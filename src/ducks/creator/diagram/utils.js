@@ -1,5 +1,3 @@
-import cuid from 'cuid';
-
 import { withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import {
@@ -141,14 +139,6 @@ export const patchNodeInState = (nodeID, nodePatch) =>
       nodes: patchNormalizedByKey(state.nodes, nodeID, nodePatch),
     })
   );
-
-export const clonePortForNode = (nodeID) => (port) => ({
-  ...port,
-  id: cuid(),
-  nodeID,
-});
-
-export const clonePortsForNode = (ports, targetID, sourcePorts) => getAllNormalizedByKeys(ports, sourcePorts).map(clonePortForNode(targetID));
 
 export const addNodeToState = (node, data) =>
   compose(

@@ -1,4 +1,5 @@
 import Toggle from 'react-toggle';
+
 import { styled } from '@/hocs';
 
 export const RecurrenceToggle = styled(Toggle)`

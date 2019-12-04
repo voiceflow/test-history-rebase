@@ -2,6 +2,15 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
+export const withProvider = (Provider) => (Component) =>
+  setDisplayName(wrapDisplayName(Component, 'withProvider'))(
+    React.forwardRef((props, ref) => (
+      <Provider>
+        <Component {...props} ref={ref} />
+      </Provider>
+    ))
+  );
+
 export const withContext = (Context, key) => (Component) =>
   setDisplayName(wrapDisplayName(Component, 'withContext'))(
     React.forwardRef((props, ref) => {

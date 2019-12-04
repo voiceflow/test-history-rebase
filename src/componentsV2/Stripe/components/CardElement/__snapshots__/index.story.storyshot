@@ -10,7 +10,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
     className=""
     delay={0}
     disabled={false}
-    distance={10}
+    distance={5}
     duration={375}
     followCursor={false}
     hideDelay={0}
@@ -29,7 +29,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
     onShown={[Function]}
     open={false}
     popperOptions={Object {}}
-    position="top"
+    position="bottom-start"
     size="regular"
     sticky={false}
     stickyDuration={200}
@@ -51,43 +51,88 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
     >
       <styled.div
         borderColor="#d4d9e6"
+        disabled={false}
+        id="poo"
         onClick={[Function]}
       >
         <StyledComponent
           borderColor="#d4d9e6"
+          disabled={false}
           forwardedComponent={
             Object {
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-jAaTju",
+                "componentId": "sc-dNLxif",
                 "isStatic": false,
-                "lastClassName": "eLHVaf",
+                "lastClassName": "kgRHjN",
                 "rules": Array [
                   "
-  display: flex;
-  height: 42px;
-  padding: 12px 16px;
-  border: 1px solid ",
-                  [Function],
+  ",
+                  "
+  ",
+                  "
+  min-height: 42px;
+",
                   ";
-  align-items: center;
-  box-shadow: 0px 0px 3px rgba(17, 49, 96, 0.06);
-  border-radius: 5px;
-  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans, Arial, sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 9px 16px 9px;
+  line-height: 22px;
+  cursor: text;
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+    max-height 0.12s linear;
+
+  &:disabled {
+    ",
+                  "
+  color: #949db0;
+  pointer-events: none;
+",
+                  "
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    ",
+                  "
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  outline: 0;
+",
+                  "
+  }
+
   ",
                   [Function],
-                  ";
+                  "
+",
+                  "
+  border: 1px solid ",
+                  [Function],
+                  " !important;
+  box-sizing: border-box;
+
+  ",
+                  [Function],
+                  "
 
   .StripeElement {
     box-sizing: unset;
     width: unset;
-    height: unset;
     padding: unset;
     border: unset;
     border-radius: unset;
     box-shadow: unset;
     transition: unset;
+    height: 20px;
 
     &.StripeElement--focus {
       color: unset !important;
@@ -101,7 +146,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-jAaTju",
+              "styledComponentId": "sc-dNLxif",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -109,87 +154,44 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
             }
           }
           forwardedRef={null}
+          id="poo"
           onClick={[Function]}
         >
           <div
-            className="sc-jAaTju eLHVaf"
+            className="sc-dNLxif kgRHjN"
+            disabled={false}
+            id="poo"
             onClick={[Function]}
           >
-            <ForwardRef
-              color="#d4d9e6"
-              icon="creditCard"
+            <Flex
+              style={
+                Object {
+                  "overflow": "hidden",
+                }
+              }
             >
-              <SvgIcon__SvgIconContainer
-                color="#d4d9e6"
-                size={16}
-              >
-                <StyledComponent
-                  color="#d4d9e6"
-                  forwardedComponent={
-                    Object {
-                      "$$typeof": Symbol(react.forward_ref),
-                      "attrs": Array [],
-                      "componentStyle": ComponentStyle {
-                        "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
-                        "isStatic": false,
-                        "lastClassName": "hnCxVT",
-                        "rules": Array [
-                          [Function],
-                          " color:",
-                          [Function],
-                          ";width:",
-                          [Function],
-                          "px;height:",
-                          [Function],
-                          "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
-                          [Function],
-                          ";}",
-                        ],
-                      },
-                      "displayName": "SvgIcon__SvgIconContainer",
-                      "foldedComponentIds": Array [],
-                      "render": [Function],
-                      "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
-                      "target": "span",
-                      "toString": [Function],
-                      "warnTooManyClasses": [Function],
-                      "withComponent": [Function],
-                    }
-                  }
-                  forwardedRef={null}
-                  size={16}
-                >
-                  <span
-                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hnCxVT"
-                    color="#d4d9e6"
-                    size={16}
-                  >
-                    <test-file-stub />
-                  </span>
-                </StyledComponent>
-              </SvgIcon__SvgIconContainer>
-            </ForwardRef>
-            <styled.div>
               <StyledComponent
                 forwardedComponent={
                   Object {
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-jDwBTQ",
-                      "isStatic": true,
-                      "lastClassName": "jmOmYL",
+                      "componentId": "Flex-sc-127y44r-0",
+                      "isStatic": false,
+                      "lastClassName": "hrzbKc",
                       "rules": Array [
-                        "
-  flex: 1;
-  margin-left: 16px;
-",
+                        "display:",
+                        [Function],
+                        ";align-items:center;",
+                        [Function],
+                        " ",
+                        [Function],
                       ],
                     },
-                    "displayName": "styled.div",
+                    "displayName": "Flex",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-jDwBTQ",
+                    "styledComponentId": "Flex-sc-127y44r-0",
                     "target": "div",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -197,74 +199,193 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                   }
                 }
                 forwardedRef={null}
+                style={
+                  Object {
+                    "overflow": "hidden",
+                  }
+                }
               >
                 <div
-                  className="sc-jDwBTQ jmOmYL"
-                >
-                  <CardElement
-                    hideIcon={true}
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    style={
-                      Object {
-                        "base": Object {
-                          "::placeholder": Object {
-                            "color": "#8DA2B5",
-                            "fontWeight": "200",
-                            "opacity": "0.6",
-                          },
-                          "color": "#132144",
-                          "fontFamily": "\\"Open Sans\\", Helvetica, Arial, sans-serif",
-                          "fontSize": "15px",
-                          "fontWeight": "400",
-                          "lineHeight": "1.4666666667",
-                        },
-                        "invalid": Object {
-                          "::placeholder": Object {
-                            "color": "#8DA2B5",
-                            "fontWeight": "200",
-                            "opacity": "0.6",
-                          },
-                          "color": "#132144",
-                        },
-                      }
+                  className="Flex-sc-127y44r-0 hrzbKc"
+                  style={
+                    Object {
+                      "overflow": "hidden",
                     }
+                  }
+                >
+                  <ForwardRef
+                    color="#d4d9e6"
+                    icon="creditCard"
                   >
-                    <mock-stripe-card-element
-                      hideIcon={true}
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      style={
+                    <styled.span
+                      color="#d4d9e6"
+                      size={16}
+                    >
+                      <StyledComponent
+                        color="#d4d9e6"
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-bxivhb",
+                              "isStatic": false,
+                              "lastClassName": "jGWIpX",
+                              "rules": Array [
+                                "
+  ",
+                                [Function],
+                                "
+
+  color: ",
+                                [Function],
+                                ";
+  width: ",
+                                [Function],
+                                "px;
+  height: ",
+                                [Function],
+                                "px;
+  box-sizing: content-box;
+  
+  ",
+                                [Function],
+                                "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                [Function],
+                                ";
+
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.span",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-bxivhb",
+                            "target": "span",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        size={16}
+                      >
+                        <span
+                          className="sc-bxivhb jGWIpX"
+                          color="#d4d9e6"
+                          size={16}
+                        >
+                          <test-file-stub />
+                        </span>
+                      </StyledComponent>
+                    </styled.span>
+                  </ForwardRef>
+                  <styled.div>
+                    <StyledComponent
+                      forwardedComponent={
                         Object {
-                          "base": Object {
-                            "::placeholder": Object {
-                              "color": "#8DA2B5",
-                              "fontWeight": "200",
-                              "opacity": "0.6",
-                            },
-                            "color": "#132144",
-                            "fontFamily": "\\"Open Sans\\", Helvetica, Arial, sans-serif",
-                            "fontSize": "15px",
-                            "fontWeight": "400",
-                            "lineHeight": "1.4666666667",
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "sc-jqCOkK",
+                            "isStatic": true,
+                            "lastClassName": "iJXyeS",
+                            "rules": Array [
+                              "
+  flex: 1;
+  margin-left: 16px;
+  margin-right: -32px;
+",
+                            ],
                           },
-                          "invalid": Object {
-                            "::placeholder": Object {
-                              "color": "#8DA2B5",
-                              "fontWeight": "200",
-                              "opacity": "0.6",
-                            },
-                            "color": "#132144",
-                          },
+                          "displayName": "styled.div",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "sc-jqCOkK",
+                          "target": "div",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
                         }
                       }
-                    />
-                  </CardElement>
+                      forwardedRef={null}
+                    >
+                      <div
+                        className="sc-jqCOkK iJXyeS"
+                      >
+                        <CardElement
+                          hideIcon={true}
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          style={
+                            Object {
+                              "base": Object {
+                                "::placeholder": Object {
+                                  "color": "#8da2b5",
+                                  "fontWeight": "400",
+                                },
+                                "color": "#132144",
+                                "fontFamily": "'Open Sans', sans-serif",
+                                "fontSize": "15px",
+                                "fontSmoothing": "antialiased",
+                                "fontWeight": "400",
+                              },
+                              "invalid": Object {
+                                "::placeholder": Object {
+                                  "color": "#8da2b5",
+                                },
+                                "color": "#132144",
+                              },
+                            }
+                          }
+                        >
+                          <mock-stripe-card-element
+                            hideIcon={true}
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            style={
+                              Object {
+                                "base": Object {
+                                  "::placeholder": Object {
+                                    "color": "#8da2b5",
+                                    "fontWeight": "400",
+                                  },
+                                  "color": "#132144",
+                                  "fontFamily": "'Open Sans', sans-serif",
+                                  "fontSize": "15px",
+                                  "fontSmoothing": "antialiased",
+                                  "fontWeight": "400",
+                                },
+                                "invalid": Object {
+                                  "::placeholder": Object {
+                                    "color": "#8da2b5",
+                                  },
+                                  "color": "#132144",
+                                },
+                              }
+                            }
+                          />
+                        </CardElement>
+                      </div>
+                    </StyledComponent>
+                  </styled.div>
                 </div>
               </StyledComponent>
-            </styled.div>
+            </Flex>
           </div>
         </StyledComponent>
       </styled.div>

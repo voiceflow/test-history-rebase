@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, WindowScroller } from 'react-virtualized';
+import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
 import { connect } from '@/hocs';
 import { rootFlowStructureSelector, unusedDiagramsSelector } from '@/store/selectors';
@@ -60,22 +60,26 @@ const FlowStructure = ({ scrollNode, unusedDiagrams, rootFlowStructure }) => {
       <WindowScroller scrollElement={scrollNode}>
         {({ height, isScrolling, registerChild, scrollTop }) =>
           !!height && (
-            <>
-              <SectionTitle className="search-section mt-1">Project Flows</SectionTitle>
+            <AutoSizer disableHeight>
+              {({ width }) => (
+                <div style={{ width }}>
+                  <SectionTitle className="search-section mt-1">Project Flows</SectionTitle>
 
-              <div ref={registerChild}>
-                <List
-                  width={250}
-                  height={height}
-                  scrollTop={scrollTop}
-                  rowCount={flatFlows.length}
-                  rowHeight={42}
-                  autoHeight
-                  rowRenderer={treeRowRenderer}
-                  isScrolling={isScrolling}
-                />
-              </div>
-            </>
+                  <div ref={registerChild}>
+                    <List
+                      width={width}
+                      height={height}
+                      scrollTop={scrollTop}
+                      rowCount={flatFlows.length}
+                      rowHeight={42}
+                      autoHeight
+                      rowRenderer={treeRowRenderer}
+                      isScrolling={isScrolling}
+                    />
+                  </div>
+                </div>
+              )}
+            </AutoSizer>
           )
         }
       </WindowScroller>
@@ -84,24 +88,28 @@ const FlowStructure = ({ scrollNode, unusedDiagrams, rootFlowStructure }) => {
         <WindowScroller scrollElement={scrollNode}>
           {({ height, isScrolling, registerChild, scrollTop }) =>
             !!height && (
-              <>
-                <hr className="mb-2 mt-2" />
+              <AutoSizer disableHeight>
+                {({ width }) => (
+                  <div style={{ width }}>
+                    <hr className="mb-2 mt-2" />
 
-                <SectionTitle className="search-section mt-3">Other Flows</SectionTitle>
+                    <SectionTitle className="search-section mt-3">Other Flows</SectionTitle>
 
-                <div ref={registerChild}>
-                  <List
-                    width={250}
-                    height={height}
-                    scrollTop={scrollTop}
-                    rowCount={otherFlows.length}
-                    rowHeight={42}
-                    autoHeight
-                    rowRenderer={otherFlowRenderer}
-                    isScrolling={isScrolling}
-                  />
-                </div>
-              </>
+                    <div ref={registerChild}>
+                      <List
+                        width={width}
+                        height={height}
+                        scrollTop={scrollTop}
+                        rowCount={otherFlows.length}
+                        rowHeight={42}
+                        autoHeight
+                        rowRenderer={otherFlowRenderer}
+                        isScrolling={isScrolling}
+                      />
+                    </div>
+                  </div>
+                )}
+              </AutoSizer>
             )
           }
         </WindowScroller>

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { isSafari } from '@/config';
 import { BlockType } from '@/constants';
-import { ClipboardContext, EngineContext, SpotlightContext, TestingModeContext } from '@/containers/CanvasV2/contexts';
+import { ClipboardContext, EditPermissionContext, EngineContext, SpotlightContext } from '@/containers/CanvasV2/contexts';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { setActiveCreatorMenu } from '@/ducks/ui';
@@ -21,18 +21,18 @@ const Wrapper = styled.div`
 `;
 
 function CanvasContainer({ openMenu, undoHistory, redoHistory, children }) {
-  const isTesting = React.useContext(TestingModeContext);
+  const { canEdit } = React.useContext(EditPermissionContext);
   const engine = React.useContext(EngineContext);
   const mousePosition = React.useContext(MousePositionContext);
   const clipboard = React.useContext(ClipboardContext);
   const spotlight = React.useContext(SpotlightContext);
 
-  const showSpotlight = React.useCallback(() => !isTesting && spotlight.toggle(), [isTesting]);
-  const deleteActive = React.useCallback(() => !isTesting && engine.removeActive(), [isTesting]);
-  const addComment = React.useCallback(() => {
+  const showSpotlight = React.useCallback(() => canEdit && spotlight.toggle(), [canEdit]);
+  const deleteActive = React.useCallback(() => canEdit && engine.removeActive(), [canEdit]);
+  const addComment = React.useCallback(async () => {
     const position = engine.canvas.transformPoint(mousePosition.current);
 
-    engine.node.add(cuid(), BlockType.COMMENT, position);
+    await engine.node.add(cuid(), BlockType.COMMENT, position);
   }, []);
 
   useHotKeys(Hotkey.COPY, preventDefault(() => clipboard.copy()), []);

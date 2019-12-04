@@ -3,6 +3,7 @@ import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/componentsV2/IconButton';
 import { PlatformType } from '@/constants';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { SettingsModalConsumer } from '@/containers/CanvasV2/contexts/SettingsModalContext';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { setError } from '@/ducks/modal';
@@ -15,6 +16,7 @@ import { SubTitleGroup } from './styled';
 
 function ActionGroup(props) {
   const { platform } = props;
+  const { isViewer } = React.useContext(EditPermissionContext);
 
   const renderPlatform = () => {
     if (platform === PlatformType.ALEXA) return <Alexa />;
@@ -26,8 +28,16 @@ function ActionGroup(props) {
       <SubTitleGroup>
         <SettingsModalConsumer>
           {({ isEnabled, toggle }) => (
-            <Tooltip title="Settings" position="bottom">
-              <IconButton active={isEnabled} variant="outline" icon="cog" onClick={toggle} iconProps={{ width: 16, height: 15 }} large />
+            <Tooltip disabled={isViewer} title="Settings" position="bottom">
+              <IconButton
+                disabled={isViewer}
+                active={isEnabled}
+                variant="outline"
+                icon="cog"
+                onClick={toggle}
+                iconProps={{ width: 16, height: 15 }}
+                large
+              />
             </Tooltip>
           )}
         </SettingsModalConsumer>

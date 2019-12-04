@@ -1,22 +1,38 @@
 import React from 'react';
+import { Tooltip } from 'react-tippy';
 import { ActionCreators } from 'redux-undo';
 
 import { PlatformType } from '@/constants';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { activePlatformSelector, setActivePlatform } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { projectViewerCountSelector } from '@/store/selectors';
 
 import ActionGroup from './ActionGroup';
 import PlatformToggle from './PlatformToggle';
 
-const ProjectHeader = ({ platform, togglePlatform }) => (
-  <>
-    <PlatformToggle platform={platform} onToggle={togglePlatform} />
-    <ActionGroup />
-  </>
-);
+const ProjectHeader = ({ platform, togglePlatform, projectViewerCount }) => {
+  const hasViewers = projectViewerCount > 1;
+  const { isViewer } = React.useContext(EditPermissionContext);
+  const toggle = <PlatformToggle platform={platform} onToggle={togglePlatform} disabled={hasViewers || isViewer} />;
+
+  return (
+    <>
+      {hasViewers ? (
+        <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
+          {toggle}
+        </Tooltip>
+      ) : (
+        toggle
+      )}
+      <ActionGroup />
+    </>
+  );
+};
 
 const mapStateToProps = {
   platform: activePlatformSelector,
+  projectViewerCount: projectViewerCountSelector,
 };
 
 const mapDispatchToProps = {

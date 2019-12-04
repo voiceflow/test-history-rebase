@@ -14,7 +14,7 @@ import { HelpModalProvider } from './HelpModalContext';
 import { LinkCreationProvider } from './LinkCreationContext';
 import { SpotlightProvider } from './SpotlightContext';
 
-export * from './TestingModeContext';
+export * from './EditPermissionContext';
 export * from './EngineContext';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
@@ -27,6 +27,7 @@ export * from './SettingsModalContext';
 export * from './NodeIDContext';
 export * from './PortIDContext';
 export * from './LinkIDContext';
+export * from './DisplayModalContext';
 
 export const LinkLayerContext = React.createContext(null);
 export const { Provider: LinkLayerProvider, Consumer: LinkLayerConsumer } = LinkLayerContext;

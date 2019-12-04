@@ -34,7 +34,7 @@ function ImportModal(props) {
 }
 
 const mapStateToProps = (state) => ({
-  boards: state.team.allIds.map((id) => ({ value: id, label: state.team.byId[id].name })),
+  boards: state.workspace.allIds.map((id) => ({ value: id, label: state.workspace.byId[id].name })),
 });
 
 export default connect(mapStateToProps)(ImportModal);

@@ -11,3 +11,6 @@ scripts/
 storybook_build/
 **/__tests__/*
 *.test.js
+
+!.storybook/*
+!.git/*

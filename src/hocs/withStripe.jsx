@@ -12,8 +12,9 @@ const MAX_POLL_COUNT = 30;
 const POLL_INTERVAL = 1000;
 
 const STRIPE_CUSTOM_FONTS = [
-  { cssSrc: 'https://fonts.googleapis.com/css?family=Open+Sans:300' },
-  { cssSrc: 'https://fonts.googleapis.com/css?family=Open+Sans:400' },
+  {
+    cssSrc: 'https://fonts.googleapis.com/css?family=Open+Sans:400',
+  },
 ];
 
 export const withStripe = (Component) => {
@@ -67,7 +68,7 @@ export const withStripe = (Component) => {
         return (
           <StripeProvider stripe={stripe}>
             <Elements fonts={STRIPE_CUSTOM_FONTS}>
-              <StripeWrappedComponent {...props} ref={ref} checkChargeable={checkChargeable} />
+              <StripeWrappedComponent {...props} ref={ref} stripe={stripe} checkChargeable={checkChargeable} />
             </Elements>
           </StripeProvider>
         );

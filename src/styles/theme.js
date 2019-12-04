@@ -9,6 +9,8 @@ const THEME = {
       '#fff', // '0'
       // darkest
     ],
+    offWhite: '#FAFAFC',
+    blue: '#5d9df5',
   },
   components: {
     button: {

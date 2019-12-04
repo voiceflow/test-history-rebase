@@ -1,3 +1,4 @@
+import { MemberIcon } from '@/components/User';
 import BlockCard from '@/containers/CanvasV2/components/BlockCard';
 import { css, styled } from '@/hocs';
 
@@ -19,9 +20,17 @@ const BlockContainer = styled(BlockCard)`
       opacity: 0.5;
     `};
 
-  & ${BlockOverlay} {
+  ${BlockOverlay} {
     border-color: ${({ color }) => color};
     border-width: ${({ isActive }) => (isActive ? 1 : 0)}px;
+  }
+
+  ${MemberIcon} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 99;
   }
 `;
 

@@ -9,9 +9,9 @@ exports[`Storyshots Divider variants: labeled 1`] = `
           "$$typeof": Symbol(react.forward_ref),
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-jTzLTM",
+            "componentId": "sc-fjdhpX",
             "isStatic": false,
-            "lastClassName": "cHntUW",
+            "lastClassName": "kqzdTp",
             "rules": Array [
               "display:",
               [Function],
@@ -64,7 +64,7 @@ exports[`Storyshots Divider variants: labeled 1`] = `
             "Flex-sc-127y44r-0",
           ],
           "render": [Function],
-          "styledComponentId": "sc-jTzLTM",
+          "styledComponentId": "sc-fjdhpX",
           "target": "div",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -74,7 +74,7 @@ exports[`Storyshots Divider variants: labeled 1`] = `
       forwardedRef={null}
     >
       <div
-        className="Flex-sc-127y44r-0 sc-jTzLTM cHntUW"
+        className="Flex-sc-127y44r-0 sc-fjdhpX kqzdTp"
       >
         Button
       </div>
@@ -92,9 +92,9 @@ exports[`Storyshots Divider variants: normal 1`] = `
           "$$typeof": Symbol(react.forward_ref),
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-VigVT",
+            "componentId": "sc-jTzLTM",
             "isStatic": false,
-            "lastClassName": "cIjHQc",
+            "lastClassName": "ddOgbe",
             "rules": Array [
               "
   ",
@@ -112,7 +112,7 @@ exports[`Storyshots Divider variants: normal 1`] = `
           "displayName": "styled.hr",
           "foldedComponentIds": Array [],
           "render": [Function],
-          "styledComponentId": "sc-VigVT",
+          "styledComponentId": "sc-jTzLTM",
           "target": "hr",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -122,7 +122,7 @@ exports[`Storyshots Divider variants: normal 1`] = `
       forwardedRef={null}
     >
       <hr
-        className="sc-VigVT cIjHQc"
+        className="sc-jTzLTM ddOgbe"
       />
     </StyledComponent>
   </styled.hr>

@@ -3,6 +3,7 @@ import cuid from 'cuid';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
+import { identity } from '@/utils/functional';
 
 import { EngineConsumer } from './utils';
 
@@ -12,9 +13,13 @@ class PortManager extends EngineConsumer {
       this.dispatch(Creator.addPort(nodeID, portID, port));
     },
 
-    remove: (portID) => {
-      this.engine.getLinkIDsByPortID(portID).forEach((linkID) => this.engine.link.remove(linkID));
+    remove: async (portID, syncRemove = identity) => {
+      const port = this.engine.getPortByID(portID);
+
+      await Promise.all(this.engine.getLinkIDsByPortID(portID).map((linkID) => this.engine.link.remove(linkID)));
+      await syncRemove();
       this.dispatch(Creator.removePort(portID));
+      this.engine.node.redrawLinks(port.nodeID);
     },
   };
 
@@ -33,17 +38,16 @@ class PortManager extends EngineConsumer {
     });
   }
 
-  add(nodeID, port) {
+  async add(nodeID, port) {
     const portID = cuid();
 
+    await this.engine.realtime.sendUpdate(Realtime.addPort(nodeID, portID, port));
     this.internal.add(nodeID, portID, port);
-    this.dispatch(Realtime.addPort(nodeID, portID, port));
     this.engine.saveHistory();
   }
 
-  remove(portID) {
-    this.internal.remove(portID);
-    this.dispatch(Realtime.removePort(portID));
+  async remove(portID) {
+    await this.internal.remove(portID, () => this.engine.realtime.sendUpdate(Realtime.removePort(portID)));
     this.engine.saveHistory();
   }
 

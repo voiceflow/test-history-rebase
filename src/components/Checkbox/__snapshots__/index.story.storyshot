@@ -8,9 +8,9 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-gqjmRU",
+          "componentId": "sc-VigVT",
           "isStatic": true,
-          "lastClassName": "etzSgW",
+          "lastClassName": "gnCnbN",
           "rules": Array [
             "
   position: relative;
@@ -26,7 +26,7 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
         "displayName": "styled.label",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-gqjmRU",
+        "styledComponentId": "sc-VigVT",
         "target": "label",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -36,7 +36,7 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
     forwardedRef={null}
   >
     <label
-      className="sc-gqjmRU etzSgW"
+      className="sc-VigVT gnCnbN"
     >
       <styled.div>
         <StyledComponent
@@ -45,9 +45,9 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-gZMcBi",
+                "componentId": "sc-gqjmRU",
                 "isStatic": true,
-                "lastClassName": "dqAXEC",
+                "lastClassName": "dqXpYh",
                 "rules": Array [
                   "
   flex: 0 0 auto;
@@ -56,13 +56,16 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                 ],
               },
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-gZMcBi",
+              "styledComponentId": "sc-gqjmRU",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -72,40 +75,47 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-gZMcBi dqAXEC"
+            className="sc-gqjmRU dqXpYh"
           >
             <styled.input
               checked={false}
+              color="#5d9df5"
               onChange={[Function]}
               type="checkbox"
             >
               <StyledComponent
                 checked={false}
+                color="#5d9df5"
                 forwardedComponent={
                   Object {
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-iwsKbI",
-                      "isStatic": true,
-                      "lastClassName": "bkouDE",
+                      "componentId": "sc-gZMcBi",
+                      "isStatic": false,
+                      "lastClassName": "bJWspH",
                       "rules": Array [
+                        "
+  ",
+                        [Function],
                         "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        ".sc-bxivhb",
                         " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        ".sc-bxivhb",
                         " {
-    color: #5d9df5;
+    color: ",
+                        [Function],
+                        ";
   }
 ",
                       ],
@@ -113,7 +123,7 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
                     "displayName": "styled.input",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-iwsKbI",
+                    "styledComponentId": "sc-gZMcBi",
                     "target": "input",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -126,47 +136,77 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
               >
                 <input
                   checked={false}
-                  className="sc-iwsKbI bkouDE"
+                  className="sc-gZMcBi bJWspH"
+                  color="#5d9df5"
                   onChange={[Function]}
                   type="checkbox"
                 />
               </StyledComponent>
             </styled.input>
             <ForwardRef
+              checked={false}
+              color="#5d9df5"
               icon="emptyCheckbox"
               size={16}
             >
-              <SvgIcon__SvgIconContainer
-                color="currentColor"
+              <styled.span
+                checked={false}
+                color="#5d9df5"
                 size={16}
               >
                 <StyledComponent
-                  color="currentColor"
+                  checked={false}
+                  color="#5d9df5"
                   forwardedComponent={
                     Object {
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "componentId": "sc-bxivhb",
                         "isStatic": false,
-                        "lastClassName": "kycatR",
+                        "lastClassName": "kwqhZm",
                         "rules": Array [
+                          "
+  ",
                           [Function],
-                          " color:",
+                          "
+
+  color: ",
                           [Function],
-                          ";width:",
+                          ";
+  width: ",
                           [Function],
-                          "px;height:",
+                          "px;
+  height: ",
                           [Function],
-                          "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                          "px;
+  box-sizing: content-box;
+  
+  ",
                           [Function],
-                          ";}",
+                          "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                          [Function],
+                          ";
+
+  }
+",
                         ],
                       },
-                      "displayName": "SvgIcon__SvgIconContainer",
+                      "displayName": "styled.span",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                      "styledComponentId": "sc-bxivhb",
                       "target": "span",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -177,14 +217,15 @@ exports[`Storyshots Checkbox variants: Checkbox 1`] = `
                   size={16}
                 >
                   <span
-                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                    color="currentColor"
+                    checked={false}
+                    className="sc-bxivhb kwqhZm"
+                    color="#5d9df5"
                     size={16}
                   >
                     <test-file-stub />
                   </span>
                 </StyledComponent>
-              </SvgIcon__SvgIconContainer>
+              </styled.span>
             </ForwardRef>
           </div>
         </StyledComponent>
@@ -205,9 +246,9 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-gqjmRU",
+          "componentId": "sc-VigVT",
           "isStatic": true,
-          "lastClassName": "etzSgW",
+          "lastClassName": "gnCnbN",
           "rules": Array [
             "
   position: relative;
@@ -223,7 +264,7 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
         "displayName": "styled.label",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-gqjmRU",
+        "styledComponentId": "sc-VigVT",
         "target": "label",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -233,7 +274,7 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
     forwardedRef={null}
   >
     <label
-      className="sc-gqjmRU etzSgW"
+      className="sc-VigVT gnCnbN"
     >
       <styled.div>
         <StyledComponent
@@ -242,9 +283,9 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-gZMcBi",
+                "componentId": "sc-gqjmRU",
                 "isStatic": true,
-                "lastClassName": "dqAXEC",
+                "lastClassName": "dqXpYh",
                 "rules": Array [
                   "
   flex: 0 0 auto;
@@ -253,13 +294,16 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                 ],
               },
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-gZMcBi",
+              "styledComponentId": "sc-gqjmRU",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -269,40 +313,47 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-gZMcBi dqAXEC"
+            className="sc-gqjmRU dqXpYh"
           >
             <styled.input
               checked={false}
+              color="#5d9df5"
               onChange={[Function]}
               type="radio"
             >
               <StyledComponent
                 checked={false}
+                color="#5d9df5"
                 forwardedComponent={
                   Object {
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-iwsKbI",
-                      "isStatic": true,
-                      "lastClassName": "bkouDE",
+                      "componentId": "sc-gZMcBi",
+                      "isStatic": false,
+                      "lastClassName": "bJWspH",
                       "rules": Array [
+                        "
+  ",
+                        [Function],
                         "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        ".sc-bxivhb",
                         " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                        ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        ".sc-bxivhb",
                         " {
-    color: #5d9df5;
+    color: ",
+                        [Function],
+                        ";
   }
 ",
                       ],
@@ -310,7 +361,7 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
                     "displayName": "styled.input",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-iwsKbI",
+                    "styledComponentId": "sc-gZMcBi",
                     "target": "input",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -323,47 +374,77 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
               >
                 <input
                   checked={false}
-                  className="sc-iwsKbI bkouDE"
+                  className="sc-gZMcBi bJWspH"
+                  color="#5d9df5"
                   onChange={[Function]}
                   type="radio"
                 />
               </StyledComponent>
             </styled.input>
             <ForwardRef
+              checked={false}
+              color="#5d9df5"
               icon="emptyCheckbox"
               size={16}
             >
-              <SvgIcon__SvgIconContainer
-                color="currentColor"
+              <styled.span
+                checked={false}
+                color="#5d9df5"
                 size={16}
               >
                 <StyledComponent
-                  color="currentColor"
+                  checked={false}
+                  color="#5d9df5"
                   forwardedComponent={
                     Object {
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "componentId": "sc-bxivhb",
                         "isStatic": false,
-                        "lastClassName": "kycatR",
+                        "lastClassName": "kwqhZm",
                         "rules": Array [
+                          "
+  ",
                           [Function],
-                          " color:",
+                          "
+
+  color: ",
                           [Function],
-                          ";width:",
+                          ";
+  width: ",
                           [Function],
-                          "px;height:",
+                          "px;
+  height: ",
                           [Function],
-                          "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                          "px;
+  box-sizing: content-box;
+  
+  ",
                           [Function],
-                          ";}",
+                          "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                          [Function],
+                          ";
+
+  }
+",
                         ],
                       },
-                      "displayName": "SvgIcon__SvgIconContainer",
+                      "displayName": "styled.span",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                      "styledComponentId": "sc-bxivhb",
                       "target": "span",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -374,14 +455,15 @@ exports[`Storyshots Checkbox variants: Radio button 1`] = `
                   size={16}
                 >
                   <span
-                    className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                    color="currentColor"
+                    checked={false}
+                    className="sc-bxivhb kwqhZm"
+                    color="#5d9df5"
                     size={16}
                   >
                     <test-file-stub />
                   </span>
                 </StyledComponent>
-              </SvgIcon__SvgIconContainer>
+              </styled.span>
             </ForwardRef>
           </div>
         </StyledComponent>

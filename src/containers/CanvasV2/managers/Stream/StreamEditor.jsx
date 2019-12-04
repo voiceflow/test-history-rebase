@@ -23,13 +23,13 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
   const updateBackgroundImage = React.useCallback((backgroundImage) => onChange({ backgroundImage }), [onChange]);
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
 
-  const togglePause = React.useCallback(() => {
+  const togglePause = React.useCallback(async () => {
     onChange({ customPause: !hadPause }, false);
 
     if (hadPause) {
-      engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
+      await engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
     } else {
-      engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: PlatformType.ALEXA });
+      await engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: PlatformType.ALEXA });
     }
   }, [hadPause, focusedNode.id, focusedNode.ports.out, onChange]);
 

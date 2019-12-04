@@ -22,9 +22,9 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
           },
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-fjdhpX",
+            "componentId": "sc-jWBwVP",
             "isStatic": false,
-            "lastClassName": "gZKPwt",
+            "lastClassName": "inlaoL",
             "rules": Array [
               "
   ",
@@ -62,6 +62,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
               [Function],
               ";
@@ -91,10 +92,10 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
           "displayName": "Styled(Styled(styled.button))",
           "foldedComponentIds": Array [
             "sc-bdVaJa",
-            "sc-bxivhb",
+            "sc-ifAKCX",
           ],
           "render": [Function],
-          "styledComponentId": "sc-fjdhpX",
+          "styledComponentId": "sc-jWBwVP",
           "target": "button",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -105,7 +106,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP inlaoL"
         disabled={false}
         onClick={[Function]}
       >
@@ -175,7 +176,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                 color="#FFF"
                 icon="plus"
               >
-                <SvgIcon__SvgIconContainer
+                <styled.span
                   color="#FFF"
                   size={16}
                 >
@@ -186,26 +187,51 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                         "$$typeof": Symbol(react.forward_ref),
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
-                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "componentId": "sc-bxivhb",
                           "isStatic": false,
-                          "lastClassName": "kycatR",
+                          "lastClassName": "iqcteL",
                           "rules": Array [
+                            "
+  ",
                             [Function],
-                            " color:",
+                            "
+
+  color: ",
                             [Function],
-                            ";width:",
+                            ";
+  width: ",
                             [Function],
-                            "px;height:",
+                            "px;
+  height: ",
                             [Function],
-                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;
+  box-sizing: content-box;
+  
+  ",
                             [Function],
-                            ";}",
+                            "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                            [Function],
+                            ";
+
+  }
+",
                           ],
                         },
-                        "displayName": "SvgIcon__SvgIconContainer",
+                        "displayName": "styled.span",
                         "foldedComponentIds": Array [],
                         "render": [Function],
-                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "styledComponentId": "sc-bxivhb",
                         "target": "span",
                         "toString": [Function],
                         "warnTooManyClasses": [Function],
@@ -216,14 +242,14 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                     size={16}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 haWjoH"
+                      className="sc-bxivhb jPGdYh"
                       color="#FFF"
                       size={16}
                     >
                       <test-file-stub />
                     </span>
                   </StyledComponent>
-                </SvgIcon__SvgIconContainer>
+                </styled.span>
               </ForwardRef>
             </span>
           </StyledComponent>
@@ -253,7 +279,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "SecondaryButtonContainer-djlxo5-0",
             "isStatic": false,
-            "lastClassName": "kcbUso",
+            "lastClassName": "fivAMD",
             "rules": Array [
               "
   ",
@@ -291,6 +317,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
               [Function],
               ";
@@ -304,7 +331,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
           "displayName": "SecondaryButtonContainer",
           "foldedComponentIds": Array [
             "sc-bdVaJa",
-            "sc-bxivhb",
+            "sc-ifAKCX",
           ],
           "render": [Function],
           "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
@@ -318,7 +345,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb SecondaryButtonContainer-djlxo5-0 kcbUso"
+        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 fivAMD"
         disabled={false}
         onClick={[Function]}
       >
@@ -354,7 +381,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
               <ForwardRef
                 icon="sync"
               >
-                <SvgIcon__SvgIconContainer
+                <styled.span
                   color="currentColor"
                   size={16}
                 >
@@ -365,26 +392,51 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
                         "$$typeof": Symbol(react.forward_ref),
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
-                          "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                          "componentId": "sc-bxivhb",
                           "isStatic": false,
-                          "lastClassName": "kycatR",
+                          "lastClassName": "iqcteL",
                           "rules": Array [
+                            "
+  ",
                             [Function],
-                            " color:",
+                            "
+
+  color: ",
                             [Function],
-                            ";width:",
+                            ";
+  width: ",
                             [Function],
-                            "px;height:",
+                            "px;
+  height: ",
                             [Function],
-                            "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                            "px;
+  box-sizing: content-box;
+  
+  ",
                             [Function],
-                            ";}",
+                            "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                            [Function],
+                            ";
+
+  }
+",
                           ],
                         },
-                        "displayName": "SvgIcon__SvgIconContainer",
+                        "displayName": "styled.span",
                         "foldedComponentIds": Array [],
                         "render": [Function],
-                        "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                        "styledComponentId": "sc-bxivhb",
                         "target": "span",
                         "toString": [Function],
                         "warnTooManyClasses": [Function],
@@ -395,14 +447,14 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
                     size={16}
                   >
                     <span
-                      className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                      className="sc-bxivhb iqcteL"
                       color="currentColor"
                       size={16}
                     >
                       <test-file-stub />
                     </span>
                   </StyledComponent>
-                </SvgIcon__SvgIconContainer>
+                </styled.span>
               </ForwardRef>
             </span>
           </StyledComponent>
@@ -435,9 +487,9 @@ exports[`Storyshots Button variants: primary 1`] = `
           },
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-fjdhpX",
+            "componentId": "sc-jWBwVP",
             "isStatic": false,
-            "lastClassName": "gZKPwt",
+            "lastClassName": "inlaoL",
             "rules": Array [
               "
   ",
@@ -475,6 +527,7 @@ exports[`Storyshots Button variants: primary 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
               [Function],
               ";
@@ -504,10 +557,10 @@ exports[`Storyshots Button variants: primary 1`] = `
           "displayName": "Styled(Styled(styled.button))",
           "foldedComponentIds": Array [
             "sc-bdVaJa",
-            "sc-bxivhb",
+            "sc-ifAKCX",
           ],
           "render": [Function],
-          "styledComponentId": "sc-fjdhpX",
+          "styledComponentId": "sc-jWBwVP",
           "target": "button",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -518,7 +571,7 @@ exports[`Storyshots Button variants: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb sc-fjdhpX gZKPwt"
+        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP inlaoL"
         disabled={false}
         onClick={[Function]}
       >
@@ -579,7 +632,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "SecondaryButtonContainer-djlxo5-0",
             "isStatic": false,
-            "lastClassName": "kcbUso",
+            "lastClassName": "fivAMD",
             "rules": Array [
               "
   ",
@@ -617,6 +670,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
               [Function],
               ";
@@ -630,7 +684,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
           "displayName": "SecondaryButtonContainer",
           "foldedComponentIds": Array [
             "sc-bdVaJa",
-            "sc-bxivhb",
+            "sc-ifAKCX",
           ],
           "render": [Function],
           "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
@@ -644,7 +698,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-bxivhb SecondaryButtonContainer-djlxo5-0 kcbUso"
+        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 fivAMD"
         disabled={false}
         onClick={[Function]}
       >
@@ -669,7 +723,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "TertiaryButton-sc-1ecurkc-0",
           "isStatic": false,
-          "lastClassName": "glBWfe",
+          "lastClassName": "dRdpKQ",
           "rules": Array [
             "
   ",
@@ -707,6 +761,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
             [Function],
             ";
@@ -721,7 +776,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
         "displayName": "TertiaryButton",
         "foldedComponentIds": Array [
           "sc-bdVaJa",
-          "sc-bxivhb",
+          "sc-ifAKCX",
         ],
         "render": [Function],
         "styledComponentId": "TertiaryButton-sc-1ecurkc-0",
@@ -735,7 +790,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-bxivhb TertiaryButton-sc-1ecurkc-0 glBWfe"
+      className="sc-bdVaJa sc-ifAKCX TertiaryButton-sc-1ecurkc-0 dRdpKQ"
       disabled={false}
       onClick={[Function]}
     >

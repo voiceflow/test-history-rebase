@@ -92,7 +92,7 @@ export class SkillDetail extends Component {
               </div>
               <div className="col-sm-6">
                 <Select
-                  placeholder="Select Board"
+                  placeholder="Select Workspace"
                   classNamePrefix="select-box"
                   className="select-box mb-2 mr-2 mt-1"
                   value={this.state.target_board}

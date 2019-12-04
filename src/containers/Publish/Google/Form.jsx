@@ -150,10 +150,7 @@ class GooglePublish extends Component {
   }
 
   componentWillUnmount() {
-    const { loaded } = this.state;
-    if (loaded) {
-      this.save();
-    }
+    if (this.state.loaded && !this.props.isLocked) this.save();
   }
 
   save = async () => {

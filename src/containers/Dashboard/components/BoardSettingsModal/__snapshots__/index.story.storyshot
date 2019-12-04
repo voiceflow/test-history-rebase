@@ -2,143 +2,39 @@
 
 exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = `
 <Modal
-  autoFocus={true}
-  backdrop={true}
-  backdropTransition={
-    Object {
-      "mountOnEnter": true,
-      "timeout": 150,
-    }
-  }
-  centered={false}
   className="upgrade-modal"
-  fade={true}
   isOpen={true}
-  keyboard={true}
-  modalTransition={
-    Object {
-      "timeout": 300,
-    }
-  }
-  onClosed={[Function]}
-  onOpened={[Function]}
-  role="dialog"
   toggle={[Function]}
-  zIndex={1050}
 >
-  <Portal
-    node={
-      <div
-        style="position: relative; z-index: 1050;"
-        tabindex="-1"
-      >
-        <div
-          class=""
-        >
-          <div
-            class="modal fade"
-            role="dialog"
-            style="display: block;"
-            tabindex="-1"
-          >
-            <div
-              class="modal-dialog upgrade-modal"
-              role="document"
-            >
-              <div
-                class="modal-content"
-              >
-                <div
-                  class="pb-2 sc-fBuWsC hQFoLU"
-                >
-                  <h5>
-                    Board Settings
-                  </h5>
-                  <span
-                    class="sc-bxivhb fsvlWZ"
-                    color="currentColor"
-                    size="12"
-                  >
-                    <test-file-stub />
-                  </span>
-                </div>
-                <div
-                  class="px-45 pt-0 overflow-hidden modal-body"
-                >
-                  <div
-                    class="mb-3"
-                  >
-                    <label>
-                      Board Icon
-                    </label>
-                    <img
-                      alt="Voiceflow"
-                      class="mt-2 mb-1 no-select"
-                      src="/images/icons/vf_logo.png"
-                      width="80"
-                    />
-                    <br />
-                    <small
-                      class="text-muted"
-                    >
-                      Upgrade this board under billing to add a custom image
-                    </small>
-                    <br />
-                    <br />
-                    <label>
-                      Name
-                    </label>
-                    <input
-                      class="form-control"
-                      name="name"
-                      placeholder="Board Name"
-                      type="text"
-                      value="name"
-                    />
-                    <hr />
-                    <label>
-                      Billing
-                    </label>
-                    <button
-                      class="btn btn-link __large"
-                    >
-                      Invoices
-                    </button>
-                    <br />
-                    <small
-                      class="text-muted"
-                    >
-                      View invoices, update your payment options
-                    </small>
-                    <hr />
-                    <label>
-                      Privacy
-                    </label>
-                    <button
-                      class="btn btn-link __large"
-                    >
-                      Delete Board
-                    </button>
-                    <br />
-                    <small
-                      class="text-muted"
-                    >
-                      This action is irreversible. All team and project data will be removed
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="modal-backdrop fade"
-          />
-        </div>
-      </div>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropClassName="modal-backdrop-invisible"
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
     }
+    centered={false}
+    className="upgrade-modal"
+    fade={true}
+    isOpen={true}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    onPaste={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
   >
     <Portal
-      containerInfo={
+      node={
         <div
           style="position: relative; z-index: 1050;"
           tabindex="-1"
@@ -160,17 +56,13 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                   class="modal-content"
                 >
                   <div
-<<<<<<< Updated upstream
-                    class="pb-2 sc-fBuWsC hQFoLU"
-=======
-                    class="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                    class="pb-2 sc-gzOgki bMwJiZ"
                   >
                     <h5>
-                      Board Settings
+                      Workspace Settings
                     </h5>
                     <span
-                      class="sc-bxivhb fsvlWZ"
+                      class="sc-bxivhb iYlQyD"
                       color="currentColor"
                       size="12"
                     >
@@ -178,17 +70,13 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                     </span>
                   </div>
                   <div
-<<<<<<< Updated upstream
-                    class="px-45 pt-0 overflow-hidden modal-body"
-=======
-                    class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                    class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                   >
                     <div
                       class="mb-3"
                     >
                       <label>
-                        Board Icon
+                        Workspace Icon
                       </label>
                       <img
                         alt="Voiceflow"
@@ -200,7 +88,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                       <small
                         class="text-muted"
                       >
-                        Upgrade this board under billing to add a custom image
+                        Upgrade this workspace under billing to add a custom image
                       </small>
                       <br />
                       <br />
@@ -236,13 +124,13 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                       <button
                         class="btn btn-link __large"
                       >
-                        Delete Board
+                        Delete Workspace
                       </button>
                       <br />
                       <small
                         class="text-muted"
                       >
-                        This action is irreversible. All team and project data will be removed
+                        This action is irreversible. All workspace and project data will be removed
                       </small>
                     </div>
                   </div>
@@ -250,16 +138,12 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
               </div>
             </div>
             <div
-              class="modal-backdrop fade"
+              class="modal-backdrop modal-backdrop-invisible fade"
             />
           </div>
         </div>
       }
     >
-<<<<<<< Updated upstream
-      <div
-        className=""
-=======
       <Portal
         containerInfo={
           <div
@@ -283,7 +167,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                     class="modal-content"
                   >
                     <div
-                      class="pb-2 sc-feJyhm eScQzT"
+                      class="pb-2 sc-gzOgki bMwJiZ"
                     >
                       <h5>
                         Workspace Settings
@@ -297,7 +181,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                       </span>
                     </div>
                     <div
-                      class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+                      class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                     >
                       <div
                         class="mb-3"
@@ -370,96 +254,84 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
             </div>
           </div>
         }
->>>>>>> Stashed changes
       >
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={false}
-          onClick={[Function]}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          role="dialog"
-          style={
-            Object {
-              "display": "block",
-            }
-          }
-          tabIndex="-1"
-          tag="div"
-          timeout={300}
-          unmountOnExit={false}
+        <div
+          className=""
         >
-          <Transition
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal"
             enter={true}
             exit={true}
             in={true}
             mountOnEnter={false}
+            onClick={[Function]}
             onEnter={[Function]}
             onEntered={[Function]}
             onEntering={[Function]}
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            role="dialog"
+            style={
+              Object {
+                "display": "block",
+              }
+            }
+            tabIndex="-1"
+            tag="div"
             timeout={300}
             unmountOnExit={false}
           >
-            <div
-              className="modal fade"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              role="dialog"
-              style={
-                Object {
-                  "display": "block",
-                }
-              }
-              tabIndex="-1"
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={false}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={300}
+              unmountOnExit={false}
             >
               <div
-                className="modal-dialog upgrade-modal"
-                role="document"
+                className="modal fade"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                role="dialog"
+                style={
+                  Object {
+                    "display": "block",
+                  }
+                }
+                tabIndex="-1"
               >
                 <div
-                  className="modal-content"
+                  className="modal-dialog upgrade-modal"
+                  onPaste={[Function]}
+                  role="document"
                 >
-                  <ModalHeader
-                    className="pb-2"
-                    header="Board Settings"
-                    toggle={[Function]}
+                  <div
+                    className="modal-content"
                   >
-                    <styled.div
+                    <ModalHeader
                       className="pb-2"
+                      header="Workspace Settings"
+                      toggle={[Function]}
                     >
-                      <StyledComponent
+                      <styled.div
                         className="pb-2"
-<<<<<<< Updated upstream
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-fBuWsC",
-                              "isStatic": false,
-                              "lastClassName": "hQFoLU",
-                              "rules": Array [
-                                "
-=======
                       >
                         <StyledComponent
                           className="pb-2"
@@ -468,20 +340,19 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                               "$$typeof": Symbol(react.forward_ref),
                               "attrs": Array [],
                               "componentStyle": ComponentStyle {
-                                "componentId": "sc-feJyhm",
+                                "componentId": "sc-gzOgki",
                                 "isStatic": false,
-                                "lastClassName": "eScQzT",
+                                "lastClassName": "bMwJiZ",
                                 "rules": Array [
                                   "
->>>>>>> Stashed changes
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: ",
-                                [Function],
-                                "px ",
-                                [Function],
-                                "px !important;
+                                  [Function],
+                                  "px ",
+                                  [Function],
+                                  "px !important;
   padding-left: 2rem;
   border: 0;
 
@@ -496,8 +367,11 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
   }
 
   & > ",
-                                ".sc-bxivhb",
-                                " {
+                                  ".sc-bxivhb",
+                                  " {
+    ",
+                                  [Function],
+                                  "
     padding: 10px;
     margin: -10px;
     cursor: pointer;
@@ -509,145 +383,116 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
     }
   }
 ",
-<<<<<<< Updated upstream
-                              ],
-                            },
-                            "displayName": "styled.div",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-fBuWsC",
-                            "target": "div",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-=======
                                 ],
                               },
                               "displayName": "styled.div",
                               "foldedComponentIds": Array [],
                               "render": [Function],
-                              "styledComponentId": "sc-feJyhm",
+                              "styledComponentId": "sc-gzOgki",
                               "target": "div",
                               "toString": [Function],
                               "warnTooManyClasses": [Function],
                               "withComponent": [Function],
                             }
->>>>>>> Stashed changes
                           }
-                        }
-                        forwardedRef={null}
-                      >
-                        <div
-                          className="pb-2 sc-fBuWsC hQFoLU"
+                          forwardedRef={null}
                         >
-<<<<<<< Updated upstream
-                          <h5>
-                            Board Settings
-                          </h5>
-                          <ForwardRef
-                            icon="close"
-                            onClick={[Function]}
-                            size={12}
-=======
                           <div
-                            className="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                            className="pb-2 sc-gzOgki bMwJiZ"
                           >
-                            <styled.span
-                              color="currentColor"
+                            <h5>
+                              Workspace Settings
+                            </h5>
+                            <ForwardRef
+                              icon="close"
                               onClick={[Function]}
                               size={12}
                             >
-                              <StyledComponent
+                              <styled.span
                                 color="currentColor"
-                                forwardedComponent={
-                                  Object {
-                                    "$$typeof": Symbol(react.forward_ref),
-                                    "attrs": Array [],
-                                    "componentStyle": ComponentStyle {
-                                      "componentId": "sc-bxivhb",
-                                      "isStatic": false,
-                                      "lastClassName": "fsvlWZ",
-                                      "rules": Array [
-                                        "
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <StyledComponent
+                                  color="currentColor"
+                                  forwardedComponent={
+                                    Object {
+                                      "$$typeof": Symbol(react.forward_ref),
+                                      "attrs": Array [],
+                                      "componentStyle": ComponentStyle {
+                                        "componentId": "sc-bxivhb",
+                                        "isStatic": false,
+                                        "lastClassName": "iYlQyD",
+                                        "rules": Array [
+                                          "
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
   width: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   height: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   box-sizing: content-box;
   
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   & > svg {
     display: block;
     width: inherit;
     height: inherit;
+
   }
 
   &:hover,
   &:active {
     color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
+
   }
 ",
-                                      ],
-                                    },
-                                    "displayName": "styled.span",
-                                    "foldedComponentIds": Array [],
-                                    "render": [Function],
-                                    "styledComponentId": "sc-bxivhb",
-                                    "target": "span",
-                                    "toString": [Function],
-                                    "warnTooManyClasses": [Function],
-                                    "withComponent": [Function],
+                                        ],
+                                      },
+                                      "displayName": "styled.span",
+                                      "foldedComponentIds": Array [],
+                                      "render": [Function],
+                                      "styledComponentId": "sc-bxivhb",
+                                      "target": "span",
+                                      "toString": [Function],
+                                      "warnTooManyClasses": [Function],
+                                      "withComponent": [Function],
+                                    }
                                   }
-                                }
-                                forwardedRef={null}
-                                onClick={[Function]}
-                                size={12}
-                              >
-                                <span
-                                  className="sc-bxivhb fsvlWZ"
-                                  color="currentColor"
+                                  forwardedRef={null}
                                   onClick={[Function]}
                                   size={12}
                                 >
-                                  <test-file-stub />
-                                </span>
-                              </StyledComponent>
-                            </styled.span>
-                          </ForwardRef>
-                        </div>
-                      </StyledComponent>
-                    </styled.div>
-                  </ModalHeader>
-                  <ModalBody
-                    className="px-45 pt-0 overflow-hidden"
-                    tag="div"
-                  >
-                    <div
-                      className="px-45 pt-0 overflow-hidden modal-body"
+                                  <span
+                                    className="sc-bxivhb iYlQyD"
+                                    color="currentColor"
+                                    onClick={[Function]}
+                                    size={12}
+                                  >
+                                    <test-file-stub />
+                                  </span>
+                                </StyledComponent>
+                              </styled.span>
+                            </ForwardRef>
+                          </div>
+                        </StyledComponent>
+                      </styled.div>
+                    </ModalHeader>
+                    <styled.div
+                      className="px-45 pt-0 overflow-hidden"
                     >
-<<<<<<< Updated upstream
-                      <div
-                        className="mb-3"
-                      >
-                        <SettingField
-                          description="Upgrade this board under billing to add a custom image"
-                          label="Board Icon"
-=======
                       <StyledComponent
                         className="px-45 pt-0 overflow-hidden"
                         forwardedComponent={
@@ -655,9 +500,9 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-cIShpX",
+                              "componentId": "sc-gxMtzJ",
                               "isStatic": false,
-                              "lastClassName": "haqxvv",
+                              "lastClassName": "hnvNMF",
                               "rules": Array [
                                 "
   position: relative;
@@ -671,7 +516,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-cIShpX",
+                            "styledComponentId": "sc-gxMtzJ",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -681,141 +526,133 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                         forwardedRef={null}
                       >
                         <div
-                          className="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                          className="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                         >
-                          <label>
-                            Board Icon
-                          </label>
-                          <img
-                            alt="Voiceflow"
-                            className="mt-2 mb-1 no-select"
-                            onDragStart={[Function]}
-                            src="/images/icons/vf_logo.png"
-                            width={80}
-                          />
-                          <br />
-                          <small
-                            className="text-muted"
+                          <div
+                            className="mb-3"
                           >
-                            Upgrade this board under billing to add a custom image
-                          </small>
-                        </SettingField>
-                        <br />
-                        <br />
-                        <SettingField
-                          hr={true}
-                          label="Name"
-                        >
-                          <label>
-                            Name
-                          </label>
-                          <Input
-                            name="name"
-                            onChange={[Function]}
-                            placeholder="Board Name"
-                            type="text"
-                            value="name"
-                          >
-                            <input
-                              className="form-control"
-                              name="name"
-                              onChange={[Function]}
-                              placeholder="Board Name"
-                              type="text"
-                              value="name"
-                            />
-                          </Input>
-                          <hr />
-                        </SettingField>
-                        <SettingField
-                          description="View invoices, update your payment options"
-                          hr={true}
-                          label="Billing"
-                        >
-                          <label>
-                            Billing
-                          </label>
-                          <Button
-                            iconPosition="right"
-                            isBtn={true}
-                            isLinkLarge={true}
-                            onRef={[Function]}
-                            trackEvent="Button Click"
-                          >
-                            <button
-                              className="btn btn-link __large"
-                              onClick={[Function]}
+                            <SettingField
+                              description="Upgrade this workspace under billing to add a custom image"
+                              label="Workspace Icon"
                             >
-                              Invoices
-                            </button>
-                          </Button>
-                          <br />
-                          <small
-                            className="text-muted"
-                          >
-                            View invoices, update your payment options
-                          </small>
-                          <hr />
-                        </SettingField>
-                        <SettingField
-                          description="This action is irreversible. All team and project data will be removed"
-                          label="Privacy"
-                        >
-                          <label>
-                            Privacy
-                          </label>
-                          <Button
-                            iconPosition="right"
-                            isBtn={true}
-                            isLinkLarge={true}
-                            onClick={[Function]}
-                            onRef={[Function]}
-                            trackEvent="Button Click"
-                          >
-                            <button
-                              className="btn btn-link __large"
-                              onClick={[Function]}
+                              <label>
+                                Workspace Icon
+                              </label>
+                              <img
+                                alt="Voiceflow"
+                                className="mt-2 mb-1 no-select"
+                                onDragStart={[Function]}
+                                src="/images/icons/vf_logo.png"
+                                width={80}
+                              />
+                              <br />
+                              <small
+                                className="text-muted"
+                              >
+                                Upgrade this workspace under billing to add a custom image
+                              </small>
+                            </SettingField>
+                            <br />
+                            <br />
+                            <SettingField
+                              hr={true}
+                              label="Name"
                             >
-                              Delete Board
-                            </button>
-                          </Button>
-                          <br />
-                          <small
-                            className="text-muted"
-                          >
-                            This action is irreversible. All team and project data will be removed
-                          </small>
-                        </SettingField>
-                      </div>
-                    </div>
-                  </ModalBody>
+                              <label>
+                                Name
+                              </label>
+                              <Input
+                                name="name"
+                                onChange={[Function]}
+                                placeholder="Board Name"
+                                type="text"
+                                value="name"
+                              >
+                                <input
+                                  className="form-control"
+                                  name="name"
+                                  onChange={[Function]}
+                                  placeholder="Board Name"
+                                  type="text"
+                                  value="name"
+                                />
+                              </Input>
+                              <hr />
+                            </SettingField>
+                            <SettingField
+                              description="View invoices, update your payment options"
+                              hr={true}
+                              label="Billing"
+                            >
+                              <label>
+                                Billing
+                              </label>
+                              <Button
+                                iconPosition="right"
+                                isBtn={true}
+                                isLinkLarge={true}
+                                onClick={[Function]}
+                                onRef={[Function]}
+                                trackEvent="Button Click"
+                              >
+                                <button
+                                  className="btn btn-link __large"
+                                  onClick={[Function]}
+                                >
+                                  Invoices
+                                </button>
+                              </Button>
+                              <br />
+                              <small
+                                className="text-muted"
+                              >
+                                View invoices, update your payment options
+                              </small>
+                              <hr />
+                            </SettingField>
+                            <SettingField
+                              description="This action is irreversible. All workspace and project data will be removed"
+                              label="Privacy"
+                            >
+                              <label>
+                                Privacy
+                              </label>
+                              <Button
+                                iconPosition="right"
+                                isBtn={true}
+                                isLinkLarge={true}
+                                onClick={[Function]}
+                                onRef={[Function]}
+                                trackEvent="Button Click"
+                              >
+                                <button
+                                  className="btn btn-link __large"
+                                  onClick={[Function]}
+                                >
+                                  Delete Workspace
+                                </button>
+                              </Button>
+                              <br />
+                              <small
+                                className="text-muted"
+                              >
+                                This action is irreversible. All workspace and project data will be removed
+                              </small>
+                            </SettingField>
+                          </div>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Transition>
-        </Fade>
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal-backdrop"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={true}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          tag="div"
-          timeout={150}
-          unmountOnExit={false}
-        >
-          <Transition
+            </Transition>
+          </Fade>
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal-backdrop modal-backdrop-invisible"
             enter={true}
             exit={true}
             in={true}
@@ -826,17 +663,34 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            tag="div"
             timeout={150}
             unmountOnExit={false}
           >
-            <div
-              className="modal-backdrop fade"
-            />
-          </Transition>
-        </Fade>
-      </div>
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={true}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={150}
+              unmountOnExit={false}
+            >
+              <div
+                className="modal-backdrop modal-backdrop-invisible fade"
+              />
+            </Transition>
+          </Fade>
+        </div>
+      </Portal>
     </Portal>
-  </Portal>
+  </Modal>
 </Modal>
 `;
 
@@ -844,154 +698,39 @@ exports[`Storyshots Dashboard/Board Settings Modal User is not admin: default 1`
 
 exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
 <Modal
-  autoFocus={true}
-  backdrop={true}
-  backdropTransition={
-    Object {
-      "mountOnEnter": true,
-      "timeout": 150,
-    }
-  }
-  centered={false}
   className="upgrade-modal"
-  fade={true}
   isOpen={true}
-  keyboard={true}
-  modalTransition={
-    Object {
-      "timeout": 300,
-    }
-  }
-  onClosed={[Function]}
-  onOpened={[Function]}
-  role="dialog"
   toggle={[Function]}
-  zIndex={1050}
 >
-  <Portal
-    node={
-      <div
-        style="position: relative; z-index: 1050;"
-        tabindex="-1"
-      >
-        <div
-          class=""
-        >
-          <div
-            class="modal fade"
-            role="dialog"
-            style="display: block;"
-            tabindex="-1"
-          >
-            <div
-              class="modal-dialog upgrade-modal"
-              role="document"
-            >
-              <div
-                class="modal-content"
-              >
-                <div
-                  class="pb-2 sc-fBuWsC hQFoLU"
-                >
-                  <h5>
-                    Board Settings
-                  </h5>
-                  <span
-                    class="sc-bxivhb fsvlWZ"
-                    color="currentColor"
-                    size="12"
-                  >
-                    <test-file-stub />
-                  </span>
-                </div>
-                <div
-                  class="px-45 pt-0 overflow-hidden modal-body"
-                >
-                  <div
-                    class="mb-3"
-                  >
-                    <label>
-                      Board Icon
-                    </label>
-                    <div
-                      class="icon-image icon-image-sm icon-image-square mb-3 tiny"
-                    >
-                      <div
-                        aria-disabled="false"
-                        class="dropzone image-box"
-                        style="position: relative;"
-                      >
-                        <div
-                          class="image"
-                          style="background-image: url(/images/img.png);"
-                        />
-                        <div
-                          class="rejected-file text-danger text-center super-center h-100"
-                        >
-                          File not Accepted
-                        </div>
-                        <input
-                          accept="image/jpeg,image/png"
-                          autocomplete="off"
-                          style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.00001; pointer-events: none;"
-                          type="file"
-                        />
-                      </div>
-                    </div>
-                    <label>
-                      Name
-                    </label>
-                    <input
-                      class="form-control"
-                      name="name"
-                      placeholder="Board Name"
-                      type="text"
-                      value="name"
-                    />
-                    <hr />
-                    <label>
-                      Billing
-                    </label>
-                    <button
-                      class="btn btn-link __large"
-                    >
-                      Invoices
-                    </button>
-                    <br />
-                    <small
-                      class="text-muted"
-                    >
-                      View invoices, update your payment options
-                    </small>
-                    <hr />
-                    <label>
-                      Privacy
-                    </label>
-                    <button
-                      class="btn btn-link __large"
-                    >
-                      Delete Board
-                    </button>
-                    <br />
-                    <small
-                      class="text-muted"
-                    >
-                      This action is irreversible. All team and project data will be removed
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="modal-backdrop fade"
-          />
-        </div>
-      </div>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropClassName="modal-backdrop-invisible"
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
     }
+    centered={false}
+    className="upgrade-modal"
+    fade={true}
+    isOpen={true}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    onPaste={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
   >
     <Portal
-      containerInfo={
+      node={
         <div
           style="position: relative; z-index: 1050;"
           tabindex="-1"
@@ -1013,17 +752,13 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                   class="modal-content"
                 >
                   <div
-<<<<<<< Updated upstream
-                    class="pb-2 sc-fBuWsC hQFoLU"
-=======
-                    class="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                    class="pb-2 sc-gzOgki bMwJiZ"
                   >
                     <h5>
-                      Board Settings
+                      Workspace Settings
                     </h5>
                     <span
-                      class="sc-bxivhb fsvlWZ"
+                      class="sc-bxivhb iYlQyD"
                       color="currentColor"
                       size="12"
                     >
@@ -1031,17 +766,13 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                     </span>
                   </div>
                   <div
-<<<<<<< Updated upstream
-                    class="px-45 pt-0 overflow-hidden modal-body"
-=======
-                    class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                    class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                   >
                     <div
                       class="mb-3"
                     >
                       <label>
-                        Board Icon
+                        Workspace Icon
                       </label>
                       <div
                         class="icon-image icon-image-sm icon-image-square mb-3 tiny"
@@ -1100,13 +831,13 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                       <button
                         class="btn btn-link __large"
                       >
-                        Delete Board
+                        Delete Workspace
                       </button>
                       <br />
                       <small
                         class="text-muted"
                       >
-                        This action is irreversible. All team and project data will be removed
+                        This action is irreversible. All workspace and project data will be removed
                       </small>
                     </div>
                   </div>
@@ -1114,16 +845,12 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
               </div>
             </div>
             <div
-              class="modal-backdrop fade"
+              class="modal-backdrop modal-backdrop-invisible fade"
             />
           </div>
         </div>
       }
     >
-<<<<<<< Updated upstream
-      <div
-        className=""
-=======
       <Portal
         containerInfo={
           <div
@@ -1147,7 +874,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                     class="modal-content"
                   >
                     <div
-                      class="pb-2 sc-feJyhm eScQzT"
+                      class="pb-2 sc-gzOgki bMwJiZ"
                     >
                       <h5>
                         Workspace Settings
@@ -1161,7 +888,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                       </span>
                     </div>
                     <div
-                      class="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
+                      class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                     >
                       <div
                         class="mb-3"
@@ -1245,96 +972,84 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
             </div>
           </div>
         }
->>>>>>> Stashed changes
       >
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={false}
-          onClick={[Function]}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          role="dialog"
-          style={
-            Object {
-              "display": "block",
-            }
-          }
-          tabIndex="-1"
-          tag="div"
-          timeout={300}
-          unmountOnExit={false}
+        <div
+          className=""
         >
-          <Transition
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal"
             enter={true}
             exit={true}
             in={true}
             mountOnEnter={false}
+            onClick={[Function]}
             onEnter={[Function]}
             onEntered={[Function]}
             onEntering={[Function]}
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            role="dialog"
+            style={
+              Object {
+                "display": "block",
+              }
+            }
+            tabIndex="-1"
+            tag="div"
             timeout={300}
             unmountOnExit={false}
           >
-            <div
-              className="modal fade"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              role="dialog"
-              style={
-                Object {
-                  "display": "block",
-                }
-              }
-              tabIndex="-1"
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={false}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={300}
+              unmountOnExit={false}
             >
               <div
-                className="modal-dialog upgrade-modal"
-                role="document"
+                className="modal fade"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                role="dialog"
+                style={
+                  Object {
+                    "display": "block",
+                  }
+                }
+                tabIndex="-1"
               >
                 <div
-                  className="modal-content"
+                  className="modal-dialog upgrade-modal"
+                  onPaste={[Function]}
+                  role="document"
                 >
-                  <ModalHeader
-                    className="pb-2"
-                    header="Board Settings"
-                    toggle={[Function]}
+                  <div
+                    className="modal-content"
                   >
-                    <styled.div
+                    <ModalHeader
                       className="pb-2"
+                      header="Workspace Settings"
+                      toggle={[Function]}
                     >
-                      <StyledComponent
+                      <styled.div
                         className="pb-2"
-<<<<<<< Updated upstream
-                        forwardedComponent={
-                          Object {
-                            "$$typeof": Symbol(react.forward_ref),
-                            "attrs": Array [],
-                            "componentStyle": ComponentStyle {
-                              "componentId": "sc-fBuWsC",
-                              "isStatic": false,
-                              "lastClassName": "hQFoLU",
-                              "rules": Array [
-                                "
-=======
                       >
                         <StyledComponent
                           className="pb-2"
@@ -1343,20 +1058,19 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                               "$$typeof": Symbol(react.forward_ref),
                               "attrs": Array [],
                               "componentStyle": ComponentStyle {
-                                "componentId": "sc-feJyhm",
+                                "componentId": "sc-gzOgki",
                                 "isStatic": false,
-                                "lastClassName": "eScQzT",
+                                "lastClassName": "bMwJiZ",
                                 "rules": Array [
                                   "
->>>>>>> Stashed changes
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: ",
-                                [Function],
-                                "px ",
-                                [Function],
-                                "px !important;
+                                  [Function],
+                                  "px ",
+                                  [Function],
+                                  "px !important;
   padding-left: 2rem;
   border: 0;
 
@@ -1371,8 +1085,11 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
   }
 
   & > ",
-                                ".sc-bxivhb",
-                                " {
+                                  ".sc-bxivhb",
+                                  " {
+    ",
+                                  [Function],
+                                  "
     padding: 10px;
     margin: -10px;
     cursor: pointer;
@@ -1384,145 +1101,116 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
     }
   }
 ",
-<<<<<<< Updated upstream
-                              ],
-                            },
-                            "displayName": "styled.div",
-                            "foldedComponentIds": Array [],
-                            "render": [Function],
-                            "styledComponentId": "sc-fBuWsC",
-                            "target": "div",
-                            "toString": [Function],
-                            "warnTooManyClasses": [Function],
-                            "withComponent": [Function],
-=======
                                 ],
                               },
                               "displayName": "styled.div",
                               "foldedComponentIds": Array [],
                               "render": [Function],
-                              "styledComponentId": "sc-feJyhm",
+                              "styledComponentId": "sc-gzOgki",
                               "target": "div",
                               "toString": [Function],
                               "warnTooManyClasses": [Function],
                               "withComponent": [Function],
                             }
->>>>>>> Stashed changes
                           }
-                        }
-                        forwardedRef={null}
-                      >
-                        <div
-                          className="pb-2 sc-fBuWsC hQFoLU"
+                          forwardedRef={null}
                         >
-<<<<<<< Updated upstream
-                          <h5>
-                            Board Settings
-                          </h5>
-                          <ForwardRef
-                            icon="close"
-                            onClick={[Function]}
-                            size={12}
-=======
                           <div
-                            className="pb-2 sc-feJyhm eScQzT"
->>>>>>> Stashed changes
+                            className="pb-2 sc-gzOgki bMwJiZ"
                           >
-                            <styled.span
-                              color="currentColor"
+                            <h5>
+                              Workspace Settings
+                            </h5>
+                            <ForwardRef
+                              icon="close"
                               onClick={[Function]}
                               size={12}
                             >
-                              <StyledComponent
+                              <styled.span
                                 color="currentColor"
-                                forwardedComponent={
-                                  Object {
-                                    "$$typeof": Symbol(react.forward_ref),
-                                    "attrs": Array [],
-                                    "componentStyle": ComponentStyle {
-                                      "componentId": "sc-bxivhb",
-                                      "isStatic": false,
-                                      "lastClassName": "fsvlWZ",
-                                      "rules": Array [
-                                        "
+                                onClick={[Function]}
+                                size={12}
+                              >
+                                <StyledComponent
+                                  color="currentColor"
+                                  forwardedComponent={
+                                    Object {
+                                      "$$typeof": Symbol(react.forward_ref),
+                                      "attrs": Array [],
+                                      "componentStyle": ComponentStyle {
+                                        "componentId": "sc-bxivhb",
+                                        "isStatic": false,
+                                        "lastClassName": "iYlQyD",
+                                        "rules": Array [
+                                          "
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
   width: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   height: ",
-                                        [Function],
-                                        "px;
+                                          [Function],
+                                          "px;
   box-sizing: content-box;
   
   ",
-                                        [Function],
-                                        "
+                                          [Function],
+                                          "
 
   & > svg {
     display: block;
     width: inherit;
     height: inherit;
+
   }
 
   &:hover,
   &:active {
     color: ",
-                                        [Function],
-                                        ";
+                                          [Function],
+                                          ";
+
   }
 ",
-                                      ],
-                                    },
-                                    "displayName": "styled.span",
-                                    "foldedComponentIds": Array [],
-                                    "render": [Function],
-                                    "styledComponentId": "sc-bxivhb",
-                                    "target": "span",
-                                    "toString": [Function],
-                                    "warnTooManyClasses": [Function],
-                                    "withComponent": [Function],
+                                        ],
+                                      },
+                                      "displayName": "styled.span",
+                                      "foldedComponentIds": Array [],
+                                      "render": [Function],
+                                      "styledComponentId": "sc-bxivhb",
+                                      "target": "span",
+                                      "toString": [Function],
+                                      "warnTooManyClasses": [Function],
+                                      "withComponent": [Function],
+                                    }
                                   }
-                                }
-                                forwardedRef={null}
-                                onClick={[Function]}
-                                size={12}
-                              >
-                                <span
-                                  className="sc-bxivhb fsvlWZ"
-                                  color="currentColor"
+                                  forwardedRef={null}
                                   onClick={[Function]}
                                   size={12}
                                 >
-                                  <test-file-stub />
-                                </span>
-                              </StyledComponent>
-                            </styled.span>
-                          </ForwardRef>
-                        </div>
-                      </StyledComponent>
-                    </styled.div>
-                  </ModalHeader>
-                  <ModalBody
-                    className="px-45 pt-0 overflow-hidden"
-                    tag="div"
-                  >
-                    <div
-                      className="px-45 pt-0 overflow-hidden modal-body"
+                                  <span
+                                    className="sc-bxivhb iYlQyD"
+                                    color="currentColor"
+                                    onClick={[Function]}
+                                    size={12}
+                                  >
+                                    <test-file-stub />
+                                  </span>
+                                </StyledComponent>
+                              </styled.span>
+                            </ForwardRef>
+                          </div>
+                        </StyledComponent>
+                      </styled.div>
+                    </ModalHeader>
+                    <styled.div
+                      className="px-45 pt-0 overflow-hidden"
                     >
-<<<<<<< Updated upstream
-                      <div
-                        className="mb-3"
-                      >
-                        <SettingField
-                          description={null}
-                          label="Board Icon"
-=======
                       <StyledComponent
                         className="px-45 pt-0 overflow-hidden"
                         forwardedComponent={
@@ -1530,9 +1218,9 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-cIShpX",
+                              "componentId": "sc-gxMtzJ",
                               "isStatic": false,
-                              "lastClassName": "haqxvv",
+                              "lastClassName": "hnvNMF",
                               "rules": Array [
                                 "
   position: relative;
@@ -1546,7 +1234,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-cIShpX",
+                            "styledComponentId": "sc-gxMtzJ",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -1556,204 +1244,196 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="px-45 pt-0 overflow-hidden sc-cIShpX haqxvv"
->>>>>>> Stashed changes
+                          className="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
                         >
-                          <label>
-                            Board Icon
-                          </label>
-                          <Image
-                            className="icon-image icon-image-sm icon-image-square mb-3"
-                            image="/images/img.png"
-                            path="/team/1/picture"
-                            replace={true}
-                            tiny={true}
-                            update={[Function]}
+                          <div
+                            className="mb-3"
                           >
-                            <div
-                              className="icon-image icon-image-sm icon-image-square mb-3 tiny"
+                            <SettingField
+                              description={null}
+                              label="Workspace Icon"
                             >
-                              <n
-                                accept="image/jpeg,image/png"
-                                activeClassName="active"
-                                className="dropzone image-box"
-                                disableClick={false}
-                                disablePreview={false}
-                                disabled={false}
-                                getDataTransferItems={[Function]}
-                                inputProps={Object {}}
-                                maxSize={5242880}
-                                minSize={0}
-                                multiple={false}
-                                onDrop={[Function]}
-                                preventDropOnDocument={true}
-                                rejectClassName="reject"
+                              <label>
+                                Workspace Icon
+                              </label>
+                              <Image
+                                className="icon-image icon-image-sm icon-image-square mb-3"
+                                image="/images/img.png"
+                                path="/team/1/picture"
+                                replace={true}
+                                tiny={true}
+                                update={[Function]}
                               >
                                 <div
-                                  aria-disabled={false}
-                                  className="dropzone image-box"
-                                  onClick={[Function]}
-                                  onDragEnter={[Function]}
-                                  onDragLeave={[Function]}
-                                  onDragOver={[Function]}
-                                  onDragStart={[Function]}
-                                  onDrop={[Function]}
-                                  style={
-                                    Object {
-                                      "position": "relative",
-                                    }
-                                  }
+                                  className="icon-image icon-image-sm icon-image-square mb-3 tiny"
                                 >
-                                  <div
-                                    className="image"
-                                    style={
-                                      Object {
-                                        "backgroundImage": "url(/images/img.png)",
-                                      }
-                                    }
-                                  />
-                                  <div
-                                    className="rejected-file text-danger text-center super-center h-100"
-                                  >
-                                    File not Accepted
-                                  </div>
-                                  <input
+                                  <n
                                     accept="image/jpeg,image/png"
-                                    autoComplete="off"
+                                    activeClassName="active"
+                                    className="dropzone image-box"
+                                    disableClick={false}
+                                    disablePreview={false}
                                     disabled={false}
+                                    getDataTransferItems={[Function]}
+                                    inputProps={Object {}}
+                                    maxSize={5242880}
+                                    minSize={0}
                                     multiple={false}
-                                    onChange={[Function]}
-                                    style={
-                                      Object {
-                                        "bottom": 0,
-                                        "left": 0,
-                                        "opacity": 0.00001,
-                                        "pointerEvents": "none",
-                                        "position": "absolute",
-                                        "right": 0,
-                                        "top": 0,
+                                    onDrop={[Function]}
+                                    preventDropOnDocument={true}
+                                    rejectClassName="reject"
+                                  >
+                                    <div
+                                      aria-disabled={false}
+                                      className="dropzone image-box"
+                                      onClick={[Function]}
+                                      onDragEnter={[Function]}
+                                      onDragLeave={[Function]}
+                                      onDragOver={[Function]}
+                                      onDragStart={[Function]}
+                                      onDrop={[Function]}
+                                      style={
+                                        Object {
+                                          "position": "relative",
+                                        }
                                       }
-                                    }
-                                    type="file"
-                                  />
+                                    >
+                                      <div
+                                        className="image"
+                                        style={
+                                          Object {
+                                            "backgroundImage": "url(/images/img.png)",
+                                          }
+                                        }
+                                      />
+                                      <div
+                                        className="rejected-file text-danger text-center super-center h-100"
+                                      >
+                                        File not Accepted
+                                      </div>
+                                      <input
+                                        accept="image/jpeg,image/png"
+                                        autoComplete="off"
+                                        disabled={false}
+                                        multiple={false}
+                                        onChange={[Function]}
+                                        style={
+                                          Object {
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "opacity": 0.00001,
+                                            "pointerEvents": "none",
+                                            "position": "absolute",
+                                            "right": 0,
+                                            "top": 0,
+                                          }
+                                        }
+                                        type="file"
+                                      />
+                                    </div>
+                                  </n>
                                 </div>
-                              </n>
-                            </div>
-                          </Image>
-                        </SettingField>
-                        <SettingField
-                          hr={true}
-                          label="Name"
-                        >
-                          <label>
-                            Name
-                          </label>
-                          <Input
-                            name="name"
-                            onChange={[Function]}
-                            placeholder="Board Name"
-                            type="text"
-                            value="name"
-                          >
-                            <input
-                              className="form-control"
-                              name="name"
-                              onChange={[Function]}
-                              placeholder="Board Name"
-                              type="text"
-                              value="name"
-                            />
-                          </Input>
-                          <hr />
-                        </SettingField>
-                        <SettingField
-                          description="View invoices, update your payment options"
-                          hr={true}
-                          label="Billing"
-                        >
-                          <label>
-                            Billing
-                          </label>
-                          <Button
-                            iconPosition="right"
-                            isBtn={true}
-                            isLinkLarge={true}
-                            onRef={[Function]}
-                            trackEvent="Button Click"
-                          >
-                            <button
-                              className="btn btn-link __large"
-                              onClick={[Function]}
+                              </Image>
+                            </SettingField>
+                            <SettingField
+                              hr={true}
+                              label="Name"
                             >
-                              Invoices
-                            </button>
-                          </Button>
-                          <br />
-                          <small
-                            className="text-muted"
-                          >
-                            View invoices, update your payment options
-                          </small>
-                          <hr />
-                        </SettingField>
-                        <SettingField
-                          description="This action is irreversible. All team and project data will be removed"
-                          label="Privacy"
-                        >
-                          <label>
-                            Privacy
-                          </label>
-                          <Button
-                            iconPosition="right"
-                            isBtn={true}
-                            isLinkLarge={true}
-                            onClick={[Function]}
-                            onRef={[Function]}
-                            trackEvent="Button Click"
-                          >
-                            <button
-                              className="btn btn-link __large"
-                              onClick={[Function]}
+                              <label>
+                                Name
+                              </label>
+                              <Input
+                                name="name"
+                                onChange={[Function]}
+                                placeholder="Board Name"
+                                type="text"
+                                value="name"
+                              >
+                                <input
+                                  className="form-control"
+                                  name="name"
+                                  onChange={[Function]}
+                                  placeholder="Board Name"
+                                  type="text"
+                                  value="name"
+                                />
+                              </Input>
+                              <hr />
+                            </SettingField>
+                            <SettingField
+                              description="View invoices, update your payment options"
+                              hr={true}
+                              label="Billing"
                             >
-                              Delete Board
-                            </button>
-                          </Button>
-                          <br />
-                          <small
-                            className="text-muted"
-                          >
-                            This action is irreversible. All team and project data will be removed
-                          </small>
-                        </SettingField>
-                      </div>
-                    </div>
-                  </ModalBody>
+                              <label>
+                                Billing
+                              </label>
+                              <Button
+                                iconPosition="right"
+                                isBtn={true}
+                                isLinkLarge={true}
+                                onClick={[Function]}
+                                onRef={[Function]}
+                                trackEvent="Button Click"
+                              >
+                                <button
+                                  className="btn btn-link __large"
+                                  onClick={[Function]}
+                                >
+                                  Invoices
+                                </button>
+                              </Button>
+                              <br />
+                              <small
+                                className="text-muted"
+                              >
+                                View invoices, update your payment options
+                              </small>
+                              <hr />
+                            </SettingField>
+                            <SettingField
+                              description="This action is irreversible. All workspace and project data will be removed"
+                              label="Privacy"
+                            >
+                              <label>
+                                Privacy
+                              </label>
+                              <Button
+                                iconPosition="right"
+                                isBtn={true}
+                                isLinkLarge={true}
+                                onClick={[Function]}
+                                onRef={[Function]}
+                                trackEvent="Button Click"
+                              >
+                                <button
+                                  className="btn btn-link __large"
+                                  onClick={[Function]}
+                                >
+                                  Delete Workspace
+                                </button>
+                              </Button>
+                              <br />
+                              <small
+                                className="text-muted"
+                              >
+                                This action is irreversible. All workspace and project data will be removed
+                              </small>
+                            </SettingField>
+                          </div>
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Transition>
-        </Fade>
-        <Fade
-          appear={true}
-          baseClass="fade"
-          baseClassActive="show"
-          className="modal-backdrop"
-          enter={true}
-          exit={true}
-          in={true}
-          mountOnEnter={true}
-          onEnter={[Function]}
-          onEntered={[Function]}
-          onEntering={[Function]}
-          onExit={[Function]}
-          onExited={[Function]}
-          onExiting={[Function]}
-          tag="div"
-          timeout={150}
-          unmountOnExit={false}
-        >
-          <Transition
+            </Transition>
+          </Fade>
+          <Fade
             appear={true}
+            baseClass="fade"
+            baseClassActive="show"
+            className="modal-backdrop modal-backdrop-invisible"
             enter={true}
             exit={true}
             in={true}
@@ -1764,16 +1444,33 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
             onExit={[Function]}
             onExited={[Function]}
             onExiting={[Function]}
+            tag="div"
             timeout={150}
             unmountOnExit={false}
           >
-            <div
-              className="modal-backdrop fade"
-            />
-          </Transition>
-        </Fade>
-      </div>
+            <Transition
+              appear={true}
+              enter={true}
+              exit={true}
+              in={true}
+              mountOnEnter={true}
+              onEnter={[Function]}
+              onEntered={[Function]}
+              onEntering={[Function]}
+              onExit={[Function]}
+              onExited={[Function]}
+              onExiting={[Function]}
+              timeout={150}
+              unmountOnExit={false}
+            >
+              <div
+                className="modal-backdrop modal-backdrop-invisible fade"
+              />
+            </Transition>
+          </Fade>
+        </div>
+      </Portal>
     </Portal>
-  </Portal>
+  </Modal>
 </Modal>
 `;

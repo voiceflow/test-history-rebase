@@ -1,7 +1,6 @@
 import './UserTesting.css';
 
 import React from 'react';
-import { IntercomAPI } from 'react-intercom';
 import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
@@ -10,7 +9,7 @@ import Header from '@/components/Header';
 import Dropdown from '@/componentsV2/Dropdown';
 import IconButton from '@/componentsV2/IconButton';
 import { MenuContainer } from '@/componentsV2/Menu';
-import { TestingModeProvider } from '@/containers/CanvasV2/contexts';
+import { EditPermissionProvider } from '@/containers/CanvasV2/contexts';
 import Testing from '@/containers/Testing';
 import { replaceIntents } from '@/ducks/intent';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
@@ -18,6 +17,7 @@ import { replaceSlots } from '@/ducks/slot';
 import { initializeTest, updateTest } from '@/ducks/test';
 import { connect, styled } from '@/hocs';
 import { FadeDownContainer } from '@/styles/animations';
+import * as Intercom from '@/vendors/intercom';
 
 const UserTestingMenuContainer = styled(MenuContainer)`
   padding: 18px 24px;
@@ -29,9 +29,7 @@ class UserTesting extends React.Component {
   state = { loading: 1 };
 
   componentDidMount() {
-    IntercomAPI('update', {
-      hide_default_launcher: true,
-    });
+    Intercom.updateSettings({ hide_default_launcher: true });
     if (this.props.diagramID) {
       this.setState({ loading: 0 });
     } else {
@@ -55,9 +53,7 @@ class UserTesting extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   componentWillUnmount() {
-    IntercomAPI('update', {
-      hide_default_launcher: false,
-    });
+    Intercom.updateSettings({ hide_default_launcher: false });
   }
 
   async fetchInformation() {
@@ -111,9 +107,9 @@ class UserTesting extends React.Component {
         />
         {!this.state.loading && (
           <div id="PublicUserTesting">
-            <TestingModeProvider value={true}>
+            <EditPermissionProvider isTesting={true}>
               <Testing />
-            </TestingModeProvider>
+            </EditPermissionProvider>
           </div>
         )}
       </>

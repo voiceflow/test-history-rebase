@@ -4,10 +4,11 @@ import Flex from '@/componentsV2/Flex';
 import { styled } from '@/hocs';
 
 const CanvasReadOnlyContainer = styled(Flex)`
-  position: absolute;
+  position: relative;
+  float: left;
   top: 15px;
   left: 30px;
-  z-index: 5;
+  z-index: 30;
   color: #62778c;
   font-size: 13px;
   text-transform: uppercase;

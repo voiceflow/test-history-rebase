@@ -31,7 +31,7 @@ const API_SUBDOMAIN = 'api';
 
 function getHost() {
   if (window.location.hostname.startsWith(`${APP_SUBDOMAIN}.`)) {
-    return window.location.hostname.replace(RegExp(`^${APP_SUBDOMAIN}\\b`), API_SUBDOMAIN);
+    return window.location.hostname.replace(new RegExp(`^${APP_SUBDOMAIN}\\b`), API_SUBDOMAIN);
   }
   return process.env.API_HOST;
 }
@@ -46,6 +46,8 @@ export const VERSION = process.env.VERSION;
 export const DEBUG_NETWORK = !IS_PRODUCTION && process.env.DEBUG_NETWORK;
 export const DEBUG_HTTP = DEBUG_NETWORK || (!IS_PRODUCTION && process.env.DEBUG_HTTP);
 export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && process.env.DEBUG_SOCKET);
+
+export const DEBUG_REALTIME = !IS_PRODUCTION && process.env.DEBUG_REALTIME;
 
 export const ADMIN_HOST =
   // eslint-disable-next-line no-nested-ternary

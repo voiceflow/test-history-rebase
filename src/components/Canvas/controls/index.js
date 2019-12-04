@@ -20,10 +20,18 @@ const generateControls = (scheme, handle) => {
   if (scheme === ControlScheme.TRACKPAD) {
     const trackpad = new Trackpad(handle);
 
+    Object.defineProperty(controls, 'isTrackpadPanning', {
+      // eslint-disable-next-line lodash/prefer-constant
+      get() {
+        return trackpad.isPanning;
+      },
+    });
     controls.wheel = trackpad.wheel;
     controls.gesturestart = trackpad.gesturestart;
     controls.gesturechange = trackpad.gesturechange;
   }
+
+  controls.scheme = scheme || null;
 
   return controls;
 };

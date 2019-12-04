@@ -1,7 +1,7 @@
 import _toLower from 'lodash/toLower';
 import _trim from 'lodash/trim';
 import React from 'react';
-import { List, WindowScroller } from 'react-virtualized';
+import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { Input } from 'reactstrap';
 
 import { ROOT_DIAGRAM_NAME } from '@/constants';
@@ -39,25 +39,29 @@ const FlowList = ({ diagrams, scrollNode }) => {
     <WindowScroller scrollElement={scrollNode}>
       {({ height, isScrolling, registerChild, scrollTop }) =>
         !!height && (
-          <>
-            <SectionTitle className="mt-1">All Flows</SectionTitle>
-            <SearchSection>
-              <Input placeholder="Search Flows" name="filter" value={filter} onChange={updateFilter} className="mb-2 search-input" />
-            </SearchSection>
+          <AutoSizer disableHeight={true}>
+            {({ width }) => (
+              <div style={{ width }}>
+                <SectionTitle className="mt-1">All Flows</SectionTitle>
+                <SearchSection>
+                  <Input placeholder="Search Flows" name="filter" value={filter} onChange={updateFilter} className="mb-2 search-input" />
+                </SearchSection>
 
-            <div ref={registerChild} className="flows-list">
-              <List
-                width={250}
-                height={height}
-                scrollTop={scrollTop}
-                rowCount={diagramsToRender.length}
-                rowHeight={42}
-                autoHeight
-                rowRenderer={rowRenderer}
-                isScrolling={isScrolling}
-              />
-            </div>
-          </>
+                <div ref={registerChild} className="flows-list">
+                  <List
+                    width={width}
+                    height={height}
+                    scrollTop={scrollTop}
+                    rowCount={diagramsToRender.length}
+                    rowHeight={42}
+                    autoHeight
+                    rowRenderer={rowRenderer}
+                    isScrolling={isScrolling}
+                  />
+                </div>
+              </div>
+            )}
+          </AutoSizer>
         )
       }
     </WindowScroller>

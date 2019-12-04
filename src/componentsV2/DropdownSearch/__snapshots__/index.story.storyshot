@@ -2948,7 +2948,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-5-input"
+                                  id="react-select-6-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -3199,7 +3199,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-5-input"
+                                      id="react-select-6-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -3237,7 +3237,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-5-input"
+                                          id="react-select-6-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -4488,7 +4488,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -4499,26 +4499,51 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -4529,14 +4554,14 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -6260,12 +6285,12 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                       hasValue={false}
                                                       headingProps={
                                                         Object {
-                                                          "id": "react-select-5-group-0-heading",
+                                                          "id": "react-select-6-group-0-heading",
                                                         }
                                                       }
                                                       isMulti={false}
                                                       isRtl={false}
-                                                      key="react-select-5-group-0"
+                                                      key="react-select-6-group-0"
                                                       label="Parent Option 1"
                                                       options={
                                                         Array [
@@ -6277,7 +6302,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-0-0",
+                                                              "id": "react-select-6-option-0-0",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -6286,7 +6311,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-0-0",
+                                                            "key": "react-select-6-option-0-0",
                                                             "label": "Option 1",
                                                             "type": "option",
                                                             "value": Object {
@@ -6301,7 +6326,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-0-1",
+                                                              "id": "react-select-6-option-0-1",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -6310,7 +6335,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-0-1",
+                                                            "key": "react-select-6-option-0-1",
                                                             "label": "Option 2",
                                                             "type": "option",
                                                             "value": Object {
@@ -6325,7 +6350,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-0-2",
+                                                              "id": "react-select-6-option-0-2",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -6334,7 +6359,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-0-2",
+                                                            "key": "react-select-6-option-0-2",
                                                             "label": "Option 3",
                                                             "type": "option",
                                                             "value": Object {
@@ -6349,7 +6374,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-0-3",
+                                                              "id": "react-select-6-option-0-3",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -6358,7 +6383,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-0-3",
+                                                            "key": "react-select-6-option-0-3",
                                                             "label": "Option 4",
                                                             "type": "option",
                                                             "value": Object {
@@ -6373,7 +6398,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-0-4",
+                                                              "id": "react-select-6-option-0-4",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -6382,7 +6407,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-0-4",
+                                                            "key": "react-select-6-option-0-4",
                                                             "label": "Option 5",
                                                             "type": "option",
                                                             "value": Object {
@@ -6629,7 +6654,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         <GroupHeading
                                                           cx={[Function]}
                                                           getStyles={[Function]}
-                                                          id="react-select-5-group-0-heading"
+                                                          id="react-select-6-group-0-heading"
                                                           selectProps={
                                                             Object {
                                                               "actionClick": undefined,
@@ -6862,7 +6887,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         >
                                                           <div
                                                             className="css-5ih5ya-group select__group-heading"
-                                                            id="react-select-5-group-0-heading"
+                                                            id="react-select-6-group-0-heading"
                                                           >
                                                             Parent Option 1
                                                           </div>
@@ -6884,7 +6909,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-0-0",
+                                                                "id": "react-select-6-option-0-0",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -6896,7 +6921,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-0-0"
+                                                            key="react-select-6-option-0-0"
                                                             label="Option 1"
                                                             options={
                                                               Array [
@@ -7282,7 +7307,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-0-0"
+                                                              id="react-select-6-option-0-0"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -7307,7 +7332,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-0-1",
+                                                                "id": "react-select-6-option-0-1",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -7319,7 +7344,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-0-1"
+                                                            key="react-select-6-option-0-1"
                                                             label="Option 2"
                                                             options={
                                                               Array [
@@ -7705,7 +7730,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-0-1"
+                                                              id="react-select-6-option-0-1"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -7730,7 +7755,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-0-2",
+                                                                "id": "react-select-6-option-0-2",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -7742,7 +7767,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-0-2"
+                                                            key="react-select-6-option-0-2"
                                                             label="Option 3"
                                                             options={
                                                               Array [
@@ -8128,7 +8153,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-0-2"
+                                                              id="react-select-6-option-0-2"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -8153,7 +8178,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-0-3",
+                                                                "id": "react-select-6-option-0-3",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -8165,7 +8190,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-0-3"
+                                                            key="react-select-6-option-0-3"
                                                             label="Option 4"
                                                             options={
                                                               Array [
@@ -8551,7 +8576,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-0-3"
+                                                              id="react-select-6-option-0-3"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -8576,7 +8601,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-0-4",
+                                                                "id": "react-select-6-option-0-4",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -8588,7 +8613,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-0-4"
+                                                            key="react-select-6-option-0-4"
                                                             label="Option 5"
                                                             options={
                                                               Array [
@@ -8974,7 +8999,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-0-4"
+                                                              id="react-select-6-option-0-4"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -9032,12 +9057,12 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                       hasValue={false}
                                                       headingProps={
                                                         Object {
-                                                          "id": "react-select-5-group-1-heading",
+                                                          "id": "react-select-6-group-1-heading",
                                                         }
                                                       }
                                                       isMulti={false}
                                                       isRtl={false}
-                                                      key="react-select-5-group-1"
+                                                      key="react-select-6-group-1"
                                                       label="Parent Option 2"
                                                       options={
                                                         Array [
@@ -9049,7 +9074,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-1-0",
+                                                              "id": "react-select-6-option-1-0",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -9058,7 +9083,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-1-0",
+                                                            "key": "react-select-6-option-1-0",
                                                             "label": "Option 1",
                                                             "type": "option",
                                                             "value": Object {
@@ -9073,7 +9098,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-1-1",
+                                                              "id": "react-select-6-option-1-1",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -9082,7 +9107,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-1-1",
+                                                            "key": "react-select-6-option-1-1",
                                                             "label": "Option 2",
                                                             "type": "option",
                                                             "value": Object {
@@ -9097,7 +9122,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-1-2",
+                                                              "id": "react-select-6-option-1-2",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -9106,7 +9131,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-1-2",
+                                                            "key": "react-select-6-option-1-2",
                                                             "label": "Option 3",
                                                             "type": "option",
                                                             "value": Object {
@@ -9121,7 +9146,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-1-3",
+                                                              "id": "react-select-6-option-1-3",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -9130,7 +9155,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-1-3",
+                                                            "key": "react-select-6-option-1-3",
                                                             "label": "Option 4",
                                                             "type": "option",
                                                             "value": Object {
@@ -9145,7 +9170,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-1-4",
+                                                              "id": "react-select-6-option-1-4",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -9154,7 +9179,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-1-4",
+                                                            "key": "react-select-6-option-1-4",
                                                             "label": "Option 5",
                                                             "type": "option",
                                                             "value": Object {
@@ -9401,7 +9426,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         <GroupHeading
                                                           cx={[Function]}
                                                           getStyles={[Function]}
-                                                          id="react-select-5-group-1-heading"
+                                                          id="react-select-6-group-1-heading"
                                                           selectProps={
                                                             Object {
                                                               "actionClick": undefined,
@@ -9634,7 +9659,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         >
                                                           <div
                                                             className="css-5ih5ya-group select__group-heading"
-                                                            id="react-select-5-group-1-heading"
+                                                            id="react-select-6-group-1-heading"
                                                           >
                                                             Parent Option 2
                                                           </div>
@@ -9656,7 +9681,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-1-0",
+                                                                "id": "react-select-6-option-1-0",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -9668,7 +9693,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-1-0"
+                                                            key="react-select-6-option-1-0"
                                                             label="Option 1"
                                                             options={
                                                               Array [
@@ -10054,7 +10079,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-1-0"
+                                                              id="react-select-6-option-1-0"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -10079,7 +10104,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-1-1",
+                                                                "id": "react-select-6-option-1-1",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -10091,7 +10116,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-1-1"
+                                                            key="react-select-6-option-1-1"
                                                             label="Option 2"
                                                             options={
                                                               Array [
@@ -10477,7 +10502,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-1-1"
+                                                              id="react-select-6-option-1-1"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -10502,7 +10527,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-1-2",
+                                                                "id": "react-select-6-option-1-2",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -10514,7 +10539,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-1-2"
+                                                            key="react-select-6-option-1-2"
                                                             label="Option 3"
                                                             options={
                                                               Array [
@@ -10900,7 +10925,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-1-2"
+                                                              id="react-select-6-option-1-2"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -10925,7 +10950,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-1-3",
+                                                                "id": "react-select-6-option-1-3",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -10937,7 +10962,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-1-3"
+                                                            key="react-select-6-option-1-3"
                                                             label="Option 4"
                                                             options={
                                                               Array [
@@ -11323,7 +11348,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-1-3"
+                                                              id="react-select-6-option-1-3"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -11348,7 +11373,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-1-4",
+                                                                "id": "react-select-6-option-1-4",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -11360,7 +11385,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-1-4"
+                                                            key="react-select-6-option-1-4"
                                                             label="Option 5"
                                                             options={
                                                               Array [
@@ -11746,7 +11771,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-1-4"
+                                                              id="react-select-6-option-1-4"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -11804,12 +11829,12 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                       hasValue={false}
                                                       headingProps={
                                                         Object {
-                                                          "id": "react-select-5-group-2-heading",
+                                                          "id": "react-select-6-group-2-heading",
                                                         }
                                                       }
                                                       isMulti={false}
                                                       isRtl={false}
-                                                      key="react-select-5-group-2"
+                                                      key="react-select-6-group-2"
                                                       label="Parent Option 3"
                                                       options={
                                                         Array [
@@ -11821,7 +11846,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-2-0",
+                                                              "id": "react-select-6-option-2-0",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -11830,7 +11855,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-2-0",
+                                                            "key": "react-select-6-option-2-0",
                                                             "label": "Option 1",
                                                             "type": "option",
                                                             "value": Object {
@@ -11845,7 +11870,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-2-1",
+                                                              "id": "react-select-6-option-2-1",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -11854,7 +11879,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-2-1",
+                                                            "key": "react-select-6-option-2-1",
                                                             "label": "Option 2",
                                                             "type": "option",
                                                             "value": Object {
@@ -11869,7 +11894,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-2-2",
+                                                              "id": "react-select-6-option-2-2",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -11878,7 +11903,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-2-2",
+                                                            "key": "react-select-6-option-2-2",
                                                             "label": "Option 3",
                                                             "type": "option",
                                                             "value": Object {
@@ -11893,7 +11918,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-2-3",
+                                                              "id": "react-select-6-option-2-3",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -11902,7 +11927,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-2-3",
+                                                            "key": "react-select-6-option-2-3",
                                                             "label": "Option 4",
                                                             "type": "option",
                                                             "value": Object {
@@ -11917,7 +11942,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-2-4",
+                                                              "id": "react-select-6-option-2-4",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -11926,7 +11951,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-2-4",
+                                                            "key": "react-select-6-option-2-4",
                                                             "label": "Option 5",
                                                             "type": "option",
                                                             "value": Object {
@@ -12173,7 +12198,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         <GroupHeading
                                                           cx={[Function]}
                                                           getStyles={[Function]}
-                                                          id="react-select-5-group-2-heading"
+                                                          id="react-select-6-group-2-heading"
                                                           selectProps={
                                                             Object {
                                                               "actionClick": undefined,
@@ -12406,7 +12431,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         >
                                                           <div
                                                             className="css-5ih5ya-group select__group-heading"
-                                                            id="react-select-5-group-2-heading"
+                                                            id="react-select-6-group-2-heading"
                                                           >
                                                             Parent Option 3
                                                           </div>
@@ -12428,7 +12453,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-2-0",
+                                                                "id": "react-select-6-option-2-0",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -12440,7 +12465,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-2-0"
+                                                            key="react-select-6-option-2-0"
                                                             label="Option 1"
                                                             options={
                                                               Array [
@@ -12826,7 +12851,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-2-0"
+                                                              id="react-select-6-option-2-0"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -12851,7 +12876,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-2-1",
+                                                                "id": "react-select-6-option-2-1",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -12863,7 +12888,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-2-1"
+                                                            key="react-select-6-option-2-1"
                                                             label="Option 2"
                                                             options={
                                                               Array [
@@ -13249,7 +13274,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-2-1"
+                                                              id="react-select-6-option-2-1"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -13274,7 +13299,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-2-2",
+                                                                "id": "react-select-6-option-2-2",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -13286,7 +13311,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-2-2"
+                                                            key="react-select-6-option-2-2"
                                                             label="Option 3"
                                                             options={
                                                               Array [
@@ -13672,7 +13697,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-2-2"
+                                                              id="react-select-6-option-2-2"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -13697,7 +13722,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-2-3",
+                                                                "id": "react-select-6-option-2-3",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -13709,7 +13734,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-2-3"
+                                                            key="react-select-6-option-2-3"
                                                             label="Option 4"
                                                             options={
                                                               Array [
@@ -14095,7 +14120,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-2-3"
+                                                              id="react-select-6-option-2-3"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -14120,7 +14145,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-2-4",
+                                                                "id": "react-select-6-option-2-4",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -14132,7 +14157,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-2-4"
+                                                            key="react-select-6-option-2-4"
                                                             label="Option 5"
                                                             options={
                                                               Array [
@@ -14518,7 +14543,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-2-4"
+                                                              id="react-select-6-option-2-4"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -14576,12 +14601,12 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                       hasValue={false}
                                                       headingProps={
                                                         Object {
-                                                          "id": "react-select-5-group-3-heading",
+                                                          "id": "react-select-6-group-3-heading",
                                                         }
                                                       }
                                                       isMulti={false}
                                                       isRtl={false}
-                                                      key="react-select-5-group-3"
+                                                      key="react-select-6-group-3"
                                                       label="Parent Option 4"
                                                       options={
                                                         Array [
@@ -14593,7 +14618,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-3-0",
+                                                              "id": "react-select-6-option-3-0",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -14602,7 +14627,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-3-0",
+                                                            "key": "react-select-6-option-3-0",
                                                             "label": "Option 1",
                                                             "type": "option",
                                                             "value": Object {
@@ -14617,7 +14642,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-3-1",
+                                                              "id": "react-select-6-option-3-1",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -14626,7 +14651,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-3-1",
+                                                            "key": "react-select-6-option-3-1",
                                                             "label": "Option 2",
                                                             "type": "option",
                                                             "value": Object {
@@ -14641,7 +14666,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-3-2",
+                                                              "id": "react-select-6-option-3-2",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -14650,7 +14675,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-3-2",
+                                                            "key": "react-select-6-option-3-2",
                                                             "label": "Option 3",
                                                             "type": "option",
                                                             "value": Object {
@@ -14665,7 +14690,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-3-3",
+                                                              "id": "react-select-6-option-3-3",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -14674,7 +14699,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-3-3",
+                                                            "key": "react-select-6-option-3-3",
                                                             "label": "Option 4",
                                                             "type": "option",
                                                             "value": Object {
@@ -14689,7 +14714,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                               },
                                                             },
                                                             "innerProps": Object {
-                                                              "id": "react-select-5-option-3-4",
+                                                              "id": "react-select-6-option-3-4",
                                                               "onClick": [Function],
                                                               "onMouseMove": [Function],
                                                               "onMouseOver": [Function],
@@ -14698,7 +14723,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             "innerRef": undefined,
                                                             "isDisabled": false,
                                                             "isSelected": false,
-                                                            "key": "react-select-5-option-3-4",
+                                                            "key": "react-select-6-option-3-4",
                                                             "label": "Option 5",
                                                             "type": "option",
                                                             "value": Object {
@@ -14945,7 +14970,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         <GroupHeading
                                                           cx={[Function]}
                                                           getStyles={[Function]}
-                                                          id="react-select-5-group-3-heading"
+                                                          id="react-select-6-group-3-heading"
                                                           selectProps={
                                                             Object {
                                                               "actionClick": undefined,
@@ -15178,7 +15203,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                         >
                                                           <div
                                                             className="css-5ih5ya-group select__group-heading"
-                                                            id="react-select-5-group-3-heading"
+                                                            id="react-select-6-group-3-heading"
                                                           >
                                                             Parent Option 4
                                                           </div>
@@ -15200,7 +15225,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-3-0",
+                                                                "id": "react-select-6-option-3-0",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -15212,7 +15237,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-3-0"
+                                                            key="react-select-6-option-3-0"
                                                             label="Option 1"
                                                             options={
                                                               Array [
@@ -15598,7 +15623,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-3-0"
+                                                              id="react-select-6-option-3-0"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -15623,7 +15648,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-3-1",
+                                                                "id": "react-select-6-option-3-1",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -15635,7 +15660,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-3-1"
+                                                            key="react-select-6-option-3-1"
                                                             label="Option 2"
                                                             options={
                                                               Array [
@@ -16021,7 +16046,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-3-1"
+                                                              id="react-select-6-option-3-1"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -16046,7 +16071,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-3-2",
+                                                                "id": "react-select-6-option-3-2",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -16058,7 +16083,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-3-2"
+                                                            key="react-select-6-option-3-2"
                                                             label="Option 3"
                                                             options={
                                                               Array [
@@ -16444,7 +16469,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-3-2"
+                                                              id="react-select-6-option-3-2"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -16469,7 +16494,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-3-3",
+                                                                "id": "react-select-6-option-3-3",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -16481,7 +16506,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-3-3"
+                                                            key="react-select-6-option-3-3"
                                                             label="Option 4"
                                                             options={
                                                               Array [
@@ -16867,7 +16892,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-3-3"
+                                                              id="react-select-6-option-3-3"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -16892,7 +16917,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             hasValue={false}
                                                             innerProps={
                                                               Object {
-                                                                "id": "react-select-5-option-3-4",
+                                                                "id": "react-select-6-option-3-4",
                                                                 "onClick": [Function],
                                                                 "onMouseMove": [Function],
                                                                 "onMouseOver": [Function],
@@ -16904,7 +16929,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                             isMulti={false}
                                                             isRtl={false}
                                                             isSelected={false}
-                                                            key="react-select-5-option-3-4"
+                                                            key="react-select-6-option-3-4"
                                                             label="Option 5"
                                                             options={
                                                               Array [
@@ -17290,7 +17315,7 @@ exports[`Storyshots Search Dropdowns variants: 2-Level Nested 1`] = `
                                                           >
                                                             <div
                                                               className="css-fk865s-option select__option"
-                                                              id="react-select-5-option-3-4"
+                                                              id="react-select-6-option-3-4"
                                                               onClick={[Function]}
                                                               onMouseMove={[Function]}
                                                               onMouseOver={[Function]}
@@ -18442,7 +18467,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-7-input"
+                                  id="react-select-8-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -18577,7 +18602,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-7-input"
+                                      id="react-select-8-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -18615,7 +18640,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-7-input"
+                                          id="react-select-8-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -19170,7 +19195,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -19181,26 +19206,51 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -19211,14 +19261,14 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -19984,7 +20034,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-7-option-0",
+                                                          "id": "react-select-8-option-0",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -19996,7 +20046,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-7-option-0"
+                                                      key="react-select-8-option-0"
                                                       label="Option 1"
                                                       options={
                                                         Array [
@@ -20150,7 +20200,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-7-option-0"
+                                                        id="react-select-8-option-0"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -20175,7 +20225,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-7-option-1",
+                                                          "id": "react-select-8-option-1",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -20187,7 +20237,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-7-option-1"
+                                                      key="react-select-8-option-1"
                                                       label="Option 2"
                                                       options={
                                                         Array [
@@ -20341,7 +20391,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-7-option-1"
+                                                        id="react-select-8-option-1"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -20366,7 +20416,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-7-option-2",
+                                                          "id": "react-select-8-option-2",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -20378,7 +20428,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-7-option-2"
+                                                      key="react-select-8-option-2"
                                                       label="Option 3"
                                                       options={
                                                         Array [
@@ -20532,7 +20582,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-7-option-2"
+                                                        id="react-select-8-option-2"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -20557,7 +20607,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-7-option-3",
+                                                          "id": "react-select-8-option-3",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -20569,7 +20619,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-7-option-3"
+                                                      key="react-select-8-option-3"
                                                       label="Option 4"
                                                       options={
                                                         Array [
@@ -20723,7 +20773,7 @@ exports[`Storyshots Search Dropdowns variants: Actions 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-7-option-3"
+                                                        id="react-select-8-option-3"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -21901,7 +21951,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-4-input"
+                                  id="react-select-5-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -22036,7 +22086,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-4-input"
+                                      id="react-select-5-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -22074,7 +22124,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-4-input"
+                                          id="react-select-5-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -22629,7 +22679,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -22640,26 +22690,51 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -22670,14 +22745,14 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -23443,7 +23518,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-4-option-0",
+                                                          "id": "react-select-5-option-0",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -23455,7 +23530,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-4-option-0"
+                                                      key="react-select-5-option-0"
                                                       label="Option 1"
                                                       options={
                                                         Array [
@@ -23609,7 +23684,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-4-option-0"
+                                                        id="react-select-5-option-0"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -23634,7 +23709,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-4-option-1",
+                                                          "id": "react-select-5-option-1",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -23646,7 +23721,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-4-option-1"
+                                                      key="react-select-5-option-1"
                                                       label="Option 2"
                                                       options={
                                                         Array [
@@ -23800,7 +23875,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-4-option-1"
+                                                        id="react-select-5-option-1"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -23825,7 +23900,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-4-option-2",
+                                                          "id": "react-select-5-option-2",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -23837,7 +23912,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-4-option-2"
+                                                      key="react-select-5-option-2"
                                                       label="Option 3"
                                                       options={
                                                         Array [
@@ -23991,7 +24066,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-4-option-2"
+                                                        id="react-select-5-option-2"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -24016,7 +24091,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-4-option-3",
+                                                          "id": "react-select-5-option-3",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -24028,7 +24103,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-4-option-3"
+                                                      key="react-select-5-option-3"
                                                       label="Option 4"
                                                       options={
                                                         Array [
@@ -24182,7 +24257,7 @@ exports[`Storyshots Search Dropdowns variants: Borderless 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-4-option-3"
+                                                        id="react-select-5-option-3"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -33491,7 +33566,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-6-input"
+                                  id="react-select-7-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -34136,7 +34211,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-6-input"
+                                      id="react-select-7-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -34174,7 +34249,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-6-input"
+                                          id="react-select-7-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -37789,7 +37864,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -37800,26 +37875,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -37830,14 +37930,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -41639,7 +41739,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41650,26 +41750,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41680,14 +41805,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -41789,7 +41914,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41800,26 +41925,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41830,14 +41980,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -41939,7 +42089,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -41950,26 +42100,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -41980,14 +42155,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -42089,7 +42264,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -42100,26 +42275,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -42130,14 +42330,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -42239,7 +42439,7 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                         icon="arrowRight"
                                                                         size={10}
                                                                       >
-                                                                        <SvgIcon__SvgIconContainer
+                                                                        <styled.span
                                                                           color="#8da2b5"
                                                                           size={10}
                                                                         >
@@ -42250,26 +42450,51 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                                 "$$typeof": Symbol(react.forward_ref),
                                                                                 "attrs": Array [],
                                                                                 "componentStyle": ComponentStyle {
-                                                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                  "componentId": "sc-bxivhb",
                                                                                   "isStatic": false,
-                                                                                  "lastClassName": "hRGvZW",
+                                                                                  "lastClassName": "ftmOTd",
                                                                                   "rules": Array [
+                                                                                    "
+  ",
                                                                                     [Function],
-                                                                                    " color:",
+                                                                                    "
+
+  color: ",
                                                                                     [Function],
-                                                                                    ";width:",
+                                                                                    ";
+  width: ",
                                                                                     [Function],
-                                                                                    "px;height:",
+                                                                                    "px;
+  height: ",
                                                                                     [Function],
-                                                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                                                     [Function],
-                                                                                    ";}",
+                                                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                                                    [Function],
+                                                                                    ";
+
+  }
+",
                                                                                   ],
                                                                                 },
-                                                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                                                "displayName": "styled.span",
                                                                                 "foldedComponentIds": Array [],
                                                                                 "render": [Function],
-                                                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                                                "styledComponentId": "sc-bxivhb",
                                                                                 "target": "span",
                                                                                 "toString": [Function],
                                                                                 "warnTooManyClasses": [Function],
@@ -42280,14 +42505,14 @@ exports[`Storyshots Search Dropdowns variants: Multi-level Expandable 1`] = `
                                                                             size={10}
                                                                           >
                                                                             <span
-                                                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hXTNER"
+                                                                              className="sc-bxivhb eePwcL"
                                                                               color="#8da2b5"
                                                                               size={10}
                                                                             >
                                                                               <test-file-stub />
                                                                             </span>
                                                                           </StyledComponent>
-                                                                        </SvgIcon__SvgIconContainer>
+                                                                        </styled.span>
                                                                       </ForwardRef>
                                                                     </div>
                                                                   </StyledComponent>
@@ -43810,7 +44035,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-3-input"
+                                  id="react-select-4-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -43945,7 +44170,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-3-input"
+                                      id="react-select-4-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -43983,7 +44208,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-3-input"
+                                          id="react-select-4-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -44538,7 +44763,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -44549,26 +44774,51 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -44579,14 +44829,14 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -45352,7 +45602,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-3-option-0",
+                                                          "id": "react-select-4-option-0",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -45364,7 +45614,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-3-option-0"
+                                                      key="react-select-4-option-0"
                                                       label="Option 1"
                                                       options={
                                                         Array [
@@ -45518,7 +45768,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-3-option-0"
+                                                        id="react-select-4-option-0"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -45543,7 +45793,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-3-option-1",
+                                                          "id": "react-select-4-option-1",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -45555,7 +45805,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-3-option-1"
+                                                      key="react-select-4-option-1"
                                                       label="Option 2"
                                                       options={
                                                         Array [
@@ -45709,7 +45959,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-3-option-1"
+                                                        id="react-select-4-option-1"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -45734,7 +45984,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-3-option-2",
+                                                          "id": "react-select-4-option-2",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -45746,7 +45996,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-3-option-2"
+                                                      key="react-select-4-option-2"
                                                       label="Option 3"
                                                       options={
                                                         Array [
@@ -45900,7 +46150,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-3-option-2"
+                                                        id="react-select-4-option-2"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -45925,7 +46175,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-3-option-3",
+                                                          "id": "react-select-4-option-3",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -45937,7 +46187,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-3-option-3"
+                                                      key="react-select-4-option-3"
                                                       label="Option 4"
                                                       options={
                                                         Array [
@@ -46091,7 +46341,7 @@ exports[`Storyshots Search Dropdowns variants: Optional 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-3-option-3"
+                                                        id="react-select-4-option-3"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -47220,7 +47470,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                   autoCorrect="off"
                                   cx={[Function]}
                                   getStyles={[Function]}
-                                  id="react-select-2-input"
+                                  id="react-select-3-input"
                                   innerRef={[Function]}
                                   isDisabled={false}
                                   isHidden={false}
@@ -47355,7 +47605,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                       autoCorrect="off"
                                       className="select__input"
                                       disabled={false}
-                                      id="react-select-2-input"
+                                      id="react-select-3-input"
                                       injectStyles={true}
                                       inputRef={[Function]}
                                       inputStyle={
@@ -47393,7 +47643,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                           autoComplete="off"
                                           autoCorrect="off"
                                           disabled={false}
-                                          id="react-select-2-input"
+                                          id="react-select-3-input"
                                           onBlur={[Function]}
                                           onChange={[Function]}
                                           onFocus={[Function]}
@@ -47948,7 +48198,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                           icon="caretDown"
                                           size={10}
                                         >
-                                          <SvgIcon__SvgIconContainer
+                                          <styled.span
                                             color="currentColor"
                                             size={10}
                                           >
@@ -47959,26 +48209,51 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                   "$$typeof": Symbol(react.forward_ref),
                                                   "attrs": Array [],
                                                   "componentStyle": ComponentStyle {
-                                                    "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                    "componentId": "sc-bxivhb",
                                                     "isStatic": false,
-                                                    "lastClassName": "hRGvZW",
+                                                    "lastClassName": "ftmOTd",
                                                     "rules": Array [
+                                                      "
+  ",
                                                       [Function],
-                                                      " color:",
+                                                      "
+
+  color: ",
                                                       [Function],
-                                                      ";width:",
+                                                      ";
+  width: ",
                                                       [Function],
-                                                      "px;height:",
+                                                      "px;
+  height: ",
                                                       [Function],
-                                                      "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                      "px;
+  box-sizing: content-box;
+  
+  ",
                                                       [Function],
-                                                      ";}",
+                                                      "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                      [Function],
+                                                      ";
+
+  }
+",
                                                     ],
                                                   },
-                                                  "displayName": "SvgIcon__SvgIconContainer",
+                                                  "displayName": "styled.span",
                                                   "foldedComponentIds": Array [],
                                                   "render": [Function],
-                                                  "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "styledComponentId": "sc-bxivhb",
                                                   "target": "span",
                                                   "toString": [Function],
                                                   "warnTooManyClasses": [Function],
@@ -47989,14 +48264,14 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                               size={10}
                                             >
                                               <span
-                                                className="SvgIcon__SvgIconContainer-sc-1krgz98-0 hRGvZW"
+                                                className="sc-bxivhb ftmOTd"
                                                 color="currentColor"
                                                 size={10}
                                               >
                                                 <test-file-stub />
                                               </span>
                                             </StyledComponent>
-                                          </SvgIcon__SvgIconContainer>
+                                          </styled.span>
                                         </ForwardRef>
                                       </div>
                                     </StyledComponent>
@@ -48762,7 +49037,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-2-option-0",
+                                                          "id": "react-select-3-option-0",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -48774,7 +49049,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-2-option-0"
+                                                      key="react-select-3-option-0"
                                                       label="Option 1"
                                                       options={
                                                         Array [
@@ -48928,7 +49203,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-2-option-0"
+                                                        id="react-select-3-option-0"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -48953,7 +49228,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-2-option-1",
+                                                          "id": "react-select-3-option-1",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -48965,7 +49240,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-2-option-1"
+                                                      key="react-select-3-option-1"
                                                       label="Option 2"
                                                       options={
                                                         Array [
@@ -49119,7 +49394,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-2-option-1"
+                                                        id="react-select-3-option-1"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -49144,7 +49419,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-2-option-2",
+                                                          "id": "react-select-3-option-2",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -49156,7 +49431,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-2-option-2"
+                                                      key="react-select-3-option-2"
                                                       label="Option 3"
                                                       options={
                                                         Array [
@@ -49310,7 +49585,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-2-option-2"
+                                                        id="react-select-3-option-2"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}
@@ -49335,7 +49610,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       hasValue={false}
                                                       innerProps={
                                                         Object {
-                                                          "id": "react-select-2-option-3",
+                                                          "id": "react-select-3-option-3",
                                                           "onClick": [Function],
                                                           "onMouseMove": [Function],
                                                           "onMouseOver": [Function],
@@ -49347,7 +49622,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                       isMulti={false}
                                                       isRtl={false}
                                                       isSelected={false}
-                                                      key="react-select-2-option-3"
+                                                      key="react-select-3-option-3"
                                                       label="Option 4"
                                                       options={
                                                         Array [
@@ -49501,7 +49776,7 @@ exports[`Storyshots Search Dropdowns variants: Regular 1`] = `
                                                     >
                                                       <div
                                                         className="css-fk865s-option select__option"
-                                                        id="react-select-2-option-3"
+                                                        id="react-select-3-option-3"
                                                         onClick={[Function]}
                                                         onMouseMove={[Function]}
                                                         onMouseOver={[Function]}

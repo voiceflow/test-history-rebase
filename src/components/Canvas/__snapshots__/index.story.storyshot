@@ -26,9 +26,9 @@ Array [
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-htoDjs",
+                "componentId": "sc-dnqmqq",
                 "isStatic": true,
-                "lastClassName": "AEJae",
+                "lastClassName": "drpFyU",
                 "rules": Array [
                   "
   position: relative;
@@ -46,7 +46,7 @@ Array [
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-htoDjs",
+              "styledComponentId": "sc-dnqmqq",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -56,11 +56,11 @@ Array [
           forwardedRef={
             Object {
               "current": <div
-                class="sc-htoDjs AEJae"
+                class="sc-dnqmqq drpFyU"
                 tabindex="-1"
               >
                 <div
-                  class="sc-dnqmqq huYHX"
+                  class="sc-iwsKbI hfMnkh"
                   style="transform: translate3d(0px, 0px, 0px) scale(1);"
                 >
                   <div
@@ -80,7 +80,7 @@ Array [
           tabIndex={-1}
         >
           <div
-            className="sc-htoDjs AEJae"
+            className="sc-dnqmqq drpFyU"
             onMouseDown={[Function]}
             tabIndex={-1}
           >
@@ -97,9 +97,9 @@ Array [
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-dnqmqq",
+                      "componentId": "sc-iwsKbI",
                       "isStatic": true,
-                      "lastClassName": "huYHX",
+                      "lastClassName": "hfMnkh",
                       "rules": Array [
                         "
   position: absolute;
@@ -115,7 +115,7 @@ Array [
                     "displayName": "styled.div",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-dnqmqq",
+                    "styledComponentId": "sc-iwsKbI",
                     "target": "div",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -125,7 +125,7 @@ Array [
                 forwardedRef={
                   Object {
                     "current": <div
-                      class="sc-dnqmqq huYHX"
+                      class="sc-iwsKbI hfMnkh"
                       style="transform: translate3d(0px, 0px, 0px) scale(1);"
                     >
                       <div
@@ -147,7 +147,7 @@ Array [
                 }
               >
                 <div
-                  className="sc-dnqmqq huYHX"
+                  className="sc-iwsKbI hfMnkh"
                   style={
                     Object {
                       "transform": "translate3d(0px, 0px, 0px) scale(1)",
@@ -161,13 +161,13 @@ Array [
                       >
                         <div>
                           <div
-                            class="Flex-sc-127y44r-0 sc-gzVnrw eXCZBX"
+                            class="Flex-sc-127y44r-0 sc-htoDjs hAuPnP"
                           >
                             <button
-                              class="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                              class="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                             >
                               <span
-                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                class="sc-bxivhb iqcteL"
                                 color="currentColor"
                                 size="16"
                               >
@@ -175,10 +175,10 @@ Array [
                               </span>
                             </button>
                             <button
-                              class="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                              class="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                             >
                               <span
-                                class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                class="sc-bxivhb iqcteL"
                                 color="currentColor"
                                 size="16"
                               >
@@ -187,10 +187,10 @@ Array [
                             </button>
                           </div>
                           <button
-                            class="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                            class="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                           >
                             <span
-                              class="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                              class="sc-bxivhb iqcteL"
                               color="currentColor"
                               size="16"
                             >
@@ -212,9 +212,9 @@ Array [
                                 "$$typeof": Symbol(react.forward_ref),
                                 "attrs": Array [],
                                 "componentStyle": ComponentStyle {
-                                  "componentId": "sc-gzVnrw",
+                                  "componentId": "sc-htoDjs",
                                   "isStatic": false,
-                                  "lastClassName": "eXCZBX",
+                                  "lastClassName": "hAuPnP",
                                   "rules": Array [
                                     "display:",
                                     [Function],
@@ -224,20 +224,20 @@ Array [
                                     [Function],
                                     "
   & ",
-                                    ".sc-ifAKCX",
+                                    ".sc-EHOje",
                                     " {
     box-shadow: none;
   }
 
   & ",
-                                    ".sc-ifAKCX",
+                                    ".sc-EHOje",
                                     ":not(:last-of-type) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
   & ",
-                                    ".sc-ifAKCX",
+                                    ".sc-EHOje",
                                     ":not(:first-of-type) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -250,7 +250,7 @@ Array [
                                   "Flex-sc-127y44r-0",
                                 ],
                                 "render": [Function],
-                                "styledComponentId": "sc-gzVnrw",
+                                "styledComponentId": "sc-htoDjs",
                                 "target": "div",
                                 "toString": [Function],
                                 "warnTooManyClasses": [Function],
@@ -260,7 +260,7 @@ Array [
                             forwardedRef={null}
                           >
                             <div
-                              className="Flex-sc-127y44r-0 sc-gzVnrw eXCZBX"
+                              className="Flex-sc-127y44r-0 sc-htoDjs hAuPnP"
                             >
                               <ForwardRef
                                 icon="zoomIn"
@@ -275,9 +275,9 @@ Array [
                                         "$$typeof": Symbol(react.forward_ref),
                                         "attrs": Array [],
                                         "componentStyle": ComponentStyle {
-                                          "componentId": "sc-ifAKCX",
+                                          "componentId": "sc-EHOje",
                                           "isStatic": false,
-                                          "lastClassName": "dGDbTb",
+                                          "lastClassName": "gydlaL",
                                           "rules": Array [
                                             "
   ",
@@ -315,6 +315,7 @@ Array [
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                                             [Function],
                                             ";
@@ -329,7 +330,7 @@ Array [
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
                                             [Function],
                                             ";
@@ -368,10 +369,10 @@ Array [
                                         "displayName": "Styled(Styled(styled.button))",
                                         "foldedComponentIds": Array [
                                           "sc-bdVaJa",
-                                          "sc-bxivhb",
+                                          "sc-ifAKCX",
                                         ],
                                         "render": [Function],
-                                        "styledComponentId": "sc-ifAKCX",
+                                        "styledComponentId": "sc-EHOje",
                                         "target": "button",
                                         "toString": [Function],
                                         "warnTooManyClasses": [Function],
@@ -382,14 +383,14 @@ Array [
                                     onClick={[Function]}
                                   >
                                     <button
-                                      className="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                                       onClick={[Function]}
                                     >
                                       <ForwardRef
                                         color="currentColor"
                                         icon="zoomIn"
                                       >
-                                        <SvgIcon__SvgIconContainer
+                                        <styled.span
                                           color="currentColor"
                                           size={16}
                                         >
@@ -400,26 +401,51 @@ Array [
                                                 "$$typeof": Symbol(react.forward_ref),
                                                 "attrs": Array [],
                                                 "componentStyle": ComponentStyle {
-                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "componentId": "sc-bxivhb",
                                                   "isStatic": false,
-                                                  "lastClassName": "kycatR",
+                                                  "lastClassName": "iqcteL",
                                                   "rules": Array [
+                                                    "
+  ",
                                                     [Function],
-                                                    " color:",
+                                                    "
+
+  color: ",
                                                     [Function],
-                                                    ";width:",
+                                                    ";
+  width: ",
                                                     [Function],
-                                                    "px;height:",
+                                                    "px;
+  height: ",
                                                     [Function],
-                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                     [Function],
-                                                    ";}",
+                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                    [Function],
+                                                    ";
+
+  }
+",
                                                   ],
                                                 },
-                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                "displayName": "styled.span",
                                                 "foldedComponentIds": Array [],
                                                 "render": [Function],
-                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                "styledComponentId": "sc-bxivhb",
                                                 "target": "span",
                                                 "toString": [Function],
                                                 "warnTooManyClasses": [Function],
@@ -430,14 +456,14 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                              className="sc-bxivhb iqcteL"
                                               color="currentColor"
                                               size={16}
                                             >
                                               <test-file-stub />
                                             </span>
                                           </StyledComponent>
-                                        </SvgIcon__SvgIconContainer>
+                                        </styled.span>
                                       </ForwardRef>
                                     </button>
                                   </StyledComponent>
@@ -456,9 +482,9 @@ Array [
                                         "$$typeof": Symbol(react.forward_ref),
                                         "attrs": Array [],
                                         "componentStyle": ComponentStyle {
-                                          "componentId": "sc-ifAKCX",
+                                          "componentId": "sc-EHOje",
                                           "isStatic": false,
-                                          "lastClassName": "dGDbTb",
+                                          "lastClassName": "gydlaL",
                                           "rules": Array [
                                             "
   ",
@@ -496,6 +522,7 @@ Array [
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                                             [Function],
                                             ";
@@ -510,7 +537,7 @@ Array [
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
                                             [Function],
                                             ";
@@ -549,10 +576,10 @@ Array [
                                         "displayName": "Styled(Styled(styled.button))",
                                         "foldedComponentIds": Array [
                                           "sc-bdVaJa",
-                                          "sc-bxivhb",
+                                          "sc-ifAKCX",
                                         ],
                                         "render": [Function],
-                                        "styledComponentId": "sc-ifAKCX",
+                                        "styledComponentId": "sc-EHOje",
                                         "target": "button",
                                         "toString": [Function],
                                         "warnTooManyClasses": [Function],
@@ -563,14 +590,14 @@ Array [
                                     onClick={[Function]}
                                   >
                                     <button
-                                      className="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                                       onClick={[Function]}
                                     >
                                       <ForwardRef
                                         color="currentColor"
                                         icon="zoomOut"
                                       >
-                                        <SvgIcon__SvgIconContainer
+                                        <styled.span
                                           color="currentColor"
                                           size={16}
                                         >
@@ -581,26 +608,51 @@ Array [
                                                 "$$typeof": Symbol(react.forward_ref),
                                                 "attrs": Array [],
                                                 "componentStyle": ComponentStyle {
-                                                  "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                  "componentId": "sc-bxivhb",
                                                   "isStatic": false,
-                                                  "lastClassName": "kycatR",
+                                                  "lastClassName": "iqcteL",
                                                   "rules": Array [
+                                                    "
+  ",
                                                     [Function],
-                                                    " color:",
+                                                    "
+
+  color: ",
                                                     [Function],
-                                                    ";width:",
+                                                    ";
+  width: ",
                                                     [Function],
-                                                    "px;height:",
+                                                    "px;
+  height: ",
                                                     [Function],
-                                                    "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                                    "px;
+  box-sizing: content-box;
+  
+  ",
                                                     [Function],
-                                                    ";}",
+                                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                                    [Function],
+                                                    ";
+
+  }
+",
                                                   ],
                                                 },
-                                                "displayName": "SvgIcon__SvgIconContainer",
+                                                "displayName": "styled.span",
                                                 "foldedComponentIds": Array [],
                                                 "render": [Function],
-                                                "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                                "styledComponentId": "sc-bxivhb",
                                                 "target": "span",
                                                 "toString": [Function],
                                                 "warnTooManyClasses": [Function],
@@ -611,14 +663,14 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                              className="sc-bxivhb iqcteL"
                                               color="currentColor"
                                               size={16}
                                             >
                                               <test-file-stub />
                                             </span>
                                           </StyledComponent>
-                                        </SvgIcon__SvgIconContainer>
+                                        </styled.span>
                                       </ForwardRef>
                                     </button>
                                   </StyledComponent>
@@ -640,9 +692,9 @@ Array [
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-ifAKCX",
+                                    "componentId": "sc-EHOje",
                                     "isStatic": false,
-                                    "lastClassName": "dGDbTb",
+                                    "lastClassName": "gydlaL",
                                     "rules": Array [
                                       "
   ",
@@ -680,6 +732,7 @@ Array [
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+
   width: ",
                                       [Function],
                                       ";
@@ -694,7 +747,7 @@ Array [
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ",
                                       [Function],
                                       ";
@@ -733,10 +786,10 @@ Array [
                                   "displayName": "Styled(Styled(styled.button))",
                                   "foldedComponentIds": Array [
                                     "sc-bdVaJa",
-                                    "sc-bxivhb",
+                                    "sc-ifAKCX",
                                   ],
                                   "render": [Function],
-                                  "styledComponentId": "sc-ifAKCX",
+                                  "styledComponentId": "sc-EHOje",
                                   "target": "button",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -747,14 +800,14 @@ Array [
                               onClick={[Function]}
                             >
                               <button
-                                className="sc-bdVaJa sc-bxivhb sc-ifAKCX dGDbTb"
+                                className="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
                                 onClick={[Function]}
                               >
                                 <ForwardRef
                                   color="currentColor"
                                   icon="home"
                                 >
-                                  <SvgIcon__SvgIconContainer
+                                  <styled.span
                                     color="currentColor"
                                     size={16}
                                   >
@@ -765,26 +818,51 @@ Array [
                                           "$$typeof": Symbol(react.forward_ref),
                                           "attrs": Array [],
                                           "componentStyle": ComponentStyle {
-                                            "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                            "componentId": "sc-bxivhb",
                                             "isStatic": false,
-                                            "lastClassName": "kycatR",
+                                            "lastClassName": "iqcteL",
                                             "rules": Array [
+                                              "
+  ",
                                               [Function],
-                                              " color:",
+                                              "
+
+  color: ",
                                               [Function],
-                                              ";width:",
+                                              ";
+  width: ",
                                               [Function],
-                                              "px;height:",
+                                              "px;
+  height: ",
                                               [Function],
-                                              "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                              "px;
+  box-sizing: content-box;
+  
+  ",
                                               [Function],
-                                              ";}",
+                                              "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                              [Function],
+                                              ";
+
+  }
+",
                                             ],
                                           },
-                                          "displayName": "SvgIcon__SvgIconContainer",
+                                          "displayName": "styled.span",
                                           "foldedComponentIds": Array [],
                                           "render": [Function],
-                                          "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                          "styledComponentId": "sc-bxivhb",
                                           "target": "span",
                                           "toString": [Function],
                                           "warnTooManyClasses": [Function],
@@ -795,14 +873,14 @@ Array [
                                       size={16}
                                     >
                                       <span
-                                        className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
+                                        className="sc-bxivhb iqcteL"
                                         color="currentColor"
                                         size={16}
                                       >
                                         <test-file-stub />
                                       </span>
                                     </StyledComponent>
-                                  </SvgIcon__SvgIconContainer>
+                                  </styled.span>
                                 </ForwardRef>
                               </button>
                             </StyledComponent>

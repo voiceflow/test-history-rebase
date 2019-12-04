@@ -1,3 +1,4 @@
+import { MemberIcon } from '@/components/User';
 import Flex from '@/componentsV2/Flex';
 import { css, styled, units } from '@/hocs';
 
@@ -36,6 +37,19 @@ const CommentBlockContainer = styled(Flex)`
     &:focus {
       outline: 0;
     }
+
+    &:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  ${MemberIcon} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 99;
   }
 `;
 

@@ -10,8 +10,8 @@ const spinnerStyles = css`
 `;
 const LoadContainer = styled.div`
   ${spinnerStyles}
-  box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
   margin-bottom: 20px;
+  box-shadow: ${(props) => (props.isMd ? 'none' : '0 1px 2px 0 rgba(17, 49, 96, 0.24);')};
 `;
 
 export const LoadCircle = styled.span`

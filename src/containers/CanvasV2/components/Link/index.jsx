@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withCanvas } from '@/components/Canvas/contexts';
-import { withEngine, withLink, withPlatform, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEditPermission, withEngine, withLink, withPlatform } from '@/containers/CanvasV2/contexts';
 import { compose } from '@/utils/functional';
 
 import { Overlay, Path, RemoveButton } from './components';
@@ -89,7 +89,7 @@ export class Link extends React.PureComponent {
   }
 
   render() {
-    const { points, isTesting, platform } = this.props;
+    const { points, editPermission, platform } = this.props;
     const { isHovering, pointsChanged } = this.state;
 
     if (pointsChanged) {
@@ -105,7 +105,9 @@ export class Link extends React.PureComponent {
         <Overlay d={path} isHovering={isHovering} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref={this.hiddenPathRef} />
         <Path d={path} markerEnd="url(#head)" isHovering={isHovering} ref={this.pathRef} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        {!isTesting && <RemoveButton x={centerX} y={centerY} isHovering={isHovering} onMouseLeave={this.onMouseLeave} onClick={this.onRemove} />}
+        {editPermission.canEdit && (
+          <RemoveButton x={centerX} y={centerY} isHovering={isHovering} onMouseLeave={this.onMouseLeave} onClick={this.onRemove} />
+        )}
       </g>
     );
   }
@@ -117,5 +119,5 @@ export default compose(
   withEngine,
   withCanvas,
   withPlatform,
-  withTestingMode
+  withEditPermission
 )(Link);

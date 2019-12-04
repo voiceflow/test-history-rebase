@@ -10,7 +10,7 @@ export function useDismissable(defaultValue = false, onClose, autoDismiss = fals
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
 
   const handleClose = (event) => {
-    if (ref?.current?.contains?.(event.target)) {
+    if (ref?.current?.contains?.(event?.target)) {
       return;
     }
 

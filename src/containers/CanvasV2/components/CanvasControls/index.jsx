@@ -4,7 +4,7 @@ import { Tooltip } from 'react-tippy';
 import SvgIcon from '@/components/SvgIcon';
 import IconButton from '@/componentsV2/IconButton';
 import FlowBar from '@/containers/CanvasV2/components/FlowBar';
-import { ShortcutModalContext, TestingModeContext } from '@/containers/CanvasV2/contexts';
+import { EditPermissionContext, ShortcutModalContext } from '@/containers/CanvasV2/contexts';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import { flowStructureSelector } from '@/ducks/diagram';
 import { goToRootDiagram } from '@/ducks/router';
@@ -17,7 +17,7 @@ const ZOOM_DELTA = 15;
 
 function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, flow }) {
   const eventualEngine = React.useContext(EventualEngineContext);
-  const isTesting = React.useContext(TestingModeContext);
+  const { isTesting } = React.useContext(EditPermissionContext);
   const shortcutModal = React.useContext(ShortcutModalContext);
   const showFlowControls = !isTesting && !isRootDiagram && flow;
 

@@ -26,6 +26,7 @@ export default function modalReducer(state = initialState, action = {}) {
         ...state,
         modal: action.payload.def,
       };
+
     case CLEAR_MODAL:
       return {
         ...state,

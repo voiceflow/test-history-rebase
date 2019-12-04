@@ -23,7 +23,7 @@ const IconButtonContainer = styled(ButtonContainer)`
   color: #8da2b5;
   background: #fff;
   border: 1px solid #fff;
-
+ 
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
 

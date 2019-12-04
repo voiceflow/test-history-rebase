@@ -33,6 +33,18 @@ yarn start --debugNet
 You can also enable more granular network debugging by passing `--debugHttp` to only see HTTP/HTTPS requests
 or `--debugSocket` to only see websocket events.
 
+#### Realtime Debugging
+
+Websockets are very convenient to debug in the browser, but the sheer volume of events that are sent for a production scenario
+can often make simple local debugging very difficult. Enabling realtime debugging will prevent the mouse movement events
+from being sent in order to cut down on noise in the websocket event log.
+
+To enable realtime debugging:
+
+```sh
+yarn start --debugRealtime
+```
+
 ### LogRocket
 
 To enable LogRocket when running locally, set the environment variable `VF_APP_LOGROCKET_ENABLED` to `"true"`

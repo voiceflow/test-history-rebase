@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType } from '@/constants';
 import { MergeStatus } from '@/containers/CanvasV2/constants';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
@@ -36,6 +38,11 @@ class MergeEngine extends EngineConsumer {
     }
 
     const targetNode = this.engine.getNodeByID(this.target);
+
+    if (sourceNode.type === BlockType.INTENT && targetNode.type !== BlockType.COMBINED) {
+      return true;
+    }
+
     return NODE_MANAGERS[targetNode.type].mergeTerminator;
   }
 
@@ -45,7 +52,7 @@ class MergeEngine extends EngineConsumer {
 
   prepare(target) {
     const sourceNode = this.engine.getNodeByID(this.source);
-    if (sourceNode.type === BlockType.COMMENT) {
+    if (!sourceNode || sourceNode.type === BlockType.COMMENT) {
       return;
     }
 
@@ -60,7 +67,7 @@ class MergeEngine extends EngineConsumer {
     this.updateStatus();
   }
 
-  confirm() {
+  async confirm() {
     const source = this.source;
     const target = this.target;
     const shouldInvert = this.shouldInvert;
@@ -73,10 +80,12 @@ class MergeEngine extends EngineConsumer {
     this.clear();
 
     if (target && status === MergeStatus.ACCEPT) {
+      const mergedNodeID = cuid();
+
       if (shouldInvert) {
-        this.engine.node.merge(target, source, true);
+        await this.engine.node.merge(mergedNodeID, target, source, true);
       } else {
-        this.engine.node.merge(source, target);
+        await this.engine.node.merge(mergedNodeID, source, target);
       }
     }
   }
@@ -110,6 +119,10 @@ class MergeEngine extends EngineConsumer {
 
     const targetMergeTerminator = NODE_MANAGERS[targetNode.type].mergeTerminator;
     if (targetMergeTerminator) {
+      return MergeStatus.DENY;
+    }
+
+    if (sourceNode.type === BlockType.INTENT && targetNode.type === BlockType.INTENT) {
       return MergeStatus.DENY;
     }
 

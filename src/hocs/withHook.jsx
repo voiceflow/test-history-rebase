@@ -8,7 +8,7 @@ export const withHook = (useHook, { getProps = identity, shouldRender } = {}, ..
   setDisplayName(wrapDisplayName(Component, 'withHook'))(
     // eslint-disable-next-line react/display-name
     React.forwardRef((props, ref) => {
-      const value = useHook(props, ...args);
+      const value = useHook(...args, props);
       const allProps = { ...getProps(value), ...props, ref };
 
       if (shouldRender && !shouldRender(allProps)) {

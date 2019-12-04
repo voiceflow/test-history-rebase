@@ -87,8 +87,8 @@ class ChargeTeamGroup extends React.Component {
   };
 
   render() {
-    if (this.props.team) {
-      const { team } = this.props;
+    if (this.props.workspace) {
+      const { workspace: team } = this.props;
       return (
         <div className="ctg__wrapper">
           <div className="ctg__team-header">

@@ -1,43 +1,48 @@
 import React from 'react';
 
-import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
-import { useEnableDisable } from '@/hooks';
+import * as Realtime from '@/ducks/realtime';
+import { connect } from '@/hocs';
 
-import { ConnectionError, Warning } from './components';
+import { Warning } from './components';
 
-const ProjectLockGate = ({ versionID, children }) => {
-  const [hasLock, acceptLock] = useEnableDisable();
+const ProjectLockGate = ({ isSessionBusy, handleSessionTakeover, children }) => {
   const [errorScreen, setErrorScreen] = React.useState(null);
 
   const lockProject = () => {
-    if (client.socket.isHealthy) {
-      client.socket.lockProject(versionID, acceptLock, (target) =>
-        setErrorScreen(
-          <Warning
-            target={target}
-            onTakeover={() => {
-              client.socket.takeoverProject(versionID);
-              window.location.reload();
-            }}
-          />
-        )
+    if (isSessionBusy) {
+      setErrorScreen(
+        <Warning
+          onTakeover={() => {
+            setErrorScreen();
+            handleSessionTakeover();
+            window.location.reload();
+          }}
+        />
       );
-    } else {
-      setErrorScreen(<ConnectionError />);
     }
   };
-  const releaseLock = () => client.socket.releaseProject(versionID);
 
   if (errorScreen) {
     return <div className="super-center w-100 h-100">{errorScreen}</div>;
   }
 
   return (
-    <LoadingGate label="Session" isLoaded={hasLock} load={lockProject} unload={releaseLock}>
+    <LoadingGate label="Session" isLoaded={!isSessionBusy} load={lockProject}>
       {children}
     </LoadingGate>
   );
 };
 
-export default ProjectLockGate;
+const mapStateToProps = {
+  isSessionBusy: Realtime.isSessionBusy,
+};
+
+const mapDispatchToProps = {
+  handleSessionTakeover: Realtime.handleRealtimeTakeover,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectLockGate);

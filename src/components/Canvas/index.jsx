@@ -26,7 +26,9 @@ class Canvas extends React.PureComponent {
   controlTeardownHandlers = [];
 
   api = {
+    getControlScheme: () => this.controls.scheme,
     isPanning: () => this.controls.isPanning,
+    isTrackpadPanning: () => this.controls?.isTrackpadPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
     getRef: () => this.rootRef.current,

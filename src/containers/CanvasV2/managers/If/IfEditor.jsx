@@ -40,9 +40,9 @@ function IfEditor({ data, onChange, focusedNode }) {
     handleRemove: onRemoveExpression,
   });
 
-  const addExpression = React.useCallback(() => {
+  const addExpression = React.useCallback(async () => {
     onAdd();
-    engine.port.add(focusedNode.id, { label: items.length + 1 });
+    await engine.port.add(focusedNode.id, { label: items.length + 1 });
   }, [focusedNode.id, items.length, onAdd]);
 
   return (

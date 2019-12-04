@@ -1,98 +1,95 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
-import client from '@/client';
-import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
-import { tabIDSelector } from '@/ducks/session';
 
 import { EngineConsumer } from './utils';
 
-const ServerEvent = {
-  NEW_USER: 'NEW_USER',
-  USER_LEFT: 'USER_LEFT',
+export const OverlayType = {
+  LINK: 'link',
+  CURSOR: 'cursor',
 };
 
 class RealtimeEngine extends EngineConsumer {
-  overlay = null;
+  overlays = {};
 
-  constructor(engine) {
+  constructor(subscription, engine) {
     super(engine);
 
-    const tabID = tabIDSelector(engine.store.getState());
-    this.subscription = client.socket.realtime.createSubscription(
-      tabID,
-      (timestamp) => this.dispatch(Realtime.updateLastTimestamp(timestamp)),
-      () => {
-        throw new Error('socket failed, reload page');
-      }
-    );
-
-    this.subscription.on(ServerEvent.NEW_USER, (otherTabID, { type, ...viewer }) => this.dispatch(Realtime.addDiagramViewer(otherTabID, viewer)));
-    this.subscription.on(ServerEvent.USER_LEFT, (otherTabID) => {
-      this.dispatch(Realtime.removeDiagramViewer(otherTabID));
-
-      if (this.overlay) {
-        this.overlay.removeUser(otherTabID);
-      }
-    });
-    this.subscription.onUpdate((otherTabID, data) => {
+    this.teardownHandlers = subscription.onUpdate(async (data, otherTabID) => {
       if (data && data.type in this.handlers) {
-        this.handlers[data.type](data.payload);
-      }
-    });
-    this.subscription.onMoveMouse((otherTabID, location) => {
-      if (this.overlay) {
-        this.overlay.moveMouse(otherTabID, location);
+        await this.handlers[data.type](data.payload, otherTabID);
       }
     });
   }
 
   handlers = {
+    [Realtime.LOCK_NODES]: ({ targets, types }, tabID) => {
+      this.dispatch(Realtime.addNodeLocks(types, targets, tabID));
+
+      if (types.includes(Realtime.LockType.EDIT)) {
+        targets.forEach((nodeID) => this.engine.node.redraw(nodeID));
+      }
+    },
+    [Realtime.UNLOCK_NODES]: ({ targets, types }) => {
+      this.dispatch(Realtime.removeNodeLocks(types, targets));
+
+      if (types.includes(Realtime.LockType.EDIT)) {
+        targets.forEach((nodeID) => this.engine.node.redraw(nodeID));
+      }
+    },
     [Realtime.ADD_NODE]: ({ node, data, nodeID }) => this.engine.node.internal.add(node, data, nodeID),
-    [Realtime.COPY_NODE]: ({ node, data, position }) => this.engine.node.internal.copy(node, data, position),
+    [Realtime.ADD_MANY_NODES]: ({ nodeGroup, position }) => this.engine.node.internal.addMany(nodeGroup, position),
+    [Realtime.ADD_NESTED_NODE]: ({ parentNodeID, nodeID, node, data, mergedNodeID }) =>
+      this.engine.node.internal.addNested(parentNodeID, nodeID, node, data, mergedNodeID),
+    [Realtime.INSERT_NESTED_NODE]: ({ parentNodeID, index, nodeID }) => this.engine.node.internal.insertNested(parentNodeID, index, nodeID),
+    [Realtime.UNMERGE_NODE]: ({ nodeID, position }) => this.engine.node.internal.unmerge(nodeID, position),
+    [Realtime.MERGE_NODES]: ({ mergedNodeID, sourceNodeID, targetNodeID, position }) =>
+      this.engine.node.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, position),
     [Realtime.REMOVE_NODE]: (nodeID) => this.engine.node.internal.remove(nodeID),
     [Realtime.REMOVE_MANY_NODES]: (nodeIDs) => this.engine.node.internal.removeMany(nodeIDs),
-    [Realtime.UPDATE_NODE_DATA]: ({ nodeID, data }) => this.dispatch(Creator.updateNodeData(nodeID, data)),
     [Realtime.UPDATE_NODE_DATA]: ({ nodeID, data }) => this.engine.node.internal.updateData(nodeID, data),
-    [Realtime.MOVE_NODE]: ({ nodeID, movement }) => this.engine.node.internal.translate(nodeID, movement),
-    [Realtime.MOVE_MANY_NODES]: ({ nodeIDs, movement }) => this.engine.node.internal.translateMany(nodeIDs, movement),
+    [Realtime.MOVE_NODE]: ({ nodeID, movement, origin }) => this.engine.node.internal.translateBaseOnOrigin(nodeID, movement, origin),
+    [Realtime.MOVE_MANY_NODES]: ({ nodeIDs, movement, origins }) => this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins),
 
+    [Realtime.MOVE_LINK]: (linkData, tabID) => this.overlays[OverlayType.LINK]?.moveLink(tabID, linkData),
     [Realtime.ADD_LINK]: ({ sourcePortID, targetPortID, linkID }) => this.engine.link.internal.add(sourcePortID, targetPortID, linkID),
     [Realtime.REMOVE_LINK]: (linkID) => this.engine.link.internal.remove(linkID),
 
     [Realtime.ADD_PORT]: ({ nodeID, portID, port }) => this.engine.port.internal.add(nodeID, portID, port),
     [Realtime.REMOVE_PORT]: (portID) => this.engine.port.internal.remove(portID),
 
-    [Realtime.SET_FOCUS]: () => {},
-    [Realtime.CLEAR_FOCUS]: () => {},
-
-    [Realtime.ADD_TO_SELECTION]: () => {},
-    [Realtime.REMOVE_FROM_SELECTION]: () => {},
-    [Realtime.REPLACE_SELECTION]: () => {},
-    [Realtime.CLEAR_SELECTION]: () => {},
+    [Realtime.MOVE_MOUSE]: (location, tabID) => this.overlays[OverlayType.CURSOR]?.moveMouse(tabID, location),
   };
 
-  registerOverlay(api) {
-    this.overlay = api;
+  sendUpdate(action) {
+    return this.dispatch(Realtime.sendRealtimeUpdate(action));
   }
 
-  expireOverlay() {
-    this.overlay = null;
+  sendVolatileUpdate(action) {
+    return this.dispatch(Realtime.sendRealtimeVolatileUpdate(action));
+  }
+
+  sendProjectUpdate(action) {
+    return this.dispatch(Realtime.sendRealtimeProjectUpdate(action));
+  }
+
+  registerOverlay(key, api) {
+    this.overlays[key] = api;
+  }
+
+  expireOverlay(key) {
+    this.overlays[key] = null;
   }
 
   panViewport(moveX, moveY) {
-    if (this.overlay) {
-      this.overlay.panViewport(moveX, moveY);
-    }
+    this.overlays[OverlayType.CURSOR]?.panViewport(moveX, moveY);
   }
 
   zoomViewport(calculateMovement) {
-    if (this.overlay) {
-      this.overlay.zoomViewport(calculateMovement);
-    }
+    this.overlays[OverlayType.CURSOR]?.zoomViewport(calculateMovement);
   }
 
   teardown() {
-    this.subscription.destroy();
+    this.teardownHandlers();
   }
 }
 

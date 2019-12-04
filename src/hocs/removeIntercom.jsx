@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
-import { IntercomAPI } from 'react-intercom';
+import React from 'react';
 
-import { INTERCOM_ENABLED } from '@/config';
+import * as Intercom from '@/vendors/intercom';
 
 export function RemoveIntercom(props) {
-  useEffect(() => {
-    if (INTERCOM_ENABLED) {
-      IntercomAPI('update', { hide_default_launcher: true });
+  React.useEffect(() => {
+    Intercom.updateSettings({ hide_default_launcher: true });
 
-      return () => IntercomAPI('update', { hide_default_launcher: false });
-    }
-  });
+    return () => Intercom.updateSettings({ hide_default_launcher: false });
+  }, []);
+
   return <>{props.children}</>;
 }
 const removeIntercomWrap = (WrappedComponent) => (props) => (

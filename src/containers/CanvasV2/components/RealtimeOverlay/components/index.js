@@ -1,2 +1,2 @@
-export { default as Cursor } from './RealtimeOverlayCursor';
-export { default as Nametag } from './RealtimeOverlayNametag';
+export { default as LinksOverlay } from './RealtimeLinksOverlay';
+export { default as CursorOverlay } from './RealtimeCursorOverlay';

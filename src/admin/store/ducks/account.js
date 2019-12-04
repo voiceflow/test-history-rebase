@@ -142,7 +142,7 @@ const createSession = (endpoint) => {
         } else {
           localStorage.setItem('is_first_upload', 'true');
           localStorage.setItem('is_first_session', 'true');
-          dispatch(push('/team/onboarding'));
+          dispatch(push('/workspace/onboarding'));
         }
 
         return Promise.resolve();

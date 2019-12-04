@@ -9,15 +9,14 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/Button';
 import { FullSpinner } from '@/components/Spinner';
 import { userSelector } from '@/ducks/account';
-import { addProjectToList } from '@/ducks/board';
+import { addProjectToList } from '@/ducks/lists';
+import { goToCanvas } from '@/ducks/router';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { RootRoutes } from '@/utils/routes';
 
 import LOCALE_MAP from '../../services/LocaleMap';
 import LocalCheckbox from './components/LocalCheckBox';
 import LocaleLabelFlex from './components/LocaleLabelFlex';
-
-const getBoardFromURL = (computedMatch) => _.get(computedMatch, ['params', 'board_id']);
 
 class Templates extends React.Component {
   constructor(props) {
@@ -80,7 +79,7 @@ class Templates extends React.Component {
   }
 
   createProject(moduleId) {
-    const { team_id, computedMatch, addProjectToList, history } = this.props;
+    const { workspaceID, computedMatch, addProjectToList, goToCanvas } = this.props;
     const { name, locales, google } = this.state;
 
     this.setState({ loading: true });
@@ -92,20 +91,18 @@ class Templates extends React.Component {
     }
 
     axios
-      .post(`/team/${team_id}/copy/module/${moduleId}`, {
+      .post(`/team/${workspaceID}/copy/module/${moduleId}`, {
         name,
         locales,
         platform: google ? 'google' : 'alexa',
       })
       .then((res) => {
         if (res.data.skill_id && res.data.diagram) {
-          const board_id = getBoardFromURL(computedMatch);
-          if (board_id) {
-            addProjectToList(board_id, res.data.project_id);
+          const listID = computedMatch?.params?.listID;
+          if (listID) {
+            addProjectToList(listID, res.data.project_id);
           }
-          setTimeout(() => {
-            history.push(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas/${res.data.diagram}`);
-          }, 3000);
+          setTimeout(() => goToCanvas(res.data.skill_id, res.data.diagram, true), 3000);
         } else {
           throw new Error('Invalid Response Format');
         }
@@ -197,10 +194,12 @@ class Templates extends React.Component {
 
 const mapStateToProps = {
   user: userSelector,
+  workspaceID: activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
   addProjectToList,
+  goToCanvas,
 };
 
 export default connect(

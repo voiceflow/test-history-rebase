@@ -5,8 +5,10 @@ import { NavLink, Switch } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
-import { userSelector } from '@/ducks/account';
-import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
+import { LockedResourceOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
+import * as Account from '@/ducks/account';
+import * as Realtime from '@/ducks/realtime';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 import PublishAmazon from './Amazon';
@@ -57,29 +59,47 @@ function Publish(props) {
   } = props;
 
   return (
-    <div id="business">
-      <Sidebar md="3">
-        {TABS.map((tab, i) => (
-          <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
-            {tab.display(i)}
-          </SidebarItem>
-        ))}
-      </Sidebar>
+    <LockedResourceOverlay type={Realtime.ResourceType.PUBLISH}>
+      {({ lockOwner, prevOwner, forceUpdateKey }) => (
+        <div id="business">
+          <Sidebar md="3">
+            {TABS.map((tab, i) => (
+              <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
+                {tab.display(i)}
+              </SidebarItem>
+            ))}
+          </Sidebar>
 
-      <div md="9" className="business-page">
-        <Switch>
-          <PrivateRoute {...ownProps} path={`${path}/alexa`} component={PublishAmazon} skillID={skillID} />
-          <PrivateRoute {...ownProps} path={`${path}/google`} component={PublishGoogle} skillID={skillID} />
-        </Switch>
-      </div>
-    </div>
+          <div md="9" className="business-page">
+            <Switch>
+              <PrivateRoute
+                {...ownProps}
+                key={forceUpdateKey}
+                path={`${path}/alexa`}
+                skillID={skillID}
+                component={PublishAmazon}
+                isLocked={!!lockOwner || !!prevOwner}
+              />
+              <PrivateRoute
+                {...ownProps}
+                key={forceUpdateKey}
+                path={`${path}/google`}
+                skillID={skillID}
+                component={PublishGoogle}
+                isLocked={!!lockOwner || !!prevOwner}
+              />
+            </Switch>
+          </div>
+        </div>
+      )}
+    </LockedResourceOverlay>
   );
 }
 
 const mapStateToProps = {
-  user: userSelector,
-  skillID: activeSkillIDSelector,
-  platform: activePlatformSelector,
+  user: Account.userSelector,
+  skillID: Skill.activeSkillIDSelector,
+  platform: Skill.activePlatformSelector,
 };
 
 export default connect(mapStateToProps)(Publish);

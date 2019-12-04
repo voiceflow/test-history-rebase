@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { User } from '@/components/User/User';
+import User from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { userSelector } from '@/ducks/account';

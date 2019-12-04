@@ -18,11 +18,11 @@ const Spotlight = () => {
   const mousePosition = React.useContext(MousePositionContext);
   const engine = React.useContext(EngineContext);
 
-  const addBlock = (blockType) => {
+  const addBlock = async (blockType) => {
     const position = engine.canvas.transformPoint(mousePosition.current);
     const newNodeID = cuid();
 
-    engine.node.add(newNodeID, blockType, position);
+    await engine.node.add(newNodeID, blockType, position);
     hide();
   };
 

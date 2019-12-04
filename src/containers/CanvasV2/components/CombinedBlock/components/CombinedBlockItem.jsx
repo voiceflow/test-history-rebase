@@ -5,7 +5,7 @@ import { BlockType, INTERNAL_BLOCKS } from '@/constants';
 import { PortSet } from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
 import { ContextMenuTarget, getBlockCategory } from '@/containers/CanvasV2/constants';
-import { ContextMenuContext, PlatformContext, TestingModeContext, useNodeData, withNode } from '@/containers/CanvasV2/contexts';
+import { ContextMenuContext, EditPermissionContext, EngineContext, PlatformContext, useNodeData, withNode } from '@/containers/CanvasV2/contexts';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 import { stopPropagation } from '@/utils/dom';
 
@@ -13,9 +13,10 @@ import CombinedBlockEnterFlow from './CombinedBlockEnterFlow';
 import CombinedBlockHandle from './CombinedBlockHandle';
 import CombinedBlockItemContainer from './CombinedBlockItemContainer';
 
-const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engine, ...props }) => {
+const CombinedBlockItem = ({ node, lockOwner, showOutPorts, index, ...props }) => {
   const { data } = useNodeData();
-  const isTesting = React.useContext(TestingModeContext);
+  const engine = React.useContext(EngineContext);
+  const { canEdit } = React.useContext(EditPermissionContext);
   const platform = React.useContext(PlatformContext);
   const contextMenu = React.useContext(ContextMenuContext);
 
@@ -30,7 +31,7 @@ const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engin
   const isEnabled = !platforms || platforms.includes(platform);
   const outPorts = showOutPorts && <PortSet ports={node.ports.out} direction="out" withLabel canDrag fullWidth={!hasDiagram} />;
 
-  const openContextMenu = (event) => !isTesting && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
+  const openContextMenu = (event) => canEdit && contextMenu.onOpen(event, ContextMenuTarget.NODE, node.id);
 
   return (
     <CombinedBlockItemContainer isEnabled={isEnabled} onContextMenu={stopPropagation(openContextMenu)} column {...props}>
@@ -38,7 +39,7 @@ const CombinedBlockItem = ({ node, showOutPorts, index, onReorder, onDrop, engin
         <PortSet ports={node.ports.in} direction="in" canDrop />
         <PortLabel fullWidth>
           {data.name}
-          {showIcon && <CombinedBlockHandle icon={icon} color={color} />}
+          {showIcon && <CombinedBlockHandle icon={icon} color={color} lockOwner={lockOwner} className="nestedBlockItem" />}
         </PortLabel>
       </Flex>
       {hasDiagram ? <CombinedBlockEnterFlow diagramID={data.diagramID}>{outPorts}</CombinedBlockEnterFlow> : outPorts}

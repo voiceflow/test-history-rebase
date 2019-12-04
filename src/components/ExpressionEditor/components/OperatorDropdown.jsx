@@ -5,30 +5,33 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { ExpressionType } from '@/constants';
 import { useToggle } from '@/hooks/toggle';
 
-import { GROUPS, SYMBOLS } from '../constants';
+import { GROUPS, MAX_DEPTH } from '../constants';
+import ExpressionOperator from './ExpressionOperator';
+
+const MAX_DEPTH_GROUPS = [[ExpressionType.VALUE, ExpressionType.VARIABLE], [ExpressionType.ADVANCE]];
 
 function OperatorDropdown({ depth, children, update, className }) {
   const [open, toggleOpen] = useToggle(false);
 
-  const menuGroups = depth === 8 ? [[ExpressionType.VALUE, ExpressionType.VARIABLE], [ExpressionType.ADVANCE]] : GROUPS;
+  const createOnClick = (type) => () => {
+    update(type);
+    toggleOpen();
+  };
+
+  const menuGroups = depth === MAX_DEPTH ? MAX_DEPTH_GROUPS : GROUPS;
 
   return (
     <Dropdown isOpen={open} toggle={toggleOpen}>
       <DropdownToggle tag="div" className={className}>
         {children}
       </DropdownToggle>
+
       <DropdownMenu className="expression-menu">
         {menuGroups.map((group, index) => (
           <div key={index} className={cn('expression-group', `group-${group.length}`)}>
             {group.map((type) => (
-              <div
-                key={type}
-                onClick={() => {
-                  update(type);
-                  toggleOpen();
-                }}
-              >
-                {SYMBOLS[type]}
+              <div key={type} role="button" onClick={createOnClick(type)} tabIndex="0">
+                <ExpressionOperator type={type} />
               </div>
             ))}
           </div>
@@ -38,4 +41,4 @@ function OperatorDropdown({ depth, children, update, className }) {
   );
 }
 
-export default OperatorDropdown;
+export default React.memo(OperatorDropdown);

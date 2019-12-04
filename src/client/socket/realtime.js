@@ -1,40 +1,62 @@
+import _ from 'lodash';
+
+import { SocketStatus } from './client';
+
+const HEARTBEAT_TIMEOUT = 1000;
+
 function createRealtimeSocketClient(client) {
   return {
-    initialize: (skillID, diagramID) =>
-      new Promise((resolve) => {
+    initialize(skillID, diagramID) {
+      return new Promise((resolve, reject) => {
+        // once this is received, we can choose to take over the seesion
+        client.once('session:busy', reject);
+
         // once this is received, we have the ability to modify the diagram
-        client.on('diagram:init', ({ blocks, flows, users }) =>
-          resolve({
-            blocks,
-            flows,
-            users: Object.keys(users).reduce((acc, key) => Object.assign(acc, { [key]: JSON.parse(users[key]) }), {}),
-          })
-        );
+        client.once('diagram:init', resolve);
 
         // expect a `diagram:init` event to be sent in return
-        client.emit('diagram', {
+        client.emit('diagramConnect', {
           skillId: skillID,
           diagramId: diagramID,
         });
-      }),
-
-    sendUpdate: (payload, lastTimestamp) => {
-      const isVolatile = !lastTimestamp;
-      client.emit(isVolatile ? 'diagramVolatile' : 'diagramUpdate', {
-        // TODO: handle BLOCK_BUSY and BLOCK_FREE
-        type: null,
-        lastTimestamp: isVolatile ? null : lastTimestamp,
-        payload,
       });
     },
 
-    moveMouse: (location) =>
-      client.emit('diagramMouse', {
-        type: null,
-        payload: location,
-      }),
+    sendProjectUpdate(action, lastTimestamp, lock = null) {
+      return new Promise((resolve) => {
+        client.once('project:updated', resolve);
 
-    createSubscription: (tabID, updateTimestamp, onReload) => {
+        client.emit('projectUpdate', {
+          action,
+          lastTimestamp,
+          lock,
+        });
+      });
+    },
+
+    sendUpdate(action, lastTimestamp, lock = null, serverAction = null) {
+      return new Promise((resolve) => {
+        client.once('diagram:updated', resolve);
+
+        client.emit('diagramUpdate', {
+          action,
+          lastTimestamp,
+          lock,
+          serverAction,
+        });
+      });
+    },
+
+    sendVolatileUpdate(action) {
+      client.emit('diagramVolatile', { action });
+    },
+
+    initiateSessionTakeOver() {
+      // new client will send this action
+      client.emit('sessionTakeover');
+    },
+
+    createSubscription(tabID, { onReload, onDisconnect, onReconnect, updateTimestamp, handleSessionTakeOver, handleSessionTaken }) {
       const handlers = {};
       const updateHandlers = [];
       const teardownHandlers = [];
@@ -44,27 +66,88 @@ function createRealtimeSocketClient(client) {
           updateTimestamp(data.timestamp);
         }
 
+        // ignore our own events
         if (data.tabId === tabID) return;
 
-        const type = data.payload.type;
-        const eventHandlers = type.startsWith('REALTIME:SOCKET:') ? updateHandlers : handlers[type] || [];
+        const { type } = data.action;
+        const eventHandlers =
+          type.startsWith('REALTIME:SOCKET:') || type.startsWith('REALTIME:PROJECT:SOCKET:') ? updateHandlers : handlers[type] || [];
 
-        eventHandlers.forEach((handler) => handler(data.tabId, data.payload));
+        eventHandlers.forEach((handler) => handler(data.action, data.tabId));
+      };
+
+      const handleVolatile = (data) => {
+        // ignore our own events
+        if (data.tabId === tabID) return;
+
+        updateHandlers.forEach((handler) => handler(data.action, data.tabId));
       };
 
       const handleRecover = (updates) => {
-        // TODO: replay updates
-        // eslint-disable-next-line no-console
-        console.log('replay these updates', updates);
+        /**
+         * property "update" will be of the shape:
+         * [
+         *  "{
+         *   "action": {},
+         *   "tabId",
+         *   "timestamp",
+         *   }"
+         * ]
+         */
+        const lastTimestamp = JSON.parse(_.last(updates)).timestamp; // getting the last timestamp
+
+        if (lastTimestamp) {
+          updateTimestamp(lastTimestamp);
+        }
+
+        updates.forEach((dataStr) => {
+          const dataObj = JSON.parse(dataStr);
+          handleUpdate({ tabId: dataObj.tabId, action: dataObj.action });
+        });
       };
 
-      client.on('diagram:refresh', onReload);
+      function handleReconnect() {
+        client.status = SocketStatus.AUTHENTICATED;
+
+        onReconnect();
+
+        client.once('connect_error', handleDisconnect);
+      }
+
+      function handleDisconnect() {
+        client.status = SocketStatus.RECONNECTING;
+
+        onDisconnect();
+
+        client.once('reconnect', handleReconnect);
+      }
+
+      function handleFailure(error) {
+        if (typeof error === 'object' && (error?.code ?? 0 >= 400)) {
+          client.status = SocketStatus.TERMINATED;
+
+          onDisconnect();
+        }
+      }
+
+      client.on('fail', handleFailure);
       client.on('diagram:update', handleUpdate);
+      client.on('diagram:volatile', handleVolatile);
       client.on('diagram:recover', handleRecover);
+      client.once('diagram:refresh', onReload);
+      client.once('session:takeover', handleSessionTakeOver);
+      client.once('session:taken', handleSessionTaken);
+      client.once('connect_error', handleDisconnect);
 
       teardownHandlers.push(() => client.off('diagram:refresh', onReload));
       teardownHandlers.push(() => client.off('diagram:update', handleUpdate));
-      teardownHandlers.push(() => client.off('diagram:recoverrefrecresh', handleRecover));
+      teardownHandlers.push(() => client.off('diagram:volatile', handleVolatile));
+      teardownHandlers.push(() => client.off('diagram:recover', handleRecover));
+      teardownHandlers.push(() => client.off('connect_error', handleDisconnect));
+      teardownHandlers.push(() => client.off('reconnect', handleReconnect));
+
+      const heartbeatInterval = setInterval(this.sendHeartbeat, HEARTBEAT_TIMEOUT);
+      teardownHandlers.push(() => clearInterval(heartbeatInterval));
 
       return {
         on: (event, callback) => {
@@ -72,18 +155,30 @@ function createRealtimeSocketClient(client) {
         },
         onUpdate: (callback) => {
           updateHandlers.push(callback);
-        },
-        onMoveMouse: (callback) => {
-          const handler = (data) => data.tabId !== tabID && callback(data.tabId, data.payload);
-          client.on('diagram:mouse', handler);
 
-          teardownHandlers.push(() => client.off('diagram:mouse', handler));
+          return () => updateHandlers.includes(callback) && updateHandlers.splice(updateHandlers.indexOf(callback), 1);
         },
         destroy: () => teardownHandlers.forEach((callback) => callback()),
       };
     },
 
-    terminate: () => client.emit('leave'),
+    sendHeartbeat() {
+      if (client.isConnected) {
+        client.emit('diagramHeartbeat');
+      }
+    },
+
+    terminate() {
+      client.emit('diagramLeave');
+
+      return new Promise((resolve) => client.once('diagram:left', resolve));
+    },
+
+    async switch(skillID, diagramID) {
+      await this.terminate();
+
+      return this.initialize(skillID, diagramID);
+    },
   };
 }
 

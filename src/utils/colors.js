@@ -1,22 +1,12 @@
-export const colors = [
-  'cyan',
-  'red',
-  'blue',
-  'orange',
-  'green',
-  'pink',
-  'keppel',
-  'silver',
-  'red-orange',
-  'gray',
-  'cyan-dark',
-  'red-dark',
-  'blue-dark',
-  'orange-dark',
-  'green-dark',
-  'pink-dark',
-  'keppel-dark',
-  'silver-dark',
-  'red-orange-dark',
-  'gray-dark',
-];
+import { PROFILE_COLORS } from '@/styles/colors';
+
+// eslint-disable-next-line import/prefer-default-export
+export const getAlternativeColor = (id) => {
+  const index =
+    String(id)
+      .split('')
+      .map((c) => c.charCodeAt(0))
+      .reduce((acc, code) => acc + code) % PROFILE_COLORS.length;
+
+  return PROFILE_COLORS[index];
+};

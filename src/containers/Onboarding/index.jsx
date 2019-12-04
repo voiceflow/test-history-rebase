@@ -12,8 +12,9 @@ import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import { ButtonCard } from '@/containers/Onboarding/container';
 import { userSelector } from '@/ducks/account';
+import { goToCanvas, goToDashboard, goToHome } from '@/ducks/router';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { RootRoutes } from '@/utils/routes';
 
 const CLASS_MUTED = 'text-muted';
 const PROG_XP = (xp) => {
@@ -79,8 +80,7 @@ class Onboarding extends Component {
   }
 
   closeSurvey() {
-    const { history } = this.props;
-    history.push('/');
+    this.props.goToHome();
   }
 
   handleChange(event) {
@@ -92,24 +92,23 @@ class Onboarding extends Component {
 
   createSkill = () => {
     const { templates } = this.state;
-    const { history, team_id } = this.props;
+    const { goToCanvas, goToDashboard, workspaceID } = this.props;
+
     // Onboarding Failsafe
     if (!Array.isArray(templates) || !templates[0] || !templates[0].module_id) {
-      return history.push('/dashboard');
+      return goToDashboard();
     }
 
     const module_id = templates[0].module_id;
     axios
-      .post(`/team/${team_id}/copy/module/${module_id}`, {
+      .post(`/team/${workspaceID}/copy/module/${module_id}`, {
         name: 'My First Project',
         locales: ['en-US'],
         platform: 'alexa',
       })
       .then((res) => {
         if (res.data.skill_id && res.data.diagram) {
-          setTimeout(() => {
-            history.push(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas/${res.data.diagram}`);
-          }, 3000);
+          setTimeout(() => goToCanvas(res.data.skill_id, res.data.diagram), 3000);
         } else {
           throw new Error('Invalid Response Format');
         }
@@ -475,6 +474,16 @@ class Onboarding extends Component {
 
 const mapStateToProps = {
   user: userSelector,
+  workspaceID: activeWorkspaceIDSelector,
 };
 
-export default connect(mapStateToProps)(Onboarding);
+const mapDispatchToProps = {
+  goToHome,
+  goToCanvas,
+  goToDashboard,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Onboarding);

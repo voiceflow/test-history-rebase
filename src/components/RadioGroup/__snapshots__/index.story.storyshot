@@ -8,9 +8,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ckVGcZ",
+          "componentId": "sc-fMiknA",
           "isStatic": true,
-          "lastClassName": "hJexYd",
+          "lastClassName": "dfVBhB",
           "rules": Array [
             "
   display: flex;
@@ -22,7 +22,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
         "displayName": "styled.div",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-ckVGcZ",
+        "styledComponentId": "sc-fMiknA",
         "target": "div",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -32,7 +32,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
     forwardedRef={null}
   >
     <div
-      className="sc-ckVGcZ hJexYd"
+      className="sc-fMiknA dfVBhB"
     >
       <styled.div
         key="0"
@@ -43,9 +43,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-fBuWsC",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "doOhiN",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -58,7 +58,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-fBuWsC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -68,7 +68,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-fBuWsC doOhiN"
           >
             <Checkbox
               checked={true}
@@ -84,9 +84,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-gqjmRU",
+                        "componentId": "sc-VigVT",
                         "isStatic": true,
-                        "lastClassName": "etzSgW",
+                        "lastClassName": "gnCnbN",
                         "rules": Array [
                           "
   position: relative;
@@ -102,7 +102,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "displayName": "styled.label",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-gqjmRU",
+                      "styledComponentId": "sc-VigVT",
                       "target": "label",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -112,7 +112,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                   forwardedRef={null}
                 >
                   <label
-                    className="sc-gqjmRU etzSgW"
+                    className="sc-VigVT gnCnbN"
                   >
                     <styled.div>
                       <StyledComponent
@@ -121,9 +121,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gZMcBi",
+                              "componentId": "sc-gqjmRU",
                               "isStatic": true,
-                              "lastClassName": "dqAXEC",
+                              "lastClassName": "dqXpYh",
                               "rules": Array [
                                 "
   flex: 0 0 auto;
@@ -132,13 +132,16 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                               ],
                             },
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gZMcBi",
+                            "styledComponentId": "sc-gqjmRU",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -148,10 +151,11 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-gZMcBi dqAXEC"
+                          className="sc-gqjmRU dqXpYh"
                         >
                           <styled.input
                             checked={true}
+                            color="#5d9df5"
                             name="multiple"
                             onChange={[Function]}
                             type="radio"
@@ -159,31 +163,37 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                           >
                             <StyledComponent
                               checked={true}
+                              color="#5d9df5"
                               forwardedComponent={
                                 Object {
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-iwsKbI",
-                                    "isStatic": true,
-                                    "lastClassName": "bkouDE",
+                                    "componentId": "sc-gZMcBi",
+                                    "isStatic": false,
+                                    "lastClassName": "bJWspH",
                                     "rules": Array [
+                                      "
+  ",
+                                      [Function],
                                       "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
-    color: #5d9df5;
+    color: ",
+                                      [Function],
+                                      ";
   }
 ",
                                     ],
@@ -191,7 +201,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                   "displayName": "styled.input",
                                   "foldedComponentIds": Array [],
                                   "render": [Function],
-                                  "styledComponentId": "sc-iwsKbI",
+                                  "styledComponentId": "sc-gZMcBi",
                                   "target": "input",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -206,7 +216,8 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             >
                               <input
                                 checked={true}
-                                className="sc-iwsKbI bkouDE"
+                                className="sc-gZMcBi bJWspH"
+                                color="#5d9df5"
                                 name="multiple"
                                 onChange={[Function]}
                                 type="radio"
@@ -215,40 +226,69 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             </StyledComponent>
                           </styled.input>
                           <ForwardRef
+                            checked={true}
+                            color="#5d9df5"
                             icon="checked"
                             size={16}
                           >
-                            <SvgIcon__SvgIconContainer
-                              color="currentColor"
+                            <styled.span
+                              checked={true}
+                              color="#5d9df5"
                               size={16}
                             >
                               <StyledComponent
-                                color="currentColor"
+                                checked={true}
+                                color="#5d9df5"
                                 forwardedComponent={
                                   Object {
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "componentId": "sc-bxivhb",
                                       "isStatic": false,
-                                      "lastClassName": "kycatR",
+                                      "lastClassName": "kwqhZm",
                                       "rules": Array [
+                                        "
+  ",
                                         [Function],
-                                        " color:",
+                                        "
+
+  color: ",
                                         [Function],
-                                        ";width:",
+                                        ";
+  width: ",
                                         [Function],
-                                        "px;height:",
+                                        "px;
+  height: ",
                                         [Function],
-                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
                                         [Function],
-                                        ";}",
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+
+  }
+",
                                       ],
                                     },
-                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "displayName": "styled.span",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "styledComponentId": "sc-bxivhb",
                                     "target": "span",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -259,14 +299,15 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                 size={16}
                               >
                                 <span
-                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                                  color="currentColor"
+                                  checked={true}
+                                  className="sc-bxivhb kwqhZm"
+                                  color="#5d9df5"
                                   size={16}
                                 >
                                   <test-file-stub />
                                 </span>
                               </StyledComponent>
-                            </SvgIcon__SvgIconContainer>
+                            </styled.span>
                           </ForwardRef>
                         </div>
                       </StyledComponent>
@@ -290,9 +331,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-fBuWsC",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "doOhiN",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -305,7 +346,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-fBuWsC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -315,7 +356,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-fBuWsC doOhiN"
           >
             <Checkbox
               checked={false}
@@ -331,9 +372,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-gqjmRU",
+                        "componentId": "sc-VigVT",
                         "isStatic": true,
-                        "lastClassName": "etzSgW",
+                        "lastClassName": "gnCnbN",
                         "rules": Array [
                           "
   position: relative;
@@ -349,7 +390,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "displayName": "styled.label",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-gqjmRU",
+                      "styledComponentId": "sc-VigVT",
                       "target": "label",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -359,7 +400,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                   forwardedRef={null}
                 >
                   <label
-                    className="sc-gqjmRU etzSgW"
+                    className="sc-VigVT gnCnbN"
                   >
                     <styled.div>
                       <StyledComponent
@@ -368,9 +409,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gZMcBi",
+                              "componentId": "sc-gqjmRU",
                               "isStatic": true,
-                              "lastClassName": "dqAXEC",
+                              "lastClassName": "dqXpYh",
                               "rules": Array [
                                 "
   flex: 0 0 auto;
@@ -379,13 +420,16 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                               ],
                             },
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gZMcBi",
+                            "styledComponentId": "sc-gqjmRU",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -395,10 +439,11 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-gZMcBi dqAXEC"
+                          className="sc-gqjmRU dqXpYh"
                         >
                           <styled.input
                             checked={false}
+                            color="#5d9df5"
                             name="multiple"
                             onChange={[Function]}
                             type="radio"
@@ -406,31 +451,37 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                           >
                             <StyledComponent
                               checked={false}
+                              color="#5d9df5"
                               forwardedComponent={
                                 Object {
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-iwsKbI",
-                                    "isStatic": true,
-                                    "lastClassName": "bkouDE",
+                                    "componentId": "sc-gZMcBi",
+                                    "isStatic": false,
+                                    "lastClassName": "bJWspH",
                                     "rules": Array [
+                                      "
+  ",
+                                      [Function],
                                       "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
-    color: #5d9df5;
+    color: ",
+                                      [Function],
+                                      ";
   }
 ",
                                     ],
@@ -438,7 +489,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                   "displayName": "styled.input",
                                   "foldedComponentIds": Array [],
                                   "render": [Function],
-                                  "styledComponentId": "sc-iwsKbI",
+                                  "styledComponentId": "sc-gZMcBi",
                                   "target": "input",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -453,7 +504,8 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             >
                               <input
                                 checked={false}
-                                className="sc-iwsKbI bkouDE"
+                                className="sc-gZMcBi bJWspH"
+                                color="#5d9df5"
                                 name="multiple"
                                 onChange={[Function]}
                                 type="radio"
@@ -462,40 +514,69 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             </StyledComponent>
                           </styled.input>
                           <ForwardRef
+                            checked={false}
+                            color="#5d9df5"
                             icon="emptyCheckbox"
                             size={16}
                           >
-                            <SvgIcon__SvgIconContainer
-                              color="currentColor"
+                            <styled.span
+                              checked={false}
+                              color="#5d9df5"
                               size={16}
                             >
                               <StyledComponent
-                                color="currentColor"
+                                checked={false}
+                                color="#5d9df5"
                                 forwardedComponent={
                                   Object {
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "componentId": "sc-bxivhb",
                                       "isStatic": false,
-                                      "lastClassName": "kycatR",
+                                      "lastClassName": "kwqhZm",
                                       "rules": Array [
+                                        "
+  ",
                                         [Function],
-                                        " color:",
+                                        "
+
+  color: ",
                                         [Function],
-                                        ";width:",
+                                        ";
+  width: ",
                                         [Function],
-                                        "px;height:",
+                                        "px;
+  height: ",
                                         [Function],
-                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
                                         [Function],
-                                        ";}",
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+
+  }
+",
                                       ],
                                     },
-                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "displayName": "styled.span",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "styledComponentId": "sc-bxivhb",
                                     "target": "span",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -506,14 +587,15 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                 size={16}
                               >
                                 <span
-                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                                  color="currentColor"
+                                  checked={false}
+                                  className="sc-bxivhb kwqhZm"
+                                  color="#5d9df5"
                                   size={16}
                                 >
                                   <test-file-stub />
                                 </span>
                               </StyledComponent>
-                            </SvgIcon__SvgIconContainer>
+                            </styled.span>
                           </ForwardRef>
                         </div>
                       </StyledComponent>
@@ -537,9 +619,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-fBuWsC",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "doOhiN",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -552,7 +634,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-fBuWsC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -562,7 +644,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-fBuWsC doOhiN"
           >
             <Checkbox
               checked={false}
@@ -578,9 +660,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-gqjmRU",
+                        "componentId": "sc-VigVT",
                         "isStatic": true,
-                        "lastClassName": "etzSgW",
+                        "lastClassName": "gnCnbN",
                         "rules": Array [
                           "
   position: relative;
@@ -596,7 +678,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                       "displayName": "styled.label",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-gqjmRU",
+                      "styledComponentId": "sc-VigVT",
                       "target": "label",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -606,7 +688,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                   forwardedRef={null}
                 >
                   <label
-                    className="sc-gqjmRU etzSgW"
+                    className="sc-VigVT gnCnbN"
                   >
                     <styled.div>
                       <StyledComponent
@@ -615,9 +697,9 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gZMcBi",
+                              "componentId": "sc-gqjmRU",
                               "isStatic": true,
-                              "lastClassName": "dqAXEC",
+                              "lastClassName": "dqXpYh",
                               "rules": Array [
                                 "
   flex: 0 0 auto;
@@ -626,13 +708,16 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                               ],
                             },
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gZMcBi",
+                            "styledComponentId": "sc-gqjmRU",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -642,10 +727,11 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-gZMcBi dqAXEC"
+                          className="sc-gqjmRU dqXpYh"
                         >
                           <styled.input
                             checked={false}
+                            color="#5d9df5"
                             name="multiple"
                             onChange={[Function]}
                             type="radio"
@@ -653,31 +739,37 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                           >
                             <StyledComponent
                               checked={false}
+                              color="#5d9df5"
                               forwardedComponent={
                                 Object {
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-iwsKbI",
-                                    "isStatic": true,
-                                    "lastClassName": "bkouDE",
+                                    "componentId": "sc-gZMcBi",
+                                    "isStatic": false,
+                                    "lastClassName": "bJWspH",
                                     "rules": Array [
+                                      "
+  ",
+                                      [Function],
                                       "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
-    color: #5d9df5;
+    color: ",
+                                      [Function],
+                                      ";
   }
 ",
                                     ],
@@ -685,7 +777,7 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                   "displayName": "styled.input",
                                   "foldedComponentIds": Array [],
                                   "render": [Function],
-                                  "styledComponentId": "sc-iwsKbI",
+                                  "styledComponentId": "sc-gZMcBi",
                                   "target": "input",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -700,7 +792,8 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             >
                               <input
                                 checked={false}
-                                className="sc-iwsKbI bkouDE"
+                                className="sc-gZMcBi bJWspH"
+                                color="#5d9df5"
                                 name="multiple"
                                 onChange={[Function]}
                                 type="radio"
@@ -709,40 +802,69 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                             </StyledComponent>
                           </styled.input>
                           <ForwardRef
+                            checked={false}
+                            color="#5d9df5"
                             icon="emptyCheckbox"
                             size={16}
                           >
-                            <SvgIcon__SvgIconContainer
-                              color="currentColor"
+                            <styled.span
+                              checked={false}
+                              color="#5d9df5"
                               size={16}
                             >
                               <StyledComponent
-                                color="currentColor"
+                                checked={false}
+                                color="#5d9df5"
                                 forwardedComponent={
                                   Object {
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "componentId": "sc-bxivhb",
                                       "isStatic": false,
-                                      "lastClassName": "kycatR",
+                                      "lastClassName": "kwqhZm",
                                       "rules": Array [
+                                        "
+  ",
                                         [Function],
-                                        " color:",
+                                        "
+
+  color: ",
                                         [Function],
-                                        ";width:",
+                                        ";
+  width: ",
                                         [Function],
-                                        "px;height:",
+                                        "px;
+  height: ",
                                         [Function],
-                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
                                         [Function],
-                                        ";}",
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+
+  }
+",
                                       ],
                                     },
-                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "displayName": "styled.span",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "styledComponentId": "sc-bxivhb",
                                     "target": "span",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -753,14 +875,15 @@ exports[`Storyshots Radio Group variants: Multiple Radio Button 1`] = `
                                 size={16}
                               >
                                 <span
-                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                                  color="currentColor"
+                                  checked={false}
+                                  className="sc-bxivhb kwqhZm"
+                                  color="#5d9df5"
                                   size={16}
                                 >
                                   <test-file-stub />
                                 </span>
                               </StyledComponent>
-                            </SvgIcon__SvgIconContainer>
+                            </styled.span>
                           </ForwardRef>
                         </div>
                       </StyledComponent>
@@ -788,9 +911,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-ckVGcZ",
+          "componentId": "sc-fMiknA",
           "isStatic": true,
-          "lastClassName": "hJexYd",
+          "lastClassName": "dfVBhB",
           "rules": Array [
             "
   display: flex;
@@ -802,7 +925,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
         "displayName": "styled.div",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-ckVGcZ",
+        "styledComponentId": "sc-fMiknA",
         "target": "div",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -812,7 +935,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
     forwardedRef={null}
   >
     <div
-      className="sc-ckVGcZ hJexYd"
+      className="sc-fMiknA dfVBhB"
     >
       <styled.div
         key="0"
@@ -823,9 +946,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-fBuWsC",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "doOhiN",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -838,7 +961,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-fBuWsC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -848,7 +971,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-fBuWsC doOhiN"
           >
             <Checkbox
               checked={false}
@@ -864,9 +987,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-gqjmRU",
+                        "componentId": "sc-VigVT",
                         "isStatic": true,
-                        "lastClassName": "etzSgW",
+                        "lastClassName": "gnCnbN",
                         "rules": Array [
                           "
   position: relative;
@@ -882,7 +1005,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                       "displayName": "styled.label",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-gqjmRU",
+                      "styledComponentId": "sc-VigVT",
                       "target": "label",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -892,7 +1015,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                   forwardedRef={null}
                 >
                   <label
-                    className="sc-gqjmRU etzSgW"
+                    className="sc-VigVT gnCnbN"
                   >
                     <styled.div>
                       <StyledComponent
@@ -901,9 +1024,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gZMcBi",
+                              "componentId": "sc-gqjmRU",
                               "isStatic": true,
-                              "lastClassName": "dqAXEC",
+                              "lastClassName": "dqXpYh",
                               "rules": Array [
                                 "
   flex: 0 0 auto;
@@ -912,13 +1035,16 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                               ],
                             },
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gZMcBi",
+                            "styledComponentId": "sc-gqjmRU",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -928,10 +1054,11 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-gZMcBi dqAXEC"
+                          className="sc-gqjmRU dqXpYh"
                         >
                           <styled.input
                             checked={false}
+                            color="#5d9df5"
                             name="yesNo"
                             onChange={[Function]}
                             type="radio"
@@ -939,31 +1066,37 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                           >
                             <StyledComponent
                               checked={false}
+                              color="#5d9df5"
                               forwardedComponent={
                                 Object {
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-iwsKbI",
-                                    "isStatic": true,
-                                    "lastClassName": "bkouDE",
+                                    "componentId": "sc-gZMcBi",
+                                    "isStatic": false,
+                                    "lastClassName": "bJWspH",
                                     "rules": Array [
+                                      "
+  ",
+                                      [Function],
                                       "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
-    color: #5d9df5;
+    color: ",
+                                      [Function],
+                                      ";
   }
 ",
                                     ],
@@ -971,7 +1104,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                                   "displayName": "styled.input",
                                   "foldedComponentIds": Array [],
                                   "render": [Function],
-                                  "styledComponentId": "sc-iwsKbI",
+                                  "styledComponentId": "sc-gZMcBi",
                                   "target": "input",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -986,7 +1119,8 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             >
                               <input
                                 checked={false}
-                                className="sc-iwsKbI bkouDE"
+                                className="sc-gZMcBi bJWspH"
+                                color="#5d9df5"
                                 name="yesNo"
                                 onChange={[Function]}
                                 type="radio"
@@ -995,40 +1129,69 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             </StyledComponent>
                           </styled.input>
                           <ForwardRef
+                            checked={false}
+                            color="#5d9df5"
                             icon="emptyCheckbox"
                             size={16}
                           >
-                            <SvgIcon__SvgIconContainer
-                              color="currentColor"
+                            <styled.span
+                              checked={false}
+                              color="#5d9df5"
                               size={16}
                             >
                               <StyledComponent
-                                color="currentColor"
+                                checked={false}
+                                color="#5d9df5"
                                 forwardedComponent={
                                   Object {
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "componentId": "sc-bxivhb",
                                       "isStatic": false,
-                                      "lastClassName": "kycatR",
+                                      "lastClassName": "kwqhZm",
                                       "rules": Array [
+                                        "
+  ",
                                         [Function],
-                                        " color:",
+                                        "
+
+  color: ",
                                         [Function],
-                                        ";width:",
+                                        ";
+  width: ",
                                         [Function],
-                                        "px;height:",
+                                        "px;
+  height: ",
                                         [Function],
-                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
                                         [Function],
-                                        ";}",
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+
+  }
+",
                                       ],
                                     },
-                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "displayName": "styled.span",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "styledComponentId": "sc-bxivhb",
                                     "target": "span",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1039,14 +1202,15 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                                 size={16}
                               >
                                 <span
-                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                                  color="currentColor"
+                                  checked={false}
+                                  className="sc-bxivhb kwqhZm"
+                                  color="#5d9df5"
                                   size={16}
                                 >
                                   <test-file-stub />
                                 </span>
                               </StyledComponent>
-                            </SvgIcon__SvgIconContainer>
+                            </styled.span>
                           </ForwardRef>
                         </div>
                       </StyledComponent>
@@ -1070,9 +1234,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-dxgOiQ",
+                "componentId": "sc-fBuWsC",
                 "isStatic": true,
-                "lastClassName": "gbykQm",
+                "lastClassName": "doOhiN",
                 "rules": Array [
                   "
   display: inline-flex;
@@ -1085,7 +1249,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-dxgOiQ",
+              "styledComponentId": "sc-fBuWsC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -1095,7 +1259,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-dxgOiQ gbykQm"
+            className="sc-fBuWsC doOhiN"
           >
             <Checkbox
               checked={true}
@@ -1111,9 +1275,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-gqjmRU",
+                        "componentId": "sc-VigVT",
                         "isStatic": true,
-                        "lastClassName": "etzSgW",
+                        "lastClassName": "gnCnbN",
                         "rules": Array [
                           "
   position: relative;
@@ -1129,7 +1293,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                       "displayName": "styled.label",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-gqjmRU",
+                      "styledComponentId": "sc-VigVT",
                       "target": "label",
                       "toString": [Function],
                       "warnTooManyClasses": [Function],
@@ -1139,7 +1303,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                   forwardedRef={null}
                 >
                   <label
-                    className="sc-gqjmRU etzSgW"
+                    className="sc-VigVT gnCnbN"
                   >
                     <styled.div>
                       <StyledComponent
@@ -1148,9 +1312,9 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gZMcBi",
+                              "componentId": "sc-gqjmRU",
                               "isStatic": true,
-                              "lastClassName": "dqAXEC",
+                              "lastClassName": "dqXpYh",
                               "rules": Array [
                                 "
   flex: 0 0 auto;
@@ -1159,13 +1323,16 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+  span {
+    box-shadow: none !important;
+  }
 ",
                               ],
                             },
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gZMcBi",
+                            "styledComponentId": "sc-gqjmRU",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -1175,10 +1342,11 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="sc-gZMcBi dqAXEC"
+                          className="sc-gqjmRU dqXpYh"
                         >
                           <styled.input
                             checked={true}
+                            color="#5d9df5"
                             name="yesNo"
                             onChange={[Function]}
                             type="radio"
@@ -1186,31 +1354,37 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                           >
                             <StyledComponent
                               checked={true}
+                              color="#5d9df5"
                               forwardedComponent={
                                 Object {
                                   "$$typeof": Symbol(react.forward_ref),
                                   "attrs": Array [],
                                   "componentStyle": ComponentStyle {
-                                    "componentId": "sc-iwsKbI",
-                                    "isStatic": true,
-                                    "lastClassName": "bkouDE",
+                                    "componentId": "sc-gZMcBi",
+                                    "isStatic": false,
+                                    "lastClassName": "bJWspH",
                                     "rules": Array [
+                                      "
+  ",
+                                      [Function],
                                       "
   position: absolute;
   cursor: pointer;
   opacity: 0;
 
   :focus ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
     display: block;
     border-radius: 4px;
     box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
   }
   :hover ~ ",
-                                      ".SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      ".sc-bxivhb",
                                       " {
-    color: #5d9df5;
+    color: ",
+                                      [Function],
+                                      ";
   }
 ",
                                     ],
@@ -1218,7 +1392,7 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                                   "displayName": "styled.input",
                                   "foldedComponentIds": Array [],
                                   "render": [Function],
-                                  "styledComponentId": "sc-iwsKbI",
+                                  "styledComponentId": "sc-gZMcBi",
                                   "target": "input",
                                   "toString": [Function],
                                   "warnTooManyClasses": [Function],
@@ -1233,7 +1407,8 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             >
                               <input
                                 checked={true}
-                                className="sc-iwsKbI bkouDE"
+                                className="sc-gZMcBi bJWspH"
+                                color="#5d9df5"
                                 name="yesNo"
                                 onChange={[Function]}
                                 type="radio"
@@ -1242,40 +1417,69 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                             </StyledComponent>
                           </styled.input>
                           <ForwardRef
+                            checked={true}
+                            color="#5d9df5"
                             icon="checked"
                             size={16}
                           >
-                            <SvgIcon__SvgIconContainer
-                              color="currentColor"
+                            <styled.span
+                              checked={true}
+                              color="#5d9df5"
                               size={16}
                             >
                               <StyledComponent
-                                color="currentColor"
+                                checked={true}
+                                color="#5d9df5"
                                 forwardedComponent={
                                   Object {
                                     "$$typeof": Symbol(react.forward_ref),
                                     "attrs": Array [],
                                     "componentStyle": ComponentStyle {
-                                      "componentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                      "componentId": "sc-bxivhb",
                                       "isStatic": false,
-                                      "lastClassName": "kycatR",
+                                      "lastClassName": "kwqhZm",
                                       "rules": Array [
+                                        "
+  ",
                                         [Function],
-                                        " color:",
+                                        "
+
+  color: ",
                                         [Function],
-                                        ";width:",
+                                        ";
+  width: ",
                                         [Function],
-                                        "px;height:",
+                                        "px;
+  height: ",
                                         [Function],
-                                        "px;box-sizing:content-box;& > svg{display:block;width:inherit;height:inherit;}&:hover,&:active{color:",
+                                        "px;
+  box-sizing: content-box;
+  
+  ",
                                         [Function],
-                                        ";}",
+                                        "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                        [Function],
+                                        ";
+
+  }
+",
                                       ],
                                     },
-                                    "displayName": "SvgIcon__SvgIconContainer",
+                                    "displayName": "styled.span",
                                     "foldedComponentIds": Array [],
                                     "render": [Function],
-                                    "styledComponentId": "SvgIcon__SvgIconContainer-sc-1krgz98-0",
+                                    "styledComponentId": "sc-bxivhb",
                                     "target": "span",
                                     "toString": [Function],
                                     "warnTooManyClasses": [Function],
@@ -1286,14 +1490,15 @@ exports[`Storyshots Radio Group variants: Yes No Radio Button 1`] = `
                                 size={16}
                               >
                                 <span
-                                  className="SvgIcon__SvgIconContainer-sc-1krgz98-0 kycatR"
-                                  color="currentColor"
+                                  checked={true}
+                                  className="sc-bxivhb kwqhZm"
+                                  color="#5d9df5"
                                   size={16}
                                 >
                                   <test-file-stub />
                                 </span>
                               </StyledComponent>
-                            </SvgIcon__SvgIconContainer>
+                            </styled.span>
                           </ForwardRef>
                         </div>
                       </StyledComponent>

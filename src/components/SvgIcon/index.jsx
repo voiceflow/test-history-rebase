@@ -2,8 +2,9 @@
 import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 
+import { css, styled } from '@/hocs';
+import { Spin } from '@/styles/animations/Spin';
 import * as ICONS from '@/svgs';
 import { compose } from '@/utils/functional';
 
@@ -14,23 +15,32 @@ export const SvgIconContainer = styled.span`
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
   box-sizing: content-box;
+  
+  ${({ spin }) =>
+    spin &&
+    css`
+      display: block;
+      ${Spin}
+    `}
 
   & > svg {
     display: block;
     width: inherit;
     height: inherit;
+
   }
 
   &:hover,
   &:active {
     color: ${({ hoverColor, color }) => hoverColor || color};
+
   }
 `;
 
 const SvgIcon = compose(
   React.memo,
   React.forwardRef
-)(({ icon, size = 16, color = 'currentColor', ...props }, ref) => {
+)(({ icon, size = 16, color = 'currentColor', checked, ...props }, ref) => {
   let IconElement;
 
   if (_isString(icon)) {
@@ -42,7 +52,7 @@ const SvgIcon = compose(
   }
 
   return (
-    <SvgIconContainer size={size} color={color} {...props} ref={ref}>
+    <SvgIconContainer size={size} color={color} checked={checked} {...props} ref={ref}>
       <IconElement />
     </SvgIconContainer>
   );

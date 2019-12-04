@@ -1,7 +1,10 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 
+import User, { MemberIcon } from '@/components/User';
 import { KeyCodes } from '@/constants';
+import { EngineContext } from '@/containers/CanvasV2/contexts';
+import * as Realtime from '@/ducks/realtime';
 import { styled } from '@/hocs';
 import { useEnableDisable, useImperativeApi } from '@/hooks';
 import { stopPropagation } from '@/utils/dom';
@@ -9,27 +12,42 @@ import { stopPropagation } from '@/utils/dom';
 import CombinedBlockInput, { combinedBlockInputStyle } from './CombinedBlockInput';
 
 const Label = styled.span`
-  &:hover {
+  &:hover:not([disabled]) {
     ${combinedBlockInputStyle}
+  }
+
+  ${MemberIcon} {
+    position: absolute;
+    top: 6px;
+    left: 3px;
+    transform: translate(-50%, -50%);
+    z-index: 99;
   }
 `;
 
-const CombinedBlockLabel = ({ value, onChange }, ref) => {
+const CombinedBlockLabel = ({ value, lockOwner, nodeID, onChange }, ref) => {
   const [name, setName] = React.useState(value);
+  const engine = React.useContext(EngineContext);
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const inputRef = useImperativeApi({ ref, deps: [enableEditing], creator: () => ({ enableEditing }) });
 
-  const updateName = () => {
+  const updateName = async () => {
+    await engine.realtime.sendUpdate(Realtime.unlockNodes([nodeID], [Realtime.LockType.EDIT]));
     disableEditing();
     onChange(name);
   };
 
-  const onKeyPress = (e) => {
+  const onKeyPress = async (e) => {
     if (e.charCode !== KeyCodes.ENTER) {
       return;
     }
 
-    updateName();
+    await updateName();
+  };
+
+  const onLabelClick = async () => {
+    await engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], [Realtime.LockType.EDIT]));
+    enableEditing();
   };
 
   React.useEffect(() => {
@@ -37,6 +55,10 @@ const CombinedBlockLabel = ({ value, onChange }, ref) => {
       inputRef.current.select();
     }
   }, [isEditing]);
+
+  React.useEffect(() => {
+    setName(value);
+  }, [value]);
 
   return (
     <>
@@ -50,7 +72,10 @@ const CombinedBlockLabel = ({ value, onChange }, ref) => {
           ref={inputRef}
         />
       ) : (
-        <Label onClick={enableEditing}>{name}</Label>
+        <Label onClick={!lockOwner && onLabelClick} disabled={!!lockOwner}>
+          {name}
+          {lockOwner && <User user={lockOwner} />}
+        </Label>
       )}
     </>
   );

@@ -15,7 +15,7 @@ import { useToggle } from '@/hooks/toggle';
 const PROJECT_VARIABLE_DESCRIPTION = 'Project Variables can be used anywhere in the project and save across sessions';
 const FLOW_VARIABLE_DESCRIPTION = 'Flow Variables exist only in this flow and are reset after you leave the flow';
 
-const VariableForm = ({ addFlowVariable, addVariable, setConfirm }) => {
+const VariableForm = ({ lockOwner, prevOwner, addFlowVariable, addVariable, setConfirm }) => {
   const [formValue, setFormValue] = React.useState('');
   const updateFormValue = ({ target }) => setFormValue(target.value);
   const [editingDiagramVariables, toggleEditTarget] = useToggle();
@@ -61,7 +61,8 @@ const VariableForm = ({ addFlowVariable, addVariable, setConfirm }) => {
             onChange={updateFormValue}
             maxLength="16"
             placeholder={editingDiagramVariables ? 'Flow Variable Name' : 'Variable Name'}
-            autoFocus
+            disabled={!!lockOwner}
+            autoFocus={!lockOwner && !prevOwner}
           />
         </VariableBox>
       </FormGroup>

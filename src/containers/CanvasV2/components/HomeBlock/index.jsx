@@ -7,7 +7,7 @@ import AddButton from '@/containers/CanvasV2/components/AddButton';
 import GroupBlock, { Section as GroupBlockSection } from '@/containers/CanvasV2/components/GroupBlock';
 import * as NestedBlock from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
-import { EngineContext, NodeIDProvider, TestingModeContext, useNode } from '@/containers/CanvasV2/contexts';
+import { EditPermissionContext, EngineContext, NodeIDProvider, useNode } from '@/containers/CanvasV2/contexts';
 import { useImperativeApi } from '@/hooks';
 
 import CommandBlock from './components/CommandBlock';
@@ -15,17 +15,17 @@ import CommandBlock from './components/CommandBlock';
 const HomeBlock = (_, ref) => {
   const { node, isHighlighted } = useNode();
   const engine = React.useContext(EngineContext);
-  const isTesting = React.useContext(TestingModeContext);
+  const { canEdit } = React.useContext(EditPermissionContext);
   const nodeRef = useImperativeApi({ ref, nodeWithApi: true });
 
-  const onAddCommand = () => {
+  const onAddCommand = async () => {
     const newBlockID = cuid();
 
-    engine.node.addNested(node.id, newBlockID, BlockType.COMMAND);
+    await engine.node.addNested(node.id, newBlockID, BlockType.COMMAND);
   };
 
   return (
-    <GroupBlock isActive={isHighlighted} addButton={!isTesting && <AddButton onClick={onAddCommand} tooltip="Add Command" />} ref={nodeRef}>
+    <GroupBlock isActive={isHighlighted} addButton={canEdit && <AddButton onClick={onAddCommand} tooltip="Add Command" />} ref={nodeRef}>
       <GroupBlockSection label="Home" icon="home" tooltip="This is where your project begins">
         <NestedBlock.Container>
           <FlexCenter fullWidth>
@@ -43,7 +43,7 @@ const HomeBlock = (_, ref) => {
         >
           {node.combinedNodes.map((nodeID) => (
             <NodeIDProvider value={nodeID} key={nodeID}>
-              <CommandBlock engine={engine} />
+              <CommandBlock />
             </NodeIDProvider>
           ))}
         </GroupBlockSection>

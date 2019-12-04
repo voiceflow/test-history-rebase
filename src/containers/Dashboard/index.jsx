@@ -18,26 +18,27 @@ import IconButton from '@/componentsV2/IconButton';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import {
-  addBoard,
+  addList,
   changeListPosition,
   changeProjectPosition,
   clearNewList,
-  deleteBoard,
   deleteBoardProject,
-  fetchBoards,
+  deleteList,
+  fetchLists,
   renameList,
   updateBoards,
   updateLists,
-} from '@/ducks/board';
+} from '@/ducks/lists';
 import { setConfirm, setError } from '@/ducks/modal';
 import { fetchNotifications } from '@/ducks/notifications';
 import { allProjectsSelector, projectsMapSelector } from '@/ducks/project';
-import { removeTrial } from '@/ducks/team';
+import { activeWorkspaceIDSelector, activeWorkspaceSelector, allWorkspacesSelector } from '@/ducks/workspace';
 import { useScrollHelpers } from '@/hooks/scroll';
 import { copyProject, importProject } from '@/store/sideEffects';
 
-import ExpiryButton from './ExpiryButton';
 import DashboardHeader from './Header';
+import BoardDeleteModal from './components/BoardDeleteModal';
+import BoardSettingsModal from './components/BoardSettingsModal';
 import ImportModal from './components/ImportModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
@@ -59,6 +60,7 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
 export const DashBoard = (props) => {
   const [team_setting, setTeamSetting] = useState(null);
   let importToken = null;
+
   if (props.location?.search) {
     const query = queryString.parse(props.location.search);
     importToken = query.import;
@@ -93,11 +95,11 @@ export const DashBoard = (props) => {
     props.history.replace({ search: '' });
   };
 
-  const importProject = (team_id) => {
+  const importProject = (workspaceID) => {
     closeImport();
     toggleLoadingModal(true);
     props
-      .importProject(team_id, importToken)
+      .importProject(workspaceID, importToken)
       .then(() => {
         toggleLoadingModal(false);
       })
@@ -109,16 +111,16 @@ export const DashBoard = (props) => {
 
   const onCopyProject = useCallback(
     async (projectId, boardId = null) => {
-      if (props.projects.length >= props.team.projects) {
-        return setTeamSetting('CHECKOUT:PROJECTS');
+      if (props.projects.length >= props.workspace.projects) {
+        //  TODO: implement flimsy project limit
       }
       toggleLoadingModal(true);
 
-      await props.copyProject(projectId, props.team_id, boardId);
+      await props.copyProject(projectId, props.workspaceID, boardId);
 
       toggleLoadingModal(false);
     },
-    [props.projects, props.team, props.team_id, props.copyProject]
+    [props.projects, props.workspace, props.workspaceID, props.copyProject]
   );
 
   const onDeleteProject = useCallback(
@@ -126,7 +128,7 @@ export const DashBoard = (props) => {
       props.setConfirm({
         text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
         warning: true,
-        confirm: () => props.deleteBoardProject(boardID, projectId),
+        confirm: () => props.deleteBoardProject(boardID, projectId).catch((err) => props.setError(err.message)),
       });
     },
     [props.deleteBoardProject]
@@ -134,16 +136,16 @@ export const DashBoard = (props) => {
 
   const onCreateProject = useCallback(
     (id) => {
-      if (props.projects.length >= props.team.projects) {
-        setTeamSetting('CHECKOUT:PROJECTS');
+      if (props.projects.length >= props.workspace.projects) {
+        //  TODO: implement flimsy project limit
       } else {
-        props.history.push(id !== 'initial' ? `/team/template/${id}` : '/team/template');
+        props.history.push(id !== 'initial' ? `/workspace/template/${id}` : '/workspace/template');
       }
     },
-    [props.projects, props.team, props.history]
+    [props.projects, props.workspace, props.history]
   );
 
-  let fetchBoards;
+  let fetchLists;
 
   const onDeleteBoard = useCallback(
     ({ name, id, projects }) => {
@@ -154,67 +156,63 @@ export const DashBoard = (props) => {
           </p>
         ),
         warning: true,
-        confirm: () => {
-          props.removeBoard(id);
-        },
+        confirm: () => props.deleteList(id).catch((err) => props.setError(err.message)),
       });
     },
-    [props.setConfirm, props.removeBoard]
+    [props.setConfirm, props.deleteList]
   );
 
-  const updateTeam = () => {
-    // ensure team hasn't changed
+  const updateWorkspace = () => {
+    // ensure workspace hasn't changed
     toggleLoading(true);
-    fetchBoards = props.fetchBoards(props.team_id).then(() => {
+    fetchLists = props.fetchLists(props.workspaceID).then(() => {
       toggleLoading(false);
-      fetchBoards = null;
+      fetchLists = null;
     });
   };
 
   useEffect(() => {
-    updateTeam();
-  }, [props.team_id]);
+    updateWorkspace();
+  }, [props.workspaceID]);
 
   useEffect(() => {
     props.fetchNotifications();
   }, []);
 
-  const LOCKED = props.team.state === 'LOCKED';
-  const EXPIRED = props.team.state === 'EXPIRED';
+  const LOCKED = props.workspace.state === 'LOCKED';
 
   const filter = filter_text.trim().toLowerCase();
 
-  const onSaveList = useCallback(() => props.updateLists(props.team_id), [props.updateLists, props.team_id]);
-
-  const downgrade = () => {
-    props.removeTrial(props.team.team_id);
-  };
+  const onSaveList = useCallback(() => props.updateLists(props.workspaceID), [props.updateLists, props.workspaceID]);
 
   return (
     <>
-      <ExpiryButton team={props.team} upgrade={() => setTeamSetting('CHECKOUT')} />
-
       <LoadingModal open={loading_modal} />
 
       {importToken && <ImportModal open={importOpen} toggle={closeImport} importProject={importProject} token={importToken} />}
 
+      <BoardDeleteModal workspace={props.workspace} />
+      <BoardSettingsModal user={props.user} workspace={props.workspace} />
+
       <div id="app" className="dashboard">
         <DashboardHeader
+          user={props.user}
           history={props.history}
           handleFilterText={handleFilterText}
           showInfo={showInfo}
           setShowInfo={setShowInfo}
-          teams={props.teams}
-          team_id={props.team_id}
-          team={props.team}
-          fetchBoards={fetchBoards}
+          workspaces={props.workspaces}
+          workspaceID={props.workspaceID}
+          workspace={props.workspace}
+          fetchBoards={fetchLists}
           team_setting={team_setting}
           setTeamSetting={setTeamSetting}
         />
 
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
-            <Alert color="danger" onClick={() => setTeamSetting('BILLING')} className="pointer text-center py-3">
+            {/* TODO: flush out subscription failed logic */}
+            <Alert color="danger" className="pointer text-center py-3">
               <h1>
                 <i className="far fa-ban" />
               </h1>
@@ -225,30 +223,15 @@ export const DashBoard = (props) => {
           </div>
         )}
 
-        {EXPIRED && (
-          <div className="w-100 h-100 super-center text-center position-absolute z-hard pb-5">
-            <div>
-              <h3>Your free trial has expired</h3>
-              <div className="text-dull mt-3 mb-4">Please Upgrade to continue using Voiceflow</div>
-              <Button isPrimary className="mb-4" onClick={() => setTeamSetting('CHECKOUT')}>
-                Upgrade
-              </Button>
-              <div className="btn-link" onClick={() => downgrade()}>
-                Downgrade to Personal
-              </div>
-            </div>
-          </div>
-        )}
-
         {loading ? (
           <FullSpinner name="Projects" />
         ) : (
           <div
             id="dashboard"
-            className={cn({ 'thanos-ed': LOCKED || EXPIRED })}
+            className={cn({ 'thanos-ed': LOCKED })}
             onClickCapture={(e) => {
               // prevent all click events
-              if (LOCKED || EXPIRED) {
+              if (LOCKED) {
                 e.preventDefault();
                 e.stopPropagation();
                 return false;
@@ -262,8 +245,8 @@ export const DashBoard = (props) => {
                     <img src="/create.svg" alt="skill-icon" width="100" height="127" className="mb-1" />
                   </div>
                   <label className="dark text-center">No Projects Found</label>
-                  <div className="text-muted mt-3 mb-2">This board has no projects yet, create one.</div>
-                  <Link to="/team/template" className="no-underline super-center">
+                  <div className="text-muted mt-3 mb-2">This workspace has no projects yet, create one.</div>
+                  <Link to="/workspace/template" className="no-underline super-center">
                     <Button isPrimary className="mt-3" id="createskill">
                       New Project
                     </Button>
@@ -276,28 +259,28 @@ export const DashBoard = (props) => {
                   <ScrollContextProvider value={scrollHelpers}>
                     <div ref={bodyRef} className="main-lists">
                       <div ref={innerRef} className="main-lists-inner">
-                        {_.map(props.boards_array, (board, idx) => {
-                          const projects = getBoardFilteredProjects(board.projects, props.projectsMap, filter);
+                        {_.map(props.listsArray, (list, idx) => {
+                          const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
                           if (filter && !projects.length) {
                             return null;
                           }
                           return (
                             <List
-                              id={board.board_id}
-                              key={board.board_id}
-                              isNew={board.isNew}
+                              id={list.board_id}
+                              key={list.board_id}
+                              isNew={list.isNew}
                               index={idx}
-                              name={board.name}
-                              onRename={props.renameBoard}
+                              name={list.name}
+                              onRename={props.renameList}
                               onRemove={onDeleteBoard}
                               projects={projects}
                               onCopyProject={onCopyProject}
-                              onDeleteProject={onDeleteProject(board.board_id)}
+                              onDeleteProject={onDeleteProject(list.board_id)}
                               createSkill={onCreateProject}
                               onMove={props.changeListPosition}
                               onDrop={onSaveList}
                               onMoveProject={props.changeProjectPosition}
-                              clearNewBoard={props.clearIsNewBoard}
+                              clearNewBoard={props.clearNewList}
                               onDropProject={onSaveList}
                               disableDragging={!!filter}
                             />
@@ -319,7 +302,7 @@ export const DashBoard = (props) => {
                               large
                               icon="addStep"
                               onClick={() => {
-                                props.addBoard(props.team_id);
+                                props.addList(props.workspaceID);
                               }}
                               size={13}
                             />
@@ -342,23 +325,25 @@ const mapStateToProps = (state) => ({
   user: state.account,
   projects: allProjectsSelector(state),
   projectsMap: projectsMapSelector(state),
-  boards: state.board,
-  boards_array: unnormalize(state.board),
+  lists: state.list,
+  listsArray: unnormalize(state.list),
+  workspace: activeWorkspaceSelector(state),
+  workspaceID: activeWorkspaceIDSelector(state),
+  workspaces: allWorkspacesSelector(state),
 });
 
 const mapDispatchToProps = {
-  removeTrial,
-  fetchBoards,
-  addBoard,
+  fetchLists,
+  addList,
   deleteBoardProject,
   importProject,
   copyProject,
   setConfirm,
   setError,
   updateLists,
-  removeBoard: deleteBoard,
-  renameBoard: renameList,
-  clearIsNewBoard: clearNewList,
+  deleteList,
+  renameList,
+  clearNewList,
   updateBoards,
   changeProjectPosition,
   changeListPosition,

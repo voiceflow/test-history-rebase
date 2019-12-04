@@ -30,9 +30,9 @@ function InteractionChoiceManager({ data, platform, onChange, focusedNode, isLiv
     handleRemove: onRemoveChoice,
   });
 
-  const addChoice = React.useCallback(() => {
+  const addChoice = React.useCallback(async () => {
     onAdd();
-    engine.port.add(focusedNode.id, { label: choices.length + 1 });
+    await engine.port.add(focusedNode.id, { label: choices.length + 1 });
   }, [focusedNode.id, choices.length, onAdd]);
 
   return (

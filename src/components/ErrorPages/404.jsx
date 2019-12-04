@@ -9,7 +9,7 @@ const Page404 = () => {
   return (
     <Page404Wrapper>
       <div>
-        <SvgIcon icon="error404" height={128} width={128} />
+        <SvgIcon icon="error404" size={128} />
       </div>
 
       <h4>Alexa, where am I?</h4>

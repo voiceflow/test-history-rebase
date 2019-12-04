@@ -2,17 +2,29 @@
 
 exports[`Dashboard render dashboard 1`] = `
 <Fragment>
-  <_default
-    team={
-      Object {
-        "state": null,
-        "team_id": 1,
-      }
-    }
-    upgrade={[Function]}
-  />
   <LoadingModal
     open={false}
+  />
+  <Connect(BoardDeleteModal)
+    workspace={
+      Object {
+        "id": 1,
+        "state": null,
+      }
+    }
+  />
+  <Connect(BoardSettingsModal)
+    user={
+      Object {
+        "id": 1,
+      }
+    }
+    workspace={
+      Object {
+        "id": 1,
+        "state": null,
+      }
+    }
   />
   <div
     className="dashboard"
@@ -23,14 +35,20 @@ exports[`Dashboard render dashboard 1`] = `
       setShowInfo={[Function]}
       setTeamSetting={[Function]}
       showInfo={false}
-      team={
+      team_setting={null}
+      user={
         Object {
-          "state": null,
-          "team_id": 1,
+          "id": 1,
         }
       }
-      team_setting={null}
-      teams={
+      workspace={
+        Object {
+          "id": 1,
+          "state": null,
+        }
+      }
+      workspaceID={1}
+      workspaces={
         Object {
           "allIds": Array [],
           "byId": Object {},

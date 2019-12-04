@@ -4,7 +4,7 @@ import React from 'react';
 import { withCanvas } from '@/components/Canvas/contexts';
 import { withNodeLifecycle } from '@/containers/CanvasV2/components/Node/hocs';
 import { getBlockCategory } from '@/containers/CanvasV2/constants';
-import { withEngine, withNode, withTestingMode } from '@/containers/CanvasV2/contexts';
+import { withEditPermission, withEngine, withNode } from '@/containers/CanvasV2/contexts';
 import { withOverlay } from '@/contexts';
 import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
@@ -41,10 +41,10 @@ class NestedBlock extends React.PureComponent {
     engine.setActivation(nodeID, event.shiftKey);
   };
 
-  onDrag = (event) => {
-    const { engine, nodeID, isTesting } = this.props;
+  onDrag = async (event) => {
+    const { engine, nodeID, editPermission } = this.props;
 
-    if (isTesting) {
+    if (!editPermission.canEdit) {
       return;
     }
 
@@ -56,7 +56,7 @@ class NestedBlock extends React.PureComponent {
 
     if (this.dragDistance > NESTED_DRAG_DISTANCE) {
       const { clientX, clientY } = event;
-      engine.transitionNested(nodeID, engine.canvas.transformPoint([clientX, clientY]));
+      await engine.transitionNested(nodeID, engine.canvas.transformPoint([clientX, clientY]));
       this.teardownMouseListeners();
     }
   };
@@ -122,5 +122,5 @@ export default compose(
   withEngine,
   withCanvas,
   withOverlay,
-  withTestingMode
+  withEditPermission
 )(NestedBlock);

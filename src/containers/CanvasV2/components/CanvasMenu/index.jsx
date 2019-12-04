@@ -8,7 +8,7 @@ import CanvasControls from '@/containers/CanvasV2/components/CanvasControls';
 import CanvasReadOnly from '@/containers/CanvasV2/components/CanvasControls/components/CanvasReadOnly';
 import FlowMenu from '@/containers/CanvasV2/components/FlowMenu';
 import VariableMenu from '@/containers/CanvasV2/components/VariableMenu';
-import { TestingModeContext } from '@/containers/CanvasV2/contexts';
+import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
 import { activeCreatorMenuSelector, isCreatorMenuHiddenSelector, setActiveCreatorMenu, toggleCreatorMenuHidden } from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { stopImmediatePropagation } from '@/utils/dom';
@@ -42,10 +42,10 @@ const Tabs = [
 ];
 
 function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme }) {
-  const isVisible = !React.useContext(TestingModeContext);
+  const { canEdit } = React.useContext(EditPermissionContext);
   const activeTab = activePanel || PanelType.BLOCK_PANEL;
   const Panel = PANELS[activeTab];
-  const isOpen = !isHidden && isVisible;
+  const isOpen = !isHidden && canEdit;
 
   const changePanel = (panel) => () => selectPanel(panel);
 
@@ -59,7 +59,7 @@ function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme })
       >
         <MenuContainer>
           <MenuContent isHidden={isHidden}>
-            {isVisible && !isHidden && (
+            {isOpen && (
               <>
                 <MenuActionContainer>
                   {Tabs.map(({ type, tip, icon }) => (
@@ -88,12 +88,12 @@ function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme })
               </>
             )}
           </MenuContent>
-          {Panel && <Panel />}
-          <MenuHandle isHidden={!isVisible || isHidden} onClick={toggleHidden} />
+          {Panel && <Panel isHidden={!canEdit || isHidden} />}
+          <MenuHandle isHidden={!canEdit || isHidden} onClick={toggleHidden} />
         </MenuContainer>
       </Drawer>
-      {!isVisible && <CanvasReadOnly />}
-      <CanvasControls withMenu={isOpen} withDrawer={isVisible} />
+      {!canEdit && <CanvasReadOnly />}
+      <CanvasControls withMenu={isOpen} withDrawer={!canEdit} />
     </>
   );
 }

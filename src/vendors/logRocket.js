@@ -2,7 +2,7 @@ import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import { IntercomAPI } from 'react-intercom';
 
-import { LOGROCKET_ENABLED, LOGROCKET_PROJECT } from '@/config';
+import { INTERCOM_ENABLED, LOGROCKET_ENABLED, LOGROCKET_PROJECT } from '@/config';
 
 export function initializeLogRocket(cb) {
   if (LOGROCKET_ENABLED) {
@@ -20,7 +20,9 @@ export function identifyLogRocketUser(user) {
       name: user.name,
     });
 
-    // add session URL to intercom timeline
-    LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL }));
+    if (INTERCOM_ENABLED) {
+      // add session URL to intercom timeline
+      LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL }));
+    }
   }
 }

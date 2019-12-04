@@ -8,7 +8,7 @@ import { activeSkillSelector } from './skill';
 
 export const UPDATE_PUBLISH_INFO = 'SKILL:UPDATE_ACTIVE_PUBLISH';
 
-export const updatePublishInfoReducer = (state, { context: platform, payload }) => update(state, { [platform]: { $merge: payload } });
+export const updatePublishInfoReducer = (state, { meta, payload }) => update(state, { [meta.platform]: { $merge: payload } });
 
 function publishInfoReducer(state = null, action) {
   // eslint-disable-next-line sonarjs/no-small-switch
@@ -40,6 +40,6 @@ export const publishPlatformSelectors = PLATFORMS.reduce((selectors, platform) =
 // action creators
 
 export const updatePublishPlatforms = PLATFORMS.reduce((actions, platform) => {
-  actions[platform] = (properties) => createAction(UPDATE_PUBLISH_INFO, { ...properties }, platform);
+  actions[platform] = (properties, meta) => createAction(UPDATE_PUBLISH_INFO, { ...properties }, { platform, ...meta });
   return actions;
 }, {});

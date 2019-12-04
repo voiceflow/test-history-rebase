@@ -1,5 +1,3 @@
-import cuid from 'cuid';
-
 import { BlockType } from '@/constants';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
@@ -11,7 +9,6 @@ import {
   addAllPortsToState,
   addBlockToState,
   addNodeToState,
-  clonePortForNode,
   getLinkIDsByPortID,
   patchNodeInState,
   removeAllLinksFromState,
@@ -45,10 +42,11 @@ const addNodeReducer = (state, { payload: { node, data } }) => {
 
 export default addNodeReducer;
 
-export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, data } }) => {
+export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
-  const inPorts = ((node.ports || {}).in || []).map(clonePortForNode(node.id));
-  const outPorts = ((node.ports || {}).out || []).map(clonePortForNode(node.id));
+
+  const inPorts = node.ports.in.map(buildPortForNode(node.id));
+  const outPorts = node.ports.out.map(buildPortForNode(node.id));
 
   const newNodeData = {
     ...data,
@@ -88,7 +86,6 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
   // constructing a new combined block
   const parentNodeOutPortIDs = parentNode.ports.out;
   const parentNodeOutLinkIDs = parentNodeOutPortIDs.flatMap(getLinkIDsByPortID(state));
-  const mergedNodeID = cuid();
 
   const mergedNode = nodeFactory(mergedNodeID, {
     type: BlockType.COMBINED,

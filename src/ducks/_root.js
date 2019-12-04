@@ -5,12 +5,12 @@ import { reducer as formReducer } from 'redux-form';
 import account, * as Account from '@/ducks/account';
 import admin from '@/ducks/admin';
 import alerts from '@/ducks/alerts';
-import board from '@/ducks/board';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
 import display, * as Display from '@/ducks/display';
 import integrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
+import list from '@/ducks/lists';
 import modal from '@/ducks/modal';
 import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
@@ -21,20 +21,20 @@ import recent, * as Recent from '@/ducks/recent';
 import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
-import team, * as Team from '@/ducks/team';
 import test, * as Test from '@/ducks/test';
 import ui, * as UI from '@/ducks/ui';
 import userSetting from '@/ducks/user';
 import variableSet, * as VariableSet from '@/ducks/variableSet';
 import viewport, * as Viewport from '@/ducks/viewport';
+import workspace, * as Workspace from '@/ducks/workspace';
 
 export default (history) =>
   combineReducers({
     router: connectRouter(history),
-    board,
+    list,
     userSetting,
     modal,
-    [Team.STATE_KEY]: team,
+    [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
     integrationUsers,
     admin,

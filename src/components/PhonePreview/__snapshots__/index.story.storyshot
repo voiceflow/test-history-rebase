@@ -8,9 +8,9 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-kgoBCf",
+          "componentId": "sc-bRBYWo",
           "isStatic": true,
-          "lastClassName": "lbtcJv",
+          "lastClassName": "JosPQ",
           "rules": Array [
             "
   position: relative;
@@ -50,7 +50,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
         "displayName": "styled.div",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-kgoBCf",
+        "styledComponentId": "sc-bRBYWo",
         "target": "div",
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -60,7 +60,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
     forwardedRef={null}
   >
     <div
-      className="sc-kgoBCf lbtcJv"
+      className="sc-bRBYWo JosPQ"
     >
       <styled.div>
         <StyledComponent
@@ -69,9 +69,9 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-kGXeez",
+                "componentId": "sc-hzDkRC",
                 "isStatic": true,
-                "lastClassName": "kuRAoz",
+                "lastClassName": "hTZUVs",
                 "rules": Array [
                   "
   overflow-y: hidden;
@@ -82,7 +82,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
               "displayName": "styled.div",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-kGXeez",
+              "styledComponentId": "sc-hzDkRC",
               "target": "div",
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -92,7 +92,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
           forwardedRef={null}
         >
           <div
-            className="sc-kGXeez kuRAoz"
+            className="sc-hzDkRC hTZUVs"
           >
             <styled.img
               alt="smartphone preview"
@@ -105,9 +105,9 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
                     "$$typeof": Symbol(react.forward_ref),
                     "attrs": Array [],
                     "componentStyle": ComponentStyle {
-                      "componentId": "sc-kpOJdX",
+                      "componentId": "sc-jhAzac",
                       "isStatic": true,
-                      "lastClassName": "hHdQiu",
+                      "lastClassName": "dQamDg",
                       "rules": Array [
                         "
   width: 100%;
@@ -118,7 +118,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
                     "displayName": "styled.img",
                     "foldedComponentIds": Array [],
                     "render": [Function],
-                    "styledComponentId": "sc-kpOJdX",
+                    "styledComponentId": "sc-jhAzac",
                     "target": "img",
                     "toString": [Function],
                     "warnTooManyClasses": [Function],
@@ -130,7 +130,7 @@ exports[`Storyshots Phone Preview variants: default 1`] = `
               >
                 <img
                   alt="smartphone preview"
-                  className="sc-kpOJdX hHdQiu"
+                  className="sc-jhAzac dQamDg"
                   src="/permissions.png"
                 />
               </StyledComponent>

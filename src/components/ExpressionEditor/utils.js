@@ -27,9 +27,11 @@ export const evolveValue = (expression, type) => {
           };
       }
     default:
-      if (Array.isArray(expression.value)) {
-        // do nothing since its already 2 type value
-      } else if (originalType === ExpressionType.ADVANCE || originalType === ExpressionType.VALUE || originalType === ExpressionType.VARIABLE) {
+      if (Array.isArray(expression.value) && originalType !== ExpressionType.ADVANCE) {
+        return expression.value;
+      }
+
+      if (originalType === ExpressionType.ADVANCE || originalType === ExpressionType.VALUE || originalType === ExpressionType.VARIABLE) {
         return [
           {
             type: originalType,
@@ -42,31 +44,21 @@ export const evolveValue = (expression, type) => {
             depth,
           },
         ];
-      } else {
-        return [
-          {
-            type: ExpressionType.VALUE,
-            value: '',
-            depth,
-          },
-          {
-            type: ExpressionType.VALUE,
-            value: '',
-            depth,
-          },
-        ];
       }
+
+      return [
+        {
+          type: ExpressionType.VALUE,
+          value: '',
+          depth,
+        },
+        {
+          type: ExpressionType.VALUE,
+          value: '',
+          depth,
+        },
+      ];
   }
 };
 
-export const evolveExpression = (expression, type) => {
-  const newExpression = {
-    ...expression,
-  };
-  newExpression.type = type;
-  newExpression.value =
-    evolveValue(expression, type) || (type === ExpressionType.ADVANCE || type === ExpressionType.VALUE || type === ExpressionType.VARIABLE)
-      ? evolveValue(expression, type)
-      : expression.value;
-  return newExpression;
-};
+export const evolveExpression = (expression, type) => ({ ...expression, type, value: evolveValue(expression, type) });

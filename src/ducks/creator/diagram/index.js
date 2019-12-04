@@ -1,11 +1,9 @@
-import cuid from 'cuid';
 import undoable, { includeAction } from 'redux-undo';
 import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
 import { updateViewportForDiagram } from '@/ducks/viewport';
-import { reorder } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { denormalize, getAllNormalizedByKeys, getNormalizedByKey, normalize } from '@/utils/normalized';
 
@@ -56,7 +54,6 @@ export const INSERT_NESTED_NODE = 'CREATOR:NODE:INSERT_NESTED';
 export const ADD_NODE = 'CREATOR:NODE:ADD';
 export const ADD_MANY_NODES = 'CREATOR:NODE:ADD_MANY';
 export const ADD_NESTED_NODE = 'CREATOR:NODE:ADD_NESTED';
-export const REORDER_NESTED_NODES = 'CREATOR:NODE:REORDER_NESTED';
 export const REMOVE_NODE = 'CREATOR:NODE:REMOVE';
 export const REMOVE_MANY_NODES = 'CREATOR:NODE:REMOVE_MANY';
 export const ADD_PORT = 'CREATOR:PORT:ADD';
@@ -80,25 +77,6 @@ export const initializeCreatorReducer = ({ payload: { diagramID, rootNodes, node
   linksByNodeID: buildLinksByNodeID(links),
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),
 });
-
-export const reorderNestedNodesReducer = (state, { payload: { nodeID, sourceIndex, targetIndex } }) => {
-  const node = getNormalizedByKey(state.nodes, nodeID);
-  const reorderedNodes = reorder(node.combinedNodes, sourceIndex, targetIndex);
-  const removeOutboundLinks = sourceIndex === node.combinedNodes.length - 1 || targetIndex === node.combinedNodes.length - 1;
-
-  return compose(
-    patchNodeInState(nodeID, {
-      combinedNodes: reorderedNodes,
-    }),
-    ...(removeOutboundLinks
-      ? [
-          removeAllLinksFromState(
-            getNormalizedByKey(state.nodes, node.combinedNodes[node.combinedNodes.length - 1]).ports.out.flatMap(getLinkIDsByPortID(state))
-          ),
-        ]
-      : [])
-  )(state);
-};
 
 export const updateNodeDataReducer = (state, { payload: { nodeID, data, patch } }) => ({
   ...state,
@@ -145,8 +123,6 @@ function creatorDiagramReducer(state = DEFAULT_STATE, action) {
       return addManyNodesReducer(state, action);
     case ADD_NESTED_NODE:
       return addNestedNodeReducer(state, action);
-    case REORDER_NESTED_NODES:
-      return reorderNestedNodesReducer(state, action);
     case REMOVE_NODE:
       return removeNodeReducer(state, action);
     case REMOVE_MANY_NODES:
@@ -298,25 +274,31 @@ export const updateNodeLocation = (nodeID, [x, y]) => createAction(UPDATE_NODE_L
  *
  * @param {string} sourceNodeID the node that was dropped
  * @param {string} targetNodeID the node on which the source node was dropped
- * @param {boolean} invert if true then the dropped node should be the first node in the combined block
+ * @param {[number, number]} position the point the merged node should be anchored to
  * @param {string} mergedNodeID the ID of the resulting combined node
  * @returns {*} a MERGE_NODES action
  */
-export const mergeNodes = (sourceNodeID, targetNodeID, invert, mergedNodeID = cuid()) =>
-  createAction(MERGE_NODES, { sourceNodeID, targetNodeID, invert, mergedNodeID });
+export const mergeNodes = (sourceNodeID, targetNodeID, position, mergedNodeID) =>
+  createAction(MERGE_NODES, { sourceNodeID, targetNodeID, position, mergedNodeID });
 
 export const unmergeNode = (nodeID, position) => createAction(UNMERGE_NODE, { nodeID, position });
 
 export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, nodeID, index });
 
-export const addNode = (node, data, nodeID = cuid()) => createAction(ADD_NODE, { node: { ...node, id: nodeID }, data });
+export const addNode = (node, data, nodeID) => createAction(ADD_NODE, { node: { ...node, id: nodeID }, data });
 
 export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES, { nodeGroup, position });
 
-export const addNestedNode = (parentNodeID, node, data, nodeID = cuid()) =>
-  createAction(ADD_NESTED_NODE, { parentNodeID, node: { ...node, id: nodeID }, data });
-
-export const reorderNestedNodes = (nodeID, sourceIndex, targetIndex) => createAction(REORDER_NESTED_NODES, { nodeID, sourceIndex, targetIndex });
+export const addNestedNode = (parentNodeID, node, data, nodeID, mergedNodeID) =>
+  createAction(ADD_NESTED_NODE, {
+    parentNodeID,
+    node: {
+      ...node,
+      id: nodeID,
+    },
+    data,
+    mergedNodeID,
+  });
 
 export const removeNode = (nodeID) => createAction(REMOVE_NODE, nodeID);
 
@@ -334,7 +316,7 @@ export const undoHistory = () => createAction(UNDO_HISTORY);
 
 export const redoHistory = () => createAction(REDO_HISTORY);
 
-export const saveHistory = () => createAction(SAVE_HISTORY);
+export const saveHistory = (force = false) => createAction(SAVE_HISTORY, null, { force });
 
 // side effects
 

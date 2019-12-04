@@ -1,5 +1,5 @@
 const branch = require('git-branch');
-const { action, env, logrocket, intercom, ga, debug, debugNet, debugHttp, debugSocket } = require('webpack-nano/argv');
+const { action, env, logrocket, intercom, ga, debug, debugNet, debugHttp, debugRealtime, debugSocket } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -30,11 +30,13 @@ module.exports = {
     ...(debug
       ? {
           DEBUG_NETWORK: true,
+          DEBUG_REALTIME: true,
         }
       : {
           DEBUG_NETWORK: debugNet ? true : '',
           DEBUG_HTTP: debugHttp ? true : '',
           DEBUG_SOCKET: debugSocket ? true : '',
+          DEBUG_REALTIME: debugRealtime ? true : '',
         }),
   },
 };

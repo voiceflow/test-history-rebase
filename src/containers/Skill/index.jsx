@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import IdleTimer from 'react-idle-timer';
 import { Redirect, Switch } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { compose } from 'recompose';
@@ -7,22 +8,28 @@ import { compose } from 'recompose';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import DragLayer from '@/componentsV2/DragLayer';
+import { FEATURE_IDS } from '@/constants';
 import Business from '@/containers/Business';
 import Canvas from '@/containers/CanvasV2';
 import CanvasMenu from '@/containers/CanvasV2/components/CanvasMenu';
-import { SettingsModalProvider, ShortcutModalProvider, TestingModeProvider } from '@/containers/CanvasV2/contexts';
+import { EditPermissionProvider, SettingsModalProvider, ShortcutModalProvider } from '@/containers/CanvasV2/contexts';
 import CanvasHeader from '@/containers/CanvasV2/header';
+import InactivityModal from '@/containers/Inactivity';
 import Logs from '@/containers/Logs';
 import Publish from '@/containers/Publish';
 import Migrate from '@/containers/Publish/Amazon/Migrate';
 import Testing from '@/containers/Testing';
 import Visuals from '@/containers/Visuals';
+import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { trackSessionTime } from '@/ducks/analytics';
 import { updateProjectName } from '@/ducks/project';
+import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
-import { ProjectLoadingGate, ProjectLockGate } from '@/gates';
+import { ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
+import { useEnableDisable } from '@/hooks';
+import { isOnlyViewerSelector } from '@/store/selectors';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 import ProjectTitle from './components/ProjectTitle';
@@ -39,11 +46,13 @@ const PAGES_MATCHES = {
   publish: ['/publish'],
 };
 
+const TIMEOUT_COUNT = 5 * 60 * 1000;
+
 function RenderCanvas({ diagramID, isTesting }) {
   return (
     <>
       {!isTesting && <DiagramSync diagramID={diagramID} />}
-      <TestingModeProvider value={isTesting}>
+      <EditPermissionProvider isTesting={isTesting}>
         <ShortcutModalProvider>
           <SettingsModalProvider>
             <CanvasHeader />
@@ -52,15 +61,18 @@ function RenderCanvas({ diagramID, isTesting }) {
             <Testing render />
           </SettingsModalProvider>
         </ShortcutModalProvider>
-      </TestingModeProvider>
+      </EditPermissionProvider>
     </>
   );
 }
 
 function Skill(props) {
-  const { match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName } = props;
+  const { match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer } = props;
+  const [isIdle, onIdle, onActive] = useEnableDisable();
+  const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
 
   const timeMounted = null;
+  const idleTimer = React.useRef();
 
   React.useEffect(() => {
     if (window.performance?.navigation.type === 1) {
@@ -81,17 +93,34 @@ function Skill(props) {
   }
   const isTesting = activePage === 'test';
 
+  const setActive = React.useCallback(() => {
+    onActive();
+    idleTimer.current.reset();
+  }, [onActive]);
+
+  const setIdle = React.useCallback(() => {
+    onIdle();
+    idleTimer.current.pause();
+  }, [onIdle]);
+
   return (
     <>
       <Helmet>
         <title>{activeSkill.name || 'Voiceflow Creator'}</title>
       </Helmet>
 
+      {!isOnlyViewer && (
+        <>
+          <IdleTimer ref={idleTimer} element={document} onIdle={setIdle} debounce={250} timeout={TIMEOUT_COUNT} />
+          <InactivityModal open={isIdle} onActive={setActive} />
+        </>
+      )}
+
       <Page
         header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
         userMenu={false}
         canScroll={false}
-        subHeader={<SkillSubHeader activePage={activePage} />}
+        subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
         onNavigateBack={goToDashboard}
       >
         <Switch>
@@ -122,6 +151,8 @@ function Skill(props) {
 
 const mapStateToProps = {
   activeSkill: activeSkillSelector,
+  isConnected: Realtime.isRealtimeConnectedSelector,
+  isOnlyViewer: isOnlyViewerSelector,
 };
 
 const mapDispatchToProps = {
@@ -145,17 +176,20 @@ export default compose(
     mergeProps
   ),
   withBatchLoadingGate(
-    [ProjectLockGate, ({ match }) => ({ versionID: match.params?.versionID })],
     [
       ProjectLoadingGate,
       ({ match, location }) => {
         const { activePage, activePageMatch } = getActivePageAndMatch(PAGES_MATCHES, location.pathname, match.path);
 
         return {
-          diagramID: activePageMatch?.params?.diagramID,
+          versionID: activePageMatch.params?.versionID,
+          diagramID: activePageMatch.params?.diagramID,
           activePage,
         };
       },
-    ]
+    ],
+    ProjectLockGate,
+    WorkspaceLoadingGate,
+    RealtimeLoadingGate
   )
 )(Skill);

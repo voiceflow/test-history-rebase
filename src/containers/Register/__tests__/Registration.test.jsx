@@ -17,7 +17,7 @@ jest.mock('@/client');
 jest.mock('universal-cookie');
 jest.mock('connected-react-router');
 const mockDispatch = jest.fn();
-const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: 'foo ' } }));
+const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: { value: 'foo' }, browserID: { value: 'bar' } } }));
 
 beforeEach(() => {
   client.socket = { auth: jest.fn() };

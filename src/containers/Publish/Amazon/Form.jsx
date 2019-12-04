@@ -78,7 +78,7 @@ class Skill extends Component {
   };
 
   componentWillUnmount() {
-    if (this.state.loaded) this.save();
+    if (this.state.loaded && !this.props.isLocked) this.save();
   }
 
   validateForm = async () => {

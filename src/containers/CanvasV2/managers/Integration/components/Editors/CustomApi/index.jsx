@@ -2,6 +2,7 @@ import React from 'react';
 import { TabContent, TabPane } from 'reactstrap';
 
 import Button from '@/componentsV2/Button';
+import Tabs from '@/componentsV2/Tabs';
 import { IntegrationActionType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { variableInputValueIsEmpty } from '@/utils/variableInput';
@@ -13,7 +14,6 @@ import RequestParams from '../../Steps/CustomApi/RequestParams';
 import RequestType from '../../Steps/CustomApi/RequestType';
 import CustomApiTestModal from '../../Steps/CustomApi/TestModal';
 import Footer from './components/Footer';
-import MetaDataTab from './components/MetaDataTab';
 import TabsContainer from './components/TabsContainer';
 
 const keyPairFactory = () => ({
@@ -40,30 +40,46 @@ function CustomApiEditor({ data, onChange }) {
   const [activeTab, setActiveTab] = React.useState(IntegrationTab.HEADERS);
 
   const hasNonEmptyURL = variableInputValueIsEmpty(data.url) === false;
+  const tabsOptions = React.useMemo(
+    () => [
+      {
+        value: IntegrationTab.HEADERS,
+        label: (
+          <>
+            {IntegrationTab.HEADERS}
+            {data.headers.length > 1 && <span> ({data.headers.length})</span>}
+          </>
+        ),
+      },
+      ...(selectedAction !== IntegrationActionType.CUSTOM_API.GET
+        ? [
+            {
+              value: IntegrationTab.BODY,
+              label: IntegrationTab.BODY,
+            },
+          ]
+        : []),
+      {
+        value: IntegrationTab.PARAMS,
+        label: (
+          <>
+            {IntegrationTab.PARAMS}
+            {data.parameters.length > 1 && <span> ({data.parameters.length})</span>}
+          </>
+        ),
+      },
+    ],
+    [data.headers, data.parameters, selectedAction]
+  );
 
   return (
     <div>
       <RequestType onChange={onChange} data={data} openTestModal={openTestModal} />
+
       <TabsContainer tabs>
-        <MetaDataTab
-          active={activeTab === IntegrationTab.HEADERS}
-          onClick={() => {
-            setActiveTab(IntegrationTab.HEADERS);
-          }}
-        >
-          {IntegrationTab.HEADERS}
-          {data.headers.length > 1 && <span> ({data.headers.length})</span>}
-        </MetaDataTab>
-        {selectedAction !== IntegrationActionType.CUSTOM_API.GET && (
-          <MetaDataTab active={activeTab === IntegrationTab.BODY} onClick={() => setActiveTab(IntegrationTab.BODY)}>
-            {IntegrationTab.BODY}
-          </MetaDataTab>
-        )}
-        <MetaDataTab active={activeTab === IntegrationTab.PARAMS} onClick={() => setActiveTab(IntegrationTab.PARAMS)}>
-          {IntegrationTab.PARAMS}
-          {data.parameters.length > 1 && <span> ({data.parameters.length})</span>}
-        </MetaDataTab>
+        <Tabs options={tabsOptions} onChange={setActiveTab} selected={activeTab} />
       </TabsContainer>
+
       <TabContent activeTab={activeTab}>
         <TabPane tabId={IntegrationTab.HEADERS}>
           <RequestHeaders onChange={onChange} data={data} factory={keyPairFactory} />

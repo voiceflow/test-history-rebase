@@ -6,8 +6,10 @@ import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { diagramByIDSelector } from '@/ducks/diagram';
+import * as Realtime from '@/ducks/realtime';
 import { activePlatformSelector, isRootDiagramSelector } from '@/ducks/skill';
 import { setCanvasError } from '@/ducks/user';
+import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { useEnableDisable } from '@/hooks';
 
 import ActivationEngine from './activationEngine';
@@ -53,14 +55,14 @@ export class Engine {
 
   supportedLinks = [];
 
-  constructor(store, finalize, mousePosition) {
+  constructor(store, finalize, mousePosition, realtimeSubscription) {
     this.store = store;
     this.finalize = finalize;
     this.mousePosition = mousePosition;
     this.linkIDs = Creator.allLinkIDsSelector(store.getState());
 
     // do not change these to property declarations, they depend on this.store being set
-    this.realtime = new RealtimeEngine(this);
+    this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
   }
 
@@ -69,6 +71,10 @@ export class Engine {
   getNodeByID = (nodeID) => Creator.nodeByIDSelector(this.store.getState())(nodeID);
 
   getDataByNodeID = (nodeID) => Creator.dataByNodeIDSelector(this.store.getState())(nodeID);
+
+  isNodeMovementLocked = (nodeID) => Realtime.isNodeMovementLockedSelector(this.store.getState())(nodeID);
+
+  getDeleteLockedNodes = () => Realtime.deletionLockedNodesSelector(this.store.getState());
 
   getLinkByID = (linkID) => Creator.linkByIDSelector(this.store.getState())(linkID);
 
@@ -178,19 +184,21 @@ export class Engine {
     this.store.dispatch(Creator.updateViewport({ x, y, zoom }));
   }
 
-  dragNode(nodeID, movement) {
+  async dragNode(nodeID, movement) {
     const hasMultipleActivationTargets = this.activation.targets.size > 1;
 
     if (this.selection.isTarget(nodeID) && hasMultipleActivationTargets) {
-      this.node.translateMany(this.selection.getTargets(), movement);
+      const targets = this.selection.getTargets();
+
+      await this.drag.setGroup(targets);
+      await this.node.translateMany(targets, movement);
     } else {
       if (hasMultipleActivationTargets) {
         this.selection.clear();
       }
 
-      this.drag.set(nodeID);
-
-      this.node.translate(nodeID, movement);
+      await this.drag.set(nodeID);
+      await this.node.translate(nodeID, movement);
 
       // eslint-disable-next-line jest/no-disabled-tests
       const mergeTarget = this.merge.predicates.find(({ test }) => test(this.mousePosition.current));
@@ -210,12 +218,12 @@ export class Engine {
     this.drag.clear();
   }
 
-  transitionNested(nodeID, [x, y]) {
+  async transitionNested(nodeID, [x, y]) {
     // TODO: position is always the top-middle of the block, it should be center of mass
     // the -20 is a hard coded value meant to make it feel a little more natural
-    this.node.unmerge(nodeID, [x, y - 20]);
+    await this.node.unmerge(nodeID, [x, y - 20]);
     this.selection.replace([nodeID]);
-    this.node.api(nodeID)?.forceDrag();
+    this.node.api(nodeID)?.forceDrag?.();
   }
 
   /**
@@ -262,13 +270,13 @@ export class Engine {
    *
    * @returns {void}
    */
-  removeActive() {
+  async removeActive() {
     if (this.activation.hasTargets) {
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
 
       this.clearActivation();
-      this.node.removeMany(activeTargets);
+      await this.node.removeMany(activeTargets);
     }
   }
 
@@ -330,10 +338,10 @@ export class Engine {
     this.store.dispatch(Creator.saveHistory());
   }
 
-  teardown() {
+  async teardown() {
     this.focus.clear();
     this.selection.clear();
-    this.drag.clear();
+    await this.drag.clear();
     this.merge.clear();
     this.dispatcher.teardown();
     this.realtime.teardown();
@@ -343,7 +351,9 @@ export class Engine {
   }
 }
 
-const createEngine = moize.simple((store, finalize, mousePosition) => new Engine(store, finalize, mousePosition));
+const createEngine = moize.simple(
+  (store, finalize, mousePosition, realtimeSubscription) => new Engine(store, finalize, mousePosition, realtimeSubscription)
+);
 
 function useEngine() {
   const store = useStore();
@@ -351,7 +361,8 @@ function useEngine() {
   const linkIDs = Creator.allLinkIDsSelector(state);
   const [isFinalized, finalize] = useEnableDisable(linkIDs.length === 0);
   const mousePosition = React.useContext(MousePositionContext);
-  const engine = React.useMemo(() => createEngine(store, finalize, mousePosition));
+  const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
+  const engine = React.useMemo(() => createEngine(store, finalize, mousePosition, realtimeSubscription));
 
   React.useEffect(() => () => engine.teardown(), []);
 

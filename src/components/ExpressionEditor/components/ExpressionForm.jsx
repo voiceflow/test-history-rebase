@@ -1,166 +1,93 @@
-import cn from 'classnames';
-import * as MathJS from 'mathjs';
-import React, { Component } from 'react';
-import { Input } from 'reactstrap';
+import React from 'react';
 
-import VariableText from '@/components/VariableText';
-import VariableSelect from '@/componentsV2/VariableSelect';
 import { ExpressionType } from '@/constants';
-import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 import { swallowEvent } from '@/utils/dom';
 
-import { LEVELS, SYMBOLS } from '../constants';
 import { evolveExpression } from '../utils';
-import Container from './ExpressionFormContainer';
-import OperatorDropdown from './OperatorDropdown';
+import ExpressionAdvance from './ExpressionAdvance';
+import ExpressionDefault from './ExpressionDefault';
+import ExpressionNot from './ExpressionNot';
+import ExpressionValue from './ExpressionValue';
+import ExpressionVariable from './ExpressionVariable';
 
-const BRACKET_PATTERN = /{(\w*)}/g;
-const OPERATOR_SELECT = <i className="fas fa-code" />;
+const FormComponent = ({ value, onChange, variables, parentType }) => (
+  <ExpressionForm expression={value} onChange={onChange} variables={variables} parentType={parentType} />
+);
 
-const mapStateToProps = {
-  variables: allVariablesSelector,
-};
+function ExpressionForm({ onChange, expression, variables, parentType }) {
+  const cachedExpression = React.useRef(expression);
 
-@connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)
-class ExpressionForm extends Component {
-  state = {
-    dropdownOpen: false,
-    error: false,
-  };
+  cachedExpression.current = expression;
 
-  updateType = (type) => {
-    const { expression, onChange } = this.props;
+  const onChangeType = React.useCallback(
+    (type) => {
+      if (type === cachedExpression.current.type) return;
 
-    if (type === expression.type) return;
+      onChange(evolveExpression(cachedExpression.current, type));
+    },
+    [onChange]
+  );
 
-    onChange(evolveExpression(expression, type));
-  };
+  const onCollapseExpression = React.useMemo(
+    () =>
+      swallowEvent(() => {
+        if (Array.isArray(cachedExpression.current.value)) {
+          onChange({ ...cachedExpression.current, type: cachedExpression.current.value[0].type, value: cachedExpression.current.value[0].value });
+        } else if (cachedExpression.current.value && cachedExpression.current.value.type) {
+          onChange({ ...cachedExpression.current, type: cachedExpression.current.value.type, value: cachedExpression.current.value.value });
+        }
+      }),
+    [onChange]
+  );
 
-  collapseExpression = swallowEvent(() => {
-    const { expression, onChange } = this.props;
-
-    if (Array.isArray(expression.value)) {
-      const firstValue = expression.value[0];
-
-      onChange({ ...expression, type: firstValue.type, value: firstValue.value });
-    } else if (expression.value && expression.value.type) {
-      onChange({ ...expression, type: expression.value.type, value: expression.value.value });
-    }
-  });
-
-  updateAdvanced = (value) => {
-    const { expression, onChange } = this.props;
-
-    if (expression.type !== ExpressionType.ADVANCE) {
+  const onChangeAdvanced = React.useCallback((value) => {
+    if (cachedExpression.current.type !== ExpressionType.ADVANCE) {
       return;
     }
 
-    if (value.text) {
-      try {
-        MathJS.parse(value.text.replace(BRACKET_PATTERN, "v['$1']").split('\n'));
-      } catch (err) {
-        this.setState({ error: err.message });
-      }
-    }
+    onChange({ ...cachedExpression.current, value });
+  });
 
-    onChange({ ...expression, value });
-  };
+  const onChangeValue = React.useCallback((value) => onChange({ ...cachedExpression.current, value }), [onChange]);
 
-  render() {
-    const { expression, variables, parentType, onChange } = this.props;
+  if (!expression?.type) {
+    return null;
+  }
 
-    if (!expression || !expression.type) {
-      return null;
-    }
+  const { type, value, depth } = expression;
 
-    const updateValue = (value) => onChange({ ...expression, value });
-    const { type } = expression;
-
-    switch (type) {
-      case ExpressionType.VARIABLE:
-        return (
-          // eslint-disable-next-line sonarjs/no-duplicate-string
-          <Container className={cn('expression-block', type)}>
-            <VariableSelect value={expression.value} onChange={updateValue} fullWidth />
-            <div className="type-button-container">
-              <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
-                {OPERATOR_SELECT}
-              </OperatorDropdown>
-            </div>
-          </Container>
-        );
-
-      case ExpressionType.VALUE:
-        return (
-          <Container className={cn('expression-block', type)}>
-            <div className="type-button-container">
-              <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
-                {OPERATOR_SELECT}
-              </OperatorDropdown>
-            </div>
-            <Input placeholder="value" value={expression.value} onChange={({ target }) => updateValue(target.value)} />
-          </Container>
-        );
-
-      case ExpressionType.ADVANCE:
-        return (
-          <Container className={cn('expression-block', type)}>
-            <VariableText
-              className={cn('editor', 'form-control', 'auto-height', 'oneline', { 'is-invalid': expression.value.error })}
-              value={expression.value}
-              placeholder="Enter your expression here"
-              variables={variables}
-              onChange={this.updateAdvanced}
-            />
-            <div className="type-button-container">
-              <OperatorDropdown update={this.updateType} className="type-button" depth={expression.depth}>
-                {OPERATOR_SELECT}
-              </OperatorDropdown>
-            </div>
-          </Container>
-        );
-
-      case 'not':
-        return (
-          <Container
-            className={cn('expression-block', type, {
-              same: LEVELS[type] && LEVELS[type].has(parentType),
-            })}
-          >
-            <OperatorDropdown update={this.updateType} depth={expression.depth} className="operator">
-              {SYMBOLS[type]}
-              <div className="type-button" onClick={this.collapseExpression}>
-                <i className="fas fa-trash" />
-              </div>
-            </OperatorDropdown>
-            <ExpressionForm expression={expression.value} onChange={updateValue} />
-          </Container>
-        );
-
-      default:
-        return (
-          <Container
-            className={cn('expression-block', type, {
-              same: LEVELS[type] && LEVELS[type].has(parentType),
-            })}
-          >
-            <ExpressionForm expression={expression.value[0]} onChange={(value) => updateValue([value, expression.value[1]])} parentType={type} />
-            <OperatorDropdown update={this.updateType} className="operator">
-              {SYMBOLS[type]}
-              <div className="type-button" onClick={this.collapseExpression}>
-                <i className="fas fa-trash" />
-              </div>
-            </OperatorDropdown>
-            <ExpressionForm expression={expression.value[1]} onChange={(value) => updateValue([expression.value[0], value])} parentType={type} />
-          </Container>
-        );
-    }
+  switch (expression.type) {
+    case ExpressionType.VARIABLE:
+      return <ExpressionVariable value={value} depth={depth} onChange={onChangeValue} onUpdateType={onChangeType} />;
+    case ExpressionType.VALUE:
+      return <ExpressionValue value={value} depth={depth} onChange={onChangeValue} onUpdateType={onChangeType} />;
+    case ExpressionType.ADVANCE:
+      return <ExpressionAdvance value={value} depth={depth} onChange={onChangeAdvanced} variables={variables} onUpdateType={onChangeType} />;
+    case ExpressionType.NOT:
+      return (
+        <ExpressionNot
+          type={type}
+          value={value}
+          depth={depth}
+          onChange={onChangeValue}
+          onCollapse={onCollapseExpression}
+          parentType={parentType}
+          onUpdateType={onChangeType}
+          formComponent={FormComponent}
+        />
+      );
+    default:
+      return (
+        <ExpressionDefault
+          type={type}
+          value={value}
+          onChange={onChangeValue}
+          onCollapse={onCollapseExpression}
+          onUpdateType={onChangeType}
+          parentType={parentType}
+          formComponent={FormComponent}
+        />
+      );
   }
 }
 

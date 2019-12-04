@@ -1,27 +1,28 @@
 import { createSelector } from 'reselect';
 
 import { GLOBAL_VARIABLES } from '@/constants';
-import { userSelector } from '@/ducks/account';
-import { linksByPortIDSelector, portByIDSelector } from '@/ducks/creator';
-import { allDiagramIDsSelector, diagramsByIDsSelector, flowStructureSelector } from '@/ducks/diagram';
-import { projectByIDSelector } from '@/ducks/project';
-import { realtimeLocksSelector } from '@/ducks/realtime';
-import { authTokenSelector } from '@/ducks/session';
+import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
+import * as Diagram from '@/ducks/diagram';
+import * as Project from '@/ducks/project';
+import * as Realtime from '@/ducks/realtime';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
-import { activeTeamSelector } from '@/ducks/team';
-import { variablesByDiagramIDSelector } from '@/ducks/variableSet';
-import { viewportByIDSelector } from '@/ducks/viewport';
+import * as VariableSet from '@/ducks/variableSet';
+import * as Viewport from '@/ducks/viewport';
+import * as Workspace from '@/ducks/workspace';
+import { getAlternativeColor } from '@/utils/colors';
 import { getSlotTypes } from '@/utils/slot';
 
 export const activeDiagramVariablesSelector = createSelector(
   Skill.activeDiagramIDSelector,
-  variablesByDiagramIDSelector,
+  VariableSet.variablesByDiagramIDSelector,
   (diagramID, getVariables) => getVariables(diagramID)
 );
 
 export const activeDiagramViewportSelector = createSelector(
   Skill.activeDiagramIDSelector,
-  viewportByIDSelector,
+  Viewport.viewportByIDSelector,
   (diagramID, getViewportByID) => getViewportByID(diagramID)
 );
 
@@ -38,60 +39,101 @@ export const activeSlotTypes = createSelector(
 
 export const activeProjectSelector = createSelector(
   Skill.activeProjectIDSelector,
-  projectByIDSelector,
+  Project.projectByIDSelector,
   (projectID, getProject) => getProject(projectID)
 );
 
 export const isLoggingInSelector = createSelector(
-  authTokenSelector,
-  userSelector,
+  Session.authTokenSelector,
+  Account.userSelector,
   (token, user) => token && user.creator_id === null
 );
 
-export const diagramViewersSelector = createSelector(
-  realtimeLocksSelector,
-  activeTeamSelector,
+// Realtime
+
+/**
+ * gets a count of users for the active project
+ */
+export const projectViewerCountSelector = createSelector(
+  Realtime.realtimeLocksSelector,
+  Workspace.activeWorkspaceSelector,
   (locks, team) => {
     if (!locks || !team) {
+      return 1;
+    }
+
+    return Object.values(locks.users).reduce((acc, diagramLocks) => {
+      Object.keys(diagramLocks || {}).forEach((tabID) => acc.add(tabID));
+
+      return acc;
+    }, new Set()).size;
+  }
+);
+
+export const isOnlyViewerSelector = createSelector(
+  projectViewerCountSelector,
+  (projectViewerCount) => projectViewerCount === 1
+);
+
+/**
+ * gets all members for a given diagram
+ */
+export const diagramViewersSelector = createSelector(
+  Realtime.realtimeLocksSelector,
+  Workspace.workspaceMemberSelector,
+  (locks, getWorkspaceMember) => (diagramID) => {
+    if (!locks || !diagramID) {
       return [];
     }
 
-    return Object.keys(locks.users).map((tabID) => {
-      const user = locks.users[tabID];
-
-      return { tabID, ...user, ...team.members.find((member) => member.name === user.name) };
-    });
+    return Object.entries(locks.users[diagramID] || {}).map(([tabID, creatorID]) => ({
+      tabID,
+      ...getWorkspaceMember(creatorID),
+      color: getAlternativeColor(tabID),
+    }));
   }
+);
+
+/**
+ * gets all members in the active diagram
+ */
+export const activeDiagramViewersSelector = createSelector(
+  diagramViewersSelector,
+  Skill.activeDiagramIDSelector,
+  (getViewers, diagramID) => getViewers(diagramID)
 );
 
 export const diagramViewersLookupSelector = createSelector(
-  realtimeLocksSelector,
-  activeTeamSelector,
-  (locks, team) => {
-    if (!locks || !team) {
+  Realtime.realtimeLocksSelector,
+  Workspace.workspaceMemberSelector,
+  (locks, getWorkspaceMember) => {
+    if (!locks || !getWorkspaceMember) {
       return {};
     }
 
-    return Object.keys(locks.users).reduce((acc, tabID) => {
-      const user = locks.users[tabID];
+    const acc = [];
+    Object.values(locks.users).forEach((usersInDiagram) =>
+      // eslint-disable-next-line array-callback-return
+      Object.entries(usersInDiagram).map(([tabID, creatorID]) => {
+        acc[tabID] = { ...getWorkspaceMember(creatorID), color: getAlternativeColor(tabID) };
+      })
+    );
 
-      acc[tabID] = { ...user, ...team.members.find((member) => member.name === user.name) };
-
-      return acc;
-    }, {});
+    return acc;
   }
 );
 
+// Flow
 export const rootFlowStructureSelector = createSelector(
-  flowStructureSelector,
+  Diagram.flowStructureSelector,
   Skill.rootDiagramIDSelector,
   (getFlowStructure, rootDiagramID) => getFlowStructure(rootDiagramID)
 );
 
 export const unusedDiagramsSelector = createSelector(
   rootFlowStructureSelector,
-  allDiagramIDsSelector,
-  diagramsByIDsSelector,
+  Diagram.allDiagramIDsSelector,
+  Diagram.diagramsByIDsSelector,
   (rootFlow, diagramIDs, getDiagrams) => {
     const unusedDiagramIDs = new Set(diagramIDs);
 
@@ -110,8 +152,8 @@ export const unusedDiagramsSelector = createSelector(
 
 export const hasActiveLinksSelector = createSelector(
   Skill.activePlatformSelector,
-  portByIDSelector,
-  linksByPortIDSelector,
+  Creator.portByIDSelector,
+  Creator.linksByPortIDSelector,
   (platform, getPortByID, getAllLinksByPortID) => (portID) =>
     getAllLinksByPortID(portID).some((link) => {
       const sourcePort = getPortByID(link.source.portID);

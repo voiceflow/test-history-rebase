@@ -6,13 +6,11 @@ import { activeSkillSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { loadSkill } from '@/store/sideEffects';
 
-const ProjectLoadingGate = ({ isProjectLoaded, loadProject, children }) => {
-  return (
-    <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProject}>
-      {children}
-    </LoadingGate>
-  );
-};
+const ProjectLoadingGate = ({ isProjectLoaded, loadProject, children }) => (
+  <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProject}>
+    {children}
+  </LoadingGate>
+);
 
 const mapStateToProps = {
   activeSkill: activeSkillSelector,

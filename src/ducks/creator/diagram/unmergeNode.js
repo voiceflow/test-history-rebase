@@ -15,6 +15,11 @@ const unmergeNodeReducer = (
 ) => {
   const node = getNormalizedByKey(state.nodes, nodeID);
   const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
+
+  if (!parentNode) {
+    return state;
+  }
+
   const index = parentNode.combinedNodes.indexOf(node.id);
 
   if (parentNode.combinedNodes.length > 2) {

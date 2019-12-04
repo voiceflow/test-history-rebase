@@ -34,7 +34,6 @@ class FocusEngine extends EngineConsumer {
    */
   set(nodeID, { renameActiveRevision } = {}) {
     this.engine.activation.clear();
-
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
     this.dispatch(setFocus(nodeID, renameActiveRevision));
   }

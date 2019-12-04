@@ -1,11 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
 import { Tooltip } from 'react-tippy';
 
 import SvgIcon from '@/components/SvgIcon';
+import Flex from '@/componentsV2/Flex';
 import { useEnableDisable, useToggle } from '@/hooks';
 
-import { StripeCardElementWrapper, Wrapper, strypeInputStyle } from './styled';
+import { StripeCardElementWrapper, Wrapper, stripeInputStyle } from './styled';
 
 const getColor = (error, complete, focused) => {
   if (error) {
@@ -35,7 +37,7 @@ const getIcon = (error, complete) => {
   return 'creditCard';
 };
 
-export default function StripeCardElement() {
+export default function StripeCardElement({ onChangeComplete, disabled = false }) {
   const cardElementRef = React.useRef();
   const errorMessageRef = React.useRef('message');
   const [error, updateError] = React.useState('');
@@ -49,21 +51,26 @@ export default function StripeCardElement() {
   const onChange = ({ error: nextError, complete: nextComplete }) => {
     updateError(nextError?.message);
     updateComplete(nextComplete);
+    onChangeComplete?.(nextComplete);
   };
-
-  const color = getColor(error, complete, focused);
 
   errorMessageRef.current = error || errorMessageRef.current;
 
   return (
-    <Tooltip open={!!error} title={error || errorMessageRef.current} position="top" theme="warning" animation="fade">
-      <Wrapper onClick={onClick} borderColor={color}>
-        <SvgIcon icon={getIcon(error, complete)} color={color} />
+    <Tooltip open={!!error && focused} title={error || errorMessageRef.current} position="bottom-start" theme="warning" animation="fade" distance={5}>
+      <Wrapper id="poo" disabled={disabled} onClick={onClick} borderColor={getColor(error, complete, focused)}>
+        <Flex style={{ overflow: 'hidden' }}>
+          <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />
 
-        <StripeCardElementWrapper>
-          <CardElement ref={cardElementRef} style={strypeInputStyle} hideIcon onBlur={disableFocus} onFocus={enableFocus} onChange={onChange} />
-        </StripeCardElementWrapper>
+          <StripeCardElementWrapper>
+            <CardElement ref={cardElementRef} style={stripeInputStyle} hideIcon onBlur={disableFocus} onFocus={enableFocus} onChange={onChange} />
+          </StripeCardElementWrapper>
+        </Flex>
       </Wrapper>
     </Tooltip>
   );
 }
+
+StripeCardElement.propTypes = {
+  onChangeComplete: PropTypes.func,
+};

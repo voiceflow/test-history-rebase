@@ -6,9 +6,10 @@ import React, { PureComponent } from 'react';
 import GuidedSteps from '@/components/GuidedSteps';
 import SvgIcon from '@/components/SvgIcon';
 import { NEW_PRODUCT_ID } from '@/constants';
-import { cancelProduct, createProduct, productByIDSelector, uploadProduct } from '@/ducks/product';
-import { goToProducts } from '@/ducks/router';
+import * as Product from '@/ducks/product';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { compose } from '@/utils/functional';
 
 import { BackButtonContainer, BackLink } from '../components';
 import { AvailabilityForm, DescriptionForm, DetailsForm, IconsForm, PhrasesForm, PricingModelForm } from './GuidedSteps';
@@ -196,14 +197,14 @@ ProductEditPage.propTypes = {
 };
 
 const mapStateToProps = {
-  product: productByIDSelector,
+  product: Product.productByIDSelector,
 };
 
 const mapDispatchToProps = {
-  goToProducts,
-  createProduct,
-  cancelProduct,
-  uploadProduct,
+  goToProducts: Router.goToProducts,
+  createProduct: Product.createProduct,
+  cancelProduct: Product.cancelProduct,
+  uploadProduct: Product.uploadProduct,
 };
 
 const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { match, skillID }) => {
@@ -217,10 +218,11 @@ const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProd
   };
 };
 
-export default React.memo(
+export default compose(
+  React.memo,
   connect(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(ProductEditPage)
-);
+  )
+)(ProductEditPage);

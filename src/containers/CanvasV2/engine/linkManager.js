@@ -24,17 +24,17 @@ class LinkManager extends EngineConsumer {
     return this.engine.links.get(linkID).api;
   }
 
-  add(sourcePortID, targetPortID) {
+  async add(sourcePortID, targetPortID) {
     const linkID = cuid();
 
+    await this.engine.realtime.sendUpdate(Realtime.addLink(sourcePortID, targetPortID, linkID));
     this.internal.add(sourcePortID, targetPortID, linkID);
-    this.dispatch(Realtime.addLink(sourcePortID, targetPortID, linkID));
     this.engine.saveHistory();
   }
 
-  remove(linkID) {
+  async remove(linkID) {
+    await this.engine.realtime.sendUpdate(Realtime.removeLink(linkID));
     this.internal.remove(linkID);
-    this.dispatch(Realtime.removeLink(linkID));
     this.engine.saveHistory();
   }
 

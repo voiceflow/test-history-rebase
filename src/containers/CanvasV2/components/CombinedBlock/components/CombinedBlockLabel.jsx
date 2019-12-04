@@ -3,7 +3,7 @@ import React from 'react';
 
 import User, { MemberIcon } from '@/components/User';
 import { KeyCodes } from '@/constants';
-import { EngineContext } from '@/containers/CanvasV2/contexts';
+import { EditPermissionContext, EngineContext } from '@/containers/CanvasV2/contexts';
 import * as Realtime from '@/ducks/realtime';
 import { styled } from '@/hocs';
 import { useEnableDisable, useImperativeApi } from '@/hooks';
@@ -28,8 +28,10 @@ const Label = styled.span`
 const CombinedBlockLabel = ({ value, lockOwner, nodeID, onChange }, ref) => {
   const [name, setName] = React.useState(value);
   const engine = React.useContext(EngineContext);
+  const { canEdit } = React.useContext(EditPermissionContext);
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const inputRef = useImperativeApi({ ref, deps: [enableEditing], creator: () => ({ enableEditing }) });
+  const editLocked = !canEdit || !!lockOwner;
 
   const updateName = async () => {
     await engine.realtime.sendUpdate(Realtime.unlockNodes([nodeID], [Realtime.LockType.EDIT]));
@@ -72,7 +74,7 @@ const CombinedBlockLabel = ({ value, lockOwner, nodeID, onChange }, ref) => {
           ref={inputRef}
         />
       ) : (
-        <Label onClick={!lockOwner && onLabelClick} disabled={!!lockOwner}>
+        <Label onClick={!editLocked && onLabelClick} disabled={editLocked}>
           {name}
           {lockOwner && <User user={lockOwner} />}
         </Label>

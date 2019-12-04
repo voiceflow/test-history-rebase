@@ -7,7 +7,8 @@ import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 
 const MAX_SIZE = 5 * 1024 * 1024;
-
+const VARIABLE_REGEX = /^{.*}$/;
+const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,4}\b([\w#%&+-./:=?@~]*)/;
 class Image extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +21,12 @@ class Image extends Component {
       url_open: false,
       url: '',
     };
-
     this.max_size = this.props.max_size || MAX_SIZE;
-    this.handleChange = this.handleChange.bind(this);
   }
+
+  onReset = () => {
+    this.props.update(null);
+  };
 
   handleChange = (event) => {
     this.setState({
@@ -97,11 +100,36 @@ class Image extends Component {
           <div className="rejected-file text-danger text-center super-center h-100">File not Accepted</div>
         </Dropzone>
       );
+    } else if (this.props.image && typeof this.props.image === 'string') {
+      if (VARIABLE_REGEX.test(this.props.image)) {
+        render = (
+          <div className="image-box super-center d-flex">
+            <div>{this.props.image}</div>
+            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+          </div>
+        );
+      } else if (!HTTPS_URL_REGEX.test(this.props.image)) {
+        render = (
+          <div className="image-box super-center d-flex">
+            <div className="rejected-file text-danger text-center super-center h-100">
+              Please check your URL or your {'{'}variable{'}'}
+            </div>
+            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+          </div>
+        );
+      } else {
+        render = (
+          <div className="image-box">
+            <div className="image" style={{ backgroundImage: `url(${this.props.image})` }} />
+            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+          </div>
+        );
+      }
     } else if (this.props.image) {
       render = (
         <div className="image-box">
           <div className="image" style={{ backgroundImage: `url(${this.props.image})` }} />
-          <Button className="close" disabled={this.props.isDisabled} onClick={() => this.props.update(null)} />
+          <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
         </div>
       );
     } else if (this.state.url_open) {
@@ -109,7 +137,7 @@ class Image extends Component {
         <div className="dropzone">
           <div className="text-center w-100">
             <label>Enter Image URL</label>
-            <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url" />
+            <Input placeholder="URL Link (must be [https])" value={this.state.url} onChange={this.handleChange} name="url" />
             <Button isFlat onClick={() => this.setState({ url_open: false })} className="mt-3 mr-1">
               Back
             </Button>
@@ -133,24 +161,20 @@ class Image extends Component {
         >
           <div className="w-100">
             <div className="drop-child">
-              {this.props.tiny && (
-                <>
-                  {/* Drag-n-Drop Image or <span className="btn-link">browse</span><br/> */}
-                  {this.props.url && (
-                    <Button
-                      isBtn
-                      isDefault
-                      className="upload-btn"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.setState({ url_open: true });
-                      }}
-                    >
-                      URL
-                    </Button>
-                  )}
-                </>
+              {this.props.url && (
+                <Button
+                  isBtn
+                  isLink
+                  className="mt-5 pt-4 pointer"
+                  style={{ fontSize: 15 }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.setState({ url_open: true });
+                  }}
+                >
+                  Add URL or {'{'}variable{'}'}
+                </Button>
               )}
             </div>
             <div className="rejected-file text-danger text-center">

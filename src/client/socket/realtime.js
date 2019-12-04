@@ -80,7 +80,7 @@ function createRealtimeSocketClient(client) {
         // ignore our own events
         if (data.tabId === tabID) return;
 
-        updateHandlers.forEach((handler) => handler(data.action, data.tabId));
+        updateHandlers.forEach((handler) => handler(data.action, data.tabId, { volatile: true }));
       };
 
       const handleRecover = (updates) => {

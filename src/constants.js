@@ -302,10 +302,16 @@ export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
 
 export const AV_FILE_FORMATS = [
+  'audio/pcm',
+  'audio/aiff',
+  'audio/aac',
   'audio/x-wav',
   'audio/x-aiff',
   'audio/alac',
   'audio/mpeg',
+  'audio/mp2',
+  'audio/mp3',
+  'audio/aa',
   'audio/flac',
   'audio/x-flac',
   'audio/x-wav',

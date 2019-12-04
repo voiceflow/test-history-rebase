@@ -2,7 +2,7 @@
 
 exports[`Audio Drop Test render audio drop 1`] = `
 <n
-  accept="audio/x-wav,audio/x-aiff,audio/alac,audio/mpeg,audio/flac,audio/x-flac,audio/x-wav,audio/vnd.wave,audio/wav,audio/wave,audio/x-pn-wav,audio/ogg"
+  accept="audio/pcm,audio/aiff,audio/aac,audio/x-wav,audio/x-aiff,audio/alac,audio/mpeg,audio/mp2,audio/mp3,audio/aa,audio/flac,audio/x-flac,audio/x-wav,audio/vnd.wave,audio/wav,audio/wave,audio/x-pn-wav,audio/ogg"
   activeClassName="active"
   className="dropzone"
   disableClick={false}
@@ -44,11 +44,15 @@ exports[`Audio Drop Test render audio drop 1`] = `
           Add Audio
         </Button>
         <br />
+        <br />
         <div
           className="btn-link"
           onClick={[Function]}
         >
-          Add URL
+          Add URL or 
+          {
+          variable
+          }
         </div>
       </div>
     </div>

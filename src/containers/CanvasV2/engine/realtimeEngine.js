@@ -14,9 +14,9 @@ class RealtimeEngine extends EngineConsumer {
   constructor(subscription, engine) {
     super(engine);
 
-    this.teardownHandlers = subscription.onUpdate(async (data, otherTabID) => {
+    this.teardownHandlers = subscription.onUpdate(async (data, otherTabID, options = {}) => {
       if (data && data.type in this.handlers) {
-        await this.handlers[data.type](data.payload, otherTabID);
+        await this.handlers[data.type](data.payload, otherTabID, options);
       }
     });
   }
@@ -47,8 +47,18 @@ class RealtimeEngine extends EngineConsumer {
     [Realtime.REMOVE_NODE]: (nodeID) => this.engine.node.internal.remove(nodeID),
     [Realtime.REMOVE_MANY_NODES]: (nodeIDs) => this.engine.node.internal.removeMany(nodeIDs),
     [Realtime.UPDATE_NODE_DATA]: ({ nodeID, data }) => this.engine.node.internal.updateData(nodeID, data),
-    [Realtime.MOVE_NODE]: ({ nodeID, movement, origin }) => this.engine.node.internal.translateBaseOnOrigin(nodeID, movement, origin),
-    [Realtime.MOVE_MANY_NODES]: ({ nodeIDs, movement, origins }) => this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins),
+    [Realtime.MOVE_NODE]: ({ nodeID, movement, origin }, _, options) => {
+      this.engine.node.internal.translateBaseOnOrigin(nodeID, movement, origin);
+      if (!options.volatile) {
+        this.engine.node.saveLocation(nodeID);
+      }
+    },
+    [Realtime.MOVE_MANY_NODES]: ({ nodeIDs, movement, origins }, _, options) => {
+      this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins);
+      if (!options.volatile) {
+        nodeIDs.forEach((nodeID) => this.engine.node.saveLocation(nodeID));
+      }
+    },
 
     [Realtime.MOVE_LINK]: (linkData, tabID) => this.overlays[OverlayType.LINK]?.moveLink(tabID, linkData),
     [Realtime.ADD_LINK]: ({ sourcePortID, targetPortID, linkID }) => this.engine.link.internal.add(sourcePortID, targetPortID, linkID),

@@ -375,7 +375,7 @@ export const updateDiagramViewers = (users) => async (dispatch, getState) => {
 
   // reinitialize history if no other collaborators present
   if (diagramViewers.length === 1) {
-    dispatch(Creator.saveHistory(true));
+    dispatch(Creator.saveHistory({ force: true, preventUpdate: true }));
     dispatch(ActionCreators.clearHistory());
   }
 

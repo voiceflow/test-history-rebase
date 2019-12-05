@@ -316,7 +316,7 @@ export const undoHistory = () => createAction(UNDO_HISTORY);
 
 export const redoHistory = () => createAction(REDO_HISTORY);
 
-export const saveHistory = (force = false) => createAction(SAVE_HISTORY, null, { force });
+export const saveHistory = ({ force, preventUpdate } = {}) => createAction(SAVE_HISTORY, null, { force, preventUpdate });
 
 // side effects
 

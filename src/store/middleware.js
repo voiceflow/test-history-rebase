@@ -77,7 +77,7 @@ const creatorHistoryMiddleware = (store) => (next) => (action) => {
   const viewers = activeDiagramViewersSelector(store.getState());
   const hasViewers = viewers.length > 1;
 
-  if (action.type === Creator.SAVE_HISTORY) {
+  if (action.type === Creator.SAVE_HISTORY && !action?.meta?.preventUpdate) {
     // eslint-disable-next-line no-console
     store.dispatch(Diagram.saveActiveDiagram()).catch(() => console.warn('failed to save diagram'));
 

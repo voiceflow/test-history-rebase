@@ -93,7 +93,7 @@ function CanvasMenu({ activePanel, selectPanel, isHidden, toggleHidden, theme })
         </MenuContainer>
       </Drawer>
       {!canEdit && <CanvasReadOnly />}
-      <CanvasControls withMenu={isOpen} withDrawer={!canEdit} />
+      <CanvasControls withMenu={isOpen} withDrawer={canEdit} />
     </>
   );
 }

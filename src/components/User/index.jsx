@@ -16,6 +16,7 @@ const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
       </MemberIcon>
     );
   }
+
   if (!user?.image) {
     return (
       <MemberIcon className={className} ref={ref} {...props}>
@@ -26,8 +27,9 @@ const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
 
   const style = {};
   let letter = null;
+
   if (user.image.length === 13 && user.image.includes('|')) {
-    const colors = user.image.split('|');
+    const colors = user.color ? user.color.split('|') : user.image.split('|');
     style.backgroundColor = `#${colors[1]}`;
     style.color = `#${colors[0]}`;
     letter = user.name[0];

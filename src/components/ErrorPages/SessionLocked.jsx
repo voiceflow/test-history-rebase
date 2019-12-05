@@ -2,7 +2,7 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 
-import { Page404Wrapper } from './styled';
+import { Message, Page404Wrapper } from './styled';
 
 const SessionLocked = ({ children }) => (
   <Page404Wrapper>
@@ -10,7 +10,9 @@ const SessionLocked = ({ children }) => (
 
     <label className="mt-3 dark">Project Open in Another Tab</label>
 
-    <p className="mt-1 mb-2">This project is currently open in another tab. Please close existing tab, or takeober the active session.</p>
+    <Message className="mt-1 mb-4 text-center">
+      This project is currently open in another tab. Please close existing tab, or takeover the active session.
+    </Message>
 
     {children}
   </Page404Wrapper>

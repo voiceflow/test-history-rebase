@@ -37,3 +37,7 @@ export const ErrorBoundaryWrapper = styled.div`
     margin-top: 1rem;
   }
 `;
+
+export const Message = styled.p`
+  max-width: 360px;
+`;

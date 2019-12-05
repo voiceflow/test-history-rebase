@@ -2,7 +2,7 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 
-import { Page404Wrapper } from './styled';
+import { Message, Page404Wrapper } from './styled';
 
 const Error = ({ icon = <SvgIcon icon="error500" size={80} />, title = 'Alexa, what happened?', message, children }) => (
   <Page404Wrapper>
@@ -10,7 +10,7 @@ const Error = ({ icon = <SvgIcon icon="error500" size={80} />, title = 'Alexa, w
 
     <label className="mt-3 dark">{title}</label>
 
-    <p className="mt-1 mb-2">{message}</p>
+    <Message className="mt-1 mb-2">{message}</Message>
 
     {children}
   </Page404Wrapper>

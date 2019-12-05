@@ -41,9 +41,12 @@ class NewLink extends React.PureComponent {
   };
 
   onMouseUp = () => {
-    this.props.linkCreation.onAbort();
-    this.props.moveLink({ reset: true });
     this.removeEventListeners();
+    this.props.moveLink({ reset: true });
+
+    if (!this.props.linkCreation.completing) {
+      this.props.linkCreation.onAbort();
+    }
   };
 
   removeEventListeners() {

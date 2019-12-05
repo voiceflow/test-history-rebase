@@ -15,6 +15,7 @@ export const { Consumer: LinkCreationConsumer } = LinkCreationContext;
 export const LinkCreationProvider = ({ children }) => {
   const engine = React.useContext(EngineContext);
   const [context, setContext] = React.useState(DEFAULT_CONTEXT);
+  const [completing, setCompleting] = React.useState();
   const isDrawing = !!context.sourcePortID;
 
   const onStart = React.useCallback(async (sourcePortID, mouseOrigin) => {
@@ -28,7 +29,9 @@ export const LinkCreationProvider = ({ children }) => {
   const onAbort = React.useCallback(() => setContext(DEFAULT_CONTEXT), []);
   const onComplete = React.useCallback(
     async (targetPortID) => {
+      setCompleting(true);
       await engine.link.add(context.sourcePortID, targetPortID);
+      setCompleting(false);
       onAbort();
     },
     [engine, context]
@@ -36,7 +39,7 @@ export const LinkCreationProvider = ({ children }) => {
 
   return (
     <LinkCreationContext.Provider
-      value={{ isDrawing, sourcePortID: context.sourcePortID, mouseOrigin: context.mouseOrigin, onStart, onComplete, onAbort }}
+      value={{ isDrawing, sourcePortID: context.sourcePortID, mouseOrigin: context.mouseOrigin, onStart, onComplete, onAbort, completing }}
     >
       {children}
     </LinkCreationContext.Provider>

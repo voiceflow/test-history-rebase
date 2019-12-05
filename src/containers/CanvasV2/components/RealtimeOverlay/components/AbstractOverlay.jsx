@@ -4,7 +4,6 @@ import { withEngine } from '@/containers/CanvasV2/contexts';
 import { connect } from '@/hocs';
 import { diagramViewersLookupSelector } from '@/store/selectors';
 import { append, withoutValue } from '@/utils/array';
-import { getAlternativeColor } from '@/utils/colors';
 import { compose } from '@/utils/functional';
 
 class AbstractOverlay extends React.PureComponent {
@@ -62,7 +61,7 @@ class AbstractOverlay extends React.PureComponent {
       // TODO: this is only a case because we use tabId as the lookup
       if (!viewer) return null;
 
-      return this.renderItem(tabID, { ...viewer, color: getAlternativeColor(tabID) }, this.itemRefs[tabID]);
+      return this.renderItem(tabID, viewer, this.itemRefs[tabID]);
     });
   }
 }

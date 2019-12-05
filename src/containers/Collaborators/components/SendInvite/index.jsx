@@ -10,7 +10,7 @@ import { BILLING_SEATS_ELEMENT } from '../../../Payment/Checkout/components/Seat
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
 
-const OPTIONS_ARRAY = [{ value: 'viewer', label: 'can view' }, { value: 'editor', label: 'can edit' }];
+const OPTIONS_ARRAY = [{ value: 'editor', label: 'can edit' }, { value: 'viewer', label: 'can view' }];
 
 function SendInvite({ sendInvite, numberOfSeats, members }) {
   const [email, setEmail] = React.useState('');

@@ -16,7 +16,7 @@ class Port extends React.PureComponent {
     getRect: () => this.portRef.current.getBoundingClientRect(),
   };
 
-  onMouseDown = swallowEvent((event) => {
+  onStartCreateLink = swallowEvent((event) => {
     const { portID, canvas, canDrag, linkCreation, editPermission, node, engine } = this.props;
     const canCreateLink = canDrag && editPermission.canEdit && !engine.isNodeMovementLocked(node.id);
     if (canCreateLink) {
@@ -24,7 +24,7 @@ class Port extends React.PureComponent {
     }
   });
 
-  onMouseUp = (event) => {
+  onEndCreateLink = (event) => {
     const { portID, canDrop, linkCreation } = this.props;
 
     if (linkCreation.isDrawing && canDrop) {
@@ -51,7 +51,13 @@ class Port extends React.PureComponent {
     return (
       <>
         {label && <Label>{label}</Label>}
-        <Container onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} isActive={hasActiveLinks} ref={this.portRef} />
+        <Container
+          onMouseDown={this.onStartCreateLink}
+          onMouseUp={this.onEndCreateLink}
+          onClick={this.onStartCreateLink}
+          isActive={hasActiveLinks}
+          ref={this.portRef}
+        />
       </>
     );
   }

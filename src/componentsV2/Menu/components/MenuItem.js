@@ -21,6 +21,12 @@ const MenuItem = styled.li`
       color: #8da2b5;
       background: #fff;
     `}
+  
+  ${({ capitalize }) =>
+    capitalize &&
+    css`
+      text-transform: capitalize;
+    `}
     
   &:hover {
    ${({ disabled }) =>

@@ -1,0 +1,1610 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots User variants - Members: default 1`] = `
+<styled.div>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-fAjcbJ",
+          "isStatic": true,
+          "lastClassName": "fjBwKE",
+          "rules": Array [
+            "
+  display: flex;
+  margin-left: 22px;
+
+  & > div {
+    margin-right: 12px;
+
+    :last-child {
+      margin-right: 0;
+    }
+  }
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-fAjcbJ",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <div
+      className="sc-fAjcbJ fjBwKE"
+    >
+      <styled.div>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dVhcbM",
+                "isStatic": true,
+                "lastClassName": "jbcowb",
+                "rules": Array [
+                  "
+  display: flex;
+  margin-left: 5px;
+
+  & > div {
+    margin-left: -5px;
+  }
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dVhcbM",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dVhcbM jbcowb"
+          >
+            <div
+              key="3"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 8,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Test Member"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Test Member"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 3,
+                        "email": "test@voiceflow.com",
+                        "image": "697986|EEF0F1",
+                        "name": "Test Member",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#EEF0F1",
+                          "color": "#697986",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#EEF0F1",
+                            "color": "#697986",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#EEF0F1",
+                              "color": "#697986",
+                            }
+                          }
+                        >
+                          T
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+            <div
+              key="2"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 7,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Admin User"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Admin User"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 2,
+                        "email": "admin@voiceflow.com",
+                        "image": "5891FB|EFF5FF",
+                        "name": "Admin User",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#EFF5FF",
+                          "color": "#5891FB",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#EFF5FF",
+                            "color": "#5891FB",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#EFF5FF",
+                              "color": "#5891FB",
+                            }
+                          }
+                        >
+                          A
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+            <div
+              key="1"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 6,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Local User"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Local User"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 1,
+                        "email": "local@voiceflow.com",
+                        "image": "F86683|FEF2F4",
+                        "name": "Local User",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#FEF2F4",
+                          "color": "#F86683",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#FEF2F4",
+                            "color": "#F86683",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#FEF2F4",
+                              "color": "#F86683",
+                            }
+                          }
+                        >
+                          L
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </div>
+  </StyledComponent>
+</styled.div>
+`;
+
+exports[`Storyshots User variants - Members: with add 1`] = `
+<styled.div>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-fAjcbJ",
+          "isStatic": true,
+          "lastClassName": "fjBwKE",
+          "rules": Array [
+            "
+  display: flex;
+  margin-left: 22px;
+
+  & > div {
+    margin-right: 12px;
+
+    :last-child {
+      margin-right: 0;
+    }
+  }
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-fAjcbJ",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+  >
+    <div
+      className="sc-fAjcbJ fjBwKE"
+    >
+      <styled.div>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-dVhcbM",
+                "isStatic": true,
+                "lastClassName": "jbcowb",
+                "rules": Array [
+                  "
+  display: flex;
+  margin-left: 5px;
+
+  & > div {
+    margin-left: -5px;
+  }
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-dVhcbM",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-dVhcbM jbcowb"
+          >
+            <div
+              key="3"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 8,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Test Member"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Test Member"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 3,
+                        "email": "test@voiceflow.com",
+                        "image": "697986|EEF0F1",
+                        "name": "Test Member",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#EEF0F1",
+                          "color": "#697986",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#EEF0F1",
+                            "color": "#697986",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#EEF0F1",
+                              "color": "#697986",
+                            }
+                          }
+                        >
+                          T
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+            <div
+              key="2"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 7,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Admin User"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Admin User"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 2,
+                        "email": "admin@voiceflow.com",
+                        "image": "5891FB|EFF5FF",
+                        "name": "Admin User",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#EFF5FF",
+                          "color": "#5891FB",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#EFF5FF",
+                            "color": "#5891FB",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#EFF5FF",
+                              "color": "#5891FB",
+                            }
+                          }
+                        >
+                          A
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+            <div
+              key="1"
+              style={
+                Object {
+                  "position": "relative",
+                  "zIndex": 6,
+                }
+              }
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className=""
+                delay={0}
+                disabled={false}
+                distance={10}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Local User"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline",
+                    }
+                  }
+                  title="Local User"
+                >
+                  <ForwardRef
+                    user={
+                      Object {
+                        "created": null,
+                        "creator_id": 1,
+                        "email": "local@voiceflow.com",
+                        "image": "F86683|FEF2F4",
+                        "name": "Local User",
+                        "role": "admin",
+                        "seats": 10,
+                      }
+                    }
+                  >
+                    <styled.div
+                      style={
+                        Object {
+                          "backgroundColor": "#FEF2F4",
+                          "color": "#F86683",
+                        }
+                      }
+                    >
+                      <StyledComponent
+                        forwardedComponent={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "attrs": Array [],
+                            "componentStyle": ComponentStyle {
+                              "componentId": "sc-eqIVtm",
+                              "isStatic": false,
+                              "lastClassName": "fNkSha",
+                              "rules": Array [
+                                "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                                [Function],
+                                "
+
+  ",
+                                [Function],
+                                "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                              ],
+                            },
+                            "displayName": "styled.div",
+                            "foldedComponentIds": Array [],
+                            "render": [Function],
+                            "styledComponentId": "sc-eqIVtm",
+                            "target": "div",
+                            "toString": [Function],
+                            "warnTooManyClasses": [Function],
+                            "withComponent": [Function],
+                          }
+                        }
+                        forwardedRef={null}
+                        style={
+                          Object {
+                            "backgroundColor": "#FEF2F4",
+                            "color": "#F86683",
+                          }
+                        }
+                      >
+                        <div
+                          className="sc-eqIVtm fNkSha"
+                          style={
+                            Object {
+                              "backgroundColor": "#FEF2F4",
+                              "color": "#F86683",
+                            }
+                          }
+                        >
+                          L
+                        </div>
+                      </StyledComponent>
+                    </styled.div>
+                  </ForwardRef>
+                </div>
+              </Tooltip>
+            </div>
+            <Tooltip
+              animateFill={true}
+              animation="shift"
+              arrow={false}
+              arrowSize="regular"
+              className=""
+              delay={0}
+              disabled={false}
+              distance={10}
+              duration={375}
+              followCursor={false}
+              hideDelay={0}
+              hideDuration={375}
+              hideOnClick={true}
+              html={null}
+              inertia={false}
+              interactive={false}
+              interactiveBorder={2}
+              multiple={false}
+              offset={0}
+              onHidden={[Function]}
+              onHide={[Function]}
+              onRequestClose={[Function]}
+              onShow={[Function]}
+              onShown={[Function]}
+              popperOptions={Object {}}
+              position="bottom"
+              size="regular"
+              sticky={false}
+              stickyDuration={200}
+              style={Object {}}
+              theme="dark"
+              title="Add Collaborators"
+              touchHold={false}
+              trigger="mouseenter focus"
+              unmountHTMLWhenHide={false}
+            >
+              <div
+                className=""
+                style={
+                  Object {
+                    "display": "inline",
+                  }
+                }
+                title="Add Collaborators"
+              >
+                <Styled(styled.div)
+                  onClick={[Function]}
+                >
+                  <StyledComponent
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "sc-caSCKo",
+                          "isStatic": false,
+                          "lastClassName": "hzdhmx",
+                          "rules": Array [
+                            "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+                            [Function],
+                            "
+
+  ",
+                            [Function],
+                            "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+                            "
+  line-height: 28px;
+  border-color: #becedc;
+  border-style: dashed;
+
+  &:hover {
+    border-color: rgb(141, 162, 181);
+    color: rgb(141, 162, 181) !important;
+    cursor: pointer;
+  }
+",
+                          ],
+                        },
+                        "displayName": "Styled(styled.div)",
+                        "foldedComponentIds": Array [
+                          "sc-eqIVtm",
+                        ],
+                        "render": [Function],
+                        "styledComponentId": "sc-caSCKo",
+                        "target": "div",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    onClick={[Function]}
+                  >
+                    <div
+                      className="sc-eqIVtm sc-caSCKo hzdhmx"
+                      onClick={[Function]}
+                    >
+                      <ForwardRef
+                        icon="plus"
+                        size={12}
+                      >
+                        <styled.span
+                          color="currentColor"
+                          size={12}
+                        >
+                          <StyledComponent
+                            color="currentColor"
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "sc-bxivhb",
+                                  "isStatic": false,
+                                  "lastClassName": "iYlQyD",
+                                  "rules": Array [
+                                    "
+  ",
+                                    [Function],
+                                    "
+
+  color: ",
+                                    [Function],
+                                    ";
+  width: ",
+                                    [Function],
+                                    "px;
+  height: ",
+                                    [Function],
+                                    "px;
+  box-sizing: content-box;
+  
+  ",
+                                    [Function],
+                                    "
+
+  & > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+  }
+
+  &:hover,
+  &:active {
+    color: ",
+                                    [Function],
+                                    ";
+
+  }
+",
+                                  ],
+                                },
+                                "displayName": "styled.span",
+                                "foldedComponentIds": Array [],
+                                "render": [Function],
+                                "styledComponentId": "sc-bxivhb",
+                                "target": "span",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                            size={12}
+                          >
+                            <span
+                              className="sc-bxivhb iYlQyD"
+                              color="currentColor"
+                              size={12}
+                            >
+                              <test-file-stub />
+                            </span>
+                          </StyledComponent>
+                        </styled.span>
+                      </ForwardRef>
+                    </div>
+                  </StyledComponent>
+                </Styled(styled.div)>
+              </div>
+            </Tooltip>
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </div>
+  </StyledComponent>
+</styled.div>
+`;
+
+exports[`Storyshots User variants - User: default 1`] = `
+<styled.div
+  style={
+    Object {
+      "backgroundColor": "#FEF2F4",
+      "color": "#F86683",
+    }
+  }
+>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-eqIVtm",
+          "isStatic": false,
+          "lastClassName": "ddkuvJ",
+          "rules": Array [
+            "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+            [Function],
+            "
+
+  ",
+            [Function],
+            "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-eqIVtm",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    style={
+      Object {
+        "backgroundColor": "#FEF2F4",
+        "color": "#F86683",
+      }
+    }
+  >
+    <div
+      className="sc-eqIVtm fNkSha"
+      style={
+        Object {
+          "backgroundColor": "#FEF2F4",
+          "color": "#F86683",
+        }
+      }
+    >
+      L
+    </div>
+  </StyledComponent>
+</styled.div>
+`;
+
+exports[`Storyshots User variants - User: large 1`] = `
+<styled.div
+  large={true}
+  style={
+    Object {
+      "backgroundColor": "#FEF2F4",
+      "color": "#F86683",
+    }
+  }
+>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-eqIVtm",
+          "isStatic": false,
+          "lastClassName": "ddkuvJ",
+          "rules": Array [
+            "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+            [Function],
+            "
+
+  ",
+            [Function],
+            "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-eqIVtm",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    large={true}
+    style={
+      Object {
+        "backgroundColor": "#FEF2F4",
+        "color": "#F86683",
+      }
+    }
+  >
+    <div
+      className="sc-eqIVtm ddkuvJ"
+      style={
+        Object {
+          "backgroundColor": "#FEF2F4",
+          "color": "#F86683",
+        }
+      }
+    >
+      L
+    </div>
+  </StyledComponent>
+</styled.div>
+`;
+
+exports[`Storyshots User variants - User: solid 1`] = `
+<styled.div
+  solid={true}
+  style={
+    Object {
+      "backgroundColor": "#FEF2F4",
+      "color": "#F86683",
+    }
+  }
+>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-eqIVtm",
+          "isStatic": false,
+          "lastClassName": "ddkuvJ",
+          "rules": Array [
+            "
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 26px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border: 1px solid rgba(17, 49, 96, 0.08);
+  border-radius: 100%;
+  box-shadow: inset 0 0 0 2px #fff;
+  cursor: default;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+
+  &:hover {
+    border-color: rgba(17, 49, 96, 0.13);
+  }
+
+  ",
+            [Function],
+            "
+
+  ",
+            [Function],
+            "
+  
+  & > * {
+    display: inline-block;
+  }
+",
+          ],
+        },
+        "displayName": "styled.div",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-eqIVtm",
+        "target": "div",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={null}
+    solid={true}
+    style={
+      Object {
+        "backgroundColor": "#FEF2F4",
+        "color": "#F86683",
+      }
+    }
+  >
+    <div
+      className="sc-eqIVtm hqziUo"
+      style={
+        Object {
+          "backgroundColor": "#FEF2F4",
+          "color": "#F86683",
+        }
+      }
+    >
+      L
+    </div>
+  </StyledComponent>
+</styled.div>
+`;

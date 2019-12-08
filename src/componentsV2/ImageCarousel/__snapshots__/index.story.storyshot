@@ -7,9 +7,9 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
       "$$typeof": Symbol(react.forward_ref),
       "attrs": Array [],
       "componentStyle": ComponentStyle {
-        "componentId": "sc-kgAjT",
+        "componentId": "sc-frDJqD",
         "isStatic": true,
-        "lastClassName": "llzEGG",
+        "lastClassName": "jmEgRd",
         "rules": Array [
           "
   width: 500px;
@@ -19,7 +19,7 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
       "displayName": "styled.div",
       "foldedComponentIds": Array [],
       "render": [Function],
-      "styledComponentId": "sc-kgAjT",
+      "styledComponentId": "sc-frDJqD",
       "target": "div",
       "toString": [Function],
       "warnTooManyClasses": [Function],
@@ -29,7 +29,7 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
   forwardedRef={null}
 >
   <div
-    className="sc-kgAjT llzEGG"
+    className="sc-frDJqD jmEgRd"
   >
     <ImageCarousel
       imageUrls={
@@ -48,9 +48,9 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
               "$$typeof": Symbol(react.forward_ref),
               "attrs": Array [],
               "componentStyle": ComponentStyle {
-                "componentId": "sc-TOsTZ",
+                "componentId": "sc-hmzhuo",
                 "isStatic": true,
-                "lastClassName": "ldQyOQ",
+                "lastClassName": "fleXgO",
                 "rules": Array [
                   "
   overflow-y: hidden;
@@ -64,7 +64,7 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
               "displayName": "Styled(DragScroll)",
               "foldedComponentIds": Array [],
               "render": [Function],
-              "styledComponentId": "sc-TOsTZ",
+              "styledComponentId": "sc-hmzhuo",
               "target": [Function],
               "toString": [Function],
               "warnTooManyClasses": [Function],
@@ -78,10 +78,10 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
           }
         >
           <DragScroll
-            className="sc-TOsTZ ldQyOQ"
+            className="sc-hmzhuo fleXgO"
           >
             <SimpleBar
-              className="sc-TOsTZ ldQyOQ"
+              className="sc-hmzhuo fleXgO"
               onMouseDown={[Function]}
               onMouseLeave={[Function]}
               onMouseMove={[Function]}
@@ -103,7 +103,7 @@ exports[`Storyshots Image Carousel variants: normal 1`] = `
               }
             >
               <div
-                className="sc-TOsTZ ldQyOQ"
+                className="sc-hmzhuo fleXgO"
                 data-simplebar={true}
                 onMouseDown={[Function]}
                 onMouseLeave={[Function]}

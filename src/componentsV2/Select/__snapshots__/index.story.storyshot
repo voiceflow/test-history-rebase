@@ -34,9 +34,9 @@ exports[`Storyshots Select variants: creatable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-cJSrbW",
+              "componentId": "sc-kvZOFW",
               "isStatic": true,
-              "lastClassName": "fdJBli",
+              "lastClassName": "bHDyla",
               "rules": Array [
                 "
   position: relative;
@@ -48,7 +48,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-cJSrbW",
+            "styledComponentId": "sc-kvZOFW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -61,7 +61,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
         tabIndex={0}
       >
         <div
-          className="sc-cJSrbW fdJBli"
+          className="sc-kvZOFW bHDyla"
           onClick={[Function]}
           onFocus={[Function]}
           tabIndex={0}
@@ -89,9 +89,9 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-ksYbfQ",
+                        "componentId": "sc-hqyNC",
                         "isStatic": false,
-                        "lastClassName": "hIntx",
+                        "lastClassName": "bhquZI",
                         "rules": Array [
                           "
   ",
@@ -107,7 +107,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-ksYbfQ",
+                      "styledComponentId": "sc-hqyNC",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -126,7 +126,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-ksYbfQ hrAIbn"
+                    className="sc-hqyNC jaJKbr"
                     disabled={true}
                     isFocused={false}
                     onChange={[Function]}
@@ -136,7 +136,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                     value=""
                   >
                     <ForwardRef
-                      className="sc-ksYbfQ hrAIbn"
+                      className="sc-hqyNC jaJKbr"
                       disabled={true}
                       isFocused={false}
                       onChange={[Function]}
@@ -146,7 +146,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                       value=""
                     >
                       <styled.input
-                        className="sc-ksYbfQ hrAIbn"
+                        className="sc-hqyNC jaJKbr"
                         disabled={true}
                         isFocused={false}
                         onChange={[Function]}
@@ -156,7 +156,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                         value=""
                       >
                         <StyledComponent
-                          className="sc-ksYbfQ hrAIbn"
+                          className="sc-hqyNC jaJKbr"
                           disabled={true}
                           forwardedComponent={
                             Object {
@@ -237,7 +237,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-ksYbfQ hrAIbn sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC jaJKbr sc-jKJlTe hcCSZd"
                             disabled={true}
                             onChange={[Function]}
                             onClick={null}
@@ -295,9 +295,9 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-cJSrbW",
+              "componentId": "sc-kvZOFW",
               "isStatic": true,
-              "lastClassName": "fdJBli",
+              "lastClassName": "bHDyla",
               "rules": Array [
                 "
   position: relative;
@@ -309,7 +309,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-cJSrbW",
+            "styledComponentId": "sc-kvZOFW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -322,7 +322,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-cJSrbW fdJBli"
+          className="sc-kvZOFW bHDyla"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -351,9 +351,9 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-ksYbfQ",
+                        "componentId": "sc-hqyNC",
                         "isStatic": false,
-                        "lastClassName": "hIntx",
+                        "lastClassName": "bhquZI",
                         "rules": Array [
                           "
   ",
@@ -369,7 +369,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-ksYbfQ",
+                      "styledComponentId": "sc-hqyNC",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -389,7 +389,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-ksYbfQ hIntx"
+                    className="sc-hqyNC bhquZI"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -400,7 +400,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                     value=""
                   >
                     <ForwardRef
-                      className="sc-ksYbfQ hIntx"
+                      className="sc-hqyNC bhquZI"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -411,7 +411,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                       value=""
                     >
                       <styled.input
-                        className="sc-ksYbfQ hIntx"
+                        className="sc-hqyNC bhquZI"
                         disabled={false}
                         isFocused={false}
                         onChange={[Function]}
@@ -422,7 +422,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                         value=""
                       >
                         <StyledComponent
-                          className="sc-ksYbfQ hIntx"
+                          className="sc-hqyNC bhquZI"
                           disabled={false}
                           forwardedComponent={
                             Object {
@@ -504,7 +504,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}
@@ -605,9 +605,9 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-cJSrbW",
+              "componentId": "sc-kvZOFW",
               "isStatic": true,
-              "lastClassName": "fdJBli",
+              "lastClassName": "bHDyla",
               "rules": Array [
                 "
   position: relative;
@@ -619,7 +619,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-cJSrbW",
+            "styledComponentId": "sc-kvZOFW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -632,7 +632,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-cJSrbW fdJBli"
+          className="sc-kvZOFW bHDyla"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -661,9 +661,9 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-ksYbfQ",
+                        "componentId": "sc-hqyNC",
                         "isStatic": false,
-                        "lastClassName": "hIntx",
+                        "lastClassName": "bhquZI",
                         "rules": Array [
                           "
   ",
@@ -679,7 +679,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-ksYbfQ",
+                      "styledComponentId": "sc-hqyNC",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -699,7 +699,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-ksYbfQ hIntx"
+                    className="sc-hqyNC bhquZI"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -710,7 +710,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                     value=""
                   >
                     <ForwardRef
-                      className="sc-ksYbfQ hIntx"
+                      className="sc-hqyNC bhquZI"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -721,7 +721,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                       value=""
                     >
                       <styled.input
-                        className="sc-ksYbfQ hIntx"
+                        className="sc-hqyNC bhquZI"
                         disabled={false}
                         isFocused={false}
                         onChange={[Function]}
@@ -732,7 +732,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                         value=""
                       >
                         <StyledComponent
-                          className="sc-ksYbfQ hIntx"
+                          className="sc-hqyNC bhquZI"
                           disabled={false}
                           forwardedComponent={
                             Object {
@@ -814,7 +814,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}
@@ -868,9 +868,9 @@ exports[`Storyshots Select variants: default 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-cJSrbW",
+              "componentId": "sc-kvZOFW",
               "isStatic": true,
-              "lastClassName": "fdJBli",
+              "lastClassName": "bHDyla",
               "rules": Array [
                 "
   position: relative;
@@ -882,7 +882,7 @@ exports[`Storyshots Select variants: default 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-cJSrbW",
+            "styledComponentId": "sc-kvZOFW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -895,7 +895,7 @@ exports[`Storyshots Select variants: default 1`] = `
         tabIndex={0}
       >
         <div
-          className="sc-cJSrbW fdJBli"
+          className="sc-kvZOFW bHDyla"
           onClick={[Function]}
           onFocus={[Function]}
           tabIndex={0}
@@ -923,9 +923,9 @@ exports[`Storyshots Select variants: default 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-ksYbfQ",
+                        "componentId": "sc-hqyNC",
                         "isStatic": false,
-                        "lastClassName": "hIntx",
+                        "lastClassName": "bhquZI",
                         "rules": Array [
                           "
   ",
@@ -941,7 +941,7 @@ exports[`Storyshots Select variants: default 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-ksYbfQ",
+                      "styledComponentId": "sc-hqyNC",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -960,7 +960,7 @@ exports[`Storyshots Select variants: default 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-ksYbfQ hrAIbn"
+                    className="sc-hqyNC jaJKbr"
                     disabled={true}
                     isFocused={false}
                     onChange={[Function]}
@@ -970,7 +970,7 @@ exports[`Storyshots Select variants: default 1`] = `
                     value=""
                   >
                     <ForwardRef
-                      className="sc-ksYbfQ hrAIbn"
+                      className="sc-hqyNC jaJKbr"
                       disabled={true}
                       isFocused={false}
                       onChange={[Function]}
@@ -980,7 +980,7 @@ exports[`Storyshots Select variants: default 1`] = `
                       value=""
                     >
                       <styled.input
-                        className="sc-ksYbfQ hrAIbn"
+                        className="sc-hqyNC jaJKbr"
                         disabled={true}
                         isFocused={false}
                         onChange={[Function]}
@@ -990,7 +990,7 @@ exports[`Storyshots Select variants: default 1`] = `
                         value=""
                       >
                         <StyledComponent
-                          className="sc-ksYbfQ hrAIbn"
+                          className="sc-hqyNC jaJKbr"
                           disabled={true}
                           forwardedComponent={
                             Object {
@@ -1071,7 +1071,7 @@ exports[`Storyshots Select variants: default 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-ksYbfQ hrAIbn sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC jaJKbr sc-jKJlTe hcCSZd"
                             disabled={true}
                             onChange={[Function]}
                             onClick={null}
@@ -1126,9 +1126,9 @@ exports[`Storyshots Select variants: searchable 1`] = `
             "$$typeof": Symbol(react.forward_ref),
             "attrs": Array [],
             "componentStyle": ComponentStyle {
-              "componentId": "sc-cJSrbW",
+              "componentId": "sc-kvZOFW",
               "isStatic": true,
-              "lastClassName": "fdJBli",
+              "lastClassName": "bHDyla",
               "rules": Array [
                 "
   position: relative;
@@ -1140,7 +1140,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
             "displayName": "styled.div",
             "foldedComponentIds": Array [],
             "render": [Function],
-            "styledComponentId": "sc-cJSrbW",
+            "styledComponentId": "sc-kvZOFW",
             "target": "div",
             "toString": [Function],
             "warnTooManyClasses": [Function],
@@ -1153,7 +1153,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
         tabIndex={-1}
       >
         <div
-          className="sc-cJSrbW fdJBli"
+          className="sc-kvZOFW bHDyla"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
@@ -1182,9 +1182,9 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       "$$typeof": Symbol(react.forward_ref),
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
-                        "componentId": "sc-ksYbfQ",
+                        "componentId": "sc-hqyNC",
                         "isStatic": false,
-                        "lastClassName": "hIntx",
+                        "lastClassName": "bhquZI",
                         "rules": Array [
                           "
   ",
@@ -1200,7 +1200,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       "displayName": "Styled(Component)",
                       "foldedComponentIds": Array [],
                       "render": [Function],
-                      "styledComponentId": "sc-ksYbfQ",
+                      "styledComponentId": "sc-hqyNC",
                       "target": Object {
                         "$$typeof": Symbol(react.forward_ref),
                         "render": [Function],
@@ -1220,7 +1220,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                   value=""
                 >
                   <ForwardRef(Input)
-                    className="sc-ksYbfQ hIntx"
+                    className="sc-hqyNC bhquZI"
                     disabled={false}
                     isFocused={false}
                     onChange={[Function]}
@@ -1231,7 +1231,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                     value=""
                   >
                     <ForwardRef
-                      className="sc-ksYbfQ hIntx"
+                      className="sc-hqyNC bhquZI"
                       disabled={false}
                       isFocused={false}
                       onChange={[Function]}
@@ -1242,7 +1242,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                       value=""
                     >
                       <styled.input
-                        className="sc-ksYbfQ hIntx"
+                        className="sc-hqyNC bhquZI"
                         disabled={false}
                         isFocused={false}
                         onChange={[Function]}
@@ -1253,7 +1253,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                         value=""
                       >
                         <StyledComponent
-                          className="sc-ksYbfQ hIntx"
+                          className="sc-hqyNC bhquZI"
                           disabled={false}
                           forwardedComponent={
                             Object {
@@ -1335,7 +1335,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-ksYbfQ hIntx sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}

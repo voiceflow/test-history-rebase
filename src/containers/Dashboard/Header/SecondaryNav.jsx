@@ -10,7 +10,6 @@ import { FEATURE_IDS, MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
-import RolePermissionGate from '@/gates/RolePermissionGate';
 import { connect } from '@/hocs';
 
 import { NewWorkspaceTab, TabsContainer } from './components';
@@ -22,6 +21,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
   const { toggle: toggleCollaborators } = useModals(MODALS.COLLABORATORS);
   const { toggle: toggleWorkspaceSettings } = useModals(MODALS.BOARD_SETTINGS);
   const [canUseWorkspaceSettings] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
+  const [canAddCollaborators] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
 
   const tabsOptions = React.useMemo(() => {
     const tabs = workspaces.map((workspace) => ({
@@ -54,14 +54,17 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
       <div className="super-center">
         {selectedWorkspace && (
           <>
-            <RolePermissionGate featureId={FEATURE_IDS.ADD_COLLABORATORS}>
-              <div className="add-collaborators" onClick={toggleCollaborators}>
-                <SvgIcon icon="power" color="inherit" />
-                Add Collaborators
-              </div>
-            </RolePermissionGate>
+            {selectedWorkspace.members.length > 1 ? (
+              <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
+            ) : (
+              canAddCollaborators && (
+                <div className="add-collaborators" onClick={toggleCollaborators}>
+                  <SvgIcon icon="power" color="inherit" />
+                  Add Collaborators
+                </div>
+              )
+            )}
 
-            <Members members={selectedWorkspace.members} />
             <>
               {
                 <div className="nav-child-item">

@@ -14,9 +14,9 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-gGBfsJ",
+          "componentId": "sc-hEsumM",
           "isStatic": false,
-          "lastClassName": "jySKYS",
+          "lastClassName": "lkrEwk",
           "rules": Array [
             "
   ",
@@ -83,7 +83,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
         "displayName": "Styled(TextareaAutosize)",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-gGBfsJ",
+        "styledComponentId": "sc-hEsumM",
         "target": [Function],
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -96,7 +96,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
   >
     <TextareaAutosize
-      className="sc-gGBfsJ jySKYS"
+      className="sc-hEsumM lkrEwk"
       disabled={false}
       inputRef={[Function]}
       onChange={[Function]}
@@ -106,7 +106,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
       value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
     >
       <textarea
-        className="sc-gGBfsJ jySKYS"
+        className="sc-hEsumM lkrEwk"
         disabled={false}
         onChange={[Function]}
         placeholder="placeholder"

@@ -157,7 +157,7 @@
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "^7.14.2",
-    "eslint-plugin-react-hooks": "^1.6.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "exargs": "^1.0.0",
     "file-loader": "2.0.0",
     "fixpack": "^2.3.1",

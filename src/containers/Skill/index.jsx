@@ -73,6 +73,7 @@ function Skill(props) {
 
   const timeMounted = null;
   const idleTimer = React.useRef();
+  const isTesting = activePage === 'test';
 
   React.useEffect(() => {
     if (window.performance?.navigation.type === 1) {
@@ -82,16 +83,7 @@ function Skill(props) {
 
       skill && props.trackSessionTime(timeUnmounted - timeMounted, skill.skill_id);
     }
-  }, []);
-
-  if (error) {
-    return (
-      <div className="super-center w-100 h-100">
-        <Alert color="danger">{error}</Alert>
-      </div>
-    );
-  }
-  const isTesting = activePage === 'test';
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setActive = React.useCallback(() => {
     onActive();
@@ -102,6 +94,14 @@ function Skill(props) {
     onIdle();
     idleTimer.current.pause();
   }, [onIdle]);
+
+  if (error) {
+    return (
+      <div className="super-center w-100 h-100">
+        <Alert color="danger">{error}</Alert>
+      </div>
+    );
+  }
 
   return (
     <>

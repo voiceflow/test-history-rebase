@@ -20,23 +20,8 @@ import { compose } from '@/utils/functional';
 
 function DisplayEditor({ data, onChange, displays, goToDisplays, goToNewDisplay, displayModal }) {
   const { setDisplayID, setDataSource, setAPLCommands, toggle } = displayModal;
-  if (displays.length === 0) {
-    return (
-      <Section>
-        <div className="text-center">
-          <img className="mb-4" src="/desktop.svg" alt="user" width="64" />
-          <br />
-          <label className="dark">No Displays Exist</label>
-          <div className="text-muted">You currently have no Multimodal Displays</div>
-          <button className="btn btn-secondary mt-4" onClick={goToNewDisplay}>
-            Add Displays
-          </button>
-        </div>
-      </Section>
-    );
-  }
 
-  const getDatasource = (displayID) => displays.find((display) => display.id === displayID).datasource || null;
+  const getDatasource = React.useCallback((displayID) => displays.find((display) => display.id === displayID).datasource || null, [displays]);
 
   const updateDatasource = React.useCallback((datasource) => onChange({ datasource }), [onChange]);
 
@@ -58,6 +43,22 @@ function DisplayEditor({ data, onChange, displays, goToDisplays, goToNewDisplay,
     setAPLCommands(data.aplCommands || '');
     toggle();
   };
+
+  if (displays.length === 0) {
+    return (
+      <Section>
+        <div className="text-center">
+          <img className="mb-4" src="/desktop.svg" alt="user" width="64" />
+          <br />
+          <label className="dark">No Displays Exist</label>
+          <div className="text-muted">You currently have no Multimodal Displays</div>
+          <button className="btn btn-secondary mt-4" onClick={goToNewDisplay}>
+            Add Displays
+          </button>
+        </div>
+      </Section>
+    );
+  }
 
   return (
     <Content>

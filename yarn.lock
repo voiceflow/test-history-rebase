@@ -2932,10 +2932,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.1.tgz#e9513aa348d5e88ff064022e2dae8d0d7e227f6a"
   integrity sha512-7amH9jUarcsB5CXmYNOeejQXtCs7kdyETjPp6q2x0y1mNGWfhqzWZ/FySP+wkvFytXyu46PADH29rBw3p2zGdw==
 
-"@voiceflow/common@^6.1.2":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.1.2.tgz#5448a6b7af48299fab49a5155ee816cd79399710"
-  integrity sha512-lsMAAl9UcyNCZNEQ60nOe8cFPAnIjKSlOSTG29OuN4Qj8mTHb/o+cXYR9tPZGNXjbIFt743AwEPoIx9TM1RtRg==
+"@voiceflow/common@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.2.0.tgz#9aa8d110119477d2ef6d2fe33cc65dfc66a73a12"
+  integrity sha512-jJhEXdpykzbNzwwI/KJva15YsRzH49ydi4y25RAc+Ki5sVkimV4jbOMiwGxfesrhjmOxRZet0Mu2OfxroDMTVw==
   dependencies:
     lodash "^4.17.11"
     moment "^2.24.0"
@@ -7645,10 +7645,10 @@ eslint-plugin-promise@^4.1.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.2.1.tgz#845fd8b2260ad8f82564c1222fce44ad71d9418a"
   integrity sha512-VoM09vT7bfA7D+upt+FjeBO5eHIJQBUWki1aPvB+vbNiHS3+oGIJGIeyBtKQTME6UPXXy3vV07OL1tHd3ANuDw==
 
-eslint-plugin-react-hooks@^1.6.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.6.1.tgz#3c66a5515ea3e0a221ffc5d4e75c971c217b1a4c"
-  integrity sha512-wHhmGJyVuijnYIJXZJHDUF2WM+rJYTjulUTqF9k61d3BTk8etydz+M4dXUVH7M76ZRS85rqBTCx0Es/lLsrjnA==
+eslint-plugin-react-hooks@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.3.0.tgz#53e073961f1f5ccf8dd19558036c1fac8c29d99a"
+  integrity sha512-gLKCa52G4ee7uXzdLiorca7JIQZPPXRAQDXV83J4bUEeUuc5pIEyZYAZ45Xnxe5IuupxEqHS+hUhSLIimK1EMw==
 
 eslint-plugin-react@^7.13.0, eslint-plugin-react@^7.14.2:
   version "7.14.2"

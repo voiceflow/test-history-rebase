@@ -164,7 +164,7 @@ Array [
                             class="Flex-sc-127y44r-0 sc-htoDjs hAuPnP"
                           >
                             <button
-                              class="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                              class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                             >
                               <span
                                 class="sc-bxivhb iqcteL"
@@ -175,7 +175,7 @@ Array [
                               </span>
                             </button>
                             <button
-                              class="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                              class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                             >
                               <span
                                 class="sc-bxivhb iqcteL"
@@ -187,7 +187,7 @@ Array [
                             </button>
                           </div>
                           <button
-                            class="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                            class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                           >
                             <span
                               class="sc-bxivhb iqcteL"
@@ -277,7 +277,7 @@ Array [
                                         "componentStyle": ComponentStyle {
                                           "componentId": "sc-EHOje",
                                           "isStatic": false,
-                                          "lastClassName": "bsuML",
+                                          "lastClassName": "bnmUWa",
                                           "rules": Array [
                                             "
   ",
@@ -328,7 +328,7 @@ Array [
                                             "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -384,7 +384,7 @@ Array [
                                     onClick={[Function]}
                                   >
                                     <button
-                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                                       onClick={[Function]}
                                     >
                                       <ForwardRef
@@ -485,7 +485,7 @@ Array [
                                         "componentStyle": ComponentStyle {
                                           "componentId": "sc-EHOje",
                                           "isStatic": false,
-                                          "lastClassName": "bsuML",
+                                          "lastClassName": "bnmUWa",
                                           "rules": Array [
                                             "
   ",
@@ -536,7 +536,7 @@ Array [
                                             "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -592,7 +592,7 @@ Array [
                                     onClick={[Function]}
                                   >
                                     <button
-                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                                      className="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                                       onClick={[Function]}
                                     >
                                       <ForwardRef
@@ -696,7 +696,7 @@ Array [
                                   "componentStyle": ComponentStyle {
                                     "componentId": "sc-EHOje",
                                     "isStatic": false,
-                                    "lastClassName": "bsuML",
+                                    "lastClassName": "bnmUWa",
                                     "rules": Array [
                                       "
   ",
@@ -747,7 +747,7 @@ Array [
                                       "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -803,7 +803,7 @@ Array [
                               onClick={[Function]}
                             >
                               <button
-                                className="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+                                className="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                                 onClick={[Function]}
                               >
                                 <ForwardRef

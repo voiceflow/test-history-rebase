@@ -15,7 +15,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "ActionIconButtonContainer-sc-1imkol5-0",
           "isStatic": false,
-          "lastClassName": "clLUM",
+          "lastClassName": "ffcXTB",
           "rules": Array [
             "
   ",
@@ -66,7 +66,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -128,7 +128,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
     variant="action"
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 clLUM"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 ffcXTB"
       disabled={false}
       onClick={[Function]}
     >
@@ -231,7 +231,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "eSKeKI",
+          "lastClassName": "lbhBnO",
           "rules": Array [
             "
   ",
@@ -282,7 +282,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -339,7 +339,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
     variant="flat"
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
       disabled={false}
       onClick={[Function]}
     >
@@ -441,7 +441,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "eSKeKI",
+          "lastClassName": "lbhBnO",
           "rules": Array [
             "
   ",
@@ -492,7 +492,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -548,7 +548,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
       disabled={false}
       onClick={[Function]}
     >

@@ -49,7 +49,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "eSKeKI",
+                  "lastClassName": "lbhBnO",
                   "rules": Array [
                     "
   ",
@@ -100,7 +100,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -157,7 +157,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
               onClick={[Function]}
             >
               <ForwardRef
@@ -279,7 +279,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "eSKeKI",
+                  "lastClassName": "lbhBnO",
                   "rules": Array [
                     "
   ",
@@ -330,7 +330,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     "px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  
@@ -387,7 +387,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
               onClick={[Function]}
             >
               <ForwardRef

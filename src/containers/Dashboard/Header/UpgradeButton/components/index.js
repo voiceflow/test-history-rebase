@@ -18,6 +18,7 @@ export const UpgradeIcon = styled(IconButton)`
   pointer-events: none;
   user-select: none;
   ${transition(['border'])}
+  color: #4c944f;
 `;
 
 export const Container = styled(Flex)`

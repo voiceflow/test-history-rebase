@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 
 import { FEATURE_IDS, MODALS } from '@/constants';
@@ -16,7 +17,7 @@ function UpgradeButton({ onPaidPlan }) {
       <>
         {!onPaidPlan ? (
           <Container onClick={openPaymentsModal}>
-            <UpgradeIcon variant="flat" large icon="upgrade" color="#4c944f" />
+            <UpgradeIcon variant="flat" large icon="upgrade" />
             <UpgradeText>UPGRADE</UpgradeText>
           </Container>
         ) : null}

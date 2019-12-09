@@ -21,7 +21,7 @@ const IconButtonContainer = styled(ButtonContainer)`
   width: ${BUTTON_HEIGHT}px;
   border: 0;
   color: #8da2b5;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid transparent;
   transition: all 0.12s ease-out;
  

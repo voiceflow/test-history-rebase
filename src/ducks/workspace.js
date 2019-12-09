@@ -4,6 +4,7 @@ import client from '@/client';
 import { toast } from '@/componentsV2/Toast';
 import Normalize, { deleteNormalize, normalize } from '@/ducks/_normalize';
 import { setError } from '@/ducks/modal';
+import { getAlternativeColor } from '@/utils/colors';
 
 import { createRootSelector } from './utils';
 
@@ -101,6 +102,15 @@ export const allWorkspacesSelector = createSelector(
 export const workspaceMemberSelector = createSelector(
   activeWorkspaceMembersSelector,
   (members) => (creatorID) => members?.find((member) => String(member.creator_id) === creatorID) || null
+);
+
+export const distinctWorkspaceMemberSelector = createSelector(
+  workspaceMemberSelector,
+  (getWorkspaceMember) => (creatorID, tabID) => {
+    const workspaceMember = getWorkspaceMember(creatorID);
+
+    return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
+  }
 );
 
 // actions

@@ -3,7 +3,7 @@
 exports[`Storyshots Select variants: creatable 1`] = `
 <Select
   creatable={true}
-  createInputPlaceholder="create placeholder"
+  createInputPlaceholder="Create placeholder"
   onCreate={[Function]}
   onSelect={[Function]}
   options={
@@ -165,7 +165,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "sc-jKJlTe",
                                 "isStatic": false,
-                                "lastClassName": "hcCSZd",
+                                "lastClassName": "bQEdZn",
                                 "rules": Array [
                                   "
   ",
@@ -188,6 +188,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -237,7 +238,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-hqyNC jaJKbr sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC jaJKbr sc-jKJlTe bQEdZn"
                             disabled={true}
                             onChange={[Function]}
                             onClick={null}
@@ -263,7 +264,7 @@ exports[`Storyshots Select variants: creatable 1`] = `
 exports[`Storyshots Select variants: creatable-searchable 1`] = `
 <Select
   creatable={true}
-  createInputPlaceholder="create placeholder"
+  createInputPlaceholder="Create placeholder"
   onCreate={[Function]}
   onSelect={[Function]}
   options={
@@ -431,7 +432,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "sc-jKJlTe",
                                 "isStatic": false,
-                                "lastClassName": "hcCSZd",
+                                "lastClassName": "bQEdZn",
                                 "rules": Array [
                                   "
   ",
@@ -454,6 +455,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -504,7 +506,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe bQEdZn"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}
@@ -530,7 +532,7 @@ exports[`Storyshots Select variants: creatable-searchable 1`] = `
 exports[`Storyshots Select variants: custom label renderer 1`] = `
 <Select
   creatable={true}
-  createInputPlaceholder="create placeholder"
+  createInputPlaceholder="Create placeholder"
   getOptionLabel={[Function]}
   getOptionValue={[Function]}
   onCreate={[Function]}
@@ -741,7 +743,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "sc-jKJlTe",
                                 "isStatic": false,
-                                "lastClassName": "hcCSZd",
+                                "lastClassName": "bQEdZn",
                                 "rules": Array [
                                   "
   ",
@@ -764,6 +766,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -814,7 +817,7 @@ exports[`Storyshots Select variants: custom label renderer 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe bQEdZn"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}
@@ -999,7 +1002,7 @@ exports[`Storyshots Select variants: default 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "sc-jKJlTe",
                                 "isStatic": false,
-                                "lastClassName": "hcCSZd",
+                                "lastClassName": "bQEdZn",
                                 "rules": Array [
                                   "
   ",
@@ -1022,6 +1025,7 @@ exports[`Storyshots Select variants: default 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -1071,7 +1075,7 @@ exports[`Storyshots Select variants: default 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-hqyNC jaJKbr sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC jaJKbr sc-jKJlTe bQEdZn"
                             disabled={true}
                             onChange={[Function]}
                             onClick={null}
@@ -1262,7 +1266,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "sc-jKJlTe",
                                 "isStatic": false,
-                                "lastClassName": "hcCSZd",
+                                "lastClassName": "bQEdZn",
                                 "rules": Array [
                                   "
   ",
@@ -1285,6 +1289,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -1335,7 +1340,7 @@ exports[`Storyshots Select variants: searchable 1`] = `
                           value=""
                         >
                           <input
-                            className="sc-hqyNC bhquZI sc-jKJlTe hcCSZd"
+                            className="sc-hqyNC bhquZI sc-jKJlTe bQEdZn"
                             disabled={false}
                             onChange={[Function]}
                             onClick={[Function]}

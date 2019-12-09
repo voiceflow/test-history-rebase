@@ -8,7 +8,7 @@ const SecondaryDropdownButtonToggle = styled(Flex)`
   margin-right: -2px;
 
   & ${SvgIconContainer} {
-    color: rgba(110, 132, 154, 0.85);
+    color: #6e849a;
   }
 `;
 

@@ -10,7 +10,7 @@ export const selectDropdown = css`
     ${({ variant }) =>
       variant === 'borderless'
         ? css`
-            border: none !important;
+            border: 1px solid transparent !important;
           `
         : css`
             border: 1px solid #d4d9e6 !important;
@@ -25,7 +25,7 @@ export const selectDropdown = css`
     border: 1px solid #5d9df5 !important;
   }
   .select__indicator-separator {
-    background-color: #fff;
+    background-color: transparent;
   }
   .select__menu {
     position: relative;
@@ -49,12 +49,15 @@ export const selectDropdown = css`
     cursor: pointer;
   }
   .select__option--is-selected {
-    background-color: #deebff;
+    background-color: #fff;
   }
   .select__option:hover {
     background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
   }
   .select__option:active {
+    background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), #ffffff;
+  }
+  .select__option--is-focused {
     background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), #ffffff;
   }
   .select__group-heading {

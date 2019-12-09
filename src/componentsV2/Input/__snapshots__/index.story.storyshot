@@ -39,7 +39,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-ckVGcZ",
             "isStatic": false,
-            "lastClassName": "cQHHMH",
+            "lastClassName": "keytlc",
             "rules": Array [
               "
   ",
@@ -62,6 +62,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -133,7 +134,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
       onClick={[Function]}
     >
       <div
-        className="sc-ckVGcZ cQHHMH"
+        className="sc-ckVGcZ keytlc"
         disabled={false}
         onClick={[Function]}
       >
@@ -409,7 +410,7 @@ exports[`Storyshots Input variants: icon 1`] = `
               "componentStyle": ComponentStyle {
                 "componentId": "sc-ckVGcZ",
                 "isStatic": false,
-                "lastClassName": "cQHHMH",
+                "lastClassName": "keytlc",
                 "rules": Array [
                   "
   ",
@@ -432,6 +433,7 @@ exports[`Storyshots Input variants: icon 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -503,7 +505,7 @@ exports[`Storyshots Input variants: icon 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-ckVGcZ cQHHMH"
+            className="sc-ckVGcZ keytlc"
             disabled={false}
             onClick={[Function]}
           >
@@ -808,7 +810,7 @@ exports[`Storyshots Input variants: input elements 1`] = `
               "componentStyle": ComponentStyle {
                 "componentId": "sc-ckVGcZ",
                 "isStatic": false,
-                "lastClassName": "cQHHMH",
+                "lastClassName": "keytlc",
                 "rules": Array [
                   "
   ",
@@ -831,6 +833,7 @@ exports[`Storyshots Input variants: input elements 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -902,7 +905,7 @@ exports[`Storyshots Input variants: input elements 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-ckVGcZ cQHHMH"
+            className="sc-ckVGcZ keytlc"
             disabled={false}
             onClick={[Function]}
           >
@@ -1032,7 +1035,7 @@ exports[`Storyshots Input variants: normal 1`] = `
             "componentStyle": ComponentStyle {
               "componentId": "sc-jKJlTe",
               "isStatic": false,
-              "lastClassName": "hcCSZd",
+              "lastClassName": "bQEdZn",
               "rules": Array [
                 "
   ",
@@ -1055,6 +1058,7 @@ exports[`Storyshots Input variants: normal 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -1099,7 +1103,7 @@ exports[`Storyshots Input variants: normal 1`] = `
         placeholder="placeholder"
       >
         <input
-          className="sc-jKJlTe hcCSZd"
+          className="sc-jKJlTe bQEdZn"
           disabled={false}
           placeholder="placeholder"
         />

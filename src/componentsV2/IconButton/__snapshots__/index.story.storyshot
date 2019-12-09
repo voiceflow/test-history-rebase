@@ -15,7 +15,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "ActionIconButtonContainer-sc-1imkol5-0",
           "isStatic": false,
-          "lastClassName": "kBqLoN",
+          "lastClassName": "clLUM",
           "rules": Array [
             "
   ",
@@ -66,8 +66,9 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ",
             [Function],
@@ -103,7 +104,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
             "
 ",
             "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-            " border:1px solid #fff;color:rgba(93,157,245,0.85);",
+            " border:1px solid #fff;color:#5d9df5;box-shadow:0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);&:hover{box-shadow:0 0 0 1px #fff,0 2px 4px 1px rgba(17,49,96,0.16);}",
             [Function],
             ";",
           ],
@@ -127,7 +128,7 @@ exports[`Storyshots Icon Button variants: action 1`] = `
     variant="action"
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 kBqLoN"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 clLUM"
       disabled={false}
       onClick={[Function]}
     >
@@ -230,7 +231,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "ehcvDr",
+          "lastClassName": "eSKeKI",
           "rules": Array [
             "
   ",
@@ -281,8 +282,9 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ",
             [Function],
@@ -337,7 +339,7 @@ exports[`Storyshots Icon Button variants: flat 1`] = `
     variant="flat"
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
       disabled={false}
       onClick={[Function]}
     >
@@ -439,7 +441,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-EHOje",
           "isStatic": false,
-          "lastClassName": "ehcvDr",
+          "lastClassName": "eSKeKI",
           "rules": Array [
             "
   ",
@@ -490,8 +492,9 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
             "px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ",
             [Function],
@@ -545,7 +548,7 @@ exports[`Storyshots Icon Button variants: normal 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje gydlaL"
+      className="sc-bdVaJa sc-ifAKCX sc-EHOje bsuML"
       disabled={false}
       onClick={[Function]}
     >

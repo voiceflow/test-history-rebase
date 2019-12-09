@@ -44,15 +44,16 @@ export const MenuHeader = styled.div`
   ${({ isFocused }) =>
     isFocused &&
     css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+      background: #ffffff;
 
       > input {
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
+        background: #ffffff;
       }
     `}
 
   display: flex;
-  padding: 0 24px;
+  padding: 0 24px
+  margin-bottom: 6px;
 `;
 
 export const MenuInput = styled(Input)`

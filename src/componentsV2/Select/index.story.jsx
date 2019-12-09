@@ -65,7 +65,7 @@ storiesOf('Select', module).add(
               onCreate={onCreateSimple}
               creatable
               placeholder="placeholder"
-              createInputPlaceholder="create placeholder"
+              createInputPlaceholder="Create placeholder"
             />
           </div>
         </Variant>
@@ -80,7 +80,7 @@ storiesOf('Select', module).add(
               creatable
               searchable
               placeholder="placeholder"
-              createInputPlaceholder="create placeholder"
+              createInputPlaceholder="Create placeholder"
             />
           </div>
         </Variant>
@@ -103,7 +103,7 @@ storiesOf('Select', module).add(
                   {defaultOptionLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)}
                 </>
               )}
-              createInputPlaceholder="create placeholder"
+              createInputPlaceholder="Create placeholder"
             />
           </div>
         </Variant>

@@ -1361,7 +1361,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                                             "componentStyle": ComponentStyle {
                                                               "componentId": "SecondaryButtonContainer-djlxo5-0",
                                                               "isStatic": false,
-                                                              "lastClassName": "fivAMD",
+                                                              "lastClassName": "hRdNaq",
                                                               "rules": Array [
                                                                 "
   ",
@@ -1406,7 +1406,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
 ",
                                                                 "
 ",
-                                                                "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+                                                                "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
                                                                 [Function],
                                                               ],
                                                             },
@@ -1427,7 +1427,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                                         onClick={[Function]}
                                                       >
                                                         <button
-                                                          className="sc-bdVaJa sc-ifAKCX OverflowMenuContainer-sc-1q774y2-0 PfSJa SecondaryButtonContainer-djlxo5-0 fivAMD"
+                                                          className="sc-bdVaJa sc-ifAKCX OverflowMenuContainer-sc-1q774y2-0 PfSJa SecondaryButtonContainer-djlxo5-0 hRdNaq"
                                                           onClick={[Function]}
                                                         >
                                                           <ForwardRef
@@ -1536,7 +1536,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                                 "componentStyle": ComponentStyle {
                                                   "componentId": "SecondaryButtonContainer-djlxo5-0",
                                                   "isStatic": false,
-                                                  "lastClassName": "fivAMD",
+                                                  "lastClassName": "hRdNaq",
                                                   "rules": Array [
                                                     "
   ",
@@ -1581,7 +1581,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
 ",
                                                     "
 ",
-                                                    "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+                                                    "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
                                                     [Function],
                                                   ],
                                                 },
@@ -1601,7 +1601,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                             forwardedRef={null}
                                           >
                                             <button
-                                              className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 fivAMD"
+                                              className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 hRdNaq"
                                             >
                                               <SecondaryButtonIcon>
                                                 <StyledComponent
@@ -1634,6 +1634,7 @@ exports[`Storyshots Creator/Editor variants: default 1`] = `
                                                   >
                                                     <ForwardRef
                                                       icon="alexa"
+                                                      size={16}
                                                     >
                                                       <styled.span
                                                         color="currentColor"

@@ -37,6 +37,7 @@ const ToastGlobalStyles = createGlobalStyle`
       padding: 24px 32px !important;
       border-radius: 5px !important;
       background-color: #fff !important;
+      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16) !important;
     }
   }
 `;

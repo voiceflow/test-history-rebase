@@ -30,6 +30,7 @@ export const inputStyle = css`
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ${inputDisabled}

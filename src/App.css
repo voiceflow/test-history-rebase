@@ -1140,6 +1140,10 @@ label {
   color: #8da2b590 !important;
 }
 
+.select__indicators {
+  cursor: pointer;
+}
+
 input,
 textarea,
 .text-to-voice,

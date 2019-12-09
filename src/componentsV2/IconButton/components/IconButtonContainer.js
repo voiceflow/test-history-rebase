@@ -21,8 +21,9 @@ const IconButtonContainer = styled(ButtonContainer)`
   width: ${BUTTON_HEIGHT}px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
@@ -38,7 +39,7 @@ const IconButtonContainer = styled(ButtonContainer)`
         `
       : css`
           &:hover {
-            box-shadow: 0px 2px 6px rgba(17, 49, 96, 0.24), 0px 0px 0px rgba(17, 49, 96, 0.04);
+            box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
           }
         `}
 

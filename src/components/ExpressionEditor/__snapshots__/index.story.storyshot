@@ -878,7 +878,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                     "componentStyle": ComponentStyle {
                                       "componentId": "sc-hSdWYo",
                                       "isStatic": false,
-                                      "lastClassName": "LJEDK",
+                                      "lastClassName": "egordc",
                                       "rules": Array [
                                         "
   ",
@@ -953,6 +953,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -1135,7 +1136,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                 }
                               >
                                 <Select
-                                  className="sc-iAyFgw variable-box sc-hSdWYo LJEDK"
+                                  className="sc-iAyFgw variable-box sc-hSdWYo egordc"
                                   classNamePrefix="variable-box"
                                   components={
                                     Object {
@@ -1179,7 +1180,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                   }
                                 >
                                   <StateManager
-                                    className="select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK"
+                                    className="select-box sc-iAyFgw variable-box sc-hSdWYo egordc"
                                     classNamePrefix="variable-box"
                                     components={
                                       Object {
@@ -1229,7 +1230,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                       backspaceRemovesValue={true}
                                       blurInputOnSelect={true}
                                       captureMenuScroll={false}
-                                      className="select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK"
+                                      className="select-box sc-iAyFgw variable-box sc-hSdWYo egordc"
                                       classNamePrefix="variable-box"
                                       closeMenuOnScroll={false}
                                       closeMenuOnSelect={true}
@@ -1307,7 +1308,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                       }
                                     >
                                       <SelectContainer
-                                        className="select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK"
+                                        className="select-box sc-iAyFgw variable-box sc-hSdWYo egordc"
                                         clearValue={[Function]}
                                         cx={[Function]}
                                         getStyles={[Function]}
@@ -1353,7 +1354,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                             "backspaceRemovesValue": true,
                                             "blurInputOnSelect": true,
                                             "captureMenuScroll": false,
-                                            "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                            "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                             "classNamePrefix": "variable-box",
                                             "closeMenuOnScroll": false,
                                             "closeMenuOnSelect": true,
@@ -1457,7 +1458,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                         }
                                       >
                                         <div
-                                          className="css-1pcexqc-container select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK"
+                                          className="css-1pcexqc-container select-box sc-iAyFgw variable-box sc-hSdWYo egordc"
                                           onKeyDown={[Function]}
                                         >
                                           <Control
@@ -1508,7 +1509,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                 "backspaceRemovesValue": true,
                                                 "blurInputOnSelect": true,
                                                 "captureMenuScroll": false,
-                                                "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                 "classNamePrefix": "variable-box",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
@@ -1655,7 +1656,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                     "backspaceRemovesValue": true,
                                                     "blurInputOnSelect": true,
                                                     "captureMenuScroll": false,
-                                                    "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                    "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                     "classNamePrefix": "variable-box",
                                                     "closeMenuOnScroll": false,
                                                     "closeMenuOnSelect": true,
@@ -1806,7 +1807,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                         "backspaceRemovesValue": true,
                                                         "blurInputOnSelect": true,
                                                         "captureMenuScroll": false,
-                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                         "classNamePrefix": "variable-box",
                                                         "closeMenuOnScroll": false,
                                                         "closeMenuOnSelect": true,
@@ -1934,7 +1935,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                         "backspaceRemovesValue": true,
                                                         "blurInputOnSelect": true,
                                                         "captureMenuScroll": false,
-                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                         "classNamePrefix": "variable-box",
                                                         "closeMenuOnScroll": false,
                                                         "closeMenuOnSelect": true,
@@ -2169,7 +2170,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                     "backspaceRemovesValue": true,
                                                     "blurInputOnSelect": true,
                                                     "captureMenuScroll": false,
-                                                    "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                    "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                     "classNamePrefix": "variable-box",
                                                     "closeMenuOnScroll": false,
                                                     "closeMenuOnSelect": true,
@@ -2315,7 +2316,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                         "backspaceRemovesValue": true,
                                                         "blurInputOnSelect": true,
                                                         "captureMenuScroll": false,
-                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                         "classNamePrefix": "variable-box",
                                                         "closeMenuOnScroll": false,
                                                         "closeMenuOnSelect": true,
@@ -2469,7 +2470,7 @@ exports[`Storyshots ExpressionEditor variants: default 1`] = `
                                                         "backspaceRemovesValue": true,
                                                         "blurInputOnSelect": true,
                                                         "captureMenuScroll": false,
-                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo LJEDK",
+                                                        "className": "select-box sc-iAyFgw variable-box sc-hSdWYo egordc",
                                                         "classNamePrefix": "variable-box",
                                                         "closeMenuOnScroll": false,
                                                         "closeMenuOnSelect": true,

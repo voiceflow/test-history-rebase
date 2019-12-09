@@ -5,11 +5,9 @@ import SvgIcon from '@/components/SvgIcon';
 
 const Toggle = styled.div`
   display: flex;
-  color: #becedc;
+  color: #6e849a;
   padding: 0 16px;
-
-  &:hover {
-    color: #6e849a;
+  margin-top: 2px;
   }
 `;
 

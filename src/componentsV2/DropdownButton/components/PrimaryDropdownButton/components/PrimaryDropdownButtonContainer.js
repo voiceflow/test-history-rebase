@@ -5,18 +5,18 @@ import { FlexCenter } from '@/componentsV2/Flex';
 
 const PrimaryDropdownButtonContainer = styled(FlexCenter)`
   & ${PrimaryButtonContainer} {
-    margin-right: 1px;
+    margin-right: 2px;
   }
 
   & ${PrimaryButtonContainer}:not(:first-of-type) {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
     margin-right: 0;
   }
 
   & ${PrimaryButtonContainer}:not(:last-of-type) {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
   }
 
   & ${PrimaryButtonContainer}:last-of-type {

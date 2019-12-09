@@ -49,7 +49,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "ehcvDr",
+                  "lastClassName": "eSKeKI",
                   "rules": Array [
                     "
   ",
@@ -100,8 +100,9 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
                     "px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ",
                     [Function],
@@ -156,7 +157,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] =
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
               onClick={[Function]}
             >
               <ForwardRef
@@ -278,7 +279,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "ehcvDr",
+                  "lastClassName": "eSKeKI",
                   "rules": Array [
                     "
   ",
@@ -329,8 +330,9 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
                     "px;
   border: 0;
   color: #8da2b5;
-  background: #fff;
-  border: 1px solid #fff;
+  background-color: #fff !important;
+  border: 1px solid transparent;
+  transition: all 0.12s ease-out;
  
   height: ",
                     [Function],
@@ -385,7 +387,7 @@ exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] 
             variant="flat"
           >
             <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje ehcvDr"
+              className="sc-bdVaJa sc-ifAKCX sc-EHOje eSKeKI"
               onClick={[Function]}
             >
               <ForwardRef

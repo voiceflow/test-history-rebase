@@ -56,7 +56,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                   "componentStyle": ComponentStyle {
                     "componentId": "PrimaryDropdownButtonContainer-sc-1tpt2nt-0",
                     "isStatic": false,
-                    "lastClassName": "ktZkmw",
+                    "lastClassName": "cwhLRq",
                     "rules": Array [
                       "display:",
                       [Function],
@@ -67,11 +67,11 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                       " justify-content:center;",
                       "& ",
                       ".sc-jWBwVP",
-                      "{margin-right:1px;}& ",
+                      "{margin-right:2px;}& ",
                       ".sc-jWBwVP",
-                      ":not(:first-of-type){border-top-left-radius:6px;border-bottom-left-radius:6px;margin-right:0;}& ",
+                      ":not(:first-of-type){border-top-left-radius:14px;border-bottom-left-radius:14px;margin-right:0;}& ",
                       ".sc-jWBwVP",
-                      ":not(:last-of-type){border-top-right-radius:6px;border-bottom-right-radius:6px;}& ",
+                      ":not(:last-of-type){border-top-right-radius:14px;border-bottom-right-radius:14px;}& ",
                       ".sc-jWBwVP",
                       ":last-of-type{margin-right:0;}",
                     ],
@@ -92,7 +92,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
               inline={true}
             >
               <div
-                className="Flex__FlexCenter-sc-127y44r-1 PrimaryDropdownButtonContainer-sc-1tpt2nt-0 ktZkmw"
+                className="Flex__FlexCenter-sc-127y44r-1 PrimaryDropdownButtonContainer-sc-1tpt2nt-0 cwhLRq"
               >
                 <PrimaryButton
                   canHover={false}
@@ -115,7 +115,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                           "componentStyle": ComponentStyle {
                             "componentId": "sc-jWBwVP",
                             "isStatic": false,
-                            "lastClassName": "epuoPb",
+                            "lastClassName": "iytfTA",
                             "rules": Array [
                               "
   ",
@@ -162,20 +162,21 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
 ",
                               "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
                               [Function],
-                              "
+                              " */
 
   ",
                               [Function],
                               "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
                             ],
@@ -196,7 +197,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                       forwardedRef={null}
                     >
                       <button
-                        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP epuoPb"
+                        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP iytfTA"
                         disabled={false}
                       >
                         <components__PrimaryButtonLabel>
@@ -254,7 +255,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "sc-jWBwVP",
                           "isStatic": false,
-                          "lastClassName": "epuoPb",
+                          "lastClassName": "iytfTA",
                           "rules": Array [
                             "
   ",
@@ -301,20 +302,21 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
 ",
                             "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
                             [Function],
-                            "
+                            " */
 
   ",
                             [Function],
                             "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
                           ],
@@ -336,7 +338,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                     onClick={[Function]}
                   >
                     <button
-                      className="sc-bdVaJa sc-ifAKCX sc-jWBwVP epuoPb"
+                      className="sc-bdVaJa sc-ifAKCX sc-jWBwVP iytfTA"
                       disabled={false}
                       onClick={[Function]}
                     >
@@ -349,7 +351,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "PrimaryDropdownButtonToggle-sc-15cmejx-0",
                                 "isStatic": false,
-                                "lastClassName": "dKexTX",
+                                "lastClassName": "gwCqqn",
                                 "rules": Array [
                                   "display:",
                                   [Function],
@@ -357,7 +359,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                   [Function],
                                   " ",
                                   [Function],
-                                  "padding:0 16px 0 12px;& ",
+                                  "padding:14px 18px 18px 14px;& ",
                                   ".sc-bxivhb",
                                   "{color:#fff;}",
                                 ],
@@ -377,16 +379,16 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                           forwardedRef={null}
                         >
                           <div
-                            className="Flex-sc-127y44r-0 PrimaryDropdownButtonToggle-sc-15cmejx-0 dKexTX"
+                            className="Flex-sc-127y44r-0 PrimaryDropdownButtonToggle-sc-15cmejx-0 gwCqqn"
                           >
                             <ForwardRef
                               icon="caretDown"
-                              width={12}
+                              width={10}
                             >
                               <styled.span
                                 color="currentColor"
                                 size={16}
-                                width={12}
+                                width={10}
                               >
                                 <StyledComponent
                                   color="currentColor"
@@ -397,7 +399,7 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "sc-bxivhb",
                                         "isStatic": false,
-                                        "lastClassName": "ciNdSO",
+                                        "lastClassName": "jFmiFq",
                                         "rules": Array [
                                           "
   ",
@@ -448,13 +450,13 @@ exports[`Storyshots Dropdown Button variants: primary 1`] = `
                                   }
                                   forwardedRef={null}
                                   size={16}
-                                  width={12}
+                                  width={10}
                                 >
                                   <span
-                                    className="sc-bxivhb ciNdSO"
+                                    className="sc-bxivhb jFmiFq"
                                     color="currentColor"
                                     size={16}
-                                    width={12}
+                                    width={10}
                                   >
                                     <test-file-stub />
                                   </span>
@@ -581,7 +583,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "SecondaryButtonContainer-djlxo5-0",
                           "isStatic": false,
-                          "lastClassName": "fivAMD",
+                          "lastClassName": "hRdNaq",
                           "rules": Array [
                             "
   ",
@@ -626,7 +628,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
 ",
                             "
 ",
-                            "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+                            "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
                             [Function],
                           ],
                         },
@@ -647,7 +649,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                     onClick={[Function]}
                   >
                     <button
-                      className="sc-bdVaJa sc-ifAKCX SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt SecondaryButtonContainer-djlxo5-0 fivAMD"
+                      className="sc-bdVaJa sc-ifAKCX SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt SecondaryButtonContainer-djlxo5-0 hRdNaq"
                       disabled={false}
                       onClick={[Function]}
                     >
@@ -661,7 +663,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                               "componentStyle": ComponentStyle {
                                 "componentId": "SecondaryDropdownButtonToggle-sc-1ns1nqi-0",
                                 "isStatic": false,
-                                "lastClassName": "cNuAlN",
+                                "lastClassName": "fHpSRm",
                                 "rules": Array [
                                   "display:",
                                   [Function],
@@ -671,7 +673,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                   [Function],
                                   "margin-left:12px;margin-right:-2px;& ",
                                   ".sc-bxivhb",
-                                  "{color:rgba(110,132,154,0.85);}",
+                                  "{color:#6e849a;}",
                                 ],
                               },
                               "displayName": "SecondaryDropdownButtonToggle",
@@ -689,16 +691,16 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                           forwardedRef={null}
                         >
                           <div
-                            className="Flex-sc-127y44r-0 SecondaryDropdownButtonToggle-sc-1ns1nqi-0 cNuAlN"
+                            className="Flex-sc-127y44r-0 SecondaryDropdownButtonToggle-sc-1ns1nqi-0 fHpSRm"
                           >
                             <ForwardRef
                               icon="caretDown"
-                              width={12}
+                              width={10}
                             >
                               <styled.span
                                 color="currentColor"
                                 size={16}
-                                width={12}
+                                width={10}
                               >
                                 <StyledComponent
                                   color="currentColor"
@@ -709,7 +711,7 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "sc-bxivhb",
                                         "isStatic": false,
-                                        "lastClassName": "ciNdSO",
+                                        "lastClassName": "jFmiFq",
                                         "rules": Array [
                                           "
   ",
@@ -760,13 +762,13 @@ exports[`Storyshots Dropdown Button variants: secondary 1`] = `
                                   }
                                   forwardedRef={null}
                                   size={16}
-                                  width={12}
+                                  width={10}
                                 >
                                   <span
-                                    className="sc-bxivhb ciNdSO"
+                                    className="sc-bxivhb jFmiFq"
                                     color="currentColor"
                                     size={16}
-                                    width={12}
+                                    width={10}
                                   >
                                     <test-file-stub />
                                   </span>

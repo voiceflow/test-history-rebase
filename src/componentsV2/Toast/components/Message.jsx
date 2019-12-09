@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 `;
 
 const Icon = styled(SvgIcon)`
-  padding-top: 2px;
+  padding-top: 4px;
   margin-right: 16px;
 `;
 

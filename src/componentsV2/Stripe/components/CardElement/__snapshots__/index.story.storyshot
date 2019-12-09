@@ -65,7 +65,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
               "componentStyle": ComponentStyle {
                 "componentId": "sc-gGBfsJ",
                 "isStatic": false,
-                "lastClassName": "fSJwEl",
+                "lastClassName": "SFahm",
                 "rules": Array [
                   "
   ",
@@ -88,6 +88,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -158,7 +159,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gGBfsJ fSJwEl"
+            className="sc-gGBfsJ SFahm"
             disabled={false}
             id="poo"
             onClick={[Function]}

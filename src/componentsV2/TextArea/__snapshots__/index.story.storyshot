@@ -16,7 +16,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "sc-hEsumM",
           "isStatic": false,
-          "lastClassName": "lkrEwk",
+          "lastClassName": "jEpAWR",
           "rules": Array [
             "
   ",
@@ -39,6 +39,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -96,7 +97,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
   >
     <TextareaAutosize
-      className="sc-hEsumM lkrEwk"
+      className="sc-hEsumM jEpAWR"
       disabled={false}
       inputRef={[Function]}
       onChange={[Function]}
@@ -106,7 +107,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
       value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
     >
       <textarea
-        className="sc-hEsumM lkrEwk"
+        className="sc-hEsumM jEpAWR"
         disabled={false}
         onChange={[Function]}
         placeholder="placeholder"

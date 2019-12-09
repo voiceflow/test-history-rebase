@@ -26,10 +26,13 @@ export function ContextMenuProvider({ children }) {
       return;
     }
 
-    overlay.setHandler(() => {
-      setMenuContext(null);
-      overlay.setHandler(null);
-    });
+    // defense for ctrl-click on chrome and safari ¯\_(ツ)_/¯
+    if (!event.ctrlKey) {
+      overlay.setHandler(() => {
+        setMenuContext(null);
+        overlay.setHandler(null);
+      });
+    }
     setMenuContext({ position: [event.clientX, event.clientY], type, target });
   };
 

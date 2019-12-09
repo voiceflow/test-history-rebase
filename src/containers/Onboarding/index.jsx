@@ -11,9 +11,10 @@ import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import { ButtonCard } from '@/containers/Onboarding/container';
-import { userSelector } from '@/ducks/account';
-import { goToCanvas, goToDashboard, goToHome } from '@/ducks/router';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Router from '@/ducks/router';
+import * as Tracking from '@/ducks/tracking';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
 const CLASS_MUTED = 'text-muted';
@@ -73,7 +74,6 @@ class Onboarding extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSizeSelection = this.handleSizeSelection.bind(this);
     this.handleIndustrySelection = this.handleIndustrySelection.bind(this);
-    // this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
     this.renderModalContent = this.renderModalContent.bind(this);
     this.submitSurvey = this.submitSurvey.bind(this);
     this.closeSurvey = this.closeSurvey.bind(this);
@@ -168,7 +168,8 @@ class Onboarding extends Component {
       .catch(() => {
         localStorage.setItem('onboarding', PROG_XP(s.experience));
         this.createSkill();
-      });
+      })
+      .then(() => this.props.trackOnboardingComplete());
   }
 
   handleSizeSelection(value) {
@@ -251,6 +252,7 @@ class Onboarding extends Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.BEGINNER);
                   this.setState({ experience: 'beginner' });
                 }}
               >
@@ -263,6 +265,7 @@ class Onboarding extends Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.INTERMEDIATE);
                   this.setState({ experience: 'intermediate' });
                 }}
               >
@@ -275,6 +278,7 @@ class Onboarding extends Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.EXPERT);
                   this.setState({ experience: 'expert' });
                 }}
               >
@@ -295,6 +299,7 @@ class Onboarding extends Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.DESIGN_AND_PROTOTYPE);
                   this.setState((prev_state) => ({ design: !prev_state.design }));
                 }}
               >
@@ -303,6 +308,7 @@ class Onboarding extends Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.BUILD_AND_PUBLISH);
                   this.setState((prev_state) => ({ build: !prev_state.build }));
                 }}
               >
@@ -310,7 +316,14 @@ class Onboarding extends Component {
                 <p className={build ? '' : CLASS_MUTED}>Build & Publish</p>
               </ButtonCard>
             </div>
-            <Button isPrimary disabled={!(design || build)} onClick={() => this.setState({ stage: 'code_stage' })}>
+            <Button
+              isPrimary
+              disabled={!(design || build)}
+              onClick={() => {
+                this.props.trackOnboardingStage(Tracking.OnboardingStage.USAGE);
+                this.setState({ stage: 'code_stage' });
+              }}
+            >
               Continue
             </Button>
             <p className="small text-dull mt-3">Select all that apply</p>
@@ -383,6 +396,7 @@ class Onboarding extends Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PERSONAL);
                   this.setState({ type: 'PERSONAL' });
                 }}
               >
@@ -398,6 +412,7 @@ class Onboarding extends Component {
 
               <ButtonCard
                 onClick={() => {
+                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PROFESSIONAL);
                   this.setState({ type: 'WORK' });
                 }}
               >
@@ -415,6 +430,8 @@ class Onboarding extends Component {
               isPrimary
               disabled={!['WORK', 'PERSONAL'].includes(type)}
               onClick={() => {
+                this.props.trackOnboardingStage(Tracking.OnboardingStage.TEAM);
+
                 if (type === 'WORK') {
                   this.setState({ stage: 'work_name' });
                 } else if (type === 'PERSONAL') {
@@ -445,6 +462,7 @@ class Onboarding extends Component {
                 <Button
                   isPrimary
                   onClick={() => {
+                    this.props.trackOnboardingBegin();
                     this.setState({ stage: 'work_type' });
                   }}
                 >
@@ -473,14 +491,18 @@ class Onboarding extends Component {
 }
 
 const mapStateToProps = {
-  user: userSelector,
-  workspaceID: activeWorkspaceIDSelector,
+  user: Account.userSelector,
+  workspaceID: Workspace.activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
-  goToHome,
-  goToCanvas,
-  goToDashboard,
+  goToHome: Router.goToHome,
+  goToCanvas: Router.goToCanvas,
+  goToDashboard: Router.goToDashboard,
+  trackOnboardingBegin: Tracking.trackOnboardingBegin,
+  trackOnboardingComplete: Tracking.trackOnboardingComplete,
+  trackOnboardingStage: Tracking.trackOnboardingStage,
+  trackOnboardingChoice: Tracking.trackOnboardingChoice,
 };
 
 export default connect(

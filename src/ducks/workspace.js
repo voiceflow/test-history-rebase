@@ -2,10 +2,11 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { toast } from '@/componentsV2/Toast';
-import Normalize, { deleteNormalize, normalize } from '@/ducks/_normalize';
-import { setError } from '@/ducks/modal';
 import { getAlternativeColor } from '@/utils/colors';
 
+import Normalize, { deleteNormalize, normalize } from './_normalize';
+import * as Modal from './modal';
+import * as Tracking from './tracking';
 import { createRootSelector } from './utils';
 
 export const STATE_KEY = 'workspace';
@@ -151,7 +152,7 @@ export const deleteWorkspace = (workspaceId) => async (dispatch) => {
     dispatch(removeWorkspace(workspaceId));
     toast.success('Successfully deleted workspace');
   } catch (err) {
-    dispatch(setError(err.body.data || 'Unable to delete workspace'));
+    dispatch(Modal.setError(err.body.data || 'Unable to delete workspace'));
 
     return Promise.reject();
   }
@@ -174,7 +175,7 @@ export const fetchWorkspaces = () => async (dispatch, getState) => {
       dispatch(updateCurrentWorkspace(workspaces[0]?.id));
     }
   } catch (err) {
-    dispatch(setError('Unable to fetch workspaces'));
+    dispatch(Modal.setError('Unable to fetch workspaces'));
 
     return Promise.reject();
   }
@@ -189,7 +190,7 @@ export const leaveWorkspace = () => async (dispatch, getState) => {
     dispatch(removeWorkspace(targetWorkspaceId));
     toast.success('Successfully left workspace');
   } catch (err) {
-    dispatch(setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
 
     return Promise.reject();
   }
@@ -204,7 +205,7 @@ export const fetchWorkspace = () => async (dispatch, getState) => {
 
     dispatch(updateWorkspace(activeWorkspaceID, workspace));
   } catch (err) {
-    dispatch(setError('Unable to fetch workspace'));
+    dispatch(Modal.setError('Unable to fetch workspace'));
 
     return Promise.reject();
   }
@@ -214,7 +215,7 @@ export const createWorkspace = (data) => async (dispatch) => {
   try {
     return client.workspace.createWorkspace(data);
   } catch (err) {
-    dispatch(setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
 
     return Promise.reject();
   }
@@ -233,7 +234,7 @@ export const updateMembers = (members, options) => async (dispatch, getState) =>
 
     dispatch(updateCurrentWorkspaceItem(workspace));
   } catch (err) {
-    dispatch(setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
 
     return Promise.reject();
   }
@@ -247,7 +248,7 @@ export const updateWorkspaceName = (name) => async (dispatch, getState) => {
 
     dispatch(updateWorkspace(activeWorkspaceID, { name }));
   } catch (err) {
-    dispatch(setError(extractErrorFromResponseData(err, 'Invalid Workspace Name')));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invalid Workspace Name')));
 
     return Promise.reject();
   }
@@ -262,7 +263,7 @@ export const validateInvite = (invite) => {
 
       return workspaceId;
     } catch (err) {
-      dispatch(setError(extractErrorFromResponseData(err, 'Invite Invalid')));
+      dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invite Invalid')));
     }
   };
 };
@@ -279,9 +280,12 @@ export const sendInvite = (email, permissionType) => {
       const currentMembers = activeWorkspaceMembersSelector(state);
 
       const newMember = await client.workspace.sendInvite(currentWorkspaceId, email, permissionType || undefined);
+
       if (newMember) {
         dispatch(updateWorkspace(currentWorkspaceId, { members: [...currentMembers, newMember] }));
+        dispatch(Tracking.trackInvitationSent(currentWorkspaceId, email));
       }
+
       toast.success('Sent invite');
     } catch (err) {
       toast.error(extractErrorMessages(err));
@@ -320,6 +324,7 @@ export const cancelInvite = (email) => {
       const currentMembers = activeWorkspaceMembersSelector(state);
 
       await client.workspace.cancelInvite(workspaceId, email);
+      dispatch(Tracking.trackInvitationCancelled(workspaceId, email));
 
       const updatedMembers = currentMembers.filter((member) => member.email !== email);
 

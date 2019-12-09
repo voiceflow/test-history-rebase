@@ -23,6 +23,7 @@ import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
 import test, * as Test from '@/ducks/test';
+import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
 import userSetting from '@/ducks/user';
 import variableSet, * as VariableSet from '@/ducks/variableSet';
@@ -60,4 +61,5 @@ export default (history) =>
     [Realtime.STATE_KEY]: realtime,
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
+    [Tracking.STATE_KEY]: tracking,
   });

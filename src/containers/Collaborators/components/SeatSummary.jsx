@@ -28,16 +28,9 @@ function SeatSummary({ numberOfSeats, members, plan }) {
   return (
     <Container>
       <Number>
-        {plan !== PLANS.enterprise ? (
-          <span>
-            {numberOfUsedSeats} <Text>of {numberOfSeats} seats are taken.</Text>
-          </span>
-        ) : (
-          <span>
-            {numberOfUsedSeats}
-            {numberOfUsedSeats === 1 ? <Text> &nbsp;seat</Text> : <Text> &nbsp;seats</Text>}
-          </span>
-        )}
+        <span>
+          {numberOfUsedSeats} <Text>of {numberOfSeats} seats are taken.</Text>
+        </span>
       </Number>
 
       {plan !== PLANS.enterprise && (

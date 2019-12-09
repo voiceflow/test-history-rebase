@@ -6,7 +6,7 @@ import { Members } from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import Tabs from '@/componentsV2/Tabs';
-import { FEATURE_IDS, MODALS } from '@/constants';
+import { FEATURE_IDS, MODALS, PLANS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
@@ -75,7 +75,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                           <>
                             <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
                             <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
-                            <MenuItem onClick={togglePayment}>Payment</MenuItem>
+                            {selectedWorkspace.plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Payment</MenuItem>}
                             <MenuItem divider />
                             {plan ? (
                               <MenuItem disabled capitalize>

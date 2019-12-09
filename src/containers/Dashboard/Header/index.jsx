@@ -21,6 +21,7 @@ export default function DashboardHeader({
   return (
     <Header
       withLogo
+      logo={workspace.image}
       disableLogoClick
       history={history}
       leftRenderer={() => (

@@ -23,7 +23,7 @@ import { ToastContainer } from '@/componentsV2/Toast';
 import CollaboratorsModal from '@/containers/Collaborators/CollaboratorsModal';
 import BillingModal from '@/containers/Payment/BillingModal';
 import PaymentModal from '@/containers/Payment/PaymentModal';
-import { AccountLoadingGate, SocketLoadingGate } from '@/gates';
+import { AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 
 import Routes from './Routes';
 import Alerts from './components/Alerts/Alerts';
@@ -31,7 +31,7 @@ import GlobalProviders from './contexts/GlobalProviders';
 
 const App = ({ history, store, persistor }) => (
   <GlobalProviders history={history} store={store} persistor={persistor}>
-    <BatchLoadingGate gates={[SocketLoadingGate, AccountLoadingGate]}>
+    <BatchLoadingGate gates={[SocketLoadingGate, AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate]}>
       {() => (
         <>
           <Helmet>

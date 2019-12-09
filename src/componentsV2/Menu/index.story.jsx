@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Variant, createTestableStory } from '@/../.storybook';
 
-import Menu from '.';
+import Menu, { MenuItem } from '.';
 
 storiesOf('Menu', module).add(
   'variants',
@@ -95,6 +95,17 @@ storiesOf('Menu', module).add(
             ]}
             onSelect={onSelect}
           />
+        </Variant>
+
+        <Variant label="divider">
+          <Menu>
+            <>
+              <MenuItem>Collaborators</MenuItem>
+              <MenuItem>Workspace Settings</MenuItem>
+              <MenuItem divider />
+              <MenuItem>Payment</MenuItem>
+            </>
+          </Menu>
         </Variant>
       </>
     );

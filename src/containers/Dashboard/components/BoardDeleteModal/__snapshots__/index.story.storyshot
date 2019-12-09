@@ -56,7 +56,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                   class="modal-content"
                 >
                   <div
-                    class="pb-2 sc-gzOgki bMwJiZ"
+                    class="pb-2 sc-kfGgVZ diagdY"
                   >
                     <h5>
                       Delete Workspace
@@ -70,7 +70,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                     </span>
                   </div>
                   <div
-                    class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
+                    class="px-45 pt-0 overflow-hidden sc-hwwEjo kEkjYT"
                   >
                     <div>
                       <b>
@@ -135,7 +135,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                     class="modal-content"
                   >
                     <div
-                      class="pb-2 sc-gzOgki bMwJiZ"
+                      class="pb-2 sc-kfGgVZ diagdY"
                     >
                       <h5>
                         Delete Workspace
@@ -149,7 +149,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                       </span>
                     </div>
                     <div
-                      class="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
+                      class="px-45 pt-0 overflow-hidden sc-hwwEjo kEkjYT"
                     >
                       <div>
                         <b>
@@ -276,9 +276,9 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                               "$$typeof": Symbol(react.forward_ref),
                               "attrs": Array [],
                               "componentStyle": ComponentStyle {
-                                "componentId": "sc-gzOgki",
+                                "componentId": "sc-kfGgVZ",
                                 "isStatic": false,
-                                "lastClassName": "bMwJiZ",
+                                "lastClassName": "diagdY",
                                 "rules": Array [
                                   "
   align-items: center;
@@ -324,7 +324,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                               "displayName": "styled.div",
                               "foldedComponentIds": Array [],
                               "render": [Function],
-                              "styledComponentId": "sc-gzOgki",
+                              "styledComponentId": "sc-kfGgVZ",
                               "target": "div",
                               "toString": [Function],
                               "warnTooManyClasses": [Function],
@@ -334,7 +334,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                           forwardedRef={null}
                         >
                           <div
-                            className="pb-2 sc-gzOgki bMwJiZ"
+                            className="pb-2 sc-kfGgVZ diagdY"
                           >
                             <h5>
                               Delete Workspace
@@ -436,9 +436,9 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                             "$$typeof": Symbol(react.forward_ref),
                             "attrs": Array [],
                             "componentStyle": ComponentStyle {
-                              "componentId": "sc-gxMtzJ",
+                              "componentId": "sc-hwwEjo",
                               "isStatic": false,
-                              "lastClassName": "hnvNMF",
+                              "lastClassName": "kEkjYT",
                               "rules": Array [
                                 "
   position: relative;
@@ -452,7 +452,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                             "displayName": "styled.div",
                             "foldedComponentIds": Array [],
                             "render": [Function],
-                            "styledComponentId": "sc-gxMtzJ",
+                            "styledComponentId": "sc-hwwEjo",
                             "target": "div",
                             "toString": [Function],
                             "warnTooManyClasses": [Function],
@@ -462,7 +462,7 @@ exports[`Storyshots Dashboard/Board Delete Modal variants: default 1`] = `
                         forwardedRef={null}
                       >
                         <div
-                          className="px-45 pt-0 overflow-hidden sc-gxMtzJ hnvNMF"
+                          className="px-45 pt-0 overflow-hidden sc-hwwEjo kEkjYT"
                         >
                           <div>
                             <b>

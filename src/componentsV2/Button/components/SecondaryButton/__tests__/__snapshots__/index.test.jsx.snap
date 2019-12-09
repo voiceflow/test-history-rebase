@@ -11,6 +11,7 @@ exports[`Seconday Button renders with icon 1`] = `
   <SecondaryButtonIcon>
     <Memo([object Object])
       icon="plus"
+      size={16}
     />
   </SecondaryButtonIcon>
   Button

@@ -280,7 +280,7 @@ export const creatorMappingSelector = createSelector(
 export const lockOwnerSelector = createSelector(
   Creator.creatorDiagramIDSelector,
   creatorMappingSelector,
-  Workspace.workspaceMemberSelector,
+  Workspace.distinctWorkspaceMemberSelector,
   (diagramID, getCreatorMapping, getWorkspaceMember) => (lockType, nodeID) => {
     const [tabID, creatorID] = getCreatorMapping(lockType, nodeID, diagramID);
     return getWorkspaceMember(creatorID, tabID);
@@ -301,7 +301,7 @@ export const editLockOwnerSelector = createSelector(
 export const resourceLockOwnerSelector = createSelector(
   realtimeLocksSelector,
   reourceLockOwnerTabIDSelector,
-  Workspace.workspaceMemberSelector,
+  Workspace.distinctWorkspaceMemberSelector,
   ({ users }, getTabID, getWorkspaceMember) => (resourceType) => {
     const tabID = getTabID(resourceType);
     const found = Object.values(users)
@@ -310,7 +310,6 @@ export const resourceLockOwnerSelector = createSelector(
 
     if (found) {
       const [, creatorID] = found;
-
       return getWorkspaceMember(creatorID, tabID);
     }
 

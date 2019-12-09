@@ -24,7 +24,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-jWBwVP",
             "isStatic": false,
-            "lastClassName": "inlaoL",
+            "lastClassName": "csgNpl",
             "rules": Array [
               "
   ",
@@ -71,20 +71,21 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
 ",
               "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
               [Function],
-              "
+              " */
 
   ",
               [Function],
               "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
             ],
@@ -106,7 +107,7 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP inlaoL"
+        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP csgNpl"
         disabled={false}
         onClick={[Function]}
       >
@@ -152,9 +153,9 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "PrimaryButtonIcon-sc-1ldd3qi-0",
                   "isStatic": true,
-                  "lastClassName": "dqFGAa",
+                  "lastClassName": "ljKuHR",
                   "rules": Array [
-                    "margin-right:6px;padding:7px;border-radius:50%;background-color:#00000030;",
+                    "margin-right:6px;padding:9px;border-radius:50%;height:30px;width:30px;text-align:center;background-color:rgba(0,0,0,0.16);",
                   ],
                 },
                 "displayName": "PrimaryButtonIcon",
@@ -170,15 +171,16 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
             forwardedRef={null}
           >
             <span
-              className="PrimaryButtonIcon-sc-1ldd3qi-0 dqFGAa"
+              className="PrimaryButtonIcon-sc-1ldd3qi-0 ljKuHR"
             >
               <ForwardRef
                 color="#FFF"
                 icon="plus"
+                size={12}
               >
                 <styled.span
                   color="#FFF"
-                  size={16}
+                  size={12}
                 >
                   <StyledComponent
                     color="#FFF"
@@ -239,12 +241,12 @@ exports[`Storyshots Button variants - with icon: primary 1`] = `
                       }
                     }
                     forwardedRef={null}
-                    size={16}
+                    size={12}
                   >
                     <span
-                      className="sc-bxivhb jPGdYh"
+                      className="sc-bxivhb hDtCNa"
                       color="#FFF"
-                      size={16}
+                      size={12}
                     >
                       <test-file-stub />
                     </span>
@@ -279,7 +281,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "SecondaryButtonContainer-djlxo5-0",
             "isStatic": false,
-            "lastClassName": "fivAMD",
+            "lastClassName": "hRdNaq",
             "rules": Array [
               "
   ",
@@ -324,7 +326,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
 ",
               "
 ",
-              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
               [Function],
             ],
           },
@@ -345,7 +347,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 fivAMD"
+        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 hRdNaq"
         disabled={false}
         onClick={[Function]}
       >
@@ -380,6 +382,7 @@ exports[`Storyshots Button variants - with icon: secondary 1`] = `
             >
               <ForwardRef
                 icon="sync"
+                size={16}
               >
                 <styled.span
                   color="currentColor"
@@ -489,7 +492,7 @@ exports[`Storyshots Button variants: primary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-jWBwVP",
             "isStatic": false,
-            "lastClassName": "inlaoL",
+            "lastClassName": "csgNpl",
             "rules": Array [
               "
   ",
@@ -536,20 +539,21 @@ exports[`Storyshots Button variants: primary 1`] = `
 ",
               "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
               [Function],
-              "
+              " */
 
   ",
               [Function],
               "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
             ],
@@ -571,7 +575,7 @@ exports[`Storyshots Button variants: primary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP inlaoL"
+        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP csgNpl"
         disabled={false}
         onClick={[Function]}
       >
@@ -632,7 +636,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "SecondaryButtonContainer-djlxo5-0",
             "isStatic": false,
-            "lastClassName": "fivAMD",
+            "lastClassName": "hRdNaq",
             "rules": Array [
               "
   ",
@@ -677,7 +681,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
 ",
               "
 ",
-              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background:linear-gradient(-180deg,rgba(238,244,246,0.85),#eef4f6);box-sizing:border-box;",
+              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
               [Function],
             ],
           },
@@ -698,7 +702,7 @@ exports[`Storyshots Button variants: secondary 1`] = `
       onClick={[Function]}
     >
       <button
-        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 fivAMD"
+        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 hRdNaq"
         disabled={false}
         onClick={[Function]}
       >
@@ -723,7 +727,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
         "componentStyle": ComponentStyle {
           "componentId": "TertiaryButton-sc-1ecurkc-0",
           "isStatic": false,
-          "lastClassName": "dRdpKQ",
+          "lastClassName": "gRkRGZ",
           "rules": Array [
             "
   ",
@@ -768,7 +772,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
 ",
             "
 ",
-            "border:0;padding:0 22px;font-weight:600;color:#5d9df5;box-shadow:none;",
+            "border:0;padding:0 22px;font-weight:600;color:#5d9df5;box-shadow:none;transition:all 0.15s ease-out;",
             [Function],
             " &:active{background:rgba(93,157,245,0.16);}",
           ],
@@ -790,7 +794,7 @@ exports[`Storyshots Button variants: tertiary 1`] = `
     onClick={[Function]}
   >
     <button
-      className="sc-bdVaJa sc-ifAKCX TertiaryButton-sc-1ecurkc-0 dRdpKQ"
+      className="sc-bdVaJa sc-ifAKCX TertiaryButton-sc-1ecurkc-0 gRkRGZ"
       disabled={false}
       onClick={[Function]}
     >

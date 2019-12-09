@@ -1,9 +1,9 @@
 import React from 'react';
 
 import ButtonDropdownInput, { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
-import { MODALS } from '@/constants';
+import { MODALS, PLANS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
-import { activeWorkspaceMembersSelector, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
+import { activeWorkspaceMembersSelector, planTypeSelector, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
 import { BILLING_SEATS_ELEMENT } from '../../../Payment/Checkout/components/SeatsAndBilling/components/SeatsInput';
@@ -12,7 +12,7 @@ import SendInviteButton from './components/SendInviteButton';
 
 const OPTIONS_ARRAY = [{ value: 'editor', label: 'can edit' }, { value: 'viewer', label: 'can view' }];
 
-function SendInvite({ sendInvite, numberOfSeats, members }) {
+function SendInvite({ plan, sendInvite, numberOfSeats, members }) {
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
   const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
@@ -33,6 +33,16 @@ function SendInvite({ sendInvite, numberOfSeats, members }) {
 
     setPermissionType(option);
   };
+
+  if (plan === PLANS.enterprise && members.length >= numberOfSeats) {
+    return (
+      <Container>
+        Enterprise Workspace Seat Limit Reached
+        <br />
+        Contact Voiceflow for Allocation
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -55,6 +65,7 @@ function SendInvite({ sendInvite, numberOfSeats, members }) {
 }
 
 const mapStateToProps = {
+  plan: planTypeSelector,
   members: activeWorkspaceMembersSelector,
   numberOfSeats: workspaceNumberOfSeatsSelector,
 };

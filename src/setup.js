@@ -1,8 +1,9 @@
 import axios from 'axios';
 import ReactGA from 'react-ga';
+import segment from 'react-segment';
 
 import { GLOBAL_HEADERS } from '@/client/fetch';
-import { API_ENDPOINT, GA_ENABLED, GOOGLE_ANALYTICS_ID, VERSION } from '@/config';
+import { API_ENDPOINT, GA_ENABLED, GOOGLE_ANALYTICS_ID, SEGMENT_KEY, VERSION } from '@/config';
 import { initializeLogRocket } from '@/vendors/logRocket';
 
 const setupApp = (history, browserID, tabID) => {
@@ -30,6 +31,8 @@ const setupApp = (history, browserID, tabID) => {
       ReactGA.pageview(location.pathname);
     });
   }
+
+  segment.default.load(SEGMENT_KEY);
 
   // eslint-disable-next-line no-console
   console.info(

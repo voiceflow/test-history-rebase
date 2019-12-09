@@ -8,6 +8,7 @@ const TertiaryButton = styled(ButtonContainer)`
   font-weight: 600;
   color: #5d9df5;
   box-shadow: none;
+  transition: all 0.15s ease-out;
 
   ${({ disabled }) =>
     disabled

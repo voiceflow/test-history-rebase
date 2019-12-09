@@ -14,7 +14,7 @@ function DropdownButton({ disabled, onToggle, children }, ref) {
       </PrimaryButton>
       <PrimaryButtonContainer disabled={disabled} canHover={false} onClick={onToggle}>
         <Toggle>
-          <SvgIcon icon="caretDown" width={12} />
+          <SvgIcon icon="caretDown" width={10} />
         </Toggle>
       </PrimaryButtonContainer>
     </Container>

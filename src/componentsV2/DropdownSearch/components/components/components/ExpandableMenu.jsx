@@ -20,7 +20,7 @@ export const Option = styled(FlexCenter)`
   cursor: pointer;
 
   &:hover {
-    background: #deebff;
+    background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), #ffffff;
   }
 `;
 
@@ -30,5 +30,5 @@ export const Label = styled.div`
   line-height: 18px;
   color: #132144;
   padding-right: 12px;
-  font-weight: 600;
+  font-weight: 500;
 `;

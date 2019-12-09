@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
-import { LOGROCKET_ENABLED } from '@/config';
+import { LOGROCKET_ENABLED, TRACKING_ENABLED } from '@/config';
 import { NEW_PRODUCT_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -22,6 +22,7 @@ import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
+import createTrackingMiddleware from './tracking';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const CREATOR_HISTORY_ACTIONS = [Creator.UNDO_HISTORY, Creator.REDO_HISTORY];
@@ -156,6 +157,7 @@ const createMiddleware = (history) => {
       }),
       [Skill.SET_ACTIVE_SKILL, VariableSet.REPLACE_VARIABLE_SET_DIAGRAM, Creator.INITIALIZE_CREATOR, Creator.RESET_CREATOR]
     ),
+    ...(TRACKING_ENABLED ? createTrackingMiddleware() : []),
   ];
 
   if (LOGROCKET_ENABLED) {

@@ -5,15 +5,17 @@ import Icon from './PrimaryButtonIcon';
 
 const PrimaryButtonContainer = styled(ButtonContainer)`
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ${transition()}
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ${transition()} */
 
   ${({ disabled, canHover }) =>
     disabled
       ? css`
-          background: linear-gradient(180deg, rgba(93, 157, 245, 0.351647) 0%, rgba(44, 133, 255, 0.390597) 100%);
+          background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 68%);
           box-shadow: none;
 
           & ${Icon} {
@@ -23,14 +25,14 @@ const PrimaryButtonContainer = styled(ButtonContainer)`
       : canHover &&
         css`
           &:hover {
-            background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-            box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+            background-position: 0px;
+            /* background-image: linear-gradient(-180deg, #5d9df5 0%, #1f79f3 78%);
+            box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.18), 0 4px 8px 0 rgba(17, 49, 96, 0.16); */
           }
         `}
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 `;
 

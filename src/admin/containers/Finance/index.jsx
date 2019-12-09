@@ -61,7 +61,7 @@ class FinanceBoard extends React.Component {
                 />
               </div>
               <div className="col-sm-4">
-                <Button className="fb_search_button" isPrimary onClick={() => this.props.getCharges(this.state.searchTerm)}>
+                <Button className="fb_search_button" onClick={() => this.props.getCharges(this.state.searchTerm)}>
                   Search
                 </Button>
               </div>

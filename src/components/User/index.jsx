@@ -3,7 +3,7 @@ import { Tooltip } from 'react-tippy';
 
 import SvgIcon from '@/components/SvgIcon';
 
-import { MemberIcon, MembersContainer, MembersWrapper } from './components';
+import { AddMemberIcon, MemberIcon, MembersContainer, MembersWrapper } from './components';
 
 export * from './components';
 
@@ -46,25 +46,33 @@ const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
 
 export default User;
 
-export const Members = ({ min = 0, max = 8, ...props }) => {
-  const accepted = props.members.filter((m) => !!m.creator_id).reverse();
+export const Members = ({ min = 0, max = 8, onAdd, members }) => {
+  const accepted = members.filter((m) => !!m.creator_id).reverse();
+
   if (!accepted || accepted.length <= min) {
     return null;
   }
 
   return (
     <MembersContainer>
-      {accepted.length > min && (
-        <MembersWrapper>
-          {accepted.slice(0, max).map((m) => (
-            <div key={m.tabID || m.creator_id}>
-              <Tooltip title={m.name} position="bottom">
-                <User user={m} />
-              </Tooltip>
-            </div>
-          ))}
-        </MembersWrapper>
-      )}
+      <MembersWrapper>
+        {accepted.slice(0, max).map((m, i) => (
+          <div key={m.tabID || m.creator_id} style={{ zIndex: max - i, position: 'relative' }}>
+            <Tooltip title={m.name} position="bottom">
+              <User user={m} />
+            </Tooltip>
+          </div>
+        ))}
+
+        {onAdd && (
+          <Tooltip title="Add Collaborators" position="bottom">
+            <AddMemberIcon onClick={onAdd}>
+              <SvgIcon icon="plus" size={12} />
+            </AddMemberIcon>
+          </Tooltip>
+        )}
+      </MembersWrapper>
+
       {accepted.length > max && (
         <Tooltip
           html={accepted.slice(max).map((m) => (

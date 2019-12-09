@@ -2,8 +2,10 @@ import queryString from 'query-string';
 import React, { Component } from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { setModal } from '@/ducks/modal';
-import { activeWorkspaceIDSelector, allWorkspacesSelector, fetchWorkspaces, updateCurrentWorkspace, validateInvite } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
+import * as Tracking from '@/ducks/tracking';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
 const DASHBOARD_PATH = '/dashboard';
@@ -22,12 +24,16 @@ class WorkspacesLoadingGate extends Component {
   }
 
   async showInviteModal() {
-    const { history, location, setModal, validateInvite } = this.props;
+    const { history, location, setModal, validateInvite, trackInvitationAccepted } = this.props;
 
     if (location.search) {
       const query = queryString.parse(location.search);
 
-      if (query.invite && (await validateInvite(query.invite))) {
+      if (query.invite) {
+        const newWorkspaceID = await validateInvite(query.invite);
+
+        if (!newWorkspaceID) return;
+
         setModal({
           size: 'sm',
           header: true,
@@ -42,6 +48,8 @@ class WorkspacesLoadingGate extends Component {
             </div>
           ),
         });
+
+        trackInvitationAccepted(newWorkspaceID);
 
         history.push({ search: '' });
       }
@@ -98,18 +106,26 @@ class WorkspacesLoadingGate extends Component {
 }
 
 const mapStateToProps = {
-  workspaces: allWorkspacesSelector,
-  workspaceID: activeWorkspaceIDSelector,
+  workspaces: Workspace.allWorkspacesSelector,
+  workspaceID: Workspace.activeWorkspaceIDSelector,
+  getWorkspace: Workspace.workspaceByIDSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  fetchWorkspaces,
-  updateCurrentWorkspace,
-  validateInvite,
-  setModal,
+  fetchWorkspaces: Workspace.fetchWorkspaces,
+  updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
+  validateInvite: Workspace.validateInvite,
+  setModal: Modal.setModal,
+  trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
+
+const mergeProps = ({ user }, { trackInvitationAccepted }) => ({
+  trackInvitationAccepted: (workspaceID) => trackInvitationAccepted(workspaceID, user.email),
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(WorkspacesLoadingGate);

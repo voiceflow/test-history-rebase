@@ -26,7 +26,6 @@ function Collaborators({ workspace, user, updateMembers, setConfirm, sendInvite 
   return (
     <Container>
       <SendInvite sendInvite={sendInvite} />
-
       <MemberSection members={workspace.members} user={user} workspace={workspace} removeMember={removeMember} resendInvite={sendInvite} />
     </Container>
   );

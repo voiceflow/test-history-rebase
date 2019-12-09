@@ -30,6 +30,7 @@ const MenuContainer = styled.ul`
   transform-origin: top;
 
   ${({ nativeScrollbar }) => nativeScrollbar && nativeScrollbarsStyle}
+
 `;
 
 export default MenuContainer;

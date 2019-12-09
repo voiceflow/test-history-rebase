@@ -1,5 +1,5 @@
 const branch = require('git-branch');
-const { action, env, logrocket, intercom, ga, debug, debugNet, debugHttp, debugRealtime, debugSocket } = require('webpack-nano/argv');
+const { action, env, logrocket, intercom, ga, tracking, debug, debugNet, debugHttp, debugRealtime, debugSocket } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -24,6 +24,7 @@ module.exports = {
     LOGROCKET_ENABLED: logrocket && 'true',
     INTERCOM_ENABLED: intercom && 'true',
     GA_ENABLED: ga && 'true',
+    TRACKING_ENABLED: tracking && 'true',
     API_HOST: 'localhost',
     ...ENV,
     VERSION: ENV.VERSION || `(${branch.sync()})`,

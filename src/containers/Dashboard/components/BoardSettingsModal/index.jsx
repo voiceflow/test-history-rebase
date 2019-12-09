@@ -4,15 +4,15 @@ import { Input } from 'reactstrap';
 import Button from '@/components/Button';
 import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
 import Image from '@/components/Uploads/Image';
-import { MODALS } from '@/constants';
+import { MODALS, PLANS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
-import { updateCurrentWorkspace, updateWorkspaceName } from '@/ducks/workspace';
+import { updateCurrentWorkspaceItem, updateWorkspaceName } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { swallowEvent } from '@/utils/dom';
 
 import SettingField from './components/SettingField';
 
-export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateCurrentWorkspace }) {
+export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateCurrentWorkspaceItem }) {
   const [name, updateName] = React.useState(workspace.name);
 
   const { open: openBillingModal } = useModals(MODALS.BILLING);
@@ -58,7 +58,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
                 tiny
                 path={`/team/${workspace.id}/picture`}
                 image={workspace.image}
-                update={(url) => updateCurrentWorkspace({ image: url })}
+                update={(url) => updateCurrentWorkspaceItem({ image: url })}
                 replace
                 className="icon-image icon-image-sm icon-image-square mb-3"
               />
@@ -76,11 +76,13 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
             <Input name="name" value={name} onChange={onNameChange} placeholder="Board Name" />
           </SettingField>
 
-          <SettingField hr label="Billing" description="View invoices, update your payment options">
-            <Button onClick={openBillingModal} isBtn isLinkLarge>
-              Invoices
-            </Button>
-          </SettingField>
+          {workspace.plan !== PLANS.enterprise && (
+            <SettingField hr label="Billing" description="View invoices, update your payment options">
+              <Button onClick={openBillingModal} isBtn isLinkLarge>
+                Invoices
+              </Button>
+            </SettingField>
+          )}
 
           <SettingField label="Privacy" description="This action is irreversible. All workspace and project data will be removed">
             <Button isBtn onClick={openDeleteModal} isLinkLarge>
@@ -97,7 +99,7 @@ const mapStateToProps = {};
 
 const mapDispatchToProps = {
   updateWorkspaceName,
-  updateCurrentWorkspace,
+  updateCurrentWorkspaceItem,
 };
 
 export default connect(

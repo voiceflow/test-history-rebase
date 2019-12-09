@@ -66,9 +66,16 @@ const GOOGLE_PROD_CLIENT_ID = process.env.GOOGLE_PROD_CLIENT_ID;
 const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID;
 export const GOOGLE_CLIENT_ID = BUILD_ENV === 'production' ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
 
+// tracking
+export const TRACKING_ENABLED = IS_PRODUCTION || process.env.TRACKING_ENABLED === 'true';
+
 // google analytics
-export const GA_ENABLED = IS_PRODUCTION || process.env.GA_ENABLED === 'true';
+export const GA_ENABLED = TRACKING_ENABLED || process.env.GA_ENABLED === 'true';
 export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
+
+// segment
+export const SEGMENT_ENABLED = TRACKING_ENABLED || process.env.SEGMENT_ENABLED === 'true';
+export const SEGMENT_KEY = process.env.SEGMENT_KEY;
 
 // zapier
 const ZAPIER_DEV_PATH = process.env.ZAPIER_DEV_PATH;

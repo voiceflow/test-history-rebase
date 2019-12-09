@@ -32,7 +32,7 @@ exports[`Amazon Login Test render empty card 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "cgMRoQ",
+                  "lastClassName": "eUwxZW",
                   "rules": Array [
                     "
   ",
@@ -79,20 +79,21 @@ exports[`Amazon Login Test render empty card 1`] = `
 ",
                     "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
                     [Function],
-                    "
+                    " */
 
   ",
                     [Function],
                     "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
                   ],
@@ -114,7 +115,7 @@ exports[`Amazon Login Test render empty card 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bxivhb sc-ifAKCX LoginWithAmazon sc-EHOje cgMRoQ"
+              className="sc-bxivhb sc-ifAKCX LoginWithAmazon sc-EHOje eUwxZW"
               onClick={[Function]}
             >
               <components__PrimaryButtonLabel>

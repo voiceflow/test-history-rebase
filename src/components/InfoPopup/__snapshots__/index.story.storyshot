@@ -43,7 +43,7 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "sc-jWBwVP",
                           "isStatic": false,
-                          "lastClassName": "inlaoL",
+                          "lastClassName": "csgNpl",
                           "rules": Array [
                             "
   ",
@@ -90,20 +90,21 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
 ",
                             "
   color: #fff;
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.85) 0%, #2c85ff 100%);
-  box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  ",
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  /* ",
                             [Function],
-                            "
+                            " */
 
   ",
                             [Function],
                             "
 
   &:active {
-    background: linear-gradient(180deg, rgba(93, 157, 245, 0.99) 0%, #2c85ff 100%);
-    box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 ",
                           ],
@@ -124,7 +125,7 @@ exports[`Storyshots Info Popup variants: Icon Popup 1`] = `
                     forwardedRef={null}
                   >
                     <button
-                      className="sc-bdVaJa sc-ifAKCX sc-jWBwVP inlaoL"
+                      className="sc-bdVaJa sc-ifAKCX sc-jWBwVP csgNpl"
                     >
                       <components__PrimaryButtonLabel>
                         <StyledComponent

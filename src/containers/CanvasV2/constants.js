@@ -34,21 +34,6 @@ export const BLOCK_MENU_CATEGORIES = {
   },
 };
 
-// const BLOCK_TYPES = {
-//   combine: {
-//     text: 'Combine',
-//     type: 'combine',
-//     icon: <i className="fas fa-compress-alt" />,
-//     tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit',
-//   },
-//   comment: {
-//     text: 'Comment',
-//     type: 'comment',
-//     icon: <i className="far fa-comment-alt" />,
-//     tip: 'Add notes to your diagram',
-//   },
-// };
-
 export const BLOCK_MENU = [
   {
     type: BlockCategoryType.BASIC,

@@ -48,9 +48,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
           "$$typeof": Symbol(react.forward_ref),
           "attrs": Array [],
           "componentStyle": ComponentStyle {
-            "componentId": "sc-gisBJw",
+            "componentId": "sc-kgAjT",
             "isStatic": true,
-            "lastClassName": "fZvEAP",
+            "lastClassName": "fRnduy",
             "rules": Array [
               "
   width: 100%;
@@ -62,7 +62,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
           "displayName": "styled.div",
           "foldedComponentIds": Array [],
           "render": [Function],
-          "styledComponentId": "sc-gisBJw",
+          "styledComponentId": "sc-kgAjT",
           "target": "div",
           "toString": [Function],
           "warnTooManyClasses": [Function],
@@ -72,7 +72,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
       forwardedRef={[Function]}
     >
       <div
-        className="sc-gisBJw fZvEAP"
+        className="sc-kgAjT fRnduy"
       >
         <Memo()
           handlers={
@@ -108,9 +108,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-caSCKo",
+                    "componentId": "sc-TOsTZ",
                     "isStatic": true,
-                    "lastClassName": "dkNPxF",
+                    "lastClassName": "cbVEOu",
                     "rules": Array [
                       "
   width: 100%;
@@ -120,7 +120,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-caSCKo",
+                  "styledComponentId": "sc-TOsTZ",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -130,7 +130,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               forwardedRef={
                 Object {
                   "current": <div
-                    class="sc-caSCKo dkNPxF"
+                    class="sc-TOsTZ cbVEOu"
                     draggable="true"
                     style="opacity: 1;"
                   >
@@ -151,7 +151,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               }
             >
               <div
-                className="sc-caSCKo dkNPxF"
+                className="sc-TOsTZ cbVEOu"
                 style={
                   Object {
                     "opacity": 1,
@@ -221,9 +221,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-caSCKo",
+                    "componentId": "sc-TOsTZ",
                     "isStatic": true,
-                    "lastClassName": "dkNPxF",
+                    "lastClassName": "cbVEOu",
                     "rules": Array [
                       "
   width: 100%;
@@ -233,7 +233,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-caSCKo",
+                  "styledComponentId": "sc-TOsTZ",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -243,7 +243,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               forwardedRef={
                 Object {
                   "current": <div
-                    class="sc-caSCKo dkNPxF"
+                    class="sc-TOsTZ cbVEOu"
                     draggable="true"
                     style="opacity: 1;"
                   >
@@ -264,7 +264,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               }
             >
               <div
-                className="sc-caSCKo dkNPxF"
+                className="sc-TOsTZ cbVEOu"
                 style={
                   Object {
                     "opacity": 1,
@@ -334,9 +334,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-caSCKo",
+                    "componentId": "sc-TOsTZ",
                     "isStatic": true,
-                    "lastClassName": "dkNPxF",
+                    "lastClassName": "cbVEOu",
                     "rules": Array [
                       "
   width: 100%;
@@ -346,7 +346,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-caSCKo",
+                  "styledComponentId": "sc-TOsTZ",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -356,7 +356,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               forwardedRef={
                 Object {
                   "current": <div
-                    class="sc-caSCKo dkNPxF"
+                    class="sc-TOsTZ cbVEOu"
                     draggable="true"
                     style="opacity: 1;"
                   >
@@ -377,7 +377,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               }
             >
               <div
-                className="sc-caSCKo dkNPxF"
+                className="sc-TOsTZ cbVEOu"
                 style={
                   Object {
                     "opacity": 1,
@@ -447,9 +447,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-caSCKo",
+                    "componentId": "sc-TOsTZ",
                     "isStatic": true,
-                    "lastClassName": "dkNPxF",
+                    "lastClassName": "cbVEOu",
                     "rules": Array [
                       "
   width: 100%;
@@ -459,7 +459,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-caSCKo",
+                  "styledComponentId": "sc-TOsTZ",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -469,7 +469,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               forwardedRef={
                 Object {
                   "current": <div
-                    class="sc-caSCKo dkNPxF"
+                    class="sc-TOsTZ cbVEOu"
                     draggable="true"
                     style="opacity: 1;"
                   >
@@ -490,7 +490,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               }
             >
               <div
-                className="sc-caSCKo dkNPxF"
+                className="sc-TOsTZ cbVEOu"
                 style={
                   Object {
                     "opacity": 1,
@@ -560,9 +560,9 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "$$typeof": Symbol(react.forward_ref),
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
-                    "componentId": "sc-caSCKo",
+                    "componentId": "sc-TOsTZ",
                     "isStatic": true,
-                    "lastClassName": "dkNPxF",
+                    "lastClassName": "cbVEOu",
                     "rules": Array [
                       "
   width: 100%;
@@ -572,7 +572,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
                   "displayName": "styled.div",
                   "foldedComponentIds": Array [],
                   "render": [Function],
-                  "styledComponentId": "sc-caSCKo",
+                  "styledComponentId": "sc-TOsTZ",
                   "target": "div",
                   "toString": [Function],
                   "warnTooManyClasses": [Function],
@@ -582,7 +582,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               forwardedRef={
                 Object {
                   "current": <div
-                    class="sc-caSCKo dkNPxF"
+                    class="sc-TOsTZ cbVEOu"
                     draggable="true"
                     style="opacity: 1;"
                   >
@@ -603,7 +603,7 @@ exports[`Storyshots DraggableList variants: default 1`] = `
               }
             >
               <div
-                className="sc-caSCKo dkNPxF"
+                className="sc-TOsTZ cbVEOu"
                 style={
                   Object {
                     "opacity": 1,

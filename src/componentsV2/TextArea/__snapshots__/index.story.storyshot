@@ -14,9 +14,9 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
         "$$typeof": Symbol(react.forward_ref),
         "attrs": Array [],
         "componentStyle": ComponentStyle {
-          "componentId": "sc-gGBfsJ",
+          "componentId": "sc-hEsumM",
           "isStatic": false,
-          "lastClassName": "jySKYS",
+          "lastClassName": "jEpAWR",
           "rules": Array [
             "
   ",
@@ -39,6 +39,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   &:disabled {
     ",
@@ -83,7 +84,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
         "displayName": "Styled(TextareaAutosize)",
         "foldedComponentIds": Array [],
         "render": [Function],
-        "styledComponentId": "sc-gGBfsJ",
+        "styledComponentId": "sc-hEsumM",
         "target": [Function],
         "toString": [Function],
         "warnTooManyClasses": [Function],
@@ -96,7 +97,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
   >
     <TextareaAutosize
-      className="sc-gGBfsJ jySKYS"
+      className="sc-hEsumM jEpAWR"
       disabled={false}
       inputRef={[Function]}
       onChange={[Function]}
@@ -106,7 +107,7 @@ exports[`Storyshots TextArea variants: TextArea 1`] = `
       value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac orci at neque ultricies venenatis suscipit sed nunc."
     >
       <textarea
-        className="sc-gGBfsJ jySKYS"
+        className="sc-hEsumM jEpAWR"
         disabled={false}
         onChange={[Function]}
         placeholder="placeholder"

@@ -3,7 +3,7 @@ import User from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import { FlexApart } from '@/componentsV2/Flex';
 import { MenuItem } from '@/componentsV2/Menu';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export const Container = styled(FlexApart)`
   border-bottom: 1px solid #eaeff4;
@@ -15,6 +15,12 @@ export const UserIcon = styled(User)`
   display: inline-block;
   margin-right: 16px;
   margin-left: 4px;
+
+  ${({ pending }) =>
+    pending &&
+    css`
+      line-height: 28px;
+    `}
 `;
 
 export const PermissionDropdown = styled(Dropdown)`

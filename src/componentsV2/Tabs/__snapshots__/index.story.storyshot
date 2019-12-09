@@ -29,7 +29,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "Wrapper__TabWrapper-nx57tn-0",
             "isStatic": false,
-            "lastClassName": "jCGFGA",
+            "lastClassName": "cmpHAb",
             "rules": Array [
               "display:",
               [Function],
@@ -38,7 +38,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
               " ",
               [Function],
               "position:relative;height:100%;justify-content:flex-start;& ",
-              ".sc-bbmXgH",
+              ".sc-tilXH",
               "{height:100%;}",
             ],
           },
@@ -57,7 +57,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
       forwardedRef={null}
     >
       <div
-        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 jCGFGA"
+        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 cmpHAb"
       >
         <styled.button
           as="button"
@@ -72,9 +72,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -132,7 +132,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -144,7 +144,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH bPOhFz"
+              className="sc-tilXH dxuyKd"
               onClick={[Function]}
             >
               First value
@@ -164,9 +164,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -224,7 +224,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -236,7 +236,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH bPOhFz"
+              className="sc-tilXH dxuyKd"
               onClick={[Function]}
             >
               second value
@@ -256,9 +256,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -316,7 +316,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -328,7 +328,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH bPOhFz"
+              className="sc-tilXH dxuyKd"
               onClick={[Function]}
             >
               third long long long long value
@@ -345,9 +345,9 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-uJMKN",
+                  "componentId": "sc-fYxtnH",
                   "isStatic": false,
-                  "lastClassName": "UnajY",
+                  "lastClassName": "hvscmk",
                   "rules": Array [
                     "
   position: absolute;
@@ -369,7 +369,7 @@ exports[`Storyshots Tabs variants: default 1`] = `
                 "displayName": "styled.div",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-uJMKN",
+                "styledComponentId": "sc-fYxtnH",
                 "target": "div",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -379,13 +379,13 @@ exports[`Storyshots Tabs variants: default 1`] = `
             forwardedRef={
               Object {
                 "current": <div
-                  class="sc-uJMKN UnajY"
+                  class="sc-fYxtnH hvscmk"
                 />,
               }
             }
           >
             <div
-              className="sc-uJMKN UnajY"
+              className="sc-fYxtnH hvscmk"
               color={null}
             />
           </StyledComponent>
@@ -426,7 +426,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "Wrapper__TabWrapper-nx57tn-0",
             "isStatic": false,
-            "lastClassName": "jCGFGA",
+            "lastClassName": "cmpHAb",
             "rules": Array [
               "display:",
               [Function],
@@ -435,7 +435,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
               " ",
               [Function],
               "position:relative;height:100%;justify-content:flex-start;& ",
-              ".sc-bbmXgH",
+              ".sc-tilXH",
               "{height:100%;}",
             ],
           },
@@ -454,7 +454,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
       forwardedRef={null}
     >
       <div
-        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 jCGFGA"
+        className="Flex-sc-127y44r-0 Wrapper__TabWrapper-nx57tn-0 cmpHAb"
       >
         <styled.button
           as="button"
@@ -469,9 +469,9 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -529,7 +529,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -541,7 +541,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH kJFNng"
+              className="sc-tilXH gFZKOv"
               onClick={[Function]}
             >
               First value
@@ -561,9 +561,9 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -621,7 +621,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -633,7 +633,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH bPOhFz"
+              className="sc-tilXH dxuyKd"
               onClick={[Function]}
             >
               second value
@@ -653,9 +653,9 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-bbmXgH",
+                  "componentId": "sc-tilXH",
                   "isStatic": false,
-                  "lastClassName": "bPOhFz",
+                  "lastClassName": "dxuyKd",
                   "rules": Array [
                     "
   ",
@@ -713,7 +713,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "displayName": "styled.button",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-bbmXgH",
+                "styledComponentId": "sc-tilXH",
                 "target": "button",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -725,7 +725,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
             onClick={[Function]}
           >
             <button
-              className="sc-bbmXgH bPOhFz"
+              className="sc-tilXH dxuyKd"
               onClick={[Function]}
             >
               third long long long long value
@@ -742,9 +742,9 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "$$typeof": Symbol(react.forward_ref),
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
-                  "componentId": "sc-uJMKN",
+                  "componentId": "sc-fYxtnH",
                   "isStatic": false,
-                  "lastClassName": "UnajY",
+                  "lastClassName": "hvscmk",
                   "rules": Array [
                     "
   position: absolute;
@@ -766,7 +766,7 @@ exports[`Storyshots Tabs variants: props control 1`] = `
                 "displayName": "styled.div",
                 "foldedComponentIds": Array [],
                 "render": [Function],
-                "styledComponentId": "sc-uJMKN",
+                "styledComponentId": "sc-fYxtnH",
                 "target": "div",
                 "toString": [Function],
                 "warnTooManyClasses": [Function],
@@ -776,13 +776,13 @@ exports[`Storyshots Tabs variants: props control 1`] = `
             forwardedRef={
               Object {
                 "current": <div
-                  class="sc-uJMKN UnajY"
+                  class="sc-fYxtnH hvscmk"
                 />,
               }
             }
           >
             <div
-              className="sc-uJMKN UnajY"
+              className="sc-fYxtnH hvscmk"
               color={null}
             />
           </StyledComponent>

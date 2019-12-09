@@ -16,6 +16,7 @@ import Template from '@/admin/containers/Templates';
 import Vendors from '@/admin/containers/Vendors';
 import { checkSession } from '@/admin/store/ducks/account';
 import { mainTheme, mappedThemes } from '@/admin/styles/theme';
+import theme from '@/styles/theme';
 
 import { AdminWrapper, PageWrapper } from './styles';
 
@@ -26,7 +27,12 @@ class Admin extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={mappedThemes[this.props.theme] || mainTheme}>
+      <ThemeProvider
+        theme={{
+          ...theme,
+          ...(mappedThemes[this.props.theme] || mainTheme),
+        }}
+      >
         <AdminWrapper>
           <div>
             <Sidebar />

@@ -2,7 +2,7 @@ const { default: webpackConfig } = require('./config/webpack/common');
 
 module.exports = {
   extends: '@voiceflow/eslint-config/frontend',
-  plugins: ['prettier'],
+  plugins: ['prettier', 'react-hooks'],
   parser: 'babel-eslint',
   rules: {
     // errors
@@ -25,6 +25,8 @@ module.exports = {
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
     'class-methods-use-this': ['error', { exceptMethods: ['render'] }],
     'lodash/preferred-alias': ['error', { ignoreMethods: ['first'] }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
 
     // disabled
     'react/no-unescaped-entities': 'off',

@@ -59,7 +59,7 @@ const NestedDropdown = (props) => {
   const renderSubMenu = (options, depthLevel = 0) => {
     const genKey = generateLocalKey();
     const { openDirection, selectOption } = props;
-    const caret = <SvgIcon color="#8da2b5" icon={openDirection === 'left' ? 'arrowLeft' : 'arrowRight'} size={10} />;
+    const caret = <SvgIcon color="#8da2b5" icon={openDirection === 'left' ? 'arrowLeft' : 'arrowRight'} size={8} />;
 
     const menuOptions = options.map((option) => {
       let subMenu;

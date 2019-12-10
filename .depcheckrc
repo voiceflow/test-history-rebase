@@ -26,6 +26,8 @@
     "prettier-eslint-cli",
     "prettier-stylelint",
     "react-router",
-    "exargs"
+    "exargs",
+    "@storybook/addon-storyshots",
+    "jest-styled-components"
   ]
 }

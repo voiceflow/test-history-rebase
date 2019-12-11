@@ -221,6 +221,12 @@
     ],
     "**/*.css": [
       "prettier-stylelint"
+    ],
+    "Dockerfile": [
+      "hadolint --ignore DL3018"
+    ],
+    "*.dockerfile": [
+      "hadolint --ignore DL3018"
     ]
   },
   "prettier": "@voiceflow/prettier-config",
@@ -237,6 +243,7 @@
     "gen-certs": "scripts/generate_certs.sh",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint src/**/*.css",
+    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile ./cache.dockerfile ./admin.dockerfile ./storybook.dockerfile",
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
     "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
     "local": "yarn start",

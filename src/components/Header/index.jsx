@@ -1,21 +1,28 @@
-import './Header.css';
-
-// import cn from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import LeftIcon from '@/svgs/arrow-left.svg';
 
-import UserMenu from './components/UserMenu';
-import { BackButton, CenterGroup, HeaderActions, HeaderContainer, HeaderNavigation, JustifiedHeaderActions, Logo, PrimaryHeader } from './styled';
+import {
+  BackButton,
+  CenterGroup,
+  HeaderActions,
+  HeaderContainer,
+  HeaderNavigation,
+  JustifiedHeaderActions,
+  Logo,
+  PrimaryHeader,
+  SecondaryNavWrapper,
+  TitleGroup,
+  UserMenu,
+} from './components';
 
 function Header({
   title,
   preview,
   isUserMenu,
   history,
-  logo,
   withLogo,
   onBackClick,
   leftRenderer,
@@ -23,6 +30,7 @@ function Header({
   centerRenderer,
   subHeaderRenderer,
   disableLogoClick,
+  logoAssetPath,
 }) {
   return (
     <HeaderContainer>
@@ -30,7 +38,7 @@ function Header({
         {withLogo && (
           <Logo
             disableLogoClick={disableLogoClick}
-            src={logo || '/logo_bubble_Small.png'}
+            src={logoAssetPath || '/logo_bubble_Small.png'}
             alt="logo"
             draggable="false"
             onClick={() => (disableLogoClick ? null : history.push('/'))}
@@ -48,12 +56,12 @@ function Header({
         <HeaderActions>
           <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
           <JustifiedHeaderActions>
-            {!preview && rightRenderer && <div className="title-group no-select">{rightRenderer()}</div>}
+            {!preview && rightRenderer && <TitleGroup>{rightRenderer()}</TitleGroup>}
             {!isUserMenu && <UserMenu history={history} preview={preview} />}
           </JustifiedHeaderActions>
         </HeaderActions>
       </PrimaryHeader>
-      {subHeaderRenderer && subHeaderRenderer()}
+      {subHeaderRenderer && <SecondaryNavWrapper>{subHeaderRenderer()}</SecondaryNavWrapper>}
     </HeaderContainer>
   );
 }
@@ -68,6 +76,7 @@ Header.propTypes = {
   rightClassName: PropTypes.string,
   centerRenderer: PropTypes.func,
   subHeaderRenderer: PropTypes.func,
+  logoAssetPath: PropTypes.string,
 };
 
 export default Header;

@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header render header 1`] = `
-<styled__HeaderContainer>
-  <styled__PrimaryHeader>
-    <styled__HeaderNavigation />
-    <styled__HeaderActions>
-      <styled__CenterGroup />
-      <styled__JustifiedHeaderActions>
+<components__HeaderContainer>
+  <components__PrimaryHeader>
+    <components__HeaderNavigation />
+    <components__HeaderActions>
+      <components__CenterGroup />
+      <components__JustifiedHeaderActions>
         <Connect(UserMenu) />
-      </styled__JustifiedHeaderActions>
-    </styled__HeaderActions>
-  </styled__PrimaryHeader>
-</styled__HeaderContainer>
+      </components__JustifiedHeaderActions>
+    </components__HeaderActions>
+  </components__PrimaryHeader>
+</components__HeaderContainer>
 `;

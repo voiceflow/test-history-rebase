@@ -13,7 +13,7 @@ import { useToggle } from '@/hooks/toggle';
 import { stopPropagation } from '@/utils/dom';
 
 import UpdatesPopover from '../UpdatesPopover';
-import { Numbered, UpdateBubble } from './components';
+import { Numbered, SubHeaderItem, UpdateBubble } from './components';
 
 const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
 
@@ -32,12 +32,12 @@ function RightNavSection({ notifications, goToDesigner, readNotifications }) {
   return (
     <>
       {!IS_PRODUCTION && (
-        <div className="subheader-right nav-child-item" onClick={goToDesigner}>
+        <SubHeaderItem onClick={goToDesigner}>
           <IconButton icon="star" size={15} large variant="outline" />
-        </div>
+        </SubHeaderItem>
       )}
 
-      <div className="subheader-right nav-child-item">
+      <SubHeaderItem>
         {/* notifications component */}
         <Dropdown
           menu={
@@ -87,9 +87,9 @@ function RightNavSection({ notifications, goToDesigner, readNotifications }) {
             );
           }}
         </Dropdown>
-      </div>
+      </SubHeaderItem>
 
-      <div className="subheader-right nav-child-item">
+      <SubHeaderItem>
         <Dropdown
           menu={
             <Menu>
@@ -122,7 +122,7 @@ function RightNavSection({ notifications, goToDesigner, readNotifications }) {
             </Tooltip>
           )}
         </Dropdown>
-      </div>
+      </SubHeaderItem>
     </>
   );
 }

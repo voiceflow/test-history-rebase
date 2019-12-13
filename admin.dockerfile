@@ -14,7 +14,8 @@ COPY . .
 
 RUN echo $NPM_TOKEN > .npmrc && \
   yarn install && \
-  yarn build:admin
+  yarn build:admin && \
+  rm -f .npmrc
 
 FROM nginx:stable
 

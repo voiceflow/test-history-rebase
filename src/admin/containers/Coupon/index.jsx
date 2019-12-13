@@ -112,8 +112,9 @@ class Coupon extends React.Component {
               </Label>
               <Col sm={10}>
                 <Select name="plan" id="plan" type="select" value={this.state.coupon.plan} onChange={this.handleInputChange}>
-                  <option value="1">Pro</option>
-                  <option value="2">Business</option>
+                  <option value="pro">Pro</option>
+                  <option value="team">Team</option>
+                  <option value="enterprise">Enterprise</option>
                 </Select>
               </Col>
             </FormGroup>

@@ -3,8 +3,10 @@ import { styled } from '@/hocs';
 import IconButtonContainer from './IconButtonContainer';
 
 const OutlineIconButtonContainer = styled(IconButtonContainer)`
-  border: 1px solid #e2e9ec;
-  box-shadow: none;
+  border: 1px solid #e2e9ec !important;
+  box-shadow: none !important;
+  background: #fff;
+  color: #8da2b5;
 
   &:hover {
     box-shadow: none;
@@ -14,8 +16,15 @@ const OutlineIconButtonContainer = styled(IconButtonContainer)`
 
   &:active {
     background: #eef4f6cc;
-    color: #6e849a;
-    box-shadow: none;
+    color: #132144;
+    box-shadow: none !important;
+    border: 1px solid #e2e9ec;
+  }
+
+  &:focus {
+    background: #eef4f6cc;
+    color: #132144;
+    box-shadow: none !important;
     border: 1px solid #e2e9ec;
   }
 `;

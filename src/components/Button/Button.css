@@ -56,29 +56,25 @@ button {
   font-size: 15px;
   font-family: 'Open Sans', sans-serif !important;
   text-transform: none;
-  background-color: #5d9df5 !important;
-  background-image: linear-gradient(180deg, #72adfd 0%, #3083f3 78%);
-
-  /* added important to override bootstrap hover and active states on br color */
+  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  background-size: 1px 52px;
   border: none;
   border-radius: 90px;
-  box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   cursor: pointer;
-  -moz-transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  -ms-transition: all 0.15s ease-out;
+  -o-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
 }
 
 .btn-primary:hover {
-  background-image: linear-gradient(180deg, #3083f3 0%, #3083f3 78%);
-  box-shadow: 0 4px 8px rgba(17, 49, 96, 0.16), 0 0 4px rgba(17, 49, 96, 0.08);
+  background-position: 0;
 }
 
 .btn-primary:active {
-  background-image: linear-gradient(0deg, #3087fe, #3087fe) !important;
-  box-shadow: 0 6px 12px rgba(17, 49, 96, 0.2), 0 0 6px rgba(17, 49, 96, 0.1);
+  box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
 }
 
 .btn-primary:focus {

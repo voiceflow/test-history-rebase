@@ -5,7 +5,7 @@ const ButtonGroupButton = styled(BaseButton)`
   flex: 1;
   border: 1px solid transparent;
   border-radius: 5px;
-  padding: 10px 12px;
+  padding: 8px 18px;
   white-space: nowrap;
   color: #62778c;
   background: transparent;
@@ -16,7 +16,7 @@ const ButtonGroupButton = styled(BaseButton)`
     isSelected &&
     css`
       background: #fff;
-      box-shadow: 0 1px 3px 0 rgba(14, 30, 37, 0.1);
+      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 2px 5px 0 rgba(17, 49, 96, 0.16);
       color: #132144;
     `}
 `;

@@ -43,20 +43,27 @@ const FormContainer = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border: 0;
-    border-radius: 50%;
+    border-radius: 5px;
     color: #8da2b5;
-    background: #fff;
+    /* background: #fff; */
     line-height: 24px;
     text-align: center;
+    transition: all 0.15s ease;
     cursor: pointer;
 
     &:hover {
       color: #62778c;
-      background-color: #f7f9fb;
-      box-shadow: 0 1px 6px rgba(17, 49, 96, 0.24), 0 0 0 rgba(17, 49, 96, 0.04);
+      background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%);
+      box-shadow: inset 0 0 0 1px #dfe3ed;
+    }
+    &:active,
+    &:focus {
+      color: #132144;
+      background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%);
+      box-shadow: inset 0 0 0 1px #dfe3ed;
     }
   }
 
@@ -104,6 +111,7 @@ const FormContainer = styled.div`
   & .expression-group {
     display: grid;
     border-bottom: 1px solid #eaeff4;
+    font-weight: 600;
     grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
 

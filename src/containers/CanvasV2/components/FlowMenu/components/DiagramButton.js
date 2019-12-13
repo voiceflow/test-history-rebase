@@ -32,14 +32,14 @@ export const DiagramButton = styled.button.attrs(({ depth }) => ({
   }
 
   &.active {
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff !important;
+    background: linear-gradient(180deg, rgba(238, 244, 246, 0.55), #eef4f6) !important;
     color: #132144;
-    border-top-color: #dfe3ed;
-    border-bottom-color: #dfe3ed;
+    border-top-color: #eaeff4;
+    border-bottom-color: #eaeff4;
   }
 
   &:hover {
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eff5f7 100%), #ffffff;
+    background: linear-gradient(180deg, rgba(238, 244, 246, 0.39) 0%, #eff5f775 100%), #ffffff;
 
     ${DiagramEdit} {
       opacity: 1;

@@ -9,6 +9,7 @@ const CaptionedIconButtonContainer = styled(ButtonContainer)`
   width: ${CAPTIONED_ICON_BUTTON_HEIGHT}px;
   flex-direction: column;
   color: #6e849a;
+  transition: ease all 0.15s;
 
   ${({ disabled }) =>
     disabled &&

@@ -67,9 +67,10 @@ export const selectDropdown = css`
     text-transform: none;
     font-weight: 600;
     padding-left: 24px;
+    margin-bottom: 8px;
   }
   .select__group .select__option {
     padding-left: 40px;
-    font-size: 14px;
+    font-size: 15px;
   }
 `;

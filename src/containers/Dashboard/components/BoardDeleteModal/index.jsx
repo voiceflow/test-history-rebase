@@ -35,11 +35,11 @@ export function BoardDeleteModal({ workspace, deleteWorkspace }) {
       close();
       updateDeleting(false);
     }
-  }, [workspace.id, onClose, updateDeleting, deleteWorkspace]);
+  }, [deleteWorkspace, workspace.id, closeSettingsModal, close]);
 
   return (
     <Modal isOpen={isOpened} toggle={onClose} className="upgrade-modal">
-      <ModalHeader toggle={onClose} className="pb-2" header="Delete Workspace" />
+      <ModalHeader toggle={onClose} header="Delete Workspace" />
 
       <ModalBody className="px-45 pt-0 overflow-hidden">
         {deleting ? (
@@ -48,15 +48,13 @@ export function BoardDeleteModal({ workspace, deleteWorkspace }) {
           </div>
         ) : (
           <div>
-            <b>Are you sure you want to delete this?</b>
-            <br />
-            Deleting a workspace will permanently delete all of its projects and live voice applications
+            <b>Warning</b>, deleting a workspace will permanently delete all of its projects and live voice applications.
             <br /> <br />
-            <label>Enter this workspace's name to confirm</label>
+            <label>Workspace name</label>
             <Input name="input" onChange={onNameChange} value={name} placeholder="Workspace Name" />
             <div className="mt-3 mb-2 text-center">
               <Button isBtn isPrimary disabled={_lowerCase(_trim(name)) !== _lowerCase(_trim(workspace.name))} onClick={onDeleteWorkspace}>
-                Delete Workspace
+                Delete forever
               </Button>
             </div>
           </div>

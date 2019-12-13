@@ -7,7 +7,7 @@ const CaptionedIconButtonLabel = styled.span`
   box-sizing: border-box;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 11px;
   line-height: 15px;
 `;

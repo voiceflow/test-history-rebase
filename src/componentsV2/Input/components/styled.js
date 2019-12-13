@@ -25,7 +25,7 @@ export const inputStyle = css`
   background: #fff;
   border: 1px solid #d2dae2;
   border-radius: 6px;
-  padding: 9px 16px 9px;
+  padding: 11px 16px 9px;
   line-height: 22px;
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,

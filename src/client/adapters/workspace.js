@@ -4,7 +4,7 @@ export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
 
 const workspaceAdapter = createAdapter(
-  ({ boards, created, creator_id, hasSource, image, name, projects, seats, team_id, stripe_status, members, plan }) => {
+  ({ boards, created, creator_id, hasSource, image, name, projects, seats, seatLimits, team_id, stripe_status, members, plan }) => {
     let state;
     if (INVALID_STATES.includes(stripe_status)) {
       state = 'LOCKED';
@@ -16,6 +16,7 @@ const workspaceAdapter = createAdapter(
       name,
       boards,
       created,
+      seatLimits,
       creatorID: creator_id,
       hasSource,
       image,

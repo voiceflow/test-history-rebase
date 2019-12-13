@@ -1,30 +1,46 @@
 import React from 'react';
 
 import ButtonDropdownInput, { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
-import { MODALS, PLANS } from '@/constants';
+import { toast } from '@/componentsV2/Toast';
+import { MODALS, PLANS, USER_ROLES } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
-import { activeWorkspaceMembersSelector, planTypeSelector, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
+import {
+  activeWorkspaceMembersSelector,
+  planTypeSelector,
+  seatLimits,
+  usedEditorSeats,
+  usedViewerSeats,
+  workspaceNumberOfSeatsSelector,
+} from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
-import { BILLING_SEATS_ELEMENT } from '../../../Payment/Checkout/components/SeatsAndBilling/components/SeatsInput';
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
 
-const OPTIONS_ARRAY = [{ value: 'editor', label: 'can edit' }, { value: 'viewer', label: 'can view' }];
+const OPTIONS_ARRAY = [{ value: USER_ROLES.EDITOR, label: 'can edit' }, { value: USER_ROLES.VIEWER, label: 'can view' }];
 
-function SendInvite({ plan, sendInvite, numberOfSeats, members }) {
+function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, usedEditorSeats, usedViewerSeats }) {
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
   const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
 
   const onSendInviteClick = async () => {
-    if (members.length >= numberOfSeats) {
-      openPaymentsModal({ focus: BILLING_SEATS_ELEMENT });
-      return;
+    const role = permissionType.value;
+
+    const editorLimit = seatLimits.editor;
+    const paidEditorSeats = numberOfSeats;
+    const numberOfUsedEditorSeats = usedEditorSeats;
+
+    if (editorLimit !== null && numberOfUsedEditorSeats >= paidEditorSeats && permissionType === USER_ROLES.EDITOR) {
+      return openPaymentsModal();
     }
 
-    await sendInvite(email, permissionType.value);
+    const viewerLimit = seatLimits.viewer;
+    if (viewerLimit !== null && usedViewerSeats >= viewerLimit && permissionType === USER_ROLES.VIEWER) {
+      return toast.error('Viewer limit reached.');
+    }
 
+    sendInvite(email, role);
     setEmail('');
   };
 
@@ -65,9 +81,12 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members }) {
 }
 
 const mapStateToProps = {
+  seatLimits,
   plan: planTypeSelector,
   members: activeWorkspaceMembersSelector,
   numberOfSeats: workspaceNumberOfSeatsSelector,
+  usedEditorSeats,
+  usedViewerSeats,
 };
 
 export default connect(mapStateToProps)(SendInvite);

@@ -2,8 +2,18 @@ import React from 'react';
 
 import Flex from '@/componentsV2/Flex';
 import Menu from '@/componentsV2/Menu';
+import { toast } from '@/componentsV2/Toast';
 import { USER_ROLES } from '@/constants';
-import { cancelInvite, deleteMember, updateInvite, updateMember } from '@/ducks/workspace';
+import {
+  cancelInvite,
+  deleteMember,
+  seatLimits,
+  updateInvite,
+  updateMember,
+  usedEditorSeats,
+  usedViewerSeats,
+  workspaceNumberOfSeatsSelector,
+} from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
 
@@ -25,10 +35,30 @@ const getRoleVerb = (role) => {
   }
 };
 
-const MemberRow = ({ member, isOwner, pending, resendInvite, updateMember, deleteMember, cancelInvite, updateInvite }) => {
+const MemberRow = ({
+  member,
+  isOwner,
+  pending,
+  resendInvite,
+  numberOfUsedEditorSeats,
+  numberOfUsedViewerSeats,
+  updateMember,
+  deleteMember,
+  cancelInvite,
+  updateInvite,
+  seatLimits,
+  seats,
+}) => {
   const changePermission = (role) => {
     if (role === member.role) {
       return;
+    }
+
+    if (role === USER_ROLES.EDITOR && numberOfUsedEditorSeats >= seats) {
+      return toast.error('You have reached your max editor seats usage.');
+    }
+    if (role === USER_ROLES.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
+      return toast.error('You have reached your max viewer seats usage.');
     }
 
     if (isVerifiedMember(member)) {
@@ -89,6 +119,13 @@ const MemberRow = ({ member, isOwner, pending, resendInvite, updateMember, delet
   );
 };
 
+const mapStateToProps = {
+  numberOfUsedEditorSeats: usedEditorSeats,
+  numberOfUsedViewerSeats: usedViewerSeats,
+  seatLimits,
+  seats: workspaceNumberOfSeatsSelector,
+};
+
 const MapDispatchToProps = {
   updateMember,
   deleteMember,
@@ -97,6 +134,6 @@ const MapDispatchToProps = {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   MapDispatchToProps
 )(MemberRow);

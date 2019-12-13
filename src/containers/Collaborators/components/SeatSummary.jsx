@@ -1,9 +1,9 @@
 import React from 'react';
 
 import ClickableText from '@/componentsV2/Text/ClickableText';
-import { MODALS, PLANS } from '@/constants';
+import { MODALS, PLANS, UNLIMITED_SEAT_NUMBER } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
-import { activeWorkspaceMembersSelector, planTypeSelector, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
+import { planTypeSelector, seatLimits, usedEditorSeats, usedViewerSeats, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 
 const Container = styled.div`
@@ -21,18 +21,28 @@ const Text = styled.div`
   display: inline-block;
 `;
 
-function SeatSummary({ numberOfSeats, members, plan }) {
-  const numberOfUsedSeats = members.length || 1;
+function SeatSummary({ numberOfSeats, plan, seatLimits, usedEditorSeats, usedViewerSeats }) {
   const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
+
+  const numberOfUsedEditorSeats = usedEditorSeats;
+  const numberOfUsedViewerSeats = usedViewerSeats;
+
+  const viewerSeatLimit = seatLimits.viewer;
+
+  const editorSeatsMessage =
+    numberOfSeats >= UNLIMITED_SEAT_NUMBER ? 'Unlimited Editors.' : `${numberOfUsedEditorSeats} of ${numberOfSeats} Editor seats taken.`;
+  const viewerSeatsMessage =
+    viewerSeatLimit >= UNLIMITED_SEAT_NUMBER ? 'Unlimited Viewers.' : `${numberOfUsedViewerSeats} of ${viewerSeatLimit} Viewer seats taken.`;
 
   return (
     <Container>
       <Number>
         <span>
-          {numberOfUsedSeats} <Text>of {numberOfSeats} seats are taken.</Text>
+          <Text>
+            {editorSeatsMessage} {(viewerSeatLimit === null || viewerSeatLimit > 0) && <>{viewerSeatsMessage}</>}
+          </Text>
         </span>
       </Number>
-
       {plan !== PLANS.enterprise && (
         <ClickableText onClick={openPaymentsModal}>{plan === PLANS.team ? <span>Need more room?</span> : <span>Upgrade</span>}</ClickableText>
       )}
@@ -41,8 +51,10 @@ function SeatSummary({ numberOfSeats, members, plan }) {
 }
 
 const mapStateToProps = {
+  usedEditorSeats,
+  usedViewerSeats,
   numberOfSeats: workspaceNumberOfSeatsSelector,
-  members: activeWorkspaceMembersSelector,
+  seatLimits,
   plan: planTypeSelector,
 };
 

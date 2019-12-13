@@ -10,6 +10,7 @@ const DropdownButton = styled.button`
   font-weight: 600;
   font-size: 13px;
   height: auto;
+  box-shadow: none;
 
   display: flex;
   align-items: center;

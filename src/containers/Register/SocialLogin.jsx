@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login';
@@ -10,7 +9,7 @@ import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, coupon, checkCoupon = _.constant(true), googleLogin, facebookLogin }) => {
+const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebookLogin }) => {
   const [authError, setAuthError] = useState(null);
   let timeout;
 
@@ -57,7 +56,7 @@ const SocialLogin = ({ entryText, light, coupon, checkCoupon = _.constant(true),
         render={(renderProps) => (
           <div
             onClick={() => {
-              checkCoupon() && renderProps.onClick();
+              !disabled && renderProps.onClick();
             }}
             className={cn('social-button', { 'social-button-light': light })}
           >
@@ -73,7 +72,7 @@ const SocialLogin = ({ entryText, light, coupon, checkCoupon = _.constant(true),
         render={(renderProps) => (
           <div
             onClick={() => {
-              checkCoupon() && renderProps.onClick();
+              !disabled && renderProps.onClick();
             }}
             className={cn('social-button', { 'social-button-light': light })}
           >

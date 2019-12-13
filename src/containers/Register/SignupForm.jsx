@@ -1,24 +1,30 @@
 import './Account.css';
 
+import axios from 'axios';
+import throttle from 'lodash/throttle';
 import queryString from 'query-string/index';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/Button';
+import { ControlledInput } from '@/componentsV2/Input';
 import { signup } from '@/ducks/session';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history }) => {
+export const SignupForm = ({ signup, history, promo }) => {
   // eslint-disable-next-line no-restricted-globals
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
   const [password, setPassword] = useState('');
   const [name, setName] = useState(query.name ? query.name : '');
+
+  const [coupon, setCoupon] = useState('');
+  const [couponValid, setCouponValid] = useState(false);
   let timeout;
 
   const openLogin = (e) => {
@@ -34,6 +40,7 @@ export const SignupForm = ({ signup, history }) => {
       name,
       email,
       password,
+      coupon,
     }).catch((err) => {
       setSignupError(err.body.data);
     });
@@ -47,6 +54,31 @@ export const SignupForm = ({ signup, history }) => {
 
     return () => clearTimeout(timeout);
   });
+
+  const verifyCoupon = React.useCallback(
+    throttle(async (input) => {
+      setCouponValid(false);
+
+      if (!input) return;
+
+      const { data } = await axios.get(`/workspaces/coupon/${input}`);
+
+      if (data) {
+        setCouponValid(true);
+      }
+    }, 1000)
+  );
+
+  const onCouponChange = React.useCallback(async (value) => {
+    setCoupon(value);
+    verifyCoupon(value);
+  });
+
+  const isSignupDisabled = coupon && !couponValid;
+
+  useEffect(() => {
+    if (promo && query.coupon) onCouponChange(query.coupon);
+  }, [onCouponChange, promo, query.coupon]);
 
   return (
     <AuthenticationContainer dark>
@@ -92,13 +124,26 @@ export const SignupForm = ({ signup, history }) => {
                 value={password}
               />
             </FormGroup>
+            {promo && (
+              <FormGroup>
+                <ControlledInput
+                  type="text"
+                  name="promo"
+                  onChange={(e) => onCouponChange(e.target.value)}
+                  placeholder="Promo Code"
+                  value={coupon}
+                  complete={couponValid}
+                  error={coupon && !couponValid}
+                />
+              </FormGroup>
+            )}
             <div className="row">
               <div className="col-6 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={openLogin}>Have an account?</a>
               </div>
               <div className="col-6">
-                <Button isPrimary isLarge isBlock type="submit">
+                <Button isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
                   Create Account
                 </Button>
               </div>
@@ -106,7 +151,7 @@ export const SignupForm = ({ signup, history }) => {
           </div>
         </Form>
 
-        <SocialLogin entryText="Or sign up with" />
+        <SocialLogin entryText="Or sign up with" coupon={coupon} disabled={isSignupDisabled} />
 
         {signupError && (
           <div className="errorContainer row">

@@ -52,6 +52,12 @@ class Coupon extends React.Component {
     if (!parseInt(this.state.coupon.duration, 10)) {
       return toast.error('Bad duration');
     }
+    if (!parseInt(this.state.coupon.seats, 10)) {
+      return toast.error('Bad seats');
+    }
+    if (!parseInt(this.state.coupon.redemptions, 10)) {
+      return toast.error('Bad redemptions');
+    }
     try {
       await axios.post('/admin-api/coupon/', this.state.coupon);
       toast.success('Submit Success');
@@ -85,6 +91,22 @@ class Coupon extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup row>
+              <Label for="seats" sm={2}>
+                Seats
+              </Label>
+              <Col sm={10}>
+                <Input name="seats" id="seats" value={this.state.coupon.seats} onChange={this.handleInputChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="redemptions" sm={2}>
+                Redemptions
+              </Label>
+              <Col sm={10}>
+                <Input name="redemptions" id="redemptions" value={this.state.coupon.redemptions} onChange={this.handleInputChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
               <Label for="plan" sm={2}>
                 Plan
               </Label>
@@ -106,6 +128,8 @@ class Coupon extends React.Component {
               <th>Code</th>
               <th>Duration</th>
               <th>Plan</th>
+              <th>Seats</th>
+              <th>Redemptions</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -117,6 +141,8 @@ class Coupon extends React.Component {
                 </th>
                 <td>{t.duration}</td>
                 <td>{t.plan}</td>
+                <td>{t.seats}</td>
+                <td>{t.redemptions}</td>
                 <td>
                   <Button color="warning" onClick={() => this.delete(t.code)}>
                     Delete

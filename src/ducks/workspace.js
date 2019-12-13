@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { toast } from '@/componentsV2/Toast';
+import { EDITOR_SEAT_ROLES } from '@/constants';
 import { getAlternativeColor } from '@/utils/colors';
 
 import Normalize, { deleteNormalize, normalize } from './_normalize';
@@ -93,6 +94,21 @@ export const workspaceByIDSelector = createSelector(
 export const activeWorkspaceMembersSelector = createSelector(
   activeWorkspaceSelector,
   (activeWorkspace) => activeWorkspace?.members || []
+);
+
+export const seatLimits = createSelector(
+  activeWorkspaceSelector,
+  ({ seatLimits }) => seatLimits
+);
+
+export const usedEditorSeats = createSelector(
+  activeWorkspaceMembersSelector,
+  (members) => members.filter((member) => EDITOR_SEAT_ROLES.includes(member.role)).length || 1
+);
+
+export const usedViewerSeats = createSelector(
+  activeWorkspaceMembersSelector,
+  (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
 );
 
 export const allWorkspacesSelector = createSelector(
@@ -274,8 +290,9 @@ export const validateInvite = (invite) => {
 
 export const sendInvite = (email, permissionType) => {
   return async (dispatch, getState) => {
+    const state = getState();
+
     try {
-      const state = getState();
       const currentWorkspaceId = activeWorkspaceIDSelector(state);
       const currentMembers = activeWorkspaceMembersSelector(state);
 
@@ -287,6 +304,7 @@ export const sendInvite = (email, permissionType) => {
       }
 
       toast.success('Sent invite');
+      return true;
     } catch (err) {
       toast.error(extractErrorMessages(err));
 

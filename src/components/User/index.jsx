@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import SvgIcon from '@/components/SvgIcon';
+import FlexCenter from '@/componentsV2/Flex';
 
 import { AddMemberIcon, MemberIcon, MembersContainer, MembersWrapper } from './components';
 
@@ -74,17 +75,19 @@ export const Members = ({ min = 0, max = 8, onAdd, members }) => {
       </MembersWrapper>
 
       {accepted.length > max && (
-        <Tooltip
-          html={accepted.slice(max).map((m) => (
-            <>
-              {m.name}
-              <br />
-            </>
-          ))}
-          position="bottom"
-        >
-          <div className="text-muted no-select">+{accepted.length - max}</div>
-        </Tooltip>
+        <FlexCenter>
+          <Tooltip
+            html={accepted.slice(max).map((m) => (
+              <>
+                {m.name}
+                <br />
+              </>
+            ))}
+            position="bottom"
+          >
+            <div className="text-muted no-select">+{accepted.length - max}</div>
+          </Tooltip>
+        </FlexCenter>
       )}
     </MembersContainer>
   );

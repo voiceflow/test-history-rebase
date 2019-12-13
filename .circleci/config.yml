@@ -1,12 +1,13 @@
 version: 2.1
 
 executors:
-  node_11:
+  node-executor:
     working_directory: ~/voiceflow # directory where steps will run
     docker: # run the steps with Docker
-      - image: circleci/node:11 # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/node:12 # ...with this image as the primary container; this is where all `steps` will run
     environment:
-      NODE_OPTIONS: --max-old-space-size=2048
+      NODE_OPTIONS: --max-old-space-size=4096
+    resource_class: medium+
   image_builder:
     working_directory: /tmp/vf-build
     docker:
@@ -24,19 +25,18 @@ commands:
         default: false
     steps:
       - checkout # special step to check out source code to working directory
-      - run:
-          name: Add token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - restore_cache: # special step to restore the dependency cache
-          key: react-cache-{{ checksum "package.json" }}
+          key: creator-app-{{ checksum "yarn.lock" }}
       - run:
           name: yarn install packages
-          command: yarn
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            yarn install --frozen-lockfile
       - when:
           condition: << parameters.saveCache >>
           steps:
             - save_cache: # special step to save the dependency cache
-                key: react-cache-{{ checksum "package.json" }}
+                key: creator-app-{{ checksum "yarn.lock" }}
                 paths:
                   - ./node_modules
       - steps: << parameters.tests >>
@@ -49,32 +49,45 @@ jobs:
       - checkout
       - run: git tag --merged production
       - run: npx semantic-release@15
+  test-build-app:
+    executor: node-executor
+    steps:
+      - run_tests:
+          saveCache: false
+          tests:
+            - run:
+                name: (Build App)
+                command: yarn build
+  test-build-storybook:
+    executor: node-executor
+    steps:
+      - run_tests:
+          saveCache: false
+          tests:
+            - run:
+                name: (Build App)
+                command: yarn storybook:build
   test: # runs not using Workflows must have a `build` job as entry point
-    executor: node_11
+    executor: node-executor
     steps: # a collection of executable commands
       - run_tests:
           saveCache: true
           tests:
             - run:
                 name: (React Tests)
-                command: npm run test -- --detectOpenHandles --runInBand
+                command: yarn test --detectOpenHandles
             - run:
                 name: (Code Style)
-                command: npm run lint:quiet
+                command: yarn lint:quiet
             - run:
                 name: (Dependency Tests)
-                command: npm run test:dependencies
-            - run:
-                name: (Build App)
-                command: npm run build
-            - run:
-                name: (Build Storybook)
-                command: npm run storybook:build
+                command: yarn test:dependencies # Run dependency test here
   build-push-image:
     executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "Build docker image"
           command: |
@@ -114,7 +127,7 @@ jobs:
               --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
               --build-arg VF_APP_MAINTENANCE_STATUS_SOURCE=$VF_APP_MAINTENANCE_STATUS_SOURCE \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
-            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/build_num
+            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/app_build_num
       - run:
           name: "Push docker images"
           command: |
@@ -124,7 +137,7 @@ jobs:
       - persist_to_workspace:
           root: vars
           paths:
-            - build_num
+            - app_build_num
   deploy-image:
     executor: image_builder
     steps:
@@ -139,33 +152,57 @@ jobs:
             if [ "$CIRCLE_BRANCH" == "production" ]; then
               aws eks --region us-east-1 update-kubeconfig --name production
             fi
-            BUILD_NUM=$(cat /tmp/vf-build/vars/build_num)
+            BUILD_NUM=$(cat /tmp/vf-build/vars/app_build_num)
             kubectl set image --namespace voiceflow-v1 deployment/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
-  build-deploy-storybook:
+  build-push-storybook:
     executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "Build storybook docker image"
           command: |
+            mkdir -p /tmp/vf-build/vars
             $(aws ecr get-login --no-include-email --region us-east-1)
             mv storybook.dockerignore .dockerignore
             docker build \
               -f storybook.dockerfile \
               --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
+            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/storybook_build_num
       - run:
           name: "Push storybook docker images"
           command: |
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
             docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
+      - persist_to_workspace:
+          root: vars
+          paths:
+            - storybook_build_num
+  deploy-storybook:
+    executor: image_builder
+    steps:
+      - attach_workspace:
+          at: /tmp/vf-build/vars
+      - run:
+          name: Update image
+          command: |
+            if [ "$CIRCLE_BRANCH" == "master" ] || [ "$CIRCLE_BRANCH" == "staging" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name development
+            fi
+            if [ "$CIRCLE_BRANCH" == "production" ]; then
+              aws eks --region us-east-1 update-kubeconfig --name production
+            fi
+            BUILD_NUM=$(cat /tmp/vf-build/vars/storybook_build_num)
+            kubectl set image --namespace voiceflow-v1 deployment/storybook-$CIRCLE_BRANCH storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$BUILD_NUM
   build-deploy-admin:
     executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "Build and deploy admin panel docker image"
           command: |
@@ -197,7 +234,8 @@ jobs:
     executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "Build and deploy ephemeral image"
           command: |
@@ -231,9 +269,18 @@ jobs:
             kubectl set image --namespace ephemeral-$ENV_NAME deployment/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
             kubectl set image --namespace ephemeral-$ENV_NAME deployment/admin-ui-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
 workflows:
-  version: 2
   build-deploy:
     jobs:
+      - test-build-app:
+          filters:
+            branches:
+              ignore:
+                - /ephemeral.*/
+      - test-build-storybook:
+          filters:
+            branches:
+              ignore:
+                - /ephemeral.*/
       - test:
           filters:
             branches:
@@ -261,9 +308,16 @@ workflows:
                 - master
                 - staging
                 - production
-      - build-deploy-storybook:
+      - build-push-storybook:
+          filters:
+            branches:
+              only:
+                - master
+                - staging
+      - deploy-storybook:
           requires:
-            - deploy-image
+            - test-build-storybook
+            - build-push-storybook
           filters:
             branches:
               only:

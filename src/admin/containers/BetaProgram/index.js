@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'reactstrap';
 
-import { User } from '@/admin/containers/Home/components/User/User';
+import User from '@/admin/containers/Home/components/User';
 import { findBetaCreator } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
 import { toast } from '@/componentsV2/Toast';

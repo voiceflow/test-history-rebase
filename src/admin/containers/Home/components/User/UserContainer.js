@@ -1,4 +1,6 @@
-.member-icon {
+import { styled } from '@/hocs';
+
+const UserContainer = styled.div`
   width: 32px;
   height: 32px;
   color: #8da2b5;
@@ -15,4 +17,6 @@
   box-shadow: 0 0 0 1px #fff, 0 0 0 2px rgba(17, 49, 96, 0.08);
   cursor: default;
   transition: all 0.25s ease;
-}
+`;
+
+export default UserContainer;

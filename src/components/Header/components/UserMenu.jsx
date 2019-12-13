@@ -10,8 +10,8 @@ import { connect, styled } from '@/hocs';
 import { preventDefault } from '@/utils/dom';
 
 const StyledLink = styled(Link)`
-  text-decoration: none !important;
   color: inherit !important;
+  text-decoration: none !important;
 `;
 
 export function UserMenu({ user, logout, preview }) {

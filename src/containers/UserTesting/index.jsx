@@ -20,9 +20,9 @@ import { FadeDownContainer } from '@/styles/animations';
 import * as Intercom from '@/vendors/intercom';
 
 const UserTestingMenuContainer = styled(MenuContainer)`
+  margin-top: 10px;
   padding: 18px 24px;
   white-space: normal;
-  margin-top: 10px;
 `;
 
 class UserTesting extends React.Component {
@@ -87,11 +87,8 @@ class UserTesting extends React.Component {
         </a>
         <Header
           isUserMenu
-          leftRenderer={() => (
-            <a href="https://www.voiceflow.com" className="mx-2">
-              <img className="voiceflow-logo" src="/logo_bubble_Small.png" alt="logo" />
-            </a>
-          )}
+          withLogo
+          logoAssetPath="/logo_bubble_Small.png"
           centerRenderer={() => name || 'Loading...'}
           rightRenderer={() => (
             <div className="mr-3">

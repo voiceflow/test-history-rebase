@@ -360,3 +360,7 @@ export const PLANS = {
   team: 'team',
   enterprise: 'enterprise',
 };
+
+export const EDITOR_SEAT_ROLES = [USER_ROLES.EDITOR, USER_ROLES.ADMIN];
+
+export const UNLIMITED_SEAT_NUMBER = 100;

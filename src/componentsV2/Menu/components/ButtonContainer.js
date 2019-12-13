@@ -7,7 +7,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
   font-size: 15px;
   line-height: 18px;
-  color: #0f7ec0;
+  color: #5d9df5;
   display: flex;
   align-items: center;
   justify-content: center;

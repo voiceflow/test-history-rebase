@@ -29,7 +29,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
 
   React.useEffect(() => {
     updateName(workspace.name);
-  }, [workspace.id]);
+  }, [workspace.id, workspace.name]);
 
   // do not show for the no-admin users
   if (workspace.creatorID !== user.creator_id) {
@@ -40,7 +40,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
 
   return (
     <Modal isOpen={isOpened} toggle={toggle} className="upgrade-modal">
-      <ModalHeader toggle={toggle} className="pb-2" header="Workspace Settings" />
+      <ModalHeader toggle={toggle} header="Workspace Settings" />
 
       <ModalBody className="px-45 pt-0 overflow-hidden">
         <div className="mb-3">

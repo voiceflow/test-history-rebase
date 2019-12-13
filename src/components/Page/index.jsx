@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
+import { BackButton } from '@/components/Header/components';
 import UserMenu from '@/components/Header/components/UserMenu';
-import { BackButton } from '@/components/Header/styled';
 import SvgIcon from '@/components/SvgIcon';
 import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 

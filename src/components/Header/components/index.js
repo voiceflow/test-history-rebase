@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
+export { default as UserMenu } from './UserMenu';
+
 export const HeaderContainer = styled.header`
   position: relative;
+  z-index: 10;
   width: 100%;
   box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
-  z-index: 10;
 `;
 
 export const CenterGroup = styled.div`
@@ -17,47 +19,47 @@ export const CenterGroup = styled.div`
 export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
-  background-color: #fff;
-  padding: 0px 34px 0 40px;
   height: 70px;
+  padding: 0 34px 0 40px;
+  background-color: #fff;
 `;
 
 export const HeaderNavigation = styled.div`
   display: flex;
   flex-basis: calc(50% - 100px);
-  white-space: nowrap;
   align-items: center;
-  overflow-x: hidden;
   height: inherit;
+  overflow-x: hidden;
+  white-space: nowrap;
 `;
 
 export const HeaderActions = styled.div`
   display: flex;
   flex-basis: calc(50% + 100px);
-  justify-content: flex-end;
   align-items: center;
+  justify-content: flex-end;
   height: inherit;
 `;
 
 export const JustifiedHeaderActions = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: flex-end;
-  flex-grow: 1;
-  white-space: nowrap;
   height: inherit;
+  white-space: nowrap;
 `;
 
 export const BackButton = styled.span`
-  padding: 22px 22px 22px 36px;
-  margin-right: 12px;
-  cursor: pointer;
-  height: inherit;
   display: flex;
   align-items: center;
+  height: inherit;
+  margin-right: 12px;
+  padding: 22px 22px 22px 36px;
+  color: #8da2b5;
+  cursor: pointer;
   opacity: 0.8;
   transition: opacity 0.15s ease;
-  color: #8da2b5;
 
   &:hover {
     opacity: 1;
@@ -65,6 +67,7 @@ export const BackButton = styled.span`
 `;
 
 export const Logo = styled.img`
+  border-radius: 50%;
   height: 42px;
   margin-right: 6px;
   cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
@@ -86,4 +89,11 @@ export const SecondaryNavWrapper = styled.div`
   & > * {
     height: inherit;
   }
+`;
+
+export const TitleGroup = styled.div`
+  display: flex;
+  align-items: center;
+  height: inherit;
+  user-select: none;
 `;

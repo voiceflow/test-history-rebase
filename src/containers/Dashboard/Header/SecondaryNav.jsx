@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import SvgIcon from '@/components/SvgIcon';
 import { Members } from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
+import FlexCenter from '@/componentsV2/Flex';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
 import Tabs from '@/componentsV2/Tabs';
 import { FEATURE_IDS, MODALS, PLANS } from '@/constants';
@@ -12,7 +13,7 @@ import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
-import { NewWorkspaceTab, TabsContainer } from './components';
+import { AddCollaborators, ButtonSquare, NavChildItem, NewWorkspaceTab, TabsContainer } from './components';
 
 const SafeLink = ({ isActive, ...props }) => <Link {...props} />;
 
@@ -46,28 +47,28 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
   }, [workspaces]);
 
   return (
-    <div id="secondary-nav">
+    <>
       <TabsContainer>
         <Tabs as={SafeLink} options={tabsOptions} onChange={() => fetchBoards && fetchBoards.abort()} selected={selectedWorkspaceID} innerRef />
       </TabsContainer>
 
-      <div className="super-center">
+      <FlexCenter>
         {selectedWorkspace && (
           <>
             {selectedWorkspace.members.length > 1 ? (
               <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
             ) : (
               canAddCollaborators && (
-                <div className="add-collaborators" onClick={toggleCollaborators}>
+                <AddCollaborators onClick={toggleCollaborators}>
                   <SvgIcon icon="power" color="inherit" />
                   Add Collaborators
-                </div>
+                </AddCollaborators>
               )
             )}
 
             <>
               {
-                <div className="nav-child-item">
+                <NavChildItem>
                   <Dropdown
                     menu={
                       <Menu>
@@ -95,18 +96,18 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                     placement="bottom-end"
                   >
                     {(ref, onToggle) => (
-                      <div className="pointer btn-square" onClick={onToggle} ref={ref}>
+                      <ButtonSquare onClick={onToggle} ref={ref}>
                         <SvgIcon icon="cog" />
-                      </div>
+                      </ButtonSquare>
                     )}
                   </Dropdown>
-                </div>
+                </NavChildItem>
               }
             </>
           </>
         )}
-      </div>
-    </div>
+      </FlexCenter>
+    </>
   );
 }
 

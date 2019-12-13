@@ -221,6 +221,12 @@
     ],
     "**/*.css": [
       "prettier-stylelint"
+    ],
+    "Dockerfile": [
+      "hadolint --ignore DL3018"
+    ],
+    "*.dockerfile": [
+      "hadolint --ignore DL3018"
     ]
   },
   "prettier": "@voiceflow/prettier-config",
@@ -235,10 +241,11 @@
     "demo": "scripts/apply_demo_env.sh && wp --action=serve --host 0.0.0.0",
     "deploy:staging": "git push origin $(git branch | grep \\* | cut -d ' ' -f2):staging -f",
     "gen-certs": "scripts/generate_certs.sh",
-    "lint": "npm run lint:js && npm run lint:css",
+    "lint": "yarn lint:js && yarn lint:css",
     "lint:css": "stylelint src/**/*.css",
+    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile ./cache.dockerfile ./admin.dockerfile ./storybook.dockerfile",
     "lint:js": "eslint \"src/**/*.{js,jsx}\"",
-    "lint:quiet": "npm run lint:js -- --quiet && npm run lint:css -- --quiet",
+    "lint:quiet": "yarn lint:js --quiet && yarn lint:css --quiet",
     "local": "yarn start",
     "postinstall": "patch-package",
     "preview": "scripts/deploy_ephemeral.sh",
@@ -248,7 +255,7 @@
     "start:admin": "wp --action=admin-serve",
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key --static-dir=public",
     "storybook:build": "build-storybook --output-dir storybook_build --static-dir=public --quiet",
-    "tdd": "npm run test -- --watchAll=true",
+    "tdd": "yarn test --watchAll=true",
     "test": "NODE_ENV=test jest",
     "test:dependencies": "depcheck $(exargs .depcheckrc)"
   }

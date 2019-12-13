@@ -42,21 +42,20 @@ export const UploadButtonWrapper = styled.div`
     font-weight: 600;
     font-size: 15px;
     text-transform: none;
-    background: linear-gradient(180deg, #72adfd 0%, #3083f3 78%);
+    background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+    background-size: 1px 52px;
     border: none;
-    border-radius: 50px;
-    box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.08), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
+    border-radius: 90px;
+    box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
     cursor: pointer;
     transition: all 0.15s ease;
 
     &:hover {
-      background: linear-gradient(180deg, #3083f3 0%, #3083f3 78%);
-      box-shadow: 0px 4px 8px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+      background-position: 0px;
     }
 
     &:active {
-      background: linear-gradient(180deg, #3083f3 0%, #3083f3) 78%;
-      box-shadow: 0px 7px 12px rgba(17, 49, 96, 0.16), 0px 0px 4px rgba(17, 49, 96, 0.08);
+      box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
     }
   }
 
@@ -100,7 +99,7 @@ export const UploadButtonWrapper = styled.div`
     box-shadow: none;
 
     .publish-spinner {
-      background: linear-gradient(180deg, #5d9df5 0%, #2779eb 100%);
+      background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
       box-shadow: 0px 4px 8px rgba(19, 33, 68, 0.1);
       opacity: 1;
 

@@ -27,16 +27,15 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
   const onSendInviteClick = async () => {
     const role = permissionType.value;
 
-    const editorLimit = seatLimits.editor;
     const paidEditorSeats = numberOfSeats;
     const numberOfUsedEditorSeats = usedEditorSeats;
 
-    if (editorLimit !== null && numberOfUsedEditorSeats >= paidEditorSeats && permissionType === USER_ROLES.EDITOR) {
+    if (numberOfUsedEditorSeats >= paidEditorSeats && permissionType.value === USER_ROLES.EDITOR) {
       return openPaymentsModal();
     }
 
     const viewerLimit = seatLimits.viewer;
-    if (viewerLimit !== null && usedViewerSeats >= viewerLimit && permissionType === USER_ROLES.VIEWER) {
+    if (usedViewerSeats >= viewerLimit && permissionType.value === USER_ROLES.VIEWER) {
       return toast.error('Viewer limit reached.');
     }
 

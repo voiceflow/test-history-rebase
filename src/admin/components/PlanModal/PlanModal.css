@@ -19,3 +19,13 @@
   width: 100%;
 }
 
+.ctg__seats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.ctg__seats input {
+  max-width: 70px;
+  margin: 0 8px;
+}

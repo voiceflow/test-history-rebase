@@ -12,6 +12,7 @@ export const SET_VENDORS = 'SET_VENDORS';
 export const SET_BETA_CREATOR = 'SET_BETA_CREATOR';
 export const CLEAR_BETA_CREATOR = 'CLEAR_BETA_CREATOR';
 export const SET_ALL_BETA_USERS = 'SET_ALL_BETA_USERS';
+export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';
 
 export const TOGGLE_THEME = 'TOGGLE_THEME';
 export const THEMES = {
@@ -37,6 +38,18 @@ export const ADMIN_INITIAL_STATE = {
 
 export default function adminReducer(state = ADMIN_INITIAL_STATE, action) {
   switch (action.type) {
+    case UPDATE_WORKSPACE:
+      return {
+        ...state,
+        boards: state.boards.map((board) =>
+          board.team_id === action.payload.id
+            ? {
+                ...board,
+                ...action.payload.data,
+              }
+            : board
+        ),
+      };
     case SET_CREATOR:
       return {
         ...state,
@@ -224,8 +237,8 @@ export const getVendors = (creatorInfo) => async (dispatch) => {
   }
 };
 
-export const editTrial = (teamId, date) => async () => {
-  if (!teamId) {
+export const editTrial = (workspaceID, date) => async () => {
+  if (!workspaceID) {
     return;
   }
 
@@ -236,10 +249,10 @@ export const editTrial = (teamId, date) => async () => {
       const formatDate = moment(date)
         .add(1, 'd')
         .unix();
-      axios.post(`/admin-api/trial/${teamId}/${formatDate}`);
+      axios.post(`/admin-api/trial/${workspaceID}/${formatDate}`);
     } else {
       // We want to set the trial expiry to null here
-      axios.post(`/admin-api/trial/${teamId}/${0}`);
+      axios.post(`/admin-api/trial/${workspaceID}/${0}`);
     }
     toast.success("Trial period set! Please refresh the page to see updated charges'");
   } catch (err) {
@@ -248,13 +261,13 @@ export const editTrial = (teamId, date) => async () => {
 };
 
 // Refund a specific user
-export const refundCharge = (teamId, chargeId, chargeAmount) => async () => {
-  if (!teamId || !chargeId || !chargeAmount) {
+export const refundCharge = (workspaceID, chargeId, chargeAmount) => async () => {
+  if (!workspaceID || !chargeId || !chargeAmount) {
     return;
   }
 
   try {
-    await axios.post(`/admin-api/refund/${teamId}/${chargeId}/${chargeAmount}`);
+    await axios.post(`/admin-api/refund/${workspaceID}/${chargeId}/${chargeAmount}`);
     toast.success('Refund successful! Please refresh the page to see updated charges');
   } catch (err) {
     console.error('error when refunding user: ', err);
@@ -263,16 +276,36 @@ export const refundCharge = (teamId, chargeId, chargeAmount) => async () => {
 };
 
 // Cancel a user's subscription
-export const cancelSubscription = (teamId, subscriptionId) => async () => {
-  if (!teamId || !subscriptionId) {
+export const cancelSubscription = (workspaceID, subscriptionId) => async () => {
+  if (!workspaceID || !subscriptionId) {
     return;
   }
 
   try {
-    await axios.post(`/admin-api/cancel/${teamId}/${subscriptionId}`);
+    await axios.post(`/admin-api/cancel/${workspaceID}/${subscriptionId}`);
     toast.success('Subscription cancelled! Refresh to see updated results');
   } catch (err) {
     console.error('error from cancelling subscription', err);
     toast.error('Cancel Subscription Failed');
+  }
+};
+
+export const updateWorkspace = (workspaceID, data) => async (dispatch) => {
+  if (!workspaceID) return toast.error('Workspace not found');
+
+  try {
+    // Add one extra day to account for reset at midnight
+    await axios.patch(`/admin-api/workspace/${workspaceID}`, data);
+
+    dispatch({
+      type: UPDATE_WORKSPACE,
+      payload: {
+        id: workspaceID,
+        data,
+      },
+    });
+    toast.success(`Workspace ${Object.keys(data).join(', ')} updated`);
+  } catch (err) {
+    toast.error('Failed to set the plan.');
   }
 };

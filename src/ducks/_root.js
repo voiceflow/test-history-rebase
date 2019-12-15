@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
-import admin from '@/ducks/admin';
 import alerts from '@/ducks/alerts';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
@@ -39,7 +38,6 @@ export default (history) =>
     [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
     integrationUsers,
-    admin,
     [Test.STATE_KEY]: test,
     alerts,
     publish,

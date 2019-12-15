@@ -8,7 +8,7 @@ import { HomeWrapper } from './styles';
 const Home = () => {
   return (
     <HomeWrapper>
-      <AdminTitle>Will's Lookup Emporium</AdminTitle>
+      <AdminTitle>Admin Lookup Emporium</AdminTitle>
       <hr />
       <InternalLookup />
     </HomeWrapper>

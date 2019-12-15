@@ -4,11 +4,12 @@ import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import { connect } from 'react-redux';
-import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 
-import Button from '@/components/Button';
-import { toast } from '@/componentsV2/Toast';
-import { editTrial, setEnterprise } from '@/ducks/admin';
+import { updateWorkspace } from '@/admin/store/ducks/admin';
+import Button from '@/componentsV2/Button';
+import { FlexApart } from '@/componentsV2/Flex';
+import { PLANS } from '@/constants';
 
 class PlanModal extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class PlanModal extends React.Component {
     this.handleDayClick = this.handleDayClick.bind(this);
     this.state = {
       selectedDay: undefined,
+      seats: props.workspace.seats || 1,
     };
   }
 
@@ -32,38 +34,16 @@ class PlanModal extends React.Component {
     this.setState({ selectedDay: day });
   }
 
-  giveTrial = (expiry) => {
-    if (!expiry && expiry !== null) {
-      toast.error('You must select a day for the trial');
-      return;
-    }
-    if (!expiry && !this.props.workspace.expiry) {
-      toast.error('User already has no trial');
-      return;
-    }
-    if (this.props.workspace) {
-      this.props.editTrial(this.props.workspace.team_id, expiry);
-    } else {
-      toast.error('Workspace not found.');
-    }
-    this.props.togglePlanModal();
+  updatePlan = (planID) => () => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { plan: planID });
   };
 
-  makeEnterprise = (expiry, planId) => {
-    if (!expiry && expiry !== null) {
-      toast.error('You must select a day for the trial');
-      return;
-    }
-    if (!expiry && !this.props.workspace.expiry) {
-      toast.error('User already has no trial');
-      return;
-    }
-    if (this.props.workspace) {
-      this.props.setEnterprise(this.props.workspace.team_id, planId, expiry);
-    } else {
-      toast.error('Workspace not found.');
-    }
-    this.props.togglePlanModal();
+  updateSeats = (seats) => () => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { seats });
+  };
+
+  updateExpiry = (expiry) => () => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { expiry });
   };
 
   getSelectedDays = () => {
@@ -84,23 +64,7 @@ class PlanModal extends React.Component {
     const selectedDays = this.getSelectedDays();
 
     const { workspace } = this.props;
-
-    let planType;
-
-    switch (workspace.plan_id) {
-      case 0:
-        planType = 'Community';
-        break;
-      case 1:
-        planType = 'Pro';
-        break;
-      case 2:
-        planType = 'Business';
-        break;
-      default:
-        planType = `Unknown: ${workspace.plan_id}`;
-        break;
-    }
+    const { seats } = this.state;
 
     return (
       <div>
@@ -116,7 +80,7 @@ class PlanModal extends React.Component {
                 <div className="ctg__charge_header">Team #{workspace.team_id}</div>
                 <div className="ctg__receipt_divider"></div>
                 <div className="ctg__charge_amount">
-                  <div>Current Plan: {planType}</div>
+                  <div>Current Plan: {PLANS[workspace.plan]?.toUpperCase() || 'BASIC'}</div>
                   <div>Expiry: {workspace.expiry ? moment(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
                   <div className="ctg__date-picker">
                     <DayPicker
@@ -129,7 +93,7 @@ class PlanModal extends React.Component {
                       <div>
                         Plan will expire{' '}
                         {moment(this.state.selectedDay)
-                          .startOf('day')
+                          .add(1, 'd')
                           .fromNow()}
                       </div>
                       <div>
@@ -141,46 +105,49 @@ class PlanModal extends React.Component {
                       </div>
                     </div>
                   </div>
+                  <FlexApart>
+                    <Button
+                      variant="secondary"
+                      onClick={this.updateExpiry(
+                        moment(this.state.selectedDay)
+                          .add(1, 'd')
+                          .format()
+                      )}
+                    >
+                      Update Expiry
+                    </Button>
+                    <Button variant="secondary" onClick={this.updateExpiry(null)}>
+                      Cancel Expiry
+                    </Button>
+                  </FlexApart>
                 </div>
               </div>
             </div>
+            <hr />
+            <div className="ctg__seats">
+              Seats:
+              <input
+                type="number"
+                id="seats"
+                min="1"
+                value={this.state.seats}
+                onChange={(e) => this.setState({ seats: parseInt(e.target.value, 10) })}
+              />
+              <Button variant="secondary" onClick={this.updateSeats(seats)}>
+                Update Seats
+              </Button>
+            </div>
+            <hr />
+            <label>Set Plan to: (currently {workspace.plan?.toUpperCase() || 'BASIC'})</label>
+            <FlexApart>
+              <Button variant="secondary" onClick={this.updatePlan(null)}>
+                Basic (Free)
+              </Button>
+              <Button onClick={this.updatePlan(PLANS.pro)}>Pro</Button>
+              <Button onClick={this.updatePlan(PLANS.team)}>Team</Button>
+              <Button onClick={this.updatePlan(PLANS.enterprise)}>Enterprise</Button>
+            </FlexApart>
           </ModalBody>
-          <ModalFooter style={{ 'justify-content': 'center' }}>
-            <Button
-              isWarning
-              onClick={() => {
-                this.giveTrial(null);
-              }}
-            >
-              Change to free
-            </Button>
-            <Button
-              isPrimary
-              onClick={() => {
-                this.giveTrial(this.state.selectedDay);
-              }}
-            >
-              Set Trial
-            </Button>
-          </ModalFooter>
-          <ModalFooter style={{ 'justify-content': 'center' }}>
-            <Button
-              isPrimary
-              onClick={() => {
-                this.makeEnterprise(this.state.selectedDay, 1);
-              }}
-            >
-              Set Enterprise Pro
-            </Button>
-            <Button
-              isPrimary
-              onClick={() => {
-                this.makeEnterprise(this.state.selectedDay, 2);
-              }}
-            >
-              Set Enterprise Business
-            </Button>
-          </ModalFooter>
         </Modal>
       </div>
     );
@@ -189,5 +156,5 @@ class PlanModal extends React.Component {
 
 export default connect(
   null,
-  { editTrial, setEnterprise }
+  { updateWorkspace }
 )(PlanModal);

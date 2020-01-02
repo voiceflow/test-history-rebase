@@ -89,6 +89,9 @@ export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
 // youtube
 export const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
+// airtable
+export const AIRTABLE_ID = process.env.AIRTABLE_ID;
+
 // stripe
 const STRIPE_LIVE_KEY = process.env.STRIPE_LIVE_KEY;
 const STRIPE_TEST_KEY = process.env.STRIPE_TEST_KEY;

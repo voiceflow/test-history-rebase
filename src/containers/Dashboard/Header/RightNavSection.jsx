@@ -5,7 +5,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
 import IconButton from '@/componentsV2/IconButton';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
-import { IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
+import { AIRTABLE_ID, IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { goToDesigner } from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -16,7 +16,7 @@ import UpdatesPopover from '../UpdatesPopover';
 import { Numbered, SubHeaderItem, UpdateBubble } from './components';
 
 const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
-
+const AIRTABLE_LINK = `https://airtable.com/${AIRTABLE_ID}?blocks=hide`;
 const DEFAULT_MESSAGE = [
   {
     details: 'There are no new updates available.',
@@ -104,6 +104,9 @@ function RightNavSection({ notifications, goToDesigner, readNotifications }) {
               </a>
               <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
                 <MenuItem>Forums</MenuItem>
+              </a>
+              <a href={AIRTABLE_LINK} target="_blank" rel="noopener noreferrer">
+                <MenuItem>Marketplace</MenuItem>
               </a>
             </Menu>
           }

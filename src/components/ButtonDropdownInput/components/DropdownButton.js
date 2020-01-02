@@ -48,6 +48,8 @@ const DropdownButton = styled.button`
   :focus,
   :focus-within {
     ${({ orientation }) => (orientation === ORIENTATION_TYPE.RIGHT ? 'border-right: 0 !important;' : 'border-left: 0 !important;')}
+    box-shadow: none !important;
+    border-color: #d2dae2 !important;
   }
   :hover {
     color: #5d9df5 !important;

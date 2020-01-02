@@ -10,7 +10,7 @@ function PaymentModal() {
   const { isOpened, toggle, data } = useModals(MODALS.PAYMENT);
 
   return (
-    <Modal isOpen={isOpened} toggle={toggle}>
+    <Modal modalname="plan" isOpen={isOpened} toggle={toggle}>
       <Payment focus={data?.focus} />
     </Modal>
   );

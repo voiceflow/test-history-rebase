@@ -26,7 +26,7 @@ function CollaboratorsModal() {
   const { isOpened, toggle } = useModals(MODALS.COLLABORATORS);
 
   return (
-    <Modal isOpen={isOpened} toggle={toggle}>
+    <Modal modalname="collaborators" isOpen={isOpened} toggle={toggle}>
       <ModalHeader toggle={() => toggle()} header={MODAL_TITLE} tooltip={TooltipMessage} />
 
       <BodyContainer>

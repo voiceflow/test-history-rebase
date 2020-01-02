@@ -3,7 +3,7 @@ import React from 'react';
 import ClickableText from '@/componentsV2/Text/ClickableText';
 import { MODALS, PLANS, UNLIMITED_SEAT_NUMBER } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
-import { planTypeSelector, seatLimits, usedEditorSeats, usedViewerSeats, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
+import { planTypeSelector, usedEditorSeats, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 
 const Container = styled.div`
@@ -21,26 +21,19 @@ const Text = styled.div`
   display: inline-block;
 `;
 
-function SeatSummary({ numberOfSeats, plan, seatLimits, usedEditorSeats, usedViewerSeats }) {
+function SeatSummary({ numberOfSeats, plan, usedEditorSeats }) {
   const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
 
   const numberOfUsedEditorSeats = usedEditorSeats;
-  const numberOfUsedViewerSeats = usedViewerSeats;
-
-  const viewerSeatLimit = seatLimits.viewer;
 
   const editorSeatsMessage =
     numberOfSeats >= UNLIMITED_SEAT_NUMBER ? 'Unlimited Editors.' : `${numberOfUsedEditorSeats} of ${numberOfSeats} Editor seats taken.`;
-  const viewerSeatsMessage =
-    viewerSeatLimit >= UNLIMITED_SEAT_NUMBER ? 'Unlimited Viewers.' : `${numberOfUsedViewerSeats} of ${viewerSeatLimit} Viewer seats taken.`;
 
   return (
     <Container>
       <Number>
         <span>
-          <Text>
-            {editorSeatsMessage} {(viewerSeatLimit === null || viewerSeatLimit > 0) && <>{viewerSeatsMessage}</>}
-          </Text>
+          <Text>{editorSeatsMessage}</Text>
         </span>
       </Number>
       {plan !== PLANS.enterprise && (
@@ -52,9 +45,7 @@ function SeatSummary({ numberOfSeats, plan, seatLimits, usedEditorSeats, usedVie
 
 const mapStateToProps = {
   usedEditorSeats,
-  usedViewerSeats,
   numberOfSeats: workspaceNumberOfSeatsSelector,
-  seatLimits,
   plan: planTypeSelector,
 };
 

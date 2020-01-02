@@ -26,6 +26,7 @@ export const Container = styled.div`
 
 export const Description = styled.div`
   margin: 10px 0;
+  margin-bottom: 0;
 `;
 
 export const Price = styled.span`
@@ -47,4 +48,9 @@ export const SelectBox = styled(Checkbox)`
   position: absolute;
   top: 10px;
   right: 0px;
+`;
+
+export const EditorLimitText = styled.div`
+  margin-top: 6px;
+  color: #8da2b5;
 `;

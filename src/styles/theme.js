@@ -34,6 +34,14 @@ const THEME = {
     menuDrawer: {
       width: 250,
     },
+    modals: {
+      plan: {
+        width: 545,
+      },
+      collaborators: {
+        width: 545,
+      },
+    },
   },
   transition(...propertyWhitelist) {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

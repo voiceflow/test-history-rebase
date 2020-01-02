@@ -1,11 +1,12 @@
 import React from 'react';
 
 import BubbleText from '@/componentsV2/Text/BubbleText';
+import { UNLIMITED_SEAT_NUMBER } from '@/constants';
 
-import { Container, Description, Price, PriceContainer, PriceDescription, SelectBox } from './styled';
+import { Container, Description, EditorLimitText, Price, PriceContainer, PriceDescription, SelectBox } from './styled';
 
 function PlanOptionCard({ plan, active, selectPlan, period }) {
-  const { summary, pricing, color, name } = plan;
+  const { summary, pricing, color, name, editorLimit } = plan;
   const price = pricing?.[period]?.price / 100 || null;
 
   return (
@@ -13,9 +14,11 @@ function PlanOptionCard({ plan, active, selectPlan, period }) {
       <SelectBox checked={active} color={active ? color : '#8DA2B5'} readOnly />
       <BubbleText color={color}>{name}</BubbleText>
       <Description>{summary}</Description>
+      {editorLimit !== UNLIMITED_SEAT_NUMBER && <EditorLimitText>Up to {editorLimit} editors</EditorLimitText>}
+
       <PriceContainer>
         {price && <Price>${price}</Price>}
-        <PriceDescription>{price ? 'seat/month' : 'Contact Us'}</PriceDescription>
+        <PriceDescription>{price ? 'editor/mo' : 'Contact Us'}</PriceDescription>
       </PriceContainer>
     </Container>
   );

@@ -289,7 +289,12 @@ export const DashBoard = (props) => {
                             if (item.dragType === 'dashboard-list') {
                               return <SimpleList {...item} />;
                             }
-                            return <ListItem {...item} />;
+
+                            if (item.dragType === 'dashboard-item') {
+                              return <ListItem {...item} />;
+                            }
+
+                            return null;
                           }}
                         </DragLayer>
 

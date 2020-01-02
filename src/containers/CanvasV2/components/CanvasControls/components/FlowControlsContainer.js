@@ -2,7 +2,7 @@ import Flex from '@/componentsV2/Flex';
 import { styled, units } from '@/hocs';
 
 const FlowControlsContainer = styled(Flex)`
-  position: relative;
+  position: absolute;
   float: left
   left: ${({ withMenu, withDrawer, theme }) =>
     withMenu ? theme.components.menuBar.width + (withDrawer ? theme.components.menuDrawer.width : 0) : 20}px;

@@ -20,7 +20,7 @@ const members = [
     name: 'Admin User',
     email: 'admin@voiceflow.com',
     role: 'admin',
-    image: '5891FB|EFF5FF',
+    image: 'https://picsum.photos/200',
     creator_id: 2,
     seats: 10,
     created: null,

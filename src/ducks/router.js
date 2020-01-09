@@ -21,7 +21,7 @@ export const goToDashboard = () => goTo('dashboard');
 
 export const goToDashboardWithSearch = (search) => goTo(`dashboard${search}`);
 
-export const goToOnboarding = () => goTo('onboarding');
+export const goToOnboarding = () => goTo(`onboarding${window.location.search}`);
 
 export const goToTeam = (teamID) => goTo(`team/${teamID}`);
 
@@ -67,7 +67,7 @@ export const goToCanvas = (versionID, diagramID, isNewDiagram) => async (dispatc
     }
   }
 
-  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}`));
+  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}${window.location.search}`));
 };
 
 export const goToCurrentCanvas = () => async (dispatch, getState) => {

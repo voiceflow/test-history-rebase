@@ -13,7 +13,6 @@ import { ROOT_DOMAIN } from '@/config';
 import { SessionType } from '@/constants';
 import * as Cookies from '@/utils/cookies';
 import { identity } from '@/utils/functional';
-import { identifyAppCuesUser } from '@/vendors/appCues';
 import { identifyLogRocketUser } from '@/vendors/logRocket';
 
 import { resetAccount, updateAccount } from './account';
@@ -196,7 +195,6 @@ const createSession = (sessionType) => (authRequest) => async (dispatch, getStat
   }
 
   identifyLogRocketUser(user);
-  identifyAppCuesUser(user.id, authRequest);
 };
 
 export const signup = createSession(SessionType.SIGN_UP);

@@ -1,6 +1,6 @@
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
 
-**Fixes or implements [Jira Ticket](url)**
+**Fixes or implements [CORE-XXX](https://voiceflow.atlassian.net/browse/CORE-XXX)**
 
 ### Description
 

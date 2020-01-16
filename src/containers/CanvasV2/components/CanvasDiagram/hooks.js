@@ -10,11 +10,14 @@ export const useCursorControls = () => {
   const mousePosition = React.useRef(null);
   const engine = React.useContext(EngineContext);
   const linkCreation = React.useContext(LinkCreationContext);
-  const moveMouse = React.useCallback((location) => {
-    if (DEBUG_REALTIME) return;
+  const moveMouse = React.useCallback(
+    (location) => {
+      if (DEBUG_REALTIME) return;
 
-    engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
-  }, []);
+      engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
+    },
+    [engine.realtime]
+  );
 
   const panViewport = React.useCallback(
     (moveX, moveY) => {
@@ -26,7 +29,7 @@ export const useCursorControls = () => {
         const nextMousePosition = [currX - moveX / zoom, currY - moveY / zoom];
 
         if (linkCreation.isDrawing) {
-          const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition);
+          const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition, true);
 
           linkCreation.onAbort();
           linkCreation.onStart(linkCreation.sourcePortID, transformedPosition);
@@ -35,14 +38,17 @@ export const useCursorControls = () => {
         moveMouse(nextMousePosition);
       }
     },
-    [linkCreation, engine]
+    [engine, linkCreation, moveMouse]
   );
 
-  const zoomViewport = React.useCallback((calculateMovement) => {
-    engine.realtime.zoomViewport(calculateMovement);
-  }, []);
+  const zoomViewport = React.useCallback(
+    (calculateMovement) => {
+      engine.realtime.zoomViewport(calculateMovement);
+    },
+    [engine.realtime]
+  );
 
-  const updateViewport = React.useCallback(({ x, y, zoom }) => engine.updateViewport(x, y, zoom), []);
+  const updateViewport = React.useCallback(({ x, y, zoom }) => engine.updateViewport(x, y, zoom), [engine]);
 
   React.useEffect(() => {
     if (engine.canvas) {
@@ -60,7 +66,7 @@ export const useCursorControls = () => {
 
       return () => document.removeEventListener('mousemove', onMouseMove);
     }
-  }, [engine.canvas]);
+  }, [engine.canvas, moveMouse]);
 
   return {
     updateViewport,

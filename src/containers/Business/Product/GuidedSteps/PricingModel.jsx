@@ -30,7 +30,7 @@ import {
 
 export const TAX_CATEGORIES = [
   { value: 'INFORMATION_SERVICES', label: 'Information Services' },
-  { value: 'NEWSPAPERS', label: 'NewsPaper' },
+  { value: 'NEWSPAPERS', label: 'Newspaper' },
   { value: 'PERIODICALS', label: 'Periodicals' },
   { value: 'SOFTWARE', label: 'Software' },
   { value: 'STREAMING_RADIO', label: 'Streaming Radio' },

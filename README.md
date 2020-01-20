@@ -3,11 +3,113 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d8d6315726f4eb09e278701f739147d)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=storyflow/creator-app&utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/voiceflow/creator-app/tree/master.svg?style=shield&circle-token=d2fee4e418aa5f2a3499ac21cbc5f86c2e0fcdf4)](https://circleci.com/gh/voiceflow/creator-app/tree/master)
 
-## Configuration
+## Getting Started
+
+### Environment
+
+In order to run this package locally, make sure you have `yarn` and `brew` installed.
 
 ### Package Manager
 
 This Repository Relies on `yarn` and does not work with `npm`
+
+### Install Dependencies
+
+Use `yarn` to install this project's dependencies.
+
+```sh
+yarn install
+```
+
+### Generate SSL Certificates
+
+Use `mkcert` to generate and install SSL certificates for local development.
+
+```sh
+yarn gen-certs
+```
+
+## Usage
+
+### Build
+
+Run `webpack` to generate bundled, browser-ready code.
+
+```sh
+yarn build
+```
+
+### Start
+
+Run a local `webpack` development server that watches files and re-builds them on the fly.
+
+```sh
+yarn start
+```
+
+### Testing
+
+#### Linting
+
+Test the code for linting errors with `estlint` and `stylelint`.
+
+```sh
+yarn lint
+```
+
+Or to run them separately
+
+```sh
+yarn lint:js
+yarn lint:css
+```
+
+#### Integration and Snapshot Tests
+
+Run interaction and snapshot tests with `jest`.
+
+```sh
+yarn test
+```
+
+#### Watching Tests
+
+Run `jest` in an interactive watch mode that re-runs tests whenever the files change.
+
+```sh
+yarn tdd
+```
+
+#### Updating Jest Snapshots
+
+The recommended way to update `jest` snapshots is to run in interactive watch mode (`yarn tdd`) so that you can see all of the snapshot diffs.
+Filter down to just the files that you want to update (press `t` when in interactive mode).
+Once you have your filtered list, update all of the relevant snapshots (press `u` when in interactive mode).
+You can also use the inbuilt interactive snapshot update mode of `jest` (press `i` when in interactive mode).
+
+See [here](https://jestjs.io/docs/en/snapshot-testing#interactive-snapshot-mode) for more documentation on `jest` and how to use the interactive watch mode.
+
+### Storybook
+
+This repository generates a [storybook](https://storybook.js.org/) for its component library.
+
+#### Start Storybook
+
+Run a local development server that automatically re-builds changed files.
+
+```sh
+yarn storybook
+```
+
+#### Build Storybook
+
+Generate a website from this project's stories.
+
+```sh
+yarn storybook:build
+```
+
+## Configuration
 
 ### Debugging
 

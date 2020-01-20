@@ -84,7 +84,11 @@ const Routes = ({ authToken }) => (
           return authToken ? <Redirect to={`/dashboard?invite=${code}`} /> : <Redirect to={`/signup?invite=${code}${props.location.search}`} />;
         }}
       />
-      <Route exact path="/" render={() => (authToken ? <Redirect to="/dashboard" /> : <Redirect to="/signup" />)} />
+      <Route
+        exact
+        path="/"
+        render={() => (authToken ? <Redirect to={`/dashboard${window.location.search}`} /> : <Redirect to={`/signup${window.location.search}`} />)}
+      />
       {/* Warning Routes */}
       <Route component={Page404} />
     </Switch>

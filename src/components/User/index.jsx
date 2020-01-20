@@ -39,7 +39,7 @@ const User = React.forwardRef(({ user, className, pending, ...props }, ref) => {
   }
 
   return (
-    <MemberIcon className={className} style={style} ref={ref} {...props}>
+    <MemberIcon className={className} style={style} ref={ref} solid={!!style.backgroundImage} {...props}>
       {letter}
     </MemberIcon>
   );

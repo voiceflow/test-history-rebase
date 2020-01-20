@@ -77,23 +77,30 @@ const createRealtimeResourceUpdateMiddleware = (resourceId, selectors, blacklist
 const creatorHistoryMiddleware = (store) => (next) => (action) => {
   const viewers = activeDiagramViewersSelector(store.getState());
   const hasViewers = viewers.length > 1;
+  const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
+  // eslint-disable-next-line no-console
+  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch(() => console.warn('failed to save diagram'));
 
   if (action.type === Creator.SAVE_HISTORY && !action?.meta?.preventUpdate) {
-    // eslint-disable-next-line no-console
-    store.dispatch(Diagram.saveActiveDiagram()).catch(() => console.warn('failed to save diagram'));
+    saveDiagram();
 
     if (hasViewers && !action?.meta?.force) {
       return;
     }
   }
 
-  if (hasViewers && CREATOR_HISTORY_ACTIONS.includes(action.type)) {
+  if (hasViewers && isHistoryAction) {
     store.dispatch(User.setCanvasError('Undo and Redo actions unavailable while other active users are viewing this flow'));
 
     return;
   }
 
+  // eslint-disable-next-line callback-return
   next(action);
+
+  if (isHistoryAction) {
+    saveDiagram();
+  }
 };
 
 // reset the creator state when navigating to the canvas from elsewhere in the app

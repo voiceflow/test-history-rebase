@@ -12,7 +12,7 @@ const diagramClient = {
       timestamp,
     })),
 
-  get: (diagramID) => fetch(`${DIAGRAM_PATH}/${diagramID}`).then(diagramAdapter.fromDB),
+  get: (diagramID) => fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram }) => diagramAdapter.fromDB(diagram)),
 
   create: (diagram) => fetch.post(`${DIAGRAM_PATH}?new=1`, diagram),
 

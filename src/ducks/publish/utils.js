@@ -27,16 +27,18 @@ const matchesKeyword = (splitName) => (l) =>
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable'];
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App'];
 
+const NON_LATIN_REGIONS = ['jp-JP', 'hi-IN'];
+
 // detect if an invocation name is invalid relative to the locales for the skill
 export const invNameError = (name, locales) => {
   if (!name || !name.trim()) return 'Invocation name required for Alexa';
   let characters = validLatinChars;
   let error = `[${locales
-    .filter((l) => l !== 'jp-JP')
+    .filter((l) => !NON_LATIN_REGIONS.includes(l))
     .join(',')}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`;
-  if (locales.length === 1 && locales[0] === 'ja-JP') {
+  if (locales.length === 1 && NON_LATIN_REGIONS.includes(locales[0])) {
     characters = validSpokenCharacters;
-    error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces';
+    error = 'Invocation name may only contain language characters, apostrophes, periods and spaces';
   } else if (locales.some((l) => l.includes('en'))) {
     // If an English Skill No Accents Allowed
     error = `[${locales

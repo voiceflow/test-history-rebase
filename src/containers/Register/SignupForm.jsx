@@ -15,8 +15,7 @@ import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history, promo }) => {
-  // eslint-disable-next-line no-restricted-globals
+export const SignupForm = ({ signup, history, promo, location }) => {
   const query = queryString.parse(location.search);
   const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState(query.email ? query.email : '');
@@ -29,7 +28,7 @@ export const SignupForm = ({ signup, history, promo }) => {
 
   const openLogin = (e) => {
     e.preventDefault();
-    history.push('/login');
+    history.push(`/login${location.search}`);
     return false;
   };
 

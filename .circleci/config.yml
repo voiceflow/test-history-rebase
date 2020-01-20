@@ -276,11 +276,13 @@ workflows:
             branches:
               ignore:
                 - /ephemeral.*/
+                - production
       - test-build-storybook:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
+                - production
       - test:
           filters:
             branches:

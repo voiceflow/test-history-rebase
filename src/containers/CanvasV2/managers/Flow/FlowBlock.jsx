@@ -7,7 +7,7 @@ import { connect } from '@/hocs';
 import FlowBlockContainer from './components/FlowBlockContainer';
 import FlowButtonOverlay from './components/FlowButtonOverlay';
 
-const FlowBlock = ({ diagram, data }) => {
+const FlowBlock = ({ diagram }) => {
   if (!diagram) {
     return null;
   }
@@ -16,7 +16,7 @@ const FlowBlock = ({ diagram, data }) => {
     <>
       <FlowBlockContainer>
         <FlowButtonOverlay>
-          <EnterFlow diagramID={data.diagramID} />
+          <EnterFlow diagramID={diagram.id} />
         </FlowButtonOverlay>
       </FlowBlockContainer>
     </>

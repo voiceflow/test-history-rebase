@@ -1,3 +1,5 @@
+import BLOCK_THEME from './block';
+
 export const ANIMATION_SPEED = 0.15;
 
 const THEME = {
@@ -42,6 +44,7 @@ const THEME = {
         width: 545,
       },
     },
+    block: BLOCK_THEME,
   },
   transition(...propertyWhitelist) {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

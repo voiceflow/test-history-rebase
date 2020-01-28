@@ -27,7 +27,7 @@ const matchesKeyword = (splitName) => (l) =>
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable'];
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App'];
 
-const NON_LATIN_REGIONS = ['jp-JP', 'hi-IN'];
+const NON_LATIN_REGIONS = ['ja-JP', 'hi-IN'];
 
 // detect if an invocation name is invalid relative to the locales for the skill
 export const invNameError = (name, locales) => {

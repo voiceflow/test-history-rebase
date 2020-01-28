@@ -45,6 +45,17 @@ const THEME = {
       },
     },
     block: BLOCK_THEME,
+    step: {
+      minHeight: 54,
+      labelText: {
+        variants: {
+          primary: '#132144',
+          secondary: '#62778c',
+          placeholder: '#8da2b5',
+        },
+      },
+      activeBorderColor: '#5d9df5',
+    },
   },
   transition(...propertyWhitelist) {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

@@ -44,7 +44,10 @@ module.exports = merge(commonConfig, {
               'containers/CanvasV2/managers/Integration/zapier.png',
 
               // TODO: validate whether these components will be used
+              'componentsV2/Upload/JsonUpload/**/*',
               'components/Uploads/**/*',
+              'utils/files.js',
+              'containers/CanvasV2/managers/Display/**/*',
               'containers/CanvasV2/components/Block/NewBlock/**/*',
               'containers/CanvasV2/components/Step/**/*',
               'componentsV2/CaptionedIconButton/**/*',

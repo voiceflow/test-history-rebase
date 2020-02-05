@@ -10,7 +10,7 @@ function SpeechBar(props) {
   }
 
   if (ended) {
-    return React.createPortal(
+    return ReactDOM.createPortal(
       <div id="SpeechBar">
         <div className="text-center flex-hard">Test Ended</div>
       </div>,

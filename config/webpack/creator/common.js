@@ -43,6 +43,11 @@ module.exports = merge(commonConfig, {
               'containers/CanvasV2/managers/Display/templates/*.json',
               'containers/CanvasV2/managers/Integration/zapier.png',
 
+              // TODO: remove when re-enabling display editor
+              'componentsV2/Upload/JsonUpload/**/*',
+              'utils/files.js',
+              'containers/CanvasV2/managers/Display/**/*',
+              
               // TODO: validate whether these components will be used
               'components/Uploads/**/*',
               'containers/CanvasV2/components/Block/NewBlock/**/*',

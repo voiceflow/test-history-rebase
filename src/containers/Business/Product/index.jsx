@@ -11,9 +11,8 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 
-import { BackButtonContainer, BackLink } from '../components';
+import { BackButtonContainer, BackLink, DescriptionSection, PurchasePromptPopover } from '../components';
 import { AvailabilityForm, DescriptionForm, DetailsForm, IconsForm, PhrasesForm, PricingModelForm } from './GuidedSteps';
-import { DescriptionSection, PurchasePromptPopover } from './components';
 
 class ProductEditPage extends PureComponent {
   state = {

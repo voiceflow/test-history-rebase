@@ -1,7 +1,4 @@
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import ButtonGroup from '.';
 
@@ -20,15 +17,19 @@ const OPTIONS = [
   },
 ];
 
-storiesOf('Button Group', module).add(
-  'variants',
-  createTestableStory(() => {
-    const [selected, updateSelected] = React.useState(OPTIONS[0].value);
+const getProps = () => {
+  const [selected, updateSelected] = React.useState(OPTIONS[0].value);
 
-    return (
-      <Variant>
-        <ButtonGroup options={OPTIONS} selected={selected} onChange={(value) => updateSelected(value)} />
-      </Variant>
-    );
-  })
-);
+  return {
+    selected,
+    onChange: updateSelected,
+  };
+};
+
+export default {
+  title: 'Button Group',
+  component: ButtonGroup,
+  includeStories: [],
+};
+
+export const normal = () => <ButtonGroup options={OPTIONS} {...getProps()} />;

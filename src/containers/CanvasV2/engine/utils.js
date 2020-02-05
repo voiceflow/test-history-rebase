@@ -1,5 +1,6 @@
 import cuid from 'cuid';
 
+import { BlockType } from '@/constants';
 import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
 
 export class EngineConsumer {
@@ -49,22 +50,32 @@ export const cloneLink = ({ getPortID, getNodeID }) => (link) => ({
 });
 
 export const cloneNodeWithData = ({ getNodeID, getPortID }) => ({ node, data }) => {
-  const newID = getNodeID(node.id);
+  let originNode = node;
+  let originNodeData = data;
+
+  const newID = getNodeID(originNode.id);
+
+  // Some blocks (ex. display) point to redux for some of it's data, for UX purposes, in some cases we want to just create a fresh node
+  if (originNode.type === BlockType.DISPLAY) {
+    const emptyBlockData = NODE_MANAGERS[originNode.type].factory();
+    originNodeData = { ...originNodeData, ...emptyBlockData.data };
+    originNode = { ...originNode, ...emptyBlockData.node, ports: originNode.ports };
+  }
 
   return {
     node: {
-      ...node,
+      ...originNode,
       id: newID,
-      parentNode: node.parentNode && getNodeID(node.parentNode),
-      combinedNodes: node.combinedNodes.map(getNodeID),
+      parentNode: originNode.parentNode && getNodeID(originNode.parentNode),
+      combinedNodes: originNode.combinedNodes.map(getNodeID),
       ports: {
-        ...node.ports,
-        in: node.ports.in.map(getPortID),
-        out: node.ports.out.map(getPortID),
+        ...originNode.ports,
+        in: originNode.ports.in.map(getPortID),
+        out: originNode.ports.out.map(getPortID),
       },
     },
     data: {
-      ...data,
+      ...originNodeData,
       nodeID: newID,
     },
   };
@@ -100,7 +111,13 @@ export const createCloneContext = () => {
   };
 };
 
-export const cloneNodeGroup = ({ nodesWithData, ports, links }) => {
+export const mergeEntityMaps = (lhs, rhs) => ({
+  nodesWithData: [...lhs.nodesWithData, ...rhs.nodesWithData],
+  ports: [...lhs.ports, ...rhs.ports],
+  links: [...lhs.links, ...rhs.links],
+});
+
+export const cloneEntityMap = ({ nodesWithData, ports, links }) => {
   const context = createCloneContext();
 
   const clonedPorts = ports.map(clonePort(context));

@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { Container, Content, Footer, Header } from './components';
+import { Container, EditorContentAnimation, Header } from './components';
 
 export * from './components';
 
-const Editor = ({ path, controls, children }) => (
+const Editor = ({ children, hideHeader, animationDistance, ...headerProps }) => (
   <Container>
-    <Header path={path} />
-    <Content>{children}</Content>
-    <Footer>{controls}</Footer>
+    {!hideHeader && <Header {...headerProps} />}
+    <EditorContentAnimation distance={animationDistance}>{children}</EditorContentAnimation>
   </Container>
 );
 

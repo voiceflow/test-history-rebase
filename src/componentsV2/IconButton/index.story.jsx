@@ -1,30 +1,21 @@
-import { action } from '@storybook/addon-actions';
+import { action as storybookAction } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import IconButton from '.';
 
-storiesOf('Icon Button', module).add(
-  'variants',
-  createTestableStory(() => {
-    const disabled = boolean('Disabled', false);
-    const onClick = action('click');
+const getProps = () => ({
+  disabled: boolean('Disabled', false),
+  onClick: storybookAction('click'),
+});
 
-    return (
-      <>
-        <Variant label="normal">
-          <IconButton icon="elipsis" disabled={disabled} onClick={onClick} />
-        </Variant>
-        <Variant label="flat">
-          <IconButton icon="elipsis" variant="flat" disabled={disabled} onClick={onClick} />
-        </Variant>
-        <Variant label="action">
-          <IconButton icon="elipsis" variant="action" disabled={disabled} onClick={onClick} />
-        </Variant>
-      </>
-    );
-  })
-);
+export default {
+  title: 'Icon Button',
+  component: IconButton,
+};
+
+export const normal = () => <IconButton icon="elipsis" {...getProps()} />;
+
+export const flat = () => <IconButton icon="elipsis" variant="flat" {...getProps()} />;
+
+export const action = () => <IconButton icon="elipsis" variant="action" {...getProps()} />;

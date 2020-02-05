@@ -8,6 +8,7 @@ import {
   getNormalizedByKey,
   normalize,
   removeNormalizedByKey,
+  reorderKeys,
   updateNormalizedByKey,
 } from '@/utils/normalized';
 
@@ -25,8 +26,14 @@ export const CRUD_ADD_MANY = 'CRUD:ADD_MANY';
 export const CRUD_UPDATE = 'CRUD:UPDATE';
 export const CRUD_REMOVE = 'CRUD:REMOVE';
 export const CRUD_REPLACE = 'CRUD:REPLACE';
+export const CRUD_REORDER = 'CRUD:REORDER';
 
 // reducers
+
+export const crudReorderReducer = (state, { payload }) => {
+  const { byKey } = state;
+  return reorderKeys(payload, byKey);
+};
 
 export const crudAddReducer = (state, { payload: { key, value } }) => addNormalizedByKey(state, key, value);
 
@@ -58,6 +65,8 @@ const createCRUDReducer = (modelType, getKey = (obj) => stringify(obj.id)) => (s
       return crudRemoveReducer(state, action);
     case CRUD_REPLACE:
       return crudReplaceReducer(action, getKey);
+    case CRUD_REORDER:
+      return crudReorderReducer(state, action);
     default:
       return state;
   }
@@ -129,10 +138,13 @@ export const removeModel = (modelType) => (key) => crudAction(modelType, CRUD_RE
 
 export const replaceModels = (modelType) => (values, meta) => crudAction(modelType, CRUD_REPLACE, values, meta);
 
+export const reorderModels = (modelType) => (keyArray) => crudAction(modelType, CRUD_REORDER, keyArray);
+
 export const createCRUDActionCreators = (modelType) => ({
   add: addModel(modelType),
   addMany: addManyModels(modelType),
   update: updateModel(modelType),
   remove: removeModel(modelType),
   replace: replaceModels(modelType),
+  reorder: reorderModels(modelType),
 });

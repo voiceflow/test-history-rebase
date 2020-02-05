@@ -1,13 +1,21 @@
 import cuid from 'cuid';
+import _ from 'lodash';
 import debounce from 'lodash/debounce';
 import moize from 'moize';
 import React from 'react';
 
-import { useForceUpdate } from '@/hooks';
 import { hasIdenticalMembers, reorder } from '@/utils/array';
 import { identity } from '@/utils/functional';
-import { addNormalizedByKey, denormalize, normalize, removeNormalizedByKey, updateNormalizedByKey } from '@/utils/normalized';
+import {
+  addNormalizedByKey,
+  addToStartNormalizedByKey,
+  denormalize,
+  normalize,
+  removeNormalizedByKey,
+  updateNormalizedByKey,
+} from '@/utils/normalized';
 
+import { useForceUpdate } from './forceUpdate';
 import { useLazy } from './lazy';
 
 const UNIQUE_TYPES = ['object', 'function'];
@@ -20,6 +28,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
   const keyLookup = React.useRef();
   const normalized = React.useRef();
   const cachedOnChange = React.useRef();
+  const latestCreatedKey = React.useRef();
 
   cachedOnChange.current = onChange;
 
@@ -33,12 +42,14 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
     []
   );
 
-  const generateKey = React.useCallback((value) => (getKey ? getKey(value) : cuid.slug()), []);
+  const generateKey = React.useCallback((value) => (getKey ? getKey(value) : cuid.slug()), [getKey]);
 
   const setDependencies = useLazy(
     () => {
       // eslint-disable-next-line compat/compat
-      keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), generateKey(item)]));
+      keyLookup.current = new Map(
+        items.map((item, index) => [generateLookupKey(item, index), process.env.NODE_ENV === 'test' ? index : generateKey(item)])
+      );
       normalized.current = normalize(items, (item, index) => keyLookup.current.get(generateLookupKey(item, index)));
     },
     [items],
@@ -52,7 +63,6 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
   const onSave = React.useCallback(
     (value, { update, save = true } = {}) => {
       const denormalized = denormalize(value);
-
       if (!update && debouncedOnChange?.cancel) {
         debouncedOnChange.cancel();
       }
@@ -62,7 +72,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       forceUpdate();
       update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized, save);
     },
-    [setDependencies, debouncedOnChange]
+    [debouncedOnChange, setDependencies, forceUpdate]
   );
 
   const onAdd = React.useCallback(
@@ -72,10 +82,25 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       const updated = addNormalizedByKey(normalized.current, key, value);
 
       keyLookup.current.set(generateLookupKey(value, updated.allKeys.length - 1), key);
+      latestCreatedKey.current = key;
+      onSave(updated, { save: autosave });
+    },
+    [autosave, factory, generateKey, generateLookupKey, onSave]
+  );
+
+  const onAddToStart = React.useCallback(
+    (...args) => {
+      const value = factory(...args);
+      const key = generateKey(value);
+      const updated = addToStartNormalizedByKey(normalized.current, key, value);
+
+      keyLookup.current.set(generateLookupKey(value, updated.allKeys.length - 1), key);
+
+      latestCreatedKey.current = key;
 
       onSave(updated, { save: autosave });
     },
-    [autosave, factory, onSave]
+    [autosave, factory, generateKey, generateLookupKey, onSave]
   );
 
   const onReorder = React.useCallback(
@@ -85,7 +110,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
         allKeys: reorder(normalized.current.allKeys, from, to),
       };
 
-      onSave(updated);
+      onSave(updated, { update: true });
     },
     [onSave]
   );
@@ -97,16 +122,14 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       const updated = updateNormalizedByKey(
         normalized.current,
         key,
-        currValue && !Array.isArray(currValue) && typeof currValue === 'object' ? { ...currValue, ...value } : value
+        currValue && !Array.isArray(currValue) && _.isObject(currValue) ? { ...currValue, ...value } : value
       );
-
       const index = getIndex(key);
       keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
-
       onSave(updated, { update: true });
     },
-    [onSave]
+    [generateLookupKey, getIndex, getItem, onSave]
   );
 
   const memoizedUpdate = React.useMemo(() => moize((key) => (value) => onUpdate(key, value)), [onUpdate]);
@@ -126,12 +149,12 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
         await handleRemove(currValue, currIndex);
       }
     },
-    [autosave, onSave, handleRemove]
+    [getItem, getIndex, generateLookupKey, onSave, autosave, handleRemove]
   );
 
   const memoizedRemove = React.useMemo(() => moize((key) => () => onRemove(key)), [onRemove]);
 
-  const toggleOpen = React.useCallback((key) => onUpdate(key, { open: !getItem(key).open }), [onUpdate]);
+  const toggleOpen = React.useCallback((key) => onUpdate(key, { open: !getItem(key).open }), [getItem, onUpdate]);
 
   const memoizedToggle = React.useMemo(() => moize((key) => () => toggleOpen(key)), [toggleOpen]);
 
@@ -152,12 +175,15 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
   );
 
   return {
+    keys: normalized.current.allKeys,
     items,
+    onAdd,
     onUpdate,
     onRemove,
-    onAdd,
     onReorder,
     toggleOpen,
     mapManaged,
+    onAddToStart,
+    latestCreatedKey: latestCreatedKey.current,
   };
 };

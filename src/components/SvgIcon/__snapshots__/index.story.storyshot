@@ -1,254 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots SvgIcon variants: size 1`] = `
-<styled.span
+exports[`Storyshots SVG Icon Normal 1`] = `
+.c0 {
+  -webkit-transition: width 0.15s ease;
+  transition: width 0.15s ease;
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.c0 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c0:hover {
+  color: #000;
+  opacity: 1;
+}
+
+.c0:active {
+  color: #000;
+  opacity: 1;
+}
+
+<span
+  className="c0"
   color="#000"
   size={24}
-  transition="width"
 >
-  <StyledComponent
-    color="#000"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "sc-bxivhb",
-          "isStatic": false,
-          "lastClassName": "FpIJv",
-          "rules": Array [
-            "
-  ",
-            [Function],
-            "
-
-  color: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            "px;
-  height: ",
-            [Function],
-            "px;
-  box-sizing: content-box;
-  
-  ",
-            [Function],
-            "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-            [Function],
-            ";
-
-  }
-",
-          ],
-        },
-        "displayName": "styled.span",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "sc-bxivhb",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    size={24}
-    transition="width"
-  >
-    <span
-      className="sc-bxivhb bmRGzs"
-      color="#000"
-      size={24}
-    >
-      <test-file-stub />
-    </span>
-  </StyledComponent>
-</styled.span>
+  <svg
+    data-file-name="SvgMail"
+  />
+</span>
 `;
 
-exports[`Storyshots SvgIcon variants: transition array 1`] = `
-<styled.span
-  color="#000"
-  size={24}
-  transition={
-    Array [
-      "width",
-      "height",
-    ]
-  }
->
-  <StyledComponent
-    color="#000"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "sc-bxivhb",
-          "isStatic": false,
-          "lastClassName": "FpIJv",
-          "rules": Array [
-            "
-  ",
-            [Function],
-            "
-
-  color: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            "px;
-  height: ",
-            [Function],
-            "px;
+exports[`Storyshots SVG Icon With Height And Width 1`] = `
+.c0 {
+  -webkit-transition: width 0.15s ease;
+  transition: width 0.15s ease;
   box-sizing: content-box;
-  
-  ",
-            [Function],
-            "
+  width: 24px;
+  height: 24px;
+  color: #000;
+  opacity: 0.8;
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c0 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
 
-  }
+.c0:hover {
+  color: #000;
+  opacity: 1;
+}
 
-  &:hover,
-  &:active {
-    color: ",
-            [Function],
-            ";
+.c0:active {
+  color: #000;
+  opacity: 1;
+}
 
-  }
-",
-          ],
-        },
-        "displayName": "styled.span",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "sc-bxivhb",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    size={24}
-    transition={
-      Array [
-        "width",
-        "height",
-      ]
-    }
-  >
-    <span
-      className="sc-bxivhb FpIJv"
-      color="#000"
-      size={24}
-    >
-      <test-file-stub />
-    </span>
-  </StyledComponent>
-</styled.span>
-`;
-
-exports[`Storyshots SvgIcon variants: width height 1`] = `
-<styled.span
+<span
+  className="c0"
   color="#000"
   height={24}
   size={16}
-  transition="width"
   width={24}
 >
-  <StyledComponent
-    color="#000"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "sc-bxivhb",
-          "isStatic": false,
-          "lastClassName": "FpIJv",
-          "rules": Array [
-            "
-  ",
-            [Function],
-            "
+  <svg
+    data-file-name="SvgMail"
+  />
+</span>
+`;
 
-  color: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            "px;
-  height: ",
-            [Function],
-            "px;
+exports[`Storyshots SVG Icon With Many Transitions 1`] = `
+.c0 {
+  -webkit-transition: width 0.15s ease,height 0.15s ease;
+  transition: width 0.15s ease,height 0.15s ease;
   box-sizing: content-box;
-  
-  ",
-            [Function],
-            "
+  width: 24px;
+  height: 24px;
+  color: #000;
+  opacity: 0.8;
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c0 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
 
-  }
+.c0:hover {
+  color: #000;
+  opacity: 1;
+}
 
-  &:hover,
-  &:active {
-    color: ",
-            [Function],
-            ";
+.c0:active {
+  color: #000;
+  opacity: 1;
+}
 
-  }
-",
-          ],
-        },
-        "displayName": "styled.span",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "sc-bxivhb",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    height={24}
-    size={16}
-    transition="width"
-    width={24}
-  >
-    <span
-      className="sc-bxivhb bmRGzs"
-      color="#000"
-      height={24}
-      size={16}
-      width={24}
-    >
-      <test-file-stub />
-    </span>
-  </StyledComponent>
-</styled.span>
+<span
+  className="c0"
+  color="#000"
+  size={24}
+>
+  <svg
+    data-file-name="SvgMail"
+  />
+</span>
 `;

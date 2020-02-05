@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Card/Empty Normal 1`] = `
+<div
+  className="empty-card"
+>
+  <div
+    onClick={[Function]}
+  >
+    <img
+      alt="empty card"
+      src="/add-step.svg"
+      style={
+        Object {
+          "height": "25px",
+        }
+      }
+    />
+  </div>
+</div>
+`;

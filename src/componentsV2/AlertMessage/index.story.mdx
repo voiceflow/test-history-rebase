@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import AlertMessage from '.';
+
+<Meta title="Alert Message" component={AlertMessage} />
+
+# Alert Message Component
+
+A component to display messages with different colors
+
+<Preview>
+  <Story name="warning">{stories.warning()}</Story>
+  <Story name="primary">{stories.primary()}</Story>
+  <Story name="danger">{stories.danger()}</Story>
+  <Story name="success">{stories.success()}</Story>
+</Preview>

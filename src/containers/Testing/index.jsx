@@ -43,7 +43,6 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
 
   return (
     <>
-      <div id="speech-bar-portal-element"></div>
       {isOpen && (
         <>
           <TestSettings open={settingsOpen} />

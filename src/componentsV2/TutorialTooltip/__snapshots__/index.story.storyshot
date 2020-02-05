@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Tutorial Tooltip Normal 1`] = `
+.c0 {
+  cursor: pointer;
+  color: #5d9df5;
+  font-size: 15px;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c0:hover {
+  color: #4886da;
+}
+
+<div
+  className="c0"
+  onClick={[Function]}
+>
+  <span>
+    How it works
+  </span>
+</div>
+`;

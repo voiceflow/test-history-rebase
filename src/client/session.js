@@ -21,6 +21,22 @@ const sessionClient = {
       user: userAdapter.fromDB(user),
       token,
     })),
+
+  amazon: {
+    linkAccount: (code) => fetch.post(`${SESSION_PATH}/amazon/verify_token`, { code }),
+
+    getAccount: () => fetch.get(`${SESSION_PATH}/amazon/access_token`),
+
+    deleteAccount: () => fetch.delete(`${SESSION_PATH}/amazon`),
+  },
+
+  google: {
+    linkAccount: (code) => fetch.post(`${SESSION_PATH}/google/verify_token`, { code }),
+
+    getAccount: () => fetch.get(`${SESSION_PATH}/google/access_token`),
+
+    deleteAccount: () => fetch.delete(`${SESSION_PATH}/google`),
+  },
 };
 
 export default sessionClient;

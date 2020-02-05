@@ -1,6 +1,11 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const Input = styled.input`
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `}
   outline: none !important;
   background-color: inherit;
   border: none;

@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Visuals/Multimodal Loaded 1`] = `
+<div
+  className="px-4 mx-3 mb-5 pt-3"
+>
+  <div
+    className="products-container position-relative"
+  >
+    <div
+      className="space-between w-100 px-3"
+    >
+      <h5
+        className="text-muted mb-0"
+      >
+        Visuals
+      </h5>
+      <div>
+        <button
+          className="mr-2 btn-tertiary tertiary"
+          onClick={[Function]}
+          varient="contained"
+        >
+          Back
+        </button>
+        <button
+          className="btn-primary"
+          color="publish"
+          onClick={[Function]}
+          variant="contained"
+        >
+          New Display
+        </button>
+      </div>
+    </div>
+    <div
+      className="product-card"
+    >
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="product-image"
+          style={Object {}}
+        >
+          <div
+            className="overlay"
+          >
+            <div
+              className="elispie"
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+            >
+              <div
+                className="dropdown"
+                onKeyDown={[Function]}
+              >
+                <div
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="elispie-button"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="far fa-ellipsis-h"
+                  />
+                </div>
+                <div
+                  aria-hidden={true}
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                  tabIndex="-1"
+                >
+                  <button
+                    className="dropdown-item"
+                    onClick={[Function]}
+                    tabIndex="0"
+                    type="button"
+                  >
+                    Delete Visual
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="edit-button"
+              style={
+                Object {
+                  "color": "#fff",
+                }
+              }
+            >
+              Edit Visual
+            </div>
+          </div>
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        </div>
+        <div
+          className="card-body"
+        >
+          <div
+            className="product-body"
+          >
+            <p
+              className="product-title mb-1"
+            >
+              VisualTmplateTest
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="product-card"
+    >
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="product-image"
+          style={Object {}}
+        >
+          <div
+            className="overlay"
+          >
+            <div
+              className="elispie"
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+            >
+              <div
+                className="dropdown"
+                onKeyDown={[Function]}
+              >
+                <div
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="elispie-button"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="far fa-ellipsis-h"
+                  />
+                </div>
+                <div
+                  aria-hidden={true}
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                  tabIndex="-1"
+                >
+                  <button
+                    className="dropdown-item"
+                    onClick={[Function]}
+                    tabIndex="0"
+                    type="button"
+                  >
+                    Delete Visual
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="edit-button"
+              style={
+                Object {
+                  "color": "#fff",
+                }
+              }
+            >
+              Edit Visual
+            </div>
+          </div>
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        </div>
+        <div
+          className="card-body"
+        >
+          <div
+            className="product-body"
+          >
+            <p
+              className="product-title mb-1"
+            >
+              VisualTmplateTest2
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="product-card"
+    >
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="product-image"
+          style={Object {}}
+        >
+          <div
+            className="overlay"
+          >
+            <div
+              className="elispie"
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
+            >
+              <div
+                className="dropdown"
+                onKeyDown={[Function]}
+              >
+                <div
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="elispie-button"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="far fa-ellipsis-h"
+                  />
+                </div>
+                <div
+                  aria-hidden={true}
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                  tabIndex="-1"
+                >
+                  <button
+                    className="dropdown-item"
+                    onClick={[Function]}
+                    tabIndex="0"
+                    type="button"
+                  >
+                    Delete Visual
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="edit-button"
+              style={
+                Object {
+                  "color": "#fff",
+                }
+              }
+            >
+              Edit Visual
+            </div>
+          </div>
+          <div
+            className="no-image card-image"
+          >
+            <h1>
+              V
+            </h1>
+          </div>
+        </div>
+        <div
+          className="card-body"
+        >
+          <div
+            className="product-body"
+          >
+            <p
+              className="product-title mb-1"
+            >
+              VisualTmplateTest3
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="empty-card"
+    >
+      <div>
+        <img
+          alt="empty card"
+          src="/add-step.svg"
+          style={
+            Object {
+              "height": "25px",
+            }
+          }
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Visuals/Multimodal Loading 1`] = `
+.c0 {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px 0 rgba(17,49,96,0.24);
+}
+
+.c1 {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: 4rem;
+  line-height: 1;
+  background-color: #fff;
+  background-image: url('/loader-2.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+.c2 {
+  color: #132144;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+<div
+  className="text-center"
+>
+  <div
+    className="c0"
+  >
+    <span
+      className="c1"
+    />
+  </div>
+  <div
+    className="c2"
+  >
+    Loading Displays...
+  </div>
+</div>
+`;

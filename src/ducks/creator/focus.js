@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { createAction, createRootSelector } from '@/ducks/utils';
 
 import { INITIALIZE_CREATOR, RESET_CREATOR } from './actions';
-import { nodeByIDSelector } from './diagram';
+import * as diagram from './diagram';
 import { creatorStateSelector } from './selectors';
 
 export const FOCUS_STATE_KEY = 'focus';
@@ -72,9 +72,15 @@ const rootSelector = createSelector(
 export { rootSelector as creatorFocusSelector };
 
 export const focusedNodeSelector = createSelector(
-  nodeByIDSelector,
+  diagram.nodeByIDSelector,
   rootSelector,
   (getNodeByID, focus) => focus.target && getNodeByID(focus.target)
+);
+
+export const focusedNodeDataSelector = createSelector(
+  diagram.dataByNodeIDSelector,
+  rootSelector,
+  (getDataByNodeID, focus) => focus.target && getDataByNodeID(focus.target)
 );
 
 // action creators

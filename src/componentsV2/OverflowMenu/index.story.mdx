@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import OverflowMenu from '.';
+
+<Meta title="Overflow Menu" component={OverflowMenu} />
+
+# Overflow Menu
+
+A basic menu component.
+
+<Preview>
+  <Story name="sameActionsForMenuItem">{stories.sameActionsForMenuItem()}</Story>
+  <Story name="differentActionsForMenuItem">{stories.differentActionsForMenuItem()}</Story>
+</Preview>

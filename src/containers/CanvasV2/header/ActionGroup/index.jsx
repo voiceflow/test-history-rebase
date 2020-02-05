@@ -4,7 +4,7 @@ import { Tooltip } from 'react-tippy';
 import IconButton from '@/componentsV2/IconButton';
 import { PlatformType } from '@/constants';
 import { EditPermissionContext } from '@/containers/CanvasV2/contexts';
-import { SettingsModalConsumer } from '@/containers/CanvasV2/contexts/SettingsModalContext';
+import { SettingsModalConsumer } from '@/containers/Settings/contexts';
 import ShareTest from '@/containers/Testing/ShareTest';
 import { setError } from '@/ducks/modal';
 import { activePlatformSelector } from '@/ducks/skill';
@@ -34,9 +34,9 @@ function ActionGroup(props) {
                 active={isEnabled}
                 variant="outline"
                 icon="cog"
+                large
                 onClick={toggle}
                 iconProps={{ width: 16, height: 15 }}
-                large
               />
             </Tooltip>
           )}

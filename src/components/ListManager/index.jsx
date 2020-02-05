@@ -45,6 +45,8 @@ class ListManager extends React.Component {
       formComponent: FormComponent = ListManagerForm,
       validate,
       showHelpText,
+      formComponentProps,
+      inputComponentProps,
     } = this.props;
     const { formValue } = this.state;
     const showText = showHelpText && !items.length && this.state.isEditing && formValue;
@@ -52,6 +54,7 @@ class ListManager extends React.Component {
     return (
       <ListManagerContainer>
         <Validation
+          {...formComponentProps}
           validate={validate}
           component={FormComponent}
           value={formValue}
@@ -75,6 +78,7 @@ class ListManager extends React.Component {
                 <ListManagerItem key={key}>
                   <div>
                     <Validation
+                      {...inputComponentProps}
                       validate={validate}
                       component={InputComponent}
                       value={extractValue(item)}

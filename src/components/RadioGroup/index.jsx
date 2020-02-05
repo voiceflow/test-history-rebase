@@ -22,10 +22,12 @@ export default function RadioGroup({ options = YES_NO_RADIO_BUTTONS, name, check
   return (
     <Container className={className}>
       {options.map((button, index) => {
+        const { id, customCheckedCondition, label } = button;
+        const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
         return (
           <RadioButtonContainer key={index}>
-            <Checkbox type="radio" {...props} name={name} value={button.id} checked={checked === button.id} onChange={() => onChange(button.id)}>
-              <div>{button.label}</div>
+            <Checkbox type="radio" {...props} name={name} value={id} checked={isChecked} onChange={() => onChange(id)}>
+              <div>{label}</div>
             </Checkbox>
           </RadioButtonContainer>
         );

@@ -1,0 +1,32 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import Button from '.';
+
+<Meta title="Button" component={Button} />
+
+# Button
+
+A basic button component.
+
+## Variants
+
+### Primary
+
+<Preview>
+  <Story name="primary">{stories.primary()}</Story>
+  <Story name="primary with icon">{stories.primaryWithIcon()}</Story>
+</Preview>
+
+### Secondary
+
+<Preview>
+  <Story name="secondary">{stories.secondary()}</Story>
+  <Story name="secondary with icon">{stories.secondaryWithIcon()}</Story>
+</Preview>
+
+### Tertiary
+
+<Preview>
+  <Story name="tertiary">{stories.tertiary()}</Story>
+</Preview>

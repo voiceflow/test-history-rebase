@@ -6,6 +6,8 @@ import * as Realtime from '@/ducks/realtime';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
+import IntentCloud from './components/IntentCloud';
+import SlotCloud from './components/SlotCloud';
 import VariableCloud from './components/VariableCloud';
 import VariableForm from './components/VariableForm';
 
@@ -17,6 +19,8 @@ const VariableMenu = ({ isHidden, onClose, activeDiagram }) => {
           <PanelContent>
             <VariableForm lockOwner={lockOwner} prevOwner={prevOwner} />
             <VariableCloud />
+            <SlotCloud />
+            <IntentCloud />
           </PanelContent>
         </Panel>
       )}

@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import { withDnD } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import IntentSlotForm from '.';
+
+<Meta title="components/Intent Form/Intent Slot Editor" component={IntentSlotForm} decorators={[withDnD]} />
+
+# Intent Slot Form
+
+The editor for slots within the "intent" editor.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

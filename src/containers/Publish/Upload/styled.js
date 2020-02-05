@@ -13,7 +13,7 @@ export const PopupButtonSection = styled.div`
   margin: 0 -22px -24px;
   padding: 23px 32px 24px;
   background: #f9f9f9;
-  border-top: 1px solid #eaeff4;
+  border-top: 1px solid #dfe3ed;
 
   .modal & {
     justify-content: space-between;

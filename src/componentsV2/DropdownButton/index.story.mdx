@@ -1,0 +1,25 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import DropdownButton from '.';
+
+<Meta title="Dropdown Button" component={DropdownButton} />
+
+# Dropdown Button
+
+A button that opens a menu when clicked.
+
+## Variants
+
+### Primary
+
+<Preview>
+  <Story name="primary">{stories.primary()}</Story>
+</Preview>
+
+### Secondary
+
+<Preview>
+  <Story name="secondary">{stories.secondary()}</Story>
+</Preview>

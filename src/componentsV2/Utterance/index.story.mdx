@@ -1,0 +1,35 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Utterance from '.';
+
+<Meta title="Utterance" component={Utterance} />
+
+# Utterance
+
+A component for controlling an utterance.
+
+## Variants
+
+### Basic
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="with slots">{stories.withSlots()}</Story>
+  <Story name="with add slot">{stories.withAddSlot()}</Story>
+  <Story name="with icon">{stories.withIcon()}</Story>
+</Preview>
+
+### International
+
+<Preview>
+  <Story name="international japanese">{stories.internationalJapanese()}</Story>
+  <Story name="international hindi">{stories.internationalHindi()}</Story>
+</Preview>
+
+## Performance
+
+<Preview>
+  <Story name="performance">{stories.performance()}</Story>
+</Preview>

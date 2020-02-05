@@ -6,7 +6,7 @@ export { default as Numbered } from './Numbered';
 export { default as UpdateBubble } from './UpdateBubble';
 
 export const NavChildItem = styled.div`
-  padding-left: 22px;
+  padding-left: 20px;
 `;
 
 export const NewWorkspaceTab = styled.span`
@@ -20,7 +20,7 @@ export const NewWorkspaceTab = styled.span`
 export const SubHeaderItem = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-left: 22px;
+  padding-left: 20px;
 `;
 
 export const TabsContainer = styled.div`

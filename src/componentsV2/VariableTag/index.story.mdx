@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import { VariableTag } from '.';
+
+<Meta title="Variable Tag" component={VariableTag} />
+
+# Variable Tag
+
+A component for tagging variables within text.
+
+<Preview>
+  <Story name="variable">{stories.variable()}</Story>
+  <Story name="slot">{stories.slot()}</Story>
+</Preview>

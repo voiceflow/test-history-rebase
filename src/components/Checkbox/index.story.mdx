@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Checkbox from '.';
+
+<Meta title="Checkbox" component={Checkbox} />
+
+# Checkbox
+
+A component for representing a boolean value.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="with error">{stories.withError()}</Story>
+</Preview>

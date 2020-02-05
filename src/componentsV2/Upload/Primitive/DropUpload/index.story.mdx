@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import DropUpload from '.';
+
+<Meta title="Upload/Primitive/Drop" component={DropUpload} />
+
+# Drop Upload
+
+A component for dropping a file to upload.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

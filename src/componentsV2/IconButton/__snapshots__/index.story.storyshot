@@ -1,637 +1,313 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Icon Button variants: action 1`] = `
-<ActionIconButtonContainer
-  disabled={false}
-  onClick={[Function]}
-  variant="action"
->
-  <StyledComponent
-    disabled={false}
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "ActionIconButtonContainer-sc-1imkol5-0",
-          "isStatic": false,
-          "lastClassName": "ffcXTB",
-          "rules": Array [
-            "
-  ",
-            "
-  ",
-            "display:",
-            [Function],
-            ";align-items:center;",
-            [Function],
-            " ",
-            [Function],
-            " justify-content:center;",
-            "
-  ",
-            [Function],
-            "
+exports[`Storyshots Icon Button Action 1`] = `
+.c2 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
+.c2 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c2:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-            "
-",
-            "
-  ",
-            "
-  height: ",
-            "42",
-            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-            [Function],
-            ";
-",
-            "
-",
-            "
-  width: ",
-            "42",
-            "px;
+  width: auto;
+  width: 42px;
   border: 0;
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
- 
-  height: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            ";
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  height: 36px;
+  width: 36px;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5d9df5;
+  box-shadow: 0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);
+}
 
-  &:active {
-    ",
-            "
-  ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-            "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-",
-            "
-  }
+}
 
-  ",
-            [Function],
-            "
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
 
-  ",
-            [Function],
-            "
+.c0:hover {
+  box-shadow: 0 0 0 1px #fff,0 2px 4px 1px rgba(17,49,96,0.16);
+}
 
-  ",
-            [Function],
-            "
-",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-            " border:1px solid #fff;color:#5d9df5;box-shadow:0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);&:hover{box-shadow:0 0 0 1px #fff,0 2px 4px 1px rgba(17,49,96,0.16);}",
-            [Function],
-            ";",
-          ],
-        },
-        "displayName": "ActionIconButtonContainer",
-        "foldedComponentIds": Array [
-          "sc-bdVaJa",
-          "sc-ifAKCX",
-          "sc-EHOje",
-        ],
-        "render": [Function],
-        "styledComponentId": "ActionIconButtonContainer-sc-1imkol5-0",
-        "target": "button",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    onClick={[Function]}
-    variant="action"
+.c3 .c1 {
+  color: #fff;
+}
+
+.c4 .c1 {
+  color: #6e849a;
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c1 c2"
+    color="currentColor"
+    size={16}
   >
-    <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje ActionIconButtonContainer-sc-1imkol5-0 ffcXTB"
-      disabled={false}
-      onClick={[Function]}
-    >
-      <ForwardRef
-        color="currentColor"
-        icon="elipsis"
-      >
-        <styled.span
-          color="currentColor"
-          size={16}
-        >
-          <StyledComponent
-            color="currentColor"
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-bxivhb",
-                  "isStatic": false,
-                  "lastClassName": "iqcteL",
-                  "rules": Array [
-                    "
-  ",
-                    [Function],
-                    "
-
-  color: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    "px;
-  height: ",
-                    [Function],
-                    "px;
-  box-sizing: content-box;
-  
-  ",
-                    [Function],
-                    "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                    [Function],
-                    ";
-
-  }
-",
-                  ],
-                },
-                "displayName": "styled.span",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "sc-bxivhb",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-            size={16}
-          >
-            <span
-              className="sc-bxivhb iqcteL"
-              color="currentColor"
-              size={16}
-            >
-              <test-file-stub />
-            </span>
-          </StyledComponent>
-        </styled.span>
-      </ForwardRef>
-    </button>
-  </StyledComponent>
-</ActionIconButtonContainer>
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+</button>
 `;
 
-exports[`Storyshots Icon Button variants: flat 1`] = `
-<Styled(Styled(styled.button))
-  disabled={false}
-  onClick={[Function]}
-  variant="flat"
->
-  <StyledComponent
-    disabled={false}
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "sc-EHOje",
-          "isStatic": false,
-          "lastClassName": "lbhBnO",
-          "rules": Array [
-            "
-  ",
-            "
-  ",
-            "display:",
-            [Function],
-            ";align-items:center;",
-            [Function],
-            " ",
-            [Function],
-            " justify-content:center;",
-            "
-  ",
-            [Function],
-            "
+exports[`Storyshots Icon Button Flat 1`] = `
+.c2 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
+.c2 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c2:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-            "
-",
-            "
-  ",
-            "
-  height: ",
-            "42",
-            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-            [Function],
-            ";
-",
-            "
-",
-            "
-  width: ",
-            "42",
-            "px;
+  width: auto;
+  width: 42px;
   border: 0;
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
- 
-  height: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            ";
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  height: 36px;
+  width: 36px;
+  background: inherit;
+}
 
-  &:active {
-    ",
-            "
-  ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-            "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-",
-            "
-  }
+}
 
-  ",
-            [Function],
-            "
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
 
-  ",
-            [Function],
-            "
+.c3 .c1 {
+  color: #fff;
+}
 
-  ",
-            [Function],
-            "
-",
-          ],
-        },
-        "displayName": "Styled(Styled(styled.button))",
-        "foldedComponentIds": Array [
-          "sc-bdVaJa",
-          "sc-ifAKCX",
-        ],
-        "render": [Function],
-        "styledComponentId": "sc-EHOje",
-        "target": "button",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    onClick={[Function]}
-    variant="flat"
+.c4 .c1 {
+  color: #6e849a;
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c1 c2"
+    color="currentColor"
+    size={16}
   >
-    <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
-      disabled={false}
-      onClick={[Function]}
-    >
-      <ForwardRef
-        color="currentColor"
-        icon="elipsis"
-      >
-        <styled.span
-          color="currentColor"
-          size={16}
-        >
-          <StyledComponent
-            color="currentColor"
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-bxivhb",
-                  "isStatic": false,
-                  "lastClassName": "iqcteL",
-                  "rules": Array [
-                    "
-  ",
-                    [Function],
-                    "
-
-  color: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    "px;
-  height: ",
-                    [Function],
-                    "px;
-  box-sizing: content-box;
-  
-  ",
-                    [Function],
-                    "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                    [Function],
-                    ";
-
-  }
-",
-                  ],
-                },
-                "displayName": "styled.span",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "sc-bxivhb",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-            size={16}
-          >
-            <span
-              className="sc-bxivhb iqcteL"
-              color="currentColor"
-              size={16}
-            >
-              <test-file-stub />
-            </span>
-          </StyledComponent>
-        </styled.span>
-      </ForwardRef>
-    </button>
-  </StyledComponent>
-</Styled(Styled(styled.button))>
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+</button>
 `;
 
-exports[`Storyshots Icon Button variants: normal 1`] = `
-<Styled(Styled(styled.button))
-  disabled={false}
-  onClick={[Function]}
->
-  <StyledComponent
-    disabled={false}
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "sc-EHOje",
-          "isStatic": false,
-          "lastClassName": "lbhBnO",
-          "rules": Array [
-            "
-  ",
-            "
-  ",
-            "display:",
-            [Function],
-            ";align-items:center;",
-            [Function],
-            " ",
-            [Function],
-            " justify-content:center;",
-            "
-  ",
-            [Function],
-            "
+exports[`Storyshots Icon Button Normal 1`] = `
+.c2 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
+.c2 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c2:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-            "
-",
-            "
-  ",
-            "
-  height: ",
-            "42",
-            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-            [Function],
-            ";
-",
-            "
-",
-            "
-  width: ",
-            "42",
-            "px;
+  width: auto;
+  width: 42px;
   border: 0;
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
- 
-  height: ",
-            [Function],
-            ";
-  width: ",
-            [Function],
-            ";
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  height: 36px;
+  width: 36px;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
 
-  &:active {
-    ",
-            "
-  ",
-            "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-            "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-",
-            "
-  }
+}
 
-  ",
-            [Function],
-            "
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
 
-  ",
-            [Function],
-            "
+.c3 .c1 {
+  color: #fff;
+}
 
-  ",
-            [Function],
-            "
-",
-          ],
-        },
-        "displayName": "Styled(Styled(styled.button))",
-        "foldedComponentIds": Array [
-          "sc-bdVaJa",
-          "sc-ifAKCX",
-        ],
-        "render": [Function],
-        "styledComponentId": "sc-EHOje",
-        "target": "button",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    onClick={[Function]}
+.c4 .c1 {
+  color: #6e849a;
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c1 c2"
+    color="currentColor"
+    size={16}
   >
-    <button
-      className="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
-      disabled={false}
-      onClick={[Function]}
-    >
-      <ForwardRef
-        color="currentColor"
-        icon="elipsis"
-      >
-        <styled.span
-          color="currentColor"
-          size={16}
-        >
-          <StyledComponent
-            color="currentColor"
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-bxivhb",
-                  "isStatic": false,
-                  "lastClassName": "iqcteL",
-                  "rules": Array [
-                    "
-  ",
-                    [Function],
-                    "
-
-  color: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    "px;
-  height: ",
-                    [Function],
-                    "px;
-  box-sizing: content-box;
-  
-  ",
-                    [Function],
-                    "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                    [Function],
-                    ";
-
-  }
-",
-                  ],
-                },
-                "displayName": "styled.span",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "sc-bxivhb",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-            size={16}
-          >
-            <span
-              className="sc-bxivhb iqcteL"
-              color="currentColor"
-              size={16}
-            >
-              <test-file-stub />
-            </span>
-          </StyledComponent>
-        </styled.span>
-      </ForwardRef>
-    </button>
-  </StyledComponent>
-</Styled(Styled(styled.button))>
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+</button>
 `;

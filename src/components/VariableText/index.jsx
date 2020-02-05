@@ -5,7 +5,7 @@ import React from 'react';
 
 import { draftJSContentAdapter } from '@/client/adapters/draft';
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { InlineVariableTag } from '@/components/VariableTag';
+import { InlineVariableTag } from '@/componentsV2/VariableTag';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 import { swallowEvent } from '@/utils/dom';
@@ -89,13 +89,14 @@ class VariableText extends React.PureComponent {
       onChange,
       variables,
       suggestionsClassName,
+      invalidValue,
       ...props
     } = this.props;
     const { suggestions, editorState } = this.state;
 
     return (
       <Container>
-        <Field className={className} onDragStart={swallowEvent()} onClick={this.focusEditor}>
+        <Field className={className} onDragStart={swallowEvent()} onClick={this.focusEditor} error={invalidValue}>
           <DraftJSEditor
             plugins={[this.mentionPlugin, ...plugins]}
             editorState={editorState}

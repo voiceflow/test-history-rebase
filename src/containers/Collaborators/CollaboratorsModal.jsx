@@ -6,7 +6,7 @@ import { useModals } from '@/contexts/ModalsContext';
 
 import BodyContainer from './components/BodyContainer';
 import SeatSummary from './components/SeatSummary';
-import Collaborators from './index';
+import Collaborators from '.';
 
 const MODAL_TITLE = 'ADD COLLABORATORS';
 

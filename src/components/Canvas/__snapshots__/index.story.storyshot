@@ -167,7 +167,7 @@ Array [
                               class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                             >
                               <span
-                                class="sc-bxivhb iqcteL"
+                                class="sc-bxivhb ilzrhY"
                                 color="currentColor"
                                 size="16"
                               >
@@ -178,7 +178,7 @@ Array [
                               class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                             >
                               <span
-                                class="sc-bxivhb iqcteL"
+                                class="sc-bxivhb ilzrhY"
                                 color="currentColor"
                                 size="16"
                               >
@@ -190,7 +190,7 @@ Array [
                             class="sc-bdVaJa sc-ifAKCX sc-EHOje bnmUWa"
                           >
                             <span
-                              class="sc-bxivhb iqcteL"
+                              class="sc-bxivhb ilzrhY"
                               color="currentColor"
                               size="16"
                             >
@@ -404,7 +404,7 @@ Array [
                                                 "componentStyle": ComponentStyle {
                                                   "componentId": "sc-bxivhb",
                                                   "isStatic": false,
-                                                  "lastClassName": "iqcteL",
+                                                  "lastClassName": "ilzrhY",
                                                   "rules": Array [
                                                     "
   ",
@@ -430,7 +430,6 @@ Array [
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -438,7 +437,6 @@ Array [
     color: ",
                                                     [Function],
                                                     ";
-
   }
 ",
                                                   ],
@@ -457,7 +455,7 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="sc-bxivhb iqcteL"
+                                              className="sc-bxivhb ilzrhY"
                                               color="currentColor"
                                               size={16}
                                             >
@@ -612,7 +610,7 @@ Array [
                                                 "componentStyle": ComponentStyle {
                                                   "componentId": "sc-bxivhb",
                                                   "isStatic": false,
-                                                  "lastClassName": "iqcteL",
+                                                  "lastClassName": "ilzrhY",
                                                   "rules": Array [
                                                     "
   ",
@@ -638,7 +636,6 @@ Array [
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -646,7 +643,6 @@ Array [
     color: ",
                                                     [Function],
                                                     ";
-
   }
 ",
                                                   ],
@@ -665,7 +661,7 @@ Array [
                                             size={16}
                                           >
                                             <span
-                                              className="sc-bxivhb iqcteL"
+                                              className="sc-bxivhb ilzrhY"
                                               color="currentColor"
                                               size={16}
                                             >
@@ -823,7 +819,7 @@ Array [
                                           "componentStyle": ComponentStyle {
                                             "componentId": "sc-bxivhb",
                                             "isStatic": false,
-                                            "lastClassName": "iqcteL",
+                                            "lastClassName": "ilzrhY",
                                             "rules": Array [
                                               "
   ",
@@ -849,7 +845,6 @@ Array [
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -857,7 +852,6 @@ Array [
     color: ",
                                               [Function],
                                               ";
-
   }
 ",
                                             ],
@@ -876,7 +870,7 @@ Array [
                                       size={16}
                                     >
                                       <span
-                                        className="sc-bxivhb iqcteL"
+                                        className="sc-bxivhb ilzrhY"
                                         color="currentColor"
                                         size={16}
                                       >

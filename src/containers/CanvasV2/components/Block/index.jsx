@@ -6,8 +6,7 @@ import AddStepButton from '@/containers/CanvasV2/components/AddStepButton';
 import MergeOverlay from '@/containers/CanvasV2/components/MergeOverlay';
 import PortSet from '@/containers/CanvasV2/components/PortSet';
 import { getBlockCategory } from '@/containers/CanvasV2/constants';
-import { EditPermissionContext, EngineContext, PlatformContext, useNode, useNodeData } from '@/containers/CanvasV2/contexts';
-import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
+import { EditPermissionContext, EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/containers/CanvasV2/contexts';
 import { getNextSteps } from '@/containers/CanvasV2/utils';
 import { useImperativeApi } from '@/hooks';
 
@@ -16,6 +15,7 @@ import { Container, Overlay, Title } from './components';
 function Block(_, ref) {
   const { node, isHighlighted, lockOwner } = useNode();
   const { data } = useNodeData();
+  const { block: BlockContent, platforms } = React.useContext(ManagerContext)(data.type);
   const platform = React.useContext(PlatformContext);
   const { canEdit } = React.useContext(EditPermissionContext);
   const engine = React.useContext(EngineContext);
@@ -25,7 +25,6 @@ function Block(_, ref) {
     creator: () => ({ rename: () => engine.focus.set(node.id, { renameActiveRevision: cuid() }) }),
   });
 
-  const { block: BlockContent, platforms } = NODE_MANAGERS[data.type];
   const { color } = getBlockCategory(data.type);
   const nextSteps = getNextSteps(data.type);
   const isEnabled = !platforms || platforms.includes(platform);

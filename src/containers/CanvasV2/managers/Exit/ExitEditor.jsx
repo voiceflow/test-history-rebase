@@ -1,13 +1,26 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
-import { Section } from '@/containers/CanvasV2/components/BlockEditor';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor';
 
-function ExitEditor() {
+import { HelpTooltip, Section } from './components';
+
+function ExitEditor({ data }) {
   return (
-    <Section>
-      <Alert>This block ends the skill in its current flow and state</Alert>
-    </Section>
+    <Content
+      footer={() => (
+        <Controls
+          anchor="Learn more"
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpTitle: null,
+            helpMessage: null,
+          }}
+        />
+      )}
+    >
+      <Section>Exit block ends the project in its current state.</Section>
+    </Content>
   );
 }
 

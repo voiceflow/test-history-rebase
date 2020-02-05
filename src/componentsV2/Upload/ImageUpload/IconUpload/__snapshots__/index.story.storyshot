@@ -1,0 +1,541 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Upload/Icon Large 1`] = `
+.c4 {
+  box-sizing: content-box;
+  width: 30px;
+  height: 30px;
+  color: #BECEDC;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c4:active {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c5 .c3 {
+  color: #fff;
+}
+
+.c6 .c3 {
+  color: #6e849a;
+}
+
+.c1 {
+  display: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: background-color,border 0.15s ease;
+  transition: background-color,border 0.15s ease;
+  border-radius: 50%;
+  border: 1px solid #d4d9e6;
+  cursor: pointer;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  background-color: rgba(212,217,230,0.24);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c2:hover {
+  background-color: rgba(212,217,230,0.44);
+}
+
+.c2:before {
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.c0:focus {
+  outline: none;
+}
+
+<div
+  className="c0"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragEnter={[Function]}
+  onDragLeave={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  tabIndex={0}
+>
+  <input
+    accept={
+      Array [
+        "image/jpeg",
+        "image/png",
+      ]
+    }
+    autoComplete="off"
+    className="c1"
+    multiple={true}
+    onChange={[Function]}
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    tabIndex={-1}
+    type="file"
+  />
+  <div
+    className="c2"
+    onClick={[Function]}
+    size={120}
+  >
+    <span
+      className="c3 c4"
+      color="#BECEDC"
+      size={30}
+    >
+      <svg
+        data-file-name="SvgImage"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Upload/Icon Medium 1`] = `
+.c4 {
+  box-sizing: content-box;
+  width: 25px;
+  height: 25px;
+  color: #BECEDC;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c4:active {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c5 .c3 {
+  color: #fff;
+}
+
+.c6 .c3 {
+  color: #6e849a;
+}
+
+.c1 {
+  display: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: background-color,border 0.15s ease;
+  transition: background-color,border 0.15s ease;
+  border-radius: 50%;
+  border: 1px solid #d4d9e6;
+  cursor: pointer;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(212,217,230,0.24);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c2:hover {
+  background-color: rgba(212,217,230,0.44);
+}
+
+.c2:before {
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.c0:focus {
+  outline: none;
+}
+
+<div
+  className="c0"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragEnter={[Function]}
+  onDragLeave={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  tabIndex={0}
+>
+  <input
+    accept={
+      Array [
+        "image/jpeg",
+        "image/png",
+      ]
+    }
+    autoComplete="off"
+    className="c1"
+    multiple={true}
+    onChange={[Function]}
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    tabIndex={-1}
+    type="file"
+  />
+  <div
+    className="c2"
+    onClick={[Function]}
+    size={100}
+  >
+    <span
+      className="c3 c4"
+      color="#BECEDC"
+      size={25}
+    >
+      <svg
+        data-file-name="SvgImage"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Upload/Icon Small 1`] = `
+.c4 {
+  box-sizing: content-box;
+  width: 20px;
+  height: 20px;
+  color: #BECEDC;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c4:active {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c5 .c3 {
+  color: #fff;
+}
+
+.c6 .c3 {
+  color: #6e849a;
+}
+
+.c1 {
+  display: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: background-color,border 0.15s ease;
+  transition: background-color,border 0.15s ease;
+  border-radius: 50%;
+  border: 1px solid #d4d9e6;
+  cursor: pointer;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(212,217,230,0.24);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c2:hover {
+  background-color: rgba(212,217,230,0.44);
+}
+
+.c2:before {
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.c0:focus {
+  outline: none;
+}
+
+<div
+  className="c0"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragEnter={[Function]}
+  onDragLeave={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  tabIndex={0}
+>
+  <input
+    accept={
+      Array [
+        "image/jpeg",
+        "image/png",
+      ]
+    }
+    autoComplete="off"
+    className="c1"
+    multiple={true}
+    onChange={[Function]}
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    tabIndex={-1}
+    type="file"
+  />
+  <div
+    className="c2"
+    onClick={[Function]}
+    size={80}
+  >
+    <span
+      className="c3 c4"
+      color="#BECEDC"
+      size={20}
+    >
+      <svg
+        data-file-name="SvgImage"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Upload/Icon Xlarge 1`] = `
+.c4 {
+  box-sizing: content-box;
+  width: 37.5px;
+  height: 37.5px;
+  color: #BECEDC;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c4:active {
+  color: #BECEDC;
+  opacity: 1;
+}
+
+.c5 .c3 {
+  color: #fff;
+}
+
+.c6 .c3 {
+  color: #6e849a;
+}
+
+.c1 {
+  display: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: background-color,border 0.15s ease;
+  transition: background-color,border 0.15s ease;
+  border-radius: 50%;
+  border: 1px solid #d4d9e6;
+  cursor: pointer;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(212,217,230,0.24);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c2:hover {
+  background-color: rgba(212,217,230,0.44);
+}
+
+.c2:before {
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.c0:focus {
+  outline: none;
+}
+
+<div
+  className="c0"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragEnter={[Function]}
+  onDragLeave={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  tabIndex={0}
+>
+  <input
+    accept={
+      Array [
+        "image/jpeg",
+        "image/png",
+      ]
+    }
+    autoComplete="off"
+    className="c1"
+    multiple={true}
+    onChange={[Function]}
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    tabIndex={-1}
+    type="file"
+  />
+  <div
+    className="c2"
+    onClick={[Function]}
+    size={150}
+  >
+    <span
+      className="c3 c4"
+      color="#BECEDC"
+      size={37.5}
+    >
+      <svg
+        data-file-name="SvgImage"
+      />
+    </span>
+  </div>
+</div>
+`;

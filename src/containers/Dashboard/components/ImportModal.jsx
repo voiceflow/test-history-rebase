@@ -7,7 +7,7 @@ import { Label } from 'reactstrap';
 
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import Button from '@/componentsV2/Button';
-import Select from '@/componentsV2/DropdownSearch';
+import Select from '@/componentsV2/Select';
 
 function ImportModal(props) {
   const { toggle, open, token, boards, importProject } = props;
@@ -21,7 +21,14 @@ function ImportModal(props) {
         <Label>
           Copy <strong>{projectName}</strong> to
         </Label>
-        <Select options={boards} value={board} onSelect={setBoard} disabled={boards.length === 1} />
+        <Select
+          value={board?.label}
+          onSelect={setBoard}
+          disabled={boards.length === 1}
+          options={boards}
+          getOptionValue={(option) => option.value}
+          renderOptionLabel={(option) => option.label}
+        />
       </ModalBody>
       <ModalFooter>
         <Button variant="tertiary" onClick={toggle}>

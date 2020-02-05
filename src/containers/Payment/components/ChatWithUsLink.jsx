@@ -1,15 +1,9 @@
 import React from 'react';
 
-import ClickableText from '@/componentsV2/Text/ClickableText';
+import ChatLink from '@/componentsV2/ChatLink';
 
 function ChatWithUsLink() {
-  return (
-    <ClickableText>
-      <a href="/" className="custom_intercom_launcher">
-        Questions? Start a chat
-      </a>
-    </ClickableText>
-  );
+  return <ChatLink>Questions? Start a chat</ChatLink>;
 }
 
 export default ChatWithUsLink;

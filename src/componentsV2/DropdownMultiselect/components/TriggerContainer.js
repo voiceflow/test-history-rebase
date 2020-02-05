@@ -15,6 +15,7 @@ const Container = styled.div`
   box-shadow: 0px 0px 3px rgba(17, 49, 96, 0.06);
   border-radius: 5px;
   transition: box-shadow 0.15s ease, border 0.15s ease;
+  cursor: pointer;
   ${({ active }) => active && activeStyles}
 `;
 

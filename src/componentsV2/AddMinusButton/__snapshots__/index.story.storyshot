@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Add-Minus Button Minus 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 11px;
+  height: 11px;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: #fff;
+  opacity: 1;
+}
+
+.c1:active {
+  color: #fff;
+  opacity: 1;
+}
+
+.c0 {
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  margin: 0 4px;
+  padding: 3px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+  opacity: 0.85;
+  background-color: #6E849A;
+}
+
+.c0:hover {
+  opacity: 1;
+}
+
+<div
+  className="c0"
+>
+  <span
+    className="c1"
+    color="#fff"
+    size={11}
+  >
+    <svg
+      data-file-name="SvgZoomOut"
+    />
+  </span>
+</div>
+`;
+
+exports[`Storyshots Add-Minus Button Plus 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 11px;
+  height: 11px;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: #fff;
+  opacity: 1;
+}
+
+.c1:active {
+  color: #fff;
+  opacity: 1;
+}
+
+.c0 {
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  margin: 0 4px;
+  padding: 3px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+  opacity: 0.85;
+  background-color: #6E849A;
+}
+
+.c0:hover {
+  opacity: 1;
+}
+
+<div
+  className="c0"
+>
+  <span
+    className="c1"
+    color="#fff"
+    size={11}
+  >
+    <svg
+      data-file-name="SvgZoomIn"
+    />
+  </span>
+</div>
+`;

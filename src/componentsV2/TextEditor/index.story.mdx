@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import TextEditor from '.';
+
+<Meta title="TextEditor" component={TextEditor} />
+
+# TextEditor
+
+A basic TextEditor editor.
+
+<Preview>
+  <Story name="all">{stories.all()}</Story>
+  <Story name="xml">{stories.xml()}</Story>
+  <Story name="base">{stories.base()}</Story>
+  <Story name="variables">{stories.variables()}</Story>
+</Preview>

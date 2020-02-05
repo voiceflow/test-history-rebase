@@ -3,6 +3,7 @@ import { withoutValue } from '@/utils/array';
 export const defaultGetKey = (obj) => obj.id;
 
 export const safeAdd = (items, obj) => (items.includes(obj) ? items : [...items, obj]);
+export const safeAddToStart = (items, obj) => (items.includes(obj) ? items : [obj, ...items]);
 
 export const getByIndex = (items) => (_, index) => items[index];
 
@@ -30,10 +31,12 @@ export const getNormalizedByKey = ({ byKey }, key) => byKey[key];
 
 export const getAllNormalizedByKeys = ({ byKey }, keys) => keys.map((key) => byKey[key]);
 
-export const updateNormalizedByKey = ({ allKeys, byKey }, key, obj) => ({
-  allKeys,
-  byKey: { ...byKey, [key]: obj },
-});
+export const updateNormalizedByKey = ({ allKeys, byKey }, key, obj) => {
+  return {
+    allKeys,
+    byKey: { ...byKey, [key]: obj },
+  };
+};
 
 export const patchNormalizedByKey = (normalized, key, obj) =>
   updateNormalizedByKey(normalized, key, { ...getNormalizedByKey(normalized, key), ...obj });
@@ -41,6 +44,11 @@ export const patchNormalizedByKey = (normalized, key, obj) =>
 export const addNormalizedByKey = (normalized, key, obj) => ({
   ...updateNormalizedByKey(normalized, key, obj),
   allKeys: safeAdd(normalized.allKeys, key),
+});
+
+export const addToStartNormalizedByKey = (normalized, key, obj) => ({
+  ...updateNormalizedByKey(normalized, key, obj),
+  allKeys: safeAddToStart(normalized.allKeys, key),
 });
 
 export const addAllNormalizedByKeys = (normalized, objs, getKey = defaultGetKey) => {
@@ -65,6 +73,13 @@ export const removeNormalizedByKey = ({ allKeys, byKey }, targetKey) => {
   return {
     allKeys: filteredKeys,
     byKey: buildLookup(filteredKeys, getByKey(byKey)),
+  };
+};
+
+export const reorderKeys = (newKeyArray, byKey) => {
+  return {
+    allKeys: newKeyArray,
+    byKey,
   };
 };
 

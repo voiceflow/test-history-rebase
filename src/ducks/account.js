@@ -1,4 +1,3 @@
-import axios from 'axios';
 import update from 'immutability-helper';
 import { createSelector } from 'reselect';
 
@@ -8,7 +7,7 @@ import { setError } from '@/ducks/modal';
 import { createAction, createRootSelector } from './utils';
 
 export const STATE_KEY = 'account';
-const DEFAULT_STATE = {
+export const INITIAL_STATE = {
   loading: false,
   email: null,
   name: null,
@@ -28,7 +27,7 @@ export const RESET_ACCOUNT = 'RESET_ACCOUNT';
 
 // reducers
 
-export default function accountReducer(state = DEFAULT_STATE, action) {
+export default function accountReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case UPDATE_GOOGLE_ACCOUNT:
       if (!state.google) return state;
@@ -39,7 +38,7 @@ export default function accountReducer(state = DEFAULT_STATE, action) {
     case UPDATE_ACCOUNT:
       return { ...state, ...action.payload };
     case RESET_ACCOUNT:
-      return DEFAULT_STATE;
+      return INITIAL_STATE;
     default:
       return state;
   }
@@ -88,7 +87,7 @@ export const getVendors = () => async (dispatch, getState) => {
 
 export const createAmazonSession = (code) => async (dispatch) => {
   try {
-    const { data: amazon } = (await axios.post('/session/amazon/verify_token', { code })) || null;
+    const amazon = client.session.amazon.linkAccount(code) || null;
     dispatch(updateAccount({ amazon }));
   } catch (err) {
     console.error(err);
@@ -99,7 +98,7 @@ export const createAmazonSession = (code) => async (dispatch) => {
 export const checkAmazonAccount = () => async (dispatch) => {
   let amazon = null;
   try {
-    amazon = (await axios.get('/session/amazon/access_token')).data || null;
+    amazon = (await client.session.amazon.getAccount()) || null;
   } catch (err) {
     console.error(err);
   }
@@ -108,7 +107,7 @@ export const checkAmazonAccount = () => async (dispatch) => {
 
 export const deleteAmazonAccount = () => async (dispatch) => {
   try {
-    await axios.delete('/session/amazon');
+    await client.session.amazon.deleteAccount();
     dispatch(updateAccount({ amazon: null }));
   } catch (err) {
     dispatch(setError('Something went wrong - please refresh your page'));
@@ -117,7 +116,7 @@ export const deleteAmazonAccount = () => async (dispatch) => {
 
 export const createGoogleSession = (code) => async (dispatch) => {
   try {
-    const { data: google } = (await axios.post('/session/google/verify_token', { code })) || null;
+    const google = (await client.session.google.linkAccount(code)) || null;
     dispatch(updateAccount({ google }));
   } catch (err) {
     console.error(err);
@@ -128,7 +127,7 @@ export const createGoogleSession = (code) => async (dispatch) => {
 export const checkGoogleAccount = () => async (dispatch) => {
   let google = null;
   try {
-    google = (await axios.get('/session/google/access_token')).data || null;
+    google = (await client.session.google.getAccount()) || null;
   } catch (err) {
     console.error(err);
   }
@@ -137,7 +136,7 @@ export const checkGoogleAccount = () => async (dispatch) => {
 
 export const deleteGoogleAccount = () => async (dispatch) => {
   try {
-    await axios.delete('/session/google/access_token');
+    await client.session.google.deleteAccount();
     dispatch(updateAccount({ google: null }));
   } catch (err) {
     dispatch(setError('Something went wrong - please refresh your page'));

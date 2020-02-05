@@ -1,61 +1,26 @@
 import { action } from '@storybook/addon-actions';
 import { boolean, text } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import Button from '.';
 
-storiesOf('Button', module)
-  .add(
-    'variants',
-    createTestableStory(() => {
-      const disabled = boolean('Disabled', false);
-      const label = text('Label', 'Button');
-      const onClick = action('click');
+const getProps = () => ({
+  disabled: boolean('Disabled', false),
+  children: text('Label', 'Button'),
+  onClick: action('click'),
+});
 
-      return (
-        <>
-          <Variant label="primary">
-            <Button disabled={disabled} onClick={onClick}>
-              {label}
-            </Button>
-          </Variant>
-          <Variant label="secondary">
-            <Button variant="secondary" disabled={disabled} onClick={onClick}>
-              {label}
-            </Button>
-          </Variant>
-          <Variant label="tertiary">
-            <Button variant="tertiary" disabled={disabled} onClick={onClick}>
-              {label}
-            </Button>
-          </Variant>
-        </>
-      );
-    })
-  )
-  .add(
-    'variants - with icon',
-    createTestableStory(() => {
-      const disabled = boolean('Disabled', false);
-      const label = text('Label', 'Button');
-      const onClick = action('click');
+export default {
+  title: 'Button',
+  component: Button,
+};
 
-      return (
-        <>
-          <Variant label="primary">
-            <Button icon="plus" disabled={disabled} onClick={onClick}>
-              {label}
-            </Button>
-          </Variant>
-          <Variant label="secondary">
-            <Button variant="secondary" icon="sync" disabled={disabled} onClick={onClick}>
-              {label}
-            </Button>
-          </Variant>
-        </>
-      );
-    })
-  );
+export const primary = () => <Button variant="primary" {...getProps()} />;
+
+export const primaryWithIcon = () => <Button variant="primary" icon="plus" {...getProps()} />;
+
+export const secondary = () => <Button variant="secondary" {...getProps()} />;
+
+export const secondaryWithIcon = () => <Button icon="plus" variant="secondary" {...getProps()} />;
+
+export const tertiary = () => <Button variant="tertiary" {...getProps()} />;

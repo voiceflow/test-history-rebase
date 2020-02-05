@@ -231,7 +231,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                             "componentStyle": ComponentStyle {
                               "componentId": "sc-bxivhb",
                               "isStatic": false,
-                              "lastClassName": "jGWIpX",
+                              "lastClassName": "gPyova",
                               "rules": Array [
                                 "
   ",
@@ -257,7 +257,6 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -265,7 +264,6 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
     color: ",
                                 [Function],
                                 ";
-
   }
 ",
                               ],
@@ -284,7 +282,7 @@ exports[`Storyshots Stripe/CardElement variants: basic 1`] = `
                         size={16}
                       >
                         <span
-                          className="sc-bxivhb jGWIpX"
+                          className="sc-bxivhb gPyova"
                           color="#d4d9e6"
                           size={16}
                         >

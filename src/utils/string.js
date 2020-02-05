@@ -1,6 +1,5 @@
 import { convertToWord } from './number';
 
-// eslint-disable-next-line import/prefer-default-export
 export const createNextName = (prefix, items) => {
   let name = `${prefix}_${convertToWord(items.length + 1)}`;
 
@@ -11,3 +10,5 @@ export const createNextName = (prefix, items) => {
 
   return name;
 };
+
+export const capitalizeFirstLetter = (value) => value.charAt(0).toUpperCase() + value.slice(1);

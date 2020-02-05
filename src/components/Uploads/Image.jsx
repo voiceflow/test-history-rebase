@@ -5,10 +5,9 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
+import { HTTPS_URL_REGEX, VARIABLE_REGEXP } from '@/constants';
 
 const MAX_SIZE = 5 * 1024 * 1024;
-const VARIABLE_REGEX = /^{.*}$/;
-const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,4}\b([\w#%&+-./:=?@~]*)/;
 class Image extends Component {
   constructor(props) {
     super(props);
@@ -101,7 +100,7 @@ class Image extends Component {
         </Dropzone>
       );
     } else if (this.props.image && typeof this.props.image === 'string') {
-      if (VARIABLE_REGEX.test(this.props.image)) {
+      if (VARIABLE_REGEXP.test(this.props.image)) {
         render = (
           <div className="image-box super-center d-flex">
             <div>{this.props.image}</div>

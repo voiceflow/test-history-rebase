@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import { story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import TextArea from '.';
+
+<Meta title="Text Area" component={TextArea} />
+
+# Text Area
+
+A component for multi-line text input.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

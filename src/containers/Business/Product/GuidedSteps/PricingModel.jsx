@@ -100,6 +100,7 @@ function PricingForm({ product, updateProduct, changeStep, parentCtrl }) {
                   className="form-bg small_input"
                   name="units"
                   type="number"
+                  min={0}
                   placeholder="0 unit min"
                   value={product.consumableUnit}
                   onChange={withTargetValue(onChange('consumableUnit'))}

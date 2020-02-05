@@ -231,7 +231,8 @@ export const swallowEvent = withHandler((e, stopNativePropagation) => {
   e.preventDefault();
 
   if (stopNativePropagation) {
-    e.nativeEvent.stopImmediatePropagation();
+    e.stopImmediatePropagation?.();
+    e.nativeEvent?.stopImmediatePropagation();
   }
 });
 

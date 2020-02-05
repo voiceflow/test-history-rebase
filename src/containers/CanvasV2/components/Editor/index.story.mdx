@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Editor from '.';
+
+<Meta title="Creator/Editor" component={Editor} />
+
+# Editor
+
+A basic wrapper for canvas editors.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

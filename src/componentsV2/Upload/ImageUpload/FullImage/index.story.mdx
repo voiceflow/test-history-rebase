@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import FullImageUpload from '.';
+
+<Meta title="Upload/Full Image" component={FullImageUpload} />
+
+# Full Image Upload
+
+A component for uploading an image in its original size.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

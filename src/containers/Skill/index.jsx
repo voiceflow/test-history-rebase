@@ -7,17 +7,17 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
-import DragLayer from '@/componentsV2/DragLayer';
 import { FEATURE_IDS } from '@/constants';
 import Business from '@/containers/Business';
 import Canvas from '@/containers/CanvasV2';
 import CanvasMenu from '@/containers/CanvasV2/components/CanvasMenu';
-import { EditPermissionProvider, SettingsModalProvider, ShortcutModalProvider } from '@/containers/CanvasV2/contexts';
+import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/containers/CanvasV2/contexts';
 import CanvasHeader from '@/containers/CanvasV2/header';
+import { getManager } from '@/containers/CanvasV2/managers';
 import InactivityModal from '@/containers/Inactivity';
-import Logs from '@/containers/Logs';
 import Publish from '@/containers/Publish';
 import Migrate from '@/containers/Publish/Amazon/Migrate';
+import { SettingsModalProvider } from '@/containers/Settings/contexts';
 import Testing from '@/containers/Testing';
 import Visuals from '@/containers/Visuals';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
@@ -38,7 +38,6 @@ import DiagramSync from './contexts/DiagramSync';
 
 const PAGES_MATCHES = {
   test: ['/test/:diagramID?'],
-  logs: ['/creator_logs'],
   tools: ['/tools'],
   canvas: ['/canvas/:diagramID?'],
   migrate: ['/migrate'],
@@ -52,16 +51,18 @@ function RenderCanvas({ diagramID, isTesting }) {
   return (
     <>
       {!isTesting && <DiagramSync diagramID={diagramID} />}
-      <EditPermissionProvider isTesting={isTesting}>
-        <ShortcutModalProvider>
-          <SettingsModalProvider>
-            <CanvasHeader />
-            <CanvasMenu />
-            <Canvas isTesting={isTesting} />
-            <Testing render />
-          </SettingsModalProvider>
-        </ShortcutModalProvider>
-      </EditPermissionProvider>
+      <ManagerProvider value={getManager}>
+        <EditPermissionProvider isTesting={isTesting}>
+          <ShortcutModalProvider>
+            <SettingsModalProvider>
+              <CanvasHeader />
+              <CanvasMenu />
+              <Canvas isTesting={isTesting} />
+              <Testing render />
+            </SettingsModalProvider>
+          </ShortcutModalProvider>
+        </EditPermissionProvider>
+      </ManagerProvider>
     </>
   );
 }
@@ -139,12 +140,9 @@ function Skill(props) {
 
           <PrivateRoute path={`${match.path}/publish`} component={Publish} />
 
-          <PrivateRoute path={`${match.path}/creator_logs`} component={Logs} />
-
           <Redirect to={`${match.path}/canvas`} />
         </Switch>
       </Page>
-      <DragLayer />
     </>
   );
 }

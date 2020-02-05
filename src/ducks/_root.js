@@ -10,7 +10,7 @@ import display, * as Display from '@/ducks/display';
 import integrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
 import list from '@/ducks/lists';
-import modal from '@/ducks/modal';
+import modal, * as Modal from '@/ducks/modal';
 import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
@@ -24,7 +24,7 @@ import slot, * as Slot from '@/ducks/slot';
 import test, * as Test from '@/ducks/test';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
-import userSetting from '@/ducks/user';
+import userSetting, * as UsertSetting from '@/ducks/user';
 import variableSet, * as VariableSet from '@/ducks/variableSet';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
@@ -33,8 +33,8 @@ export default (history) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(history),
     list,
-    userSetting,
-    modal,
+    [UsertSetting.STATE_KEY]: userSetting,
+    [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
     integrationUsers,

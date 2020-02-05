@@ -45,7 +45,6 @@ const BlockMenuItemCard = styled(Card)`
   
   &:hover ${MenuTooltipContainer} {
     display: flex;
-    color: #BECEDC;
   }
 `;
 

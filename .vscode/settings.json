@@ -5,6 +5,8 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "eslint.autoFixOnSave": true,
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.tslint": true,
     "source.fixAll.eslint": true

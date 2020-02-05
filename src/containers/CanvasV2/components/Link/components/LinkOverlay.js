@@ -4,10 +4,11 @@ import { STROKE_COLOR } from '../constants';
 
 const LinkOverlay = styled.path`
   stroke: ${STROKE_COLOR};
-  stroke-width: 20px;
+  stroke-width: 15px;
   stroke-opacity: 0;
   fill: transparent;
   pointer-events: auto;
+  transition: ease 0.15s all;
 
   ${({ isHovering }) =>
     isHovering &&

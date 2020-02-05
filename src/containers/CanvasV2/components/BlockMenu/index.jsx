@@ -3,7 +3,7 @@ import React from 'react';
 import ExpandingList from '@/components/ExpandingList';
 import * as Panel from '@/components/Panel';
 import { BLOCK_MENU, BLOCK_MENU_CATEGORIES } from '@/containers/CanvasV2/constants';
-import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
+import { ManagerContext } from '@/containers/CanvasV2/contexts';
 import { openBlockMenuSectionsSelector, toggleBlockMenuSection } from '@/ducks/ui';
 import { connect } from '@/hocs';
 
@@ -11,6 +11,8 @@ import BlockMenuItem from './components/BlockMenuItem';
 import BlockMenuPanel from './components/BlockMenuPanel';
 
 function BlockMenu({ onClose, expandedSections, toggleSection }) {
+  const getManager = React.useContext(ManagerContext);
+
   return (
     <BlockMenuPanel title="Blocks" onClose={onClose}>
       <Panel.Content>
@@ -27,7 +29,7 @@ function BlockMenu({ onClose, expandedSections, toggleSection }) {
                 label,
                 color,
                 items: items.map((itemType) => {
-                  const manager = NODE_MANAGERS[itemType];
+                  const manager = getManager(itemType);
 
                   return { key: itemType, label: manager.label, type: itemType };
                 }),

@@ -155,7 +155,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bxivhb",
                     "isStatic": false,
-                    "lastClassName": "jGWIpX",
+                    "lastClassName": "gPyova",
                     "rules": Array [
                       "
   ",
@@ -181,7 +181,6 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -189,7 +188,6 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
     color: ",
                       [Function],
                       ";
-
   }
 ",
                     ],
@@ -208,7 +206,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
               size={16}
             >
               <span
-                className="sc-bxivhb jGWIpX"
+                className="sc-bxivhb gPyova"
                 color="#d4d9e6"
                 size={16}
               >
@@ -261,9 +259,12 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
                       "attrs": Array [],
                       "componentStyle": ComponentStyle {
                         "componentId": "sc-kpOJdX",
-                        "isStatic": true,
-                        "lastClassName": "gyuXzO",
+                        "isStatic": false,
+                        "lastClassName": "fAnYdg",
                         "rules": Array [
+                          "
+  ",
+                          [Function],
                           "
   outline: none !important;
   background-color: inherit;
@@ -286,7 +287,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
                   forwardedRef={
                     Object {
                       "current": <input
-                        class="sc-kpOJdX gyuXzO"
+                        class="sc-kpOJdX fAnYdg"
                         placeholder="placeholder"
                       />,
                     }
@@ -294,7 +295,7 @@ exports[`Storyshots Input controlled: controlled input 1`] = `
                   placeholder="placeholder"
                 >
                   <input
-                    className="sc-kpOJdX gyuXzO"
+                    className="sc-kpOJdX fAnYdg"
                     disabled={false}
                     placeholder="placeholder"
                   />
@@ -526,7 +527,7 @@ exports[`Storyshots Input variants: icon 1`] = `
                       "componentStyle": ComponentStyle {
                         "componentId": "sc-bxivhb",
                         "isStatic": false,
-                        "lastClassName": "ikfdvg",
+                        "lastClassName": "jnxjoU",
                         "rules": Array [
                           "
   ",
@@ -552,7 +553,6 @@ exports[`Storyshots Input variants: icon 1`] = `
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -560,7 +560,6 @@ exports[`Storyshots Input variants: icon 1`] = `
     color: ",
                           [Function],
                           ";
-
   }
 ",
                         ],
@@ -579,7 +578,7 @@ exports[`Storyshots Input variants: icon 1`] = `
                   size={16}
                 >
                   <span
-                    className="sc-bxivhb ikfdvg"
+                    className="sc-bxivhb jnxjoU"
                     color="rgba(93, 157, 245, 0.85)"
                     size={16}
                   >
@@ -632,9 +631,12 @@ exports[`Storyshots Input variants: icon 1`] = `
                           "attrs": Array [],
                           "componentStyle": ComponentStyle {
                             "componentId": "sc-kpOJdX",
-                            "isStatic": true,
-                            "lastClassName": "gyuXzO",
+                            "isStatic": false,
+                            "lastClassName": "fAnYdg",
                             "rules": Array [
+                              "
+  ",
+                              [Function],
                               "
   outline: none !important;
   background-color: inherit;
@@ -657,7 +659,7 @@ exports[`Storyshots Input variants: icon 1`] = `
                       forwardedRef={
                         Object {
                           "current": <input
-                            class="sc-kpOJdX gyuXzO"
+                            class="sc-kpOJdX fAnYdg"
                             placeholder="placeholder"
                           />,
                         }
@@ -665,7 +667,7 @@ exports[`Storyshots Input variants: icon 1`] = `
                       placeholder="placeholder"
                     >
                       <input
-                        className="sc-kpOJdX gyuXzO"
+                        className="sc-kpOJdX fAnYdg"
                         disabled={false}
                         placeholder="placeholder"
                       />
@@ -709,9 +711,12 @@ exports[`Storyshots Input variants: inline 1`] = `
             "attrs": Array [],
             "componentStyle": ComponentStyle {
               "componentId": "sc-kpOJdX",
-              "isStatic": true,
-              "lastClassName": "gyuXzO",
+              "isStatic": false,
+              "lastClassName": "fAnYdg",
               "rules": Array [
+                "
+  ",
+                [Function],
                 "
   outline: none !important;
   background-color: inherit;
@@ -737,7 +742,7 @@ exports[`Storyshots Input variants: inline 1`] = `
         value="IS INPUT"
       >
         <input
-          className="sc-kpOJdX gyuXzO"
+          className="sc-kpOJdX fAnYdg"
           disabled={false}
           onChange={[Function]}
           placeholder="INPUT"
@@ -956,9 +961,12 @@ exports[`Storyshots Input variants: input elements 1`] = `
                           "attrs": Array [],
                           "componentStyle": ComponentStyle {
                             "componentId": "sc-kpOJdX",
-                            "isStatic": true,
-                            "lastClassName": "gyuXzO",
+                            "isStatic": false,
+                            "lastClassName": "fAnYdg",
                             "rules": Array [
+                              "
+  ",
+                              [Function],
                               "
   outline: none !important;
   background-color: inherit;
@@ -981,7 +989,7 @@ exports[`Storyshots Input variants: input elements 1`] = `
                       forwardedRef={
                         Object {
                           "current": <input
-                            class="sc-kpOJdX gyuXzO"
+                            class="sc-kpOJdX fAnYdg"
                             placeholder="input part"
                           />,
                         }
@@ -989,7 +997,7 @@ exports[`Storyshots Input variants: input elements 1`] = `
                       placeholder="input part"
                     >
                       <input
-                        className="sc-kpOJdX gyuXzO"
+                        className="sc-kpOJdX fAnYdg"
                         disabled={false}
                         placeholder="input part"
                       />

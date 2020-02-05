@@ -1,46 +1,69 @@
 import React from 'react';
 
-import ButtonGroupRouter from '@/components/ButtonGroupRouter';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
-import IntentManager from '@/containers/IntentManager';
-import SlotManager from '@/containers/SlotManager';
+import IntentForm, { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
+import IntentSelect from '@/components/IntentSelect';
+import OverflowMenu from '@/componentsV2/OverflowMenu';
+import Section from '@/componentsV2/Section';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor';
+import { NamespaceProvider } from '@/contexts';
+import * as Intent from '@/ducks/intent';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
 
-import IntentForm from './components/IntentForm';
-
-const IntentRoute = {
-  SELECT: 'select',
-  INTENT: 'intents',
-  SLOT: 'slots',
+const DEFAULT_INTENT = {
+  id: '',
+  inputs: [],
+  name: '',
+  platform: '',
+  slots: {},
 };
 
-const INTENT_ROUTES = [
-  {
-    label: 'Select',
-    value: IntentRoute.SELECT,
-    component: IntentForm,
-  },
-  {
-    label: 'Intents',
-    value: IntentRoute.INTENT,
-    component: IntentManager,
-  },
-  {
-    label: 'Slots',
-    value: IntentRoute.SLOT,
-    component: SlotManager,
-  },
-];
-
-function IntentEditor({ data, onChange }) {
-  const [activeRoute, updateRoute] = React.useState(IntentRoute.SELECT);
+function IntentEditor({ intent, data, platform, onChange, pushToPath }) {
+  const updatePlatform = React.useCallback(
+    (payload) => {
+      onChange({
+        ...data,
+        [platform]: {
+          ...data[platform],
+          ...payload,
+        },
+      });
+    },
+    [data, onChange, platform]
+  );
 
   return (
-    <Content>
+    <Content
+      footer={() => (
+        /* TODO: bulk import */
+        <Controls
+          menu={null && <OverflowMenu placement="top-end" options={[{ label: 'Bulk import utterances' }]} />}
+          tutorial={{ content: <HelpTooltip /> }}
+        />
+      )}
+    >
       <Section>
-        <ButtonGroupRouter selected={activeRoute} onChange={updateRoute} routes={INTENT_ROUTES} routeProps={{ data, onChange }} />
+        <IntentSelect intent={intent} onChange={updatePlatform} />
       </Section>
+      <NamespaceProvider value={['intent', intent?.id]}>
+        <IntentForm intent={intent} pushToPath={pushToPath} />
+      </NamespaceProvider>
+      <LegacyMappings intent={intent} mappings={data[platform].mappings} onDelete={() => updatePlatform({ mappings: [] })} />
     </Content>
   );
 }
 
-export default IntentEditor;
+const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
+  getIntentByID: Intent.platformIntentByIDSelector,
+};
+
+const mergeProps = ({ platform, getIntentByID }, _, { data }) => ({
+  intent: data[platform].intent ? getIntentByID(data[platform].intent) : DEFAULT_INTENT,
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+  mergeProps
+)(IntentEditor);

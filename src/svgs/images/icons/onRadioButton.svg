@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F9FAFB" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="8" cy="8" r="8"></circle>
+        <filter x="-3.1%" y="-3.1%" width="106.2%" height="112.5%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.192156863   0 0 0 0 0.376470588  0 0 0 0.05 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-5" cx="8" cy="8" r="4"></circle>
+    </defs>
+    <g id="Radio/On" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3">
+            <g id="Oval-4">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <circle stroke="currentColor" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" cx="8" cy="8" r="7.5"></circle>
+            </g>
+            <g id="Oval-6">
+                <use xlink:href="#path-5"></use>
+                <use  fill="currentColor" xlink:href="#path-5"></use>
+            </g>
+        </g>
+    </g>
+</svg>

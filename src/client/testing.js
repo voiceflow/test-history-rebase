@@ -18,6 +18,10 @@ const testingClient = {
       const slots = extractSlots(data.skill);
       return { skill, intents, slots, testVariableValues: data.globals };
     }),
+
+  getSpeakAudio: ({ ssml, voice }) => fetch.post(`${TESTING_PATH}/speak`, { ssml, voice }),
+
+  entityExtract: ({ input, intent, slots, curSlot }) => fetch.post(`${TESTING_PATH}/entity_extract`, { input, intent, slots, curSlot }),
 };
 
 export default testingClient;

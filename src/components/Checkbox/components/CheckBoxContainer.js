@@ -7,7 +7,8 @@ const CheckBoxContainer = styled.label`
   min-width: 0;
   margin-bottom: 0;
   text-align: left;
-  cursor: pointer;
+  user-select: none;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 `;
 
 export default CheckBoxContainer;

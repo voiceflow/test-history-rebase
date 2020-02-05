@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Badge Number 1`] = `
+.c0 {
+  min-width: 22px;
+  display: inline-block;
+  height: 22.4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background: linear-gradient(180deg,#eff5f6a3 0%,#eef4f6 100%),#ffffff;
+  border: 1px solid #d4d9e6;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0px #d4d9e6;
+  border-radius: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: center;
+}
+
+<span
+  className="c0"
+>
+  1
+</span>
+`;
+
+exports[`Storyshots Badge Text 1`] = `
+.c0 {
+  min-width: 22px;
+  display: inline-block;
+  height: 22.4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background: linear-gradient(180deg,#eff5f6a3 0%,#eef4f6 100%),#ffffff;
+  border: 1px solid #d4d9e6;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0px #d4d9e6;
+  border-radius: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: center;
+}
+
+<span
+  className="c0"
+>
+  text
+</span>
+`;

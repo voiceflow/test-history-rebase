@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Tooltip from '.';
+
+<Meta title="Tooltip" component={Tooltip} />
+
+# Tooltip
+
+A container for extended descriptions or inline documentation.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

@@ -1,5 +1,7 @@
 import _upperFirst from 'lodash/upperFirst';
-import { useReducer, useRef } from 'react';
+import React, { useReducer, useRef } from 'react';
+
+import { getTopLevelDiff } from '@/utils/objects';
 
 export const TYPE = {
   set: 'set',
@@ -52,4 +54,20 @@ export const useSmartReducer = (defaultState, customReducer = (s) => s, customAp
   }
 
   return [state, apiRef.current];
+};
+
+export const useSyncedSmartReducer = (props) => {
+  const cache = React.useRef(props);
+  const [state, actions] = useSmartReducer(props);
+
+  React.useEffect(() => {
+    const diff = getTopLevelDiff(props, cache.current);
+
+    if (Object.keys(diff).length) {
+      actions.update(diff);
+      cache.current = props;
+    }
+  }, Object.values(props));
+
+  return [state, actions];
 };

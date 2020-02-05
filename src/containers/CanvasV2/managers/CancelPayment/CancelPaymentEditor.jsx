@@ -1,79 +1,64 @@
+/* eslint-disable no-shadow */
 import React from 'react';
-import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
-import ProductSelect from '@/components/ProductSelect';
-import SvgIcon from '@/components/SvgIcon';
-import { FlexCenter } from '@/componentsV2/Flex';
-import { Section } from '@/containers/CanvasV2/components/BlockEditor';
-import { hasProductsSelector, productByIDSelector } from '@/ducks/product';
-import { goToEditProduct, goToProducts } from '@/ducks/router';
-import { activeSkillIDSelector } from '@/ducks/skill';
+import Section from '@/componentsV2/Section';
+import { Content } from '@/containers/CanvasV2/components/Editor';
+import NoProducts from '@/containers/CanvasV2/components/NoProducts';
+import ProductTile from '@/containers/CanvasV2/components/ProductTile';
+import * as Product from '@/ducks/product';
+import * as Router from '@/ducks/router';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useCurried } from '@/hooks';
 
-function CancelPaymentEditor({ onChange, goToProducts, goToEditProduct, selectedProduct, hasProducts }) {
-  const updateProduct = React.useCallback((productID) => onChange({ productID }), [onChange]);
-  const unlinkProduct = React.useCallback(() => updateProduct(null), [updateProduct]);
+import { CancelPaymentFooter } from './components';
+
+function CancelPaymentEditor({ products, onChange, goToNewProduct, goToEditProduct, selectedProduct, hasProducts, data }) {
+  const updateProduct = useCurried(onChange);
 
   if (!hasProducts) {
-    return (
-      <Section>
-        <FlexCenter column>
-          <SvgIcon icon="safe" size="auto" />
-          <br />
-          <div className="text-muted">You currently have no In Skill Products</div>
-          <button className="btn btn-secondary mt-3" onClick={goToProducts}>
-            Add Products
-          </button>
-        </FlexCenter>
-      </Section>
-    );
+    return <NoProducts goToNewProduct={goToNewProduct} />;
   }
 
   if (selectedProduct) {
     return (
-      <Section>
-        <label className="space-between mb-3">
-          <span>{selectedProduct.name}</span>
-        </label>
-        <Button className="btn-primary btn-block btn-lg" onClick={goToEditProduct}>
-          Edit Product <i className="fas fa-sign-in" />
-        </Button>
-        <button className="btn-lg mt-2 btn-block btn-clear" onClick={unlinkProduct}>
-          Unlink Product
-        </button>
-        <Alert color="warning" className="mt-3">
-          {selectedProduct.type === 'SUBSCRIPTION'
-            ? 'The user will have their subscription cancelled'
-            : 'The user will be refunded their product purchase'}
-        </Alert>
-      </Section>
+      <Content footer={() => <CancelPaymentFooter updateProduct={updateProduct} withMenu blockType={data.type} />}>
+        <Section variant="secondary" header="Product to Cancel" customContentStyling={{ padding: 0 }}>
+          <ProductTile product={selectedProduct} imageIconSize={18} isNested onClick={goToEditProduct} title="Edit Product" />
+        </Section>
+      </Content>
     );
   }
 
   return (
-    <Section>
-      <label>Select Existing Product</label>
-      <ProductSelect onChange={updateProduct} />
-    </Section>
+    <Content footer={() => <CancelPaymentFooter blockType={data.type} />}>
+      <Section variant="secondary" header="Choose Product to Cancel" customContentStyling={{ padding: 0 }}>
+        {products.map((product) => (
+          <ProductTile key={product.id} product={product} isNested onClick={updateProduct({ productID: product.id })} />
+        ))}
+      </Section>
+    </Content>
   );
 }
 
 const mapStateToProps = {
-  skillID: activeSkillIDSelector,
-  selectedProduct: productByIDSelector,
-  hasProducts: hasProductsSelector,
+  skillID: Skill.activeSkillIDSelector,
+  selectedProduct: Product.productByIDSelector,
+  hasProducts: Product.hasProductsSelector,
+  products: Product.allProductsSelector,
 };
 
 const mapDispatchToProps = {
-  goToEditProduct,
-  goToProducts,
+  goToEditProduct: Router.goToEditProduct,
+  goToProducts: Router.goToProducts,
+  goToNewProduct: Router.goToNewProduct,
 };
 
-const mergeProps = ({ selectedProduct: getProductByID, skillID }, { goToEditProduct, goToProducts }, { data }) => ({
+const mergeProps = ({ selectedProduct: getProductByID, skillID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
   selectedProduct: data.productID && getProductByID(data.productID),
   goToEditProduct: () => data.productID && goToEditProduct(skillID, data.productID),
   goToProducts: () => goToProducts(skillID),
+  goToNewProduct: () => goToNewProduct(skillID),
 });
 
 export default connect(

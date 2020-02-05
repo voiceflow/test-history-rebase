@@ -1,23 +1,25 @@
+import cuid from 'cuid';
+
 import { createBlockAdapter } from './utils';
 
 const userInfoBlockAdapter = createBlockAdapter(
   ({ permissions }) => ({
     permissions: permissions.map(({ selected, map_to, product, transaction }) => ({
+      id: cuid.slug(),
       selected: selected ? selected.value : null,
       mapTo: map_to ? map_to.value : null,
-      mapToLabel: map_to ? map_to.label : null,
       product: product ? product.value : null,
       transaction,
     })),
   }),
   ({ permissions }) => ({
-    permissions: permissions.map(({ selected, mapTo, mapToLabel, product, transaction }) => {
+    permissions: permissions.map(({ selected, mapTo, product, transaction }) => {
       const permission = {
         selected: {
           value: selected,
         },
         map_to: {
-          label: mapToLabel,
+          label: `{${mapTo}}`,
           value: mapTo,
         },
       };

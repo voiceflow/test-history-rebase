@@ -22,7 +22,7 @@ const CancelPaymentManager = {
       },
     },
     data: {
-      name: 'Cancel',
+      name: 'Cancel Payment',
       productID: null,
     },
   }),

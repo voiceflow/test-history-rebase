@@ -15,7 +15,7 @@ const DEFAULT_STATE = {
 // actions
 
 export const TRACK_ONBOARDING_STAGE = 'TRACK:ONBOARDING:STAGE';
-export const TRACK_ONBOARDING_CHOICE = 'TRACK:ONBOARDING:CHOICE';
+export const TRACK_ONBOARDING_CHOICE_OLD = 'TRACK:ONBOARDING:CHOICE_OLD';
 export const TRACK_INVITATION_SENT = 'TRACK:INVITATION:SENT';
 export const TRACK_INVITATION_CANCELLED = 'TRACK:INVITATION:CANCELLED';
 export const TRACK_INVITATION_ACCEPTED = 'TRACK:INVITATION:ACCEPTED';
@@ -33,7 +33,7 @@ const trackOnboardingChoiceReducer = (state, { payload: { key, value } }) => ({
 const trackingReducer = (state = DEFAULT_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
-    case TRACK_ONBOARDING_CHOICE:
+    case TRACK_ONBOARDING_CHOICE_OLD:
       return trackOnboardingChoiceReducer(state, action);
     default:
       return state;
@@ -57,7 +57,7 @@ export const trackOnboardingStage = (stage) => createAction(TRACK_ONBOARDING_STA
 export const trackOnboardingBegin = () => trackOnboardingStage(OnboardingStage.WELCOME);
 export const trackOnboardingComplete = () => trackOnboardingStage(OnboardingStage.COMPLETE);
 
-export const trackOnboardingChoice = (key, value) => createAction(TRACK_ONBOARDING_CHOICE, { key, value });
+export const trackOnboardingChoice = (key, value) => createAction(TRACK_ONBOARDING_CHOICE_OLD, { key, value });
 
 export const trackInvitationSent = (workspaceID, email) => createAction(TRACK_INVITATION_SENT, { workspaceID, email });
 

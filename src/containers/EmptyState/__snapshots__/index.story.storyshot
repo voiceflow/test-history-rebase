@@ -1,0 +1,391 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Empty State No Displays 1`] = `
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c4 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c4:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
+
+.c9:focus,
+.c9:active {
+  outline: 0;
+}
+
+.c9:hover,
+.c9:active {
+  background-color: #e0ebee;
+}
+
+.c10 .c3 {
+  color: #fff;
+}
+
+.c11 .c3 {
+  color: #6e849a;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.c6 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  margin-bottom: 16px;
+}
+
+.c5 {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+}
+
+.c7 {
+  font-size: 15px;
+  color: #62778c;
+  line-height: 20px;
+  margin-bottom: 22px;
+}
+
+.c0 {
+  height: 500px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div>
+      <div
+        className="c2"
+      >
+        <span
+          className="c3 c4 c5"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgTakeoff"
+          />
+        </span>
+      </div>
+      <div
+        className="c6"
+      >
+        No Displays Exist
+      </div>
+      <div
+        className="c7"
+      >
+        Create a display to add it to this block
+      </div>
+      <div
+        className="c8"
+      >
+        <button
+          className="c9"
+        >
+          Create Display
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Empty State No Products 1`] = `
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c4 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c4 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c4:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c4:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
+
+.c9:focus,
+.c9:active {
+  outline: 0;
+}
+
+.c9:hover,
+.c9:active {
+  background-color: #e0ebee;
+}
+
+.c10 .c3 {
+  color: #fff;
+}
+
+.c11 .c3 {
+  color: #6e849a;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.c6 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  margin-bottom: 16px;
+}
+
+.c5 {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+}
+
+.c7 {
+  font-size: 15px;
+  color: #62778c;
+  line-height: 20px;
+  margin-bottom: 22px;
+}
+
+.c0 {
+  height: 500px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div>
+      <div
+        className="c2"
+      >
+        <span
+          className="c3 c4 c5"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNoProducts"
+          />
+        </span>
+      </div>
+      <div
+        className="c6"
+      >
+        No Products Exist
+      </div>
+      <div
+        className="c7"
+      >
+        Create a product to add it to this block
+      </div>
+      <div
+        className="c8"
+      >
+        <button
+          className="c9"
+        >
+          Create Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

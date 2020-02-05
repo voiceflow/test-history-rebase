@@ -1,0 +1,22 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Select from '.';
+
+<Meta title="Select" component={Select} />
+
+# Select
+
+A basic dropdown select menu.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="dropdown">{stories.dropdown()}</Story>
+  <Story name="searchable">{stories.searchable()}</Story>
+  <Story name="creatable">{stories.creatable()}</Story>
+  <Story name="creatable and searchable">{stories.creatableAndSearchable()}</Story>
+  <Story name="custom label">{stories.customLabel()}</Story>
+  <Story name="grouped">{stories.grouped()}</Story>
+  <Story name="multi-level">{stories.multilevel()}</Story>
+</Preview>

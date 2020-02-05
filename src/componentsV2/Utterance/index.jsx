@@ -1,25 +1,36 @@
 import React from 'react';
 
-import Input from '@/componentsV2/Input';
+import TextEditor, { PluginType } from '@/componentsV2/TextEditor';
 
-import Utterance from './Utterance';
+const pluginsTypes = [PluginType.VARIABLES];
 
-// eslint-disable-next-line react/display-name
-const UtteranceInput = React.forwardRef(({ icon, iconProps, wrapperProps, leftAction, rightAction, error, disabled, ...props }, ref) => {
-  return (
-    <Input
-      icon={icon}
-      iconProps={iconProps}
-      wrapperProps={wrapperProps}
-      leftAction={leftAction}
-      rightAction={rightAction}
-      error={error}
-      disabled={disabled}
-      ref={ref}
-    >
-      {({ ref }) => <Utterance ref={ref} {...props} disabled={disabled} />}
-    </Input>
+const Utterance = ({ space, slots, creatable, onAddSlot, characters, createInputPlaceholder = 'New Slot', onBlur, onEnterPress, ...props }, ref) => {
+  const pluginProps = React.useMemo(
+    () => ({
+      [PluginType.VARIABLES]: { space, variables: slots, creatable, characters, onAddVariable: onAddSlot, createInputPlaceholder },
+    }),
+    [space, slots, creatable, onAddSlot, characters, createInputPlaceholder]
   );
-});
 
-export default UtteranceInput;
+  const onBlurCallback = React.useCallback(({ text, pluginsData }) => onBlur?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }), [
+    onBlur,
+  ]);
+
+  const onEnterPressCallback = React.useCallback(
+    ({ text, pluginsData }) => onEnterPress?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+    [onEnterPress]
+  );
+
+  return (
+    <TextEditor
+      {...props}
+      ref={ref}
+      onBlur={onBlurCallback}
+      onEnterPress={onEnterPressCallback}
+      pluginsTypes={pluginsTypes}
+      pluginsProps={pluginProps}
+    />
+  );
+};
+
+export default React.forwardRef(Utterance);

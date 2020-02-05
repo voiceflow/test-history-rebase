@@ -104,7 +104,7 @@ export function Item(props) {
 }
 
 export default withDraggable({
-  name: _.constant('dashboard-item'),
+  name: 'dashboard-item',
   canDrag: (props) => !props.disableDragging,
   canDrop: _.constant(true),
   onDropKey: 'onDrop',

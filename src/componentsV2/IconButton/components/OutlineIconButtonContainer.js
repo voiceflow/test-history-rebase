@@ -1,3 +1,4 @@
+import { SvgIconContainer } from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 import IconButtonContainer from './IconButtonContainer';
@@ -7,6 +8,10 @@ const OutlineIconButtonContainer = styled(IconButtonContainer)`
   box-shadow: none !important;
   background: #fff;
   color: #8da2b5;
+
+  ${SvgIconContainer} {
+    opacity: 1;
+  }
 
   &:hover {
     box-shadow: none;

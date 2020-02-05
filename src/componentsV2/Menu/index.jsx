@@ -5,17 +5,31 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import { useKeygen } from '@/components/KeyedComponent';
 import { FlexLabel } from '@/componentsV2/Flex';
+import { useCombinedRefs } from '@/hooks/ref';
 import { FadeDownContainer } from '@/styles/animations';
-import { getScrollbarWidth, stopPropagation } from '@/utils/dom';
+import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils/dom';
 import { stringify } from '@/utils/functional';
 
-import { ButtonContainer, Container, Item } from './components';
+import { ButtonContainer, Container, Item, itemStyles } from './components';
 
-export { Item as MenuItem, Container as MenuContainer };
+export { Item as MenuItem, Container as MenuContainer, itemStyles as menuItemStyles };
 
-function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, buttonClick, buttonLabel } = {}, children, scrollbarsRef }) {
+function Menu(
+  {
+    options,
+    disabled,
+    onSelect,
+    children,
+    fullWidth,
+    searchable,
+    scrollbarsRef,
+    multiSelectProps: { multiselect, buttonClick, buttonLabel } = {},
+    disableAnimation = false,
+  },
+  ref
+) {
   const genKey = useKeygen();
-  const menuRef = React.useRef();
+  const menuRef = useCombinedRefs(ref);
   const [visibleOptions, setVisibleOptions] = React.useState(options);
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
 
@@ -36,8 +50,8 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
   }, [options]);
 
   return (
-    <Container ref={menuRef} nativeScrollbar={scrollBarWidth === 0}>
-      <FadeDownContainer>
+    <Container ref={menuRef} fullWidth={fullWidth} disableAnimation={disableAnimation} nativeScrollbar={scrollBarWidth === 0}>
+      <FadeDownContainer length={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable}
         <Scrollbars ref={scrollbarsRef} className="scrollbars" autoHeight autoHide hideTracksWhenNotNeeded>
@@ -55,9 +69,13 @@ function Menu({ options, onSelect, searchable, multiSelectProps: { multiselect, 
             ))}
         </Scrollbars>
       </FadeDownContainer>
-      {multiselect && <ButtonContainer onClick={buttonClick}>{buttonLabel}</ButtonContainer>}
+      {multiselect && (
+        <ButtonContainer disabled={disabled} onClick={disabled ? stopImmediatePropagation() : buttonClick}>
+          {buttonLabel}
+        </ButtonContainer>
+      )}
     </Container>
   );
 }
 
-export default Menu;
+export default React.forwardRef(Menu);

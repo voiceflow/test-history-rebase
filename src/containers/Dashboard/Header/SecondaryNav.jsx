@@ -35,11 +35,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
       tabs.push({
         to: '/workspace/new',
         value: '/workspace/new',
-        label: (
-          <NewWorkspaceTab>
-            <SvgIcon icon="addBoard" color="inherit" /> New Workspace
-          </NewWorkspaceTab>
-        ),
+        label: <NewWorkspaceTab>New Workspace</NewWorkspaceTab>,
       });
     }
 

@@ -1,34 +1,21 @@
 import { text } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import Title from '.';
 
-storiesOf('Title', module).add(
-  'variants',
-  createTestableStory(() => {
-    const label = text('Label', 'Title');
+const getProps = () => ({
+  children: text('Label', 'Title'),
+});
 
-    return (
-      <>
-        <Variant label="heading">
-          <Title>{label}</Title>
-        </Variant>
+export default {
+  title: 'Title',
+  component: Title,
+};
 
-        <Variant label="subheading">
-          <Title variant="subheading">{label}</Title>
-        </Variant>
+export const heading = () => <Title {...getProps()} />;
 
-        <Variant label="subtitle">
-          <Title variant="subtitle">{label}</Title>
-        </Variant>
+export const subheading = () => <Title variant="subheading" {...getProps()} />;
 
-        <Variant label="label">
-          <Title variant="label">{label}</Title>
-        </Variant>
-      </>
-    );
-  })
-);
+export const subtitle = () => <Title variant="subtitle" {...getProps()} />;
+
+export const label = () => <Title variant="label" {...getProps()} />;

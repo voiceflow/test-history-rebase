@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { DisplayModalProvider } from '@/containers/CanvasV2/contexts/DisplayModalContext';
 import { RegisterEngine } from '@/contexts/EventualEngineContext';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -23,11 +22,9 @@ export * from './GroupSelectionContext';
 export * from './SpotlightContext';
 export * from './ShortcutModalContext';
 export * from './HelpModalContext';
-export * from './SettingsModalContext';
 export * from './NodeIDContext';
 export * from './PortIDContext';
 export * from './LinkIDContext';
-export * from './DisplayModalContext';
 
 export const LinkLayerContext = React.createContext(null);
 export const { Provider: LinkLayerProvider, Consumer: LinkLayerConsumer } = LinkLayerContext;
@@ -36,6 +33,11 @@ export const PlatformContext = React.createContext(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;
 
 export const withPlatform = withContext(PlatformContext, 'platform');
+
+export const ManagerContext = React.createContext(null);
+export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
+
+export const withManager = withContext(ManagerContext, 'getManager');
 
 export const CanvasProviders = connect({
   platform: activePlatformSelector,
@@ -48,9 +50,7 @@ export const CanvasProviders = connect({
           <LinkCreationProvider>
             <ClipboardProvider>
               <SpotlightProvider>
-                <DisplayModalProvider>
-                  <HelpModalProvider>{children}</HelpModalProvider>
-                </DisplayModalProvider>
+                <HelpModalProvider>{children}</HelpModalProvider>
               </SpotlightProvider>
             </ClipboardProvider>
           </LinkCreationProvider>

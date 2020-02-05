@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import UserMenu from '.';
+
+<Meta title="Header/User Menu" component={UserMenu} />
+
+# User Menu
+
+The menu for users logged into the application.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

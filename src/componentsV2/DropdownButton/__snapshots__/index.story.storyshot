@@ -1,792 +1,271 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Dropdown Button variants: primary 1`] = `
-<Dropdown
-  onSelect={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "Option 1",
-        "value": Object {
-          "id": "opt1",
-        },
-      },
-      Object {
-        "label": "Option 2",
-        "value": Object {
-          "id": "opt2",
-        },
-      },
-      Object {
-        "label": "Option 3",
-        "value": Object {
-          "id": "opt3",
-        },
-      },
-      Object {
-        "label": "Option 4",
-        "value": Object {
-          "id": "opt4",
-        },
-      },
-    ]
-  }
-  placement="bottom-end"
->
-  <Manager>
-    <Reference
-      innerRef={[Function]}
-    >
-      <InnerReference
-        innerRef={[Function]}
-        setReferenceNode={[Function]}
-      >
-        <ForwardRef(DropdownButton)
-          disabled={false}
-          onToggle={[Function]}
-        >
-          <PrimaryDropdownButtonContainer
-            inline={true}
-          >
-            <StyledComponent
-              forwardedComponent={
-                Object {
-                  "$$typeof": Symbol(react.forward_ref),
-                  "attrs": Array [],
-                  "componentStyle": ComponentStyle {
-                    "componentId": "PrimaryDropdownButtonContainer-sc-1tpt2nt-0",
-                    "isStatic": false,
-                    "lastClassName": "cwhLRq",
-                    "rules": Array [
-                      "display:",
-                      [Function],
-                      ";align-items:center;",
-                      [Function],
-                      " ",
-                      [Function],
-                      " justify-content:center;",
-                      "& ",
-                      ".sc-jWBwVP",
-                      "{margin-right:2px;}& ",
-                      ".sc-jWBwVP",
-                      ":not(:first-of-type){border-top-left-radius:14px;border-bottom-left-radius:14px;margin-right:0;}& ",
-                      ".sc-jWBwVP",
-                      ":not(:last-of-type){border-top-right-radius:14px;border-bottom-right-radius:14px;}& ",
-                      ".sc-jWBwVP",
-                      ":last-of-type{margin-right:0;}",
-                    ],
-                  },
-                  "displayName": "PrimaryDropdownButtonContainer",
-                  "foldedComponentIds": Array [
-                    "Flex__FlexCenter-sc-127y44r-1",
-                  ],
-                  "render": [Function],
-                  "styledComponentId": "PrimaryDropdownButtonContainer-sc-1tpt2nt-0",
-                  "target": "div",
-                  "toString": [Function],
-                  "warnTooManyClasses": [Function],
-                  "withComponent": [Function],
-                }
-              }
-              forwardedRef={[Function]}
-              inline={true}
-            >
-              <div
-                className="Flex__FlexCenter-sc-127y44r-1 PrimaryDropdownButtonContainer-sc-1tpt2nt-0 cwhLRq"
-              >
-                <PrimaryButton
-                  canHover={false}
-                  disabled={false}
-                >
-                  <Styled(Styled(styled.button))
-                    canHover={false}
-                    disabled={false}
-                  >
-                    <StyledComponent
-                      canHover={false}
-                      disabled={false}
-                      forwardedComponent={
-                        Object {
-                          "$$typeof": Symbol(react.forward_ref),
-                          "_foldedDefaultProps": Object {
-                            "canHover": true,
-                          },
-                          "attrs": Array [],
-                          "componentStyle": ComponentStyle {
-                            "componentId": "sc-jWBwVP",
-                            "isStatic": false,
-                            "lastClassName": "iytfTA",
-                            "rules": Array [
-                              "
-  ",
-                              "
-  ",
-                              "display:",
-                              [Function],
-                              ";align-items:center;",
-                              [Function],
-                              " ",
-                              [Function],
-                              " justify-content:center;",
-                              "
-  ",
-                              [Function],
-                              "
-
-  padding: 0;
-  border: 0;
-  background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                              "
-",
-                              "
-  ",
-                              "
-  height: ",
-                              "42",
-                              "px;
-  border-radius: 90px;
-  font-size: 15px;
-  line-height: 18px;
-
-  width: ",
-                              [Function],
-                              ";
-",
-                              "
-",
-                              "
-  color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
-  font-weight: 600;
-  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
-  transition: all 0.15s ease-out;
-  background-size: 1px 52px;
-  /* ",
-                              [Function],
-                              " */
-
-  ",
-                              [Function],
-                              "
-
-  &:active {
-    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
-  }
-",
-                            ],
-                          },
-                          "displayName": "Styled(Styled(styled.button))",
-                          "foldedComponentIds": Array [
-                            "sc-bdVaJa",
-                            "sc-ifAKCX",
-                          ],
-                          "render": [Function],
-                          "styledComponentId": "sc-jWBwVP",
-                          "target": "button",
-                          "toString": [Function],
-                          "warnTooManyClasses": [Function],
-                          "withComponent": [Function],
-                        }
-                      }
-                      forwardedRef={null}
-                    >
-                      <button
-                        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP iytfTA"
-                        disabled={false}
-                      >
-                        <components__PrimaryButtonLabel>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "components__PrimaryButtonLabel-rbaz43-0",
-                                  "isStatic": true,
-                                  "lastClassName": "bPKTiG",
-                                  "rules": Array [
-                                    "padding:0 22px;",
-                                  ],
-                                },
-                                "displayName": "components__PrimaryButtonLabel",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
-                                "target": "span",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <span
-                              className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
-                            >
-                              Dropdown Button
-                            </span>
-                          </StyledComponent>
-                        </components__PrimaryButtonLabel>
-                      </button>
-                    </StyledComponent>
-                  </Styled(Styled(styled.button))>
-                </PrimaryButton>
-                <Styled(Styled(styled.button))
-                  canHover={false}
-                  disabled={false}
-                  onClick={[Function]}
-                >
-                  <StyledComponent
-                    canHover={false}
-                    disabled={false}
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "_foldedDefaultProps": Object {
-                          "canHover": true,
-                        },
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "sc-jWBwVP",
-                          "isStatic": false,
-                          "lastClassName": "iytfTA",
-                          "rules": Array [
-                            "
-  ",
-                            "
-  ",
-                            "display:",
-                            [Function],
-                            ";align-items:center;",
-                            [Function],
-                            " ",
-                            [Function],
-                            " justify-content:center;",
-                            "
-  ",
-                            [Function],
-                            "
-
-  padding: 0;
-  border: 0;
-  background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                            "
-",
-                            "
-  ",
-                            "
-  height: ",
-                            "42",
-                            "px;
-  border-radius: 90px;
-  font-size: 15px;
-  line-height: 18px;
-
-  width: ",
-                            [Function],
-                            ";
-",
-                            "
-",
-                            "
-  color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
-  font-weight: 600;
-  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
-  transition: all 0.15s ease-out;
-  background-size: 1px 52px;
-  /* ",
-                            [Function],
-                            " */
-
-  ",
-                            [Function],
-                            "
-
-  &:active {
-    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
-  }
-",
-                          ],
-                        },
-                        "displayName": "Styled(Styled(styled.button))",
-                        "foldedComponentIds": Array [
-                          "sc-bdVaJa",
-                          "sc-ifAKCX",
-                        ],
-                        "render": [Function],
-                        "styledComponentId": "sc-jWBwVP",
-                        "target": "button",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={null}
-                    onClick={[Function]}
-                  >
-                    <button
-                      className="sc-bdVaJa sc-ifAKCX sc-jWBwVP iytfTA"
-                      disabled={false}
-                      onClick={[Function]}
-                    >
-                      <PrimaryDropdownButtonToggle>
-                        <StyledComponent
-                          forwardedComponent={
-                            Object {
-                              "$$typeof": Symbol(react.forward_ref),
-                              "attrs": Array [],
-                              "componentStyle": ComponentStyle {
-                                "componentId": "PrimaryDropdownButtonToggle-sc-15cmejx-0",
-                                "isStatic": false,
-                                "lastClassName": "gwCqqn",
-                                "rules": Array [
-                                  "display:",
-                                  [Function],
-                                  ";align-items:center;",
-                                  [Function],
-                                  " ",
-                                  [Function],
-                                  "padding:14px 18px 18px 14px;& ",
-                                  ".sc-bxivhb",
-                                  "{color:#fff;}",
-                                ],
-                              },
-                              "displayName": "PrimaryDropdownButtonToggle",
-                              "foldedComponentIds": Array [
-                                "Flex-sc-127y44r-0",
-                              ],
-                              "render": [Function],
-                              "styledComponentId": "PrimaryDropdownButtonToggle-sc-15cmejx-0",
-                              "target": "div",
-                              "toString": [Function],
-                              "warnTooManyClasses": [Function],
-                              "withComponent": [Function],
-                            }
-                          }
-                          forwardedRef={null}
-                        >
-                          <div
-                            className="Flex-sc-127y44r-0 PrimaryDropdownButtonToggle-sc-15cmejx-0 gwCqqn"
-                          >
-                            <ForwardRef
-                              icon="caretDown"
-                              width={10}
-                            >
-                              <styled.span
-                                color="currentColor"
-                                size={16}
-                                width={10}
-                              >
-                                <StyledComponent
-                                  color="currentColor"
-                                  forwardedComponent={
-                                    Object {
-                                      "$$typeof": Symbol(react.forward_ref),
-                                      "attrs": Array [],
-                                      "componentStyle": ComponentStyle {
-                                        "componentId": "sc-bxivhb",
-                                        "isStatic": false,
-                                        "lastClassName": "jFmiFq",
-                                        "rules": Array [
-                                          "
-  ",
-                                          [Function],
-                                          "
-
-  color: ",
-                                          [Function],
-                                          ";
-  width: ",
-                                          [Function],
-                                          "px;
-  height: ",
-                                          [Function],
-                                          "px;
+exports[`Storyshots Dropdown Button Primary 1`] = `
+.c6 {
   box-sizing: content-box;
-  
-  ",
-                                          [Function],
-                                          "
+  width: 10px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
 
-  }
+.c6:hover {
+  color: currentColor;
+  opacity: 1;
+}
 
-  &:hover,
-  &:active {
-    color: ",
-                                          [Function],
-                                          ";
+.c6:active {
+  color: currentColor;
+  opacity: 1;
+}
 
-  }
-",
-                                        ],
-                                      },
-                                      "displayName": "styled.span",
-                                      "foldedComponentIds": Array [],
-                                      "render": [Function],
-                                      "styledComponentId": "sc-bxivhb",
-                                      "target": "span",
-                                      "toString": [Function],
-                                      "warnTooManyClasses": [Function],
-                                      "withComponent": [Function],
-                                    }
-                                  }
-                                  forwardedRef={null}
-                                  size={16}
-                                  width={10}
-                                >
-                                  <span
-                                    className="sc-bxivhb jFmiFq"
-                                    color="currentColor"
-                                    size={16}
-                                    width={10}
-                                  >
-                                    <test-file-stub />
-                                  </span>
-                                </StyledComponent>
-                              </styled.span>
-                            </ForwardRef>
-                          </div>
-                        </StyledComponent>
-                      </PrimaryDropdownButtonToggle>
-                    </button>
-                  </StyledComponent>
-                </Styled(Styled(styled.button))>
-              </div>
-            </StyledComponent>
-          </PrimaryDropdownButtonContainer>
-        </ForwardRef(DropdownButton)>
-      </InnerReference>
-    </Reference>
-  </Manager>
-</Dropdown>
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  color: #fff;
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.10),0 4px 8px 0 rgba(17,49,96,0.16);
+  font-weight: 600;
+  background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+}
+
+.c2:focus,
+.c2:active {
+  outline: 0;
+}
+
+.c2:active {
+  box-shadow: 0 0 6px 0 rgba(17,49,96,0.1),0 6px 12px 0 rgba(17,49,96,0.2);
+}
+
+.c3 {
+  padding: 0 22px;
+}
+
+.c0 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c0 .c1 {
+  margin-right: 2px;
+}
+
+.c0 .c1:not(:first-of-type) {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  margin-right: 0;
+}
+
+.c0 .c1:not(:last-of-type) {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.c0 .c1:last-of-type {
+  margin-right: 0;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 14px 18px 18px 14px;
+}
+
+.c4 .c5 {
+  color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <button
+    className="c1 c2"
+    disabled={false}
+  >
+    <span
+      className="c3"
+    >
+      Dropdown Button
+    </span>
+  </button>
+  <button
+    className="c1 c2"
+    disabled={false}
+    onClick={[Function]}
+  >
+    <div
+      className="c4"
+    >
+      <span
+        className="c5 c6"
+        color="currentColor"
+        size={16}
+        width={10}
+      >
+        <svg
+          data-file-name="SvgCaretDown"
+        />
+      </span>
+    </div>
+  </button>
+</div>
 `;
 
-exports[`Storyshots Dropdown Button variants: secondary 1`] = `
-<Dropdown
-  onSelect={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "Option 1",
-        "value": Object {
-          "id": "opt1",
-        },
-      },
-      Object {
-        "label": "Option 2",
-        "value": Object {
-          "id": "opt2",
-        },
-      },
-      Object {
-        "label": "Option 3",
-        "value": Object {
-          "id": "opt3",
-        },
-      },
-      Object {
-        "label": "Option 4",
-        "value": Object {
-          "id": "opt4",
-        },
-      },
-    ]
-  }
-  placement="bottom-end"
->
-  <Manager>
-    <Reference
-      innerRef={[Function]}
-    >
-      <InnerReference
-        innerRef={[Function]}
-        setReferenceNode={[Function]}
-      >
-        <ForwardRef(DropdownButton)
-          disabled={false}
-          onToggle={[Function]}
-        >
-          <SecondaryDropdownButtonContainer
-            canHover={false}
-            disabled={false}
-            onClick={[Function]}
-          >
-            <StyledComponent
-              canHover={false}
-              disabled={false}
-              forwardedComponent={
-                Object {
-                  "$$typeof": Symbol(react.forward_ref),
-                  "attrs": Array [],
-                  "componentStyle": ComponentStyle {
-                    "componentId": "SecondaryDropdownButtonContainer-sc-1a7zbh-0",
-                    "isStatic": false,
-                    "lastClassName": "jDTxwt",
-                    "rules": Array [
-                      [Function],
-                    ],
-                  },
-                  "displayName": "SecondaryDropdownButtonContainer",
-                  "foldedComponentIds": Array [],
-                  "render": [Function],
-                  "styledComponentId": "SecondaryDropdownButtonContainer-sc-1a7zbh-0",
-                  "target": Object {
-                    "$$typeof": Symbol(react.forward_ref),
-                    "render": [Function],
-                  },
-                  "toString": [Function],
-                  "warnTooManyClasses": [Function],
-                  "withComponent": [Function],
-                }
-              }
-              forwardedRef={[Function]}
-              onClick={[Function]}
-            >
-              <ForwardRef(SecondaryButton)
-                canHover={false}
-                className="SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt"
-                disabled={false}
-                onClick={[Function]}
-              >
-                <SecondaryButtonContainer
-                  canHover={false}
-                  className="SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt"
-                  disabled={false}
-                  onClick={[Function]}
-                >
-                  <StyledComponent
-                    canHover={false}
-                    className="SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt"
-                    disabled={false}
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "SecondaryButtonContainer-djlxo5-0",
-                          "isStatic": false,
-                          "lastClassName": "hRdNaq",
-                          "rules": Array [
-                            "
-  ",
-                            "
-  ",
-                            "display:",
-                            [Function],
-                            ";align-items:center;",
-                            [Function],
-                            " ",
-                            [Function],
-                            " justify-content:center;",
-                            "
-  ",
-                            [Function],
-                            "
+exports[`Storyshots Dropdown Button Secondary 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 10px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                            "
-",
-                            "
-  ",
-                            "
-  height: ",
-                            "42",
-                            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
 
-  width: ",
-                            [Function],
-                            ";
-",
-                            "
-",
-                            "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
-                            [Function],
-                          ],
-                        },
-                        "displayName": "SecondaryButtonContainer",
-                        "foldedComponentIds": Array [
-                          "sc-bdVaJa",
-                          "sc-ifAKCX",
-                        ],
-                        "render": [Function],
-                        "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
-                        "target": "button",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={[Function]}
-                    onClick={[Function]}
-                  >
-                    <button
-                      className="sc-bdVaJa sc-ifAKCX SecondaryDropdownButtonContainer-sc-1a7zbh-0 jDTxwt SecondaryButtonContainer-djlxo5-0 hRdNaq"
-                      disabled={false}
-                      onClick={[Function]}
-                    >
-                      Dropdown Button
-                      <SecondaryDropdownButtonToggle>
-                        <StyledComponent
-                          forwardedComponent={
-                            Object {
-                              "$$typeof": Symbol(react.forward_ref),
-                              "attrs": Array [],
-                              "componentStyle": ComponentStyle {
-                                "componentId": "SecondaryDropdownButtonToggle-sc-1ns1nqi-0",
-                                "isStatic": false,
-                                "lastClassName": "fHpSRm",
-                                "rules": Array [
-                                  "display:",
-                                  [Function],
-                                  ";align-items:center;",
-                                  [Function],
-                                  " ",
-                                  [Function],
-                                  "margin-left:12px;margin-right:-2px;& ",
-                                  ".sc-bxivhb",
-                                  "{color:#6e849a;}",
-                                ],
-                              },
-                              "displayName": "SecondaryDropdownButtonToggle",
-                              "foldedComponentIds": Array [
-                                "Flex-sc-127y44r-0",
-                              ],
-                              "render": [Function],
-                              "styledComponentId": "SecondaryDropdownButtonToggle-sc-1ns1nqi-0",
-                              "target": "div",
-                              "toString": [Function],
-                              "warnTooManyClasses": [Function],
-                              "withComponent": [Function],
-                            }
-                          }
-                          forwardedRef={null}
-                        >
-                          <div
-                            className="Flex-sc-127y44r-0 SecondaryDropdownButtonToggle-sc-1ns1nqi-0 fHpSRm"
-                          >
-                            <ForwardRef
-                              icon="caretDown"
-                              width={10}
-                            >
-                              <styled.span
-                                color="currentColor"
-                                size={16}
-                                width={10}
-                              >
-                                <StyledComponent
-                                  color="currentColor"
-                                  forwardedComponent={
-                                    Object {
-                                      "$$typeof": Symbol(react.forward_ref),
-                                      "attrs": Array [],
-                                      "componentStyle": ComponentStyle {
-                                        "componentId": "sc-bxivhb",
-                                        "isStatic": false,
-                                        "lastClassName": "jFmiFq",
-                                        "rules": Array [
-                                          "
-  ",
-                                          [Function],
-                                          "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
-  color: ",
-                                          [Function],
-                                          ";
-  width: ",
-                                          [Function],
-                                          "px;
-  height: ",
-                                          [Function],
-                                          "px;
-  box-sizing: content-box;
-  
-  ",
-                                          [Function],
-                                          "
+.c0:hover,
+.c0:active {
+  background-color: #e0ebee;
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c4 .c2 {
+  color: #fff;
+}
 
-  }
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 12px;
+  margin-right: -2px;
+}
 
-  &:hover,
-  &:active {
-    color: ",
-                                          [Function],
-                                          ";
+.c1 .c2 {
+  color: #6e849a;
+}
 
-  }
-",
-                                        ],
-                                      },
-                                      "displayName": "styled.span",
-                                      "foldedComponentIds": Array [],
-                                      "render": [Function],
-                                      "styledComponentId": "sc-bxivhb",
-                                      "target": "span",
-                                      "toString": [Function],
-                                      "warnTooManyClasses": [Function],
-                                      "withComponent": [Function],
-                                    }
-                                  }
-                                  forwardedRef={null}
-                                  size={16}
-                                  width={10}
-                                >
-                                  <span
-                                    className="sc-bxivhb jFmiFq"
-                                    color="currentColor"
-                                    size={16}
-                                    width={10}
-                                  >
-                                    <test-file-stub />
-                                  </span>
-                                </StyledComponent>
-                              </styled.span>
-                            </ForwardRef>
-                          </div>
-                        </StyledComponent>
-                      </SecondaryDropdownButtonToggle>
-                    </button>
-                  </StyledComponent>
-                </SecondaryButtonContainer>
-              </ForwardRef(SecondaryButton)>
-            </StyledComponent>
-          </SecondaryDropdownButtonContainer>
-        </ForwardRef(DropdownButton)>
-      </InnerReference>
-    </Reference>
-  </Manager>
-</Dropdown>
+<button
+  className="c0 "
+  disabled={false}
+  onClick={[Function]}
+>
+  Dropdown Button
+  <div
+    className="c1"
+  >
+    <span
+      className="c2 c3"
+      color="currentColor"
+      size={16}
+      width={10}
+    >
+      <svg
+        data-file-name="SvgCaretDown"
+      />
+    </span>
+  </div>
+</button>
 `;

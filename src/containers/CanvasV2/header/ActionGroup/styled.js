@@ -10,7 +10,7 @@ export const SubTitleGroup = styled.div`
   justify-content: center;
   height: 100%;
   padding: 0 24px;
-  border-left: 1px solid #e2e9ec;
+  border-left: 1px solid #eaeff4;
 `;
 
 export const UploadButtonWrapper = styled.div`

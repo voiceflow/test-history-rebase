@@ -11,7 +11,7 @@
 }
 
 .nav-child-item {
-  padding-left: 22px;
+  padding-left: 20px;
 }
 
 #secondary-nav .super-center > * {
@@ -106,7 +106,7 @@
   margin-left: -32px;
   padding-right: 22px;
   padding-left: 32px;
-  border-bottom: 1px solid #eaeff4;
+  border-bottom: 1px solid #dfe3ed;
 }
 
 .add-skill {
@@ -362,7 +362,7 @@
   padding: 15px 23px;
   background-color: #fff;
   border: 1px solid #eaeff4;
-  border-radius: 5px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
 }
@@ -1253,7 +1253,7 @@
 
 .upgrade-plan:first-child {
   margin-top: 24px;
-  border-top: 1px solid #eaeff4;
+  border-top: 1px solid #dfe3ed;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }

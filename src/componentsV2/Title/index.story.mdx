@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Title from '.';
+
+<Meta title="Title" component={Title} />
+
+# Title
+
+A component for display of title and label text.
+
+<Preview>
+  <Story name="heading">{stories.heading()}</Story>
+  <Story name="subheading">{stories.subheading()}</Story>
+  <Story name="subtitle">{stories.subtitle()}</Story>
+  <Story name="label">{stories.label()}</Story>
+</Preview>

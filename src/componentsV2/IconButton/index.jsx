@@ -20,7 +20,7 @@ const IconButton = React.forwardRef(({ icon, size, iconProps, ...props }, ref) =
 
   return (
     <IconButtonContainer ref={ref} {...props}>
-      <SvgIcon icon={icon} color="currentColor" size={size} {...iconProps} />
+      <SvgIcon icon={icon} size={size} {...iconProps} />
     </IconButtonContainer>
   );
 });

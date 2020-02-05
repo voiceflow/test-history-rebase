@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 export const inputControlStyles = css`
-  min-height: 42px;
+  min-height: ${({ theme }) => theme.components.input.height}px;
   padding: 8px 16px;
   display: block;
   width: 100%;

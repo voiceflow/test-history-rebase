@@ -37,7 +37,7 @@ export const BLOCK_MENU_CATEGORIES = {
 export const BLOCK_MENU = [
   {
     type: BlockCategoryType.BASIC,
-    items: [BlockType.SPEAK, BlockType.CHOICE],
+    items: [BlockType.SPEAK, BlockType.CHOICE, BlockType.INTENT],
   },
   {
     type: BlockCategoryType.LOGIC,
@@ -45,7 +45,7 @@ export const BLOCK_MENU = [
   },
   {
     type: BlockCategoryType.ADVANCED,
-    items: [BlockType.INTERACTION, BlockType.INTENT, BlockType.STREAM, BlockType.INTEGRATION, BlockType.FLOW, BlockType.CODE, BlockType.EXIT],
+    items: [BlockType.STREAM, BlockType.INTEGRATION, BlockType.FLOW, BlockType.CODE, BlockType.EXIT],
   },
   {
     type: BlockCategoryType.VISUAL,
@@ -53,7 +53,7 @@ export const BLOCK_MENU = [
   },
   {
     type: BlockCategoryType.USER,
-    items: [BlockType.PERMISSION, BlockType.USER_INFO, BlockType.PAYMENT, BlockType.CANCEL_PAYMENT, BlockType.REMINDER],
+    items: [BlockType.PERMISSION, BlockType.ACCOUNT_LINKING, BlockType.USER_INFO, BlockType.PAYMENT, BlockType.CANCEL_PAYMENT, BlockType.REMINDER],
   },
 ];
 
@@ -71,12 +71,16 @@ export const BLOCK_CATEGORIES = BLOCK_MENU.reduce(
   }
 );
 
+const DEFAULT_BLOCK = {
+  color: 'lightgrey',
+};
+
 export function getBlockCategory(type) {
   if (type === BlockType.DEPRECATED) {
-    return {
-      color: 'lightgrey',
-    };
+    return DEFAULT_BLOCK;
   }
   const category = BLOCK_CATEGORIES[type];
-  return BLOCK_MENU_CATEGORIES[category];
+  return BLOCK_MENU_CATEGORIES[category] || DEFAULT_BLOCK;
 }
+
+export const MAX_ITEMS_PER_EDITOR = 22;

@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import { ToastContainer } from '.';
+
+<Meta title="Toast" component={ToastContainer} />
+
+# Toast
+
+A component for showing short-lived messages on screen.
+
+<Preview>
+  <Story name="variants" labeled={false}>
+    {stories.variants()}
+  </Story>
+</Preview>

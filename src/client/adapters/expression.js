@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { ExpressionType } from '@/constants';
 
 import { draftJSContentAdapter } from './draft';
@@ -10,6 +12,7 @@ const expressionAdapter = createAdapter(
     }
 
     return {
+      id: cuid.slug(),
       type,
       value: convertExpressionValueFromDB(type, value),
       depth,

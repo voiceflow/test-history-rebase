@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import { FlexCenter } from '@/componentsV2/Flex';
-import { REPROMPT_TYPE } from '@/constants';
+import { RepromptType } from '@/constants';
 import { HelpModalConsumer } from '@/containers/CanvasV2/contexts/HelpModalContext';
 
 import { Body, Container, Content, Header, RemovableSection, Section, SettingsMenu, Title } from './components';
@@ -10,7 +10,7 @@ import { Body, Container, Content, Header, RemovableSection, Section, SettingsMe
 export { Section, Content, RemovableSection, Title };
 
 function BlockEditor({ data, onChange, children, onExpand, onRemove, onDuplicate, expanded, hideHeader, renameActiveRevision }) {
-  const addEmptyReprompt = React.useCallback(() => onChange({ reprompt: { type: REPROMPT_TYPE.TEXT } }), [onChange]);
+  const addEmptyReprompt = React.useCallback(() => onChange({ reprompt: { type: RepromptType.TEXT } }), [onChange]);
 
   return (
     <Container>

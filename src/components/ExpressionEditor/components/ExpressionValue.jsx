@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
-import { Input } from 'reactstrap';
 
+import Input from '@/componentsV2/Input';
 import { ExpressionType } from '@/constants';
 
 import ExpressionOperator from './ExpressionOperator';
@@ -35,7 +35,7 @@ function ExpressionValue({ value, depth, onChange, isPreview, onUpdateType }) {
         </OperatorDropdown>
       </div>
 
-      <Input placeholder="value" value={value} onChange={onChangeInput} />
+      <Input placeholder="Value" value={value} onChange={onChangeInput} />
     </FormContainer>
   );
 }

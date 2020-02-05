@@ -1,9 +1,11 @@
 import { BlockType } from '@/constants';
 
+import AccountLinkingManager from './AccountLinking';
 import CancelPaymentManager from './CancelPayment';
 import CaptureManager from './Capture';
 import CardManager from './Card';
 import ChoiceManager from './Choice';
+import ChoiceOldManager from './ChoiceOld';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
 import CommandManager from './Command';
@@ -15,7 +17,6 @@ import FlowManager from './Flow';
 import IfManager from './If';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
-import InteractionManager from './Interaction';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
 import RandomManager from './Random';
@@ -37,7 +38,6 @@ const MANAGERS = [
   IfManager,
   CaptureManager,
   RandomManager,
-  InteractionManager,
   IntentManager,
   StreamManager,
   IntegrationManager,
@@ -47,11 +47,13 @@ const MANAGERS = [
   CardManager,
   DisplayManager,
   PermissionManager,
+  AccountLinkingManager,
   UserInfoManager,
   PaymentManager,
   CancelPaymentManager,
   ReminderManager,
   DeprecatedManager,
+  ChoiceOldManager,
 ];
 
 export default MANAGERS;

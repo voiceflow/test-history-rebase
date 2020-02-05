@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Card/Voice Normal 1`] = `
+<div
+  className="product-card"
+>
+  <div
+    className="card"
+    onClick={[Function]}
+  >
+    <div
+      className="product-image"
+      style={Object {}}
+    >
+      <div
+        className="overlay"
+      >
+        <div
+          className="elispie"
+          onMouseLeave={[Function]}
+          onMouseOver={[Function]}
+        >
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <div
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="elispie-button"
+              onClick={[Function]}
+            >
+              <i
+                className="far fa-ellipsis-h"
+              />
+            </div>
+            <div
+              aria-hidden={true}
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabIndex="-1"
+            >
+              <button
+                className="dropdown-item"
+                onClick={[Function]}
+                tabIndex="0"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="edit-button"
+          style={
+            Object {
+              "color": "#fff",
+            }
+          }
+        />
+      </div>
+    </div>
+    <div
+      className="card-body"
+    >
+      <div
+        className="product-body"
+      >
+        <p
+          className="product-title mb-1"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -9,7 +9,7 @@ const BlockEditorContainer = styled.div`
   height: 100%;
 
   & ${BlockEditorSection}, & ${BlockEditorHeader} {
-    border-bottom: 1px solid #eaeff4;
+    border-bottom: 1px solid #dfe3ed;
   }
 
   & ${BlockEditorSection} {

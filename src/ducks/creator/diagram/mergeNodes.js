@@ -30,7 +30,7 @@ const mergeNodesReducer = (
   });
   const mergedData = {
     nodeID: mergedNodeID,
-    name: 'New Block',
+    name: 'Block',
     type: BlockType.COMBINED,
   };
 

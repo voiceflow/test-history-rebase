@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ExpressionEditor from '.';
+
+<Meta title="Expression Editor" component={ExpressionEditor} />
+
+# Expression Editor
+
+A component for representing a complex expression.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

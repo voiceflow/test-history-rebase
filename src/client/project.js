@@ -27,6 +27,10 @@ const projectClient = {
   updateVendorId: (projectID, vendorId) => fetch.post(`${PROJECT_PATH}/${projectID}/vendor_id`, { vendor_id: vendorId }),
 
   getImportToken: (projectID) => fetch(`exportProject/${projectID}`),
+
+  getLiveVersion: (projectId) => fetch(`${PROJECT_PATH}/${projectId}/live_version`),
+
+  getVersions: (projectId) => fetch(`${PROJECT_PATH}/${projectId}/versions`),
 };
 
 export default projectClient;

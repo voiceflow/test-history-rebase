@@ -1,4 +1,4 @@
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType, DisplayType, PlatformType } from '@/constants';
 
 import DisplayEditor from './DisplayEditor';
 
@@ -23,10 +23,14 @@ const DisplayManager = {
     data: {
       name: 'Display',
       type: 'display',
+      displayType: DisplayType.SPLASH,
       displayID: null,
       datasource: '',
       aplCommands: '',
       updateOnChange: false,
+      backgroundImage: null,
+      splashHeader: '',
+      jsonFile: null,
     },
   }),
 };

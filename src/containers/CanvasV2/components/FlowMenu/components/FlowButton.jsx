@@ -3,6 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
+import SvgIcon from '@/components/SvgIcon';
 import { Members } from '@/components/User';
 import Dropdown from '@/componentsV2/Dropdown';
 import Input from '@/componentsV2/Input';
@@ -83,7 +84,7 @@ function FlowButton({ id, name, isLimit, activeDiagram, goToDiagram, depth = 0, 
               >
                 {(ref, onToggle, isOpen) => (
                   <DiagramEdit tag="button" onClick={stopPropagation(onToggle)} ref={ref} isOpen={isOpen}>
-                    <i className="fas fa-cog" />
+                    <SvgIcon size={14} icon="cog" />
                   </DiagramEdit>
                 )}
               </Dropdown>
@@ -121,8 +122,6 @@ const mergeProps = ({ viewers: getViewers }, { copyDiagram, deleteDiagram, renam
       warning: true,
       text: (
         <Alert color="danger" className="mb-0">
-          <i className="fas fa-exclamation-triangle fa-2x" />
-          <br />
           Deleting this flow permanently deletes everything inside and can not be recovered
           <br />
           <br />

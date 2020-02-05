@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Portal from '.';
+
+<Meta title="Portal" component={Portal} />
+
+# Portal
+
+A portal component to render things at the top level of the DOM.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="custom portal">{stories.customPortal()}</Story>
+</Preview>

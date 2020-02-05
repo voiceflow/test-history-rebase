@@ -6,20 +6,18 @@ const commandBlockAdapter = platformDependentAdapter(
   createBlockAdapter(
     ({ intent, mappings, resume, diagram_id }) => ({
       intent: intent ? intent.value : null,
-      mappings: slotMappingAdapter.fromDB(mappings),
       resume,
+      inputs: [],
+      outputs: [],
+      mappings: slotMappingAdapter.fromDB(mappings),
       diagramID: diagram_id,
     }),
     ({ intent, mappings, resume, diagramID }) => ({
-      intent: intent
-        ? {
-            key: intent,
-            value: intent,
-            built_in: isBuiltInIntent(intent),
-          }
-        : null,
-      mappings: slotMappingAdapter.toDB(mappings),
+      intent: intent ? { key: intent, value: intent, built_in: isBuiltInIntent(intent) } : null,
       resume,
+      inputs: [],
+      outputs: [],
+      mappings: slotMappingAdapter.toDB(mappings),
       diagram_id: diagramID,
     })
   )

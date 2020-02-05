@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 
-const rootNode = document.querySelector('#root') || document.body; // for tests
+export const rootNode = document.querySelector('#root') || document.body; // for tests
 
 function Portal({ children, portalNode = rootNode }) {
   return createPortal(children, portalNode);

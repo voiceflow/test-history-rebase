@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import React from 'react';
 
-import VariableInput from '@/components/VariableInput';
+import VariablesInput from '@/componentsV2/VariablesInput';
 
 import NextStepButton from '../../../components/NextStepButton';
 import Label from './components/Label';
@@ -20,14 +20,9 @@ class CreateUpdateDataSection extends React.PureComponent {
               <RowNumberContainer>
                 <Label>Row Number</Label>
                 <ValueContainer>
-                  <VariableInput
-                    className="form-control"
+                  <VariablesInput
                     value={this.props.data.row_number}
-                    onChange={(val) => {
-                      this.props.onChange({
-                        row_number: val,
-                      });
-                    }}
+                    onBlur={({ text }) => this.props.onChange({ row_number: text })}
                     placeholder="Row Number to Update"
                   />
                 </ValueContainer>
@@ -38,16 +33,11 @@ class CreateUpdateDataSection extends React.PureComponent {
                 <LineItemContainer key={i}>
                   <Label>{header.label}</Label>
                   <ValueContainer>
-                    <VariableInput
+                    <VariablesInput
                       value={this.props.data.row_values[i]}
-                      className="form-control"
-                      onChange={(val) => {
+                      onBlur={({ text }) => {
                         this.props.onChange({
-                          row_values: update(this.props.data.row_values, {
-                            [i]: {
-                              $set: val,
-                            },
-                          }),
+                          row_values: update(this.props.data.row_values, { [i]: { $set: text } }),
                         });
                       }}
                       placeholder="Column Value to Create"

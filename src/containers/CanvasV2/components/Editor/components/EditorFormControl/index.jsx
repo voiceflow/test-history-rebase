@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Content, Label } from './components';
 
-const EditorFormControl = ({ label, children }) => (
+const EditorFormControl = ({ label, children, contentBottomUnits }) => (
   <>
     {label && <Label>{label}</Label>}
-    <Content>{children}</Content>
+    {children && <Content contentBottomUnits={contentBottomUnits}>{children}</Content>}
   </>
 );
 

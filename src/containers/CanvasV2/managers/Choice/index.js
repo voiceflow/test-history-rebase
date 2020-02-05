@@ -1,16 +1,30 @@
-import { BlockType } from '@/constants';
-import ProjectDiagramIcon from '@/svgs/solid/project-diagram.svg';
+import cuid from 'cuid';
 
+import IntentSlotForm from '@/components/IntentSlotForm';
+import { BlockType } from '@/constants';
+import { NoReplyResponseForm } from '@/containers/CanvasV2/components/NoReplyResponse';
+import UserAltIcon from '@/svgs/solid/user-alt.svg';
+
+import ChoiceBlock from './ChoiceBlock';
 import ChoiceEditor from './ChoiceEditor';
+
+const EDITORS_BY_PATH = {
+  slot: IntentSlotForm,
+  noReplyResponse: NoReplyResponseForm,
+};
 
 const ChoiceManager = {
   type: BlockType.CHOICE,
+  icon: UserAltIcon,
+  block: ChoiceBlock,
+
   editor: ChoiceEditor,
-  icon: ProjectDiagramIcon,
+  editorsByPath: EDITORS_BY_PATH,
 
   label: 'Choice',
-  tip: 'Listen for the user to make a choice from a list of options you set',
+  tip: 'Select choices and capture slot values from user input',
 
+  platformDependent: true,
   reprompt: true,
   chips: true,
   mergeTerminator: true,
@@ -24,12 +38,8 @@ const ChoiceManager = {
     },
     data: {
       name: 'Choice',
-      choices: [
-        {
-          synonyms: [],
-          open: true,
-        },
-      ],
+      alexa: [{ id: cuid.slug() }],
+      google: [{ id: cuid.slug() }],
     },
   }),
 };

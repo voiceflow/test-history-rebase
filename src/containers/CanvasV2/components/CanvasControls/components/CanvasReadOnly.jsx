@@ -4,7 +4,7 @@ import Flex from '@/componentsV2/Flex';
 import { styled } from '@/hocs';
 
 const CanvasReadOnlyContainer = styled(Flex)`
-  position: relative;
+  position: absolute;
   float: left;
   top: 15px;
   left: 30px;

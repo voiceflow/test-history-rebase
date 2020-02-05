@@ -1,41 +1,92 @@
-import cn from 'classnames';
 import React from 'react';
 
 import SlotSelect from '@/components/SlotSelect';
+import Input from '@/componentsV2/Input';
+import ListManagerV2 from '@/componentsV2/ListManagerV2';
+import OverflowMenu from '@/componentsV2/OverflowMenu';
 import VariableSelect from '@/componentsV2/VariableSelect';
-import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
-import SlotSynonymManager from '@/containers/SlotManager/components/SlotSynonymManager';
-import { activePlatformSelector, isLiveSelector } from '@/ducks/skill';
-import { connect } from '@/hocs';
+import { CUSTOM_SLOT_TYPE } from '@/constants';
+import { Content, Controls, FormControl, Section } from '@/containers/CanvasV2/components/Editor';
+import NoReplyResponse, { repromptFactory } from '@/containers/CanvasV2/components/NoReplyResponse';
 
-function CaptureEditor({ data, onChange, platform, isLive }) {
-  const onSelectVariable = React.useCallback((variable) => onChange({ variable }), [onChange]);
+import HelpTooltip from './components/HelpTooltip';
+
+const DOCUMENTATION_LINK = 'https://docs.voiceflow.com/voiceflow-documentation/untitled/capture-block';
+
+function CaptureEdtitor({ data, onChange, pushToPath }) {
   const updateSlot = React.useCallback((slot) => onChange({ slot }), [onChange]);
-  const updateExamples = React.useCallback((examples) => onChange({ examples }), [onChange]);
+  const onSelectVariable = React.useCallback((variable) => onChange({ variable }), [onChange]);
+
+  const hasReprompt = !!data.reprompt;
+  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
 
   return (
-    <Content>
-      {platform === PlatformType.ALEXA && (
-        <Section className={cn({ 'disabled-overlay': isLive })}>
-          <label>
-            Input Type <small className="text-dull ml-1">required</small>
-          </label>
-          <SlotSelect value={data.slot} onChange={updateSlot} />
-          {data.slot === CUSTOM_SLOT_TYPE && <SlotSynonymManager items={data.examples} onChange={updateExamples} />}
-        </Section>
+    <Content
+      footer={() => (
+        <Controls
+          menu={
+            <OverflowMenu
+              placement="top-end"
+              options={[
+                {
+                  label: hasReprompt ? 'Remove No Reply Response' : 'Add  No Reply Response',
+                  onClick: toggleReprompt,
+                },
+              ]}
+            />
+          }
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpMessage: (
+              <>
+                Check out further documentation on the capture block{' '}
+                <a href={DOCUMENTATION_LINK} rel="noopener noreferrer" target="_blank">
+                  here
+                </a>
+                .
+              </>
+            ),
+          }}
+        />
       )}
+    >
       <Section>
-        <label>Capture Input to</label>
-        <VariableSelect value={data.variable} onChange={onSelectVariable} />
+        <FormControl label="Input Type">
+          <SlotSelect value={data.slot} onChange={updateSlot} />
+        </FormControl>
+        {data.slot === CUSTOM_SLOT_TYPE && (
+          <FormControl>
+            <ListManagerV2
+              items={data.examples}
+              addToStart
+              onUpdate={(examples) => onChange({ examples })}
+              renderForm={({ value, onAdd, onChange }) => (
+                <Input
+                  placeholder="Enter user reply"
+                  value={value}
+                  onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                      onAdd(event.target.value);
+                      onChange('');
+                    }
+                  }}
+                  onChange={(e) => onChange(e.target.value)}
+                />
+              )}
+              renderItem={(item, { onUpdate }) => (
+                <Input value={item} onChange={(e) => onUpdate(e.target.value)} placeholder="Enter Slot Content Example" />
+              )}
+            />
+          </FormControl>
+        )}
+        <FormControl label="Capture Input to" contentBottomUnits={0}>
+          <VariableSelect value={data.variable} onChange={onSelectVariable} />
+        </FormControl>
       </Section>
+      {hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
     </Content>
   );
 }
 
-const mapStateToProps = {
-  platform: activePlatformSelector,
-  isLive: isLiveSelector,
-};
-
-export default connect(mapStateToProps)(CaptureEditor);
+export default CaptureEdtitor;

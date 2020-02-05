@@ -1,7 +1,5 @@
 import { styled } from '@/hocs';
 
-import DiagramEdit from './DiagramEdit';
-
 /*
  *  attrs is used due to performance reason
  */
@@ -18,31 +16,31 @@ export const DiagramButton = styled.button.attrs(({ depth }) => ({
   color: #132144;
   font-size: 13px;
   text-align: left;
-  background: none;
   border: none;
   border-radius: 0;
   cursor: pointer;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
-
-  background: #fff;
+  background-color: #fff;
+  background: none;
+  transition: ease all 0.15s;
 
   &[disabled] {
     pointer-events: none;
   }
 
   &.active {
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.55), #eef4f6) !important;
+    background-color: #eef4f6bd !important;
     color: #132144;
-    border-top-color: #eaeff4;
-    border-bottom-color: #eaeff4;
+    border-top: 1px solid #dfe3ed;
+    border-bottom: 1px solid #dfe3ed;
+    background: none;
   }
 
   &:hover {
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.39) 0%, #eff5f775 100%), #ffffff;
-
-    ${DiagramEdit} {
+    background-color: #eef4f6bd !important;
       opacity: 1;
+      background: none;
     }
   }
 

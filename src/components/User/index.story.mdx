@@ -1,0 +1,26 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import User from '.';
+
+<Meta title="User" component={User} />
+
+# User
+
+A component for representing a user with an icon.
+
+<Preview>
+  <Story name="user">{stories.user()}</Story>
+  <Story name="solidUser">{stories.solidUser()}</Story>
+  <Story name="largeUser">{stories.largeUser()}</Story>
+</Preview>
+
+## Members
+
+A component for representing a collection of users.
+
+<Preview>
+  <Story name="members">{stories.members()}</Story>
+  <Story name="membersWithAdd">{stories.membersWithAdd()}</Story>
+</Preview>

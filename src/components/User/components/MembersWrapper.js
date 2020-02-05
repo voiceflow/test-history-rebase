@@ -5,7 +5,7 @@ const MembersWrapper = styled.div`
   margin-left: 5px;
 
   & > div {
-    margin-left: -5px;
+    margin-left: -2px;
   }
 `;
 

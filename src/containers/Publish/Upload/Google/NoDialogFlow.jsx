@@ -13,7 +13,11 @@ import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
 const MAX_SIZE = 10 * 1024 * 1024;
 
 const HelpLink = ({ children }) => (
-  <a href="https://learn.voiceflow.com/en/articles/2705386-uploading-your-project-to-google-assistant" target="_blank" rel="noopener noreferrer">
+  <a
+    href="https://docs.voiceflow.com/voiceflow-documentation/cross-platform-work/uploading-your-project-to-google-assistant"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     {children}
   </a>
 );

@@ -1,3 +1,4 @@
+import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
 import { GLOBAL_VARIABLES } from '@/constants';
@@ -8,6 +9,7 @@ import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
+import * as Slot from '@/ducks/slot';
 import * as VariableSet from '@/ducks/variableSet';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
@@ -29,7 +31,9 @@ export const activeDiagramViewportSelector = createSelector(
 export const allVariablesSelector = createSelector(
   Skill.globalVariablesSelector,
   activeDiagramVariablesSelector,
-  (globalVariables, activeDiagramVariables) => [...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables]
+  Slot.allSlotsSelector,
+  (globalVariables, activeDiagramVariables, slots) =>
+    _uniq([...slots.map(({ name }) => name), ...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
 export const activeSlotTypes = createSelector(

@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import expressionAdapter from '@/client/adapters/expression';
 
 import { createBlockAdapter } from './utils';
@@ -5,6 +7,7 @@ import { createBlockAdapter } from './utils';
 const setBlockAdapter = createBlockAdapter(
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
+      id: cuid.slug(),
       expression: expressionAdapter.fromDB(expression),
       variable: variable || null,
     })),

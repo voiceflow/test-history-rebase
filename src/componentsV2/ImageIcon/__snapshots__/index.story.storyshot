@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Image Icon Custom 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);
+  background: url(/logo_bubble_Small.png) no-repeat center;
+  background-size: contain;
+}
+
+<div
+  className="c0"
+  size={100}
+/>
+`;
+
+exports[`Storyshots Image Icon Normal 1`] = `
+.c2 {
+  box-sizing: content-box;
+  width: inheritpx;
+  height: inheritpx;
+  color: #d4d9e6;
+  opacity: 0.8;
+}
+
+.c2 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c2:hover {
+  color: #d4d9e6;
+  opacity: 1;
+}
+
+.c2:active {
+  color: #d4d9e6;
+  opacity: 1;
+}
+
+.c3 .c1 {
+  color: #fff;
+}
+
+.c4 .c1 {
+  color: #6e849a;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);
+  background-size: contain;
+}
+
+<div
+  className="c0"
+  size={42}
+>
+  <span
+    className="c1 c2"
+    color="#d4d9e6"
+    size="inherit"
+  >
+    <svg
+      data-file-name="SvgImage"
+    />
+  </span>
+</div>
+`;

@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import { withDnD } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import IntentEditor from '.';
+
+<Meta title="Creator/Editors/Intent" component={IntentEditor} decorators={[withDnD]} />
+
+# Intent Editor
+
+The editor for "intent" blocks.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

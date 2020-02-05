@@ -7,3 +7,5 @@ export * from './withStripe';
 export * from './withLoadingGate';
 export * from './withExternalResources';
 export * from './withBatchLoadingGate';
+export * from './withUpload';
+export * from './withNamespace';

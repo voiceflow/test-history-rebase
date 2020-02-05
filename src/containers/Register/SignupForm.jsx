@@ -2,7 +2,7 @@ import './Account.css';
 
 import axios from 'axios';
 import throttle from 'lodash/throttle';
-import queryString from 'query-string/index';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';

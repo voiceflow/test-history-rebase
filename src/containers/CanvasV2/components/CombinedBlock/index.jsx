@@ -4,8 +4,7 @@ import React from 'react';
 import AddStepButton from '@/containers/CanvasV2/components/AddStepButton';
 import GroupBlock, { Section as GroupBlockSection } from '@/containers/CanvasV2/components/GroupBlock';
 import { MergeStatus } from '@/containers/CanvasV2/constants';
-import { NodeIDProvider, withEditPermission, withEngine, withNode, withNodeData } from '@/containers/CanvasV2/contexts';
-import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
+import { NodeIDProvider, withEditPermission, withEngine, withManager, withNode, withNodeData } from '@/containers/CanvasV2/contexts';
 import { insert } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
@@ -54,7 +53,7 @@ class CombinedBlock extends React.PureComponent {
   }
 
   updatePlaceholder = (index) => {
-    const { engine, node } = this.props;
+    const { engine, node, getManager } = this.props;
 
     if (index === this.state.placeholderIndex) {
       return;
@@ -66,7 +65,7 @@ class CombinedBlock extends React.PureComponent {
 
     if (
       index >= node.combinedNodes.length &&
-      NODE_MANAGERS[engine.getNodeByID(node.combinedNodes[node.combinedNodes.length - 1]).type].mergeTerminator
+      getManager(engine.getNodeByID(node.combinedNodes[node.combinedNodes.length - 1]).type).mergeTerminator
     ) {
       return;
     }
@@ -90,7 +89,7 @@ class CombinedBlock extends React.PureComponent {
   };
 
   onMouseMove = () => {
-    const { engine, node } = this.props;
+    const { engine, node, getManager } = this.props;
 
     if (this.canMerge && this.dropContext) {
       this.dragContext = { nodeId: engine.drag.target };
@@ -99,7 +98,7 @@ class CombinedBlock extends React.PureComponent {
       const sourceNode = engine.getNodeByID(engine.drag.target);
       const targetIndex = this.state.localNodeIDs.indexOf(targetID);
 
-      if (NODE_MANAGERS[sourceNode.type].mergeTerminator) {
+      if (getManager(sourceNode.type).mergeTerminator) {
         this.updatePlaceholder(node.combinedNodes.length);
       } else if (sourceNode.ports.in.length === 0) {
         this.updatePlaceholder(0);
@@ -203,5 +202,6 @@ export default compose(
   withNode,
   withNodeData,
   withEngine,
-  withEditPermission
+  withEditPermission,
+  withManager
 )(CombinedBlock);

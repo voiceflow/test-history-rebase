@@ -29,8 +29,8 @@ const StreamManager = {
     },
     data: {
       name: 'Stream',
-      title: [],
-      description: [],
+      title: '',
+      description: '',
       iconImage: null,
       backgroundImage: null,
       customPause: false,

@@ -2,9 +2,9 @@ import { BlockType, PlatformType } from '@/constants';
 
 const PortLabels = {
   [BlockType.RANDOM]: (_port, index) => index + 1,
-  [BlockType.INTERACTION]: (_port, index) => (index === 0 ? 'else' : index),
-  [BlockType.IF]: (_port, index) => (index === 0 ? 'else' : index),
   [BlockType.CHOICE]: (_port, index) => (index === 0 ? 'else' : index),
+  [BlockType.IF]: (_port, index) => (index === 0 ? 'else' : index),
+  [BlockType.CHOICE_OLD]: (_port, index) => (index === 0 ? 'else' : index),
   [BlockType.STREAM]: (_port, index, platform) => {
     if (platform !== PlatformType.ALEXA) {
       return null;

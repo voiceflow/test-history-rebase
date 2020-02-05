@@ -20,7 +20,7 @@ export const CANVAS_OPTIONS = [
   },
 ];
 
-const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.FLOW, BlockType.COMMENT];
+const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.COMMENT];
 
 export const BLOCK_OPTIONS = [
   {

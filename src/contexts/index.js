@@ -2,7 +2,9 @@ import React from 'react';
 
 export * from './MousePositionContext';
 export * from './DragContext';
+export * from './NamespaceContext';
 export * from './OverlayContext';
+export * from './ModalLayerContext';
 
 export const ScrollContext = React.createContext('scroll-context');
 export const { Consumer: ScrollContextConsumer, Provider: ScrollContextProvider } = ScrollContext;

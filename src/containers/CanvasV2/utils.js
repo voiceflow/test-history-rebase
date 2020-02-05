@@ -1,13 +1,13 @@
 import moize from 'moize';
 
 import { BlockType, NO_EDITOR_BLOCKS } from '@/constants';
-import MANAGERS, { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
+import MANAGERS, { getManager } from '@/containers/CanvasV2/managers';
 
 const CHAINABLE_BLOCKS = MANAGERS.filter(({ type }) => !NO_EDITOR_BLOCKS.includes(type));
 
 // eslint-disable-next-line import/prefer-default-export
 export const getNextSteps = moize((type) => {
-  const { mergeTerminator } = NODE_MANAGERS[type];
+  const { mergeTerminator } = getManager(type);
 
   if (mergeTerminator) {
     return [];

@@ -1,12 +1,13 @@
-import { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
 import Input from '@/componentsV2/Input';
 import { styled } from '@/hocs';
+
+import { OrientationType } from '../constants';
 
 const TextInput = styled(Input)`
   box-shadow: none !important;
 
   ${({ orientation }) =>
-    orientation === ORIENTATION_TYPE.RIGHT
+    orientation === OrientationType.RIGHT
       ? `
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;

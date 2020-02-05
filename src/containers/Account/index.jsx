@@ -29,8 +29,6 @@ class Account extends Component {
     setConfirm({
       text: (
         <>
-          <i className="fas fa-exclamation-triangle fa-2x" />
-          <br />
           Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted.
           Do not reset unless you know what you are doing
         </>
@@ -48,11 +46,7 @@ class Account extends Component {
     const { setConfirm, deleteGoogleAccount } = this.props;
     setConfirm({
       text: (
-        <>
-          <i className="fas fa-exclamation-triangle fa-2x" />
-          <br />
-          Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
-        </>
+        <>Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing</>
       ),
       warning: true,
       confirm: async () => {

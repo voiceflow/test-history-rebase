@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import { withDnD } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import IfEditor from '.';
+
+<Meta title="Creator/Editors/If" component={IfEditor} decorators={[withDnD]} />
+
+# If Editor
+
+The editor for "if" blocks.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

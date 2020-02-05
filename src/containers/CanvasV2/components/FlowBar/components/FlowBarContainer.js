@@ -17,7 +17,7 @@ const FlowBar = styled(Flex)`
   border-radius: 5px 5px 0px 0px;
   cursor: default;
   user-select: none;
-  animation: flowbar 0.15s ease-in-out, fadein 0.2s ease;
+  animation: flowbar 0.3s ease, fadein 0.3s ease;
 `;
 
 export default FlowBar;

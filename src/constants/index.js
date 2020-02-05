@@ -73,14 +73,14 @@ export const BlockType = {
   COMMENT: 'comment',
   // basic
   SPEAK: 'speak',
-  CHOICE: 'choice',
+  CHOICE_OLD: 'choice',
   // logic
   SET: 'set',
   IF: 'if',
   CAPTURE: 'capture',
   RANDOM: 'random',
   // advanced
-  INTERACTION: 'interaction',
+  CHOICE: 'interaction',
   INTENT: 'intent',
   STREAM: 'stream',
   INTEGRATION: 'integration',
@@ -92,6 +92,7 @@ export const BlockType = {
   DISPLAY: 'display',
   // user
   PERMISSION: 'permission',
+  ACCOUNT_LINKING: 'account_linking',
   USER_INFO: 'user_info',
   PAYMENT: 'payment',
   CANCEL_PAYMENT: 'cancel_payment',
@@ -234,7 +235,7 @@ export const IntegrationActionType = {
 
 const EMPTY_KEY_VALUE_ITEM = {
   key: [],
-  val: [],
+  val: '',
 };
 
 // Integration default data models
@@ -242,7 +243,7 @@ export const INTEGRATION_DATA_MODELS = {
   CUSTOM_API: {
     selectedIntegration: 'Custom API',
     headers: [EMPTY_KEY_VALUE_ITEM],
-    url: [],
+    url: '',
     mapping: [
       {
         path: [],
@@ -283,10 +284,11 @@ export const RESPONSE_COLOR_CODES = {
   RED: '#e91e63',
 };
 
-export const REPROMPT_TYPE = {
+export const RepromptType = {
   TEXT: 'text',
   AUDIO: 'audio',
 };
+
 export const PERIOD = {
   monthly: 'MO',
   annually: 'YR',
@@ -300,6 +302,8 @@ export const PERIOD_NAME = {
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
+
+export const IMAGE_FILE_FORMATS = ['image/jpeg', 'image/png'];
 
 export const AV_FILE_FORMATS = [
   'audio/pcm',
@@ -333,6 +337,11 @@ export const MODALS = {
   BOARD_SETTINGS: 'board-settings',
 
   SUCCESS: 'success',
+
+  SLOT_EDIT: 'slot-edit',
+  INTENTS: 'intents',
+
+  DISPLAY_PREVIEW: 'display-preview',
 };
 
 export const USER_ROLES = {
@@ -364,3 +373,43 @@ export const PLANS = {
 export const EDITOR_SEAT_ROLES = [USER_ROLES.EDITOR, USER_ROLES.ADMIN];
 
 export const UNLIMITED_SEAT_NUMBER = 100;
+
+export const SLOT_COLORS = [
+  '#4F9ED1',
+  '#4FA9B3',
+  '#A086C4',
+  '#E26D5A',
+  '#E04F78',
+  '#BF395B',
+  '#5C6BC0',
+  '#3A5999',
+  '#457A53',
+  '#3A7685',
+  '#BF9677',
+  '#4C4C4C',
+];
+
+export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
+
+export const DisplayType = {
+  SPLASH: 'splash',
+  ADVANCED: 'advanced',
+};
+
+export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
+export const SLOT_REGEXP = /{{\[([^ .[\]{}]*?)]\.([^ .[\]{}]*?)}}/g;
+export const VARIABLE_REGEXP = /^{.*}$/;
+export const VARIABLE_STRING_REGEXP = /{.*}/g;
+
+export const FILTERED_AMAZON_INTENTS = [
+  'ScrollUpIntent',
+  'ScrollRightIntent',
+  'ScrollLeftIntent',
+  'ScrollDownIntent',
+  'PageUpIntent',
+  'PageDownIntent',
+  'NavigateSettingsIntent',
+  'NavigateHomeIntent',
+];
+
+export const INVOCATION_NAME_REGEX = /^[\s'.A-Za-z]*$/;

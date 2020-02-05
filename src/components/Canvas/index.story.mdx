@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Canvas from '.';
+
+<Meta title="Canvas" component={Canvas} />
+
+# Canvas
+
+A component for panning and zooming a collection of elements.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

@@ -74,8 +74,11 @@ jobs:
           saveCache: true
           tests:
             - run:
-                name: (React Tests)
-                command: yarn test --detectOpenHandles
+                name: (Unit Tests)
+                command: yarn test:unit
+            - run:
+                name: (Integration Tests)
+                command: yarn test:integration --detectOpenHandles
             - run:
                 name: (Code Style)
                 command: yarn lint:quiet

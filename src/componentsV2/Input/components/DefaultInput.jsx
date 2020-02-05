@@ -5,8 +5,10 @@ import SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 import { useCombinedRefs } from '@/hooks/ref';
 
+import { inputStyle } from '../styles';
+import ChildInput from './ChildInput';
 import InlineInput from './InlineInput';
-import { ChildInput, InputWrapper, inputStyle } from './styled';
+import InputWrapper from './InputWrapper';
 
 const PlainInput = styled.input`
   ${inputStyle}
@@ -14,16 +16,16 @@ const PlainInput = styled.input`
 
 // eslint-disable-next-line react/display-name
 export const NestedInput = React.forwardRef(
-  ({ icon, error, iconProps, wrapperProps = {}, disabled, children, leftAction, rightAction, ...props }, ref) => {
+  ({ icon, error, iconProps, wrapperProps = {}, disabled, children, leftAction, rightAction, className, ...props }, ref) => {
     const inputRef = React.useRef();
     const combinedRef = useCombinedRefs(ref, inputRef);
 
     const onClick = () => {
-      inputRef.current?.focus();
+      inputRef.current?.focus?.();
     };
 
     return (
-      <InputWrapper onClick={onClick} disabled={disabled} {...wrapperProps} error={error}>
+      <InputWrapper onClick={onClick} disabled={disabled} {...wrapperProps} error={error} className={className}>
         {leftAction}
         {_isString(icon) && <SvgIcon icon={icon} {...iconProps} />}
         <ChildInput>{children ? children({ ref: combinedRef }) : <InlineInput {...props} ref={combinedRef} disabled={disabled} />}</ChildInput>

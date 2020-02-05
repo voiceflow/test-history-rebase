@@ -35,9 +35,9 @@ function ExpressionDefault({
 
       return (
         <span className="math brackets">
-          <span>( </span>
+          <span className="parenthesis">( </span>
           {first} {<ExpressionOperator type={type} />} {second}
-          <span> )</span>
+          <span className="parenthesis"> )</span>
         </span>
       );
     }
@@ -45,7 +45,7 @@ function ExpressionDefault({
     if (type) {
       return (
         <span className="brackets">
-          <span>( </span>
+          <span className="parenthesis">( </span>
           {expressionify(value[0])}
           <span> </span>
           <span className={type}>
@@ -53,7 +53,7 @@ function ExpressionDefault({
           </span>
           <span> </span>
           {expressionify(value[1])}
-          <span> )</span>
+          <span className="parenthesis"> )</span>
         </span>
       );
     }
@@ -67,7 +67,7 @@ function ExpressionDefault({
         <ExpressionOperator type={type} />
 
         <div role="button" tabIndex="0" className="type-button" onClick={onCollapse}>
-          <SvgIcon icon="trash" size={12} />
+          <SvgIcon variant="standard" icon="trash" size={16} />
         </div>
       </OperatorDropdown>
 

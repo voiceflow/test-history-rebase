@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ErrorModal from '.';
+
+<Meta title="Modal/Error" component={ErrorModal} />
+
+# Error Modal
+
+A basic modal component for errors.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

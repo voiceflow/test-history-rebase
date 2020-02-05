@@ -1,84 +1,56 @@
+/* eslint-disable no-shadow */
 import React from 'react';
-import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
-import Divider from '@/components/Divider';
-import ProductSelect from '@/components/ProductSelect';
-import SvgIcon from '@/components/SvgIcon';
-import { FlexCenter } from '@/componentsV2/Flex';
-import { Section } from '@/containers/CanvasV2/components/BlockEditor';
-import { hasProductsSelector, productByIDSelector } from '@/ducks/product';
+import OverflowMenu from '@/componentsV2/OverflowMenu';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor';
+import NoProducts from '@/containers/CanvasV2/components/NoProducts';
+import ProductTile from '@/containers/CanvasV2/components/ProductTile';
+import { allProductsSelector, hasProductsSelector, productByIDSelector } from '@/ducks/product';
 import { goToEditProduct, goToNewProduct, goToProducts } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useCurried } from '@/hooks';
+import { FadeLeftContainer } from '@/styles/animations';
 import { stopPropagation } from '@/utils/dom';
 
-import { LabelTitle, SeeAll, Separator } from './styled';
+import SelectedProduct from './SelectedProduct';
+import { AllProductsLink } from './components';
 
-function PaymentEditor({ data, selectedProduct, goToEditProduct, goToProducts, goToNewProduct, onChange, hasProducts }) {
-  const updateProduct = React.useCallback((productID) => onChange({ productID }), [onChange]);
-  const unlinkProduct = React.useCallback(() => updateProduct(null), [updateProduct]);
+function PaymentEditor({ selectedProduct, goToEditProduct, goToProducts, goToNewProduct, onChange, hasProducts, products }) {
+  const updateProduct = useCurried(onChange);
 
   if (!hasProducts) {
-    return (
-      <Section className="text-center">
-        <FlexCenter column>
-          <SvgIcon icon="safe" size="auto" />
-          <br />
-          <label className="dark">No Products Exist</label>
-          <div className="text-muted">Create a product to add it to this block</div>
-          <button className="btn btn-secondary mt-4" onClick={stopPropagation(goToNewProduct)}>
-            Add Product
-          </button>
-        </FlexCenter>
-      </Section>
-    );
+    return <NoProducts goToNewProduct={goToNewProduct} />;
   }
 
   if (selectedProduct) {
     return (
-      <Section>
-        <label className="space-between mb-3">
-          <span>{selectedProduct.name}</span>
-        </label>
-        <Button isPrimary isBlock isLarge onClick={goToEditProduct}>
-          Edit Product <i className="fas fa-sign-in" />
-        </Button>
-        <Button isClear isLarge isBlock className="mt-2" onClick={unlinkProduct}>
-          Unlink Product
-        </Button>
-        {selectedProduct.type === 'SUBSCRIPTION' ? (
-          <>
-            <Divider>Subscription Settings</Divider>
-            <Alert>Alexa requires an unsubscribe option, place a cancel payment block in an easily accessible part of your flow</Alert>
-          </>
-        ) : (
-          <>
-            <Divider>Refund Settings</Divider>
-            <Alert>Alexa requires users be able to refund a purchase, place a cancel payment block in an easily accessible part of your flow</Alert>
-          </>
+      <Content
+        footer={() => (
+          <Controls
+            menu={<OverflowMenu options={[{ onClick: updateProduct({ productID: null }), label: 'Unlink Product' }]} placement="top-end" />}
+          />
         )}
-        {/* <MenuItem item={cancel} data={product.id} /> */}
-      </Section>
+      >
+        <FadeLeftContainer>
+          <SelectedProduct productID={selectedProduct.id} onClick={goToEditProduct} />
+        </FadeLeftContainer>
+      </Content>
     );
   }
 
   return (
-    <Section>
-      <LabelTitle>
-        <label>Select Existing Product</label>
-        <SeeAll onClick={goToProducts}>See all</SeeAll>
-      </LabelTitle>
-      <ProductSelect value={data.productID} onChange={updateProduct} />
-      <div>
-        <Separator>
-          <div>OR</div>
-        </Separator>
-      </div>
-      <button className="btn-clear btn-block btn-lg" onClick={goToNewProduct}>
-        Create new product
-      </button>
-    </Section>
+    <Content
+      footer={() => (
+        <Controls options={[{ label: 'Create Product', onClick: stopPropagation(goToNewProduct) }]}>
+          <AllProductsLink onClick={goToProducts}>See all Products</AllProductsLink>
+        </Controls>
+      )}
+    >
+      {products.map((product, index) => (
+        <ProductTile key={index} product={product} onClick={updateProduct({ productID: product.id })} />
+      ))}
+    </Content>
   );
 }
 
@@ -86,6 +58,7 @@ const mapStateToProps = {
   skillID: activeSkillIDSelector,
   selectedProduct: productByIDSelector,
   hasProducts: hasProductsSelector,
+  products: allProductsSelector,
 };
 
 const mapDispatchToProps = {

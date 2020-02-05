@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { OverlayContext } from '@/contexts';
+import { OverlayContext } from '@/contexts/OverlayContext';
 
 import { useEnableDisable } from './toggle';
 

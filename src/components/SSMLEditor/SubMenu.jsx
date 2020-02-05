@@ -2,8 +2,10 @@ import React from 'react';
 
 import ArrowRight from '@/svgs/arrow-right.svg';
 
-import { Effect, RightArrow, SubMenuContainer } from './Menu';
+import Effect from './Effect';
 import Prompt from './Prompt';
+import RightArrow from './RightArrow';
+import SubMenuContainer from './SubMenuContainer';
 
 function SubMenu(props) {
   const { options, data: pdata, onClick } = props;

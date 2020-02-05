@@ -54,7 +54,7 @@ function ProductCard({
 
   return (
     <Container onClick={goToEditProduct}>
-      <Icon background={smallIconUri}>{!smallIconUri && <SvgIcon icon="imageDropzone" size={80} />}</Icon>
+      <Icon background={smallIconUri}>{!smallIconUri && <SvgIcon icon="imageDropzone" size={42} />}</Icon>
 
       <Details>
         <Title>{name}</Title>

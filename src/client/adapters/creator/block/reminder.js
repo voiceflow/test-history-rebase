@@ -1,4 +1,4 @@
-import { draftJSContentAdapter } from '@/client/adapters/draft';
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 
 import { createBlockAdapter } from './utils';
 
@@ -7,10 +7,10 @@ const reminderBlockAdapter = createBlockAdapter(
     const isTimer = reminder_type === 'SCHEDULED_RELATIVE';
     return {
       reminderType: isTimer ? 'timer' : 'scheduled',
-      text: draftJSContentAdapter.fromDB(text),
-      hours: draftJSContentAdapter.fromDB(time.h),
-      minutes: draftJSContentAdapter.fromDB(time.m),
-      seconds: draftJSContentAdapter.fromDB(time.s),
+      text: textEditorContentAdapter.fromDB(text),
+      hours: textEditorContentAdapter.fromDB(time.h),
+      minutes: textEditorContentAdapter.fromDB(time.m),
+      seconds: textEditorContentAdapter.fromDB(time.s),
       ...(!isTimer && {
         date,
         timezone: timezone === 'User Timezone' ? null : timezone,
@@ -22,11 +22,11 @@ const reminderBlockAdapter = createBlockAdapter(
   ({ reminderType, text, hours, minutes, seconds, date, timezone, recurrence, recurrenceBool }) => ({
     reminder: {
       reminder_type: reminderType === 'timer' ? 'SCHEDULED_RELATIVE' : 'SCHEDULED_ABSOLUTE',
-      text: draftJSContentAdapter.toDB(text),
+      text: textEditorContentAdapter.toDB(text),
       time: {
-        h: draftJSContentAdapter.toDB(hours),
-        m: draftJSContentAdapter.toDB(minutes),
-        s: draftJSContentAdapter.toDB(seconds),
+        h: textEditorContentAdapter.toDB(hours),
+        m: textEditorContentAdapter.toDB(minutes),
+        s: textEditorContentAdapter.toDB(seconds),
       },
       date,
       timezone: timezone || 'User Timezone',

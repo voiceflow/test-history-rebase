@@ -1,38 +1,35 @@
 import React from 'react';
-import { withProps } from 'recompose';
 
-import ButtonGroupRouter from '@/components/ButtonGroupRouter';
-import VariableText from '@/components/VariableText';
+import RadioGroup from '@/components/RadioGroup';
+import Section from '@/componentsV2/Section';
 import { CardType } from '@/constants';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
+import { Content } from '@/containers/CanvasV2/components/Editor';
 
-import CardForm from './components/CardForm';
+import { CardForm, CardFormFooter } from './components';
 
-const CARD_ROUTES = [
+const CARD_TYPE_OPTIONS = [
   {
-    label: 'Simple',
-    value: CardType.SIMPLE,
-    component: CardForm,
+    id: CardType.STANDARD,
+    label: 'Standard',
   },
   {
-    label: 'Standard',
-    value: CardType.STANDARD,
-    component: withProps({ withImage: true })(CardForm),
+    id: CardType.SIMPLE,
+    label: 'Simple',
   },
 ];
 
 function CardEditor({ data, onChange }) {
-  const onUpdateContent = React.useCallback((content) => onChange({ content }), [onChange]);
+  const isStandard = data.cardType !== CardType.SIMPLE;
   const updateCardType = React.useCallback((cardType) => onChange({ cardType }), [onChange]);
-  const isSimple = data.cardType === CardType.SIMPLE;
 
   return (
-    <Content>
-      <Section>
-        <label>Card Type</label>
-        <ButtonGroupRouter selected={data.cardType} routes={CARD_ROUTES} routeProps={{ data, onChange }} onChange={updateCardType} />
-        <label>{isSimple ? 'Content' : 'Text'}</label>
-        <VariableText className="editor" value={data.content} placeholder="Add content to your card here" onChange={onUpdateContent} />
+    <Content footer={<CardFormFooter isStandard={isStandard} data={data} onChange={onChange} />}>
+      <Section variant="tertiary" header="Card Type">
+        <RadioGroup options={CARD_TYPE_OPTIONS} checked={data.cardType} onChange={updateCardType} />
+      </Section>
+
+      <Section isDividerNested>
+        <CardForm withImage={isStandard} data={data} onChange={onChange} />
       </Section>
     </Content>
   );

@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-shadow */
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import moize from 'moize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -13,12 +14,16 @@ import { connect } from '@/hocs';
 import { NextButtonContainer } from './components';
 
 function DescriptionForm({ product, changeStep, updateProduct }) {
-  const onChange = (key) => (e) => {
-    updateProduct({
-      ...product,
-      [key]: e.target.value,
-    });
-  };
+  const onChange = React.useMemo(
+    () =>
+      moize((key) => (e) => {
+        updateProduct({
+          ...product,
+          [key]: e.target.value,
+        });
+      }),
+    [updateProduct]
+  );
 
   return (
     <AvForm onSubmit={changeStep}>

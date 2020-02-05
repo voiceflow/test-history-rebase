@@ -3,6 +3,7 @@
 import { BlockType } from '@/constants';
 
 import { createSimpleAdapter, identityAdapter } from '../../utils';
+import accountLinkingBlockAdapter from './accountLinking';
 import cancelPaymentBlockAdapter from './cancelPayment';
 import captureBlockAdapter from './capture';
 import cardBlockAdapter from './card';
@@ -52,7 +53,7 @@ const blockAdapter = {
   [BlockType.CANCEL_PAYMENT]: cancelPaymentBlockAdapter,
   [BlockType.CAPTURE]: captureBlockAdapter,
   [BlockType.CARD]: cardBlockAdapter,
-  [BlockType.CHOICE]: choiceBlockAdapter,
+  [BlockType.CHOICE_OLD]: choiceBlockAdapter,
   [BlockType.CODE]: codeBlockAdapter,
   [BlockType.DISPLAY]: displayBlockAdapter,
   [BlockType.EXIT]: exitBlockAdapter,
@@ -60,9 +61,10 @@ const blockAdapter = {
   [BlockType.IF]: ifBlockAdapter,
   [BlockType.INTEGRATION]: integrationBlockAdapter,
   [BlockType.INTENT]: intentBlockAdapter,
-  [BlockType.INTERACTION]: interactionBlockAdapter,
+  [BlockType.CHOICE]: interactionBlockAdapter,
   [BlockType.PAYMENT]: paymentBlockAdapter,
   [BlockType.PERMISSION]: permissionBlockAdapter,
+  [BlockType.ACCOUNT_LINKING]: accountLinkingBlockAdapter,
   [BlockType.RANDOM]: randomBlockAdapter,
   [BlockType.REMINDER]: reminderBlockAdapter,
   [BlockType.SET]: setBlockAdapter,

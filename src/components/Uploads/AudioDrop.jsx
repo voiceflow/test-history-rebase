@@ -5,11 +5,9 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import { AV_FILE_FORMATS, AV_FORMATS_STREAMING } from '@/constants';
+import { AV_FILE_FORMATS, AV_FORMATS_STREAMING, HTTPS_URL_REGEX, VARIABLE_REGEXP } from '@/constants';
 
 const MAX_SIZE = 10 * 1024 * 1024;
-const VARIABLE_REGEX = /^{.*}$/;
-const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,4}\b([\w#%&+-./:=?@~]*)/;
 
 class AudioDrop extends Component {
   constructor(props) {
@@ -85,7 +83,7 @@ class AudioDrop extends Component {
   }
 
   submit() {
-    if (VARIABLE_REGEX.test(this.state.url) || HTTPS_URL_REGEX.test(this.state.url)) {
+    if (VARIABLE_REGEXP.test(this.state.url) || HTTPS_URL_REGEX.test(this.state.url)) {
       this.setState(
         {
           url_error: false,
@@ -125,7 +123,7 @@ class AudioDrop extends Component {
       );
     }
     if (this.props.audio && typeof this.props.audio === 'string') {
-      if (VARIABLE_REGEX.test(this.state.url)) {
+      if (VARIABLE_REGEXP.test(this.state.url)) {
         return (
           <div className="audio-box">
             <Button isBtn withDangerIndicator onClick={this.onClear}>

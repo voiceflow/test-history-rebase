@@ -1,12 +1,13 @@
 import React from 'react';
 
 import Button from '@/components/Button';
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import SvgIcon from '@/components/SvgIcon';
 import Flex from '@/componentsV2/Flex';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { styled } from '@/hocs';
+
+import { Modal, ModalBody, ModalFooter, ModalHeader } from './components';
 
 const BodyContainer = styled(ModalBody)`
   font-size: 16px;

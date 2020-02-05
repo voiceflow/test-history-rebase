@@ -43,7 +43,7 @@ function UploadButton(props) {
             {text}
             <div className="publish-spinner">
               <div className="spinner-icon">
-                <SvgIcon icon="publishSpin" color="#fff" />
+                <SvgIcon icon="publishSpin" variant="white" />
               </div>
             </div>
           </Button>

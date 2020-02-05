@@ -1,13 +1,13 @@
 import AutosizeTextArea from 'react-textarea-autosize';
 
-import { inputStyle } from '@/componentsV2/Input';
+import { inputStyle } from '@/componentsV2/Input/styles';
 import { styled } from '@/hocs';
 
 const TextArea = styled(AutosizeTextArea)`
   ${inputStyle}
 
   box-sizing: border-box;
-  min-height: 42px;
+  min-height: ${({ theme }) => theme.components.input.height}px;
   width: 100%;
   border-radius: 5px;
   font-size: 15px;

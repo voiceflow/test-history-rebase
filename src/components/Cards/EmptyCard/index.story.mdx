@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import EmptyCard from '.';
+
+<Meta title="Card/Empty" component={EmptyCard} />
+
+# Empty Card
+
+A basic card component without content.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

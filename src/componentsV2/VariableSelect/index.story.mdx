@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import { VariableSelect } from '.';
+
+<Meta title="Variable Select" component={VariableSelect} />
+
+# Variable Select
+
+A dropdown menu for selecting a variable.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

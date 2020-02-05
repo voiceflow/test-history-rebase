@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import { clearModal } from '@/ducks/modal';
+
+import { Modal, ModalBody, ModalFooter, ModalHeader } from './components';
 
 export const StandardModal = ({ modal, toggle }) => {
   if (!modal) {

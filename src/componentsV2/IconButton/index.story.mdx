@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import IconButton from '.';
+
+<Meta title="Icon Button" component={IconButton} />
+
+# Icon Button
+
+A simple button component that uses an icon.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="flat">{stories.flat()}</Story>
+  <Story name="action">{stories.action()}</Story>
+</Preview>

@@ -5,7 +5,7 @@ const MenuContent = styled.main`
   height: 100%;
   width: ${({ theme }) => theme.components.menuBar.width}px;
   flex-direction: column;
-  border-right: 1px solid #e2e9ec;
+  border-right: 1px solid #dfe3ed;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.gradient[0]};
   overflow: hidden;

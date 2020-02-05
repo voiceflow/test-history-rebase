@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType, ExpressionType } from '@/constants';
 import CodeBranchIcon from '@/svgs/solid/code-branch.svg';
 
@@ -24,6 +26,7 @@ const IfManager = {
       name: 'If',
       expressions: [
         {
+          id: cuid.slug(),
           type: ExpressionType.EQUALS,
           depth: 0,
           value: [

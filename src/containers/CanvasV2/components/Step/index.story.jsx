@@ -1,66 +1,72 @@
 import { action } from '@storybook/addon-actions';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import NewBlock from '../Block/NewBlock';
 import Step from '.';
 
-storiesOf('Step', module).add(
-  'variants',
-  createTestableStory(() => {
-    const onClickPort = action('click port');
-    const props = { label: 'Step', onClickPort };
+const getProps = () => {
+  const onClickPort = action('click port');
 
-    return (
-      <>
-        <Variant label="primary">
-          <NewBlock name="Block">
-            <Step {...props} label="Primary Step" />
-          </NewBlock>
-        </Variant>
-        <Variant label="secondary">
-          <NewBlock name="Block">
-            <Step labelVariant="secondary" {...props} label="Secondary Step" />
-          </NewBlock>
-        </Variant>
-        <Variant label="with placeholder">
-          <NewBlock name="Block">
-            <Step labelVariant="secondary" placeholder="This step has a placeholder" onClickPort={onClickPort} />
-          </NewBlock>
-        </Variant>
-        <Variant label="with icon">
-          <NewBlock name="Block">
-            <Step icon="code" iconColor="red" {...props} label="Step With Icon" />
-          </NewBlock>
-        </Variant>
-        <Variant label="without port">
-          <NewBlock name="Block">
-            <Step withPort={false} {...props} label="Step Without Port  " />
-          </NewBlock>
-        </Variant>
-        <Variant label="with long label">
-          <NewBlock name="Block">
-            <Step {...props} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
-          </NewBlock>
-        </Variant>
-        <Variant label="with long label and no port">
-          <NewBlock name="Block">
-            <Step withPort={false} {...props} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
-          </NewBlock>
-        </Variant>
-        <Variant label="active">
-          <NewBlock name="Block">
-            <Step isActive {...props} />
-          </NewBlock>
-        </Variant>
-        <Variant label="with connected port">
-          <NewBlock name="Block">
-            <Step isConnected {...props} />
-          </NewBlock>
-        </Variant>
-      </>
-    );
-  })
+  return {
+    label: 'Step',
+    onClickPort,
+  };
+};
+
+export const primary = () => (
+  <NewBlock name="Block">
+    <Step {...getProps()} label="Primary Step" />
+  </NewBlock>
+);
+
+export const secondary = () => (
+  <NewBlock name="Block">
+    <Step labelVariant="secondary" {...getProps()} label="Secondary Step" />
+  </NewBlock>
+);
+
+export const withPlaceholder = () => {
+  const { label, ...props } = getProps();
+
+  return (
+    <NewBlock name="Block">
+      <Step labelVariant="secondary" placeholder="This step has a placeholder" {...props} />
+    </NewBlock>
+  );
+};
+
+export const withIcon = () => (
+  <NewBlock name="Block">
+    <Step icon="code" iconColor="red" {...getProps()} label="Step With Icon" />
+  </NewBlock>
+);
+
+export const withoutPort = () => (
+  <NewBlock name="Block">
+    <Step withPort={false} {...getProps()} label="Step Without Port  " />
+  </NewBlock>
+);
+
+export const withLongLabel = () => (
+  <NewBlock name="Block">
+    <Step {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+  </NewBlock>
+);
+
+export const withLongLabelAndNoPort = () => (
+  <NewBlock name="Block">
+    <Step withPort={false} {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+  </NewBlock>
+);
+
+export const active = () => (
+  <NewBlock name="Block">
+    <Step isActive {...getProps()} />
+  </NewBlock>
+);
+
+export const withConnectedPort = () => (
+  <NewBlock name="Block">
+    <Step isConnected {...getProps()} />
+  </NewBlock>
 );

@@ -181,7 +181,7 @@ const GuidedStepsWrapper = styled.div`
 
       .gs__panel-footer {
         flex: 0 0 auto;
-        border-top: 1px solid #eaeff4;
+        border-top: 1px solid #dfe3ed;
         display: flex;
         justify-content: flex-end;
         min-width: 0;

@@ -1,167 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Title variants: heading 1`] = `
-<Title
-  as="h1"
+exports[`Storyshots Title Heading 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 28px;
+  line-height: 38px;
+}
+
+<h1
+  className="c0"
 >
-  <StyledComponent
-    as="h1"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "Title-sc-1dcpukq-0",
-          "isStatic": false,
-          "lastClassName": "bpoOSN",
-          "rules": Array [
-            "color:#132144;",
-            [Function],
-          ],
-        },
-        "displayName": "Title",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "Title-sc-1dcpukq-0",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-  >
-    <h1
-      className="Title-sc-1dcpukq-0 exyzsu"
-    >
-      Title
-    </h1>
-  </StyledComponent>
-</Title>
+  Title
+</h1>
 `;
 
-exports[`Storyshots Title variants: label 1`] = `
-<Title
-  as="h4"
-  variant="label"
+exports[`Storyshots Title Label 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+<h4
+  className="c0"
 >
-  <StyledComponent
-    as="h4"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "Title-sc-1dcpukq-0",
-          "isStatic": false,
-          "lastClassName": "bpoOSN",
-          "rules": Array [
-            "color:#132144;",
-            [Function],
-          ],
-        },
-        "displayName": "Title",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "Title-sc-1dcpukq-0",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    variant="label"
-  >
-    <h4
-      className="Title-sc-1dcpukq-0 bpoOSN"
-    >
-      Title
-    </h4>
-  </StyledComponent>
-</Title>
+  Title
+</h4>
 `;
 
-exports[`Storyshots Title variants: subheading 1`] = `
-<Title
-  as="h2"
-  variant="subheading"
+exports[`Storyshots Title Subheading 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+<h2
+  className="c0"
 >
-  <StyledComponent
-    as="h2"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "Title-sc-1dcpukq-0",
-          "isStatic": false,
-          "lastClassName": "bpoOSN",
-          "rules": Array [
-            "color:#132144;",
-            [Function],
-          ],
-        },
-        "displayName": "Title",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "Title-sc-1dcpukq-0",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    variant="subheading"
-  >
-    <h2
-      className="Title-sc-1dcpukq-0 bknjRM"
-    >
-      Title
-    </h2>
-  </StyledComponent>
-</Title>
+  Title
+</h2>
 `;
 
-exports[`Storyshots Title variants: subtitle 1`] = `
-<Title
-  as="h3"
-  variant="subtitle"
+exports[`Storyshots Title Subtitle 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+<h3
+  className="c0"
 >
-  <StyledComponent
-    as="h3"
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "Title-sc-1dcpukq-0",
-          "isStatic": false,
-          "lastClassName": "bpoOSN",
-          "rules": Array [
-            "color:#132144;",
-            [Function],
-          ],
-        },
-        "displayName": "Title",
-        "foldedComponentIds": Array [],
-        "render": [Function],
-        "styledComponentId": "Title-sc-1dcpukq-0",
-        "target": "span",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    variant="subtitle"
-  >
-    <h3
-      className="Title-sc-1dcpukq-0 bGKbSU"
-    >
-      Title
-    </h3>
-  </StyledComponent>
-</Title>
+  Title
+</h3>
 `;

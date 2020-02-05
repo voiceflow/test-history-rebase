@@ -1,0 +1,25 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import { withDnD } from '@/../.storybook';
+
+import DraggableList from '.';
+
+<Meta title="Draggable List" component={DraggableList} decorators={[withDnD]} />
+
+# Draggable List
+
+A container for items that can be dragged to reorder or remove.
+
+## Variants
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="with custom delete">{stories.withCustomDelete()}</Story>
+</Preview>
+
+## Performance
+
+<Preview>
+  <Story name="performance">{stories.performance()}</Story>
+</Preview>

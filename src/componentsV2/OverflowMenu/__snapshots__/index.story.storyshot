@@ -1,256 +1,200 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Overflow Menu variants: default 1`] = `
-<Dropdown
-  onSelect={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "Option 1",
-        "value": Object {
-          "id": "opt1",
-        },
-      },
-      Object {
-        "label": "Option 2",
-        "value": Object {
-          "id": "opt2",
-        },
-      },
-      Object {
-        "label": "Option 3",
-        "value": Object {
-          "id": "opt3",
-        },
-      },
-      Object {
-        "label": "Option 4",
-        "value": Object {
-          "id": "opt4",
-        },
-      },
-    ]
-  }
->
-  <Manager>
-    <Reference
-      innerRef={[Function]}
-    >
-      <InnerReference
-        innerRef={[Function]}
-        setReferenceNode={[Function]}
-      >
-        <OverflowMenuContainer
-          disabled={false}
-          onClick={[Function]}
-        >
-          <StyledComponent
-            disabled={false}
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "OverflowMenuContainer-sc-1q774y2-0",
-                  "isStatic": false,
-                  "lastClassName": "PfSJa",
-                  "rules": Array [
-                    "color:rgba(110,132,154,0.85);",
-                    [Function],
-                  ],
-                },
-                "displayName": "OverflowMenuContainer",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "OverflowMenuContainer-sc-1q774y2-0",
-                "target": Object {
-                  "$$typeof": Symbol(react.forward_ref),
-                  "render": [Function],
-                },
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={[Function]}
-            onClick={[Function]}
-          >
-            <ForwardRef(SecondaryButton)
-              className="OverflowMenuContainer-sc-1q774y2-0 PfSJa"
-              disabled={false}
-              onClick={[Function]}
-            >
-              <SecondaryButtonContainer
-                className="OverflowMenuContainer-sc-1q774y2-0 PfSJa"
-                disabled={false}
-                onClick={[Function]}
-              >
-                <StyledComponent
-                  className="OverflowMenuContainer-sc-1q774y2-0 PfSJa"
-                  disabled={false}
-                  forwardedComponent={
-                    Object {
-                      "$$typeof": Symbol(react.forward_ref),
-                      "attrs": Array [],
-                      "componentStyle": ComponentStyle {
-                        "componentId": "SecondaryButtonContainer-djlxo5-0",
-                        "isStatic": false,
-                        "lastClassName": "hRdNaq",
-                        "rules": Array [
-                          "
-  ",
-                          "
-  ",
-                          "display:",
-                          [Function],
-                          ";align-items:center;",
-                          [Function],
-                          " ",
-                          [Function],
-                          " justify-content:center;",
-                          "
-  ",
-                          [Function],
-                          "
+exports[`Storyshots Overflow Menu Different Actions For Menu Item 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                          "
-",
-                          "
-  ",
-                          "
-  height: ",
-                          "42",
-                          "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
 
-  width: ",
-                          [Function],
-                          ";
-",
-                          "
-",
-                          "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
-                          [Function],
-                        ],
-                      },
-                      "displayName": "SecondaryButtonContainer",
-                      "foldedComponentIds": Array [
-                        "sc-bdVaJa",
-                        "sc-ifAKCX",
-                      ],
-                      "render": [Function],
-                      "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
-                      "target": "button",
-                      "toString": [Function],
-                      "warnTooManyClasses": [Function],
-                      "withComponent": [Function],
-                    }
-                  }
-                  forwardedRef={[Function]}
-                  onClick={[Function]}
-                >
-                  <button
-                    className="sc-bdVaJa sc-ifAKCX OverflowMenuContainer-sc-1q774y2-0 PfSJa SecondaryButtonContainer-djlxo5-0 hRdNaq"
-                    disabled={false}
-                    onClick={[Function]}
-                  >
-                    <ForwardRef
-                      icon="elipsis"
-                    >
-                      <styled.span
-                        color="currentColor"
-                        size={16}
-                      >
-                        <StyledComponent
-                          color="currentColor"
-                          forwardedComponent={
-                            Object {
-                              "$$typeof": Symbol(react.forward_ref),
-                              "attrs": Array [],
-                              "componentStyle": ComponentStyle {
-                                "componentId": "sc-bxivhb",
-                                "isStatic": false,
-                                "lastClassName": "iqcteL",
-                                "rules": Array [
-                                  "
-  ",
-                                  [Function],
-                                  "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
-  color: ",
-                                  [Function],
-                                  ";
-  width: ",
-                                  [Function],
-                                  "px;
-  height: ",
-                                  [Function],
-                                  "px;
+.c0:hover,
+.c0:active {
+  background-color: #e0ebee;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
+}
+
+.c1 {
+  color: rgba(110,132,154,0.85);
+}
+
+<button
+  className="c0 c1"
+  onClick={[Function]}
+>
+  <span
+    className="c2 c3"
+    color="currentColor"
+    size={16}
+  >
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+</button>
+`;
+
+exports[`Storyshots Overflow Menu Same Actions For Menu Item 1`] = `
+.c3 {
   box-sizing: content-box;
-  
-  ",
-                                  [Function],
-                                  "
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
 
-  }
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
 
-  &:hover,
-  &:active {
-    color: ",
-                                  [Function],
-                                  ";
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
 
-  }
-",
-                                ],
-                              },
-                              "displayName": "styled.span",
-                              "foldedComponentIds": Array [],
-                              "render": [Function],
-                              "styledComponentId": "sc-bxivhb",
-                              "target": "span",
-                              "toString": [Function],
-                              "warnTooManyClasses": [Function],
-                              "withComponent": [Function],
-                            }
-                          }
-                          forwardedRef={null}
-                          size={16}
-                        >
-                          <span
-                            className="sc-bxivhb iqcteL"
-                            color="currentColor"
-                            size={16}
-                          >
-                            <test-file-stub />
-                          </span>
-                        </StyledComponent>
-                      </styled.span>
-                    </ForwardRef>
-                  </button>
-                </StyledComponent>
-              </SecondaryButtonContainer>
-            </ForwardRef(SecondaryButton)>
-          </StyledComponent>
-        </OverflowMenuContainer>
-      </InnerReference>
-    </Reference>
-  </Manager>
-</Dropdown>
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
+
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
+
+.c0:hover,
+.c0:active {
+  background-color: #e0ebee;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
+}
+
+.c1 {
+  color: rgba(110,132,154,0.85);
+}
+
+<button
+  className="c0 c1"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c2 c3"
+    color="currentColor"
+    size={16}
+  >
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+</button>
 `;

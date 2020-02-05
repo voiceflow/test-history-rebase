@@ -82,7 +82,7 @@ export const ALEXA_STATES = {
       time: 1000,
     },
   },
-  INTERACTION_MODEL: {
+  CHOICE_MODEL: {
     loading: {
       label: 'Building Interaction Model',
       start: 11,
@@ -264,7 +264,7 @@ export const checkInteractionModel = () =>
     const locales = activeLocalesSelector(state);
     const amznID = amznIDSelector(state);
 
-    dispatch(updateAlexaStage(ALEXA_STAGES.INTERACTION_MODEL));
+    dispatch(updateAlexaStage(ALEXA_STAGES.CHOICE_MODEL));
 
     let success = false;
     try {

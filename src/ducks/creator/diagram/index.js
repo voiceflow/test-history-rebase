@@ -42,6 +42,8 @@ const DEFAULT_STATE = {
   data: {},
   linksByPortID: {},
   linksByNodeID: {},
+  linkedNodesByNodeID: {},
+  sections: {},
 };
 
 // actions
@@ -63,6 +65,7 @@ export const REMOVE_LINK = 'CREATOR:LINK:REMOVE';
 export const UNDO_HISTORY = 'CREATOR:HISTORY:UNDO';
 export const REDO_HISTORY = 'CREATOR:HISTORY:REDO';
 export const SAVE_HISTORY = 'CREATOR:HISTORY:SAVE';
+export const SET_SECTION_STATE = 'CREATOR:SECTION_STATE:SET';
 
 // reducers
 
@@ -76,15 +79,21 @@ export const initializeCreatorReducer = ({ payload: { diagramID, rootNodes, node
   linksByPortID: buildLinksByPortID(links),
   linksByNodeID: buildLinksByNodeID(links),
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),
+  sections: {},
 });
 
-export const updateNodeDataReducer = (state, { payload: { nodeID, data, patch } }) => ({
-  ...state,
-  data: {
-    ...state.data,
-    [nodeID]: patch ? { ...state.data[nodeID], ...data } : data,
-  },
-});
+export const updateNodeDataReducer = (state, { payload: { nodeID, data, patch } }) => {
+  if (state.data.hasOwnProperty(nodeID)) {
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        [nodeID]: patch ? { ...state.data[nodeID], ...data } : data,
+      },
+    };
+  }
+  return state;
+};
 
 export const updateNodeLocationReducer = (state, { payload: { nodeID, x, y } }) => patchNodeInState(nodeID, { x, y })(state);
 
@@ -99,6 +108,25 @@ export const removePortReducer = (state, { payload: portID }) =>
   )(state);
 
 export const removeLinkReducer = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
+
+export const setSectionStateReducer = (state, { payload: { key, value } }) => {
+  if (value == null) {
+    const { [key]: _, ...nextState } = state.sections;
+
+    return {
+      ...state,
+      sections: nextState,
+    };
+  }
+
+  return {
+    ...state,
+    sections: {
+      ...state.sections,
+      [key]: value,
+    },
+  };
+};
 
 function creatorDiagramReducer(state = DEFAULT_STATE, action) {
   // eslint-disable-next-line sonarjs/no-small-switch
@@ -135,6 +163,8 @@ function creatorDiagramReducer(state = DEFAULT_STATE, action) {
       return addLinkReducer(state, action);
     case REMOVE_LINK:
       return removeLinkReducer(state, action);
+    case SET_SECTION_STATE:
+      return setSectionStateReducer(state, action);
     default:
       return state;
   }
@@ -259,6 +289,11 @@ export const hasLinksByPortIDSelector = createSelector(
   (getLinks) => (portID) => !!getLinks(portID).length
 );
 
+export const sectionStateSelector = createSelector(
+  rootSelector,
+  ({ sections }) => (key) => sections[key]
+);
+
 // action creators
 
 export const initializeCreator = (payload) => createAction(INITIALIZE_CREATOR, payload);
@@ -317,6 +352,8 @@ export const undoHistory = () => createAction(UNDO_HISTORY);
 export const redoHistory = () => createAction(REDO_HISTORY);
 
 export const saveHistory = ({ force, preventUpdate } = {}) => createAction(SAVE_HISTORY, null, { force, preventUpdate });
+
+export const setSectionState = (key, value) => createAction(SET_SECTION_STATE, { key, value });
 
 // side effects
 

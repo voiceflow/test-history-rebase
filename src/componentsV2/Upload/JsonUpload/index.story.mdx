@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import JsonUpload from '.';
+
+<Meta title="Upload/JSON" component={JsonUpload} />
+
+# JSON Upload
+
+A component for uploading a JSON file.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

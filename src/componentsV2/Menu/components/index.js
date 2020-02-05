@@ -1,6 +1,6 @@
 import ButtonContainer from './ButtonContainer';
 import Checkbox from './Checkbox';
 import Container from './MenuContainer';
-import Item from './MenuItem';
+import Item, { itemStyles } from './MenuItem';
 
-export { Container, Item, ButtonContainer, Checkbox };
+export { Container, Item, ButtonContainer, Checkbox, itemStyles };

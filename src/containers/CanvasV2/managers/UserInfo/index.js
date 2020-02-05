@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType, PlatformType } from '@/constants';
 
 import UserInfoEditor from './UserInfoEditor';
@@ -22,7 +24,12 @@ const UserInfoManager = {
     },
     data: {
       name: 'User Info',
-      permissions: [],
+      permissions: [
+        {
+          id: cuid.slug(),
+          selected: null,
+        },
+      ],
     },
   }),
 };

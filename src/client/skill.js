@@ -13,11 +13,17 @@ const skillClient = {
 
   updateInvName: (skillID, invName) => fetch.patch(`${SKILL_PATH}/${skillID}?inv_name=1`, { inv_name: invName }),
 
+  updateAccountLinking: (skillID, body) => fetch.post(`link_account/template/${skillID}`, body),
+
   findDiagrams: (skillID) => fetch(`${SKILL_PATH}/${skillID}/diagrams`).then(diagramAdapter.mapFromDB),
 
   findProducts: (skillID) => fetch(`${SKILL_PATH}/${skillID}/products`).then(productAdapter.mapFromDB),
 
   findDisplays: (skillID) => fetch(`${DISPLAYS_PATH}?skill_id=${skillID}`).then(displayAdapter.mapFromDB),
+
+  findAccountLinking: (skillID) => fetch(`link_account/template/${skillID}`),
+
+  restore: (versionId) => fetch.post(`${SKILL_PATH}/${versionId}/restore`),
 };
 
 export default skillClient;

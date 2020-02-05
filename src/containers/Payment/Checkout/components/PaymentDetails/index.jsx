@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Collapse from '@/componentsV2/Collapse';
+import Collapsable from '@/componentsV2/Collapsable';
 import Input, { ControlledInput } from '@/componentsV2/Input';
 import { CardElement } from '@/componentsV2/Stripe';
 import StepSection from '@/containers/Payment/components/Section';
@@ -38,7 +38,7 @@ function PaymentDetails({
     <>
       <StepHeading heading="3. Payment details" actions={actions} />
       <StepSection>
-        <Collapse isOpen={usingCoupon}>
+        <Collapsable opened={usingCoupon}>
           <ControlledInput
             maxLength={16}
             placeholder="Coupon code"
@@ -48,7 +48,7 @@ function PaymentDetails({
             complete={!couponError && discount?.message}
             message={couponError || generateDiscountMessage(discount)}
           />
-        </Collapse>
+        </Collapsable>
         {usingExistingSource && source ? (
           <Input icon="creditCard" value={`${source.brand} | XXXX-XXXX-XXXX-${source.last4}`} disabled />
         ) : (

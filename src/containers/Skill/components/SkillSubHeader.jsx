@@ -7,20 +7,19 @@ import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 import CanvasViewers from './CanvasViewers';
-import LogIndicator from './LogIndicator';
 
 const TABS = [
   {
     value: 'canvas',
-    label: 'canvas',
+    label: 'design',
   },
   {
     value: 'test',
-    label: 'test',
+    label: 'prototype',
   },
   {
     value: 'publish',
-    label: 'publish',
+    label: 'build',
   },
 ];
 
@@ -47,7 +46,6 @@ const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDi
       <Tabs options={options} selected={activePage} onChange={onChange} />
       <Flex>
         <CanvasViewers />
-        <LogIndicator />
       </Flex>
     </>
   );

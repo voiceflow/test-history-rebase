@@ -23,7 +23,7 @@ const IconButtonContainer = styled(ButtonContainer)`
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
+  transition: all 0.15s ease;
  
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};

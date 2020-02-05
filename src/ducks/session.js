@@ -16,7 +16,7 @@ import { identity } from '@/utils/functional';
 import { identifyLogRocketUser } from '@/vendors/logRocket';
 
 import { resetAccount, updateAccount } from './account';
-import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router';
+import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
 import { compositeReducer, createAction, createRootSelector } from './utils';
 
 export const STATE_KEY = 'session';

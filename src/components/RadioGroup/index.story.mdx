@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import RadioGroup from '.';
+
+<Meta title="Radio Group" component={RadioGroup} />
+
+# Radio Group
+
+A component for representing a selection from multiple options.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="multiselect">{stories.multiselect()}</Story>
+</Preview>

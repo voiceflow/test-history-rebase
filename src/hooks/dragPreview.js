@@ -8,5 +8,5 @@ export const useDragPreview = (type, component, options = {}) => {
 
   React.useEffect(() => {
     registerPreview(type, component, options);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };

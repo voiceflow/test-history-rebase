@@ -4,7 +4,7 @@ const PublishSidebar = styled.div`
   display: flex;
   flex-direction: column;
   width: 180px;
-  border-right: 1px solid #e2e9ec;
+  border-right: 1px solid #dfe3ed;
   background-color: #fff;
   padding: 15px 0;
   z-index: 10;

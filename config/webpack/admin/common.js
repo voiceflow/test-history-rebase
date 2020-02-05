@@ -3,6 +3,7 @@ const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 
 const paths = require('../../paths');
 const commonConfig = require('../common');
+const { circularDependencyPlugin } = require('../common/utils');
 const { IS_PRODUCTION, IS_SERVING } = require('../config');
 
 module.exports = merge(commonConfig, {
@@ -17,6 +18,7 @@ module.exports = merge(commonConfig, {
   plugins: IS_SERVING
     ? []
     : [
+        circularDependencyPlugin(),
         new UnusedFilesWebpackPlugin({
           failOnUnused: IS_PRODUCTION,
           globOptions: {

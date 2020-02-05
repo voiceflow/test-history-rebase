@@ -1,0 +1,28 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Input from '.';
+
+<Meta title="Input" component={Input} />
+
+# Input
+
+A basic input component.
+
+## Variants
+
+### Uncontrolled
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="inline">{stories.inline()}</Story>
+  <Story name="icon">{stories.icon()}</Story>
+  <Story name="with input element">{stories.withInputElement()}</Story>
+</Preview>
+
+### Controlled
+
+<Preview>
+  <Story name="controlled">{stories.controlled()}</Story>
+</Preview>

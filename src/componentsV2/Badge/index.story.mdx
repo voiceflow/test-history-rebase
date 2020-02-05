@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Badge from '.';
+
+<Meta title="Badge" component={Badge} />
+
+# Badge
+
+A simple component for highlighting a badge.
+
+<Preview>
+  <Story name="number">{stories.number()}</Story>
+  <Story name="text">{stories.text()}</Story>
+</Preview>

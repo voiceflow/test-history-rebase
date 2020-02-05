@@ -3,7 +3,6 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
-import { IS_PRODUCTION } from '@/config';
 import LoginForm from '@/containers/Register/LoginForm';
 import SignupForm from '@/containers/Register/SignupForm';
 import Reset from '@/containers/Register/reset';
@@ -20,7 +19,6 @@ const Legal = React.lazy(() => import('@/components/Legal'));
 const Skill = React.lazy(() => import('@/containers/Skill'));
 const Account = React.lazy(() => import('@/containers/Account'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
-const Designer = React.lazy(() => import('@/containers/Designer'));
 const Reference = React.lazy(() => import('@/components/Reference'));
 const UserTesting = React.lazy(() => import('@/containers/UserTesting'));
 const Workspace = React.lazy(() => import('@/containers/Workspace'));
@@ -43,8 +41,6 @@ const Routes = ({ authToken }) => (
       <PrivateRoute exact path="/workspace/new" component={NewWorkspace} />
       <PrivateRoute path={['/workspace', '/dashboard', '/onboarding']} component={Workspace} />
 
-      {/* Designer Routes */}
-      {!IS_PRODUCTION && <Route path="/designer/preview" component={Designer} />}
       {/* Canvas Routes */}
       <PrivateRoute path="/reference/:project_id" component={Reference} page="canvas" />
       <Route path="/demo/:versionID" component={UserTesting} />
@@ -64,7 +60,6 @@ const Routes = ({ authToken }) => (
       <Redirect from="/publish/:versionID/alexa" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
       <Redirect from="/publish/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
       <Redirect exact from={`/${RootRoutes.PROJECT}/:versionID/publish`} to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
-      <Redirect from="/creator_logs/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/creator_logs`} />
       {/* Skill route */}
       <PrivateRoute path={`/${RootRoutes.PROJECT}/:versionID`} component={Skill} />
 

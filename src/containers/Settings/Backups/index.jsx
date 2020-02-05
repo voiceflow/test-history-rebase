@@ -43,7 +43,7 @@ function Backups({ projectID, setConfirm, toggle, goToCanvas }) {
   const fetchBackups = React.useCallback(async () => {
     try {
       const liveVersion = await client.project.getLiveVersion(projectID);
-      const versions = (await client.project.getVersions(projectID)).data?.filter((version) => {
+      const versions = (await client.project.getVersions(projectID)).filter((version) => {
         return version.skill_id !== liveVersion.live_version;
       });
 

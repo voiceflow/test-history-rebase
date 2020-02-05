@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input } from 'reactstrap';
 import styled from 'styled-components';
 
-import { PromptContainer } from './Menu';
+import PromptContainer from './PromptContainer';
 
 const Options = styled.div`
   display: flex;

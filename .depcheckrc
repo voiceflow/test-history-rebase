@@ -27,7 +27,13 @@
     "prettier-stylelint",
     "react-router",
     "exargs",
+    "@storybook/addon-docs",
     "@storybook/addon-storyshots",
-    "jest-styled-components"
+    "jest-styled-components",
+    "lodash-es",
+    "esm",
+    "ignore-styles",
+    "mock-local-storage",
+    "nyc"
   ]
 }

@@ -1193,6 +1193,729 @@ exports[`Storyshots Menu variants: divider 1`] = `
 </styled.ul>
 `;
 
+exports[`Storyshots Menu variants: multiselect 1`] = `
+<styled.ul
+  nativeScrollbar={true}
+>
+  <StyledComponent
+    forwardedComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "attrs": Array [],
+        "componentStyle": ComponentStyle {
+          "componentId": "sc-gPEVay",
+          "isStatic": false,
+          "lastClassName": "cNFCSt",
+          "rules": Array [
+            "
+  ",
+            "
+  border-radius: 8px;
+",
+            "
+
+  max-height: ",
+            [Function],
+            "px;
+  min-width: 100px;
+  ",
+            [Function],
+            "
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 8px 0;
+  border-radius: 5px;
+  background: ",
+            [Function],
+            ";
+  color: #132144;
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
+  font-size: 15px;
+  line-height: 18px;
+  list-style: none;
+  overflow: hidden;
+  animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
+  transform-origin: top;
+
+  ",
+            [Function],
+            "
+",
+          ],
+        },
+        "displayName": "styled.ul",
+        "foldedComponentIds": Array [],
+        "render": [Function],
+        "styledComponentId": "sc-gPEVay",
+        "target": "ul",
+        "toString": [Function],
+        "warnTooManyClasses": [Function],
+        "withComponent": [Function],
+      }
+    }
+    forwardedRef={
+      Object {
+        "current": <ul
+          class="sc-gPEVay cNFCSt"
+        >
+          <div
+            class="sc-kkGfuU jeGpxP"
+          >
+            <div
+              class="scrollbars"
+              style="position: relative; overflow: hidden; width: 100%; height: auto; min-height: 0; max-height: 200px;"
+            >
+              <div
+                style="position: relative; overflow: scroll; margin-right: 0px; margin-bottom: 0px; min-height: 0; max-height: 200px;"
+              >
+                <li
+                  class="MenuItem-ca1w0r-0 esaaUy"
+                >
+                  <div
+                    class="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                  >
+                    Antidisestablishmentarianism
+                  </div>
+                </li>
+                <li
+                  class="MenuItem-ca1w0r-0 esaaUy"
+                >
+                  <div
+                    class="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                  >
+                    A Man, A Plan, A Canal: Panama
+                  </div>
+                </li>
+                <li
+                  class="MenuItem-ca1w0r-0 esaaUy"
+                >
+                  <div
+                    class="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                  >
+                    An option with a very very verrrrrrrrrrrrrrrrrrrrrrrrrry long label
+                  </div>
+                </li>
+                <li
+                  class="MenuItem-ca1w0r-0 esaaUy"
+                >
+                  <div
+                    class="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                  >
+                    this one is short
+                  </div>
+                </li>
+              </div>
+              <div
+                style="position: absolute; height: 6px; transition: opacity 200ms; opacity: 0; display: none; right: 2px; bottom: 2px; left: 2px; border-radius: 3px;"
+              >
+                <div
+                  style="position: relative; display: block; height: 100%; cursor: pointer; border-radius: inherit; background-color: rgba(0, 0, 0, 0.2);"
+                />
+              </div>
+              <div
+                style="position: absolute; width: 6px; transition: opacity 200ms; opacity: 0; display: none; right: 2px; bottom: 2px; top: 2px; border-radius: 3px;"
+              >
+                <div
+                  style="position: relative; display: block; width: 100%; cursor: pointer; border-radius: inherit; background-color: rgba(0, 0, 0, 0.2);"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="sc-brqgnP gdheeO"
+          >
+            Select All
+          </div>
+        </ul>,
+      }
+    }
+    nativeScrollbar={true}
+  >
+    <ul
+      className="sc-gPEVay cNFCSt"
+    >
+      <styled.div>
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-kkGfuU",
+                "isStatic": false,
+                "lastClassName": "jeGpxP",
+                "rules": Array [
+                  "
+  ",
+                  "
+  ",
+                  "
+  animation: ",
+                  Keyframes {
+                    "id": "sc-keyframes-kjvcBe",
+                    "inject": [Function],
+                    "name": "kjvcBe",
+                    "rules": Array [
+                      "@-webkit-keyframes kjvcBe{from{-webkit-transform:translate3d(0,8px,0);-ms-transform:translate3d(0,8px,0);transform:translate3d(0,8px,0);opacity:0;}to{-webkit-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1;}}",
+                      "@keyframes kjvcBe{from{-webkit-transform:translate3d(0,8px,0);-ms-transform:translate3d(0,8px,0);transform:translate3d(0,8px,0);opacity:0;}to{-webkit-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1;}}",
+                    ],
+                    "toString": [Function],
+                  },
+                  " ",
+                  [Function],
+                  "s ease-in-out;
+  animation-fill-mode: both;
+",
+                  "
+   animation-delay: ",
+                  [Function],
+                  "s;
+",
+                  "
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-kkGfuU",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+        >
+          <div
+            className="sc-kkGfuU jeGpxP"
+          >
+            <Scrollbars
+              autoHeight={true}
+              autoHeightMax={200}
+              autoHeightMin={0}
+              autoHide={true}
+              autoHideDuration={200}
+              autoHideTimeout={1000}
+              className="scrollbars"
+              hideTracksWhenNotNeeded={true}
+              renderThumbHorizontal={[Function]}
+              renderThumbVertical={[Function]}
+              renderTrackHorizontal={[Function]}
+              renderTrackVertical={[Function]}
+              renderView={[Function]}
+              tagName="div"
+              thumbMinSize={30}
+              universal={false}
+            >
+              <div
+                className="scrollbars"
+                style={
+                  Object {
+                    "height": "auto",
+                    "maxHeight": 200,
+                    "minHeight": 0,
+                    "overflow": "hidden",
+                    "position": "relative",
+                    "width": "100%",
+                  }
+                }
+              >
+                <div
+                  key="view"
+                  style={
+                    Object {
+                      "WebkitOverflowScrolling": "touch",
+                      "bottom": undefined,
+                      "left": undefined,
+                      "marginBottom": 0,
+                      "marginRight": 0,
+                      "maxHeight": 200,
+                      "minHeight": 0,
+                      "overflow": "scroll",
+                      "position": "relative",
+                      "right": undefined,
+                      "top": undefined,
+                    }
+                  }
+                >
+                  <MenuItem
+                    key="test-key-0"
+                    onClick={[Function]}
+                  >
+                    <StyledComponent
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "MenuItem-ca1w0r-0",
+                            "isStatic": false,
+                            "lastClassName": "esaaUy",
+                            "rules": Array [
+                              "display:",
+                              [Function],
+                              ";align-items:center;",
+                              [Function],
+                              " ",
+                              [Function],
+                              " height:",
+                              [Function],
+                              ";padding:0 24px;background:#fff;overflow:hidden;user-select:none;cursor:pointer;margin:",
+                              [Function],
+                              ";border-bottom:",
+                              [Function],
+                              ";",
+                              [Function],
+                              " &:hover{",
+                              [Function],
+                              "}",
+                              [Function],
+                              " &:active{",
+                              [Function],
+                              "}",
+                            ],
+                          },
+                          "displayName": "MenuItem",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "MenuItem-ca1w0r-0",
+                          "target": "li",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={null}
+                      onClick={[Function]}
+                    >
+                      <li
+                        className="MenuItem-ca1w0r-0 esaaUy"
+                        onClick={[Function]}
+                      >
+                        <Flex__FlexLabel>
+                          <StyledComponent
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "Flex__FlexLabel-sc-127y44r-5",
+                                  "isStatic": true,
+                                  "lastClassName": "XHzCw",
+                                  "rules": Array [
+                                    "text-overflow:ellipsis;white-space:nowrap;",
+                                  ],
+                                },
+                                "displayName": "Flex__FlexLabel",
+                                "foldedComponentIds": Array [],
+                                "render": [Function],
+                                "styledComponentId": "Flex__FlexLabel-sc-127y44r-5",
+                                "target": "div",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                          >
+                            <div
+                              className="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                            >
+                              Antidisestablishmentarianism
+                            </div>
+                          </StyledComponent>
+                        </Flex__FlexLabel>
+                      </li>
+                    </StyledComponent>
+                  </MenuItem>
+                  <MenuItem
+                    key="test-key-1"
+                    onClick={[Function]}
+                  >
+                    <StyledComponent
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "MenuItem-ca1w0r-0",
+                            "isStatic": false,
+                            "lastClassName": "esaaUy",
+                            "rules": Array [
+                              "display:",
+                              [Function],
+                              ";align-items:center;",
+                              [Function],
+                              " ",
+                              [Function],
+                              " height:",
+                              [Function],
+                              ";padding:0 24px;background:#fff;overflow:hidden;user-select:none;cursor:pointer;margin:",
+                              [Function],
+                              ";border-bottom:",
+                              [Function],
+                              ";",
+                              [Function],
+                              " &:hover{",
+                              [Function],
+                              "}",
+                              [Function],
+                              " &:active{",
+                              [Function],
+                              "}",
+                            ],
+                          },
+                          "displayName": "MenuItem",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "MenuItem-ca1w0r-0",
+                          "target": "li",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={null}
+                      onClick={[Function]}
+                    >
+                      <li
+                        className="MenuItem-ca1w0r-0 esaaUy"
+                        onClick={[Function]}
+                      >
+                        <Flex__FlexLabel>
+                          <StyledComponent
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "Flex__FlexLabel-sc-127y44r-5",
+                                  "isStatic": true,
+                                  "lastClassName": "XHzCw",
+                                  "rules": Array [
+                                    "text-overflow:ellipsis;white-space:nowrap;",
+                                  ],
+                                },
+                                "displayName": "Flex__FlexLabel",
+                                "foldedComponentIds": Array [],
+                                "render": [Function],
+                                "styledComponentId": "Flex__FlexLabel-sc-127y44r-5",
+                                "target": "div",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                          >
+                            <div
+                              className="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                            >
+                              A Man, A Plan, A Canal: Panama
+                            </div>
+                          </StyledComponent>
+                        </Flex__FlexLabel>
+                      </li>
+                    </StyledComponent>
+                  </MenuItem>
+                  <MenuItem
+                    key="test-key-2"
+                    onClick={[Function]}
+                  >
+                    <StyledComponent
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "MenuItem-ca1w0r-0",
+                            "isStatic": false,
+                            "lastClassName": "esaaUy",
+                            "rules": Array [
+                              "display:",
+                              [Function],
+                              ";align-items:center;",
+                              [Function],
+                              " ",
+                              [Function],
+                              " height:",
+                              [Function],
+                              ";padding:0 24px;background:#fff;overflow:hidden;user-select:none;cursor:pointer;margin:",
+                              [Function],
+                              ";border-bottom:",
+                              [Function],
+                              ";",
+                              [Function],
+                              " &:hover{",
+                              [Function],
+                              "}",
+                              [Function],
+                              " &:active{",
+                              [Function],
+                              "}",
+                            ],
+                          },
+                          "displayName": "MenuItem",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "MenuItem-ca1w0r-0",
+                          "target": "li",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={null}
+                      onClick={[Function]}
+                    >
+                      <li
+                        className="MenuItem-ca1w0r-0 esaaUy"
+                        onClick={[Function]}
+                      >
+                        <Flex__FlexLabel>
+                          <StyledComponent
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "Flex__FlexLabel-sc-127y44r-5",
+                                  "isStatic": true,
+                                  "lastClassName": "XHzCw",
+                                  "rules": Array [
+                                    "text-overflow:ellipsis;white-space:nowrap;",
+                                  ],
+                                },
+                                "displayName": "Flex__FlexLabel",
+                                "foldedComponentIds": Array [],
+                                "render": [Function],
+                                "styledComponentId": "Flex__FlexLabel-sc-127y44r-5",
+                                "target": "div",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                          >
+                            <div
+                              className="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                            >
+                              An option with a very very verrrrrrrrrrrrrrrrrrrrrrrrrry long label
+                            </div>
+                          </StyledComponent>
+                        </Flex__FlexLabel>
+                      </li>
+                    </StyledComponent>
+                  </MenuItem>
+                  <MenuItem
+                    key="test-key-3"
+                    onClick={[Function]}
+                  >
+                    <StyledComponent
+                      forwardedComponent={
+                        Object {
+                          "$$typeof": Symbol(react.forward_ref),
+                          "attrs": Array [],
+                          "componentStyle": ComponentStyle {
+                            "componentId": "MenuItem-ca1w0r-0",
+                            "isStatic": false,
+                            "lastClassName": "esaaUy",
+                            "rules": Array [
+                              "display:",
+                              [Function],
+                              ";align-items:center;",
+                              [Function],
+                              " ",
+                              [Function],
+                              " height:",
+                              [Function],
+                              ";padding:0 24px;background:#fff;overflow:hidden;user-select:none;cursor:pointer;margin:",
+                              [Function],
+                              ";border-bottom:",
+                              [Function],
+                              ";",
+                              [Function],
+                              " &:hover{",
+                              [Function],
+                              "}",
+                              [Function],
+                              " &:active{",
+                              [Function],
+                              "}",
+                            ],
+                          },
+                          "displayName": "MenuItem",
+                          "foldedComponentIds": Array [],
+                          "render": [Function],
+                          "styledComponentId": "MenuItem-ca1w0r-0",
+                          "target": "li",
+                          "toString": [Function],
+                          "warnTooManyClasses": [Function],
+                          "withComponent": [Function],
+                        }
+                      }
+                      forwardedRef={null}
+                      onClick={[Function]}
+                    >
+                      <li
+                        className="MenuItem-ca1w0r-0 esaaUy"
+                        onClick={[Function]}
+                      >
+                        <Flex__FlexLabel>
+                          <StyledComponent
+                            forwardedComponent={
+                              Object {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "attrs": Array [],
+                                "componentStyle": ComponentStyle {
+                                  "componentId": "Flex__FlexLabel-sc-127y44r-5",
+                                  "isStatic": true,
+                                  "lastClassName": "XHzCw",
+                                  "rules": Array [
+                                    "text-overflow:ellipsis;white-space:nowrap;",
+                                  ],
+                                },
+                                "displayName": "Flex__FlexLabel",
+                                "foldedComponentIds": Array [],
+                                "render": [Function],
+                                "styledComponentId": "Flex__FlexLabel-sc-127y44r-5",
+                                "target": "div",
+                                "toString": [Function],
+                                "warnTooManyClasses": [Function],
+                                "withComponent": [Function],
+                              }
+                            }
+                            forwardedRef={null}
+                          >
+                            <div
+                              className="Flex__FlexLabel-sc-127y44r-5 XHzCw"
+                            >
+                              this one is short
+                            </div>
+                          </StyledComponent>
+                        </Flex__FlexLabel>
+                      </li>
+                    </StyledComponent>
+                  </MenuItem>
+                </div>
+                <div
+                  key="trackHorizontal"
+                  style={
+                    Object {
+                      "borderRadius": 3,
+                      "bottom": 2,
+                      "display": "none",
+                      "height": 6,
+                      "left": 2,
+                      "opacity": 0,
+                      "position": "absolute",
+                      "right": 2,
+                      "transition": "opacity 200ms",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "backgroundColor": "rgba(0,0,0,.2)",
+                        "borderRadius": "inherit",
+                        "cursor": "pointer",
+                        "display": "block",
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  key="trackVertical"
+                  style={
+                    Object {
+                      "borderRadius": 3,
+                      "bottom": 2,
+                      "display": "none",
+                      "opacity": 0,
+                      "position": "absolute",
+                      "right": 2,
+                      "top": 2,
+                      "transition": "opacity 200ms",
+                      "width": 6,
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "backgroundColor": "rgba(0,0,0,.2)",
+                        "borderRadius": "inherit",
+                        "cursor": "pointer",
+                        "display": "block",
+                        "position": "relative",
+                        "width": "100%",
+                      }
+                    }
+                  />
+                </div>
+              </div>
+            </Scrollbars>
+          </div>
+        </StyledComponent>
+      </styled.div>
+      <styled.div
+        onClick={[Function]}
+      >
+        <StyledComponent
+          forwardedComponent={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "attrs": Array [],
+              "componentStyle": ComponentStyle {
+                "componentId": "sc-brqgnP",
+                "isStatic": true,
+                "lastClassName": "gdheeO",
+                "rules": Array [
+                  "
+  padding: 24px 40px;
+  margin-bottom: -8px;
+  border-top: 1px solid #eaeff4;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 18px;
+  color: #0f7ec0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+",
+                ],
+              },
+              "displayName": "styled.div",
+              "foldedComponentIds": Array [],
+              "render": [Function],
+              "styledComponentId": "sc-brqgnP",
+              "target": "div",
+              "toString": [Function],
+              "warnTooManyClasses": [Function],
+              "withComponent": [Function],
+            }
+          }
+          forwardedRef={null}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-brqgnP gdheeO"
+            onClick={[Function]}
+          >
+            Select All
+          </div>
+        </StyledComponent>
+      </styled.div>
+    </ul>
+  </StyledComponent>
+</styled.ul>
+`;
+
 exports[`Storyshots Menu variants: scrolling 1`] = `
 <styled.ul
   nativeScrollbar={true}

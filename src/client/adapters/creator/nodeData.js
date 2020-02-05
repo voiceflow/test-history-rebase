@@ -17,11 +17,11 @@ const nodeDataAdapter = createSimpleAdapter(
     try {
       if (dbData.type === BlockType.DEPRECATED) {
         if (Array.isArray(dbData.choices) && Array.isArray(dbData.inputs)) {
-          type = BlockType.CHOICE;
+          type = BlockType.CHOICE_OLD;
         } else if (dbData.slot_type && dbData.slot_inputs) {
           type = BlockType.CAPTURE;
         } else if (Array.isArray(dbData.alexa?.choices) && Array.isArray(dbData.google?.choices)) {
-          type = BlockType.INTERACTION;
+          type = BlockType.CHOICE;
         } else if (Array.isArray(dbData.dialogs) && typeof dbData.randomize === 'boolean') {
           type = BlockType.SPEAK;
         } else if (typeof dbData.selected_integration === 'string' && typeof dbData.integrations_data === 'object') {
@@ -48,9 +48,10 @@ const nodeDataAdapter = createSimpleAdapter(
       type,
       name: node.name,
       nodeID: node.id,
+      path: [],
     };
   },
-  (appData) => ({
+  ({ path, ...appData }) => ({
     ...blockAdapter[appData.type].toDB(appData),
     type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
   })

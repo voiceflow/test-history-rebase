@@ -41,7 +41,7 @@ function NewWorkspace({ history, createWorkspace }) {
     } else {
       history.push('/dashboard');
     }
-  }, [name, imageUrl, createWorkspace]);
+  }, [createWorkspace, name, imageUrl, history, openSuccessModal]);
 
   return (
     <div id="template-box-container">

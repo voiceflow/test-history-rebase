@@ -1,14 +1,16 @@
+import cuid from 'cuid';
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
-import { Content } from '@/containers/CanvasV2/components/BlockEditor';
-import { useManager } from '@/hooks';
+import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor';
+import { useManager, useToggle } from '@/hooks';
 
-import SetExpression from './components/SetExpression';
+import { DraggableItem, HelpMessage, HelpTooltip } from './components';
 
 const MAX_SETS = 20;
 
 const setFactory = () => ({
+  id: cuid.slug(),
   expression: {
     type: 'value',
     value: '',
@@ -17,22 +19,55 @@ const setFactory = () => ({
 });
 
 function SetEditor({ data, onChange }) {
+  const [isDragging, toggleDragging] = useToggle(false);
   const updateSets = React.useCallback((sets) => onChange({ sets }), [onChange]);
+  const onRemoveSets = React.useCallback((_, index) => onChange(data.sets.splice(index, 1)), [data.sets, onChange]);
+  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
+    factory: setFactory,
+    handleRemove: onRemoveSets,
+  });
 
-  const { items, onAdd, mapManaged } = useManager(data.sets, updateSets, { factory: setFactory });
+  const addExpression = React.useCallback(
+    async (scrollToBottom) => {
+      await onAdd();
+      scrollToBottom();
+    },
+    [onAdd]
+  );
 
   return (
-    <Content>
-      {mapManaged((set, { key, onRemove, onUpdate }) => (
-        <SetExpression set={set} onRemove={items.length > 1 && onRemove} onUpdate={onUpdate} key={key} />
-      ))}
-      {items.length < MAX_SETS && (
-        <div className="editor-flex-container">
-          <Button variant="secondary" onClick={onAdd}>
-            Add Variable Set
-          </Button>
-        </div>
-      )}
+    <Content
+      footer={({ scrollToBottom }) =>
+        items.length < MAX_SETS ? (
+          <Controls
+            options={[
+              {
+                label: 'Add Set',
+                onClick: () => addExpression(scrollToBottom),
+              },
+            ]}
+            tutorial={{ blockType: data.type, content: <HelpTooltip />, helpTitle: 'Still having trouble?', helpMessage: <HelpMessage /> }}
+          />
+        ) : (
+          <div>Maximum options reached</div>
+        )
+      }
+      hideFooter={isDragging}
+    >
+      <DraggableList
+        type="set-editor"
+        items={items}
+        onDelete={onRemove}
+        onReorder={onReorder}
+        onEndDrag={toggleDragging}
+        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
+        mapManaged={mapManaged}
+        onStartDrag={toggleDragging}
+        itemComponent={DraggableItem}
+        deleteComponent={DeleteComponent}
+        partialDragItem
+        previewComponent={DraggableItem}
+      />
     </Content>
   );
 }

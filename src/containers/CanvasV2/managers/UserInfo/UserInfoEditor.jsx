@@ -1,50 +1,61 @@
-import cn from 'classnames';
+import cuid from 'cuid';
 import React from 'react';
-import { Alert } from 'reactstrap';
 
-import Button from '@/componentsV2/Button';
-import { PERMISSIONS, PermissionType } from '@/constants';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
-import { isLiveSelector } from '@/ducks/skill';
-import { connect } from '@/hocs';
-import { useManager } from '@/hooks';
+import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor/components';
+import { useManager, useToggle } from '@/hooks';
 
-import Permission from './components/Permission';
+import { DraggableItem, HelpMessage, HelpTooltip } from './components';
 
-const permissionFactory = (selectedPermissions) => {
-  const nextPermission = PERMISSIONS.find(({ value }) => value === PermissionType.PRODUCT || !selectedPermissions.includes(value));
+const permissionFactory = () => ({
+  id: cuid.slug(),
+  selected: null,
+});
 
-  return () => ({
-    selected: nextPermission.value,
-  });
-};
-
-function UserInfoEditor({ data, onChange, isLive }) {
-  const selectedPermissions = data.permissions.map(({ selected }) => selected);
+function UserInfoEditor({ data, onChange }) {
+  const [isDragging, toggleDragging] = useToggle(false);
   const updatePermissions = React.useCallback((permissions) => onChange({ permissions }), [onChange]);
-  const { onAdd, mapManaged } = useManager(data.permissions, updatePermissions, {
-    factory: permissionFactory(selectedPermissions),
+  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.permissions, updatePermissions, {
+    factory: permissionFactory,
   });
+  const selectedPermissions = items.map(({ selected }) => selected).filter(Boolean);
 
   return (
-    <Content className={cn({ 'disabled-overlay': isLive })}>
-      {mapManaged((permission, { key, onRemove, onUpdate }) => (
-        <Permission permission={permission} onRemove={onRemove} selectedPermissions={selectedPermissions} onUpdate={onUpdate} key={key} />
-      ))}
-      <Section>
-        <Button variant="secondary" icon="plus" onClick={onAdd}>
-          Add Permission Request
-        </Button>
-        <Alert className="mt-3">
-          If failing, try prompting the user with the <b>Permission</b> block and a message
-        </Alert>
-      </Section>
+    <Content
+      footer={() => (
+        <Controls
+          options={[
+            {
+              label: 'Add Request',
+              onClick: onAdd,
+            },
+          ]}
+          anchor="How It Works"
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpMessage: <HelpMessage />,
+          }}
+        />
+      )}
+      hideFooter={isDragging}
+    >
+      <DraggableList
+        type="speak-editor"
+        items={items}
+        onDelete={onRemove}
+        onReorder={onReorder}
+        onEndDrag={toggleDragging}
+        itemProps={{ latestCreatedKey, selectedPermissions, isOnlyItem: items.length === 1 }}
+        mapManaged={mapManaged}
+        onStartDrag={toggleDragging}
+        itemComponent={DraggableItem}
+        partialDragItem
+        deleteComponent={DeleteComponent}
+        previewComponent={DraggableItem}
+      />
     </Content>
   );
 }
 
-const mapStateToProps = {
-  isLive: isLiveSelector,
-};
-
-export default connect(mapStateToProps)(UserInfoEditor);
+export default UserInfoEditor;

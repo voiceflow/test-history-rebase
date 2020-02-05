@@ -8,7 +8,7 @@ const LINK_SIZE = 52;
 
 const LinkRemoveButton = ({ x, y, onClick, isHovering, ...props }) => (
   <foreignObject width={LINK_SIZE} height={LINK_SIZE} x={x - LINK_SIZE / 2} y={y - LINK_SIZE / 2} {...props}>
-    <IconButton icon="trash" size={15} onClick={onClick} />
+    <IconButton icon="trash" size={16} onClick={onClick} variant="standard" />
   </foreignObject>
 );
 
@@ -18,14 +18,13 @@ export default styled(LinkRemoveButton)`
 
   & > ${IconButtonContainer} {
     position: absolute;
-    left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    left: 50%;
     width: 42px;
     height: 42px;
-    background: #fff;
-    pointer-events: auto;
+    transform: translate(-50%, -50%);
     opacity: 1;
+    pointer-events: auto;
     ${transition()}
   }
 `;

@@ -33,10 +33,14 @@ const expressionify = (expression, depth = 0) => {
   }
 };
 
-function ExpressionPreview({ expression }) {
+function ExpressionPreview({ expression, ...props }) {
   if (!expression) return null;
 
-  return <PreviewContainer className="expressionfy">{expressionify(expression)}</PreviewContainer>;
+  return (
+    <PreviewContainer className="expressionfy" {...props}>
+      {expressionify(expression)}
+    </PreviewContainer>
+  );
 }
 
 export default ExpressionPreview;

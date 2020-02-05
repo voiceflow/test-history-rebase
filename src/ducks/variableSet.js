@@ -80,9 +80,15 @@ export const activeDiagramVariables = createSelector(
 
 export const replaceVariableSet = (variableSet, meta) => createAction(REPLACE_VARIABLE_SET, variableSet, meta);
 
-export const replaceVariableSetDiagram = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
+export const replaceVariableSetDiagram = (diagramID, variables) => {
+  return createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
+};
 
-export const addVariableToDiagram = (diagramID, name) => createAction(ADD_VARIABLE, name, { diagramID });
+export const addVariableToDiagram = (diagramID, name) => (dispatch) => {
+  dispatch(createAction(ADD_VARIABLE, name, { diagramID }));
+  // eslint-disable-next-line no-use-before-define
+  dispatch(saveVariableSet(diagramID));
+};
 
 export const removeVariableFromDiagram = (diagramID, name) => createAction(REMOVE_VARIABLE, name, { diagramID });
 
@@ -90,7 +96,6 @@ export const removeVariableFromDiagram = (diagramID, name) => createAction(REMOV
 
 export const loadVariableSetForDiagram = (diagramID) => async (dispatch) => {
   const variables = await client.diagram.findVariables(diagramID);
-
   dispatch(replaceVariableSetDiagram(diagramID, variables));
 
   return variables;

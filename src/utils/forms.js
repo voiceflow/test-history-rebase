@@ -1,3 +1,5 @@
+import isFunction from 'lodash/isFunction';
+import isObject from 'lodash/isObject';
 import toPath from 'lodash/toPath';
 
 export const getTransform = (rawObj, field) => {
@@ -6,13 +8,13 @@ export const getTransform = (rawObj, field) => {
   let obj = rawObj;
 
   while (obj && p < path.length) {
-    if (typeof obj === 'object' && !Array.isArray(obj) && !Number.isNaN(+path[p])) {
+    if (isObject(obj) && !Array.isArray(obj) && !Number.isNaN(+path[p])) {
       p++;
     } else {
       obj = obj[path[p++]];
     }
 
-    if (typeof obj === 'function') {
+    if (isFunction(obj)) {
       return obj;
     }
   }

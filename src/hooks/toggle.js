@@ -1,9 +1,10 @@
+import _isBoolean from 'lodash/isBoolean';
 import React from 'react';
 
 export const useToggle = (defaultValue = false) => {
   const [value, setValue] = React.useState(defaultValue);
 
-  const toggle = React.useCallback((nextValue) => setValue((currValue) => (typeof nextValue === 'boolean' ? nextValue : !currValue)), []);
+  const toggle = React.useCallback((nextValue) => setValue((currValue) => (_isBoolean(nextValue) ? nextValue : !currValue)), []);
 
   return [value, toggle];
 };

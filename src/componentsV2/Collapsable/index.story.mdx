@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Collapsable from '.';
+
+<Meta title="Collapsable" component={Collapsable} />
+
+# Collapsable
+
+A container that can expand and collapse.
+
+<Preview>
+  <Story name="uncontrolled - with title">{stories.uncontrolledWithTitle()}</Story>
+  <Story name="controlled - without title">{stories.controlledWithoutTitle()}</Story>
+</Preview>

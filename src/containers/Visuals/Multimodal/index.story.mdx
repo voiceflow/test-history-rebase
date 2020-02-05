@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Multimodal from '.';
+
+<Meta title="Visuals/Multimodal" component={Multimodal.WrappedComponent} />
+
+# Multimodal
+
+A container for visuals.
+
+<Preview>
+  <Story name="loaded">{stories.loaded()}</Story>
+  <Story name="loading">{stories.loading()}</Story>
+</Preview>

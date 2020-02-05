@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withContext } from '@/hocs';
 
-import { EngineContext } from '.';
+import { EngineContext } from './EngineContext';
 
 const DEFAULT_CONTEXT = {
   sourcePortID: null,
@@ -18,14 +18,17 @@ export const LinkCreationProvider = ({ children }) => {
   const [completing, setCompleting] = React.useState();
   const isDrawing = !!context.sourcePortID;
 
-  const onStart = React.useCallback(async (sourcePortID, mouseOrigin) => {
-    const linkIDs = engine.getLinkIDsByPortID(sourcePortID);
-    if (linkIDs.length) {
-      await Promise.all(linkIDs.map((linkID) => engine.link.remove(linkID)));
-    }
+  const onStart = React.useCallback(
+    async (sourcePortID, mouseOrigin) => {
+      const linkIDs = engine.getLinkIDsByPortID(sourcePortID);
+      if (linkIDs.length) {
+        await Promise.all(linkIDs.map((linkID) => engine.link.remove(linkID)));
+      }
 
-    setContext({ sourcePortID, mouseOrigin });
-  }, []);
+      setContext({ sourcePortID, mouseOrigin });
+    },
+    [engine]
+  );
   const onAbort = React.useCallback(() => setContext(DEFAULT_CONTEXT), []);
   const onComplete = React.useCallback(
     async (targetPortID) => {
@@ -34,7 +37,7 @@ export const LinkCreationProvider = ({ children }) => {
       setCompleting(false);
       onAbort();
     },
-    [engine, context]
+    [engine.link, context.sourcePortID, onAbort]
   );
 
   return (

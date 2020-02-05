@@ -1,18 +1,14 @@
 import { action } from '@storybook/addon-actions';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
-import { Variant, createTestableStory } from '@/../.storybook';
-import DragLayer from '@/componentsV2/DragLayer';
-import { DragProvider } from '@/contexts';
 import { reorder, without } from '@/utils/array';
 
-import DraggableList from '.';
+import DraggableList, { DeleteComponent } from '.';
 
-const ItemComponent = ({ text, index, style }) => (
+// eslint-disable-next-line react/display-name
+const ItemComponent = React.forwardRef(({ item: { text }, index, style }, ref) => (
   <div
+    ref={ref}
     style={{
       display: 'flex',
       width: '100%',
@@ -27,7 +23,7 @@ const ItemComponent = ({ text, index, style }) => (
   >
     {index}: {text}
   </div>
-);
+));
 
 const PreviewComponent = (props) => (
   <ItemComponent
@@ -37,7 +33,7 @@ const PreviewComponent = (props) => (
 );
 
 // eslint-disable-next-line react/display-name
-const DeleteComponent = React.forwardRef((props, ref) => (
+const CustomDeleteComponent = React.forwardRef((props, ref) => (
   <div
     {...props}
     ref={ref}
@@ -58,91 +54,45 @@ const DeleteComponent = React.forwardRef((props, ref) => (
   </div>
 ));
 
-storiesOf('DraggableList', module)
-  .add(
-    'variants',
-    createTestableStory(() => {
-      const [items, updateItems] = React.useState(Array.from({ length: 5 }, (_, i) => ({ id: i, text: `item ${i + 1}` })));
-      const onReorder = React.useCallback(
-        (dragIndex, hoverIndex) => {
-          updateItems(reorder(items, dragIndex, hoverIndex));
-        },
-        [items]
-      );
-      const onDelete = React.useCallback(
-        (index) => {
-          updateItems(without(items, index));
-        },
-        [items]
-      );
+const getProps = (itemCount = 5) => {
+  const [items, updateItems] = React.useState(Array.from({ length: itemCount }, (_, i) => ({ id: i, text: `item ${i + 1}` })));
 
-      return (
-        <DndProvider backend={HTML5Backend}>
-          <DragProvider>
-            <Variant label="default">
-              <div style={{ width: '300px', height: '300px' }}>
-                <DraggableList
-                  type="default"
-                  items={items}
-                  onDrop={action('onDrop')}
-                  onDelete={onDelete}
-                  onEndDrag={action('onEndDrag')}
-                  onReorder={onReorder}
-                  onStartDrag={action('onStartDrag')}
-                  itemComponent={ItemComponent}
-                  deleteComponent={DeleteComponent}
-                  previewComponent={PreviewComponent}
-                />
-              </div>
-            </Variant>
-
-            <DragLayer />
-          </DragProvider>
-        </DndProvider>
-      );
-    })
-  )
-  .add(
-    'performance - (DontTest)',
-    createTestableStory(() => {
-      const [items, updateItems] = React.useState(Array.from({ length: 1000 }, (_, i) => ({ id: i, text: `item ${i + 1}` })));
-      const onReorder = React.useCallback(
-        (dragIndex, hoverIndex) => {
-          updateItems(reorder(items, dragIndex, hoverIndex));
-        },
-        [items]
-      );
-
-      const onDelete = React.useCallback(
-        (index) => {
-          updateItems(without(items, index));
-        },
-        [items]
-      );
-
-      return (
-        <DndProvider backend={HTML5Backend}>
-          <DragProvider>
-            <Variant label="performance">
-              <div style={{ width: '300px', height: '300px' }}>
-                <DraggableList
-                  type="default"
-                  items={items}
-                  onDrop={action('onDrop')}
-                  onEndDrag={action('onEndDrag')}
-                  onDelete={onDelete}
-                  onReorder={onReorder}
-                  onStartDrag={action('onStartDrag')}
-                  itemComponent={ItemComponent}
-                  deleteComponent={DeleteComponent}
-                  previewComponent={PreviewComponent}
-                />
-              </div>
-            </Variant>
-
-            <DragLayer />
-          </DragProvider>
-        </DndProvider>
-      );
-    })
+  const onReorder = React.useCallback(
+    (dragIndex, hoverIndex) => {
+      updateItems(reorder(items, dragIndex, hoverIndex));
+    },
+    [items]
   );
+
+  const onDelete = React.useCallback(
+    (index) => {
+      updateItems(without(items, index));
+    },
+    [items]
+  );
+
+  return {
+    items,
+    onReorder,
+    onDelete,
+    itemComponent: ItemComponent,
+    deleteComponent: DeleteComponent,
+    previewComponent: PreviewComponent,
+    onDrop: action('onDrop'),
+    onEndDrag: action('onEndDrag'),
+    onStartDrag: action('onStartDrag'),
+    getItemKey: (item) => item.id,
+  };
+};
+
+export default {
+  title: 'Draggable List',
+  component: DraggableList,
+  includeStories: [],
+};
+
+export const normal = () => <DraggableList type="default" {...getProps()} />;
+
+export const withCustomDelete = () => <DraggableList type="custom-delete" {...getProps()} deleteComponent={CustomDeleteComponent} />;
+
+export const performance = () => <DraggableList type="default" {...getProps(1000)} />;

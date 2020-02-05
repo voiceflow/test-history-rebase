@@ -8,6 +8,7 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Header from '@/components/Header';
 import Dropdown from '@/componentsV2/Dropdown';
 import IconButton from '@/componentsV2/IconButton';
+import MadeInVoiceflow from '@/componentsV2/MadeInVoiceflow';
 import { MenuContainer } from '@/componentsV2/Menu';
 import { EditPermissionProvider } from '@/containers/CanvasV2/contexts';
 import Testing from '@/containers/Testing';
@@ -81,10 +82,7 @@ class UserTesting extends React.Component {
     const { name } = this.props;
     return (
       <>
-        <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
-          <img src="/favicon.png" alt="Voiceflow" />
-          <span>Made In Voiceflow</span>
-        </a>
+        <MadeInVoiceflow />
         <Header
           isUserMenu
           withLogo

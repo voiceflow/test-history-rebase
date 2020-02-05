@@ -1,31 +1,24 @@
 import { action } from '@storybook/addon-actions';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Variant, createTestableStory } from '@/../.storybook';
+import { withModalContext } from '@/../.storybook';
 import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
 
 import { BoardDeleteModal } from '.';
 
-const workspace = {
+const WORKSPACE = {
   id: 1,
   name: 'name',
   status: 0,
   creatorID: 1,
 };
 
-storiesOf('Dashboard/Board Delete Modal', module).add(
-  'variants',
-  createTestableStory(() => {
-    const { isOpened, open } = useModals(MODALS.BOARD_DELETE);
+export default {
+  title: 'Dashboard/Delete Workspace Modal',
+  component: BoardDeleteModal,
+  includeStories: [],
+};
 
-    !isOpened && open();
+const withDecorators = withModalContext(MODALS.BOARD_DELETE);
 
-    return (
-      <Variant>
-        <BoardDeleteModal workspace={workspace} deleteWorkspace={action('deleteWorkspace')} />
-      </Variant>
-    );
-  })
-);
+export const normal = withDecorators(() => <BoardDeleteModal workspace={WORKSPACE} deleteWorkspace={action('deleteWorkspace')} />);

@@ -1,37 +1,37 @@
 import { array, number, select, text } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Variant, createTestableStory } from '@/../.storybook';
 import * as ICONS from '@/svgs';
 
 import SvgIcon from '.';
 
-storiesOf('SvgIcon', module).add(
-  'variants',
-  createTestableStory(() => {
-    const size = number('size', 24);
-    const icon = select('icon', Object.keys(ICONS), 'mail');
-    const color = text('color', '#000');
-    const width = number('width', 24);
-    const height = number('height', 24);
-    const transitionArray = array('transition array', ['width', 'height']);
-    const transitionString = text('transition string', 'width');
+const getProps = () => ({
+  icon: select('icon', Object.keys(ICONS), 'mail'),
+  color: text('color', '#000'),
+  transition: text('transition string', 'width'),
+});
 
-    return (
-      <>
-        <Variant label="size">
-          <SvgIcon size={size} icon={icon} color={color} transition={transitionString} />
-        </Variant>
+export default {
+  title: 'SVG Icon',
+  component: SvgIcon,
+};
 
-        <Variant label="width height">
-          <SvgIcon width={width} height={height} icon={icon} color={color} transition={transitionString} />
-        </Variant>
+export const normal = () => {
+  const size = number('size', 24);
 
-        <Variant label="transition array">
-          <SvgIcon size={size} icon={icon} color={color} transition={transitionArray} />
-        </Variant>
-      </>
-    );
-  })
-);
+  return <SvgIcon size={size} {...getProps()} />;
+};
+
+export const withHeightAndWidth = () => {
+  const width = number('width', 24);
+  const height = number('height', 24);
+
+  return <SvgIcon width={width} height={height} {...getProps()} />;
+};
+
+export const withManyTransitions = () => {
+  const size = number('size', 24);
+  const transition = array('transition array', ['width', 'height']);
+
+  return <SvgIcon size={size} {...getProps()} transition={transition} />;
+};

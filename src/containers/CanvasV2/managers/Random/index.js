@@ -17,12 +17,12 @@ const RandomManager = {
     node: {
       ports: {
         in: [{}],
-        out: [{}],
+        out: [{}, {}],
       },
     },
     data: {
       name: 'Random',
-      paths: 1,
+      paths: 2,
     },
   }),
 };

@@ -1,7 +1,7 @@
 #TestSidebar {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -400px;
   bottom: 0;
   z-index: 8;
   display: flex;
@@ -9,8 +9,7 @@
   width: 400px;
   height: 100%;
   background-color: #fff;
-  border-left: 1px solid #e2e9ec;
-  transform: translateX(400px);
+  border-left: 1px solid #dfe3ed;
   transition: transform 0.15s;
   user-select: none;
 }
@@ -37,13 +36,13 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   text-align: center;
 }
 
 #TestSidebar.open {
   overflow: hidden;
-  transform: none !important;
+  transform: translateX(-400px);
 }
 
 #TestSettings {
@@ -57,7 +56,7 @@
   width: 300px;
   height: 100%;
   background: #fff;
-  border-left: 1px solid #e2e9ec;
+  border-left: 1px solid #dfe3ed;
   transform: translateX(300px);
   transition: all 0.25s ease;
 }
@@ -72,14 +71,13 @@
   display: flex;
   flex-grow: 0;
   width: 100%;
-  height: auto;
+  height: 42px;
   margin-bottom: 10px;
   padding: 12px 15px;
   border: 1px solid #d4d9e6;
-  height: 42px;
   border-radius: 5px;
-  transition: all 0.15s ease;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+  transition: all 0.15s ease;
 }
 
 .test-variable.editor:focus-within {
@@ -89,10 +87,10 @@
 .test-variable .variable_tag {
   margin: 0;
   margin-right: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
   color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .test-variable input {
@@ -121,8 +119,8 @@
   width: 100%;
   min-height: 80px;
   padding: 10px 16px;
-  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   outline: none;
+  box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   /* margin-bottom: 5px; */
 }
@@ -264,14 +262,14 @@
 
 #SpeechBar.listening.microphone > .speech-icon::before {
   position: absolute;
-  top: 3px;
-  right: 5px;
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border: 2px solid #263353;
+  top: 5px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background-image: linear-gradient(-180deg, rgba(233, 30, 99, 0.85), #e91e63);
+  border: 1px solid #263353;
   border-radius: 10px;
-  animation: flickerAnimation 1s infinite;
+  animation: flickerAnimation 1.5s infinite;
   content: ' ';
 }
 
@@ -331,7 +329,6 @@ td {
 }
 
 .message {
-  color: #132144;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -341,6 +338,7 @@ td {
   max-width: 100%;
   padding: 0.5rem;
   overflow: hidden;
+  color: #132144;
   text-align: left;
   word-break: break-word;
   border: 1px solid #dee2e6;
@@ -450,8 +448,8 @@ td {
 
 .alert {
   position: relative;
+  margin-bottom: 0;
   padding: 0.75rem 1.25rem;
-  margin-bottom: 0rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }

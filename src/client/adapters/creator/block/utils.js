@@ -1,29 +1,29 @@
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { PLATFORMS, REPROMPT_TYPE } from '@/constants';
+import { PLATFORMS, RepromptType } from '@/constants';
 
 export const createBlockAdapter = createSimpleAdapter;
 
 export const repromptAdapter = {
   fromDB: (reprompt) => {
     if (!reprompt) return null;
-    let type = reprompt.type || REPROMPT_TYPE.TEXT;
+    let type = reprompt.type || RepromptType.TEXT;
     if (reprompt.voice === 'audio') {
-      type = REPROMPT_TYPE.AUDIO;
+      type = RepromptType.AUDIO;
     }
     return reprompt
       ? {
           type,
-          audio: type === REPROMPT_TYPE.TEXT ? null : reprompt.content,
-          content: type === REPROMPT_TYPE.TEXT ? reprompt.content : '',
-          voice: type === REPROMPT_TYPE.TEXT ? reprompt.voice : null,
+          audio: type === RepromptType.TEXT ? null : reprompt.content,
+          content: type === RepromptType.TEXT ? reprompt.content : '',
+          voice: type === RepromptType.TEXT ? reprompt.voice : null,
         }
       : null;
   },
   toDB: (reprompt) =>
     reprompt
       ? {
-          content: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.content : reprompt.audio,
-          voice: reprompt.type === REPROMPT_TYPE.TEXT ? reprompt.voice : 'audio',
+          content: reprompt.type === RepromptType.TEXT ? reprompt.content : reprompt.audio,
+          voice: reprompt.type === RepromptType.TEXT ? reprompt.voice : 'audio',
           type: reprompt.type,
         }
       : null,

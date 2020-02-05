@@ -58,6 +58,7 @@ export const parseLocals = (locales, privacyAndCompliance) =>
       keywords: locales[locale].keywords,
       cardDescription: locales[locale].customProductPrompts.boughtCardDescription,
       purchasePrompt: locales[locale].customProductPrompts.purchasePromptDescription,
+      purchasePromptVoice: locales[locale].customProductPrompts.purchasePromptDescriptionVoice,
       privacyPolicyUrl: privacyAndCompliance.locales[locale].privacyPolicyUrl,
     }),
     {}

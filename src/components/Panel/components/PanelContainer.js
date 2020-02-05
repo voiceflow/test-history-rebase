@@ -9,7 +9,7 @@ const PanelContainer = styled.div`
   height: 100%;
 
   & ${PanelSection}, & ${PanelHeader} {
-    border-bottom: 1px solid #eaeff4;
+    border-bottom: 1px solid #dfe3ed;
   }
 
   & ${PanelSection} {

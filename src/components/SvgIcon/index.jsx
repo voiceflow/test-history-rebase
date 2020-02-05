@@ -3,19 +3,19 @@ import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled, withTheme } from '@/hocs';
 import { Spin } from '@/styles/animations/Spin';
 import * as ICONS from '@/svgs';
 import { compose } from '@/utils/functional';
 
 export const SvgIconContainer = styled.span`
   ${({ theme, transition }) => transition && theme.transition(...(_isString(transition) ? [transition] : transition))}
-
-  color: ${({ color }) => color};
+  box-sizing: content-box;
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
-  box-sizing: content-box;
-  
+  color: ${({ color }) => color};
+  opacity: 0.8;
+
   ${({ spin }) =>
     spin &&
     css`
@@ -23,24 +23,33 @@ export const SvgIconContainer = styled.span`
       ${Spin}
     `}
 
+  ${({ ignoreEvents }) =>
+    ignoreEvents &&
+    css`
+      pointer-events: none;
+    `}
+
   & > svg {
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
-  &:hover,
-  &:active {
+  &:hover {
     color: ${({ hoverColor, color }) => hoverColor || color};
+    opacity: 1;
+  }
 
+  &:active {
+    color: ${({ activeColor, hoverColor, color }) => activeColor || hoverColor || color};
+    opacity: 1;
   }
 `;
 
 const SvgIcon = compose(
   React.memo,
   React.forwardRef
-)(({ icon, size = 16, color = 'currentColor', checked, ...props }, ref) => {
+)(({ icon, size = 16, color = 'currentColor', variant, theme, ...props }, ref) => {
   let IconElement;
 
   if (_isString(icon)) {
@@ -51,8 +60,10 @@ const SvgIcon = compose(
     IconElement = icon;
   }
 
+  const iconColors = theme.components.icon[variant];
+
   return (
-    <SvgIconContainer size={size} color={color} checked={checked} {...props} ref={ref}>
+    <SvgIconContainer size={size} color={color} {...iconColors} {...props} ref={ref}>
       <IconElement />
     </SvgIconContainer>
   );
@@ -64,7 +75,8 @@ SvgIcon.propTypes = {
   width: PropTypes.number,
   color: PropTypes.string,
   height: PropTypes.number,
+  className: PropTypes.string,
   transition: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 };
 
-export default SvgIcon;
+export default withTheme(SvgIcon);

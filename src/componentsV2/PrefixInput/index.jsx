@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, InputGroup, InputGroupAddon, InputGroupText as PrefixText } from 'reactstrap';
 
-import { inputStyle } from '@/componentsV2/Input';
+import { inputStyle } from '@/componentsV2/Input/styles';
 import { styled } from '@/hocs';
 
 const InputGroupText = styled(PrefixText)`

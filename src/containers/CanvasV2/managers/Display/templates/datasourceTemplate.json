@@ -1,0 +1,46 @@
+{
+  "bodyTemplate7Data": {
+    "type": "object",
+    "objectId": "bt7Sample",
+    "title": "Today's Daily Photo of Cheese",
+    "backgroundImage": {
+      "contentDescription": null,
+      "smallSourceUrl": null,
+      "largeSourceUrl": null,
+      "sources": [
+        {
+          "url": "",
+          "size": "small",
+          "widthPixels": 0,
+          "heightPixels": 0
+        },
+        {
+          "url": "",
+          "size": "large",
+          "widthPixels": 0,
+          "heightPixels": 0
+        }
+      ]
+    },
+    "image": {
+      "contentDescription": null,
+      "smallSourceUrl": null,
+      "largeSourceUrl": null,
+      "sources": [
+        {
+          "url": "",
+          "size": "small",
+          "widthPixels": 0,
+          "heightPixels": 0
+        },
+        {
+          "url": "",
+          "size": "large",
+          "widthPixels": 0,
+          "heightPixels": 0
+        }
+      ]
+    },
+    "hintText": ""
+  }
+}

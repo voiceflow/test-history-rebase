@@ -1,3 +1,7 @@
+import { createSelector } from 'reselect';
+
+import { allIntentsSelector } from '@/ducks/intent';
+
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
 export const STATE_KEY = 'slot';
@@ -11,6 +15,7 @@ export default slotReducer;
 export const {
   root: rootSlotsSelector,
   all: allSlotsSelector,
+  map: mapSlotsSelector,
   findByIDs: findSlotsByIDsSelector,
   byID: slotByIDSelector,
   has: hasSlotsSelector,
@@ -19,3 +24,14 @@ export const {
 // action creators
 
 export const { add: addSlot, addMany: addSlots, update: updateSlot, remove: removeSlot, replace: replaceSlots } = createCRUDActionCreators(STATE_KEY);
+
+export const intentsUsingSlotSelector = createSelector(
+  allIntentsSelector,
+  (intents) => (slotID) =>
+    intents.reduce((acc, intent) => {
+      if (intent.slots.allKeys.includes(slotID)) {
+        acc.push(intent);
+      }
+      return acc;
+    }, [])
+);

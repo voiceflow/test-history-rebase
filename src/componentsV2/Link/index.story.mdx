@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Link from '.';
+
+<Meta title="Link" component={Link} />
+
+# Link
+
+A basic link component.
+
+<Preview>
+  <Story name="primary">{stories.primary()}</Story>
+  <Story name="secondary">{stories.secondary()}</Story>
+  <Story name="hidden">{stories.hidden()}</Story>
+</Preview>

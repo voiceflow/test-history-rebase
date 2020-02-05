@@ -7,47 +7,26 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
-import AdvancedSettings from './Advanced';
-import BackupSettings from './Backups';
-import BasicSettings from './Basic';
+import { ButtonGroupRouterContainer } from './components';
+import { SETTINGS_ROUTES, SettingsRoute } from './constants';
 
-export const Settings = {
-  BASIC: 'basic',
-  ADVANCED: 'advanced',
-  DISCOVERY: 'discovery',
-  BACKUPS: 'backups',
-};
-
-const SettingsOptions = [
-  {
-    value: Settings.BASIC,
-    label: 'Basic',
-    component: BasicSettings,
-  },
-  {
-    value: Settings.ADVANCED,
-    label: 'Advanced',
-    component: AdvancedSettings,
-  },
-  {
-    value: Settings.BACKUPS,
-    label: 'Backups',
-    component: BackupSettings,
-  },
-];
-
-const SettingsModal = ({ open, toggle, type = Settings.BASIC, setType }) => {
-  const updateType = React.useCallback((nextType) => setType(nextType), [setType]);
-
+const SettingsModal = ({ open, toggle, type = SettingsRoute.BASIC, setType }) => {
   return (
     <Modal isOpen={open} toggle={toggle}>
       <LockedResourceOverlay type={Realtime.ResourceType.SETTINGS} disabled={!open}>
         {({ forceUpdateKey }) => (
           <>
             <ModalHeader toggle={toggle} header="Project Settings" />
-            <div className="settings pb-3">
-              <ButtonGroupRouter key={forceUpdateKey} selected={type} onChange={updateType} routes={SettingsOptions} routeProps={{ toggle }} />
-            </div>
+            <ButtonGroupRouter
+              containerComponent={ButtonGroupRouterContainer}
+              key={forceUpdateKey}
+              selected={type}
+              onChange={setType}
+              routes={SETTINGS_ROUTES}
+              routeProps={{
+                toggle,
+              }}
+            />
           </>
         )}
       </LockedResourceOverlay>

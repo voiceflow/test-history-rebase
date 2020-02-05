@@ -12,7 +12,7 @@
             <g id="Group-18-Copy-4">
                 <g id="Combined-Shape">
                     <use fill="currentColor" xlink:href="#path-2"></use>
-                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                    <use fill="currentColor" xlink:href="#path-2"></use>
                 </g>
             </g>
         </g>

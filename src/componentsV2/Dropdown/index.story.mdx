@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Dropdown from '.';
+
+<Meta title="Dropdown" component={Dropdown} />
+
+# Dropdown
+
+A system for pairing a menu with a button.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="with custom menu">{stories.withCustomMenu()}</Story>
+  <Story name="with custom button">{stories.withCustomButton()}</Story>
+</Preview>

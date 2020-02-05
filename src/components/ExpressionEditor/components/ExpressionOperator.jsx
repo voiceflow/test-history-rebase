@@ -10,15 +10,15 @@ const Wrapper = styled.span`
 `;
 
 const OPERATORS = {
-  select: <SvgIcon icon="code" />,
+  select: <SvgIcon variant="standard" icon="code" />,
 
-  [ExpressionType.PLUS]: <SvgIcon icon="add" />,
-  [ExpressionType.MINUS]: <SvgIcon icon="subtract" />,
-  [ExpressionType.TIMES]: <SvgIcon icon="times" />,
-  [ExpressionType.DIVIDE]: <SvgIcon icon="divide" />,
-  [ExpressionType.EQUALS]: <SvgIcon icon="equals" />,
-  [ExpressionType.GREATER]: <SvgIcon icon="greater" />,
-  [ExpressionType.LESS]: <SvgIcon icon="less" />,
+  [ExpressionType.PLUS]: <SvgIcon variant="standard" icon="add" />,
+  [ExpressionType.MINUS]: <SvgIcon variant="standard" icon="subtract" />,
+  [ExpressionType.TIMES]: <SvgIcon variant="standard" icon="times" />,
+  [ExpressionType.DIVIDE]: <SvgIcon variant="standard" icon="divide" />,
+  [ExpressionType.EQUALS]: <SvgIcon variant="standard" icon="equals" />,
+  [ExpressionType.GREATER]: <SvgIcon variant="standard" icon="greater" />,
+  [ExpressionType.LESS]: <SvgIcon variant="standard" icon="less" />,
   [ExpressionType.AND]: 'AND',
   [ExpressionType.OR]: 'OR',
   [ExpressionType.NOT]: 'NOT',

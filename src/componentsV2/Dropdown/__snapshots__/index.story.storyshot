@@ -1,480 +1,191 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Regular Dropdown variants: Element w/ Custom Menu 1`] = `
-<Manager>
-  <Reference
-    innerRef={[Function]}
-  >
-    <InnerReference
-      innerRef={[Function]}
-      setReferenceNode={[Function]}
-    >
-      <button
-        onClick={[Function]}
-      >
-        Custom Element
-      </button>
-    </InnerReference>
-  </Reference>
-</Manager>
-`;
+exports[`Storyshots Dropdown Normal 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 15px;
+  height: 15px;
+  color: currentColor;
+  opacity: 0.8;
+}
 
-exports[`Storyshots Regular Dropdown variants: Round Button w/ Custom Menu 1`] = `
-<Manager>
-  <Reference
-    innerRef={[Function]}
-  >
-    <InnerReference
-      innerRef={[Function]}
-      setReferenceNode={[Function]}
-    >
-      <ForwardRef
-        active={false}
-        icon="back"
-        onClick={[Function]}
-        size={15}
-        variant="flat"
-      >
-        <Styled(Styled(styled.button))
-          active={false}
-          onClick={[Function]}
-          variant="flat"
-        >
-          <StyledComponent
-            active={false}
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-EHOje",
-                  "isStatic": false,
-                  "lastClassName": "lbhBnO",
-                  "rules": Array [
-                    "
-  ",
-                    "
-  ",
-                    "display:",
-                    [Function],
-                    ";align-items:center;",
-                    [Function],
-                    " ",
-                    [Function],
-                    " justify-content:center;",
-                    "
-  ",
-                    [Function],
-                    "
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
 
+.c1:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c1:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                    "
-",
-                    "
-  ",
-                    "
-  height: ",
-                    "42",
-                    "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-                    [Function],
-                    ";
-",
-                    "
-",
-                    "
-  width: ",
-                    "42",
-                    "px;
+  width: auto;
+  width: 42px;
   border: 0;
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
- 
-  height: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    ";
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  height: 36px;
+  width: 36px;
+  background: inherit;
+}
 
-  &:active {
-    ",
-                    "
-  ",
-                    "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-                    "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-",
-                    "
-  }
+}
 
-  ",
-                    [Function],
-                    "
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
 
-  ",
-                    [Function],
-                    "
-
-  ",
-                    [Function],
-                    "
-",
-                  ],
-                },
-                "displayName": "Styled(Styled(styled.button))",
-                "foldedComponentIds": Array [
-                  "sc-bdVaJa",
-                  "sc-ifAKCX",
-                ],
-                "render": [Function],
-                "styledComponentId": "sc-EHOje",
-                "target": "button",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={[Function]}
-            onClick={[Function]}
-            variant="flat"
-          >
-            <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
-              onClick={[Function]}
-            >
-              <ForwardRef
-                color="currentColor"
-                icon="back"
-                size={15}
-              >
-                <styled.span
-                  color="currentColor"
-                  size={15}
-                >
-                  <StyledComponent
-                    color="currentColor"
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "sc-bxivhb",
-                          "isStatic": false,
-                          "lastClassName": "fjfHJl",
-                          "rules": Array [
-                            "
-  ",
-                            [Function],
-                            "
-
-  color: ",
-                            [Function],
-                            ";
-  width: ",
-                            [Function],
-                            "px;
-  height: ",
-                            [Function],
-                            "px;
-  box-sizing: content-box;
-  
-  ",
-                            [Function],
-                            "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                            [Function],
-                            ";
-
-  }
-",
-                          ],
-                        },
-                        "displayName": "styled.span",
-                        "foldedComponentIds": Array [],
-                        "render": [Function],
-                        "styledComponentId": "sc-bxivhb",
-                        "target": "span",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={null}
-                    size={15}
-                  >
-                    <span
-                      className="sc-bxivhb fjfHJl"
-                      color="currentColor"
-                      size={15}
-                    >
-                      <test-file-stub />
-                    </span>
-                  </StyledComponent>
-                </styled.span>
-              </ForwardRef>
-            </button>
-          </StyledComponent>
-        </Styled(Styled(styled.button))>
-      </ForwardRef>
-    </InnerReference>
-  </Reference>
-</Manager>
+<button
+  className="c0"
+  onClick={[Function]}
+>
+  <span
+    className="c1"
+    color="currentColor"
+    size={15}
+  >
+    <svg
+      data-file-name="SvgBack"
+    />
+  </span>
+</button>
 `;
 
-exports[`Storyshots Regular Dropdown variants: Round Button w/ Options Menu 1`] = `
-<Manager>
-  <Reference
-    innerRef={[Function]}
-  >
-    <InnerReference
-      innerRef={[Function]}
-      setReferenceNode={[Function]}
-    >
-      <ForwardRef
-        active={false}
-        icon="back"
-        onClick={[Function]}
-        size={15}
-        variant="flat"
-      >
-        <Styled(Styled(styled.button))
-          active={false}
-          onClick={[Function]}
-          variant="flat"
-        >
-          <StyledComponent
-            active={false}
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-EHOje",
-                  "isStatic": false,
-                  "lastClassName": "lbhBnO",
-                  "rules": Array [
-                    "
-  ",
-                    "
-  ",
-                    "display:",
-                    [Function],
-                    ";align-items:center;",
-                    [Function],
-                    " ",
-                    [Function],
-                    " justify-content:center;",
-                    "
-  ",
-                    [Function],
-                    "
+exports[`Storyshots Dropdown With Custom Button 1`] = `
+<button
+  onClick={[Function]}
+>
+  Custom Element
+</button>
+`;
 
+exports[`Storyshots Dropdown With Custom Menu 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 15px;
+  height: 15px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c1:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-                    "
-",
-                    "
-  ",
-                    "
-  height: ",
-                    "42",
-                    "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-                    [Function],
-                    ";
-",
-                    "
-",
-                    "
-  width: ",
-                    "42",
-                    "px;
+  width: auto;
+  width: 42px;
   border: 0;
   color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  transition: all 0.12s ease-out;
- 
-  height: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    ";
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  height: 36px;
+  width: 36px;
+  background: inherit;
+}
 
-  &:active {
-    ",
-                    "
-  ",
-                    "background:linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;",
-                    "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-",
-                    "
-  }
+}
 
-  ",
-                    [Function],
-                    "
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
 
-  ",
-                    [Function],
-                    "
-
-  ",
-                    [Function],
-                    "
-",
-                  ],
-                },
-                "displayName": "Styled(Styled(styled.button))",
-                "foldedComponentIds": Array [
-                  "sc-bdVaJa",
-                  "sc-ifAKCX",
-                ],
-                "render": [Function],
-                "styledComponentId": "sc-EHOje",
-                "target": "button",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={[Function]}
-            onClick={[Function]}
-            variant="flat"
-          >
-            <button
-              className="sc-bdVaJa sc-ifAKCX sc-EHOje lbhBnO"
-              onClick={[Function]}
-            >
-              <ForwardRef
-                color="currentColor"
-                icon="back"
-                size={15}
-              >
-                <styled.span
-                  color="currentColor"
-                  size={15}
-                >
-                  <StyledComponent
-                    color="currentColor"
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "sc-bxivhb",
-                          "isStatic": false,
-                          "lastClassName": "fjfHJl",
-                          "rules": Array [
-                            "
-  ",
-                            [Function],
-                            "
-
-  color: ",
-                            [Function],
-                            ";
-  width: ",
-                            [Function],
-                            "px;
-  height: ",
-                            [Function],
-                            "px;
-  box-sizing: content-box;
-  
-  ",
-                            [Function],
-                            "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                            [Function],
-                            ";
-
-  }
-",
-                          ],
-                        },
-                        "displayName": "styled.span",
-                        "foldedComponentIds": Array [],
-                        "render": [Function],
-                        "styledComponentId": "sc-bxivhb",
-                        "target": "span",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={null}
-                    size={15}
-                  >
-                    <span
-                      className="sc-bxivhb fjfHJl"
-                      color="currentColor"
-                      size={15}
-                    >
-                      <test-file-stub />
-                    </span>
-                  </StyledComponent>
-                </styled.span>
-              </ForwardRef>
-            </button>
-          </StyledComponent>
-        </Styled(Styled(styled.button))>
-      </ForwardRef>
-    </InnerReference>
-  </Reference>
-</Manager>
+<button
+  className="c0"
+  onClick={[Function]}
+>
+  <span
+    className="c1"
+    color="currentColor"
+    size={15}
+  >
+    <svg
+      data-file-name="SvgBack"
+    />
+  </span>
+</button>
 `;

@@ -3,9 +3,10 @@ import { styled } from '@/hocs';
 const SelectionArea = styled.div`
   position: absolute;
   display: none;
-  border: 2px solid #00c0ff;
-  background: #00c0ff25;
+  border: 1px solid #5d9df5;
+  background: #5d9df515;
   pointer-events: none;
+  border-radius: 5px;
 `;
 
 export default SelectionArea;

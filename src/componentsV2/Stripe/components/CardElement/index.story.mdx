@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import CardElement from '.';
+
+<Meta title="Stripe/Card Element" component={CardElement} />
+
+# Card Element
+
+A basic wrapper for stripe credit card input.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

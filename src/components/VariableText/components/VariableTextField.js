@@ -1,10 +1,8 @@
-import styled from 'styled-components';
-
-import { inputStyle } from '@/componentsV2/Input';
+import { inputStyle } from '@/componentsV2/Input/styles';
+import { styled } from '@/hocs';
 
 const VariableTextField = styled.div`
   ${inputStyle}
-  line-height: 25px;
 
   & .public-DraftEditorPlaceholder-root,
   & .public-DraftEditorPlaceholder-hasFocus {

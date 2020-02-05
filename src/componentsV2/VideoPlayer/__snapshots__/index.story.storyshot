@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Video Player External 1`] = `
+.c1 {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+}
+
+.c0 {
+  height: 300px;
+  width: 500px;
+}
+
+<div
+  className="c0"
+  height="300px"
+  width="500px"
+>
+  <iframe
+    allowFullScreen={true}
+    className="c1"
+    src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+  />
+</div>
+`;
+
+exports[`Storyshots Video Player Internal 1`] = `
+.c1 {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+}
+
+.c0 {
+  height: 300px;
+  width: 500px;
+}
+
+<div
+  className="c0"
+  height="300px"
+  width="500px"
+>
+  <iframe
+    allowFullScreen={true}
+    className="c1"
+    src="/SampleVideo.mp4"
+  />
+</div>
+`;

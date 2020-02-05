@@ -1,4 +1,4 @@
-import { inputStyle } from '@/componentsV2/Input';
+import { inputStyle } from '@/componentsV2/Input/styles';
 import { styled } from '@/hocs';
 
 export const Wrapper = styled.div`

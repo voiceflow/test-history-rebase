@@ -1,207 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Captioned Icon Button variants: default 1`] = `
-<CaptionedIconButtonContainer
-  disabled={false}
-  onClick={[Function]}
->
-  <StyledComponent
-    disabled={false}
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
-          "isStatic": false,
-          "lastClassName": "jCVAps",
-          "rules": Array [
-            "
-  ",
-            "
-  ",
-            "display:",
-            [Function],
-            ";align-items:center;",
-            [Function],
-            " ",
-            [Function],
-            " justify-content:center;",
-            "
-  ",
-            [Function],
-            "
+exports[`Storyshots Captioned Icon Button Normal 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #becedc;
+  opacity: 0.8;
+}
 
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: #becedc;
+  opacity: 1;
+}
+
+.c1:active {
+  color: #becedc;
+  opacity: 1;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-            "
-",
-            "
-  ",
-            "
-  height: ",
-            "42",
-            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+  width: auto;
+  height: 60px;
+  width: 60px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: #6e849a;
+  -webkit-transition: ease all 0.15s;
+  transition: ease all 0.15s;
+}
 
-  width: ",
-            [Function],
-            ";
-",
-            "
-",
-            "height:",
-            "60",
-            "px;width:",
-            "60",
-            "px;flex-direction:column;color:#6e849a;",
-            [Function],
-            " &:hover{background:#eef4f6;}& > *:nth-child(1){padding-bottom:2px;}& > *:nth-last-child(1){padding-top:2px;}",
-          ],
-        },
-        "displayName": "CaptionedIconButtonContainer",
-        "foldedComponentIds": Array [
-          "sc-bdVaJa",
-          "sc-ifAKCX",
-        ],
-        "render": [Function],
-        "styledComponentId": "CaptionedIconButtonContainer-sc-1h2g29o-0",
-        "target": "button",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    onClick={[Function]}
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
+
+.c0:hover {
+  background: #eef4f6;
+}
+
+.c0 > *:nth-child(1) {
+  padding-bottom: 2px;
+}
+
+.c0 > *:nth-last-child(1) {
+  padding-top: 2px;
+}
+
+.c2 {
+  width: inherit;
+  padding: 0 8px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c1"
+    color="#becedc"
+    size={16}
   >
-    <button
-      className="sc-bdVaJa sc-ifAKCX CaptionedIconButtonContainer-sc-1h2g29o-0 jCVAps"
-      disabled={false}
-      onClick={[Function]}
-    >
-      <ForwardRef
-        color="#becedc"
-        icon="elipsis"
-      >
-        <styled.span
-          color="#becedc"
-          size={16}
-        >
-          <StyledComponent
-            color="#becedc"
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "sc-bxivhb",
-                  "isStatic": false,
-                  "lastClassName": "hbsvVt",
-                  "rules": Array [
-                    "
-  ",
-                    [Function],
-                    "
-
-  color: ",
-                    [Function],
-                    ";
-  width: ",
-                    [Function],
-                    "px;
-  height: ",
-                    [Function],
-                    "px;
-  box-sizing: content-box;
-  
-  ",
-                    [Function],
-                    "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                    [Function],
-                    ";
-
-  }
-",
-                  ],
-                },
-                "displayName": "styled.span",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "sc-bxivhb",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-            size={16}
-          >
-            <span
-              className="sc-bxivhb hbsvVt"
-              color="#becedc"
-              size={16}
-            >
-              <test-file-stub />
-            </span>
-          </StyledComponent>
-        </styled.span>
-      </ForwardRef>
-      <CaptionedIconButtonLabel>
-        <StyledComponent
-          forwardedComponent={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "attrs": Array [],
-              "componentStyle": ComponentStyle {
-                "componentId": "CaptionedIconButtonLabel-xduuz7-0",
-                "isStatic": true,
-                "lastClassName": "gEYgnO",
-                "rules": Array [
-                  "width:inherit;padding:0 8px;overflow-x:hidden;box-sizing:border-box;text-overflow:ellipsis;white-space:nowrap;font-weight:bold;font-size:11px;line-height:15px;",
-                ],
-              },
-              "displayName": "CaptionedIconButtonLabel",
-              "foldedComponentIds": Array [],
-              "render": [Function],
-              "styledComponentId": "CaptionedIconButtonLabel-xduuz7-0",
-              "target": "span",
-              "toString": [Function],
-              "warnTooManyClasses": [Function],
-              "withComponent": [Function],
-            }
-          }
-          forwardedRef={null}
-        >
-          <span
-            className="CaptionedIconButtonLabel-xduuz7-0 gEYgnO"
-          >
-            LABEL
-          </span>
-        </StyledComponent>
-      </CaptionedIconButtonLabel>
-    </button>
-  </StyledComponent>
-</CaptionedIconButtonContainer>
+    <svg
+      data-file-name="SvgElipsis"
+    />
+  </span>
+  <span
+    className="c2"
+  >
+    LABEL
+  </span>
+</button>
 `;

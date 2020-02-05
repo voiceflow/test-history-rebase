@@ -95,7 +95,7 @@ export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, dat
   });
   const mergedData = {
     nodeID: mergedNodeID,
-    name: 'New Block',
+    name: 'Block',
     type: BlockType.COMBINED,
   };
 

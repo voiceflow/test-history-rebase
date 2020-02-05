@@ -62,7 +62,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                       Workspace Settings
                     </h5>
                     <span
-                      class="sc-bxivhb iYlQyD"
+                      class="sc-bxivhb fsvlWZ"
                       color="currentColor"
                       size="12"
                     >
@@ -173,7 +173,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                         Workspace Settings
                       </h5>
                       <span
-                        class="sc-bxivhb iYlQyD"
+                        class="sc-bxivhb fsvlWZ"
                         color="currentColor"
                         size="12"
                       >
@@ -422,7 +422,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                                       "componentStyle": ComponentStyle {
                                         "componentId": "sc-bxivhb",
                                         "isStatic": false,
-                                        "lastClassName": "iYlQyD",
+                                        "lastClassName": "fsvlWZ",
                                         "rules": Array [
                                           "
   ",
@@ -448,7 +448,6 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -456,7 +455,6 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
     color: ",
                                           [Function],
                                           ";
-
   }
 ",
                                         ],
@@ -476,7 +474,7 @@ exports[`Storyshots Dashboard/Board Settings Modal User is admin: default 1`] = 
                                   size={12}
                                 >
                                   <span
-                                    className="sc-bxivhb iYlQyD"
+                                    className="sc-bxivhb fsvlWZ"
                                     color="currentColor"
                                     onClick={[Function]}
                                     size={12}
@@ -758,7 +756,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                       Workspace Settings
                     </h5>
                     <span
-                      class="sc-bxivhb iYlQyD"
+                      class="sc-bxivhb fsvlWZ"
                       color="currentColor"
                       size="12"
                     >
@@ -880,7 +878,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                         Workspace Settings
                       </h5>
                       <span
-                        class="sc-bxivhb iYlQyD"
+                        class="sc-bxivhb fsvlWZ"
                         color="currentColor"
                         size="12"
                       >
@@ -1140,7 +1138,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                                       "componentStyle": ComponentStyle {
                                         "componentId": "sc-bxivhb",
                                         "isStatic": false,
-                                        "lastClassName": "iYlQyD",
+                                        "lastClassName": "fsvlWZ",
                                         "rules": Array [
                                           "
   ",
@@ -1166,7 +1164,6 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
     display: block;
     width: inherit;
     height: inherit;
-
   }
 
   &:hover,
@@ -1174,7 +1171,6 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
     color: ",
                                           [Function],
                                           ";
-
   }
 ",
                                         ],
@@ -1194,7 +1190,7 @@ exports[`Storyshots Dashboard/Board Settings Modal With icon: default 1`] = `
                                   size={12}
                                 >
                                   <span
-                                    className="sc-bxivhb iYlQyD"
+                                    className="sc-bxivhb fsvlWZ"
                                     color="currentColor"
                                     onClick={[Function]}
                                     size={12}

@@ -25,6 +25,7 @@ const DEFAULT_STATE = {
   flowMenu: {
     activeTab: FlowTab.STRUCTURE,
   },
+  local: {},
 };
 
 // actions

@@ -1,4 +1,4 @@
-import axios from 'axios/index';
+import axios from 'axios';
 import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

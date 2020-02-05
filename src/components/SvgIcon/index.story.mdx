@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import SvgIcon from '.';
+
+<Meta title="SVG Icon" component={SvgIcon} />
+
+# SVG Icon
+
+A component for displaying an SVG icon.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="with height and width">{stories.withHeightAndWidth()}</Story>
+  <Story name="with many transitions">{stories.withManyTransitions()}</Story>
+</Preview>

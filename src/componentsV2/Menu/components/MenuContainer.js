@@ -30,7 +30,12 @@ const MenuContainer = styled.ul`
   transform-origin: top;
 
   ${({ nativeScrollbar }) => nativeScrollbar && nativeScrollbarsStyle}
-
+  
+  ${({ disableAnimation }) =>
+    !disableAnimation &&
+    css`
+      animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
+    `}
 `;
 
 export default MenuContainer;

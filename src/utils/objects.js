@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import toPath from 'lodash/toPath';
 
@@ -63,3 +64,24 @@ export const filterEntries = (obj, predicate) =>
 
     return acc;
   }, {});
+
+export const getDiff = (object, base) => {
+  function changes(object, base) {
+    return _.transform(object, function(result, value, key) {
+      if (value !== base[key]) {
+        result[key] = _.isObject(value) && _.isObject(base[key]) ? changes(value, base[key]) : value;
+      }
+    });
+  }
+  return changes(object, base);
+};
+
+export const getTopLevelDiff = (object, base) => {
+  const changes = (object, base) =>
+    _.transform(object, (result, value, key) => {
+      if (value !== base[key]) {
+        result[key] = value;
+      }
+    });
+  return changes(object, base);
+};

@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Header/User Menu Normal 1`] = `
+.c1 {
+  -webkit-transition: color 0.15s ease,border 0.15s ease;
+  transition: color 0.15s ease,border 0.15s ease;
+  width: 26px;
+  height: 26px;
+  line-height: 22px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  position: relative;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  cursor: default;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c1:before {
+  -webkit-transition: border 0.15s ease;
+  transition: border 0.15s ease;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(17,49,96,0.08);
+  border-radius: 100%;
+  content: '';
+}
+
+.c1:hover .c0:before {
+  border-color: rgba(17,49,96,0.13);
+}
+
+.c1 > * {
+  display: inline-block;
+}
+
+<div
+  className="account-dropdown nav-child-item"
+>
+  <div
+    className="c0 c1 pointer"
+    onClick={[Function]}
+  >
+    ?
+  </div>
+</div>
+`;

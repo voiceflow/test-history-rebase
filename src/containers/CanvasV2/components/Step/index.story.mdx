@@ -1,0 +1,23 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Step from '.';
+
+<Meta title="Step" component={Step} />
+
+# Step
+
+A component to represent a step in a conversational flow.
+
+<Preview>
+  <Story name="primary">{stories.primary()}</Story>
+  <Story name="secondary">{stories.secondary()}</Story>
+  <Story name="with placeholder">{stories.withPlaceholder()}</Story>
+  <Story name="with icon">{stories.withIcon()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+  <Story name="with long label">{stories.withLongLabel()}</Story>
+  <Story name="with long label and no port">{stories.withLongLabelAndNoPort()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="with connected port">{stories.withConnectedPort()}</Story>
+</Preview>

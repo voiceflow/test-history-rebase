@@ -4,18 +4,17 @@ import projectAdapter from './adapters/project';
 import workspaceAdapter from './adapters/workspace';
 import fetch from './fetch';
 
-// const WORKSPACES_PATH = 'teams';
-const LEGACY_WORKSPACE_PATH = 'team';
-const WORKSPACES_PATH = 'workspaces';
+export const LEGACY_WORKSPACE_PATH = 'team';
+export const WORKSPACES_PATH = 'workspaces';
 
 const workspaceClient = {
   find: () => fetch(WORKSPACES_PATH).then(workspaceAdapter.mapFromDB),
 
-  fetchWorkspace: (workspaceId) => fetch(`${WORKSPACES_PATH}/${workspaceId}`).then((data) => workspaceAdapter.mapFromDB([data])),
+  fetchWorkspace: (workspaceID) => fetch(`${WORKSPACES_PATH}/${workspaceID}`).then((data) => workspaceAdapter.mapFromDB([data])),
 
-  createWorkspace: (data) => fetch.post(`${WORKSPACES_PATH}`, data).then(workspaceAdapter.fromDB),
+  createWorkspace: (data) => fetch.post(WORKSPACES_PATH, data).then(workspaceAdapter.fromDB),
 
-  findMembers: (teamID) => fetch(`${WORKSPACES_PATH}/${teamID}/members`).then(memberAdapter.mapFromDB),
+  findMembers: (workspaceID) => fetch(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
 
   updateMembers: (workspaceID, payload) => fetch.patch(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, payload),
 

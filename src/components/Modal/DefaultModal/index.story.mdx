@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import DefaultModal from '.';
+
+<Meta title="Modal/Default" component={DefaultModal} />
+
+# Default Modal
+
+A basic modal component.
+
+<Preview>
+  <Story name="normal" labeled={false}>
+    {stories.normal()}
+  </Story>
+</Preview>

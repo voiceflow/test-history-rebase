@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ButtonDropdownInput, { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
+import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import { toast } from '@/componentsV2/Toast';
 import { MODALS, PLANS, USER_ROLES } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
@@ -62,8 +62,7 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
   return (
     <Container>
       <ButtonDropdownInput
-        orientation={ORIENTATION_TYPE.LEFT}
-        regularInput
+        orientation={OrientationType.LEFT}
         textValue={email}
         dropdownValue={permissionType}
         onDropdownChange={setPermission}

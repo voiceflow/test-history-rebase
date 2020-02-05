@@ -30,7 +30,7 @@ export const UploadAlexa = (props) => {
       return <RenderingError />;
     case ALEXA_STAGES.RENDERING:
     case ALEXA_STAGES.UPLOADING_ALEXA:
-    case ALEXA_STAGES.INTERACTION_MODEL:
+    case ALEXA_STAGES.CHOICE_MODEL:
     case ALEXA_STAGES.ENABLING_SKILL:
     case ALEXA_STAGES.SUBMITTING_SKILL:
       return <ProgressLoading state={ALEXA_STATES[stage]} />;

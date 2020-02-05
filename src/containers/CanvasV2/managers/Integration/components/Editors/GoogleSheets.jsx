@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { IntegrationActionType } from '@/constants';
+import { Content } from '@/containers/CanvasV2/components/Editor';
 import { setError } from '@/ducks/modal';
 import { activeSkillCreatorIDSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -48,7 +49,7 @@ const SelectGoogleSheetNextStep = (data) => {
 function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, currentStep, toggleStep, setStep }) {
   const [headers_list, setHeadersList] = React.useState([]);
 
-  const updateHeaders = async () => {
+  const updateHeaders = useCallback(async () => {
     setHeadersList([]);
 
     const spreadSheetId = data.spreadsheet && data.spreadsheet.value;
@@ -63,18 +64,18 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
     } catch (e) {
       setError(new Error('Blank or invalid headers in spreadsheet. The first row of your spreadsheet must be a header row'));
     }
-  };
+  }, [creator_id, data.sheet, data.spreadsheet, data.user, setError, skill_id]);
 
   useEffect(() => {
     updateHeaders();
-  }, [data.sheet, data.user]);
+  }, [data.sheet, data.user, updateHeaders]);
 
   const hasSelectedAction = data.selectedAction;
   const hasUser = data.user && !_.isEmpty(data.user);
   const hasSelectedSheet = data.sheet && !_.isEmpty(data.sheet);
 
   return (
-    <div>
+    <Content>
       <GoogleRequestType
         data={data}
         onChange={onChange}
@@ -151,7 +152,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
           )}
         </>
       )}
-    </div>
+    </Content>
   );
 }
 

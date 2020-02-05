@@ -1,6 +1,4 @@
-/* eslint-disable no-shadow */
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable no-shadow, jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import React from 'react';
 

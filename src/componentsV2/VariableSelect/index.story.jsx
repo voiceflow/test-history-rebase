@@ -1,10 +1,6 @@
-import { storiesOf } from '@storybook/react';
-import cn from 'classnames';
 import React from 'react';
 
-import { Variant, createTestableStory } from '@/../.storybook';
-
-import VariableSelectControl from './components/VariableSelectControl';
+import { VariableSelect } from '.';
 
 const VARIABLE_OPTIONS = [
   {
@@ -21,17 +17,9 @@ const VARIABLE_OPTIONS = [
   },
 ];
 
-storiesOf('Variable Select', module).add(
-  'variant',
-  createTestableStory(() => (
-    <>
-      <Variant label="Variable Select">
-        <VariableSelectControl placeholder="Variables" options={VARIABLE_OPTIONS} />
-      </Variant>
+export default {
+  title: 'Variable Select',
+  component: VariableSelect,
+};
 
-      <Variant label="Variable Select Box">
-        <VariableSelectControl classNamePrefix="variable-box" className={cn('variable-box')} placeholder="Variables" options={VARIABLE_OPTIONS} />
-      </Variant>
-    </>
-  ))
-);
+export const normal = () => <VariableSelect placeholder="Variables" variables={VARIABLE_OPTIONS} />;

@@ -8,8 +8,8 @@ import Container from './components/DraftJSEditorContainer';
 
 export { Container as DraftJSEditorContainer };
 
-const DraftJSEditor = (props, ref) => (
-  <Container>
+const DraftJSEditor = ({ wordBreak, ...props }, ref) => (
+  <Container wordBreak={wordBreak}>
     <BaseDraftJSEditor {...props} ref={ref} />
   </Container>
 );

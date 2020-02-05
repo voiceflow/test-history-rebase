@@ -1,3 +1,5 @@
+export const STATE_KEY = 'realtime';
+
 export const ServerAction = {
   DELETE_BLOCK: 'BLOCK_DELETION',
 };

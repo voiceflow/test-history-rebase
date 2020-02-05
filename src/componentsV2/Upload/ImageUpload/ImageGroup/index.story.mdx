@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ImageGroupUpload from '.';
+
+<Meta title="Upload/Image Group" component={ImageGroupUpload} />
+
+# Image Group Upload
+
+A component for uploading a group of images.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

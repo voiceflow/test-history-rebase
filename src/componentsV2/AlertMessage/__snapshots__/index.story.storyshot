@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Alert Message Danger 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+<div
+  className="alert alert-danger fade"
+  role="alert"
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <div
+    className="c0"
+  />
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum fugit labore natus omnis quaerat quos ut voluptates. Accusamus delectus exercitationem ipsam ipsum itaque modi nesciunt non officiis saepe voluptates!
+</div>
+`;
+
+exports[`Storyshots Alert Message Primary 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+<div
+  className="alert alert-primary fade"
+  role="alert"
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <div
+    className="c0"
+  />
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum fugit labore natus omnis quaerat quos ut voluptates. Accusamus delectus exercitationem ipsam ipsum itaque modi nesciunt non officiis saepe voluptates!
+</div>
+`;
+
+exports[`Storyshots Alert Message Success 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c1 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c1:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2 {
+  margin-bottom: 10px;
+}
+
+<div
+  className="alert alert-success fade"
+  role="alert"
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <span
+      className="c1 c2"
+      color="currentColor"
+      size={16}
+    >
+      <svg
+        data-file-name="SvgCheck"
+      />
+    </span>
+  </div>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum fugit labore natus omnis quaerat quos ut voluptates. Accusamus delectus exercitationem ipsam ipsum itaque modi nesciunt non officiis saepe voluptates!
+</div>
+`;
+
+exports[`Storyshots Alert Message Warning 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c1 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c1:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2 {
+  margin-bottom: 10px;
+}
+
+<div
+  className="alert alert-warning fade"
+  role="alert"
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <span
+      className="c1 c2"
+      color="currentColor"
+      size={16}
+    >
+      <svg
+        data-file-name="SvgWarning"
+      />
+    </span>
+  </div>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum fugit labore natus omnis quaerat quos ut voluptates. Accusamus delectus exercitationem ipsam ipsum itaque modi nesciunt non officiis saepe voluptates!
+</div>
+`;

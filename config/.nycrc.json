@@ -1,0 +1,5 @@
+{
+  "exclude": ["coverage/**", "tests/**", "build/**", "scratch.js", "index.js", ".*.js", "src/envSetup.js", "public/**", "scripts/**", "config/**"],
+  "reporter": ["html", "text", "text-summary", "lcov"],
+  "all": true
+}

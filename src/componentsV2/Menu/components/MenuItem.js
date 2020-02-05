@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { flexStyles } from '@/componentsV2/Flex';
 
-const MenuItem = styled.li`
+export const itemStyles = css`
   ${flexStyles}
 
   height: ${({ theme, divider }) => (!divider ? `${theme.components.menuItem.height}px` : 0)};
@@ -50,7 +50,10 @@ const MenuItem = styled.li`
        background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), #ffffff;
      `}
   }
+`;
 
+const MenuItem = styled.li`
+  ${itemStyles}
 `;
 
 export default MenuItem;

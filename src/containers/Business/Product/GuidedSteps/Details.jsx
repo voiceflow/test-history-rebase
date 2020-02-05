@@ -55,17 +55,6 @@ function DetailsForm({ product, updateProduct, onSave }) {
         </SubSection>
 
         <SubSection>
-          <label>Purchase Prompt</label>
-          <TextArea
-            minRows={3}
-            name="purchasePrompt"
-            placeholder="Enter description while purchasing or cancelling subscription"
-            value={product.purchasePrompt || ''}
-            onChange={onChange('purchasePrompt')}
-          />
-        </SubSection>
-
-        <SubSection>
           <label>Privacy Policy URL</label>
           <Input
             name="privacyPolicyUrl"

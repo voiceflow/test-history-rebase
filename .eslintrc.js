@@ -26,7 +26,6 @@ module.exports = {
     'class-methods-use-this': ['error', { exceptMethods: ['render'] }],
     'lodash/preferred-alias': ['error', { ignoreMethods: ['first'] }],
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
 
     // disabled
     'react/no-unescaped-entities': 'off',
@@ -90,9 +89,17 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.story.jsx'],
+      files: ['*.story.jsx', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/*'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
+        'react-hooks/rules-of-hooks': 'off',
+        'lodash/prefer-constant': 'off',
+      },
+    },
+    {
+      files: ['**/_suite.js', '*.unit.*'],
+      rules: {
+        'jest/valid-expect': 'off',
       },
     },
   ],

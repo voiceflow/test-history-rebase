@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Upload/JSON Normal 1`] = `
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 108px;
+  border: 1px dashed #d4d9e6;
+  border-radius: 5px;
+  padding: 0 16px;
+  color: #62778c;
+  cursor: auto;
+  width: 100%;
+  position: relative;
+  background: white;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: background 0.15s ease,color 0.15s ease,border-color 0.15s ease,background-color 0.15s ease;
+  transition: background 0.15s ease,color 0.15s ease,border-color 0.15s ease,background-color 0.15s ease;
+}
+
+.c1:active,
+.c1:focus {
+  outline: none;
+}
+
+.c1:hover {
+  background: rgba(238,244,246,0.5);
+}
+
+.c4 {
+  cursor: pointer;
+  display: inline-block;
+  color: #5d9df5;
+}
+
+.c3 {
+  cursor: default;
+  display: inline-block;
+}
+
+.c2 {
+  margin-bottom: 10px;
+}
+
+.c0 {
+  width: 500px;
+  margin-top: 10px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1 c2"
+    mode="drop"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <input
+      accept=".json,.JSON,application/json"
+      autoComplete="off"
+      multiple={true}
+      onChange={[Function]}
+      onClick={[Function]}
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+      tabIndex={-1}
+      type="file"
+    />
+    <div
+      className="c3"
+    >
+      Drop 
+      JSON
+       here or 
+      <span
+        className="c4"
+      >
+        Browse
+      </span>
+    </div>
+  </div>
+</div>
+`;

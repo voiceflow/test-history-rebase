@@ -1,10 +1,7 @@
 import React from 'react';
 
-import ControlledInput from './components/ControlledInput';
-import DefaultInput from './components/DefaultInput';
-import InlineInput from './components/InlineInput';
+import { ControlledInput, DefaultInput, InlineInput } from './components';
 
-export * from './components/styled';
 export { ControlledInput };
 
 const INPUT_VARIANTS = {
@@ -12,10 +9,10 @@ const INPUT_VARIANTS = {
   inline: InlineInput,
 };
 
-function Input({ variant, ...props }, ref) {
-  const Component = INPUT_VARIANTS[variant] || DefaultInput;
+function Input({ variant = 'default', ...props }, ref) {
+  const Component = INPUT_VARIANTS[variant];
 
-  return <Component {...props} ref={ref} />;
+  return variant === 'inline' && props.children ? props.children({ ref }) : <Component {...props} ref={ref} />;
 }
 
 export default React.forwardRef(Input);

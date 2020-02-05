@@ -57,10 +57,35 @@ export const ModalsContextProvider = ({ children }) => {
 export const useModals = (modalId) => {
   const { fade, open, close, update, toggle, openedId, modalData } = React.useContext(ModalsContext) || {};
 
-  const openModal = React.useCallback((data = {}) => open(modalId, data), [open, modalId]);
+  const isOpened = openedId === modalId;
+  const cacheState = React.useRef({ opened: openedId === modalId });
+
   const closeModal = React.useCallback(() => close(modalId), [close, modalId]);
-  const toggleModal = React.useCallback((data = {}) => toggle(modalId, data), [toggle, modalId]);
   const updateModal = React.useCallback((data = {}) => update(modalId, data), [update, modalId]);
+
+  const openModal = React.useCallback(
+    (data = {}, onClose) => {
+      cacheState.current.onClose = onClose;
+      open(modalId, data, onClose);
+    },
+    [open, modalId]
+  );
+  const toggleModal = React.useCallback(
+    (data = {}, onClose) => {
+      cacheState.current.onClose = onClose;
+
+      toggle(modalId, data, onClose);
+    },
+    [toggle, modalId]
+  );
+
+  React.useEffect(() => {
+    if (!isOpened && cacheState.current.isOpened) {
+      cacheState.current.onClose?.();
+    }
+
+    cacheState.current.isOpened = isOpened;
+  }, [isOpened]);
 
   return {
     fade,
@@ -69,6 +94,6 @@ export const useModals = (modalId) => {
     close: closeModal,
     toggle: toggleModal,
     update: updateModal,
-    isOpened: openedId === modalId,
+    isOpened,
   };
 };

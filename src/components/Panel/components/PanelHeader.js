@@ -9,7 +9,7 @@ const PanelHeader = styled.header`
 
   width: 100%;
   padding: ${({ theme }) => `${theme.unit * 2}px ${theme.unit * 2.5}px`};
-  border-bottom: 1px solid #eaeff4;
+  border-bottom: 1px solid #dfe3ed;
 `;
 
 export default PanelHeader;

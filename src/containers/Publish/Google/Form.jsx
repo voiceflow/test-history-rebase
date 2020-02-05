@@ -59,7 +59,7 @@ const LegalDisclaimer = styled.div`
   font-size: 11px;
   color: #62778c;
   padding: 8px 0;
-  border-bottom: 1px solid #eaeff4;
+  border-bottom: 1px solid #dfe3ed;
   margin-bottom: 24px;
 `;
 

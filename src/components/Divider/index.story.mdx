@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Divider from '.';
+
+<Meta title="Divider" component={Divider} />
+
+# Divider
+
+A component for dividing vertical space.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="with label">{stories.withLabel()}</Story>
+</Preview>

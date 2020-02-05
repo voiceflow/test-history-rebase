@@ -9,8 +9,19 @@ import 'brace/mode/json_custom';
 import 'brace/theme/chrome';
 /* eslint-enable simple-import-sort/sort */
 
-export default styled(AceEditor)`
-  border: 1px solid #d2dae2;
+export default styled(AceEditor).attrs({
+  fontSize: 13,
+  showGutter: true,
+  showPrintMargin: false,
+  highlightActiveLine: true,
+  editorProps: { $blockScrolling: true },
+})`
+  box-shadow: 0 0 3px #d0d8e7;
+  ${({ fullHeight }) =>
+    fullHeight &&
+    css`
+      height: 100% !important;
+    `}
   border-radius: 5px;
 
   .ace_custom_variable {
@@ -22,6 +33,18 @@ export default styled(AceEditor)`
     margin: -1px;
 
     border-radius: 7px;
+  }
+  .ace_scroller {
+    &.ace_scroll-left {
+      box-shadow: none;
+    }
+  }
+  .ace_gutter-active-line {
+    margin-top: 30px;
+  }
+
+  .ace_string {
+    color: #436282 !important;
   }
 
   .ace_gutter {

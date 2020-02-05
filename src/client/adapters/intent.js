@@ -1,18 +1,20 @@
+import { denormalize, normalize } from '@/utils/normalized';
+
 import { createAdapter } from './utils';
 
 const intentAdapter = createAdapter(
-  ({ key, name, inputs, open, _platform }) => ({
+  ({ key, name, inputs, slots = [], _platform }) => ({
     id: key,
     name,
+    slots: normalize(slots),
     inputs,
-    open,
     platform: _platform,
   }),
-  ({ id, name, inputs, open, platform }) => ({
+  ({ id, name, slots, inputs, platform }) => ({
     key: id,
     name,
+    slots: denormalize(slots),
     inputs,
-    open,
     _platform: platform,
   })
 );

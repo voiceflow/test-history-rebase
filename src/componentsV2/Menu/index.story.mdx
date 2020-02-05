@@ -1,0 +1,28 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Menu from '.';
+
+<Meta title="Menu" component={Menu} />
+
+# Menu
+
+A basic menu component.
+
+## Variants
+
+### Single Select
+
+<Preview>
+  <Story name="basic">{stories.basic()}</Story>
+  <Story name="scrolling">{stories.scrolling()}</Story>
+  <Story name="thin">{stories.thin()}</Story>
+  <Story name="wide">{stories.wide()}</Story>
+</Preview>
+
+### Multi-Select
+
+<Preview>
+  <Story name="multiselect">{stories.multiselect()}</Story>
+</Preview>

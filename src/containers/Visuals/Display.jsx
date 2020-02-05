@@ -309,12 +309,7 @@ class Display extends Component {
                             name="document_editor"
                             mode="json"
                             onChange={this.onChangeDocument}
-                            fontSize={14}
-                            showPrintMargin={false}
-                            showGutter={true}
-                            highlightActiveLine={true}
                             value={document}
-                            editorProps={{ $blockScrolling: true }}
                             setOptions={{
                               enableBasicAutocompletion: true,
                               enableLiveAutocompletion: false,
@@ -331,12 +326,7 @@ class Display extends Component {
                             name="document_editor"
                             mode="json"
                             onChange={this.onChangeDataSource}
-                            fontSize={14}
-                            showPrintMargin={false}
-                            showGutter={true}
-                            highlightActiveLine={true}
                             value={datasource}
-                            editorProps={{ $blockScrolling: true }}
                             setOptions={{
                               enableBasicAutocompletion: true,
                               enableLiveAutocompletion: false,

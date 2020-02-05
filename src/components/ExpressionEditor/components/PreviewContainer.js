@@ -1,12 +1,13 @@
 import { styled } from '@/hocs';
 
 const PreviewContainer = styled.div`
-  border: 1px dashed #c5d3e0;
+  border: ${({ noBorder }) => (noBorder ? 'none' : '1px dashed #d4d9e6')};
   border-radius: 5px;
   margin-bottom: 10px;
   padding: 5px 8px;
   line-height: 28px;
   text-align: left;
+  color: #132144;
 
   & .brackets {
     & > .variable {
@@ -48,6 +49,10 @@ const PreviewContainer = styled.div`
     & > .unknown {
       color: #496cf6;
       font-weight: bold;
+    }
+
+    .parenthesis {
+      color: #8da2b5;
     }
   }
 `;

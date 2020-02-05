@@ -4,7 +4,7 @@ import Modal from '@/components/Modal';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 
-import Payment from './index';
+import Payment from '.';
 
 function PaymentModal() {
   const { isOpened, toggle, data } = useModals(MODALS.PAYMENT);

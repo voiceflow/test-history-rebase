@@ -1,56 +1,82 @@
-import cn from 'classnames';
+import cuid from 'cuid';
 import React from 'react';
 
-import Select from '@/components/Select';
-import { PlatformType } from '@/constants';
-import { allIntentsSelector } from '@/ducks/intent';
-import { activePlatformSelector, isLiveSelector } from '@/ducks/skill';
+import Select from '@/componentsV2/Select';
+import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
-import { ALEXA_BUILT_INS, GOOGLE_BUILT_INS } from '@/utils/intent';
+import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
 
-import { Option, SingleValueOption } from './components';
+import { MissingIntentMessage } from './components';
 
-const IntentSelect = ({ value, onChange, intents, platform, isLive, className, ...props }) => {
-  const options = intents
-    .filter((intent) => !intent.platform || intent.platform === platform)
-    .concat(platform === PlatformType.GOOGLE ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS)
-    .map((intent) => {
-      const intentParts = intent.name.split('.');
-      const id = intent.built_in ? intent.key : intent.id;
+const getOptionValue = (option) => option.id;
 
-      return {
-        label: intent.built_in ? intentParts[intentParts.length - 1] : intent.name,
-        value: id,
-        key: id,
-        inputs: intent.inputs,
-        built_in: intent.built_in,
-      };
-    });
+function IntentSelect({ intent, intents, onChange, addIntent }) {
+  const intentID = intent?.id;
 
-  const selected = options.find((option) => option.value === value) || null;
+  const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
+  const intentLookup = React.useMemo(
+    () =>
+      filteredIntents.reduce((acc, intent) => {
+        acc[intent.id] = intent.name;
+
+        return acc;
+      }, {}),
+    [filteredIntents]
+  );
+  const intentMissing = intent?.id && !intentLookup[(intent?.id)] && !intent?.builtIn;
+
+  const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
+  const isButtonDisabled = React.useCallback((newName) => filteredIntents.find(({ name }) => name === newName), [filteredIntents]);
+
+  const onSelectIntent = React.useCallback((value) => onChange({ intent: value }), [onChange]);
+
+  const onCreate = React.useCallback(
+    (name) => {
+      const id = cuid.slug();
+
+      onSelectIntent(id);
+
+      addIntent(id, { id, name: prettifyIntentName(name) });
+    },
+    [addIntent, onSelectIntent]
+  );
 
   return (
-    <Select
-      placeholder="Select Intent"
-      className={cn('select-box', 'mb-1', className)}
-      classNamePrefix="select-box"
-      value={selected}
-      onChange={(result) => onChange(result.value)}
-      options={options}
-      components={{ Option, SingleValue: SingleValueOption }}
-      styles={{
-        singleValue: (base) => ({ ...base, width: '100%' }),
-      }}
-      isDisabled={isLive}
-      {...props}
-    />
+    <>
+      <Select
+        value={intentID}
+        clearable={intentID}
+        options={filteredIntents}
+        onCreate={onCreate}
+        onSelect={onSelectIntent}
+        formatValue={formatIntentName}
+        creatable
+        searchable
+        placeholder="Name new intent or select existing intent"
+        getOptionValue={getOptionValue}
+        getOptionLabel={getOptionLabel}
+        isButtonDisabled={isButtonDisabled}
+        createInputPlaceholder="Name new intent"
+      />
+      {intentMissing && <MissingIntentMessage variant="warning" message="Intent is broken or has been deleted." />}
+    </>
   );
-};
+}
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
-  intents: allIntentsSelector,
-  isLive: isLiveSelector,
+  intents: Intent.allPlatformIntentsSelector,
 };
 
-export default connect(mapStateToProps)(IntentSelect);
+const mapDispatchToProps = {
+  addIntent: Intent.addIntent,
+};
+
+const mergeProps = ({ intents }, _, { intents: intentOverrides }) => ({
+  intents: intentOverrides || intents,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(IntentSelect);

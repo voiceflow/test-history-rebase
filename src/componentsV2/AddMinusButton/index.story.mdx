@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import AddMinusButton from '.';
+
+<Meta title="Add-Minus Button" component={AddMinusButton} />
+
+# Add-Minus Button
+
+A button for incrementing or decrementing.
+
+<Preview>
+  <Story name="plus">{stories.plus()}</Story>
+  <Story name="minus">{stories.minus()}</Story>
+</Preview>

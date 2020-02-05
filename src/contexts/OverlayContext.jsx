@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withContext } from '@/hocs';
+import { withContext } from '@/hocs/withContext';
 
 export const OverlayContext = React.createContext(null);
 export const { Consumer: OverlayConsumer } = OverlayContext;

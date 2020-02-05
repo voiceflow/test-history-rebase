@@ -1,11 +1,11 @@
-import { storiesOf } from '@storybook/react';
+import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { Variant, createTestableStory } from '@/../.storybook';
+import { useToggle } from '@/hooks';
 
-import RadioGroup from './index';
+import RadioGroup from '.';
 
-const MultipleOptions = [
+const OPTIONS = [
   {
     id: 1,
     label: 'Option 1',
@@ -20,22 +20,22 @@ const MultipleOptions = [
   },
 ];
 
-storiesOf('Radio Group', module).add(
-  'variants',
-  createTestableStory(() => {
-    const [yesNoChecked, setYesNo] = React.useState(false);
-    const [multipleChecked, setMultiple] = React.useState(1);
+const getProps = () => {
+  const [checked, toggleChecked] = useToggle();
 
-    return (
-      <>
-        <Variant label="Yes No Radio Button">
-          <RadioGroup name="yesNo" checked={yesNoChecked} onChange={() => setYesNo(!yesNoChecked)} />
-        </Variant>
+  return {
+    checked,
+    onChange: toggleChecked,
+    disabled: boolean('Disabled', false),
+  };
+};
 
-        <Variant label="Multiple Radio Button">
-          <RadioGroup options={MultipleOptions} name="multiple" checked={multipleChecked} onChange={(value) => setMultiple(value)} />
-        </Variant>
-      </>
-    );
-  })
-);
+export default {
+  title: 'Radio Group',
+  component: RadioGroup,
+  includeStories: [],
+};
+
+export const normal = () => <RadioGroup name="yesNo" {...getProps()} />;
+
+export const multiselect = () => <RadioGroup options={OPTIONS} name="multiple" {...getProps()} />;

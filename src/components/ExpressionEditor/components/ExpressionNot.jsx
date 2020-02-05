@@ -25,9 +25,9 @@ function ExpressionNot({
   if (isPreview) {
     return (
       <span className="brackets">
-        <span>( </span>
+        <span className="parenthesis">( </span>
         <span className="not">NOT</span> {expressionify(value)}
-        <span> )</span>
+        <span className="parenthesis"> )</span>
       </span>
     );
   }
@@ -38,7 +38,7 @@ function ExpressionNot({
         <ExpressionOperator type={type} />
 
         <div role="button" tabIndex="0" className="type-button" onClick={onCollapse}>
-          <SvgIcon icon="trash" size={12} />
+          <SvgIcon icon="trash" size={16} variant="standard" />
         </div>
       </OperatorDropdown>
 

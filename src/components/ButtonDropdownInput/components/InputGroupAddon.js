@@ -1,19 +1,20 @@
 import { InputGroupAddon as ReactstrapInputGroupAddon } from 'reactstrap';
 
-import { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
+
+import { OrientationType } from '../constants';
 
 const InputGroupAddon = styled(ReactstrapInputGroupAddon)`
-  & ${({ orientation }) =>
-    orientation === ORIENTATION_TYPE.RIGHT
-      ? `
-        margin-right: -1px;
-        border-left: 0 solid white;
-      `
-      : `
-        margin-left: -1px;
-        border-left: 0 solid white;
-      `}
+  ${({ orientation }) =>
+    orientation === OrientationType.RIGHT
+      ? css`
+          margin-right: -1px;
+          border-left: 0 solid white;
+        `
+      : css`
+          margin-left: -1px;
+          border-left: 0 solid white;
+        `}
 `;
 
 export default InputGroupAddon;

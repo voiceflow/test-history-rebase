@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Port from '@/containers/CanvasV2/components/Port';
-import { EngineContext, PlatformContext, PortIDProvider } from '@/containers/CanvasV2/contexts';
+import { PortIDProvider } from '@/containers/CanvasV2/contexts';
 
 import { Container, PortList, PortListItem } from './components';
+import { usePortFilter } from './hooks';
 
 function PortSet({ ports, children }) {
-  const engine = React.useContext(EngineContext);
-  const platform = React.useContext(PlatformContext);
+  const portFilter = usePortFilter();
 
   return (
     <Container>
@@ -23,19 +23,13 @@ function PortSet({ ports, children }) {
       {children}
       <PortList direction="out">
         {/* eslint-disable-next-line sonarjs/no-identical-functions */}
-        {ports.out
-          .filter((portID) => {
-            const port = engine.getPortByID(portID);
-
-            return port && (!port.platform || port.platform === platform);
-          })
-          .map((portID, index) => (
-            <PortIDProvider value={portID} key={portID}>
-              <PortListItem>
-                <Port canDrag withLabel index={index} />
-              </PortListItem>
-            </PortIDProvider>
-          ))}
+        {ports.out.filter(portFilter).map((portID, index) => (
+          <PortIDProvider value={portID} key={portID}>
+            <PortListItem>
+              <Port canDrag withLabel index={index} />
+            </PortListItem>
+          </PortIDProvider>
+        ))}
       </PortList>
     </Container>
   );

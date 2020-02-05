@@ -1,120 +1,107 @@
-// STANDALONE SSML EDITOR
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 import Header from '@/components/Header';
-import SSMLEditor from '@/components/SSMLEditor';
 import Button from '@/componentsV2/Button';
-import { setError } from '@/ducks/modal';
+import { FlexEnd } from '@/componentsV2/Flex';
+import MadeInVoiceflow from '@/componentsV2/MadeInVoiceflow';
+import SSML from '@/componentsV2/SSML';
 import removeIntercom from '@/hocs/removeIntercom';
+import { useDebouncedCallback } from '@/hooks/callback';
+import { useEnableDisable } from '@/hooks/toggle';
+import { copy } from '@/utils/clipboard';
 
-import { App, CodeContainer, ExportSection, Page } from './components';
+import { App, CodeContainer, CopiedMessaged, Page } from './components';
 
-class SSML extends Component {
-  constructor(props) {
-    super(props);
-
-    let value;
-    try {
-      value = JSON.parse(localStorage.getItem('SSML_EDITOR'));
-    } catch (err) {
-      console.error(err);
-    }
-    if (!value) value = { text: '' };
-
-    this.state = {
-      value,
-      ssml: '',
-      copied: false,
-    };
-  }
-
-  saveValue = () => {
-    localStorage.setItem('SSML_EDITOR', JSON.stringify(this.state.value));
-  };
-
-  componentWillUnmount = () => {
-    this.saveValue();
-  };
-
-  generateCode = () => {
-    const { value } = this.state;
-    if (!value.text) return;
-    this.saveValue();
-    this.setState({
-      ssml: value.text,
-    });
-  };
-
-  copyCode = () => {
-    const dummy = document.createElement('textarea');
-    document.body.appendChild(dummy);
-    dummy.value = this.state.ssml;
-    dummy.select();
-    document.execCommand('copy');
-    document.body.removeChild(dummy);
-
-    if (this.copyInterval) clearInterval(this.copyInterval);
-
-    this.setState({ copied: true });
-    this.copyInterval = setTimeout(() => this.setState({ copied: false }), 3000);
-  };
-
-  updateSSML = (e) => {
-    this.setState({
-      ssml: e.target.value,
-    });
-  };
-
-  updateValue = (value) => {
-    this.setState({ value });
-  };
-
-  render() {
-    const { value, ssml, copied } = this.state;
-    const { setError } = this.props;
-
-    return (
-      <>
-        <a id="MadeInVoiceflow" href="https://voiceflow.com" target="_blank" rel="noopener noreferrer">
-          <img src="/favicon.png" alt="Voiceflow" />
-          <span>Made In Voiceflow</span>
-        </a>
-        <Header withLogo logoAssetPath="/logo.png" centerRenderer={_.constant('SSML Editor (ALPHA)')} />
-        <App>
-          <Page>
-            <SSMLEditor value={value} onChange={this.updateValue} setError={setError} />
-            <ExportSection>
-              <Button variant="primary" onClick={this.generateCode} disabled={!value.text.trim()}>
-                Generate SSML
-              </Button>
-              {ssml && (
-                <>
-                  <CodeContainer value={ssml} onChange={this.updateSSML} />
-                  <div>
-                    {!!copied && <small className="light-blue mr-3">Copied to clipboard</small>}
-                    <Button variant="secondary" onClick={this.copyCode}>
-                      Copy
-                    </Button>
-                  </div>
-                </>
-              )}
-            </ExportSection>
-          </Page>
-        </App>
-      </>
-    );
+function getInitialValue() {
+  try {
+    const { text, voice } = JSON.parse(localStorage.getItem('SSML_EDITOR'));
+    return { text, voice };
+  } catch (err) {
+    return { text: '', voice: 'Alexa' };
   }
 }
 
-const mapDispatchToProps = {
-  setError,
-};
+function wrapVoice({ text, voice }) {
+  if (voice === 'Alexa') return text;
 
-export default removeIntercom(
-  connect(
-    null,
-    mapDispatchToProps
-  )(SSML)
-);
+  return `<voice name="${voice}">${text}</voice>`;
+}
+
+function SSMLPage() {
+  const [copied, onEnableCopied, onDisableCopied] = useEnableDisable();
+  const [state, setState] = React.useState(getInitialValue);
+  const [ssml, setSSML] = React.useState(state.text);
+  const cache = React.useRef({});
+
+  cache.current.state = state;
+
+  const saveState = React.useCallback(() => {
+    localStorage.setItem('SSML_EDITOR', JSON.stringify(cache.current.state));
+  }, []);
+
+  const onCopy = React.useCallback(() => {
+    copy(wrapVoice(cache.current.state));
+
+    clearTimeout(cache.current.disableCopiedTimeout);
+
+    onEnableCopied();
+
+    cache.current.disableCopiedTimeout = setTimeout(onDisableCopied, 3000);
+
+    saveState();
+  }, [onEnableCopied, onDisableCopied, saveState]);
+
+  const onBlur = React.useCallback(({ text }) => setSSML(text), [setSSML]);
+  const onChangeVoice = React.useCallback((voice) => {
+    setState((state) => ({ ...state, voice }));
+  }, []);
+  const onEditorStateChange = useDebouncedCallback(
+    300,
+    (editorState) => setState((state) => ({ ...state, text: editorState.getCurrentContent().getPlainText() })),
+    []
+  );
+
+  React.useEffect(
+    () => () => {
+      saveState();
+    },
+    [saveState, state.voice, ssml]
+  );
+
+  return (
+    <>
+      <MadeInVoiceflow />
+
+      <Header withLogo logoAssetPath="/logo.png" />
+
+      <App>
+        <Page>
+          <SSML
+            value={ssml}
+            voice={state.voice}
+            onBlur={onBlur}
+            onChangeVoice={onChangeVoice}
+            withVariablesPlugin={false}
+            onEditorStateChange={onEditorStateChange}
+          />
+
+          {state.text && (
+            <>
+              <CodeContainer value={wrapVoice(state)} readOnly />
+
+              <FlexEnd>
+                {!!copied && <CopiedMessaged>Copied to clipboard</CopiedMessaged>}
+
+                <Button variant="primary" onClick={onCopy}>
+                  Copy
+                </Button>
+              </FlexEnd>
+            </>
+          )}
+        </Page>
+      </App>
+    </>
+  );
+}
+
+export default removeIntercom(SSMLPage);

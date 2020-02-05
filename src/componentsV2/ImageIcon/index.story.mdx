@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ImageIcon from '.';
+
+<Meta title="Image Icon" component={ImageIcon} />
+
+# Image Icon
+
+A div with customizable size and background.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="custom">{stories.custom()}</Story>
+</Preview>

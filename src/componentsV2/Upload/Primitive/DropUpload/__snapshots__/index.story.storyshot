@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Upload/Primitive/Drop Normal 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c7 .c2 {
+  color: #fff;
+}
+
+.c8 .c2 {
+  color: #6e849a;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 108px;
+  border: 1px dashed #d4d9e6;
+  border-radius: 5px;
+  padding: 0 16px;
+  color: #62778c;
+  cursor: auto;
+  width: 100%;
+  position: relative;
+  background: white;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: background 0.15s ease,color 0.15s ease,border-color 0.15s ease,background-color 0.15s ease;
+  transition: background 0.15s ease,color 0.15s ease,border-color 0.15s ease,background-color 0.15s ease;
+}
+
+.c1:active,
+.c1:focus {
+  outline: none;
+}
+
+.c1:hover {
+  background: rgba(238,244,246,0.5);
+}
+
+.c4 {
+  position: absolute;
+  padding: 5px;
+  margin: -5px;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #becedc;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c4:hover {
+  color: #8da2b5;
+}
+
+.c6 {
+  cursor: pointer;
+  display: inline-block;
+  color: #5d9df5;
+}
+
+.c5 {
+  cursor: default;
+  display: inline-block;
+}
+
+.c0 {
+  width: 500px;
+  margin-top: 50px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    mode="drop"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    tabIndex={0}
+  >
+    <input
+      accept="audio/mpeg"
+      autoComplete="off"
+      multiple={true}
+      onChange={[Function]}
+      onClick={[Function]}
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+      tabIndex={-1}
+      type="file"
+    />
+    <span
+      className="c2 c3 c4"
+      color="currentColor"
+      onClick={[Function]}
+      size={12}
+    >
+      <svg
+        data-file-name="SvgLink"
+      />
+    </span>
+    <div
+      className="c5"
+    >
+      Drop 
+      File
+       here or 
+      <span
+        className="c6"
+      >
+        Browse
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -10,10 +10,11 @@ function SpeechBar(props) {
   }
 
   if (ended) {
-    return (
+    return React.createPortal(
       <div id="SpeechBar">
         <div className="text-center flex-hard">Test Ended</div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
@@ -34,8 +35,6 @@ function SpeechBar(props) {
     }
   }
 
-  const speechBarPortalElement = document.getElementById('speech-bar-portal-element');
-
   return ReactDOM.createPortal(
     <div
       id="SpeechBar"
@@ -50,7 +49,7 @@ function SpeechBar(props) {
       </div>
       <div className="text-center flex-hard">{text}</div>
     </div>,
-    speechBarPortalElement
+    document.body
   );
 }
 

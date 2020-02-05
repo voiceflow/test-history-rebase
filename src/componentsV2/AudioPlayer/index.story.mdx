@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import AudioPlayer from '.';
+
+<Meta title="Audio Player" component={AudioPlayer} />
+
+# Audio Player
+
+A component for playing audio.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

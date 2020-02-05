@@ -5,6 +5,15 @@ const paths = require('../config/paths');
 
 const { ENV, IS_PRODUCTION } = require('../config/webpack/config');
 
+const BABEL_LOADER = {
+  loader: 'babel-loader',
+  options: {
+    cacheDirectory: true,
+    cacheCompression: IS_PRODUCTION,
+    compact: IS_PRODUCTION,
+  },
+};
+
 module.exports = ({ config }) =>
   merge.strategy({ 'module.rules': 'replace' })(config, {
     resolve: {
@@ -18,14 +27,14 @@ module.exports = ({ config }) =>
         {
           oneOf: [
             {
+              test: /\.story\.jsx$/,
+              loaders: [BABEL_LOADER, require.resolve('@storybook/source-loader')],
+              enforce: 'pre',
+            },
+            {
               test: /\.(js|jsx)$/,
               include: paths.sourceDir,
-              loader: 'babel-loader',
-              options: {
-                cacheDirectory: true,
-                cacheCompression: IS_PRODUCTION,
-                compact: IS_PRODUCTION,
-              },
+              ...BABEL_LOADER,
             },
             {
               test: /\.svg$/,

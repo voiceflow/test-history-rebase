@@ -1,6 +1,6 @@
 import React from 'react';
 
-import VariableInput from '@/components/VariableInput';
+import VariablesInput from '@/componentsV2/VariablesInput';
 import { styled } from '@/hocs';
 
 import NextStepButton from '../../components/NextStepButton';
@@ -30,31 +30,13 @@ function DeleteSheets({ data, onChange, openNextStep }) {
         <LineItemContainer>
           <Label>Start Row</Label>
           <ValueContainer>
-            <VariableInput
-              className="form-control"
-              value={data.start_row}
-              onChange={(raw) => {
-                onChange({
-                  start_row: raw,
-                });
-              }}
-              placeholder="Row Number to Start Delete"
-            />
+            <VariablesInput value={data.start_row} onChange={({ text }) => onChange({ start_row: text })} placeholder="Row Number to Start Delete" />
           </ValueContainer>
         </LineItemContainer>
         <LineItemContainer>
           <Label>End Row</Label>
           <ValueContainer>
-            <VariableInput
-              className="form-control"
-              value={data.end_row}
-              onChange={(raw) => {
-                onChange({
-                  end_row: raw,
-                });
-              }}
-              placeholder="Row Number to End Delete"
-            />
+            <VariablesInput value={data.end_row} onBlur={({ text }) => onChange({ end_row: text })} placeholder="Row Number to End Delete" />
           </ValueContainer>
         </LineItemContainer>
       </div>

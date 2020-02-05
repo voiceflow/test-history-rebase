@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
-import { ScrollContext } from '../contexts';
-import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '../utils/dom';
+import { ScrollContext } from '@/contexts';
+import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
+
 import { useToggle } from './toggle';
 
 export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {

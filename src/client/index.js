@@ -2,6 +2,7 @@ import analytics from './analytics';
 import clipboard from './clipboard';
 import diagram from './diagram';
 import display from './display';
+import file from './file';
 import list from './lists';
 import product from './product';
 import project from './project';
@@ -25,6 +26,7 @@ const client = {
   display,
   socket: null,
   product,
+  file,
 };
 
 export default client;

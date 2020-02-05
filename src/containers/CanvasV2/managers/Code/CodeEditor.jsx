@@ -1,12 +1,16 @@
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
+import ChatWithUsLink from '@/componentsV2/ChatLink';
+import OverflowMenu from '@/componentsV2/OverflowMenu';
 import { GLOBAL_VARIABLES } from '@/constants';
-import { Section } from '@/containers/CanvasV2/components/BlockEditor';
+import { Content, Controls } from '@/containers/CanvasV2/components/Editor';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 
-function CodeEditor({ data, onChange, variables }) {
+import { EditorContainer, HelpTooltip } from './components';
+
+function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
   const editorRef = React.useRef();
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
@@ -28,32 +32,49 @@ function CodeEditor({ data, onChange, variables }) {
         },
       });
     }
-  }, [editorRef.current, variables]);
+  }, [variables]);
 
   return (
-    <Section>
-      <AceEditor
-        ref={editorRef}
-        value={editorState}
-        onChange={onUpdateEditorState}
-        onBlur={onUpdateCode}
-        name="code"
-        mode="javascript"
-        fontSize={14}
-        showPrintMargin={false}
-        showGutter={true}
-        highlightActiveLine={true}
-        editorProps={{ $blockScrolling: true }}
-        setOptions={{
-          enableBasicAutocompletion: true,
-          enableLiveAutocompletion: true,
-          enableSnippets: false,
-          showLineNumbers: true,
-          tabSize: 2,
-          useWorker: false,
-        }}
-      />
-    </Section>
+    <Content
+      footer={() => (
+        <Controls
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpTitle: 'Having trouble?',
+            helpMessage: (
+              <>
+                <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
+              </>
+            ),
+          }}
+          menu={<OverflowMenu options={[{ label: 'Expand Fullscreen', onClick: onExpand }]} placement="top-end" />}
+        />
+      )}
+      hideFooter={expanded}
+      fillHeight
+    >
+      <EditorContainer>
+        <AceEditor
+          fullHeight={!expanded}
+          placeholder="Enter Javascript code here"
+          ref={editorRef}
+          value={editorState}
+          onChange={onUpdateEditorState}
+          onBlur={onUpdateCode}
+          name="code"
+          mode="javascript"
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: false,
+            showLineNumbers: true,
+            tabSize: 2,
+            useWorker: false,
+          }}
+        />
+      </EditorContainer>
+    </Content>
   );
 }
 

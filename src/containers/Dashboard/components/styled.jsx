@@ -65,7 +65,7 @@ export const ProjectListItem = styled(({ isActive, ...props }) => <Link {...prop
   padding: 15px 23px;
   background: #fff;
   border: 1px solid #eaeff4;
-  border-radius: 5px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
 

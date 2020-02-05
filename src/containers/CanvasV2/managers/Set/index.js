@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType, ExpressionType } from '@/constants';
 import CodeIcon from '@/svgs/solid/code.svg';
 
@@ -24,6 +26,7 @@ const SetManager = {
       name: 'Set',
       sets: [
         {
+          id: cuid.slug(),
           expression: { type: ExpressionType.VALUE, value: '', depth: 0 },
           variable: null,
         },

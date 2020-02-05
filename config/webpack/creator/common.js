@@ -1,9 +1,10 @@
 const merge = require('webpack-merge');
-// const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
+const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 
 const paths = require('../../paths');
 const commonConfig = require('../common');
-const { IS_SERVING } = require('../config');
+const { circularDependencyPlugin } = require('../common/utils');
+const { IS_SERVING, IS_PRODUCTION } = require('../config');
 
 module.exports = merge(commonConfig, {
   entry: {
@@ -17,30 +18,42 @@ module.exports = merge(commonConfig, {
   plugins: IS_SERVING
     ? []
     : [
-        // new UnusedFilesWebpackPlugin({
-        //   failOnUnused: IS_PRODUCTION,
-        //   globOptions: {
-        //     cwd: paths.sourceDir,
-        //     ignore: [
-        //       'assets/**/*',
-        //       '**/__tests__/**/*',
-        //       '**/__mock__/**/*',
-        //       '**/__mocks__/**/*',
-        //       'components/SRD/sass/**/*',
-        //       'setupTests.js',
-        //       // TODO: To be removed once SvgIcon component is being used in the app
-        //       'components/SvgIcon/*',
-        //       // TODO: To be removed once V2 components are being used
-        //       'componentsV2/**/*',
-        //       // TODO: To be removed once canvas component is being used
-        //       'components/Canvas/**/*',
-        //       'components/CanvasControls/**/*',
-        //       'hocs/index.js',
-        //       'hocs/styled.js',
-        //       'hocs/withContext.jsx',
-        //       'svgs/**/*',
-        //     ],
-        //   },
-        // }),
+        circularDependencyPlugin({
+          exclude: /node_modules|src\/componentsV2\/Select\/components\/Menu(Options)?\/index\.jsx/,
+        }),
+        new UnusedFilesWebpackPlugin({
+          failOnUnused: IS_PRODUCTION,
+          globOptions: {
+            cwd: paths.sourceDir,
+            ignore: [
+              'assets/**/*',
+              '**/__tests__/**/*',
+              '**/__mock__/**/*',
+              '**/__mocks__/**/*',
+              '**/__snapshots__/**/*',
+              '**/*.story.*',
+              '**/*.unit.*',
+              '**/*.it.*',
+              '**/containers/admin/**/*',
+              'svgs/**/*.svg',
+              'admin/**/*',
+              'utils/testing/**/*',
+              'utils/string.js',
+              'utils/number.js',
+              'containers/CanvasV2/managers/Display/templates/*.json',
+              'containers/CanvasV2/managers/Integration/zapier.png',
+
+              // TODO: validate whether these components will be used
+              'components/Uploads/**/*',
+              'containers/CanvasV2/components/Block/NewBlock/**/*',
+              'containers/CanvasV2/components/Step/**/*',
+              'componentsV2/CaptionedIconButton/**/*',
+              'componentsV2/Dropdown/**/*',
+              'componentsV2/DropdownButton/**/*',
+              'componentsV2/Link/**/*',
+              'componentsV2/Title/**/*'
+            ],
+          },
+        }),
       ],
 });

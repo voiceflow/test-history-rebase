@@ -15,7 +15,7 @@ const LockedEditorOverlayContainer = styled.div`
   color: #62778c;
   font-size: 15px;
   z-index: 10;
-  background: #ffffffaa;
+  background: #ffffffdd;
 
   ${MemberIcon} {
     margin-bottom: ${units(2)}px;

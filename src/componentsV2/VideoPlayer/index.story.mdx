@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import VideoPlayer from '.';
+
+<Meta title="Video Player" component={VideoPlayer} />
+
+# Video Player
+
+A basic component for playing static video content.
+
+<Preview>
+  <Story name="internal">{stories.internal()}</Story>
+  <Story name="external">{stories.external()}</Story>
+</Preview>

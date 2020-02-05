@@ -1,31 +1,27 @@
-import cn from 'classnames';
+/* eslint-disable no-shadow */
 import React from 'react';
 
-import { components } from '@/components/Select';
+import Select from '@/componentsV2/Select';
+import { addGlobalVariable } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 
-import Control from './components/VariableSelectControl';
-import CreateVariable from './components/VariableSelectCreate';
-import Option from './components/VariableSelectOption';
+export const VariableSelect = ({ value, variables, addVariable, onChange, ...props }) => {
+  const onCreate = (item) => {
+    addVariable(item);
+    onChange(item);
+  };
 
-const Menu = ({ children, ...props }) => (
-  <components.Menu {...props}>
-    {children}
-    <CreateVariable />
-  </components.Menu>
-);
-
-const VariableSelect = ({ value, onChange, variables, className, ...props }) => {
   return (
-    <Control
-      classNamePrefix="variable-box"
-      placeholder={variables.length ? 'Select Variable' : 'No Variables Exist'}
-      className={cn('variable-box', className)}
-      components={{ Option, Menu }}
-      value={value ? { label: `{${value}}`, value } : null}
-      onChange={(selected) => onChange(selected.value, selected.label)}
-      options={variables.map((variable) => ({ label: `{${variable}}`, value: variable }))}
+    <Select
+      value={value}
+      options={variables}
+      onSelect={onChange}
+      onCreate={onCreate}
+      creatable
+      searchable
+      placeholder="Select Variable"
+      createInputPlaceholder="Variable"
       {...props}
     />
   );
@@ -35,4 +31,11 @@ const mapStateToProps = {
   variables: allVariablesSelector,
 };
 
-export default connect(mapStateToProps)(VariableSelect);
+const mapDispatchToProps = {
+  addVariable: addGlobalVariable,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(VariableSelect);

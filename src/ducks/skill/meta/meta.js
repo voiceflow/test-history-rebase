@@ -31,6 +31,11 @@ export const skillMetaSelector = createSelector(
   ({ meta }) => meta
 );
 
+export const skillCreatedSelector = createSelector(
+  skillMetaSelector,
+  ({ created }) => new Date(created)
+);
+
 export const invNameSelector = createSelector(
   skillMetaSelector,
   ({ invName }) => invName
@@ -69,4 +74,20 @@ export const saveMetaSettings = (settings) => async (dispatch, getState) => {
 
   await client.skill.update(skillID, skillMetaAdapter.toDB(settings));
   dispatch(updateSkillMeta(settings));
+};
+
+export const saveAccountLinking = (accountLinkingData) => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+
+  await client.skill.updateAccountLinking(skillID, accountLinkingData);
+  await dispatch(updateAccountLinking(accountLinkingData));
+};
+
+export const getAccountLinking = () => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+
+  const accountLinkingData = await client.skill.findAccountLinking(skillID);
+  return accountLinkingData.account_linking;
 };

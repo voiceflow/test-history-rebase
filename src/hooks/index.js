@@ -12,3 +12,5 @@ export * from './reducer';
 export * from './callback';
 export * from './effect';
 export * from './forceUpdate';
+export * from './lifecycle';
+export * from './modal';

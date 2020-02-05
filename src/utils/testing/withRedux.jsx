@@ -6,15 +6,17 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import rootReducer from '@/ducks/_root';
 import createMiddleware from '@/store/middleware';
 
-export default (state = {}) => (Component) => {
+export const ReduxProvider = ({ state = {}, children }) => {
   const history = createMemoryHistory();
   const middleware = createMiddleware(history);
   const store = createStore(rootReducer(history), state, compose(applyMiddleware(...middleware)));
 
-  // eslint-disable-next-line react/display-name
-  return (props) => (
-    <ReactRedux.Provider store={store}>
-      <Component {...props} />
-    </ReactRedux.Provider>
-  );
+  return <ReactRedux.Provider store={store}>{children}</ReactRedux.Provider>;
 };
+
+// eslint-disable-next-line react/display-name
+export default (state = {}) => (Component) => (props) => (
+  <ReduxProvider state={state}>
+    <Component {...props} />
+  </ReduxProvider>
+);

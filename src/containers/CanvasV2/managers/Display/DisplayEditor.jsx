@@ -1,198 +1,117 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
-import { InputGroup } from 'reactstrap';
 
-import AceEditor from '@/components/AceEditor';
-import Checkbox from '@/components/Checkbox';
-import DisplaySelect from '@/components/DisplaySelect';
-import Divider from '@/components/Divider';
-import Button from '@/componentsV2/Button';
-import { FlexApart } from '@/componentsV2/Flex';
-import Link from '@/componentsV2/Link';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
-import { withDisplayModalContext } from '@/containers/CanvasV2/contexts/DisplayModalContext';
-import { allDisplaysSelector } from '@/ducks/display';
-import { goToDisplays, goToNewDisplay } from '@/ducks/router';
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import RadioGroup from '@/components/RadioGroup';
+import Section from '@/componentsV2/Section';
+import { DisplayType, MODALS } from '@/constants';
+import { Content } from '@/containers/CanvasV2/components/Editor';
+import { useModals } from '@/contexts/ModalsContext';
+import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { preventDefault } from '@/utils/dom';
-import { compose } from '@/utils/functional';
 
-function DisplayEditor({ data, onChange, displays, goToDisplays, goToNewDisplay, displayModal }) {
-  const { setDisplayID, setDataSource, setAPLCommands, toggle } = displayModal;
+import { AdvancedEditor, Footer, SplashEditor } from './components';
 
-  const getDatasource = React.useCallback((displayID) => displays.find((display) => display.id === displayID).datasource || null, [displays]);
+const DISPLAY_OPTIONS = [
+  {
+    id: DisplayType.SPLASH,
+    label: 'Splash',
+  },
+  {
+    id: DisplayType.ADVANCED,
+    label: 'Advanced',
+  },
+];
 
-  const updateDatasource = React.useCallback((datasource) => onChange({ datasource }), [onChange]);
+function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, duplicateDisplay, selected, onChange }) {
+  const { displayType, backgroundImage, splashHeader, displayID, datasource, aplCommands, jsonFileName } = data;
+  const { open: openModal } = useModals(MODALS.DISPLAY_PREVIEW);
+  const isLegacyConditional = !!displayID && !splashHeader && !backgroundImage && displayType === DisplayType.ADVANCED && !jsonFileName;
+  const [isLegacyData, setIsLegacyData] = React.useState(isLegacyConditional);
 
-  const updateDisplay = React.useCallback(
-    (displayID) => {
-      onChange({ displayID });
-      updateDatasource(getDatasource(displayID));
-    },
-    [onChange, updateDatasource, getDatasource]
-  );
+  React.useEffect(() => {
+    const handleLegacyMigration = async () => {
+      if (isLegacyData) {
+        const newDisplayID = await duplicateDisplay(displayID, skillID);
 
-  const updateAPLCommands = React.useCallback((aplCommands) => onChange({ aplCommands }), [onChange]);
+        onChange({ displayID: newDisplayID, jsonFileName: newDisplayID });
+        setIsLegacyData(false);
+      }
+    };
 
-  const toggleUpdateOnChange = React.useCallback(() => onChange({ updateOnChange: !data.updateOnChange }), [data.updateOnChange, onChange]);
+    handleLegacyMigration();
+  }, []);
 
-  const showTestModal = () => {
-    setDisplayID(data.displayID);
-    setDataSource(data.datasource || '');
-    setAPLCommands(data.aplCommands || '');
-    toggle();
+  const canCreatePreview =
+    (displayType === DisplayType.SPLASH && (!!splashHeader || backgroundImage)) || (displayType === DisplayType.ADVANCED && jsonFileName);
+
+  const openPreviewModal = () => {
+    const { document, datasource: displayDatasource } = selected;
+    const apl = aplCommands || document;
+    const data = datasource || displayDatasource;
+    openModal({ apl, data });
   };
 
-  if (displays.length === 0) {
-    return (
-      <Section>
-        <div className="text-center">
-          <img className="mb-4" src="/desktop.svg" alt="user" width="64" />
-          <br />
-          <label className="dark">No Displays Exist</label>
-          <div className="text-muted">You currently have no Multimodal Displays</div>
-          <button className="btn btn-secondary mt-4" onClick={goToNewDisplay}>
-            Add Displays
-          </button>
-        </div>
-      </Section>
-    );
-  }
+  const changeDisplayType = (type) => {
+    const resetDataObject = {
+      displayType: type,
+      splashHeader: textEditorContentAdapter.fromDB(null),
+      datasource: null,
+      backgroundImage: null,
+      jsonFileName: null,
+    };
+    onChange(resetDataObject);
+  };
 
   return (
-    <Content>
-      <Section>
-        <FlexApart>
-          <label className="mb-0">Multimodal Display</label>
-          <Link href="" onClick={preventDefault(goToDisplays)}>
-            See all
-          </Link>
-        </FlexApart>
-        <DisplaySelect value={data.displayID} onChange={updateDisplay} />
-
-        {data.displayID ? (
-          <>
-            <InputGroup className="mb-0 mt-1">
-              <label className="input-group-text w-100 m-0 d-flex">
-                <Checkbox checked={data.updateOnChange} onChange={toggleUpdateOnChange} />
-
-                <div className="space-between flex-hard">
-                  <span>Update on Variable Changes</span>
-                  <span>
-                    <Tooltip
-                      className="menu-tip"
-                      title="When this option is checked, the multimodal display will update whenever a change is detected in any of the variables used in the Data Source JSON"
-                      position="bottom"
-                      theme="block"
-                    >
-                      ?
-                    </Tooltip>
-                  </span>
-                </div>
-              </label>
-            </InputGroup>
-            <div>
-              <Divider />
-              <Button className="mb-2" variant="secondary" icon="powerOff" onClick={showTestModal} fullWidth>
-                Test Display
-              </Button>
-              <label>Data Source JSON</label>
-              <AceEditor
-                name="datasource_editor"
-                mode="json_custom"
-                onChange={updateDatasource}
-                fontSize={14}
-                showPrintMargin={false}
-                showGutter
-                highlightActiveLine
-                value={data.datasource || ''}
-                editorProps={{
-                  $blockScrolling: true,
-                  $rules: {
-                    start: [
-                      {
-                        token: 'highlightWords',
-                        regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                      },
-                    ],
-                  },
-                }}
-                setOptions={{
-                  enableBasicAutocompletion: true,
-                  enableLiveAutocompletion: false,
-                  enableSnippets: false,
-                  showLineNumbers: true,
-                  tabSize: 2,
-                  useWorker: false,
-                }}
-              />
-              <label className="mt-2">APL Commands</label>
-              <AceEditor
-                name="apl_commands_editor"
-                mode="json_custom"
-                onChange={updateAPLCommands}
-                fontSize={14}
-                showPrintMargin={false}
-                showGutter
-                highlightActiveLine
-                value={data.aplCommands || ''}
-                editorProps={{
-                  $blockScrolling: true,
-                  $rules: {
-                    start: [
-                      {
-                        token: 'highlightWords',
-                        regex: 'word1|word2|word3|phrase one|phrase number two|etc',
-                      },
-                    ],
-                  },
-                }}
-                setOptions={{
-                  enableBasicAutocompletion: true,
-                  enableLiveAutocompletion: false,
-                  enableSnippets: false,
-                  showLineNumbers: true,
-                  tabSize: 2,
-                  useWorker: false,
-                }}
-              />
-            </div>
-          </>
+    <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
+      <Section variant="tertiary" header="Display Type">
+        <RadioGroup options={DISPLAY_OPTIONS} checked={displayType} onChange={changeDisplayType} />
+      </Section>
+      <Section isDividerNested>
+        {displayType === DisplayType.SPLASH ? (
+          <SplashEditor
+            skillID={skillID}
+            createDisplay={createDisplay}
+            splashHeader={splashHeader}
+            onChange={onChange}
+            backgroundImage={backgroundImage}
+            displayID={displayID}
+            updateDisplay={updateDisplayData}
+          />
         ) : (
-          <>
-            <Divider>or</Divider>
-
-            <button className="btn-clear btn-block btn-lg" onClick={goToNewDisplay}>
-              Create new visual
-            </button>
-          </>
+          <AdvancedEditor
+            datasourceJSON={datasource}
+            aplCommands={aplCommands}
+            createDisplay={createDisplay}
+            updateDisplay={updateDisplayData}
+            displayID={displayID}
+            skillID={skillID}
+            jsonFileName={jsonFileName}
+            onChange={onChange}
+          />
         )}
       </Section>
     </Content>
   );
 }
-
 const mapStateToProps = {
-  displays: allDisplaysSelector,
   skillID: activeSkillIDSelector,
+  selected: displayByIDSelector,
 };
 
 const mapDispatchToProps = {
-  goToDisplays,
-  goToNewDisplay,
+  createDisplay,
+  updateDisplayData,
+  duplicateDisplay,
 };
 
-const mergeProps = ({ skillID }, { goToDisplays, goToNewDisplay }) => ({
-  goToDisplays: () => goToDisplays(skillID),
-  goToNewDisplay: () => goToNewDisplay(skillID),
+const mergeProps = ({ selected: getDisplayByID }, _, { data }) => ({
+  selected: data.displayID && getDisplayByID(data.displayID),
 });
 
-export default compose(
-  withDisplayModalContext,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
-  )
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
 )(DisplayEditor);

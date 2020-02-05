@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 
-import VariableInput from '@/components/VariableInput';
+import VariablesInput from '@/componentsV2/VariablesInput';
 
 import NextStepButton from '../../components/NextStepButton';
 
@@ -41,13 +41,10 @@ function RetrieveData({ headers_list, onChange, headers_loading, data, openNextS
           <img src="/equals.svg" alt="comment" className="mr-2 ml-2" width="10px" />
         </Tooltip>
         <div className="column-input" style={{ width: '45%' }}>
-          <VariableInput
+          <VariablesInput
             key={JSON.stringify(!!data.match_value)}
-            className="form-control google-sheets-input"
             value={data.match_value}
-            onChange={(val) => {
-              onChange({ match_value: val });
-            }}
+            onBlur={({ text }) => onChange({ match_value: text })}
             placeholder="Value to Match"
           />
         </div>

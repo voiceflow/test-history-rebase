@@ -5,8 +5,15 @@ import { BlockType, INTERNAL_BLOCKS } from '@/constants';
 import { PortSet } from '@/containers/CanvasV2/components/NestedBlock';
 import PortLabel from '@/containers/CanvasV2/components/Port/components/PortLabel';
 import { ContextMenuTarget, getBlockCategory } from '@/containers/CanvasV2/constants';
-import { ContextMenuContext, EditPermissionContext, EngineContext, PlatformContext, useNodeData, withNode } from '@/containers/CanvasV2/contexts';
-import { NODE_MANAGERS } from '@/containers/CanvasV2/managers';
+import {
+  ContextMenuContext,
+  EditPermissionContext,
+  EngineContext,
+  ManagerContext,
+  PlatformContext,
+  useNodeData,
+  withNode,
+} from '@/containers/CanvasV2/contexts';
 import { stopPropagation } from '@/utils/dom';
 
 import CombinedBlockEnterFlow from './CombinedBlockEnterFlow';
@@ -15,6 +22,7 @@ import CombinedBlockItemContainer from './CombinedBlockItemContainer';
 
 const CombinedBlockItem = ({ node, lockOwner, showOutPorts, index, ...props }) => {
   const { data } = useNodeData();
+  const { icon, platforms } = React.useContext(ManagerContext)(node.type);
   const engine = React.useContext(EngineContext);
   const { canEdit } = React.useContext(EditPermissionContext);
   const platform = React.useContext(PlatformContext);
@@ -22,9 +30,8 @@ const CombinedBlockItem = ({ node, lockOwner, showOutPorts, index, ...props }) =
 
   React.useEffect(() => {
     engine.node.redrawLinks(node.id);
-  }, [index]);
+  }, [engine.node, index, node.id]);
 
-  const { icon, platforms } = NODE_MANAGERS[node.type];
   const { color } = getBlockCategory(node.type);
   const showIcon = !INTERNAL_BLOCKS.includes(node.type);
   const hasDiagram = node.type === BlockType.FLOW && data.diagramID;

@@ -1,92 +1,115 @@
 import React from 'react';
-import { compose } from 'recompose';
 import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import { BlockType } from '@/constants';
-import BlockEditor from '@/containers/CanvasV2/components/BlockEditor';
 import { LockedBlockOverlay } from '@/containers/CanvasV2/components/LockedEditorOverlay';
-import Reprompt from '@/containers/CanvasV2/components/Reprompt';
-import { EditPermissionContext, withEngine } from '@/containers/CanvasV2/contexts';
-import { getManager } from '@/containers/CanvasV2/managers';
+import { EditPermissionContext, ManagerContext } from '@/containers/CanvasV2/contexts';
+import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
-import { useEnableDisable } from '@/hooks/toggle';
+import { useEnableDisable } from '@/hooks';
 import { stopImmediatePropagation } from '@/utils/dom';
+import { compose } from '@/utils/functional';
 
-import EditorContentContainer from './components/EditorContentContainer';
+import Editor from '../Editor';
 import EditorModal from './components/EditorModal';
+import { SidebarProvider } from './contexts';
+import { withManagerProps } from './hocs';
+import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMENT];
+const UNEDITABLE_BLOCKS = [BlockType.START, BlockType.COMMENT];
 
-function EditSidebar({ focus, data, theme, engine }) {
+function EditSidebar({ focus, node, parent, theme }) {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext);
+  const { path, goToPath, pushToPath, popFromPath } = useEditorPath(node, parent);
+  const getManager = React.useContext(ManagerContext);
+  const prevPathLength = React.useRef(0);
+  const prevAnimationDistance = React.useRef(40);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
-  const shouldRender = data && !UNEDITABLE_BLOCKS.includes(data.type);
+  const shouldRender = node && !UNEDITABLE_BLOCKS.includes(node.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
-  const updateData = React.useCallback((value, save = true) => focus.target && engine.node.updateData(focus.target, value, save), [focus.target]);
-
-  const removeNode = () => engine.node.remove(data.nodeID);
-  const duplicateNode = () => engine.node.duplicate(data.nodeID);
+  const updateData = useUpdateData();
+  const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
   let editor = null;
 
   if (shouldRender) {
-    const { editor: Editor, reprompt } = getManager(data.type);
+    const { editorsByPath, editor: rootEditor } = getManager(node.type);
+    const activePath = path[path.length - 1] || {};
+
+    const Manager = withManagerProps(editorsByPath?.[activePath.type] || rootEditor);
+
+    prevAnimationDistance.current =
+      // eslint-disable-next-line no-nested-ternary
+      prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
 
     editor = (
-      <>
-        <BlockEditor
-          onExpand={enableModalMode}
-          expanded={isModal}
-          data={data}
-          onChange={updateData}
-          onRemove={removeNode}
-          onDuplicate={duplicateNode}
+      <NamespaceProvider value={['editor', node.type, node.id]}>
+        <Editor
+          key={`${node.id}-${path.length}`}
+          path={path}
+          goToPath={goToPath}
+          onRename={onRename}
           hideHeader={isModal}
-          key={data.nodeID}
-          renameActiveRevision={focus.renameActiveRevision}
+          renameRevision={focus.renameActiveRevision}
+          prevPathLength={prevPathLength.current}
+          animationDistance={prevAnimationDistance.current}
         >
-          <EditorContentContainer>
-            <Editor data={data} onChange={updateData} />
-            {reprompt && <Reprompt data={data} onChange={updateData} />}
-          </EditorContentContainer>
-        </BlockEditor>
-      </>
+          <Manager
+            onChange={updateData}
+            onExpand={enableModalMode}
+            expanded={isModal}
+            goToPath={goToPath}
+            activePath={activePath}
+            pushToPath={pushToPath}
+            popFromPath={popFromPath}
+            isOpen={isOpen}
+          />
+        </Editor>
+        <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
+      </NamespaceProvider>
     );
+
+    if (prevPathLength.current !== path.length) {
+      prevPathLength.current = path.length;
+    }
   }
 
   return (
-    <>
+    <SidebarProvider>
       <Drawer
         as="section"
-        direction="left"
-        width={theme.components.editSidebar.width}
+        key={focus.target} // required to fix layout issue
+        style={{ overflow: 'hidden' }}
         open={isOpen}
+        width={theme.components.editSidebar.width}
         onPaste={stopImmediatePropagation()}
+        direction="left"
         disableAnimation={!shouldRender}
       >
         {!isModal && editor}
-        {shouldRender && <LockedBlockOverlay nodeID={data.nodeID} disabled={!isOpen && !isModal} />}
       </Drawer>
       {isOpen && !isModal && <RemoveIntercom />}
-      {isModal && <EditorModal disableModalMode={disableModalMode} isModal={isModal} editor={editor} data={data} />}
-    </>
+      {isModal && <EditorModal disableModalMode={disableModalMode} editor={editor} />}
+    </SidebarProvider>
   );
 }
 
 const mapStateToProps = {
-  data: Creator.dataByNodeIDSelector,
+  node: Creator.focusedNodeSelector,
+  parent: Creator.dataByNodeIDSelector,
   focus: Creator.creatorFocusSelector,
 };
 
-const mergeProps = ({ data, focus }) => ({
-  data: focus.target && data(focus.target),
-});
+const mergeProps = ({ node, parent: getParentData }) => {
+  const parent = node?.parentNode && getParentData(node.parentNode);
+
+  return { parent };
+};
 
 export default compose(
-  withEngine,
   connect(
     mapStateToProps,
     null,

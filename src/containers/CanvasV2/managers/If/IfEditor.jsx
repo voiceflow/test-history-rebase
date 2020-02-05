@@ -1,18 +1,19 @@
+import cuid from 'cuid';
 import React from 'react';
 
-import ExpressionEditor from '@/components/ExpressionEditor';
-import Button from '@/componentsV2/Button';
-import Flex from '@/componentsV2/Flex';
+import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
 import { ExpressionType } from '@/constants';
-import { Content, RemovableSection } from '@/containers/CanvasV2/components/BlockEditor';
+import { Content, Controls, MaxOptionsMessage } from '@/containers/CanvasV2/components/Editor/components';
+import { MAX_ITEMS_PER_EDITOR } from '@/containers/CanvasV2/constants';
 import { EngineContext } from '@/containers/CanvasV2/contexts';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { useManager } from '@/hooks';
+import { useManager, useToggle } from '@/hooks';
 
-const MAX_EXPRESSIONS = 22;
+import { DraggableItem, HelpTooltip } from './components';
 
 const expressionFactory = () => ({
+  id: cuid.slug(),
   type: ExpressionType.EQUALS,
   depth: 0,
   value: [
@@ -30,41 +31,77 @@ const expressionFactory = () => ({
 });
 
 function IfEditor({ data, onChange, focusedNode }) {
+  const [isDragging, toggleDragging] = useToggle(false);
   const engine = React.useContext(EngineContext);
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
-  const onRemoveExpression = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [focusedNode.ports.out]);
+  const onRemoveExpression = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [
+    engine.port,
+    focusedNode.ports.out,
+  ]);
 
-  const { items, onAdd, mapManaged } = useManager(data.expressions, updateExpressions, {
-    autosave: false,
+  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
     factory: expressionFactory,
+    autosave: false,
     handleRemove: onRemoveExpression,
   });
 
-  const addExpression = React.useCallback(async () => {
-    onAdd();
-    await engine.port.add(focusedNode.id, { label: items.length + 1 });
-  }, [focusedNode.id, items.length, onAdd]);
+  const addExpression = React.useCallback(
+    async (scrollToBottom) => {
+      onAdd();
+
+      await engine.port.add(focusedNode.id, { label: items.length + 1 });
+
+      scrollToBottom();
+    },
+    [engine.port, focusedNode.id, items.length, onAdd]
+  );
 
   return (
-    <Content>
-      {mapManaged((expression, { key, index, onRemove, onUpdate }) => (
-        <RemovableSection onClose={items.length > 1 && onRemove} key={key}>
-          <Flex>
-            <div className="number-bubble mr-2">{index + 1}</div>
-            <span className="text-bold-label">If</span>
-          </Flex>
-          <ExpressionEditor expression={expression} onChange={onUpdate} />
-        </RemovableSection>
-      ))}
-      <div className="editor-flex-container">
-        {items.length < MAX_EXPRESSIONS ? (
-          <Button variant="secondary" onClick={addExpression}>
-            Add If Statement
-          </Button>
+    <Content
+      footer={({ scrollToBottom }) =>
+        items.length < MAX_ITEMS_PER_EDITOR ? (
+          <Controls
+            options={[
+              {
+                label: 'Add If Statement',
+                onClick: () => addExpression(scrollToBottom),
+              },
+            ]}
+            tutorial={{
+              content: <HelpTooltip />,
+              blockType: data.type,
+              helpTitle: 'Having trouble?',
+              helpMessage: (
+                <>
+                  Check out this{' '}
+                  <a href="https://docs.voiceflow.com/voiceflow-documentation/untitled/if-block" target="_blank" rel="noopener noreferrer">
+                    doc
+                  </a>{' '}
+                  that goes over using IF blocks inside Voiceflow.
+                </>
+              ),
+            }}
+          />
         ) : (
-          <div className="text-center text-dull mt-4">Maximum options reached</div>
-        )}
-      </div>
+          <MaxOptionsMessage>Maximum options reached</MaxOptionsMessage>
+        )
+      }
+      hideFooter={isDragging}
+    >
+      <DraggableList
+        type="if-editor"
+        items={items}
+        onDelete={onRemove}
+        onReorder={onReorder}
+        onEndDrag={toggleDragging}
+        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
+        mapManaged={mapManaged}
+        onStartDrag={toggleDragging}
+        itemComponent={DraggableItem}
+        deleteComponent={DeleteComponent}
+        partialDragItem
+        previewComponent={DraggableItem}
+      />
     </Content>
   );
 }

@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
 import { SvgIconContainer } from '@/components/SvgIcon';
-import VariableTag from '@/components/VariableTag';
+import { SlotTag, VariableTag } from '@/componentsV2/VariableTag';
 import { units } from '@/hocs';
 
 const VariableBox = styled.div`
+  ${SlotTag} {
+    margin: 0 ${units(0.5)}px ${units(0.5)}px 0;
+    cursor: pointer;
+  }
   ${VariableTag} {
     margin: 0 ${units(0.5)}px ${units(0.5)}px 0;
 

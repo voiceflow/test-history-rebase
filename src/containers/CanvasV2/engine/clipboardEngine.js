@@ -155,7 +155,7 @@ class ClipboardEngine extends EngineConsumer {
 
         const { ports, links } = result;
 
-        await this.engine.node.clone({ nodesWithData, ports, links }, mousePosition);
+        await this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, mousePosition);
       } catch (err) {
         localStorage.clear(CLIPBOARD_DATA_KEY);
         // eslint-disable-next-line no-console

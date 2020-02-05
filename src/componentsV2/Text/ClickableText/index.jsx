@@ -14,12 +14,19 @@ const RegularText = styled.span`
   }
 `;
 
-function ClickableText({ link, onClick, children, className }) {
-  if (link) {
+function ClickableText({ path, link, onClick, children, className }) {
+  if (path) {
     return (
-      <Link onClick={onClick} to={link} className={className}>
+      <Link onClick={onClick} to={path} className={className}>
         {children}
       </Link>
+    );
+  }
+  if (link) {
+    return (
+      <a href={link} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
     );
   }
   return (

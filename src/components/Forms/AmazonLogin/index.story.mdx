@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import AmazonLogin from '.';
+
+<Meta title="Forms/Amazon Login" component={AmazonLogin} />
+
+# Amazon Login Form
+
+A form for amazon login.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

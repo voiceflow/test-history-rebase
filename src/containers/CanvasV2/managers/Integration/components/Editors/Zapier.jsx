@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { useEffect } from 'react';
 
 import integrationsClient from '@/client/integrations';
+import { Content } from '@/containers/CanvasV2/components/Editor';
 
 import SetupDropdown from '../Steps/Zapier/Setup/SetupDropdown';
 import StartTrigger from '../Steps/Zapier/StartTrigger/StartTriggerDropdown';
@@ -30,7 +31,7 @@ function ZapierEditor({ data, onChange, currentStep, toggleStep, setStep }) {
   const hasSelectedTrigger = data.user && !_.isEmpty(data.user);
 
   return (
-    <div>
+    <Content>
       <StartTrigger
         data={data}
         onChange={onChange}
@@ -58,7 +59,7 @@ function ZapierEditor({ data, onChange, currentStep, toggleStep, setStep }) {
           <TestDropdown data={data} onChange={onChange} isOpened={currentStep === Step.TEST} toggleStep={toggleStep(Step.TEST)} />
         </>
       )}
-    </div>
+    </Content>
   );
 }
 

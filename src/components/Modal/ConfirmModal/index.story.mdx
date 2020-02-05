@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ConfirmModal from '.';
+
+<Meta title="Modal/Confirm" component={ConfirmModal} />
+
+# Confirm Modal
+
+A basic modal component for confirmation.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

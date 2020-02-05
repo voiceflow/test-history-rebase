@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from './utils';
 
@@ -77,7 +78,7 @@ export const draftJSContentAdapter = createSimpleAdapter(
       ? draftJSContent.blocks
           .flatMap(({ text, entityRanges }) => (entityRanges.length ? extractDraftJSEntities(text, entityRanges, draftJSContent.entityMap) : text))
           .reduce((acc, content, index) => {
-            if (index > 0 && typeof acc[acc.length - 1] === 'string' && typeof content === 'string') {
+            if (index > 0 && _isString(acc[acc.length - 1]) && _isString(content)) {
               acc.push(`${acc.pop()}\n${content}`);
             } else {
               acc.push(content);

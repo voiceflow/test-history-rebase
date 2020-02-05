@@ -4,7 +4,7 @@ import { SvgIconContainer } from '@/components/SvgIcon';
 import IconButton from '@/componentsV2/IconButton';
 import { styled, transition } from '@/hocs';
 
-import ModalBody from './ModalBody';
+import ModalBody from './components/ModalBody';
 
 const CarouselButton = styled(IconButton)`
   ${transition()}

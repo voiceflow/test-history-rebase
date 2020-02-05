@@ -1,10 +1,11 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { Label } from 'reactstrap';
 
 import * as Panel from '@/components/Panel';
-import Icon from '@/components/SvgIcon';
-import VariableTag from '@/components/VariableTag';
+import SvgIcon from '@/components/SvgIcon';
+import { VariableTag } from '@/componentsV2/VariableTag';
 import { GLOBAL_VARIABLES, GlobalVariable } from '@/constants';
 import { activeDiagramIDSelector, globalVariablesSelector, removeGlobalVariable } from '@/ducks/skill';
 import { removeVariableFromDiagram } from '@/ducks/variableSet';
@@ -29,7 +30,7 @@ const VariableCloud = ({ diagramVariables, variables, removeFlowVariable, remove
         <VariableBox>
           {diagramVariables.map((variable) => (
             <VariableTag key={variable} className="global">
-              {`{${variable}}`} <Icon icon="close" onClick={() => removeFlowVariable(variable)} size={9} />
+              {`{${variable}}`} <SvgIcon variant="standard" icon="close" onClick={() => removeFlowVariable(variable)} size={9} />
             </VariableTag>
           ))}
         </VariableBox>
@@ -44,7 +45,7 @@ const VariableCloud = ({ diagramVariables, variables, removeFlowVariable, remove
       ))}
       {variables.map((variable) => (
         <VariableTag key={variable} className="global">
-          {`{${variable}}`} <Icon icon="close" onClick={() => removeGlobalVariable(variable)} size={9} />
+          {`{${variable}}`} <SvgIcon variant="standard" icon="close" onClick={() => removeGlobalVariable(variable)} size={9} />
         </VariableTag>
       ))}
     </VariableBox>

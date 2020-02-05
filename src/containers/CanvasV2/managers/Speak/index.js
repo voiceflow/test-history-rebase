@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType, DialogType } from '@/constants';
 import CommentIcon from '@/svgs/comment.svg';
 
@@ -25,9 +27,10 @@ const SpeakManager = {
       randomize: false,
       dialogs: [
         {
+          id: cuid.slug(),
           type: DialogType.VOICE,
           voice: 'Alexa',
-          content: [],
+          content: '',
           open: true,
         },
       ],

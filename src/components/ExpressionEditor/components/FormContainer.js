@@ -3,8 +3,8 @@ import { styled } from '@/hocs';
 const FormContainer = styled.div`
   position: relative;
   padding: 10px;
-  background-color: #f7f9fb;
-  border: 1px solid #c5d3e0ad;
+  background-color: #f7fafb;
+  border: 1px solid #d4d9e6;
   border-radius: 6px;
 
   & > .composite {
@@ -37,6 +37,17 @@ const FormContainer = styled.div`
     position: absolute;
     top: 9px;
     right: 8px;
+    display: flex;
+    align-items: center;
+
+    & > * {
+      margin-left: 16px;
+      cursor: pointer;
+    }
+
+    &:first-child {
+      margin: 0;
+    }
   }
 
   & .type-button {
@@ -64,6 +75,7 @@ const FormContainer = styled.div`
       color: #132144;
       background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%);
       box-shadow: inset 0 0 0 1px #dfe3ed;
+      outline: none;
     }
   }
 
@@ -75,7 +87,7 @@ const FormContainer = styled.div`
     font-weight: 600;
     width: 100%;
     margin: 4px 0;
-    padding: 3px 7px;
+    padding: 5px 5px;
     overflow: hidden;
     color: #8da2b5;
     cursor: pointer;
@@ -85,7 +97,7 @@ const FormContainer = styled.div`
     }
 
     &:hover {
-      background-color: #f0f2f5;
+      background-color: #eef4f6;
     }
 
     & > .type-button {
@@ -97,6 +109,7 @@ const FormContainer = styled.div`
     }
   }
 
+  /* Targeting 3rd party library  */
   & .expression-menu {
     margin-top: 5px;
     padding: 0;
@@ -110,7 +123,7 @@ const FormContainer = styled.div`
 
   & .expression-group {
     display: grid;
-    border-bottom: 1px solid #eaeff4;
+    border-bottom: 1px solid #dfe3ed;
     font-weight: 600;
     grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
@@ -144,7 +157,7 @@ const FormContainer = styled.div`
 
   & .form-control {
     height: 40px;
-    padding-right: 36px;
+    padding-right: 72px;
   }
 
   & .variable-box__control {

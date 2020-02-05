@@ -14,6 +14,7 @@ import { useEnableDisable } from '@/hooks';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
+import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
 import FocusEngine from './focusEngine';
@@ -34,6 +35,8 @@ export class Engine {
   selection = new SelectionEngine(this);
 
   clipboard = new ClipboardEngine(this);
+
+  diagram = new DiagramEngine(this);
 
   merge = new MergeEngine(this);
 
@@ -364,7 +367,7 @@ function useEngine() {
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
   const engine = React.useMemo(() => createEngine(store, finalize, mousePosition, realtimeSubscription));
 
-  React.useEffect(() => () => engine.teardown(), []);
+  React.useEffect(() => () => engine.teardown(), [engine]);
 
   return {
     engine,

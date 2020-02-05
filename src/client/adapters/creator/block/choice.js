@@ -3,10 +3,12 @@ import { createBlockAdapter, repromptAdapter } from './utils';
 const choiceBlockAdapter = createBlockAdapter(
   ({ choices, inputs, reprompt }) => ({
     choices: choices.map(({ open }, index) => {
-      const [value, ...synonyms] = inputs[index].split('\n');
+      const synonyms = inputs[index]
+        .split('\n')
+        .map((value) => value.trim())
+        .filter(Boolean);
 
       return {
-        value: value || null,
         synonyms,
         open,
       };
@@ -15,7 +17,7 @@ const choiceBlockAdapter = createBlockAdapter(
   }),
   ({ choices, reprompt }) => ({
     choices: choices.map(({ open }) => ({ open })),
-    inputs: choices.map(({ value, synonyms }) => [value, ...synonyms].join('\n')),
+    inputs: choices.map(({ synonyms = [] }) => synonyms.join('\n')),
     reprompt: repromptAdapter.toDB(reprompt),
   })
 );

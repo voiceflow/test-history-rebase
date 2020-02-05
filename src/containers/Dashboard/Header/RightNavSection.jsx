@@ -5,9 +5,8 @@ import SvgIcon from '@/components/SvgIcon';
 import Dropdown from '@/componentsV2/Dropdown';
 import IconButton from '@/componentsV2/IconButton';
 import Menu, { MenuItem } from '@/componentsV2/Menu';
-import { AIRTABLE_ID, IS_PRODUCTION, YOUTUBE_CHANNEL_ID } from '@/config';
+import { AIRTABLE_ID, YOUTUBE_CHANNEL_ID } from '@/config';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
-import { goToDesigner } from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 import { stopPropagation } from '@/utils/dom';
@@ -25,18 +24,12 @@ const DEFAULT_MESSAGE = [
   },
 ];
 
-function RightNavSection({ notifications, goToDesigner, readNotifications }) {
+function RightNavSection({ notifications, readNotifications }) {
   const [onHover, toggleUpdatesHover] = useToggle(false);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
   return (
     <>
-      {!IS_PRODUCTION && (
-        <SubHeaderItem onClick={goToDesigner}>
-          <IconButton icon="star" size={15} large variant="outline" />
-        </SubHeaderItem>
-      )}
-
       <SubHeaderItem>
         {/* notifications component */}
         <Dropdown
@@ -135,7 +128,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goToDesigner,
   readNotifications,
 };
 

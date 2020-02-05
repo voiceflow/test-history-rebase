@@ -1,12 +1,9 @@
 import { action } from '@storybook/addon-actions';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import User, { Members } from '.';
 
-const members = [
+const MEMBERS = [
   {
     name: 'Local User',
     email: 'local@voiceflow.com',
@@ -45,40 +42,12 @@ const members = [
   },
 ];
 
-storiesOf('User', module)
-  .add(
-    'variants - User',
-    createTestableStory(() => {
-      return (
-        <>
-          <Variant>
-            <User user={members[0]} />
-          </Variant>
+export const user = () => <User user={MEMBERS[0]} />;
 
-          <Variant label="solid">
-            <User user={members[0]} solid />
-          </Variant>
+export const solidUser = () => <User user={MEMBERS[0]} solid />;
 
-          <Variant label="large">
-            <User user={members[0]} large />
-          </Variant>
-        </>
-      );
-    })
-  )
-  .add(
-    'variants - Members',
-    createTestableStory(() => {
-      return (
-        <>
-          <Variant>
-            <Members members={members} />
-          </Variant>
+export const largeUser = () => <User user={MEMBERS[0]} large />;
 
-          <Variant label="with add">
-            <Members members={members} onAdd={action('onAddClick')} />
-          </Variant>
-        </>
-      );
-    })
-  );
+export const members = () => <Members members={MEMBERS} />;
+
+export const membersWithAdd = () => <Members members={MEMBERS} onAdd={action('onAddClick')} />;

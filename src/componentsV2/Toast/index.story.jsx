@@ -1,30 +1,24 @@
 import { button, text } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-
-import { Variant, createTestableStory } from '@/../.storybook';
 
 import { ToastContainer, toast } from '.';
 
-storiesOf('Toast', module).add(
-  'variants',
-  createTestableStory(() => {
-    const ref = React.useRef();
+export default {
+  title: 'Toast',
+  component: ToastContainer,
+  includeStories: [],
+};
 
-    ref.current = text('message', 'Toast message!');
+export const variants = () => {
+  const ref = React.useRef();
 
-    button('default', () => toast(ref.current));
-    button('info', () => toast.info(ref.current));
-    button('success', () => toast.success(ref.current));
-    button('warning', () => toast.warning(ref.current));
-    button('error', () => toast.error(ref.current));
+  ref.current = text('message', 'Toast message!');
 
-    return (
-      <>
-        <Variant label="default">
-          <ToastContainer />
-        </Variant>
-      </>
-    );
-  })
-);
+  button('default', () => toast(ref.current));
+  button('info', () => toast.info(ref.current));
+  button('success', () => toast.success(ref.current));
+  button('warning', () => toast.warning(ref.current));
+  button('error', () => toast.error(ref.current));
+
+  return <ToastContainer />;
+};

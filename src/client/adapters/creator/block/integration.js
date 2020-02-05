@@ -1,4 +1,5 @@
 import { draftJSContentAdapter } from '@/client/adapters/draft';
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { INTEGRATION_DATA_MODELS, IntegrationActionType, IntegrationType } from '@/constants';
 
 import { createBlockAdapter } from './utils';
@@ -9,23 +10,23 @@ const ZAPIER_DEFAULTS = INTEGRATION_DATA_MODELS.ZAPIER;
 
 const keyValFromDB = ({ index, key, val }) => ({
   index,
-  key: draftJSContentAdapter.fromDB(key),
-  val: draftJSContentAdapter.fromDB(val),
+  key: textEditorContentAdapter.fromDB(key),
+  val: textEditorContentAdapter.fromDB(val),
 });
 
 const keyValToDB = ({ index, key, val }) => ({
   index,
-  key: draftJSContentAdapter.toDB(key),
-  val: draftJSContentAdapter.toDB(val),
+  key: textEditorContentAdapter.toDB(key),
+  val: textEditorContentAdapter.toDB(val),
 });
 
 // Incoming Integrations Data Mapping Functions
 const addCustomAPIData = (dataModel, actionData, selectedAction) => {
-  const url = draftJSContentAdapter.fromDB(actionData.url);
+  const url = textEditorContentAdapter.fromDB(actionData.url);
   const headers = actionData.headers.map(keyValFromDB);
   const mapping = actionData.mapping.map(({ index, path, var: varVal }) => ({
     index,
-    path: draftJSContentAdapter.fromDB(path),
+    path: textEditorContentAdapter.fromDB(path),
     var: varVal,
   }));
   const parameters = actionData.params.map(keyValFromDB);
@@ -67,11 +68,11 @@ export const encodeCustomAPIData = (data) => {
     bodyInputType,
     body: body.map(keyValToDB),
     selected_action: selectedAction,
-    url: draftJSContentAdapter.toDB(url),
+    url: textEditorContentAdapter.toDB(url),
     headers: headers.map(keyValToDB),
     mapping: mapping.map(({ index, path, var: varVal }) => ({
       index,
-      path: draftJSContentAdapter.toDB(path),
+      path: textEditorContentAdapter.toDB(path),
       var: varVal,
     })),
     method: selectedAction.split(' ')[2],

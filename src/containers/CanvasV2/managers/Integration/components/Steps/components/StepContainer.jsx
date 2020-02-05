@@ -1,7 +1,9 @@
 import { styled } from '@/hocs';
 
 const Container = styled.div`
-  border-bottom: 1px solid #eaeff4;
+  &:not(:last-child) {
+    border-bottom: 1px solid #dfe3ed;
+  }
 `;
 
 export default Container;

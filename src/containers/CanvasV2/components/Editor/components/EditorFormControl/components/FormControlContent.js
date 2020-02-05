@@ -1,7 +1,7 @@
 import { styled, units } from '@/hocs';
 
-const FormControlLabel = styled.div`
-  margin-bottom: ${units(2)}px;
+const FormControlContent = styled.div`
+  padding-bottom: ${({ contentBottomUnits = 2 }) => units(contentBottomUnits)}px;
 `;
 
-export default FormControlLabel;
+export default FormControlContent;

@@ -13,7 +13,7 @@ const MenuTooltipContainer = styled.div`
   ${transition()};
   
    &:hover {
-    background-color: #e9eff5;
+    background-color: #fff;
    }
 `;
 

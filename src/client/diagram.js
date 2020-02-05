@@ -7,8 +7,9 @@ const VARIABLES_PATH = 'variables';
 
 const diagramClient = {
   getData: (diagramID, platform) =>
-    fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram, timestamp }) => ({
+    fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram, timestamp = [] }) => ({
       data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform),
+      variables: diagram.variables || [],
       timestamp,
     })),
 

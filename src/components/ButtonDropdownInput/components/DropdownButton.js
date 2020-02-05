@@ -1,7 +1,8 @@
-import { ORIENTATION_TYPE } from '@/components/ButtonDropdownInput';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import { inputStyle } from '@/componentsV2/Input';
+import { inputStyle } from '@/componentsV2/Input/styles';
 import { css, styled } from '@/hocs';
+
+import { OrientationType } from '../constants';
 
 const DropdownButton = styled.button`
   ${inputStyle}
@@ -18,21 +19,21 @@ const DropdownButton = styled.button`
   transition: ease all 0.15s;
 
   ${({ orientation }) =>
-    orientation === ORIENTATION_TYPE.RIGHT
-      ? `
-        padding-left: 12px;
-        padding-right: 2px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-right: 0;
-      `
-      : `
-        padding-left: 2px;
-        padding-right: 12px;
-        border-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      `}
+    orientation === OrientationType.RIGHT
+      ? css`
+          padding-left: 12px;
+          padding-right: 2px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          border-right: 0;
+        `
+      : css`
+          padding-left: 2px;
+          padding-right: 12px;
+          border-left: 0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        `}
   ${SvgIconContainer} {
     margin-left: 5px;
     margin-top: 2px;
@@ -47,7 +48,7 @@ const DropdownButton = styled.button`
   :active,
   :focus,
   :focus-within {
-    ${({ orientation }) => (orientation === ORIENTATION_TYPE.RIGHT ? 'border-right: 0 !important;' : 'border-left: 0 !important;')}
+    ${({ orientation }) => (orientation === OrientationType.RIGHT ? 'border-right' : 'border-left')}: 0 !important;
     box-shadow: none !important;
     border-color: #d2dae2 !important;
   }

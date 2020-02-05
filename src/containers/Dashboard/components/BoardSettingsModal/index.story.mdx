@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import DeleteWorkspaceModal from '.';
+
+<Meta title="Dashboard/Workspace Settings Modal" component={DeleteWorkspaceModal} />
+
+# Workspace Settings Modal
+
+A modal for managing workspace settings.
+
+<Preview>
+  <Story name="admin">{stories.admin()}</Story>
+  <Story name="not admin">{stories.notAdmin()}</Story>
+  <Story name="with icon">{stories.withIcon()}</Story>
+</Preview>

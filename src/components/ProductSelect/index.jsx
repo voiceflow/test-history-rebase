@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Select from '@/components/Select';
+import Select from '@/componentsV2/Select';
 import { allProductsSelector, productByIDSelector } from '@/ducks/product';
 import { connect } from '@/hocs';
 
 const ProductSelect = ({ selected, onChange, products }) => (
   <Select
-    classNamePrefix="select-box"
-    value={selected ? { value: selected.id, label: selected.name } : null}
+    value={selected ? selected.name : null}
     placeholder={products.length > 0 ? 'Select Product' : 'No Products Exist'}
-    onChange={(result) => onChange(result.value)}
+    onSelect={onChange}
     options={products.map((product) => ({ value: product.id, label: product.name }))}
+    getOptionValue={(option) => option.value}
+    renderOptionLabel={(option) => option.label}
   />
 );
 

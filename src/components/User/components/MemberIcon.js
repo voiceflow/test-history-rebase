@@ -4,7 +4,6 @@ const MemberIcon = styled.div`
   ${transition('color', 'border')}
   width: 26px;
   height: 26px;
-  font-size: 14px;
   line-height: 22px;
   font-size: 13px;
   text-align: center;

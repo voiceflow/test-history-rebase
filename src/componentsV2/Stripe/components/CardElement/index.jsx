@@ -10,31 +10,27 @@ import { useEnableDisable, useToggle } from '@/hooks';
 import { StripeCardElementWrapper, Wrapper, stripeInputStyle } from './styled';
 
 const getColor = (error, complete, focused) => {
-  if (error) {
-    return '#E91E63';
+  switch (true) {
+    case !!error:
+      return '#E91E63';
+    case !!complete:
+      return '#279745';
+    case !!focused:
+      return '#5D9DF5';
+    default:
+      return '#d4d9e6';
   }
-
-  if (complete) {
-    return '#279745';
-  }
-
-  if (focused) {
-    return '#5D9DF5';
-  }
-
-  return '#d4d9e6';
 };
 
 const getIcon = (error, complete) => {
-  if (error) {
-    return 'error';
+  switch (true) {
+    case !!error:
+      return 'error';
+    case !!complete:
+      return 'error';
+    default:
+      return 'creditCard';
   }
-
-  if (complete) {
-    return 'check2';
-  }
-
-  return 'creditCard';
 };
 
 export default function StripeCardElement({ onChangeComplete, disabled = false }) {
@@ -58,7 +54,7 @@ export default function StripeCardElement({ onChangeComplete, disabled = false }
 
   return (
     <Tooltip open={!!error && focused} title={error || errorMessageRef.current} position="bottom-start" theme="warning" animation="fade" distance={5}>
-      <Wrapper id="poo" disabled={disabled} onClick={onClick} borderColor={getColor(error, complete, focused)}>
+      <Wrapper disabled={disabled} onClick={onClick} borderColor={getColor(error, complete, focused)}>
         <Flex style={{ overflow: 'hidden' }}>
           <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />
 

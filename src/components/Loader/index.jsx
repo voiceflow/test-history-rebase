@@ -27,7 +27,7 @@ export const LoadCircle = styled.span`
 
 const Loader = (props) => (
   <LoadContainer {...props}>
-    <LoadCircle />
+    <LoadCircle color={props.color} />
   </LoadContainer>
 );
 

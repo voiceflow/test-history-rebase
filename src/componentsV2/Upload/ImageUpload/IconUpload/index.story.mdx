@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import IconUpload from '.';
+
+<Meta title="Upload/Icon" component={IconUpload} />
+
+# Icon Upload
+
+A component for uploading an icon.
+
+<Preview>
+  <Story name="small">{stories.small()}</Story>
+  <Story name="medium">{stories.medium()}</Story>
+  <Story name="large">{stories.large()}</Story>
+  <Story name="xlarge">{stories.xlarge()}</Story>
+</Preview>

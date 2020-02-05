@@ -11,5 +11,8 @@ export default styled(EditorFooter)`
   ${flexStyles}
   ${sectionStyles}
 
+  min-height: ${FOOTER_HEIGHT}px;
   height: ${FOOTER_HEIGHT}px;
+  background-color: #fff;
+  z-index: 0;
 `;

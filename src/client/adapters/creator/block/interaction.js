@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { createBlockAdapter, platformDependentAdapter, slotMappingAdapter } from './utils';
@@ -6,18 +8,19 @@ const interactionBlockAdapter = platformDependentAdapter(
   createBlockAdapter(
     ({ choices }) =>
       choices.map(({ intent, mappings, open }) => ({
-        selected: intent?.key || intent?.value || null,
+        id: cuid.slug(),
+        intent: intent?.key || intent?.value || null,
         mappings: slotMappingAdapter.fromDB(mappings),
         open,
       })),
     (choices) => {
       return {
-        choices: choices.map(({ selected, open, mappings }) => ({
-          intent: selected
+        choices: choices.map(({ intent, open, mappings }) => ({
+          intent: intent
             ? {
-                key: selected,
-                value: selected,
-                built_in: isBuiltInIntent(selected),
+                key: intent,
+                value: intent,
+                built_in: isBuiltInIntent(intent),
               }
             : null,
           mappings: slotMappingAdapter.toDB(mappings),

@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Variable Tag Slot 1`] = `
+.c0 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+  border: none;
+  padding-top: 0px;
+  margin-bottom: -1px;
+  background-color: #5D9DF5;
+  color: #fff;
+}
+
+.c0.default {
+  color: #62778c;
+}
+
+.c0:before {
+  content: '{';
+}
+
+.c0:after {
+  content: '}';
+}
+
+<span
+  className="c0"
+>
+  content
+</span>
+`;
+
+exports[`Storyshots Variable Tag Variable 1`] = `
+.c0 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+}
+
+.c0.default {
+  color: #62778c;
+}
+
+<span
+  className="c0"
+>
+  content
+</span>
+`;

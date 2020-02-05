@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { InlineVariableTag } from '@/components/VariableTag';
+import { InlineVariableTag } from '@/componentsV2/VariableTag';
 
 import Menu from './Menu';
 import Recent from './Recent';
@@ -178,6 +178,7 @@ class SSMLEditor extends Component {
     return (
       <Container>
         <DraftJSEditor
+          wordBreak="break-all"
           plugins={plugins}
           editorState={this.state.editorState}
           onChange={this.onChange}

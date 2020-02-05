@@ -27,9 +27,8 @@ const AlexaActionGroup = (props) => {
     }
     // reset state on unmount
     return resetAlexaUpload;
-  }, []);
-  // transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-450px)')};
-  // transition: transform 0.13s ease;
+  }, [amazon, checkAmazonAccount, getVendors, resetAlexaUpload]);
+
   return (
     <>
       <UploadButton setPopup={setOpen} />

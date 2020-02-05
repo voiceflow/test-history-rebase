@@ -6,7 +6,7 @@ export const HeaderContainer = styled.header`
   position: relative;
   z-index: 10;
   width: 100%;
-  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
+  border-bottom: 1px solid #dfe3ed;
 `;
 
 export const CenterGroup = styled.div`
@@ -20,7 +20,7 @@ export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
   height: 70px;
-  padding: 0 34px 0 40px;
+  padding: 0 32px;
   background-color: #fff;
 `;
 
@@ -67,7 +67,6 @@ export const BackButton = styled.span`
 `;
 
 export const Logo = styled.img`
-  border-radius: 50%;
   height: 42px;
   margin-right: 6px;
   cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
@@ -81,10 +80,11 @@ export const SecondaryNavWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 50px;
-  padding: 0 40px;
+  padding: 0 32px;
   white-space: nowrap;
-  background-color: #f7f9fb;
-  border-top: 1px solid #dce5e8;
+  background-color: #fff;
+  background-image: linear-gradient(-180deg, rgba(246, 246, 246, 0.5) 0%, rgba(246, 246, 246, 0.65) 100%);
+  border-top: 1px solid #dfe3ed;
 
   & > * {
     height: inherit;

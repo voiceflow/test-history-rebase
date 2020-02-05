@@ -13,11 +13,8 @@ import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader/root';
 
 import IntercomChat from '@/components/IntercomChat';
-import ConfirmModal from '@/components/Modal/ConfirmModal';
-import ErrorModal from '@/components/Modal/ErrorModal';
+import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/Modal';
 import Modal from '@/components/Modal/Modal';
-import ModalBackdrop from '@/components/Modal/ModalBackdrop';
-import SuccessModal from '@/components/Modal/SuccessModal';
 import BatchLoadingGate from '@/componentsV2/BatchLoadingGate';
 import { ToastContainer } from '@/componentsV2/Toast';
 import CollaboratorsModal from '@/containers/Collaborators/CollaboratorsModal';

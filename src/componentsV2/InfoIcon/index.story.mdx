@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import InfoIcon from '.';
+
+<Meta title="Info Icon" component={InfoIcon} />
+
+# Info Icon
+
+An icon with a tooltip.
+
+<Preview>
+  <Story name="text">{stories.text()}</Story>
+  <Story name="rich content">{stories.richContent()}</Story>
+</Preview>

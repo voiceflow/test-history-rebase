@@ -6,12 +6,17 @@ import Button from './components/CheckBoxButton';
 import ButtonContainer from './components/CheckBoxButtonContainer';
 import CheckBoxContainer from './components/CheckBoxContainer';
 
-function Checkbox({ type = 'checkbox', checked, name, onChange, children, className, color = '#5d9df5', ...props }) {
+function Checkbox({ type = 'checkbox', checked, name, onChange, children, error, disabled, className, color = '#5d9df5', ...props }) {
+  // eslint-disable-next-line no-nested-ternary
+  const checkBoxColor = error && !checked ? '#e91e63' : disabled || !checked ? '#8da2b5' : color;
+  // eslint-disable-next-line no-nested-ternary
+  const icon = type === 'checkbox' ? (checked ? 'checked' : 'emptyCheckbox') : checked ? 'onRadioButton' : 'offRadioButton';
+
   return (
-    <CheckBoxContainer className={className}>
+    <CheckBoxContainer disabled={disabled} className={className}>
       <ButtonContainer>
-        <Button color={color} type={type} name={name} checked={checked} onChange={onChange} {...props} />
-        <SvgIcon checked={checked} color={color} size={16} icon={checked ? 'checked' : 'emptyCheckbox'} />
+        <Button disabled={disabled} color={checkBoxColor} type={type} name={name} checked={checked} onChange={onChange} {...props} />
+        <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
       </ButtonContainer>
       {children}
     </CheckBoxContainer>

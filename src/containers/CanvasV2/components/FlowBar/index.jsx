@@ -36,7 +36,7 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
       </Section>
 
       <Section>
-        <SvgIcon icon="flows" size={12} color="currentColor" />
+        <SvgIcon icon="flows" size={12} variant="standard" />
         {flow.name}
       </Section>
 
@@ -56,6 +56,7 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
               onClick={stopPropagation(childDiagrams.length !== 0 && onToggle)}
               ref={ref}
               disabled={childDiagrams.length === 0}
+              iconProps={{ variant: 'standard' }}
             />
           )}
         </Dropdown>

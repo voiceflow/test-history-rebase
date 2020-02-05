@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ImageCarousel from '.';
+
+<Meta title="Image Carousel" component={ImageCarousel} />
+
+# Image Carousel
+
+A carousel of images.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

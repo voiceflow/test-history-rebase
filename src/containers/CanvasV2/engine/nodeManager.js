@@ -6,9 +6,7 @@ import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 
-import { EngineConsumer, cloneNodeGroup, nodeFactory } from './utils';
-
-const DUPLICATE_OFFSET = 40;
+import { EngineConsumer, nodeFactory } from './utils';
 
 class NodeManager extends EngineConsumer {
   internal = {
@@ -122,28 +120,11 @@ class NodeManager extends EngineConsumer {
     this.engine.saveHistory();
   }
 
-  async clone(nodeGroup, position) {
-    const clonedNodeGroup = cloneNodeGroup(nodeGroup);
-    await this.addMany(clonedNodeGroup, position);
-
-    return clonedNodeGroup;
-  }
-
   async duplicate(nodeID) {
-    const node = this.engine.getNodeByID(nodeID);
-    const data = this.engine.getDataByNodeID(nodeID);
-
-    const clonedNodeGroup = await this.clone(
-      {
-        nodesWithData: [{ node, data: { ...data, name: `${data.name} copy` } }],
-        ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
-        links: [],
-      },
-      [node.x + DUPLICATE_OFFSET, node.y + DUPLICATE_OFFSET]
-    );
+    const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
 
     this.engine.saveHistory();
-    this.engine.focus.set(clonedNodeGroup.nodesWithData[0]?.node.id);
+    this.engine.focus.set(duplicateNodeID);
   }
 
   async updateData(nodeID, data, save = true) {

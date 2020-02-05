@@ -1,42 +1,38 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
-import { withProps } from 'recompose';
 
-import ButtonGroupRouter from '@/components/ButtonGroupRouter';
-import VariableText from '@/components/VariableText';
-import { ReminderType } from '@/constants';
-import { Content, Section } from '@/containers/CanvasV2/components/BlockEditor';
+import RadioGroup from '@/components/RadioGroup';
+import Section from '@/componentsV2/Section';
+import { Content, Controls, FormControl } from '@/containers/CanvasV2/components/Editor';
 
-import ReminderForm from './components/ReminderForm';
-
-const REMINDER_ROUTES = [
-  {
-    label: 'Timer',
-    value: ReminderType.TIMER,
-    component: ReminderForm,
-  },
-  {
-    label: 'Scheduled',
-    value: ReminderType.SCHEDULED,
-    component: withProps({ withDate: true })(ReminderForm),
-  },
-];
+import { HelpMessage, HelpTooltip } from './components';
+import { REMINDER_ROUTES } from './constants';
 
 function ReminderEditor({ data, onChange }) {
-  const updateText = React.useCallback((text) => onChange({ text }), [onChange]);
+  const { reminderType, name } = data;
+  const ReminderComponent = REMINDER_ROUTES.find((reminder) => reminder.id === reminderType).component;
+
   const updateReminderType = React.useCallback((reminderType) => onChange({ reminderType }), [onChange]);
 
   return (
-    <Content>
+    <Content
+      footer={() => (
+        <Controls
+          tutorial={{
+            blockType: data.type,
+            content: <HelpTooltip />,
+            helpTitle: 'Having Trouble?',
+            helpMessage: <HelpMessage />,
+          }}
+          anchor="More Info"
+        />
+      )}
+    >
       <Section>
-        <label className="mt-0">Reminder Type</label>
-        <ButtonGroupRouter selected={data.reminderType} routes={REMINDER_ROUTES} routeProps={{ data, onChange }} onChange={updateReminderType} />
-        <label>Reminder</label>
-        <VariableText className="editor" value={data.text} placeholder="Walk the dog, do the dishes, etc." onChange={updateText} />
-        <Alert className="mt-3">
-          If failing, try prompting the user with the <b>Permission</b> block and a message
-        </Alert>
+        <FormControl label="Reminder Type" />
+        <RadioGroup options={REMINDER_ROUTES} checked={reminderType} name={name} onChange={updateReminderType} />
       </Section>
+
+      <ReminderComponent data={data} onChange={onChange} />
     </Content>
   );
 }

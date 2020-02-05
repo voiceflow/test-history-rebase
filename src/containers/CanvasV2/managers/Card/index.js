@@ -22,8 +22,8 @@ const CardManager = {
     data: {
       name: 'Card',
       cardType: CardType.SIMPLE,
-      title: [],
-      content: [],
+      title: '',
+      content: '',
       largeImage: null,
       smallImage: null,
       hasSmallImage: false,

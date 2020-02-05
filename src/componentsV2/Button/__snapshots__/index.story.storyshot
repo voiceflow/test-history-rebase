@@ -1,805 +1,382 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Button variants - with icon: primary 1`] = `
-<PrimaryButton
-  disabled={false}
-  icon="plus"
-  onClick={[Function]}
->
-  <Styled(Styled(styled.button))
-    canHover={true}
-    disabled={false}
-    onClick={[Function]}
-  >
-    <StyledComponent
-      canHover={true}
-      disabled={false}
-      forwardedComponent={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "_foldedDefaultProps": Object {
-            "canHover": true,
-          },
-          "attrs": Array [],
-          "componentStyle": ComponentStyle {
-            "componentId": "sc-jWBwVP",
-            "isStatic": false,
-            "lastClassName": "csgNpl",
-            "rules": Array [
-              "
-  ",
-              "
-  ",
-              "display:",
-              [Function],
-              ";align-items:center;",
-              [Function],
-              " ",
-              [Function],
-              " justify-content:center;",
-              "
-  ",
-              [Function],
-              "
-
+exports[`Storyshots Button Primary 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-              "
-",
-              "
-  ",
-              "
-  height: ",
-              "42",
-              "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-              [Function],
-              ";
-",
-              "
-",
-              "
+  width: auto;
   color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.10),0 4px 8px 0 rgba(17,49,96,0.16);
   font-weight: 600;
-  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
+  -webkit-transition: all 0.15s ease-out;
   transition: all 0.15s ease-out;
   background-size: 1px 52px;
-  /* ",
-              [Function],
-              " */
+}
 
-  ",
-              [Function],
-              "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
-  &:active {
-    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
-  }
-",
-            ],
-          },
-          "displayName": "Styled(Styled(styled.button))",
-          "foldedComponentIds": Array [
-            "sc-bdVaJa",
-            "sc-ifAKCX",
-          ],
-          "render": [Function],
-          "styledComponentId": "sc-jWBwVP",
-          "target": "button",
-          "toString": [Function],
-          "warnTooManyClasses": [Function],
-          "withComponent": [Function],
-        }
-      }
-      forwardedRef={null}
-      onClick={[Function]}
-    >
-      <button
-        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP csgNpl"
-        disabled={false}
-        onClick={[Function]}
-      >
-        <components__PrimaryButtonLabel>
-          <StyledComponent
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "components__PrimaryButtonLabel-rbaz43-0",
-                  "isStatic": true,
-                  "lastClassName": "bPKTiG",
-                  "rules": Array [
-                    "padding:0 22px;",
-                  ],
-                },
-                "displayName": "components__PrimaryButtonLabel",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-          >
-            <span
-              className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
-            >
-              Button
-            </span>
-          </StyledComponent>
-        </components__PrimaryButtonLabel>
-        <PrimaryButtonIcon>
-          <StyledComponent
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "PrimaryButtonIcon-sc-1ldd3qi-0",
-                  "isStatic": true,
-                  "lastClassName": "ljKuHR",
-                  "rules": Array [
-                    "margin-right:6px;padding:9px;border-radius:50%;height:30px;width:30px;text-align:center;background-color:rgba(0,0,0,0.16);",
-                  ],
-                },
-                "displayName": "PrimaryButtonIcon",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "PrimaryButtonIcon-sc-1ldd3qi-0",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-          >
-            <span
-              className="PrimaryButtonIcon-sc-1ldd3qi-0 ljKuHR"
-            >
-              <ForwardRef
-                color="#FFF"
-                icon="plus"
-                size={12}
-              >
-                <styled.span
-                  color="#FFF"
-                  size={12}
-                >
-                  <StyledComponent
-                    color="#FFF"
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "sc-bxivhb",
-                          "isStatic": false,
-                          "lastClassName": "iqcteL",
-                          "rules": Array [
-                            "
-  ",
-                            [Function],
-                            "
+.c0:hover {
+  background-position: 0px;
+}
 
-  color: ",
-                            [Function],
-                            ";
-  width: ",
-                            [Function],
-                            "px;
-  height: ",
-                            [Function],
-                            "px;
-  box-sizing: content-box;
-  
-  ",
-                            [Function],
-                            "
+.c0:active {
+  box-shadow: 0 0 6px 0 rgba(17,49,96,0.1),0 6px 12px 0 rgba(17,49,96,0.2);
+}
 
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
+.c1 {
+  padding: 0 22px;
+}
 
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                            [Function],
-                            ";
-
-  }
-",
-                          ],
-                        },
-                        "displayName": "styled.span",
-                        "foldedComponentIds": Array [],
-                        "render": [Function],
-                        "styledComponentId": "sc-bxivhb",
-                        "target": "span",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={null}
-                    size={12}
-                  >
-                    <span
-                      className="sc-bxivhb hDtCNa"
-                      color="#FFF"
-                      size={12}
-                    >
-                      <test-file-stub />
-                    </span>
-                  </StyledComponent>
-                </styled.span>
-              </ForwardRef>
-            </span>
-          </StyledComponent>
-        </PrimaryButtonIcon>
-      </button>
-    </StyledComponent>
-  </Styled(Styled(styled.button))>
-</PrimaryButton>
-`;
-
-exports[`Storyshots Button variants - with icon: secondary 1`] = `
-<ForwardRef(SecondaryButton)
-  disabled={false}
-  icon="sync"
-  onClick={[Function]}
->
-  <SecondaryButtonContainer
-    disabled={false}
-    onClick={[Function]}
-  >
-    <StyledComponent
-      disabled={false}
-      forwardedComponent={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "attrs": Array [],
-          "componentStyle": ComponentStyle {
-            "componentId": "SecondaryButtonContainer-djlxo5-0",
-            "isStatic": false,
-            "lastClassName": "hRdNaq",
-            "rules": Array [
-              "
-  ",
-              "
-  ",
-              "display:",
-              [Function],
-              ";align-items:center;",
-              [Function],
-              " ",
-              [Function],
-              " justify-content:center;",
-              "
-  ",
-              [Function],
-              "
-
-  padding: 0;
-  border: 0;
-  background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-              "
-",
-              "
-  ",
-              "
-  height: ",
-              "42",
-              "px;
-  border-radius: 90px;
-  font-size: 15px;
-  line-height: 18px;
-
-  width: ",
-              [Function],
-              ";
-",
-              "
-",
-              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
-              [Function],
-            ],
-          },
-          "displayName": "SecondaryButtonContainer",
-          "foldedComponentIds": Array [
-            "sc-bdVaJa",
-            "sc-ifAKCX",
-          ],
-          "render": [Function],
-          "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
-          "target": "button",
-          "toString": [Function],
-          "warnTooManyClasses": [Function],
-          "withComponent": [Function],
-        }
-      }
-      forwardedRef={null}
-      onClick={[Function]}
-    >
-      <button
-        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 hRdNaq"
-        disabled={false}
-        onClick={[Function]}
-      >
-        <SecondaryButtonIcon>
-          <StyledComponent
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "SecondaryButtonIcon-kknuwu-0",
-                  "isStatic": true,
-                  "lastClassName": "jOFIt",
-                  "rules": Array [
-                    "height:16px;width:16px;margin-right:16px;color:rgba(110,132,154,0.85);",
-                  ],
-                },
-                "displayName": "SecondaryButtonIcon",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "SecondaryButtonIcon-kknuwu-0",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-          >
-            <span
-              className="SecondaryButtonIcon-kknuwu-0 jOFIt"
-            >
-              <ForwardRef
-                icon="sync"
-                size={16}
-              >
-                <styled.span
-                  color="currentColor"
-                  size={16}
-                >
-                  <StyledComponent
-                    color="currentColor"
-                    forwardedComponent={
-                      Object {
-                        "$$typeof": Symbol(react.forward_ref),
-                        "attrs": Array [],
-                        "componentStyle": ComponentStyle {
-                          "componentId": "sc-bxivhb",
-                          "isStatic": false,
-                          "lastClassName": "iqcteL",
-                          "rules": Array [
-                            "
-  ",
-                            [Function],
-                            "
-
-  color: ",
-                            [Function],
-                            ";
-  width: ",
-                            [Function],
-                            "px;
-  height: ",
-                            [Function],
-                            "px;
-  box-sizing: content-box;
-  
-  ",
-                            [Function],
-                            "
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-  }
-
-  &:hover,
-  &:active {
-    color: ",
-                            [Function],
-                            ";
-
-  }
-",
-                          ],
-                        },
-                        "displayName": "styled.span",
-                        "foldedComponentIds": Array [],
-                        "render": [Function],
-                        "styledComponentId": "sc-bxivhb",
-                        "target": "span",
-                        "toString": [Function],
-                        "warnTooManyClasses": [Function],
-                        "withComponent": [Function],
-                      }
-                    }
-                    forwardedRef={null}
-                    size={16}
-                  >
-                    <span
-                      className="sc-bxivhb iqcteL"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <test-file-stub />
-                    </span>
-                  </StyledComponent>
-                </styled.span>
-              </ForwardRef>
-            </span>
-          </StyledComponent>
-        </SecondaryButtonIcon>
-        Button
-      </button>
-    </StyledComponent>
-  </SecondaryButtonContainer>
-</ForwardRef(SecondaryButton)>
-`;
-
-exports[`Storyshots Button variants: primary 1`] = `
-<PrimaryButton
+<button
+  className="c0"
   disabled={false}
   onClick={[Function]}
 >
-  <Styled(Styled(styled.button))
-    canHover={true}
-    disabled={false}
-    onClick={[Function]}
+  <span
+    className="c1"
   >
-    <StyledComponent
-      canHover={true}
-      disabled={false}
-      forwardedComponent={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "_foldedDefaultProps": Object {
-            "canHover": true,
-          },
-          "attrs": Array [],
-          "componentStyle": ComponentStyle {
-            "componentId": "sc-jWBwVP",
-            "isStatic": false,
-            "lastClassName": "csgNpl",
-            "rules": Array [
-              "
-  ",
-              "
-  ",
-              "display:",
-              [Function],
-              ";align-items:center;",
-              [Function],
-              " ",
-              [Function],
-              " justify-content:center;",
-              "
-  ",
-              [Function],
-              "
+    Button
+  </span>
+</button>
+`;
 
+exports[`Storyshots Button Primary With Icon 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: #FFF;
+  opacity: 0.8;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: #FFF;
+  opacity: 1;
+}
+
+.c3:active {
+  color: #FFF;
+  opacity: 1;
+}
+
+.c2 {
+  margin-right: 6px;
+  padding: 9px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  background-color: rgba(0,0,0,0.16);
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-              "
-",
-              "
-  ",
-              "
-  height: ",
-              "42",
-              "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-
-  width: ",
-              [Function],
-              ";
-",
-              "
-",
-              "
+  width: auto;
   color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.10),0 4px 8px 0 rgba(17,49,96,0.16);
   font-weight: 600;
-  background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
+  background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
+  -webkit-transition: all 0.15s ease-out;
   transition: all 0.15s ease-out;
   background-size: 1px 52px;
-  /* ",
-              [Function],
-              " */
+}
 
-  ",
-              [Function],
-              "
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
-  &:active {
-    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
-  }
-",
-            ],
-          },
-          "displayName": "Styled(Styled(styled.button))",
-          "foldedComponentIds": Array [
-            "sc-bdVaJa",
-            "sc-ifAKCX",
-          ],
-          "render": [Function],
-          "styledComponentId": "sc-jWBwVP",
-          "target": "button",
-          "toString": [Function],
-          "warnTooManyClasses": [Function],
-          "withComponent": [Function],
-        }
-      }
-      forwardedRef={null}
-      onClick={[Function]}
-    >
-      <button
-        className="sc-bdVaJa sc-ifAKCX sc-jWBwVP csgNpl"
-        disabled={false}
-        onClick={[Function]}
-      >
-        <components__PrimaryButtonLabel>
-          <StyledComponent
-            forwardedComponent={
-              Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "attrs": Array [],
-                "componentStyle": ComponentStyle {
-                  "componentId": "components__PrimaryButtonLabel-rbaz43-0",
-                  "isStatic": true,
-                  "lastClassName": "bPKTiG",
-                  "rules": Array [
-                    "padding:0 22px;",
-                  ],
-                },
-                "displayName": "components__PrimaryButtonLabel",
-                "foldedComponentIds": Array [],
-                "render": [Function],
-                "styledComponentId": "components__PrimaryButtonLabel-rbaz43-0",
-                "target": "span",
-                "toString": [Function],
-                "warnTooManyClasses": [Function],
-                "withComponent": [Function],
-              }
-            }
-            forwardedRef={null}
-          >
-            <span
-              className="components__PrimaryButtonLabel-rbaz43-0 bPKTiG"
-            >
-              Button
-            </span>
-          </StyledComponent>
-        </components__PrimaryButtonLabel>
-      </button>
-    </StyledComponent>
-  </Styled(Styled(styled.button))>
-</PrimaryButton>
-`;
+.c0:hover {
+  background-position: 0px;
+}
 
-exports[`Storyshots Button variants: secondary 1`] = `
-<ForwardRef(SecondaryButton)
+.c0:active {
+  box-shadow: 0 0 6px 0 rgba(17,49,96,0.1),0 6px 12px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  padding: 0 22px;
+}
+
+<button
+  className="c0"
   disabled={false}
   onClick={[Function]}
 >
-  <SecondaryButtonContainer
-    disabled={false}
-    onClick={[Function]}
+  <span
+    className="c1"
   >
-    <StyledComponent
-      disabled={false}
-      forwardedComponent={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "attrs": Array [],
-          "componentStyle": ComponentStyle {
-            "componentId": "SecondaryButtonContainer-djlxo5-0",
-            "isStatic": false,
-            "lastClassName": "hRdNaq",
-            "rules": Array [
-              "
-  ",
-              "
-  ",
-              "display:",
-              [Function],
-              ";align-items:center;",
-              [Function],
-              " ",
-              [Function],
-              " justify-content:center;",
-              "
-  ",
-              [Function],
-              "
+    Button
+  </span>
+  <span
+    className="c2"
+  >
+    <span
+      className="c3"
+      color="#FFF"
+      size={12}
+    >
+      <svg
+        data-file-name="SvgPlus"
+      />
+    </span>
+  </span>
+</button>
+`;
 
+exports[`Storyshots Button Secondary 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-              "
-",
-              "
-  ",
-              "
-  height: ",
-              "42",
-              "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
 
-  width: ",
-              [Function],
-              ";
-",
-              "
-",
-              "border:1px solid #dfe3ed;font-weight:600;padding:9px 22px 10px;color:#132144;line-height:22px;background-color:#eef4f6d9;transition:all 0.15s ease-out;background-size:1px 42px;box-sizing:border-box;transition:all ease 0.15s;",
-              [Function],
-            ],
-          },
-          "displayName": "SecondaryButtonContainer",
-          "foldedComponentIds": Array [
-            "sc-bdVaJa",
-            "sc-ifAKCX",
-          ],
-          "render": [Function],
-          "styledComponentId": "SecondaryButtonContainer-djlxo5-0",
-          "target": "button",
-          "toString": [Function],
-          "warnTooManyClasses": [Function],
-          "withComponent": [Function],
-        }
-      }
-      forwardedRef={null}
-      onClick={[Function]}
-    >
-      <button
-        className="sc-bdVaJa sc-ifAKCX SecondaryButtonContainer-djlxo5-0 hRdNaq"
-        disabled={false}
-        onClick={[Function]}
-      >
-        Button
-      </button>
-    </StyledComponent>
-  </SecondaryButtonContainer>
-</ForwardRef(SecondaryButton)>
-`;
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
 
-exports[`Storyshots Button variants: tertiary 1`] = `
-<TertiaryButton
+.c0:hover,
+.c0:active {
+  background-color: #e0ebee;
+}
+
+<button
+  className="c0"
   disabled={false}
   onClick={[Function]}
 >
-  <StyledComponent
-    disabled={false}
-    forwardedComponent={
-      Object {
-        "$$typeof": Symbol(react.forward_ref),
-        "attrs": Array [],
-        "componentStyle": ComponentStyle {
-          "componentId": "TertiaryButton-sc-1ecurkc-0",
-          "isStatic": false,
-          "lastClassName": "gRkRGZ",
-          "rules": Array [
-            "
-  ",
-            "
-  ",
-            "display:",
-            [Function],
-            ";align-items:center;",
-            [Function],
-            " ",
-            [Function],
-            " justify-content:center;",
-            "
-  ",
-            [Function],
-            "
+  Button
+</button>
+`;
 
+exports[`Storyshots Button Secondary With Icon 1`] = `
+.c2 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c2 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c2:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c2:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c1 {
+  height: 16px;
+  width: 16px;
+  margin-right: 16px;
+  color: rgba(110,132,154,0.85);
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
   padding: 0;
   border: 0;
   background: inherit;
-
-  &:focus,
-  &:active {
-    outline: 0;
-  }
-",
-            "
-",
-            "
-  ",
-            "
-  height: ",
-            "42",
-            "px;
+  height: 42px;
   border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
 
-  width: ",
-            [Function],
-            ";
-",
-            "
-",
-            "border:0;padding:0 22px;font-weight:600;color:#5d9df5;box-shadow:none;transition:all 0.15s ease-out;",
-            [Function],
-            " &:active{background:rgba(93,157,245,0.16);}",
-          ],
-        },
-        "displayName": "TertiaryButton",
-        "foldedComponentIds": Array [
-          "sc-bdVaJa",
-          "sc-ifAKCX",
-        ],
-        "render": [Function],
-        "styledComponentId": "TertiaryButton-sc-1ecurkc-0",
-        "target": "button",
-        "toString": [Function],
-        "warnTooManyClasses": [Function],
-        "withComponent": [Function],
-      }
-    }
-    forwardedRef={null}
-    onClick={[Function]}
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
+
+.c0:hover,
+.c0:active {
+  background-color: #e0ebee;
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  <span
+    className="c1"
   >
-    <button
-      className="sc-bdVaJa sc-ifAKCX TertiaryButton-sc-1ecurkc-0 gRkRGZ"
-      disabled={false}
-      onClick={[Function]}
+    <span
+      className="c2"
+      color="currentColor"
+      size={16}
     >
-      Button
-    </button>
-  </StyledComponent>
-</TertiaryButton>
+      <svg
+        data-file-name="SvgPlus"
+      />
+    </span>
+  </span>
+  Button
+</button>
+`;
+
+exports[`Storyshots Button Tertiary 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  padding: 0 22px;
+  font-weight: 600;
+  color: #5d9df5;
+  box-shadow: none;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+
+.c0:focus,
+.c0:active {
+  outline: 0;
+}
+
+.c0:hover {
+  background: rgba(93,157,245,0.1);
+}
+
+.c0:active {
+  background: rgba(93,157,245,0.16);
+}
+
+<button
+  className="c0"
+  disabled={false}
+  onClick={[Function]}
+>
+  Button
+</button>
 `;

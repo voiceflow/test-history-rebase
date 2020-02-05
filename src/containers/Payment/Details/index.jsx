@@ -12,7 +12,6 @@ import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
 
 import ChatWithUsLink from '../components/ChatWithUsLink';
 import {
-  Container,
   ContentContainer,
   DetailsSection,
   DollarText,
@@ -77,7 +76,7 @@ function PlansDetails({
   });
 
   return (
-    <Container>
+    <div>
       <CarouselButtons
         onLeftClick={() => setPlanIndex(selectedPlanIndex - 1)}
         onRightClick={() => setPlanIndex(selectedPlanIndex + 1)}
@@ -120,7 +119,7 @@ function PlansDetails({
           <StartAChatButton />
         )}
       </ModalFooter>
-    </Container>
+    </div>
   );
 }
 

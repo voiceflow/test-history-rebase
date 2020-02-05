@@ -12,7 +12,8 @@ import { Button, Input } from 'reactstrap';
 import { AdminTitle } from '@/admin/styles';
 import { Spinner } from '@/components/Spinner';
 import { toast } from '@/componentsV2/Toast';
-import LogTable from '@/containers/Logs/components/LogTable';
+
+import LogTable from '../Logs/components/LogTable';
 
 const COLUMNS = [
   {

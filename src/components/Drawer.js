@@ -6,7 +6,7 @@ const Drawer = styled(SlideOut)`
   top: 0;
   border-style: solid;
   border-width: 0;
-  border-color: #e2e9ec;
+  border-color: #dfe3ed;
   background-color: ${({ theme }) => theme.color.gradient[0]};
 
   ${({ direction = 'right' }) =>

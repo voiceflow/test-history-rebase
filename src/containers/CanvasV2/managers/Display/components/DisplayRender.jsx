@@ -6,11 +6,13 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
+const CONTAINER_WIDTH = 455;
+
 class DisplayRender extends Component {
   state = {
     device: 'medHub',
-    height: 450,
-    scale: 'scale(0.75)',
+    height: 266,
+    scale: 'scale(0.44)',
     error: null,
   };
 
@@ -20,13 +22,17 @@ class DisplayRender extends Component {
 
   async componentDidMount() {
     this.renderer = createRenderer(this.device, this.elem.current, { sendCommandEvent: _.constant(0), sendActivityEvent: _.constant(0) });
+    this.renderPreview();
+  }
+
+  renderPreview = async () => {
     try {
       await this.renderer.render(JSON.parse(this.props.apl), JSON.parse(this.props.data || '{}'), {});
       await this.renderer.executeCommands(JSON.parse(this.props.commands || '[]'));
     } catch (err) {
       this.setError(err);
     }
-  }
+  };
 
   setError = (error) => this.setState({ error });
 
@@ -39,7 +45,10 @@ class DisplayRender extends Component {
     } catch (err) {
       this.setError(err);
     }
-    const scale = Math.min(768 / this.device.getDpWidth(), 1);
+    let scale = Math.min(CONTAINER_WIDTH / this.device.getDpWidth(), 1);
+    if (device === 'smallHub') {
+      scale = 0.3;
+    }
     this.setState({ height: this.device.getDpHeight() * scale, scale: `scale(${scale})`, device });
   };
 
@@ -52,6 +61,10 @@ class DisplayRender extends Component {
           {this.state.error.toString()}
         </Alert>
       );
+    }
+
+    if (this.renderer) {
+      this.renderPreview();
     }
 
     return (

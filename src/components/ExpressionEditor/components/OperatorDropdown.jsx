@@ -1,17 +1,21 @@
-import cn from 'classnames';
 import React from 'react';
-import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { Manager, Popper, Reference } from 'react-popper';
 
+import Portal from '@/componentsV2/Portal';
 import { ExpressionType } from '@/constants';
-import { useToggle } from '@/hooks/toggle';
+import { useDismissable } from '@/hooks/dismiss';
 
 import { GROUPS, MAX_DEPTH } from '../constants';
+import ExpressionGroup from './ExpressionGroup';
+import ExpressionMenu from './ExpressionMenu';
+import ExpressionMenuItem from './ExpressionMenuItem';
+import ExpressionMenuToggle from './ExpressionMenuToggle';
 import ExpressionOperator from './ExpressionOperator';
 
 const MAX_DEPTH_GROUPS = [[ExpressionType.VALUE, ExpressionType.VARIABLE], [ExpressionType.ADVANCE]];
 
 function OperatorDropdown({ depth, children, update, className }) {
-  const [open, toggleOpen] = useToggle(false);
+  const [open, toggleOpen] = useDismissable(false);
 
   const createOnClick = (type) => () => {
     update(type);
@@ -21,23 +25,35 @@ function OperatorDropdown({ depth, children, update, className }) {
   const menuGroups = depth === MAX_DEPTH ? MAX_DEPTH_GROUPS : GROUPS;
 
   return (
-    <Dropdown isOpen={open} toggle={toggleOpen}>
-      <DropdownToggle tag="div" className={className}>
-        {children}
-      </DropdownToggle>
+    <Manager>
+      <Reference>
+        {({ ref }) => (
+          <ExpressionMenuToggle ref={ref} isOpened={open} onClick={toggleOpen} className={className}>
+            {children}
+          </ExpressionMenuToggle>
+        )}
+      </Reference>
 
-      <DropdownMenu className="expression-menu">
-        {menuGroups.map((group, index) => (
-          <div key={index} className={cn('expression-group', `group-${group.length}`)}>
-            {group.map((type) => (
-              <div key={type} role="button" onClick={createOnClick(type)} tabIndex="0">
-                <ExpressionOperator type={type} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
+      {open && (
+        <Portal portalNode={document.body}>
+          <Popper placement="bottom-end" modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}>
+            {({ ref, style }) => (
+              <ExpressionMenu ref={ref} style={style}>
+                {menuGroups.map((group, index) => (
+                  <ExpressionGroup key={index} size={group.length}>
+                    {group.map((type) => (
+                      <ExpressionMenuItem key={type} onClick={createOnClick(type)}>
+                        <ExpressionOperator type={type} />
+                      </ExpressionMenuItem>
+                    ))}
+                  </ExpressionGroup>
+                ))}
+              </ExpressionMenu>
+            )}
+          </Popper>
+        </Portal>
+      )}
+    </Manager>
   );
 }
 

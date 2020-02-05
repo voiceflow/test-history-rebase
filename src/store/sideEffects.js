@@ -1,5 +1,6 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
+import { toast } from '@/componentsV2/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
@@ -9,11 +10,12 @@ import { addProjectToList } from '@/ducks/lists';
 import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
+import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
-import { loadVariableSetForDiagram, saveVariableSet } from '@/ducks/variableSet';
+import { replaceVariableSetDiagram, saveVariableSet } from '@/ducks/variableSet';
 import { rehydrateViewport } from '@/ducks/viewport';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 
 export const resetDiagram = () => async (dispatch, getState) => {
   const rootDiagramID = Skill.rootDiagramIDSelector(getState());
@@ -39,7 +41,7 @@ export const copyProject = (projectID, workspaceID, boardID) => async (dispatch,
 
 export const importProject = (workspaceID, importToken) => async (dispatch, getState) => {
   const importedProject = await client.project.import(importToken, workspaceID);
-  const activeWorkspaceID = activeWorkspaceIDSelector(getState());
+  const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
   if (activeWorkspaceID === workspaceID) {
     dispatch(addProject(importedProject.id, importedProject));
     dispatch(addProjectToList(null, importedProject.id));
@@ -51,14 +53,14 @@ export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getSt
   const {
     data: { viewport, ...creator },
     timestamp,
+    variables,
   } = await client.diagram.getData(diagramID, platform);
 
+  dispatch(replaceVariableSetDiagram(diagramID, variables));
   dispatch(rehydrateViewport(diagramID, viewport));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
   dispatch(Realtime.updateLastTimestamp(timestamp));
   dispatch(Creator.saveHistory());
-
-  dispatch(loadVariableSetForDiagram(diagramID));
 };
 
 export const loadSkill = (skillID, diagramID) => async (dispatch) => {
@@ -98,3 +100,15 @@ export const saveVariableSets = () => async (dispatch, getState) => {
 };
 
 export const savePlatformAndActiveDiagram = () => (dispatch) => Promise.all([dispatch(Skill.savePlatform()), dispatch(Diagram.saveActiveDiagram())]);
+
+export const handleRealtimeSessionCancelled = (data) => async (dispatch, getState) => {
+  const currentWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
+
+  await dispatch(Workspace.removeWorkspace(data.workspaceId));
+
+  if (currentWorkspaceID === data.workspaceId) {
+    dispatch(Router.goToDashboard());
+  }
+
+  toast.info(`You are no longer a collaborator for "${data.workspaceName}" workspace`);
+};

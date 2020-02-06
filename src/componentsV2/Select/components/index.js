@@ -12,4 +12,5 @@ export const SearchInputIcon = styled(SvgIcon)`
   position: absolute;
   right: 0;
   padding: ${units(2)}px;
+  cursor: pointer;
 `;

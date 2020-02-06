@@ -19,6 +19,12 @@ const SelectWrapper = styled.div`
     css`
       width: 100%;
     `}
+  
+  ${({ clearable }) =>
+    clearable &&
+    css`
+      cursor: not-allowed;
+    `}
 
   ${InputWrapper} {
     ${({ isFocused }) => isFocused && inputFocus}

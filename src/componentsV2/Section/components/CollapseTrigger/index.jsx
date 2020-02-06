@@ -3,6 +3,7 @@ import Toggle from 'react-toggle';
 
 import SvgIcon from '@/components/SvgIcon';
 import { styled, transition } from '@/hocs';
+import { swallowEvent } from '@/utils/dom';
 
 import { SectionToggleVariant } from '../../constants';
 
@@ -19,7 +20,8 @@ const ToggleArrowContainer = styled.div`
 
 const ToggleSwitchContainer = styled.div`
   position: relative;
-  top: 3px;
+  height: 20px;
+  margin-top: -2px;
   margin-right: -4px;
   margin-left: -4px;
   transform: scale(0.8);
@@ -36,7 +38,7 @@ function CollapseTrigger({ onToggle, isCollapsed, variant }) {
 
       {variant === SectionToggleVariant.TOGGLE && (
         <ToggleSwitchContainer>
-          <Toggle checked={!isCollapsed} icons={false} onChange={onToggle} />
+          <Toggle checked={!isCollapsed} icons={false} onClick={onToggle} onChange={swallowEvent()} />
         </ToggleSwitchContainer>
       )}
     </div>

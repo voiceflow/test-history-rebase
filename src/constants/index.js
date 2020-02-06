@@ -391,11 +391,6 @@ export const SLOT_COLORS = [
 
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 
-export const DisplayType = {
-  SPLASH: 'splash',
-  ADVANCED: 'advanced',
-};
-
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
 export const SLOT_REGEXP = /{{\[([^ .[\]{}]*?)]\.([^ .[\]{}]*?)}}/g;
 export const VARIABLE_REGEXP = /^{.*}$/;

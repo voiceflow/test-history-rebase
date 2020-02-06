@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { PlatformType, SLOT_TYPES } from '@/constants';
+import { PlatformType, SLOT_REGEXP, SLOT_TYPES } from '@/constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const getSlotTypes = (locales, platform, publishInfo, filter) => {
@@ -58,3 +58,5 @@ export const getSlotTypes = (locales, platform, publishInfo, filter) => {
     return { label: type.label, value };
   });
 };
+
+export const transformVariables = (text) => text.replace(SLOT_REGEXP, '{$1}').trim();

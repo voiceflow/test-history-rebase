@@ -30,7 +30,7 @@ function EditSidebar({ focus, node, parent, theme }) {
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = node && !UNEDITABLE_BLOCKS.includes(node.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
-  const updateData = useUpdateData();
+  const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
   let editor = null;
@@ -40,7 +40,6 @@ function EditSidebar({ focus, node, parent, theme }) {
     const activePath = path[path.length - 1] || {};
 
     const Manager = withManagerProps(editorsByPath?.[activePath.type] || rootEditor);
-
     prevAnimationDistance.current =
       // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
@@ -58,6 +57,7 @@ function EditSidebar({ focus, node, parent, theme }) {
           animationDistance={prevAnimationDistance.current}
         >
           <Manager
+            nodeID={node.id}
             onChange={updateData}
             onExpand={enableModalMode}
             expanded={isModal}

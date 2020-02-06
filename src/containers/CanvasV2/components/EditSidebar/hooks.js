@@ -1,9 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import { EngineContext, ManagerContext } from '@/containers/CanvasV2/contexts';
-import * as Creator from '@/ducks/creator';
 
 import { SidebarContext } from './contexts';
 
@@ -74,9 +72,9 @@ export const useHeaderActions = (headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS)
   }, [sidebar.updateState, headerActions]);
 };
 
-export const useUpdateData = () => {
+export const useUpdateData = (nodeID) => {
+  // We've removed useSelector hook because it sometimes has stale redux values which was causing some insane bugs, now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
   const engine = React.useContext(EngineContext);
-  const focus = useSelector(Creator.creatorFocusSelector);
 
-  return React.useCallback((value, save = true) => focus.target && engine.node.updateData(focus.target, value, save), [engine.node, focus.target]);
+  return React.useCallback((value, save = true) => nodeID && engine.node.updateData(nodeID, value, save), [engine.node, nodeID]);
 };

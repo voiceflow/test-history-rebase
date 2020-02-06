@@ -29,6 +29,7 @@ import {
   removeAllLinksFromState,
   removeLinkFromState,
   removePortFromBlockInState,
+  reorderNodePorts,
 } from './utils';
 
 export const DIAGRAM_STATE_KEY = 'diagram';
@@ -60,6 +61,7 @@ export const REMOVE_NODE = 'CREATOR:NODE:REMOVE';
 export const REMOVE_MANY_NODES = 'CREATOR:NODE:REMOVE_MANY';
 export const ADD_PORT = 'CREATOR:PORT:ADD';
 export const REMOVE_PORT = 'CREATOR:PORT:REMOVE';
+export const REORDER_PORTS = 'CREATOR:PORT:REORDER';
 export const ADD_LINK = 'CREATOR:LINK:ADD';
 export const REMOVE_LINK = 'CREATOR:LINK:REMOVE';
 export const UNDO_HISTORY = 'CREATOR:HISTORY:UNDO';
@@ -106,6 +108,8 @@ export const removePortReducer = (state, { payload: portID }) =>
     removePortFromBlockInState(portID),
     removeAllLinksFromState(getLinkIDsByPortID(state)(portID))
   )(state);
+
+export const reorderPortReducer = (state, { payload: { nodeID, from, to } }) => reorderNodePorts(nodeID, from, to)(state);
 
 export const removeLinkReducer = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
 
@@ -159,6 +163,8 @@ function creatorDiagramReducer(state = DEFAULT_STATE, action) {
       return addPortReducer(state, action);
     case REMOVE_PORT:
       return removePortReducer(state, action);
+    case REORDER_PORTS:
+      return reorderPortReducer(state, action);
     case ADD_LINK:
       return addLinkReducer(state, action);
     case REMOVE_LINK:
@@ -342,6 +348,8 @@ export const removeNodes = (nodeIDs) => createAction(REMOVE_MANY_NODES, nodeIDs)
 export const addPort = (nodeID, portID, port) => createAction(ADD_PORT, { nodeID, portID, port });
 
 export const removePort = (portID) => createAction(REMOVE_PORT, portID);
+
+export const reorderPort = (nodeID, from, to) => createAction(REORDER_PORTS, { nodeID, from, to });
 
 export const addLink = (sourcePortID, targetPortID, linkID) => createAction(ADD_LINK, { sourcePortID, targetPortID, linkID });
 

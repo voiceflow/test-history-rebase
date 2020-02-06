@@ -38,8 +38,13 @@ const ChoiceManager = {
     },
     data: {
       name: 'Choice',
-      alexa: [{ id: cuid.slug() }],
-      google: [{ id: cuid.slug() }],
+      choices: [
+        {
+          id: cuid.slug(),
+          alexa: [{}],
+          google: [{}],
+        },
+      ],
     },
   }),
 };

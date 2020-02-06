@@ -52,7 +52,7 @@ const DraggableItem = (
           <Section isNested dividers={false} customContentStyling={{ paddingTop: 0 }}>
             <IntentSelect intent={intent} onChange={onUpdate} intents={filteredIntents} />
           </Section>
-          <IntentForm isNested intent={intent} isOpened={item.open} onChange={onUpdate} pushToPath={pushToPath} />
+          <IntentForm isNested intent={intent} onChange={onUpdate} pushToPath={pushToPath} />
           <LegacyMappings intent={intent} mappings={item.mappings} onDelete={() => onUpdate({ mappings: [] })} isNested />
         </>
       )}
@@ -65,8 +65,10 @@ const mapStateToProps = {
   intent: Intent.platformIntentByIDSelector,
 };
 
-const mergeProps = ({ intent: getIntentByID }, _, { item }) => ({
-  intent: item.intent ? getIntentByID(item.intent) : { inputs: [] },
+const mergeProps = ({ intent: getIntentByID }, _, { item, platform, onUpdate }) => ({
+  item: item[platform],
+  intent: item[platform].intent ? getIntentByID(item[platform].intent) : { inputs: [] },
+  onUpdate: (data) => onUpdate({ [platform]: { ...item[platform], ...data } }),
 });
 
 export default connect(

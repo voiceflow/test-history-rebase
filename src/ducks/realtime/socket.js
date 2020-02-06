@@ -21,6 +21,7 @@ export const MOVE_MANY_NODES = 'REALTIME:SOCKET:NODE:MOVE_MANY';
 
 export const ADD_PORT = 'REALTIME:SOCKET:PORT:ADD';
 export const REMOVE_PORT = 'REALTIME:SOCKET:PORT:REMOVE';
+export const REORDER_PORTS = 'REALTIME:SOCKET:PORT:REORDER';
 
 export const MOVE_LINK = 'REALTIME:SOCKET:LINK:MOVE';
 export const ADD_LINK = 'REALTIME:SOCKET:LINK:ADD';
@@ -57,6 +58,7 @@ export const moveManyNodes = (nodeIDs, movement, origins) => createAction(MOVE_M
 
 export const addPort = (nodeID, portID, port) => createAction(ADD_PORT, { nodeID, portID, port });
 export const removePort = (portID) => createAction(REMOVE_PORT, portID);
+export const reorderPorts = (nodeID, from, to) => createAction(REORDER_PORTS, { nodeID, from, to });
 
 export const moveLink = (linkData) => createAction(MOVE_LINK, linkData);
 export const addLink = (sourcePortID, targetPortID, linkID) => createAction(ADD_LINK, { sourcePortID, targetPortID, linkID });

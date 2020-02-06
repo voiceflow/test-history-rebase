@@ -66,6 +66,7 @@ class RealtimeEngine extends EngineConsumer {
 
     [Realtime.ADD_PORT]: ({ nodeID, portID, port }) => this.engine.port.internal.add(nodeID, portID, port),
     [Realtime.REMOVE_PORT]: (portID) => this.engine.port.internal.remove(portID),
+    [Realtime.REORDER_PORTS]: ({ nodeID, from, to }) => this.engine.port.internal.reorder(nodeID, from, to),
 
     [Realtime.MOVE_MOUSE]: (location, tabID) => this.overlays[OverlayType.CURSOR]?.moveMouse(tabID, location),
   };

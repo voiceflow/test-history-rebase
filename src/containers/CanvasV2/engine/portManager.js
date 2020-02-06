@@ -21,6 +21,11 @@ class PortManager extends EngineConsumer {
       this.dispatch(Creator.removePort(portID));
       this.engine.node.redrawLinks(port.nodeID);
     },
+
+    reorder: async (nodeID, from, to) => {
+      this.dispatch(Creator.reorderPort(nodeID, from, to));
+      this.engine.node.redrawLinks(nodeID);
+    },
   };
 
   api(portID) {
@@ -43,6 +48,13 @@ class PortManager extends EngineConsumer {
 
     await this.engine.realtime.sendUpdate(Realtime.addPort(nodeID, portID, port));
     this.internal.add(nodeID, portID, port);
+    this.engine.saveHistory();
+  }
+
+  async reorder(nodeID, from, to) {
+    await this.engine.realtime.sendUpdate(Realtime.reorderPorts(nodeID, from, to));
+
+    this.internal.reorder(nodeID, from, to);
     this.engine.saveHistory();
   }
 

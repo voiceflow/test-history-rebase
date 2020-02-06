@@ -80,9 +80,12 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       const value = factory(...args);
       const key = generateKey(value);
       const updated = addNormalizedByKey(normalized.current, key, value);
+      const index = updated.allKeys.length - 1;
 
-      keyLookup.current.set(generateLookupKey(value, updated.allKeys.length - 1), key);
+      keyLookup.current.set(generateLookupKey(value, index), key);
+
       latestCreatedKey.current = key;
+
       onSave(updated, { save: autosave });
     },
     [autosave, factory, generateKey, generateLookupKey, onSave]
@@ -93,8 +96,9 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       const value = factory(...args);
       const key = generateKey(value);
       const updated = addToStartNormalizedByKey(normalized.current, key, value);
+      const index = 0;
 
-      keyLookup.current.set(generateLookupKey(value, updated.allKeys.length - 1), key);
+      keyLookup.current.set(generateLookupKey(value, index), key);
 
       latestCreatedKey.current = key;
 
@@ -145,9 +149,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
 
       onSave(updated, { save: autosave });
 
-      if (handleRemove) {
-        await handleRemove(currValue, currIndex);
-      }
+      await handleRemove?.(currValue, currIndex);
     },
     [getItem, getIndex, generateLookupKey, onSave, autosave, handleRemove]
   );

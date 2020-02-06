@@ -21,7 +21,6 @@ const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.ma
 
 function removeFunkyCharactersAndUnsupportedTags(value, tags) {
   return value
-    .trim()
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE)
     .replace(REGEX_CARRIAGE, '')

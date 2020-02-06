@@ -1,22 +1,20 @@
 import React from 'react';
 
-import VariableText from '@/components/VariableText';
+import VariablesInput from '@/componentsV2/VariablesInput';
 
 import NextStepButton from '../../components/NextStepButton';
 
 function WithMessageSection(props) {
   return (
     <>
-      <VariableText
-        className="form-control form-control auto-height"
+      <VariablesInput
         value={props.data.value}
-        onChange={(val) => {
+        onBlur={({ text }) => {
           props.onChange({
-            value: val,
+            value: text,
           });
         }}
         placeholder="Message"
-        silent
       />
       <NextStepButton openNextStep={props.openNextStep} />
     </>

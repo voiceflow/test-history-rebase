@@ -1,4 +1,3 @@
-import { draftJSContentAdapter } from '@/client/adapters/draft';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { INTEGRATION_DATA_MODELS, IntegrationActionType, IntegrationType } from '@/constants';
 
@@ -48,17 +47,17 @@ const addGoogleSheetsData = (dataModel, actionData, integrationsData, selectedIn
   dataModel.spreadsheet = actionData.spreadsheet || GOOGLE_SHEET_DEFAULTS.spreadsheet;
   dataModel.sheet = actionData.sheet || GOOGLE_SHEET_DEFAULTS.sheet;
   dataModel.header_column = actionData.header_column || GOOGLE_SHEET_DEFAULTS.header_column;
-  dataModel.match_value = draftJSContentAdapter.fromDB(actionData.match_value);
-  dataModel.row_values = actionData.row_values?.map(draftJSContentAdapter.fromDB) || GOOGLE_SHEET_DEFAULTS.row_values;
-  dataModel.row_number = draftJSContentAdapter.fromDB(actionData.row_number);
-  dataModel.start_row = draftJSContentAdapter.fromDB(actionData.start_row);
-  dataModel.end_row = draftJSContentAdapter.fromDB(actionData.end_row);
+  dataModel.match_value = textEditorContentAdapter.fromDB(actionData.match_value);
+  dataModel.row_values = actionData.row_values?.map(textEditorContentAdapter.fromDB) || GOOGLE_SHEET_DEFAULTS.row_values;
+  dataModel.row_number = textEditorContentAdapter.fromDB(actionData.row_number);
+  dataModel.start_row = textEditorContentAdapter.fromDB(actionData.start_row);
+  dataModel.end_row = textEditorContentAdapter.fromDB(actionData.end_row);
   dataModel.user = integrationsData[selectedIntegration].user;
 };
 
 const addZapierData = (dataModel, actionData, integrationsData, selectedIntegration) => {
   dataModel.selectedAction = IntegrationActionType.ZAPIER.START_A_ZAP;
-  dataModel.value = draftJSContentAdapter.fromDB(actionData.value);
+  dataModel.value = textEditorContentAdapter.fromDB(actionData.value);
   dataModel.user = integrationsData[selectedIntegration].user || ZAPIER_DEFAULTS.user;
 };
 
@@ -117,14 +116,14 @@ const setGoogleSheetsData = (dataModel, data) => {
         spreadsheet,
         sheet,
         header_column,
-        match_value: draftJSContentAdapter.toDB(match_value),
+        match_value: textEditorContentAdapter.toDB(match_value),
         row_values: row_values.map((value) => {
-          return draftJSContentAdapter.toDB(value);
+          return textEditorContentAdapter.toDB(value);
         }),
-        row_number: draftJSContentAdapter.toDB(row_number),
+        row_number: textEditorContentAdapter.toDB(row_number),
         mapping,
-        start_row: draftJSContentAdapter.toDB(start_row),
-        end_row: draftJSContentAdapter.toDB(end_row),
+        start_row: textEditorContentAdapter.toDB(start_row),
+        end_row: textEditorContentAdapter.toDB(end_row),
       },
     },
   };
@@ -137,7 +136,7 @@ const setZapierData = (dataModel, data) => {
     user,
     actions_data: {
       [selectedAction]: {
-        value: draftJSContentAdapter.toDB(value),
+        value: textEditorContentAdapter.toDB(value),
       },
     },
   };

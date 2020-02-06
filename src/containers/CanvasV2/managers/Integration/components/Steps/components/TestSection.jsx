@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { Alert, Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
-import { draftJSContentAdapter } from '@/client/adapters/draft';
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import DefaultModal from '@/components/Modal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
 import { IntegrationActionType, IntegrationType } from '@/constants';
@@ -37,24 +37,24 @@ class TestSection extends Component {
   generateLegacyActionsDataStructure = (selected_integration, selected_action, data, actionsData) => {
     if (selected_integration === IntegrationType.GOOGLE_SHEETS) {
       if (selected_action === IntegrationActionType.GOOGLE_SHEETS.RETRIEVE_DATA) {
-        actionsData.match_value = draftJSContentAdapter.toDB(data.match_value);
+        actionsData.match_value = textEditorContentAdapter.toDB(data.match_value);
 
         actionsData.header_column = data.header_column;
       } else if (selected_action === IntegrationActionType.GOOGLE_SHEETS.CREATE_DATA) {
         actionsData.row_values = data.row_values.map((rowVal) => {
-          return draftJSContentAdapter.toDB(rowVal);
+          return textEditorContentAdapter.toDB(rowVal);
         });
       } else if (selected_action === IntegrationActionType.GOOGLE_SHEETS.UPDATE_DATA) {
         actionsData.row_values = data.row_values.map((rowVal) => {
-          return draftJSContentAdapter.toDB(rowVal);
+          return textEditorContentAdapter.toDB(rowVal);
         });
-        actionsData.row_number = draftJSContentAdapter.toDB(data.row_number);
+        actionsData.row_number = textEditorContentAdapter.toDB(data.row_number);
       } else if (selected_action === IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA) {
-        actionsData.start_row = draftJSContentAdapter.toDB(data.start_row);
-        actionsData.end_row = draftJSContentAdapter.toDB(data.end_row);
+        actionsData.start_row = textEditorContentAdapter.toDB(data.start_row);
+        actionsData.end_row = textEditorContentAdapter.toDB(data.end_row);
       }
     } else if (selected_integration === IntegrationType.ZAPIER) {
-      actionsData.value = draftJSContentAdapter.toDB(data.value);
+      actionsData.value = textEditorContentAdapter.toDB(data.value);
     }
   };
 
@@ -290,7 +290,6 @@ class TestSection extends Component {
           size="sm"
           block
         >
-          <i className="fas fa-power-off mr-2" />
           Test Integration
         </Button>
         {this.renderTestContent()}

@@ -89,7 +89,7 @@ function EditSidebar({ focus, node, parent, theme }) {
         direction="left"
         disableAnimation={!shouldRender}
       >
-        {!isModal && editor}
+        {!isModal && !!path.length && editor}
       </Drawer>
       {isOpen && !isModal && <RemoveIntercom />}
       {isModal && <EditorModal disableModalMode={disableModalMode} editor={editor} />}
@@ -115,5 +115,6 @@ export default compose(
     null,
     mergeProps
   ),
-  withTheme
+  withTheme,
+  React.memo
 )(EditSidebar);

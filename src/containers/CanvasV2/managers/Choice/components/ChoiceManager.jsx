@@ -4,6 +4,7 @@ import React from 'react';
 import { HelpTooltip } from '@/components/IntentForm';
 import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
 import OverflowMenu from '@/componentsV2/OverflowMenu';
+import { PlatformType } from '@/constants';
 import { Content, Controls, MaxOptionsMessage } from '@/containers/CanvasV2/components/Editor/components';
 import NoReplyResponse, { repromptFactory } from '@/containers/CanvasV2/components/NoReplyResponse';
 import { MAX_ITEMS_PER_EDITOR } from '@/containers/CanvasV2/constants';
@@ -16,25 +17,25 @@ import { useManager, useToggle } from '@/hooks';
 import DraggableItem from './DraggableItem';
 
 const choiceFactory = () => ({
-  id: cuid.slug(),
-  open: true,
-  mappings: [],
+  [PlatformType.ALEXA]: { id: cuid.slug(), intent: null, mappings: [] },
+  [PlatformType.GOOGLE]: { id: cuid.slug(), intent: null, mappings: [] },
 });
 
 function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
-  const choices = data[platform];
+  const { choices } = data;
+
   const engine = React.useContext(EngineContext);
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const updateChoices = React.useCallback((nextChoices, save) => onChange({ [platform]: nextChoices }, save), [platform, onChange]);
+  const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
   const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [engine.port, focusedNode.ports.out]);
 
   const hasReprompt = !!data.reprompt;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
 
   const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey, items } = useManager(choices, updateChoices, {
-    autosave: false,
     factory: choiceFactory,
+    autosave: false,
     handleRemove: onRemoveChoice,
   });
 
@@ -45,6 +46,15 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
       scrollToBottom();
     },
     [onAdd, engine.port, focusedNode.id, choices.length]
+  );
+
+  const reorderChoice = React.useCallback(
+    (from, to) => {
+      onReorder(from, to);
+
+      engine.port.reorder(focusedNode.id, from + 1, to + 1);
+    },
+    [onReorder, engine.port, focusedNode.id]
   );
 
   return (
@@ -84,9 +94,9 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
         type="interaction-editor"
         items={items}
         onDelete={onRemove}
-        onReorder={onReorder}
+        onReorder={reorderChoice}
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey, pushToPath, items, isOnlyItem: items.length === 1 }}
+        itemProps={{ latestCreatedKey, pushToPath, items, isOnlyItem: items.length === 1, platform }}
         mapManaged={mapManaged}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}

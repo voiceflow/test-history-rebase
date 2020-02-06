@@ -56,6 +56,15 @@ function IfEditor({ data, onChange, focusedNode }) {
     [engine.port, focusedNode.id, items.length, onAdd]
   );
 
+  const reorderExpression = React.useCallback(
+    (from, to) => {
+      onReorder(from, to);
+
+      engine.port.reorder(focusedNode.id, from + 1, to + 1);
+    },
+    [onReorder, engine.port, focusedNode.id]
+  );
+
   return (
     <Content
       footer={({ scrollToBottom }) =>
@@ -92,7 +101,7 @@ function IfEditor({ data, onChange, focusedNode }) {
         type="if-editor"
         items={items}
         onDelete={onRemove}
-        onReorder={onReorder}
+        onReorder={reorderExpression}
         onEndDrag={toggleDragging}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
         mapManaged={mapManaged}

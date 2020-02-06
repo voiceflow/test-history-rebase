@@ -1,4 +1,4 @@
-import { withoutValue } from '@/utils/array';
+import { reorder, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import {
   addNormalizedByKey,
@@ -36,6 +36,15 @@ export const removePortFromNode = (node, portID) => ({
     out: withoutValue(node.ports.out, portID),
   },
 });
+
+export const reorderNodePorts = (nodeID, from, to) => (state) => {
+  const node = getNormalizedByKey(state.nodes, nodeID);
+
+  return {
+    ...state,
+    nodes: patchNormalizedByKey(state.nodes, node.id, { ports: { ...node.ports, out: reorder(node.ports.out, from, to) } }),
+  };
+};
 
 export const removePortFromNodes = (port) => (nodes) => {
   const node = getNormalizedByKey(nodes, port.nodeID);

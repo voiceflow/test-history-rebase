@@ -34,7 +34,7 @@ function PrefixVariableInput({ value, onChange, prefix, placeholder }) {
   return (
     <Container>
       <PrefixText>{prefix}</PrefixText>
-      <PrefixedInput placeholder={placeholder} value={value} onBlur={({ text }) => onChange(text)} />
+      <PrefixedInput space={false} placeholder={placeholder} value={value} onBlur={({ text }) => onChange(text)} />
     </Container>
   );
 }

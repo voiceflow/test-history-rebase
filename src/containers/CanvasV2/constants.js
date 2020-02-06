@@ -49,8 +49,7 @@ export const BLOCK_MENU = [
   },
   {
     type: BlockCategoryType.VISUAL,
-    items: [BlockType.CARD],
-    // , BlockType.DISPLAY],
+    items: [BlockType.CARD, BlockType.DISPLAY],
   },
   {
     type: BlockCategoryType.USER,

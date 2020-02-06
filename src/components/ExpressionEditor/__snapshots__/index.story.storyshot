@@ -332,6 +332,7 @@ Array [
   position: absolute;
   right: 0;
   padding: 16px;
+  cursor: pointer;
 }
 
 .c7 {

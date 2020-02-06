@@ -18,6 +18,12 @@ const SearchInput = styled(Input)`
       box-shadow: none !important;
     `}
 
+  ${({ clearable }) =>
+    !!clearable &&
+    css`
+      pointer-events: none;
+    `}
+
   ${({ inline }) =>
     inline &&
     css`

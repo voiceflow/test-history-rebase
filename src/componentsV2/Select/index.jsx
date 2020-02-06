@@ -255,6 +255,7 @@ export default function Select({
         isFocused={opened}
         className={className}
         fullWidth={fullWidth}
+        clearable={clearable}
       >
         <Reference
           innerRef={(ref) => {
@@ -266,7 +267,7 @@ export default function Select({
               triggerRenderer({ ...inputProps, value: searchLabel, ref })
             ) : (
               <Flex>
-                <SearchInput {...inputProps} value={label || searchLabel} ref={ref} type="search" autoComplete="off" />
+                <SearchInput {...inputProps} value={label || searchLabel} ref={ref} type="search" autoComplete="off" clearable={clearable} />
 
                 {!withIcon && (
                   <SearchInputIcon

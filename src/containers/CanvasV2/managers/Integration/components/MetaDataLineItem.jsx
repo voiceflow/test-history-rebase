@@ -45,7 +45,7 @@ function MetaDataLineItem({ value, keyPlaceholder, onUpdate, onRemove, children,
     <Container>
       <LeftSection>
         <HeaderKeyContainer>
-          <VariablesInput placeholder={keyPlaceholder} value={value} onBlur={({ text }) => onUpdate(text)} />
+          <VariablesInput space={false} placeholder={keyPlaceholder} value={value} onBlur={({ text }) => onUpdate(text)} />
         </HeaderKeyContainer>
 
         {children}

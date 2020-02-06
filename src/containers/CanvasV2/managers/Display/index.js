@@ -1,6 +1,7 @@
-import { BlockType, DisplayType, PlatformType } from '@/constants';
+import { BlockType, PlatformType } from '@/constants';
 
 import DisplayEditor from './DisplayEditor';
+import { DisplayType, VERSIONS } from './constants';
 
 const DisplayManager = {
   type: BlockType.DISPLAY,
@@ -31,6 +32,7 @@ const DisplayManager = {
       backgroundImage: null,
       splashHeader: '',
       jsonFile: null,
+      version: VERSIONS.EDITORS_REDESIGN,
     },
   }),
 };

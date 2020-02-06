@@ -10,6 +10,8 @@ import * as Intent from '@/ducks/intent';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
+import CanFulfillForm from './components/canfulfill';
+
 const DEFAULT_INTENT = {
   id: '',
   inputs: [],
@@ -38,7 +40,7 @@ function IntentEditor({ intent, data, platform, onChange, pushToPath }) {
         /* TODO: bulk import */
         <Controls
           menu={null && <OverflowMenu placement="top-end" options={[{ label: 'Bulk import utterances' }]} />}
-          tutorial={{ content: <HelpTooltip /> }}
+          tutorial={{ content: <HelpTooltip />, blockType: data.type }}
         />
       )}
     >
@@ -49,6 +51,7 @@ function IntentEditor({ intent, data, platform, onChange, pushToPath }) {
         <IntentForm intent={intent} pushToPath={pushToPath} />
       </NamespaceProvider>
       <LegacyMappings intent={intent} mappings={data[platform].mappings} onDelete={() => updatePlatform({ mappings: [] })} />
+      <CanFulfillForm intentID={intent?.id} />
     </Content>
   );
 }

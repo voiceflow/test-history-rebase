@@ -1,9 +1,11 @@
 import React from 'react';
 
+import Section from '@/componentsV2/Section';
 import FullImage from '@/componentsV2/Upload/ImageUpload/FullImage';
 import VariablesInput from '@/componentsV2/VariablesInput';
 import { FormControl } from '@/containers/CanvasV2/components/Editor';
 import { useDidUpdateEffect } from '@/hooks/lifecycle';
+import { transformVariables } from '@/utils/slot';
 
 import dataSourceTemplate from '../../templates/datasourceTemplate';
 import documentTemplate from '../../templates/documentTemplate';
@@ -11,7 +13,7 @@ import documentTemplate from '../../templates/documentTemplate';
 const injectDatasourceValues = (datasourceTemplate, header = '', backgroundImageURL) => {
   // The property name of the datasource object that houses the data
   const datasourceProperty = 'bodyTemplate7Data';
-  datasourceTemplate[datasourceProperty].title = header;
+  datasourceTemplate[datasourceProperty].title = transformVariables(header);
   datasourceTemplate[datasourceProperty].image.sources[0].url = backgroundImageURL;
   datasourceTemplate[datasourceProperty].image.sources[1].url = backgroundImageURL;
 };
@@ -44,7 +46,7 @@ function SplashEditor({ splashHeader, onChange, backgroundImage, displayID, crea
   }, [splashHeader, backgroundImage, updateSplashDisplay]);
 
   return (
-    <>
+    <Section isDividerNested>
       <FormControl label="Text Header or Variable">
         <VariablesInput value={splashHeader} onBlur={({ text }) => onChange({ splashHeader: text })} placeholder="Enter header here" />
       </FormControl>
@@ -52,7 +54,7 @@ function SplashEditor({ splashHeader, onChange, backgroundImage, displayID, crea
       <FormControl label="Background Image" contentBottomUnits={0}>
         <FullImage update={(val) => onChange({ backgroundImage: val })} image={backgroundImage} />
       </FormControl>
-    </>
+    </Section>
   );
 }
 

@@ -16,8 +16,8 @@ const focusedNodeRepromptSelector = createSelector(
   (data) => data && data.reprompt
 );
 
-const NoReplyResponseForm = ({ reprompt }) => {
-  const updateData = useUpdateData();
+const NoReplyResponseForm = ({ focus, reprompt }) => {
+  const updateData = useUpdateData(focus.target);
   const updateReprompt = React.useCallback((value) => updateData({ reprompt: { ...reprompt, ...value } }), [reprompt, updateData]);
   const isVoice = reprompt?.type === RepromptType.TEXT;
 
@@ -45,6 +45,7 @@ const NoReplyResponseForm = ({ reprompt }) => {
 };
 
 const mapStateToProps = {
+  focus: Creator.creatorFocusSelector,
   reprompt: focusedNodeRepromptSelector,
 };
 

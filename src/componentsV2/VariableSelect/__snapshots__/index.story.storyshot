@@ -91,6 +91,7 @@ exports[`Storyshots Variable Select Normal 1`] = `
   position: absolute;
   right: 0;
   padding: 16px;
+  cursor: pointer;
 }
 
 .c8 .c6 {

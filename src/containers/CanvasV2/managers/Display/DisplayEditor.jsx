@@ -1,134 +1,134 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
-import { Content, Section } from '@/containers/CanvasV2/components/Editor';
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import RadioGroup from '@/components/RadioGroup';
+import Section from '@/componentsV2/Section';
+import { MODALS } from '@/constants';
+import { Content } from '@/containers/CanvasV2/components/Editor';
+import { useModals } from '@/contexts/ModalsContext';
+import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
+import { activeSkillIDSelector } from '@/ducks/skill';
+import { connect } from '@/hocs';
 
-function DisplayEditor() {
-  return (
-    <Content>
-      <Section>
-        <Alert>
-          The display editor is currently under maintenance. Your exisiting content is saved and will still work on device and live projects.
-        </Alert>
+import { AdvancedEditor, Footer, SplashEditor } from './components';
+import { DisplayType, VERSIONS } from './constants';
+
+const DISPLAY_OPTIONS = [
+  {
+    id: DisplayType.SPLASH,
+    label: 'Splash',
+  },
+  {
+    id: DisplayType.ADVANCED,
+    label: 'Advanced',
+  },
+];
+
+function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, selected, onChange, duplicateDisplay }) {
+  const { migrating, displayType, backgroundImage, splashHeader, displayID, datasource, aplCommands, jsonFileName, version } = data;
+  const { open: openModal } = useModals(MODALS.DISPLAY_PREVIEW);
+  const cache = React.useRef({ migrating, onChange, version });
+  cache.current = { ...cache.current, version, migrating, onChange };
+
+  const canCreatePreview =
+    (displayType === DisplayType.SPLASH && (!!splashHeader || backgroundImage)) || (displayType === DisplayType.ADVANCED && jsonFileName);
+
+  const openPreviewModal = async () => {
+    const { document } = selected;
+    const apl = aplCommands || '';
+    const data = datasource || '';
+    const documentData = document;
+
+    openModal({ apl, data, documentData });
+  };
+
+  const changeDisplayType = (type) => {
+    const resetDataObject = {
+      displayType: type,
+      splashHeader: textEditorContentAdapter.fromDB(null),
+      datasource: null,
+      backgroundImage: null,
+      jsonFileName: null,
+    };
+    onChange(resetDataObject);
+  };
+
+  React.useEffect(() => {
+    const handleLegacyMigration = async () => {
+      if (!cache.current.version && !cache.current.migrating) {
+        cache.current.onChange({ migrating: true });
+
+        let newDisplayID;
+
+        // Only duplicate if the legacy display block is not empty
+        if (displayID) {
+          newDisplayID = await duplicateDisplay(displayID, skillID);
+        }
+
+        cache.current.onChange({
+          displayType: displayID ? DisplayType.ADVANCED : DisplayType.SPLASH,
+          displayID: newDisplayID,
+          jsonFileName: newDisplayID,
+          version: VERSIONS.EDITORS_REDESIGN,
+        });
+      }
+    };
+
+    // There is a global issue where on first edit sidebar render, it will render twice and cause a double duplication of the display
+    // this is a hacky fix but ensures we dont cause redudant display duplications in the db
+    // We can remove this after evgeny's double onmount fix goes out today
+    const timeout = setTimeout(handleLegacyMigration, 50);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return !version ? null : (
+    <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
+      <Section variant="tertiary" header="Display Type">
+        <RadioGroup options={DISPLAY_OPTIONS} checked={displayType} onChange={changeDisplayType} disabled={!!jsonFileName} />
       </Section>
+      {displayType === DisplayType.SPLASH ? (
+        <SplashEditor
+          skillID={skillID}
+          createDisplay={createDisplay}
+          splashHeader={splashHeader}
+          onChange={onChange}
+          backgroundImage={backgroundImage}
+          displayID={displayID}
+          updateDisplay={updateDisplayData}
+        />
+      ) : (
+        <AdvancedEditor
+          datasourceJSON={datasource}
+          aplCommands={aplCommands}
+          createDisplay={createDisplay}
+          updateDisplay={updateDisplayData}
+          displayID={displayID}
+          skillID={skillID}
+          jsonFileName={jsonFileName}
+          onChange={onChange}
+        />
+      )}
     </Content>
   );
 }
+const mapStateToProps = {
+  skillID: activeSkillIDSelector,
+  selected: displayByIDSelector,
+};
 
-export default DisplayEditor;
+const mapDispatchToProps = {
+  createDisplay,
+  duplicateDisplay,
+  updateDisplayData,
+};
 
-// import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-// import RadioGroup from '@/components/RadioGroup';
-// import Section from '@/componentsV2/Section';
-// import { DisplayType, MODALS } from '@/constants';
-// import { Content } from '@/containers/CanvasV2/components/Editor';
-// import { useModals } from '@/contexts/ModalsContext';
-// import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
-// import { activeSkillIDSelector } from '@/ducks/skill';
-// import { connect } from '@/hocs';
+const mergeProps = ({ selected: getDisplayByID }, _, { data }) => ({
+  selected: data.displayID && getDisplayByID(data.displayID),
+});
 
-// import { AdvancedEditor, Footer, SplashEditor } from './components';
-
-// const DISPLAY_OPTIONS = [
-//   {
-//     id: DisplayType.SPLASH,
-//     label: 'Splash',
-//   },
-//   {
-//     id: DisplayType.ADVANCED,
-//     label: 'Advanced',
-//   },
-// ];
-
-// function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, duplicateDisplay, selected, onChange }) {
-//   const { displayType, backgroundImage, splashHeader, displayID, datasource, aplCommands, jsonFileName } = data;
-//   const { open: openModal } = useModals(MODALS.DISPLAY_PREVIEW);
-//   const isLegacyConditional = !!displayID && !splashHeader && !backgroundImage && displayType === DisplayType.ADVANCED && !jsonFileName;
-//   const [isLegacyData, setIsLegacyData] = React.useState(isLegacyConditional);
-
-//   React.useEffect(() => {
-//     const handleLegacyMigration = async () => {
-//       if (isLegacyData) {
-//         const newDisplayID = await duplicateDisplay(displayID, skillID);
-
-//         onChange({ displayID: newDisplayID, jsonFileName: newDisplayID });
-//         setIsLegacyData(false);
-//       }
-//     };
-
-//     handleLegacyMigration();
-//   }, []);
-
-//   const canCreatePreview =
-//     (displayType === DisplayType.SPLASH && (!!splashHeader || backgroundImage)) || (displayType === DisplayType.ADVANCED && jsonFileName);
-
-//   const openPreviewModal = () => {
-//     const { document, datasource: displayDatasource } = selected;
-//     const apl = aplCommands || document;
-//     const data = datasource || displayDatasource;
-//     openModal({ apl, data });
-//   };
-
-//   const changeDisplayType = (type) => {
-//     const resetDataObject = {
-//       displayType: type,
-//       splashHeader: textEditorContentAdapter.fromDB(null),
-//       datasource: null,
-//       backgroundImage: null,
-//       jsonFileName: null,
-//     };
-//     onChange(resetDataObject);
-//   };
-
-//   return (
-//     <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
-//       <Section variant="tertiary" header="Display Type">
-//         <RadioGroup options={DISPLAY_OPTIONS} checked={displayType} onChange={changeDisplayType} />
-//       </Section>
-//       <Section isDividerNested>
-//         {displayType === DisplayType.SPLASH ? (
-//           <SplashEditor
-//             skillID={skillID}
-//             createDisplay={createDisplay}
-//             splashHeader={splashHeader}
-//             onChange={onChange}
-//             backgroundImage={backgroundImage}
-//             displayID={displayID}
-//             updateDisplay={updateDisplayData}
-//           />
-//         ) : (
-//           <AdvancedEditor
-//             datasourceJSON={datasource}
-//             aplCommands={aplCommands}
-//             createDisplay={createDisplay}
-//             updateDisplay={updateDisplayData}
-//             displayID={displayID}
-//             skillID={skillID}
-//             jsonFileName={jsonFileName}
-//             onChange={onChange}
-//           />
-//         )}
-//       </Section>
-//     </Content>
-//   );
-// }
-// const mapStateToProps = {
-//   skillID: activeSkillIDSelector,
-//   selected: displayByIDSelector,
-// };
-
-// const mapDispatchToProps = {
-//   createDisplay,
-//   updateDisplayData,
-//   duplicateDisplay,
-// };
-
-// const mergeProps = ({ selected: getDisplayByID }, _, { data }) => ({
-//   selected: data.displayID && getDisplayByID(data.displayID),
-// });
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-//   mergeProps
-// )(DisplayEditor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(DisplayEditor);

@@ -14,6 +14,8 @@ function ImportModal(props) {
   const [board, setBoard] = useState(boards[0]);
   const { projectName } = jwt.decode(token);
 
+  const updateBoard = React.useCallback((boardID) => setBoard(boards.find(({ value }) => value === boardID)), [boards, setBoard]);
+
   return (
     <Modal isOpen={open} toggle={toggle} className="import-modal">
       <ModalHeader toggle={toggle}>Copy Project</ModalHeader>
@@ -23,7 +25,7 @@ function ImportModal(props) {
         </Label>
         <Select
           value={board?.label}
-          onSelect={setBoard}
+          onSelect={updateBoard}
           disabled={boards.length === 1}
           options={boards}
           getOptionValue={(option) => option.value}

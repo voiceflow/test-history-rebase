@@ -13,7 +13,7 @@ const pluginsTypes = [PluginType.VARIABLES];
 
 const VariablesInput = (
   {
-    space = true,
+    space = false,
     onBlur,
     multiline = false,
     variables,

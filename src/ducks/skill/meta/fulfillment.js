@@ -55,3 +55,14 @@ export const deleteFulfillment = (intentID) => (dispatch, getState) => {
 
   dispatch(updateFulfillment(update(fulfillment, { $unset: [intentID] })));
 };
+
+export const toggleFulfillment = (intentID) => (dispatch, getState) => {
+  if (intentID) {
+    const fulfillment = fulfillmentSelector(getState())(intentID);
+    if (fulfillment) {
+      dispatch(deleteFulfillment(intentID));
+    } else {
+      dispatch(addFulfillment(intentID));
+    }
+  }
+};

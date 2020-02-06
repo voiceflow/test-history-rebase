@@ -4,8 +4,8 @@ import validUrl from 'valid-url';
 import Badge from '@/componentsV2/Badge';
 import Input from '@/componentsV2/Input';
 import VariablesInput from '@/componentsV2/VariablesInput';
-import { SLOT_REGEXP } from '@/constants';
 import { stopPropagation, withKeyPress } from '@/utils/dom';
+import { transformVariables } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';
 
@@ -13,8 +13,6 @@ const validURL = (text) => {
   if (!validUrl.isUri(text)) return 'Bad URL';
   return null;
 };
-
-const transformVariables = (text) => text.replace(SLOT_REGEXP, '{$1}').trim();
 
 // eslint-disable-next-line lodash/prefer-constant
 function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVariables }) {

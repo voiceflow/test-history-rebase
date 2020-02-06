@@ -447,7 +447,8 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c34 {
   position: relative;
-  top: 3px;
+  height: 20px;
+  margin-top: -2px;
   margin-right: -4px;
   margin-left: -4px;
   -webkit-transform: scale(0.8);
@@ -902,6 +903,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                       className="react-toggle-screenreader-only"
                       onBlur={[Function]}
                       onChange={[Function]}
+                      onClick={[Function]}
                       onFocus={[Function]}
                       type="checkbox"
                     />

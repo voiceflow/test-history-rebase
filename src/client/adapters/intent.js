@@ -7,7 +7,7 @@ const intentAdapter = createAdapter(
     id: key,
     name,
     slots: normalize(slots),
-    inputs,
+    inputs: inputs.map(({ text = '', slots = [] }) => ({ text, slots })),
     platform: _platform,
   }),
   ({ id, name, slots, inputs, platform }) => ({

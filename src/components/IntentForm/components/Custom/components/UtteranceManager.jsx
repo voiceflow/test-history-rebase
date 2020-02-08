@@ -110,7 +110,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
                     iconProps={{ variant: 'blue' }}
                     rightAction={
                       !isEmpty && (
-                        <AddUtteranceRightAction onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>Enter</AddUtteranceRightAction>
+                        <AddUtteranceRightAction onClick={() => onAdd(utteranceRef.current.getCurrentUtterance())}>Enter</AddUtteranceRightAction>
                       )
                     }
                     placeholder={placeholder}

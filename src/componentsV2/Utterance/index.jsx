@@ -4,7 +4,10 @@ import TextEditor, { PluginType } from '@/componentsV2/TextEditor';
 
 const pluginsTypes = [PluginType.VARIABLES];
 
-const Utterance = ({ space, slots, creatable, onAddSlot, characters, createInputPlaceholder = 'New Slot', onBlur, onEnterPress, ...props }, ref) => {
+const Utterance = (
+  { space, slots, creatable, onAddSlot, characters, createInputPlaceholder = 'New Slot', onBlur, onEnterPress, ...props },
+  forwardedRef
+) => {
   const pluginProps = React.useMemo(
     () => ({
       [PluginType.VARIABLES]: { space, variables: slots, creatable, characters, onAddVariable: onAddSlot, createInputPlaceholder },
@@ -21,10 +24,25 @@ const Utterance = ({ space, slots, creatable, onAddSlot, characters, createInput
     [onEnterPress]
   );
 
+  const onUtteranceRef = React.useCallback(
+    (editor) => {
+      if (editor) {
+        editor.getCurrentUtterance = () => {
+          const { text, pluginsData } = editor.getCurrentValue();
+          return { text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] };
+        };
+      }
+      if (forwardedRef) {
+        forwardedRef.current = editor;
+      }
+    },
+    [forwardedRef]
+  );
+
   return (
     <TextEditor
       {...props}
-      ref={ref}
+      ref={onUtteranceRef}
       onBlur={onBlurCallback}
       onEnterPress={onEnterPressCallback}
       pluginsTypes={pluginsTypes}

@@ -2,7 +2,7 @@ export const UPSELL_REQUIREMENTS =
   'Upsell Message - a product suggestion that fits the current user context. It should always end with an explicit (Yes/No) confirmation question.';
 
 export const DOS = [
-  'Determine whether a custoner is interested in your product',
+  'Determine whether a customer is interested in your product',
   'Offer relevant products to the customer',
   'Summarize what the product will provide to the customer',
   'End with an explicit confirmation (Yes/No) statement',

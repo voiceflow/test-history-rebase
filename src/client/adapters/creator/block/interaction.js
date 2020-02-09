@@ -2,7 +2,7 @@ import cuid from 'cuid';
 
 import { isBuiltInIntent } from '@/utils/intent';
 
-import { createBlockAdapter, slotMappingAdapter } from './utils';
+import { createBlockAdapter, repromptAdapter, slotMappingAdapter } from './utils';
 
 const getChoiceByIndex = (choices, index) => ({
   id: cuid.slug(),
@@ -22,17 +22,19 @@ const mapChoiceToDB = ({ intent, mappings }) => ({
 });
 
 const interactionBlockAdapter = createBlockAdapter(
-  ({ name, alexa, google }) => ({
+  ({ name, alexa, google, reprompt }) => ({
     name,
     choices: Array.from({ length: Math.max(alexa.choices.length, google.choices.length) }, (_, i) => ({
       alexa: getChoiceByIndex(alexa.choices, i),
       google: getChoiceByIndex(google.choices, i),
     })),
+    reprompt: repromptAdapter.fromDB(reprompt),
   }),
-  ({ name, choices }) => ({
+  ({ name, choices, reprompt }) => ({
     name,
     alexa: { choices: choices.map(({ alexa }) => mapChoiceToDB(alexa)) },
     google: { choices: choices.map(({ google }) => mapChoiceToDB(google)) },
+    reprompt: repromptAdapter.toDB(reprompt),
   })
 );
 

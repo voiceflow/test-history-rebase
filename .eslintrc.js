@@ -10,7 +10,7 @@ module.exports = {
     'react/jsx-fragments': 'error',
     'no-console': ['error', { allow: ['error'] }],
     quotes: ['error', 'single', 'avoid-escape'],
-    'no-secrets/no-secrets': ['error', { tolerance: 4.35 }],
+    'no-secrets/no-secrets': ['error', { tolerance: 4.45 }],
     'lodash/path-style': ['error', 'array'],
     'no-use-before-define': ['error', 'nofunc'],
     'prefer-destructuring': [

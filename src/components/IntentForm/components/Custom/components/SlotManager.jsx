@@ -3,10 +3,10 @@ import React from 'react';
 import ChatWithUsLink from '@/componentsV2/ChatLink';
 import DraggableList from '@/componentsV2/DraggableList';
 import { SectionToggleVariant } from '@/componentsV2/Section';
-import EditorSection from '@/containers/CanvasV2/components/EditorSection';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
+import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { reorder } from '@/utils/array';
 
 import DraggableSlotItem from './DraggableSlotItem';

@@ -17,10 +17,10 @@ import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/compone
 import Modal from '@/components/Modal/Modal';
 import BatchLoadingGate from '@/componentsV2/BatchLoadingGate';
 import { ToastContainer } from '@/componentsV2/Toast';
-import CollaboratorsModal from '@/containers/Collaborators/CollaboratorsModal';
-import BillingModal from '@/containers/Payment/BillingModal';
-import PaymentModal from '@/containers/Payment/PaymentModal';
 import { AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
+import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
+import BillingModal from '@/pages/Payment/BillingModal';
+import PaymentModal from '@/pages/Payment/PaymentModal';
 
 import Routes from './Routes';
 import Alerts from './components/Alerts/Alerts';

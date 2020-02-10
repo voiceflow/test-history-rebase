@@ -9,13 +9,13 @@ import Section, { SectionToggleVariant, UncontrolledSection } from '@/components
 import Utterance from '@/componentsV2/Utterance';
 import { SlotTag } from '@/componentsV2/VariableTag';
 import { PlatformType } from '@/constants';
-import { Content, FormControl } from '@/containers/CanvasV2/components/Editor';
-import EditorSection from '@/containers/CanvasV2/components/EditorSection';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import { activePlatformSelector } from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
+import { Content, FormControl } from '@/pages/Canvas/components/Editor';
+import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 

@@ -6,14 +6,14 @@ import ListManagerV2 from '@/componentsV2/ListManagerV2';
 import { SectionToggleVariant } from '@/componentsV2/Section';
 import Utterance from '@/componentsV2/Utterance';
 import { MODALS } from '@/constants';
-import { FormControl } from '@/containers/CanvasV2/components/Editor';
-import EditorSection from '@/containers/CanvasV2/components/EditorSection';
-import ErrorMessage from '@/containers/CanvasV2/components/ErrorMessage';
 import { useModals } from '@/contexts/ModalsContext';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
+import { FormControl } from '@/pages/Canvas/components/Editor';
+import EditorSection from '@/pages/Canvas/components/EditorSection';
+import ErrorMessage from '@/pages/Canvas/components/ErrorMessage';
 
 import AddUtteranceRightAction from '../../AddUtteranceRightAction';
 import ListManagerWrapper from '../../ListManagerWrapper';

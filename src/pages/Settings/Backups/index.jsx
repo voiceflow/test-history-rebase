@@ -20,7 +20,7 @@ function Backups({ projectID, setConfirm, toggle, goToCanvas }) {
 
   const swapVersions = async (versionId) => {
     try {
-      const { data } = await client.skill.restore(versionId);
+      const data = await client.skill.restore(versionId);
       setConfirm({
         text: 'Successfully Restored Backup',
       });

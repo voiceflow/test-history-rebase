@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Flex from '@/componentsV2/Flex';
-import Menu from '@/componentsV2/Menu';
-import { toast } from '@/componentsV2/Toast';
+import Flex from '@/components/Flex';
+import Menu from '@/components/Menu';
+import { toast } from '@/components/Toast';
 import { USER_ROLES } from '@/constants';
 import {
   cancelInvite,

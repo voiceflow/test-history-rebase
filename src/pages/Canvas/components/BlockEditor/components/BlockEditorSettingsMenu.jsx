@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Dropdown from '@/componentsV2/Dropdown';
-import Menu, { MenuItem } from '@/componentsV2/Menu';
+import Dropdown from '@/components/Dropdown';
+import Menu, { MenuItem } from '@/components/Menu';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import { swallowEvent } from '@/utils/dom';
 

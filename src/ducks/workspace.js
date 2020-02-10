@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 import { getAlternativeColor } from '@/utils/colors';
 

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots SVG Icon Normal 1`] = `
-.c0 {
+.c1 {
   -webkit-transition: width 0.15s ease;
   transition: width 0.15s ease;
   box-sizing: content-box;
@@ -11,24 +11,32 @@ exports[`Storyshots SVG Icon Normal 1`] = `
   opacity: 0.8;
 }
 
-.c0 > svg {
+.c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0:hover {
+.c1:hover {
   color: #000;
   opacity: 1;
 }
 
-.c0:active {
+.c1:active {
   color: #000;
   opacity: 1;
+}
+
+.c2 .c0 {
+  color: #fff;
+}
+
+.c3 .c0 {
+  color: #6e849a;
 }
 
 <span
-  className="c0"
+  className="c0 c1"
   color="#000"
   size={24}
 >
@@ -39,7 +47,7 @@ exports[`Storyshots SVG Icon Normal 1`] = `
 `;
 
 exports[`Storyshots SVG Icon With Height And Width 1`] = `
-.c0 {
+.c1 {
   -webkit-transition: width 0.15s ease;
   transition: width 0.15s ease;
   box-sizing: content-box;
@@ -49,24 +57,32 @@ exports[`Storyshots SVG Icon With Height And Width 1`] = `
   opacity: 0.8;
 }
 
-.c0 > svg {
+.c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0:hover {
+.c1:hover {
   color: #000;
   opacity: 1;
 }
 
-.c0:active {
+.c1:active {
   color: #000;
   opacity: 1;
+}
+
+.c2 .c0 {
+  color: #fff;
+}
+
+.c3 .c0 {
+  color: #6e849a;
 }
 
 <span
-  className="c0"
+  className="c0 c1"
   color="#000"
   height={24}
   size={16}
@@ -79,7 +95,7 @@ exports[`Storyshots SVG Icon With Height And Width 1`] = `
 `;
 
 exports[`Storyshots SVG Icon With Many Transitions 1`] = `
-.c0 {
+.c1 {
   -webkit-transition: width 0.15s ease,height 0.15s ease;
   transition: width 0.15s ease,height 0.15s ease;
   box-sizing: content-box;
@@ -89,24 +105,32 @@ exports[`Storyshots SVG Icon With Many Transitions 1`] = `
   opacity: 0.8;
 }
 
-.c0 > svg {
+.c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0:hover {
+.c1:hover {
   color: #000;
   opacity: 1;
 }
 
-.c0:active {
+.c1:active {
   color: #000;
   opacity: 1;
+}
+
+.c2 .c0 {
+  color: #fff;
+}
+
+.c3 .c0 {
+  color: #6e849a;
 }
 
 <span
-  className="c0"
+  className="c0 c1"
   color="#000"
   size={24}
 >

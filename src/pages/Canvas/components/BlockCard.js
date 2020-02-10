@@ -1,5 +1,5 @@
-import { FloatingCard } from '@/componentsV2/Card';
-import { flexCenterStyles } from '@/componentsV2/Flex';
+import { FloatingCard } from '@/components/Card';
+import { flexCenterStyles } from '@/components/Flex';
 import { css, styled, transition, units } from '@/hocs';
 
 const BlockCard = styled(FloatingCard)`

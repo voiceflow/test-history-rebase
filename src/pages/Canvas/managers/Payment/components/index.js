@@ -1,4 +1,4 @@
-import { FlexCenter, FlexLabel } from '@/componentsV2/Flex';
+import { FlexCenter, FlexLabel } from '@/components/Flex';
 import { css, styled, units } from '@/hocs';
 
 import ProductDetails from './ProductDetails';

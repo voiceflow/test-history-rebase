@@ -1,7 +1,7 @@
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Portal from '@/componentsV2/Portal';
+import Portal from '@/components/Portal';
 import { ExpressionType } from '@/constants';
 import { useDismissable } from '@/hooks/dismiss';
 

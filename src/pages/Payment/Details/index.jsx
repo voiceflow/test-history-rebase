@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { ModalFooter } from '@/components/Modal';
-import CarouselButtons from '@/components/Modal/CarouselButtons';
-import Button from '@/componentsV2/Button';
-import ImageCarousel from '@/componentsV2/ImageCarousel';
-import Tabs from '@/componentsV2/Tabs';
-import BubbleText from '@/componentsV2/Text/BubbleText';
+import Button from '@/components/Button';
+import ImageCarousel from '@/components/ImageCarousel';
+import { ModalFooter } from '@/components/LegacyModal';
+import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
+import Tabs from '@/components/Tabs';
+import BubbleText from '@/components/Text/BubbleText';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeLeft';

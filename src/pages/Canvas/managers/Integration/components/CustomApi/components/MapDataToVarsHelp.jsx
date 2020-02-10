@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { JSONCode, Paragraph, Section } from '@/componentsV2/Tooltip';
+import { JSONCode, Paragraph, Section } from '@/components/Tooltip';
 
 const jsonExample = `{
     <span>"Records"</span>:  [

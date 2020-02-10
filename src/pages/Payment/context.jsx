@@ -4,7 +4,7 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import client from '@/client';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 import { MODALS, PERIOD } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';

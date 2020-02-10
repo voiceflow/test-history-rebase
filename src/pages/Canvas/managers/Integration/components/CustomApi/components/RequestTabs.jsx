@@ -1,7 +1,7 @@
 import React from 'react';
 import { TabContent, TabPane } from 'reactstrap';
 
-import Tabs from '@/componentsV2/Tabs';
+import Tabs from '@/components/Tabs';
 import { IntegrationActionType } from '@/constants';
 
 import RequestBody from './RequestBody';

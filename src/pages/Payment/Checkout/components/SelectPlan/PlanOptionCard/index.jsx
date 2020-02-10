@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BubbleText from '@/componentsV2/Text/BubbleText';
+import BubbleText from '@/components/Text/BubbleText';
 import { UNLIMITED_SEAT_NUMBER } from '@/constants';
 
 import { Container, Description, EditorLimitText, Price, PriceContainer, PriceDescription, SelectBox } from './styled';

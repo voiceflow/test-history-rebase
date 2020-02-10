@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
 import { goToDiagram, goToRootDiagram } from '@/ducks/router';
 import { connect } from '@/hocs';

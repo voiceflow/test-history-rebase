@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Label } from 'reactstrap';
 
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
-import Button from '@/componentsV2/Button';
-import Select from '@/componentsV2/Select';
+import Button from '@/components/Button';
+import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
+import Select from '@/components/Select';
 
 function ImportModal(props) {
   const { toggle, open, token, boards, importProject } = props;

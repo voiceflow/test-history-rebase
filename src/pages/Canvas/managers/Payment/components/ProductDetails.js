@@ -1,4 +1,4 @@
-import { flexStyles } from '@/componentsV2/Flex';
+import { flexStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 const ProductDetails = styled.div`

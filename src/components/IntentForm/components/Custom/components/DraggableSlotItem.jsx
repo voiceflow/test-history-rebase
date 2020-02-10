@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { SlotRequiredMessage } from '@/components/IntentSlotForm/components';
-import Section from '@/componentsV2/Section';
-import { SlotTag } from '@/componentsV2/VariableTag';
+import Section from '@/components/Section';
+import { SlotTag } from '@/components/VariableTag';
 import { styled } from '@/hocs';
 
 export const SlotWrapper = styled(Section)`

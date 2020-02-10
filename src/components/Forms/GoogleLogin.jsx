@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'reactstrap';
 
+import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import Button from '@/componentsV2/Button';
 import { GOOGLE_OAUTH_ID } from '@/config';
 import { createGoogleSession } from '@/ducks/account';
 

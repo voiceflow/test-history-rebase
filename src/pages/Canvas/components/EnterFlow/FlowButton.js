@@ -1,5 +1,5 @@
+import Button from '@/components/Button';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
 import { styled } from '@/hocs';
 
 const EnterFlowButton = styled(Button)`

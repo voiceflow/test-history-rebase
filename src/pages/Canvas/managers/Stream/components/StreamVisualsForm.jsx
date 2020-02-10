@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import FullImageUpload from '@/componentsV2/Upload/ImageUpload/FullImage';
-import ImageGroupUpload from '@/componentsV2/Upload/ImageUpload/ImageGroup';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import FullImageUpload from '@/components/Upload/ImageUpload/FullImage';
+import ImageGroupUpload from '@/components/Upload/ImageUpload/ImageGroup';
+import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 

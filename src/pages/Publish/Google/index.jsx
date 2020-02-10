@@ -1,7 +1,7 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
 
-import Modal, { ModalHeader } from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STATES, loadDialogflow, publish, resetGoogleUpload } from '@/ducks/publish/google';
 import { activeProjectIDSelector } from '@/ducks/skill';

@@ -1,5 +1,5 @@
-import { FloatingCard } from '@/componentsV2/Card';
-import { flexStyles } from '@/componentsV2/Flex';
+import { FloatingCard } from '@/components/Card';
+import { flexStyles } from '@/components/Flex';
 import { styled, units } from '@/hocs';
 
 const NestedBlockContainer = styled(FloatingCard)`

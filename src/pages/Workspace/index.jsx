@@ -3,7 +3,7 @@ import { Link, Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';

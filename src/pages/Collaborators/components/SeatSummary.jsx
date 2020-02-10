@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClickableText from '@/componentsV2/Text/ClickableText';
+import ClickableText from '@/components/Text/ClickableText';
 import { MODALS, PLANS, UNLIMITED_SEAT_NUMBER } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { planTypeSelector, usedEditorSeats, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';

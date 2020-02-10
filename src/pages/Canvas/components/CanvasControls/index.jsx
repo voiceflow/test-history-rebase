@@ -2,8 +2,8 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import IconButton from '@/componentsV2/IconButton';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import { flowStructureSelector } from '@/ducks/diagram';
 import { goToRootDiagram } from '@/ducks/router';

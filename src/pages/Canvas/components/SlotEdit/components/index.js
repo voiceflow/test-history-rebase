@@ -1,4 +1,4 @@
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { styled, transition } from '@/hocs';
 
 export const ColorSelector = styled(FlexCenter)`

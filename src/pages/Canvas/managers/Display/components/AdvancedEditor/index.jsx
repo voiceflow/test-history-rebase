@@ -1,9 +1,9 @@
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import ClickableText from '@/componentsV2/Text/ClickableText';
-import JsonUpload from '@/componentsV2/Upload/JsonUpload';
+import { SectionToggleVariant } from '@/components/Section';
+import ClickableText from '@/components/Text/ClickableText';
+import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

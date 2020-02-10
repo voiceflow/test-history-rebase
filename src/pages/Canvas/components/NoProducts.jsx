@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
 import { stopPropagation } from '@/utils/dom';
 
 import { NoProductLabel, NoProductMessage, PaymentContainer } from '../managers/Payment/components';

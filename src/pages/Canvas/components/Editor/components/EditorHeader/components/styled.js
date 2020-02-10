@@ -1,5 +1,5 @@
-import { flexApartStyles, flexLabelStyles, flexStyles } from '@/componentsV2/Flex';
-import Input from '@/componentsV2/Input';
+import { flexApartStyles, flexLabelStyles, flexStyles } from '@/components/Flex';
+import Input from '@/components/Input';
 import { styled, transition, units } from '@/hocs';
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_NAME, sectionStyles } from '../../../styles';

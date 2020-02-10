@@ -2,7 +2,7 @@ import React from 'react';
 
 import IntentForm, { HelpTooltip as IntentTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Router from '@/ducks/router';

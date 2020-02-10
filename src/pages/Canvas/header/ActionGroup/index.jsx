@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import IconButton from '@/componentsV2/IconButton';
+import IconButton from '@/components/IconButton';
 import { PlatformType } from '@/constants';
 import { setError } from '@/ducks/modal';
 import { activePlatformSelector } from '@/ducks/skill';

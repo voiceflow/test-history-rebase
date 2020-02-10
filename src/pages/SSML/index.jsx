@@ -1,10 +1,10 @@
 import React from 'react';
 
+import Button from '@/components/Button';
+import { FlexEnd } from '@/components/Flex';
 import Header from '@/components/Header';
-import Button from '@/componentsV2/Button';
-import { FlexEnd } from '@/componentsV2/Flex';
-import MadeInVoiceflow from '@/componentsV2/MadeInVoiceflow';
-import SSML from '@/componentsV2/SSML';
+import MadeInVoiceflow from '@/components/MadeInVoiceflow';
+import SSML from '@/components/SSML';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { useEnableDisable } from '@/hooks/toggle';

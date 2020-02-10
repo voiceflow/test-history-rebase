@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ModalRoot from '@/componentsV2/Modal/components/ModalRoot';
+import ModalRoot from '@/components/Modal/components/ModalRoot';
 
 export const ModalLayerContext = React.createContext(null);
 export const { Consumer: ModalLayerConsumer } = ModalLayerContext;

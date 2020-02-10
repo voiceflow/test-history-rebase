@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TutorialTooltip from '@/componentsV2/TutorialTooltip';
+import TutorialTooltip from '@/components/TutorialTooltip';
 
 const EditorTutorial = ({ title, anchor, tutorialTitle, helpTitle, helpMessage, children, ...tooltipProps }) => (
   <TutorialTooltip

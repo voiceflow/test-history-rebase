@@ -1,9 +1,9 @@
 import React from 'react';
 import { Input } from 'reactstrap';
 
-import Button from '@/components/Button';
-import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
-import Image from '@/components/Uploads/Image';
+import Button from '@/components/LegacyButton';
+import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
+import Image from '@/components/LegacyUpload/Image';
 import { MODALS, PLANS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { updateCurrentWorkspaceItem, updateWorkspaceName } from '@/ducks/workspace';

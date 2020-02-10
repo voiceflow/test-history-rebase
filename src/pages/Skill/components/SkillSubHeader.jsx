@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Flex from '@/componentsV2/Flex';
-import Tabs from '@/componentsV2/Tabs';
+import Flex from '@/components/Flex';
+import Tabs from '@/components/Tabs';
 import { goToCurrentCanvas, goToPublish, goToTestDiagram } from '@/ducks/router';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';

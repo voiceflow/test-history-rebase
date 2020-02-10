@@ -1,7 +1,7 @@
 /* eslint-disable no-secrets/no-secrets */
 import React from 'react';
 
-import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
+import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 
 const blocks = [
   {

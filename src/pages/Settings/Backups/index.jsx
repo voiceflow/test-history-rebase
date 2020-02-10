@@ -1,8 +1,8 @@
 import React from 'react';
 
 import client from '@/client';
-import Section from '@/componentsV2/Section';
-import { toast } from '@/componentsV2/Toast';
+import Section from '@/components/Section';
+import { toast } from '@/components/Toast';
 import { setConfirm } from '@/ducks/modal';
 import { goToCanvas } from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/skill';

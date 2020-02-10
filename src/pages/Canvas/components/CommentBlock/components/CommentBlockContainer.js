@@ -1,5 +1,5 @@
+import Flex from '@/components/Flex';
 import { MemberIcon } from '@/components/User';
-import Flex from '@/componentsV2/Flex';
 import { css, styled, units } from '@/hocs';
 
 const CommentBlockContainer = styled(Flex)`

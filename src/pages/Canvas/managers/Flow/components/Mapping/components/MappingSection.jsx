@@ -1,7 +1,7 @@
 import React from 'react';
 
-import AddMinusButton from '@/componentsV2/AddMinusButton';
-import Section from '@/componentsV2/Section';
+import AddMinusButton from '@/components/AddMinusButton';
+import Section from '@/components/Section';
 import { useManager } from '@/hooks';
 
 import MappingVariables from './MappingVariables';

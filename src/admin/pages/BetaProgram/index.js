@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 import User from '@/admin/pages/Home/components/User';
 import { findBetaCreator } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 
 import {
   AddToBetaButton,

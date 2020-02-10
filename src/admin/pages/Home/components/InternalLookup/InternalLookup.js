@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Input } from 'reactstrap';
 
 import { findCreator } from '@/admin/store/ducks/admin';
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 
 import TeamSummary from '../TeamSummary/TeamSummary';
 import UserCard from '../UserCard/UserCard';

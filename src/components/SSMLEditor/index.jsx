@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { InlineVariableTag } from '@/componentsV2/VariableTag';
+import { InlineVariableTag } from '@/components/VariableTag';
 
 import Menu from './Menu';
 import Recent from './Recent';

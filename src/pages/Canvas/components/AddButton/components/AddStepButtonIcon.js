@@ -1,4 +1,4 @@
-import IconButton from '@/componentsV2/IconButton';
+import IconButton from '@/components/IconButton';
 import { css, styled } from '@/hocs';
 
 const AddStepButtonIcon = styled(IconButton)`

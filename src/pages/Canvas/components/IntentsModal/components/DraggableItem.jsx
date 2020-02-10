@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Section, { Header, HeaderLabel } from '@/componentsV2/Section';
+import Section, { Header, HeaderLabel } from '@/components/Section';
 import { css, styled } from '@/hocs';
 
 const IntentSection = styled(Section)`

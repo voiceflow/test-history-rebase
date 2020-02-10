@@ -2,7 +2,7 @@
 
 exports[`Storyshots Expression Editor Normal 1`] = `
 Array [
-  .c9 {
+  .c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13,7 +13,7 @@ Array [
   align-items: center;
 }
 
-.c3 {
+.c4 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
@@ -21,23 +21,23 @@ Array [
   opacity: 0.8;
 }
 
-.c3 > svg {
+.c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c3:hover {
+.c4:hover {
   color: #6E849A;
   opacity: 1;
 }
 
-.c3:active {
+.c4:active {
   color: #6E849A;
   opacity: 1;
 }
 
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 10px;
   height: 10px;
@@ -45,20 +45,28 @@ Array [
   opacity: 0.8;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c12:hover {
+.c13:hover {
   color: #6e849a;
   opacity: 1;
 }
 
-.c12:active {
+.c13:active {
   color: #6e849a;
   opacity: 1;
+}
+
+.c17 .c3 {
+  color: #fff;
+}
+
+.c18 .c3 {
+  color: #6e849a;
 }
 
 .c1 {
@@ -84,7 +92,7 @@ Array [
   vertical-align: middle;
 }
 
-.c5 {
+.c6 {
   position: relative;
   padding: 10px;
   background-color: #f7fafb;
@@ -92,7 +100,7 @@ Array [
   border-radius: 6px;
 }
 
-.c5 > .composite {
+.c6 > .composite {
   padding: 0 0 0 10px !important;
   border-top: none;
   border-right: none;
@@ -100,25 +108,25 @@ Array [
   border-radius: 0;
 }
 
-.c5 > .same {
+.c6 > .same {
   padding: 0 !important;
   border: none !important;
 }
 
-.c5 .c4 {
+.c6 .c5 {
   padding: 10px;
 }
 
-.c5.variable,
-.c5.value,
-.c5.advance {
+.c6.variable,
+.c6.value,
+.c6.advance {
   margin: 0;
   padding: 0;
   background-color: transparent;
   border: none;
 }
 
-.c5 .type-button-container {
+.c6 .type-button-container {
   position: absolute;
   top: 9px;
   right: 8px;
@@ -132,16 +140,16 @@ Array [
   align-items: center;
 }
 
-.c5 .type-button-container > * {
+.c6 .type-button-container > * {
   margin-left: 16px;
   cursor: pointer;
 }
 
-.c5 .type-button-container:first-child {
+.c6 .type-button-container:first-child {
   margin: 0;
 }
 
-.c5 .type-button {
+.c6 .type-button {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -166,21 +174,21 @@ Array [
   cursor: pointer;
 }
 
-.c5 .type-button:hover {
+.c6 .type-button:hover {
   color: #62778c;
   background: linear-gradient(-180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%);
   box-shadow: inset 0 0 0 1px #dfe3ed;
 }
 
-.c5 .type-button:active,
-.c5 .type-button:focus {
+.c6 .type-button:active,
+.c6 .type-button:focus {
   color: #132144;
   background: linear-gradient(-180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%);
   box-shadow: inset 0 0 0 1px #dfe3ed;
   outline: none;
 }
 
-.c5 .operator {
+.c6 .operator {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -203,25 +211,25 @@ Array [
   cursor: pointer;
 }
 
-.c5 .operator > .dropdown {
+.c6 .operator > .dropdown {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.c5 .operator:hover {
+.c6 .operator:hover {
   background-color: #eef4f6;
 }
 
-.c5 .operator > .type-button {
+.c6 .operator > .type-button {
   visibility: hidden;
 }
 
-.c5 .operator:hover > .type-button {
+.c6 .operator:hover > .type-button {
   visibility: visible;
 }
 
-.c5 .expression-menu {
+.c6 .expression-menu {
   margin-top: 5px;
   padding: 0;
   min-width: auto;
@@ -232,7 +240,7 @@ Array [
   border: none;
 }
 
-.c5 .expression-group {
+.c6 .expression-group {
   display: grid;
   border-bottom: 1px solid #dfe3ed;
   font-weight: 600;
@@ -240,43 +248,43 @@ Array [
   text-align: center;
 }
 
-.c5 .expression-group.group-1 {
+.c6 .expression-group.group-1 {
   grid-template-columns: 1fr;
   border-bottom: none;
 }
 
-.c5 .expression-group.group-2 {
+.c6 .expression-group.group-2 {
   grid-template-columns: 1fr 1fr;
 }
 
-.c5 .expression-group.group-4 {
+.c6 .expression-group.group-4 {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.c5 .expression-group > div {
+.c6 .expression-group > div {
   padding: 8px 20px;
   cursor: pointer;
 }
 
-.c5 .expression-group > div:hover {
+.c6 .expression-group > div:hover {
   background: linear-gradient(180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%),#ffffff;
   color: #62778c;
 }
 
-.c5 .form-control {
+.c6 .form-control {
   height: 40px;
   padding-right: 72px;
 }
 
-.c5 .variable-box__control {
+.c6 .variable-box__control {
   padding-right: 30px;
 }
 
-.c5 .editor.oneline .public-DraftEditor-content {
+.c6 .editor.oneline .public-DraftEditor-content {
   min-height: 0;
 }
 
-.c10 {
+.c11 {
   min-height: 42px;
   display: block;
   width: 100%;
@@ -294,32 +302,32 @@ Array [
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
 }
 
-.c10:disabled {
+.c11:disabled {
   color: #949db0;
   pointer-events: none;
 }
 
-.c10:active,
-.c10:focus,
-.c10:focus-within {
+.c11:active,
+.c11:focus,
+.c11:focus-within {
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
   outline: 0;
 }
 
-.c11 {
+.c12 {
   padding-right: 36px;
 }
 
-.c11 input {
+.c12 input {
   width: 100%;
 }
 
-.c11::-webkit-search-cancel-button {
+.c12::-webkit-search-cancel-button {
   display: none;
 }
 
-.c8 {
+.c9 {
   position: relative;
   outline: none;
   cursor: pointer;
@@ -328,14 +336,14 @@ Array [
   width: 100%;
 }
 
-.c14 {
+.c15 {
   position: absolute;
   right: 0;
   padding: 16px;
   cursor: pointer;
 }
 
-.c7 {
+.c8 {
   position: relative;
   padding: 10px;
   background-color: #f7fafb;
@@ -351,7 +359,7 @@ Array [
   align-items: center;
 }
 
-.c7 > .composite {
+.c8 > .composite {
   padding: 0 0 0 10px !important;
   border-top: none;
   border-right: none;
@@ -359,25 +367,25 @@ Array [
   border-radius: 0;
 }
 
-.c7 > .same {
+.c8 > .same {
   padding: 0 !important;
   border: none !important;
 }
 
-.c7 .c6 {
+.c8 .c7 {
   padding: 10px;
 }
 
-.c7.variable,
-.c7.value,
-.c7.advance {
+.c8.variable,
+.c8.value,
+.c8.advance {
   margin: 0;
   padding: 0;
   background-color: transparent;
   border: none;
 }
 
-.c7 .type-button-container {
+.c8 .type-button-container {
   position: absolute;
   top: 9px;
   right: 8px;
@@ -391,16 +399,16 @@ Array [
   align-items: center;
 }
 
-.c7 .type-button-container > * {
+.c8 .type-button-container > * {
   margin-left: 16px;
   cursor: pointer;
 }
 
-.c7 .type-button-container:first-child {
+.c8 .type-button-container:first-child {
   margin: 0;
 }
 
-.c7 .type-button {
+.c8 .type-button {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -425,21 +433,21 @@ Array [
   cursor: pointer;
 }
 
-.c7 .type-button:hover {
+.c8 .type-button:hover {
   color: #62778c;
   background: linear-gradient(-180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%);
   box-shadow: inset 0 0 0 1px #dfe3ed;
 }
 
-.c7 .type-button:active,
-.c7 .type-button:focus {
+.c8 .type-button:active,
+.c8 .type-button:focus {
   color: #132144;
   background: linear-gradient(-180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%);
   box-shadow: inset 0 0 0 1px #dfe3ed;
   outline: none;
 }
 
-.c7 .operator {
+.c8 .operator {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -462,25 +470,25 @@ Array [
   cursor: pointer;
 }
 
-.c7 .operator > .dropdown {
+.c8 .operator > .dropdown {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.c7 .operator:hover {
+.c8 .operator:hover {
   background-color: #eef4f6;
 }
 
-.c7 .operator > .type-button {
+.c8 .operator > .type-button {
   visibility: hidden;
 }
 
-.c7 .operator:hover > .type-button {
+.c8 .operator:hover > .type-button {
   visibility: visible;
 }
 
-.c7 .expression-menu {
+.c8 .expression-menu {
   margin-top: 5px;
   padding: 0;
   min-width: auto;
@@ -491,7 +499,7 @@ Array [
   border: none;
 }
 
-.c7 .expression-group {
+.c8 .expression-group {
   display: grid;
   border-bottom: 1px solid #dfe3ed;
   font-weight: 600;
@@ -499,48 +507,48 @@ Array [
   text-align: center;
 }
 
-.c7 .expression-group.group-1 {
+.c8 .expression-group.group-1 {
   grid-template-columns: 1fr;
   border-bottom: none;
 }
 
-.c7 .expression-group.group-2 {
+.c8 .expression-group.group-2 {
   grid-template-columns: 1fr 1fr;
 }
 
-.c7 .expression-group.group-4 {
+.c8 .expression-group.group-4 {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.c7 .expression-group > div {
+.c8 .expression-group > div {
   padding: 8px 20px;
   cursor: pointer;
 }
 
-.c7 .expression-group > div:hover {
+.c8 .expression-group > div:hover {
   background: linear-gradient(180deg,rgba(238,244,246,0.85) 0%,#eef4f6 100%),#ffffff;
   color: #62778c;
 }
 
-.c7 .form-control {
+.c8 .form-control {
   height: 40px;
   padding-right: 72px;
 }
 
-.c7 .variable-box__control {
+.c8 .variable-box__control {
   padding-right: 30px;
 }
 
-.c7 .editor.oneline .public-DraftEditor-content {
+.c8 .editor.oneline .public-DraftEditor-content {
   min-height: 0;
 }
 
-.c7 .c15 {
+.c8 .c16 {
   position: absolute;
   right: 8px;
 }
 
-.c7 .c13 {
+.c8 .c14 {
   right: 32px;
 }
 
@@ -632,7 +640,7 @@ Array [
             className="c2"
           >
             <span
-              className="c3"
+              className="c3 c4"
               color="#6E849A"
               size={16}
             >
@@ -658,23 +666,23 @@ Array [
       </span>
     </div>
     <div
-      className="c4 c5 expression-block composite equals"
+      className="c5 c6 expression-block composite equals"
     >
       <div
-        className="c4 c6 c7 expression-block variable"
+        className="c5 c7 c8 expression-block variable"
       >
         <div
-          className="c8"
+          className="c9"
           onClick={null}
           onFocus={null}
           tabIndex={-1}
         >
           <div
-            className="c9"
+            className="c10"
           >
             <input
               autoComplete="off"
-              className="c10 c11"
+              className="c11 c12"
               disabled={false}
               onChange={[Function]}
               onClick={[Function]}
@@ -684,7 +692,7 @@ Array [
               value="timestamp"
             />
             <span
-              className="c12 c13 c14"
+              className="c3 c13 c14 c15"
               color="#6e849a"
               onClick={[Function]}
               size={10}
@@ -696,14 +704,14 @@ Array [
           </div>
         </div>
         <div
-          className="c15 type-button"
+          className="c16 type-button"
           onClick={[Function]}
         >
           <span
             className="c2"
           >
             <span
-              className="c3"
+              className="c3 c4"
               color="#6E849A"
               size={16}
             >
@@ -715,14 +723,14 @@ Array [
         </div>
       </div>
       <div
-        className="c15 operator"
+        className="c16 operator"
         onClick={[Function]}
       >
         <span
           className="c2"
         >
           <span
-            className="c3"
+            className="c3 c4"
             color="#6E849A"
             size={16}
           >
@@ -738,7 +746,7 @@ Array [
           tabIndex="0"
         >
           <span
-            className="c3"
+            className="c3 c4"
             color="#6E849A"
             size={16}
           >
@@ -749,20 +757,20 @@ Array [
         </div>
       </div>
       <div
-        className="c4 c5 expression-block value"
+        className="c5 c6 expression-block value"
       >
         <div
           className="type-button-container"
         >
           <div
-            className="c15 type-button"
+            className="c16 type-button"
             onClick={[Function]}
           >
             <span
               className="c2"
             >
               <span
-                className="c3"
+                className="c3 c4"
                 color="#6E849A"
                 size={16}
               >
@@ -774,7 +782,7 @@ Array [
           </div>
         </div>
         <input
-          className="c10"
+          className="c11"
           onChange={[Function]}
           placeholder="Value"
           value="asdasdas"

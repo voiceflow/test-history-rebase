@@ -1,7 +1,7 @@
 import React from 'react';
 
-import IconButton from '@/componentsV2/IconButton';
-import IconButtonContainer from '@/componentsV2/IconButton/components/IconButtonContainer';
+import IconButton from '@/components/IconButton';
+import IconButtonContainer from '@/components/IconButton/components/IconButtonContainer';
 import { styled, transition } from '@/hocs';
 
 const LINK_SIZE = 52;

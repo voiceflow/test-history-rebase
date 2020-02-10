@@ -1,4 +1,4 @@
-import { FlexApart } from '@/componentsV2/Flex';
+import { FlexApart } from '@/components/Flex';
 import { css, styled, units } from '@/hocs';
 
 const ProductTileContainer = styled(FlexApart)`

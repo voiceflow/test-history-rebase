@@ -1,4 +1,4 @@
-import VariableSelect from '@/componentsV2/VariableSelect';
+import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
 import { spacingStyle } from '../styles';

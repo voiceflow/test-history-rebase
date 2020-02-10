@@ -2,9 +2,9 @@
 import React from 'react';
 import { Label } from 'reactstrap';
 
+import { FlexApart } from '@/components/Flex';
 import * as Panel from '@/components/Panel';
-import { FlexApart } from '@/componentsV2/Flex';
-import ClickableText from '@/componentsV2/Text/ClickableText';
+import ClickableText from '@/components/Text/ClickableText';
 import { MODALS } from '@/constants';
 import { useModalToggle } from '@/hooks';
 

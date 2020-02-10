@@ -1,4 +1,4 @@
-import { flexApartStyles } from '@/componentsV2/Flex';
+import { flexApartStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 const BlockEditorHeader = styled.header`

@@ -1,4 +1,4 @@
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import { styled } from '@/hocs';
 
 import GridContainer from './GridContainer';

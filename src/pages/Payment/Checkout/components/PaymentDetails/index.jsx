@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Collapsable from '@/componentsV2/Collapsable';
-import Input, { ControlledInput } from '@/componentsV2/Input';
-import { CardElement } from '@/componentsV2/Stripe';
+import Collapsable from '@/components/Collapsable';
+import Input, { ControlledInput } from '@/components/Input';
+import { CardElement } from '@/components/Stripe';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Modal, { ModalHeader } from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { checkAmazonAccount, getVendors } from '@/ducks/account';
 import { ALEXA_STATES, publish, resetAlexaUpload } from '@/ducks/publish/alexa';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';

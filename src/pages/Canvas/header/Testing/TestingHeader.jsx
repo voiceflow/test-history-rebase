@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { goToCurrentCanvas } from '@/ducks/router';
 import { TEST_STATUS, testStatusSelector } from '@/ducks/test';
 import { connect } from '@/hocs';

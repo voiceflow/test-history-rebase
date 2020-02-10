@@ -1,12 +1,12 @@
 import React from 'react';
 
+import Dropdown from '@/components/Dropdown';
+import { FlexApart } from '@/components/Flex';
+import IconButton from '@/components/IconButton';
+import Input from '@/components/Input';
 import IntentForm from '@/components/IntentForm';
 import { StandaloneIntentSlotForm } from '@/components/IntentSlotForm';
-import Dropdown from '@/componentsV2/Dropdown';
-import { FlexApart } from '@/componentsV2/Flex';
-import IconButton from '@/componentsV2/IconButton';
-import Input from '@/componentsV2/Input';
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeLeft';

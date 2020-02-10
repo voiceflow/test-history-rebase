@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Badge from '@/components/Badge';
 import ExpressionEditor from '@/components/ExpressionEditor';
-import Badge from '@/componentsV2/Badge';
-import { SectionToggleVariant } from '@/componentsV2/Section';
+import { SectionToggleVariant } from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { basicAuthLogin } from '@/ducks/session';
 
 import { AuthBox } from './AuthBoxes';

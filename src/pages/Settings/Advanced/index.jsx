@@ -2,10 +2,10 @@ import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
-import SSML from '@/componentsV2/SSML';
-import Section, { SectionToggleVariant } from '@/componentsV2/Section';
-import { toast } from '@/componentsV2/Toast';
-import AudioUpload from '@/componentsV2/Upload/AudioUpload';
+import SSML from '@/components/SSML';
+import Section, { SectionToggleVariant } from '@/components/Section';
+import { toast } from '@/components/Toast';
+import AudioUpload from '@/components/Upload/AudioUpload';
 import { activeProjectIDSelector, saveMetaSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useTeardown } from '@/hooks';

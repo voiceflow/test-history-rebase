@@ -1,8 +1,8 @@
 import React from 'react';
 import Select from 'react-select';
 
-import Button from '@/components/Button';
-import VariableSelect from '@/componentsV2/VariableSelect';
+import Button from '@/components/LegacyButton';
+import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
 const MapLine = styled.div`

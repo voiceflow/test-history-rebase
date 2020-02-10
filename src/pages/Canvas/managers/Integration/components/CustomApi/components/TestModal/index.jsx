@@ -5,8 +5,8 @@ import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
-import { ModalHeader } from '@/components/Modal';
-import DropdownCollapse from '@/componentsV2/DropdownCollapse';
+import DropdownCollapse from '@/components/DropdownCollapse';
+import { ModalHeader } from '@/components/LegacyModal';
 import { styled } from '@/hocs';
 import { copyJSONPath } from '@/utils/dom';
 

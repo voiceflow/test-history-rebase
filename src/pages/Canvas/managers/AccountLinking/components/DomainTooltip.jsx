@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ClickableText from '@/componentsV2/Text/ClickableText';
-import { Paragraph, Title } from '@/componentsV2/Tooltip';
+import ClickableText from '@/components/Text/ClickableText';
+import { Paragraph, Title } from '@/components/Tooltip';
 
 function DomainTooltip() {
   return (

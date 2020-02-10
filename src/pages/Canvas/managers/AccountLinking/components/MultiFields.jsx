@@ -1,10 +1,10 @@
 import _upperFirst from 'lodash/upperFirst';
 import React from 'react';
 
-import AddMinusButton, { ButtonContainer } from '@/componentsV2/AddMinusButton';
-import Flex from '@/componentsV2/Flex';
-import Input from '@/componentsV2/Input';
-import Section from '@/componentsV2/Section';
+import AddMinusButton, { ButtonContainer } from '@/components/AddMinusButton';
+import Flex from '@/components/Flex';
+import Input from '@/components/Input';
+import Section from '@/components/Section';
 import { styled, units } from '@/hocs';
 
 const FieldContainer = styled(Flex)`

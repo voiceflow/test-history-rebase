@@ -1,6 +1,6 @@
 import React from 'react';
 
-import OverflowMenu from '@/componentsV2/OverflowMenu';
+import OverflowMenu from '@/components/OverflowMenu';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager } from '@/hooks';

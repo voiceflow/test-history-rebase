@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
 import { loadVariableSetForDiagram } from '@/ducks/variableSet';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FullImage from '@/componentsV2/Upload/ImageUpload/FullImage';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import FullImage from '@/components/Upload/ImageUpload/FullImage';
+import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FadeLeftContainer } from '@/styles/animations';
 

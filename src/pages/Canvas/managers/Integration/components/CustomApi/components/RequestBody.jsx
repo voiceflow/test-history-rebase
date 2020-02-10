@@ -2,7 +2,7 @@ import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import { useManager } from '@/hooks';
 
 import MetaDataLineItem from '../../MetaDataLineItem';

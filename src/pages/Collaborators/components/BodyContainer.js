@@ -1,4 +1,4 @@
-import { ModalBody } from '@/components/Modal';
+import { ModalBody } from '@/components/LegacyModal';
 import { styled } from '@/hocs';
 
 const BodyContainer = styled(ModalBody)`

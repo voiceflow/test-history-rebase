@@ -1,4 +1,4 @@
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { styled } from '@/hocs';
 
 const SendInviteButton = styled(Button)`

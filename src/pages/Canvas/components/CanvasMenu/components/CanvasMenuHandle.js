@@ -1,4 +1,4 @@
-import { flexCenterStyles } from '@/componentsV2/Flex';
+import { flexCenterStyles } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
 const CanvasMenuHandle = styled.div`

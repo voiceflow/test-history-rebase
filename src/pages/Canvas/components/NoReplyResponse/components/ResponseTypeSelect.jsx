@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PrefixedSelect from '@/componentsV2/PrefixedSelect';
+import PrefixedSelect from '@/components/PrefixedSelect';
 import { RepromptType } from '@/constants';
 
 const REPROMPT_TYPE_LABELS = {

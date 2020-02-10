@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import Input from '@/componentsV2/Input';
 
 import { ButtonContainer, Container, SynonymContainer, ValueContainer } from './components';
 

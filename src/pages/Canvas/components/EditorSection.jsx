@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { UncontrolledSection } from '@/componentsV2/Section';
+import { UncontrolledSection } from '@/components/Section';
 import { withNamespace } from '@/hocs';
 import { useSectionState } from '@/pages/Canvas/hooks';
 import { compose } from '@/utils/functional';

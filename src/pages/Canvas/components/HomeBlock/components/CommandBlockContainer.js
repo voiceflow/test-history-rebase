@@ -1,5 +1,5 @@
+import { FlexApart } from '@/components/Flex';
 import { MemberIcon } from '@/components/User';
-import { FlexApart } from '@/componentsV2/Flex';
 import { styled, units } from '@/hocs';
 
 const CommandBlockContainer = styled(FlexApart)`

@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 
 import { findCreator, getCharges } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
-import Button from '@/componentsV2/Button';
-import Input from '@/componentsV2/Input';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 
 import ChargeList from './components/ChargeList/ChargeList';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonGroup } from 'reactstrap';
 
-import ButtonContainer from '@/componentsV2/Button/components/ButtonContainer';
+import ButtonContainer from '@/components/Button/components/ButtonContainer';
 import { css, styled } from '@/hocs';
 
 import { RecurrenceType } from '../constants';

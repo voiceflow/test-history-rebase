@@ -2,9 +2,9 @@
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
-import DropdownMultiselect from '@/componentsV2/DropdownMultiselect';
-import Input from '@/componentsV2/Input';
+import Button from '@/components/Button';
+import DropdownMultiselect from '@/components/DropdownMultiselect';
+import Input from '@/components/Input';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { parentCtrlSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';

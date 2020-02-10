@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 import { cancelSubscription, editTrial, refundCharge } from '@/admin/store/ducks/admin';
-import Button from '@/components/Button';
-import Input from '@/componentsV2/Input';
+import Input from '@/components/Input';
+import Button from '@/components/LegacyButton';
 
 import PlanModal from '../../../../components/PlanModal/PlanModal';
 import ChargeItem from '../ChargeItem/ChargeItem';

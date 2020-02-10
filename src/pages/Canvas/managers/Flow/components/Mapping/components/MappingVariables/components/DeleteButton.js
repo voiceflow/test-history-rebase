@@ -1,4 +1,4 @@
-import AddMinusButton from '@/componentsV2/AddMinusButton';
+import AddMinusButton from '@/components/AddMinusButton';
 import { styled } from '@/hocs';
 
 const DeleteButton = styled(AddMinusButton)`

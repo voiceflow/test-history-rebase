@@ -1,6 +1,6 @@
 import Textarea from 'react-textarea-autosize';
 
-import { inputStyle } from '@/componentsV2/Input/styles';
+import { inputStyle } from '@/components/Input/styles';
 import { styled } from '@/hocs';
 
 const CodeContainer = styled(Textarea)`

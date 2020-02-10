@@ -1,8 +1,8 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
 
-import Button from '@/components/Button';
-import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
+import Button from '@/components/LegacyButton';
+import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import SvgIcon from '@/components/SvgIcon';
 import { goToDashboard } from '@/ducks/router';
 import { connect } from '@/hocs';

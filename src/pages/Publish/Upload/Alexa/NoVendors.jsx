@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { resetAlexaUpload } from '@/ducks/publish/alexa';
 
 import { PopUpLink, PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';

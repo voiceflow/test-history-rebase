@@ -11,7 +11,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ToastContainer } from '@/componentsV2/Toast';
+import { ToastContainer } from '@/components/Toast';
 
 import AllRoutes from './Routes/allRoutes';
 import Root, { history } from './store';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { HelpMessage, HelpTooltip } from './components';

@@ -5,7 +5,7 @@ import { Label } from 'reactstrap';
 
 import * as Panel from '@/components/Panel';
 import SvgIcon from '@/components/SvgIcon';
-import { VariableTag } from '@/componentsV2/VariableTag';
+import { VariableTag } from '@/components/VariableTag';
 import { GLOBAL_VARIABLES, GlobalVariable } from '@/constants';
 import { activeDiagramIDSelector, globalVariablesSelector, removeGlobalVariable } from '@/ducks/skill';
 import { removeVariableFromDiagram } from '@/ducks/variableSet';

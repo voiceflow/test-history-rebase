@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Input from '@/componentsV2/Input';
+import Input from '@/components/Input';
 import { styled, transition } from '@/hocs';
 import { withPayment } from '@/pages/Payment/context';
 

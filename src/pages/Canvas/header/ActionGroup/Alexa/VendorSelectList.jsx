@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { Component } from 'react';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { updateVendor, vendorIdSelector } from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { FadeDownContainer } from '@/styles/animations';

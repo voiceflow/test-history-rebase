@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { SidebarContext } from '@/pages/Canvas/components/EditSidebar/contexts';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import AddMinusButton from '@/componentsV2/AddMinusButton';
-import Section from '@/componentsV2/Section';
+import AddMinusButton from '@/components/AddMinusButton';
+import Section from '@/components/Section';
 
 function LineItemsSection({ header, dividers = false, onAdd, children }) {
   const AddLineItemButton = <AddMinusButton onClick={onAdd} />;

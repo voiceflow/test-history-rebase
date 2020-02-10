@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ChatLink from '@/componentsV2/ChatLink';
+import ChatLink from '@/components/ChatLink';
 
 function ChatWithUsLink() {
   return <ChatLink>Questions? Start a chat</ChatLink>;

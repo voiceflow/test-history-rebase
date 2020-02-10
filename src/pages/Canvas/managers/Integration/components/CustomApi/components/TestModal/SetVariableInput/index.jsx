@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PrefixInput from '@/componentsV2/PrefixInput';
+import PrefixInput from '@/components/PrefixInput';
 
 function SetVariableInput({ prefix, onChange }) {
   return <PrefixInput prefix={prefix} onChange={onChange} />;

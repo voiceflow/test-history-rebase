@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Flex from '@/componentsV2/Flex';
+import Flex from '@/components/Flex';
 import { BlockType, INTERNAL_BLOCKS } from '@/constants';
 import { PortSet } from '@/pages/Canvas/components/NestedBlock';
 import PortLabel from '@/pages/Canvas/components/Port/components/PortLabel';

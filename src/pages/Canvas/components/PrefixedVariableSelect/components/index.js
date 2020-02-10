@@ -1,6 +1,6 @@
-import { FlexApart } from '@/componentsV2/Flex';
-import { SearchInput } from '@/componentsV2/Select/components';
-import VariableSelect from '@/componentsV2/VariableSelect';
+import { FlexApart } from '@/components/Flex';
+import { SearchInput } from '@/components/Select/components';
+import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
 export { default as Prefix } from './Prefix';

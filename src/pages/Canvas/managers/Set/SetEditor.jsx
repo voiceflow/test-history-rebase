@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 

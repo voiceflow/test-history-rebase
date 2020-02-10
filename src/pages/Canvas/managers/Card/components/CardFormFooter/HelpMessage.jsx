@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Paragraph } from '@/componentsV2/Tooltip';
+import { Paragraph } from '@/components/Tooltip';
 
 const HELP_LINK = 'https://developer.amazon.com/en-US/docs/alexa/custom-skills/include-a-card-in-your-skills-response.html';
 

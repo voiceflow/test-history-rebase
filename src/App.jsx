@@ -12,11 +12,11 @@ import { Helmet } from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
 
+import BatchLoadingGate from '@/components/BatchLoadingGate';
 import IntercomChat from '@/components/IntercomChat';
-import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/Modal';
-import Modal from '@/components/Modal/Modal';
-import BatchLoadingGate from '@/componentsV2/BatchLoadingGate';
-import { ToastContainer } from '@/componentsV2/Toast';
+import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
+import Modal from '@/components/LegacyModal/Modal';
+import { ToastContainer } from '@/components/Toast';
 import { AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import BillingModal from '@/pages/Payment/BillingModal';

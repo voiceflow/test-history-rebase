@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';

@@ -1,10 +1,10 @@
 import React from 'react';
 
+import Input from '@/components/Input';
+import ListManager from '@/components/ListManager';
+import OverflowMenu from '@/components/OverflowMenu';
 import SlotSelect from '@/components/SlotSelect';
-import Input from '@/componentsV2/Input';
-import ListManagerV2 from '@/componentsV2/ListManagerV2';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
-import VariableSelect from '@/componentsV2/VariableSelect';
+import VariableSelect from '@/components/VariableSelect';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Content, Controls, FormControl, Section } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
@@ -57,7 +57,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
         </FormControl>
         {data.slot === CUSTOM_SLOT_TYPE && (
           <FormControl>
-            <ListManagerV2
+            <ListManager
               items={data.examples}
               addToStart
               onUpdate={(examples) => onChange({ examples })}

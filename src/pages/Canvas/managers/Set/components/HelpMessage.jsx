@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Paragraph } from '@/componentsV2/Tooltip';
+import { Paragraph } from '@/components/Tooltip';
 
 import { HELP_LINK } from '../constants';
 

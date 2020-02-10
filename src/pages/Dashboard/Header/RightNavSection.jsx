@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
+import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
-import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { AIRTABLE_ID, YOUTUBE_CHANNEL_ID } from '@/config';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { connect } from '@/hocs';

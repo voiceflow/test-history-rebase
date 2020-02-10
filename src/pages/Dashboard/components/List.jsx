@@ -4,10 +4,10 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-import Button from '@/components/Button';
-import Form from '@/components/Form';
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
+import Button from '@/components/LegacyButton';
+import Form from '@/components/LegacyForm';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';

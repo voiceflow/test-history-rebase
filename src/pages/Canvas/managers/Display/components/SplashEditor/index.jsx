@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Section from '@/componentsV2/Section';
-import FullImage from '@/componentsV2/Upload/ImageUpload/FullImage';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import Section from '@/components/Section';
+import FullImage from '@/components/Upload/ImageUpload/FullImage';
+import VariablesInput from '@/components/VariablesInput';
 import { useDidUpdateEffect } from '@/hooks/lifecycle';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { transformVariables } from '@/utils/slot';

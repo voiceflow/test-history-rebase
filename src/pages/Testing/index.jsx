@@ -4,9 +4,9 @@ import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import { FlexCenter } from '@/components/Flex';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
-import { FlexCenter } from '@/componentsV2/Flex';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/test';

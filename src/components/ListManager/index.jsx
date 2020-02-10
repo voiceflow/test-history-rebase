@@ -1,100 +1,58 @@
 import React from 'react';
 
-import List from '@/components/List';
-import { preventDefault, swallowKeyPress, withKeyPress } from '@/utils/dom';
-import { identity } from '@/utils/functional';
+import { useManager } from '@/hooks';
 
-import { ListManagerContainer, ListManagerDivider, ListManagerForm, ListManagerItem, PressEnterContainer, Validation } from './components';
+import { ItemWrapper, RemoveIcon } from './components/styled';
 
-export * from './components';
+function ListManager({ items = [], renderForm, renderItem, renderList, onUpdate, divider = true, addToStart, addValidation, beforeAdd }) {
+  const [addError, setAddError] = React.useState();
+  const [formValue, onChangeFormValue] = React.useState();
+  const { items: managedItems, onAdd, onAddToStart, onRemove, onReorder, toggleOpen, mapManaged, latestCreatedKey } = useManager(items, onUpdate);
 
-class ListManager extends React.Component {
-  state = {
-    formValue: '',
-    isEditing: false,
-  };
+  const onAddItem = (value) => {
+    const { valid, error } = addValidation ? addValidation(value) : { valid: true };
 
-  componentWillUnmount() {
-    this.addItem();
-  }
-
-  addItem = () => {
-    const { validate } = this.props;
-    const { formValue } = this.state;
-    const trimmedValue = formValue && formValue.trim();
-
-    if (trimmedValue && !validate?.(trimmedValue)) {
-      this.props.onAdd(trimmedValue);
-      this.setState({ formValue: '', isEditing: false });
+    if (valid) {
+      onChangeFormValue(null);
+      beforeAdd?.(value);
+      addToStart ? onAddToStart(value) : onAdd(value);
+    } else if (error) {
+      onChangeFormValue(value);
+      setAddError(error);
     }
   };
 
-  addOnEnter = withKeyPress(13, preventDefault(this.addItem));
+  const itemRenderer = (item, options) => (
+    <ItemWrapper key={options.key}>
+      {renderItem(item, options)}
+      <RemoveIcon onClick={() => onRemove(options.key)} />
+    </ItemWrapper>
+  );
 
-  updateValidation = (formValue) => this.setState({ formValue, isEditing: true });
+  return (
+    <>
+      {renderForm({
+        value: formValue,
+        items: managedItems,
+        onAdd: onAddItem,
+        addError,
+        onChange: onChangeFormValue,
+        onRemove,
+        onReorder,
+        toggleOpen,
+        mapManaged,
+        setAddError,
+        itemRenderer,
+        latestCreatedKey,
+      })}
 
-  onManagerItemKeyPress = swallowKeyPress(13);
+      {divider && !!managedItems.length && <hr />}
 
-  render() {
-    const {
-      placeholder,
-      items,
-      mapManaged,
-      extractValue = identity,
-      inputComponent: InputComponent,
-      formComponent: FormComponent = ListManagerForm,
-      validate,
-      showHelpText,
-      formComponentProps,
-      inputComponentProps,
-    } = this.props;
-    const { formValue } = this.state;
-    const showText = showHelpText && !items.length && this.state.isEditing && formValue;
-
-    return (
-      <ListManagerContainer>
-        <Validation
-          {...formComponentProps}
-          validate={validate}
-          component={FormComponent}
-          value={formValue}
-          onChange={this.updateValidation}
-          placeholder={placeholder}
-          onKeyPress={this.addOnEnter}
-        />
-        {showText && (
-          <PressEnterContainer>
-            <small className="text-muted">
-              Press '<b>Enter</b>' to add
-            </small>
-          </PressEnterContainer>
-        )}
-        {!!items.length && (
-          <>
-            <ListManagerDivider />
-            <List>
-              {mapManaged((item, { key, onUpdate, onRemove }) => (
-                // this is fine as long as items are immutable
-                <ListManagerItem key={key}>
-                  <div>
-                    <Validation
-                      {...inputComponentProps}
-                      validate={validate}
-                      component={InputComponent}
-                      value={extractValue(item)}
-                      onChange={onUpdate}
-                      onKeyPress={this.onManagerItemKeyPress}
-                    />
-                  </div>
-                  <i onClick={onRemove} className="fas fa-minus-circle trash-icon" />
-                </ListManagerItem>
-              ))}
-            </List>
-          </>
-        )}
-      </ListManagerContainer>
-    );
-  }
+      {renderList
+        ? renderList({ items: managedItems, onAdd: onAddItem, onRemove, onReorder, toggleOpen, mapManaged, itemRenderer, latestCreatedKey })
+        : mapManaged(itemRenderer)}
+    </>
+  );
 }
 
 export default ListManager;

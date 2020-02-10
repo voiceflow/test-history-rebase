@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { checkInvName, invNameError } from '@/ducks/publish/alexa';
 import { activeLocalesSelector, invNameSelector, updateInvName } from '@/ducks/skill';
 import { connect } from '@/hocs';

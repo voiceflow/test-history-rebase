@@ -1,4 +1,4 @@
-import Tab from '@/componentsV2/Tabs/components/Tab';
+import Tab from '@/components/Tabs/components/Tab';
 import { styled } from '@/hocs';
 
 export const ContentContainer = styled.div`

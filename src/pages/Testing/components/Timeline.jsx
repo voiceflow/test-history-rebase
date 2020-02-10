@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { withEventualEngine } from '@/contexts/EventualEngineContext';
 import { allDiagramsSelector } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';

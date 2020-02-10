@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { userSelector } from '@/ducks/account';

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import { login } from '@/admin/store/ducks/account';
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';

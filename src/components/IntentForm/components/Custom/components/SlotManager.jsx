@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import DraggableList from '@/componentsV2/DraggableList';
-import { SectionToggleVariant } from '@/componentsV2/Section';
+import ChatWithUsLink from '@/components/ChatLink';
+import DraggableList from '@/components/DraggableList';
+import { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';

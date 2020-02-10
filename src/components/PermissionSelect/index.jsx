@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import { PERMISSIONS, PERMISSION_LABELS, PermissionType } from '@/constants';
 
 const PermissionSelect = ({ value, onChange, disabledOptions }) => (

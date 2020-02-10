@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DropdownMultiselect from '@/componentsV2/DropdownMultiselect';
-import Section from '@/componentsV2/Section';
+import DropdownMultiselect from '@/components/DropdownMultiselect';
+import Section from '@/components/Section';
 import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
 import { without } from '@/utils/array';
 

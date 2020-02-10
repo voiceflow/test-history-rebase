@@ -2,8 +2,8 @@
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import Section, { SectionToggleVariant } from '@/componentsV2/Section';
-import TextArea from '@/componentsV2/TextArea';
+import Section, { SectionToggleVariant } from '@/components/Section';
+import TextArea from '@/components/TextArea';
 import { NamespaceProvider } from '@/contexts';
 import { productByIDSelector, updateProduct, uploadProduct } from '@/ducks/product';
 import { connect } from '@/hocs';

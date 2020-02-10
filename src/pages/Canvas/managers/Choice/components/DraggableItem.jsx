@@ -1,9 +1,9 @@
 import React from 'react';
 
+import Badge from '@/components/Badge';
 import IntentForm, { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import Badge from '@/componentsV2/Badge';
-import Section, { SectionToggleVariant } from '@/componentsV2/Section';
+import Section, { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

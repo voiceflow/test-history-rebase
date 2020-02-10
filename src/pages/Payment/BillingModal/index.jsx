@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import workspaceClient from '@/client/workspace';
-import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
+import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';

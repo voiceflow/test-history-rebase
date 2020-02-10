@@ -1,4 +1,4 @@
-import { flexCenterStyles } from '@/componentsV2/Flex';
+import { flexCenterStyles } from '@/components/Flex';
 import { BlockState } from '@/constants/canvas';
 import { styled } from '@/hocs';
 

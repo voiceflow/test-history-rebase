@@ -3,9 +3,9 @@ import { text } from '@storybook/addon-knobs';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import OverflowMenu from '@/components/OverflowMenu';
+import Section, { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
-import Section, { SectionToggleVariant } from '@/componentsV2/Section';
 import { SidebarProvider } from '@/pages/Canvas/components/EditSidebar/contexts';
 import { EngineProvider } from '@/pages/Canvas/contexts';
 import { withRedux } from '@/utils/testing';

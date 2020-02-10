@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import { Paragraph } from '@/componentsV2/Tooltip';
+import ChatWithUsLink from '@/components/ChatLink';
+import { Paragraph } from '@/components/Tooltip';
 
 import { HELP_LINK } from '../constants';
 

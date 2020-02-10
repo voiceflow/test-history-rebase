@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';

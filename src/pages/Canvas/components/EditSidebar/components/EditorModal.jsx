@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Modal from '@/components/Modal';
+import Modal from '@/components/LegacyModal';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 

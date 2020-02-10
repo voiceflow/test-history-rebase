@@ -1,4 +1,4 @@
-import Flex from '@/componentsV2/Flex';
+import Flex from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
 const PlatformToggleContainer = styled(Flex)`

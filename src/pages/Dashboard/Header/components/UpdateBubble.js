@@ -1,4 +1,4 @@
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 

@@ -1,4 +1,4 @@
-import { FlexApart } from '@/componentsV2/Flex';
+import { FlexApart } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 import { PORT_SIZE } from './PortContainer';

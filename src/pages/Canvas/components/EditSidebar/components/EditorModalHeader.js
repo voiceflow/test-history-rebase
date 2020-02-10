@@ -1,4 +1,4 @@
-import { ModalHeader } from '@/components/Modal';
+import { ModalHeader } from '@/components/LegacyModal';
 import { styled } from '@/hocs';
 
 const EditorModalHeader = styled(ModalHeader)`

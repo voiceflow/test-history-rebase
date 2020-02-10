@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
-import Image from '@/components/Uploads/Image';
+import Button from '@/components/LegacyButton';
+import Image from '@/components/LegacyUpload/Image';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { createWorkspace } from '@/ducks/workspace';

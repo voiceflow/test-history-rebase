@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { flexStyles } from '@/componentsV2/Flex';
+import { flexStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 import { FOOTER_HEIGHT, sectionStyles } from '../styles';

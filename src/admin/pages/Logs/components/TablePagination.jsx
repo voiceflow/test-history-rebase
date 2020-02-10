@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 
 class TablePagination extends React.PureComponent {
   handleFirstPageButtonClick = (event) => {

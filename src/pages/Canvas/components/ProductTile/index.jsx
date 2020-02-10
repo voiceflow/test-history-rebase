@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
-import ImageIcon from '@/componentsV2/ImageIcon';
-import Section from '@/componentsV2/Section';
+import ImageIcon from '@/components/ImageIcon';
+import Section from '@/components/Section';
 import LocaleMap from '@/services/LocaleMap';
 
 import ProductHeaderInfo from './components/ProductHeaderInfo';

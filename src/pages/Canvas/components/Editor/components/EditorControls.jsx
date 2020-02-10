@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
-import Flex, { FlexApart } from '@/componentsV2/Flex';
+import Button from '@/components/Button';
+import Flex, { FlexApart } from '@/components/Flex';
 import { styled, units } from '@/hocs';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 

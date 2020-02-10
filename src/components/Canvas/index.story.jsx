@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Flex from '@/componentsV2/Flex';
-import * as IconButton from '@/componentsV2/IconButton';
+import Flex from '@/components/Flex';
+import * as IconButton from '@/components/IconButton';
 import { styled } from '@/hocs';
 import { stopPropagation } from '@/utils/dom';
 

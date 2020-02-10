@@ -1,4 +1,4 @@
-import OverflowText from '@/componentsV2/Text/OverflowText';
+import OverflowText from '@/components/Text/OverflowText';
 import { styled } from '@/hocs';
 
 const LabelText = styled(OverflowText)`

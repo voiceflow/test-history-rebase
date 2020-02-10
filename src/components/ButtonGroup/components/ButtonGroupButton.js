@@ -1,4 +1,4 @@
-import BaseButton from '@/componentsV2/Button/components/BaseButton';
+import BaseButton from '@/components/Button/components/BaseButton';
 import { css, styled, transition } from '@/hocs';
 
 const ButtonGroupButton = styled(BaseButton)`

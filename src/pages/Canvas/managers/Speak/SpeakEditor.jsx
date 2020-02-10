@@ -1,8 +1,8 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';

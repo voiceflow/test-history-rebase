@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { SectionToggleVariant, UncontrolledSection } from '@/componentsV2/Section';
-import { Paragraph } from '@/componentsV2/Tooltip';
+import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import { Paragraph } from '@/components/Tooltip';
 import { PlatformType } from '@/constants';
 import { activeLocalesSelector, activePlatformSelector, fulfillmentSelector, isRootDiagramSelector, toggleFulfillment } from '@/ducks/skill';
 import { connect } from '@/hocs';

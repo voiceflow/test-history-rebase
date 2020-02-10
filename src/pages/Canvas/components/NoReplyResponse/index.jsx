@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import { RepromptType } from '@/constants';
 
 import { InfoTooltip } from './components';

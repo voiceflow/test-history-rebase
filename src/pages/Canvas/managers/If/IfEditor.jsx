@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { ExpressionType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Modal, { ModalFooter, ModalHeader } from '@/components/Modal';
+import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 

@@ -1,6 +1,6 @@
+import Card from '@/components/Card';
+import { flexStyles } from '@/components/Flex';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import Card from '@/componentsV2/Card';
-import { flexStyles } from '@/componentsV2/Flex';
 import { css, styled, units } from '@/hocs';
 
 import MenuTooltipContainer from './MenuTooltipContainer';

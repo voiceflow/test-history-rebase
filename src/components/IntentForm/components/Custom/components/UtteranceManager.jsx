@@ -1,10 +1,10 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import ListManagerV2 from '@/componentsV2/ListManagerV2';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import Utterance from '@/componentsV2/Utterance';
+import ChatWithUsLink from '@/components/ChatLink';
+import ListManager from '@/components/ListManager';
+import { SectionToggleVariant } from '@/components/Section';
+import Utterance from '@/components/Utterance';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import * as Intent from '@/ducks/intent';
@@ -89,7 +89,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
     >
       <FormControl>
         <ListManagerWrapper>
-          <ListManagerV2
+          <ListManager
             items={intent.inputs}
             addToStart
             beforeAdd={() => utteranceRef.current.forceUpdate()}

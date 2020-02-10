@@ -1,9 +1,9 @@
 import React from 'react';
 
+import SSMLWithVars from '@/components/SSMLWithVars';
+import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import SSMLWithVars from '@/componentsV2/SSMLWithVars';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import AudioUpload from '@/componentsV2/Upload/AudioUpload';
+import AudioUpload from '@/components/Upload/AudioUpload';
 import { DialogType, PlatformType } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

@@ -1,25 +1,28 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import PropTypes from 'prop-types';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
-function Link(props) {
-  const { to, onRef, match, history, location, staticContext, component: Component, ...ownProps } = props;
+const Link = styled.a`
+  color: ${({ variant }) => (variant === 'hidden' ? '#132144' : '#5d9df5')};
+  font-size: ${({ variant }) => (variant === 'secondary' ? 13 : 15)}px;
+  line-height: 18px;
+  user-select: none;
 
-  return <Component ref={onRef} onClick={() => history.push(to)} {...ownProps} />;
-}
+  ${({ disabled, variant }) =>
+    disabled
+      ? css`
+          color: ${variant === 'hidden' ? '#62778C' : 'rgba(70, 102, 234, 0.5)'};
+          pointer-events: none;
+        `
+      : css`
+          cursor: pointer;
 
-Link.propTypes = {
-  to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  onRef: PropTypes.func,
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-};
+          &:hover {
+            color: ${variant === 'hidden' ? '#4666EA' : '#5d7af1'};
+          }
+        `}
 
-Link.defaultProps = {
-  component: 'div',
-};
+  &:active {
+    color: #2541b4;
+  }
+`;
 
-export default withRouter(Link);
+export default Link;

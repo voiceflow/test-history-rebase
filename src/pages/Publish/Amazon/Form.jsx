@@ -9,13 +9,13 @@ import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
 import Checkbox from '@/components/Checkbox';
+import { FormTextBox } from '@/components/Form/TextBox';
+import { FormTextInput } from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
+import Image from '@/components/LegacyUpload/Image';
 import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
-import Image from '@/components/Uploads/Image';
-import { FormTextBox } from '@/componentsV2/form/TextBox';
-import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { amznIDSelector, reviewSelector } from '@/ducks/publish/alexa';

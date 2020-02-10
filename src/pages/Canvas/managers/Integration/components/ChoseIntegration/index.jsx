@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Flex from '@/componentsV2/Flex';
-import Section from '@/componentsV2/Section';
+import Flex from '@/components/Flex';
+import Section from '@/components/Section';
 import { INTEGRATION_DATA_MODELS } from '@/constants';
 import { Content } from '@/pages/Canvas/components/Editor';
 

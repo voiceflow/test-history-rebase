@@ -1,5 +1,5 @@
+import Flex from '@/components/Flex';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import Flex from '@/componentsV2/Flex';
 import { styled } from '@/hocs';
 
 const DropdownArrowContainer = styled(Flex)`

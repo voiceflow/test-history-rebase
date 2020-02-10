@@ -2,7 +2,7 @@ import React from 'react';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import RadioGroup from '@/components/RadioGroup';
-import Section from '@/componentsV2/Section';
+import Section from '@/components/Section';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';

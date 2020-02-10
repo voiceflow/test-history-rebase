@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';

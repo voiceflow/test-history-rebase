@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
+import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';

@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { Alert, Table } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 
 function BackupsList({ loading, versions, live_version, live_version_id, confirmRestore }) {

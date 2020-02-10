@@ -4,7 +4,7 @@ import moment from 'moment';
 import React from 'react';
 import { Card, CardBody, Collapse, ListGroup } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 
 import PlanModal from '../../../../components/PlanModal/PlanModal';
 import SkillDetail from '../SkillDetail/SkillDetail';

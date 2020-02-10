@@ -1,9 +1,9 @@
 import React from 'react';
 
 import client from '@/client';
-import Input from '@/componentsV2/Input';
-import { CardElement } from '@/componentsV2/Stripe';
-import { toast } from '@/componentsV2/Toast';
+import Input from '@/components/Input';
+import { CardElement } from '@/components/Stripe';
+import { toast } from '@/components/Toast';
 import { withStripe } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 

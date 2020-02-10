@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, Col, Form, FormGroup, Input as Select, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/componentsV2/Input';
-import { toast } from '@/componentsV2/Toast';
+import Input from '@/components/Input';
+import { toast } from '@/components/Toast';
 
 class Coupon extends React.Component {
   constructor(props) {

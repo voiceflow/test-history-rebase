@@ -2,9 +2,9 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
-import Input from '@/componentsV2/Input';
 import { DEFAULT_PRODUCT_PHRASE } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';

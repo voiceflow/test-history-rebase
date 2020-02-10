@@ -7,4 +7,4 @@ export { default as Header } from './EditorHeader';
 export { default as Tutorial } from './EditorTutorial';
 export { default as MaxOptionsMessage } from './MaxOptionsMessage';
 export { default as EditorContentAnimation } from './EditorContentAnimation';
-export { default as Section } from '@/componentsV2/Section';
+export { default as Section } from '@/components/Section';

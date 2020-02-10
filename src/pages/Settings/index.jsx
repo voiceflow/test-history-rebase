@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ButtonGroupRouter from '@/components/ButtonGroupRouter';
-import Modal, { ModalHeader } from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/LegacyModal';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';

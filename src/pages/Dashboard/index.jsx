@@ -10,11 +10,11 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
 import DragLayer from '@/components/DragLayer';
-import LoadingModal from '@/components/Modal/LoadingModal';
+import IconButton from '@/components/IconButton';
+import Button from '@/components/LegacyButton';
+import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
-import IconButton from '@/componentsV2/IconButton';
 import { MODALS } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import { useModals } from '@/contexts/ModalsContext';

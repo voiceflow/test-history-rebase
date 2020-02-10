@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { RepromptType } from '@/constants';
 import { HelpModalConsumer } from '@/pages/Canvas/contexts/HelpModalContext';
 

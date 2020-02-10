@@ -4,8 +4,8 @@ import Toggle from 'react-toggle';
 import { Button, Col, Form, FormGroup, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
-import Input from '@/componentsV2/Input';
-import { toast } from '@/componentsV2/Toast';
+import Input from '@/components/Input';
+import { toast } from '@/components/Toast';
 
 class Template extends React.Component {
   constructor(props) {

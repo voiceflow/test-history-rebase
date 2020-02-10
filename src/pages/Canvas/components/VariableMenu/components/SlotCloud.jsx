@@ -3,7 +3,7 @@ import React from 'react';
 import { Label } from 'reactstrap';
 
 import * as Panel from '@/components/Panel';
-import { SlotTag } from '@/componentsV2/VariableTag';
+import { SlotTag } from '@/components/VariableTag';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { allSlotsSelector, removeSlot, updateSlot } from '@/ducks/slot';

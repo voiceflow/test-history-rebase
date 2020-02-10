@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ModalFooter } from '@/components/Modal';
+import { ModalFooter } from '@/components/LegacyModal';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeLeft';

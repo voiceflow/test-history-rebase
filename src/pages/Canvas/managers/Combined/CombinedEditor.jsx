@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Section from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import Section from '@/componentsV2/Section';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';

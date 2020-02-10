@@ -1,4 +1,4 @@
-import AlertMessage from '@/componentsV2/AlertMessage';
+import AlertMessage from '@/components/AlertMessage';
 import { styled } from '@/hocs';
 
 const MissingFlowMessage = styled(AlertMessage)`

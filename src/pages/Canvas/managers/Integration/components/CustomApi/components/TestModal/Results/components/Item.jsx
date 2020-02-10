@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { VariableTag } from '@/componentsV2/VariableTag';
+import { VariableTag } from '@/components/VariableTag';
 import { styled } from '@/hocs';
 
 const MAX_VAR_LENGTH = 8;

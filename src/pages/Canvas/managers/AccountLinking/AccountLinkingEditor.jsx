@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
 
+import Input from '@/components/Input';
 import { SubHeader } from '@/components/Page/components';
+import Select from '@/components/Select';
 import { Spinner } from '@/components/Spinner';
-import Input from '@/componentsV2/Input';
-import Select from '@/componentsV2/Select';
-import SubHeaderTabs from '@/componentsV2/Tabs';
+import SubHeaderTabs from '@/components/Tabs';
 import { setError } from '@/ducks/modal';
 import { getAccountLinking, saveAccountLinking } from '@/ducks/skill';
 import { connect } from '@/hocs';

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import SvgIcon from '@/components/SvgIcon';
 import { ALEXA_STATES, publish } from '@/ducks/publish/alexa';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';

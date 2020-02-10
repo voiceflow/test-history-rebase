@@ -1,8 +1,8 @@
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
+import ChatWithUsLink from '@/components/ChatLink';
+import OverflowMenu from '@/components/OverflowMenu';
 import { GLOBAL_VARIABLES } from '@/constants';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';

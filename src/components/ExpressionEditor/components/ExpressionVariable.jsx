@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import React from 'react';
 
-import VariableSelect from '@/componentsV2/VariableSelect';
-import { VariableTag } from '@/componentsV2/VariableTag';
+import VariableSelect from '@/components/VariableSelect';
+import { VariableTag } from '@/components/VariableTag';
 import { ExpressionType } from '@/constants';
 
 import ExpressionOperator from './ExpressionOperator';

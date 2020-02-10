@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
-import Flex from '@/componentsV2/Flex';
 import { FEATURE_IDS, MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { usePermissions } from '@/contexts/RolePermissionsContext';

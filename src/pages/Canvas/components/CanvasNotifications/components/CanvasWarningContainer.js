@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { FlexAround } from '@/componentsV2/Flex';
+import { FlexAround } from '@/components/Flex';
 
 const CanvasWarningContainer = styled(FlexAround)`
   width: 400px;

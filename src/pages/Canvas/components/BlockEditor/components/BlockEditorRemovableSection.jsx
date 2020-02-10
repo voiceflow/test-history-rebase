@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import LegacyButton from '@/components/Button';
+import LegacyButton from '@/components/LegacyButton';
 
 import Section from './BlockEditorSection';
 

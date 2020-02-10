@@ -6,8 +6,8 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import Avatar from '@/components/Avatar';
+import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
 import withDraggable from '@/hocs/withDraggable';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';

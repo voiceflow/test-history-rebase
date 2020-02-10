@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Input from '@/componentsV2/Input';
+import Input from '@/components/Input';
 import { FormControl, Section } from '@/pages/Canvas/components/Editor';
 
 const AccountLinkClient = ({ data, onUpate }) => (

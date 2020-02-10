@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import { allProductsSelector, productByIDSelector } from '@/ducks/product';
 import { connect } from '@/hocs';
 

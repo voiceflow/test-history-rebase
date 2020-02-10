@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { BlockType } from '@/constants';
 import { useImperativeApi } from '@/hooks';
 import AddButton from '@/pages/Canvas/components/AddButton';

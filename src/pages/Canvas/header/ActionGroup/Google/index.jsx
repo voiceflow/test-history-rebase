@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Modal, { ModalHeader } from '@/components/Modal';
+import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { checkGoogleAccount } from '@/ducks/account';
 import { GOOGLE_STAGES, GOOGLE_STATES, resetGoogleUpload } from '@/ducks/publish/google';
 import UploadGoogle from '@/pages/Publish/Upload/Google';

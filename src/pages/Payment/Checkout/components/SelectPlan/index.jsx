@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import Flex from '@/componentsV2/Flex';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 

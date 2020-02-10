@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 
-import VariablesInput from '@/componentsV2/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 
 import NextStepButton from '../../components/NextStepButton';
 

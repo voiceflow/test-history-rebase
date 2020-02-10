@@ -1,8 +1,8 @@
 import React from 'react';
 
-import AddMinusButton from '@/componentsV2/AddMinusButton';
-import Flex from '@/componentsV2/Flex';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import AddMinusButton from '@/components/AddMinusButton';
+import Flex from '@/components/Flex';
+import VariablesInput from '@/components/VariablesInput';
 import { styled } from '@/hocs';
 
 const Container = styled(Flex)`

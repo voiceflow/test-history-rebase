@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { Modal, ModalBody } from 'reactstrap';
 
 import { updateWorkspace } from '@/admin/store/ducks/admin';
-import Button from '@/componentsV2/Button';
-import { FlexApart } from '@/componentsV2/Flex';
+import Button from '@/components/Button';
+import { FlexApart } from '@/components/Flex';
 import { PLANS } from '@/constants';
 
 class PlanModal extends React.Component {

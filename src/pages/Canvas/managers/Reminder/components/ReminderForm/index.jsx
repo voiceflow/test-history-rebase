@@ -3,10 +3,10 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate, parseDate } from 'react-day-picker/moment';
 
 import { TIMEZONES } from '@/assets/timezones';
+import InfoIcon from '@/components/InfoIcon';
 import RadioGroup from '@/components/RadioGroup';
-import InfoIcon from '@/componentsV2/InfoIcon';
-import Section, { SectionToggleVariant, UncontrolledSection } from '@/componentsV2/Section';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 import {

@@ -5,11 +5,11 @@ import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import Dropdown from '@/components/Dropdown';
 import Header from '@/components/Header';
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
-import MadeInVoiceflow from '@/componentsV2/MadeInVoiceflow';
-import { MenuContainer } from '@/componentsV2/Menu';
+import IconButton from '@/components/IconButton';
+import MadeInVoiceflow from '@/components/MadeInVoiceflow';
+import { MenuContainer } from '@/components/Menu';
 import { replaceIntents } from '@/ducks/intent';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';

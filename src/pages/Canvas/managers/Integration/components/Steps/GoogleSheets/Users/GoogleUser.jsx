@@ -2,7 +2,7 @@ import cn from 'classnames';
 import _ from 'lodash';
 import React from 'react';
 
-import DefaultModal from '@/components/Modal/DefaultModal';
+import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
 import { INTEGRATION_DATA_MODELS } from '@/constants';
 import { userSelector } from '@/ducks/account';

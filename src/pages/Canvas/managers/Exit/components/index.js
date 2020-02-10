@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import EditorSection from '@/componentsV2/Section';
+import EditorSection from '@/components/Section';
 
 export { default as HelpTooltip } from './HelpTooltip';
 

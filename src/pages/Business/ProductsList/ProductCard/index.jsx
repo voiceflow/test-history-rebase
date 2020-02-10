@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import Dropdown from '@/components/Dropdown';
+import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
-import IconButton from '@/componentsV2/IconButton';
 import { copyProduct, deleteProduct } from '@/ducks/product';
 import { goToEditProduct } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';

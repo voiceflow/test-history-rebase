@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 
 export class SkillDetail extends Component {
   constructor(props) {

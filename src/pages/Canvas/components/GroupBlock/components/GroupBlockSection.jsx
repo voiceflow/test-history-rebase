@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 
 import GroupBlockSectionIcon from './GroupBlockSectionIcon';
 import GroupBlockSectionLabel from './GroupBlockSectionLabel';

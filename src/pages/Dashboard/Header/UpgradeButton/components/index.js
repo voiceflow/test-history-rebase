@@ -1,5 +1,5 @@
-import Flex from '@/componentsV2/Flex';
-import IconButton from '@/componentsV2/IconButton';
+import Flex from '@/components/Flex';
+import IconButton from '@/components/IconButton';
 import { styled, transition } from '@/hocs';
 
 export const UpgradeText = styled.div`

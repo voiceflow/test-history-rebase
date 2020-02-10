@@ -1,4 +1,4 @@
-import Flex from '@/componentsV2/Flex';
+import Flex from '@/components/Flex';
 import { styled, units } from '@/hocs';
 
 import { horizontalDividerStyles } from './HorizontalDivider';

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ExpressionEditor from '@/components/ExpressionEditor';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import VariableSelect from '@/componentsV2/VariableSelect';
+import { SectionToggleVariant } from '@/components/Section';
+import VariableSelect from '@/components/VariableSelect';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 

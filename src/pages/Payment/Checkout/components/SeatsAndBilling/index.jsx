@@ -2,9 +2,9 @@ import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import Dropdown from '@/components/Dropdown';
+import Flex, { FlexApart } from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
-import Flex, { FlexApart } from '@/componentsV2/Flex';
 import { PERIOD, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';

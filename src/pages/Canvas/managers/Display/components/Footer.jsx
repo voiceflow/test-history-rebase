@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ClickableText from '@/componentsV2/Text/ClickableText';
-import TutorialTooltip from '@/componentsV2/TutorialTooltip';
+import ClickableText from '@/components/Text/ClickableText';
+import TutorialTooltip from '@/components/TutorialTooltip';
 import { Controls } from '@/pages/Canvas/components/Editor';
 
 import HelpTooltip from './HelpTooltip';

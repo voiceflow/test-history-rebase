@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Paragraph, Title } from '@/componentsV2/Tooltip';
+import { Paragraph, Title } from '@/components/Tooltip';
 
 function HelpTooltip() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DefaultModal from '@/components/Modal/DefaultModal';
+import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import ShortCuts from '@/components/ShortCuts/ShortCuts';
 import { DiagramLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';

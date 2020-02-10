@@ -1,7 +1,7 @@
 import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { BlockState } from '@/constants/canvas';
 import { styled } from '@/hocs';
 

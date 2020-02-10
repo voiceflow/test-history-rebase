@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Dropdown from '@/components/Dropdown';
+import FlexCenter from '@/components/Flex';
+import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
+import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
-import Dropdown from '@/componentsV2/Dropdown';
-import FlexCenter from '@/componentsV2/Flex';
-import Menu, { MenuItem } from '@/componentsV2/Menu';
-import Tabs from '@/componentsV2/Tabs';
 import { FEATURE_IDS, MODALS, PLANS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { usePermissions } from '@/contexts/RolePermissionsContext';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PermissionSelect from '@/components/PermissionSelect';
-import { SectionToggleVariant } from '@/componentsV2/Section';
+import { SectionToggleVariant } from '@/components/Section';
 import { PERMISSION_LABELS } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

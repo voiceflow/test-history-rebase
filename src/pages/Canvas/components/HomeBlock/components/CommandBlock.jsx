@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Flex from '@/components/Flex';
 import User from '@/components/User';
-import Flex from '@/componentsV2/Flex';
 import { BlockType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';

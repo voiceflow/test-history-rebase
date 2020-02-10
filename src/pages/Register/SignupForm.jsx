@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import Button from '@/components/Button';
-import { ControlledInput } from '@/componentsV2/Input';
+import { ControlledInput } from '@/components/Input';
+import Button from '@/components/LegacyButton';
 import { signup } from '@/ducks/session';
 
 import { AuthBox } from './AuthBoxes';

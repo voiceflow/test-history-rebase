@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Flex, { FlexCenter } from '@/componentsV2/Flex';
-import VariablesInput from '@/componentsV2/VariablesInput';
-import { Container as VariablesContainer } from '@/componentsV2/VariablesInput/components';
+import Flex, { FlexCenter } from '@/components/Flex';
+import VariablesInput from '@/components/VariablesInput';
+import { Container as VariablesContainer } from '@/components/VariablesInput/components';
 import { styled } from '@/hocs';
 
 const PrefixedInput = styled(VariablesInput)`

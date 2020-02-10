@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
 
-import Input from '@/componentsV2/Input';
+import Input from '@/components/Input';
 import { ExpressionType } from '@/constants';
 
 import ExpressionOperator from './ExpressionOperator';

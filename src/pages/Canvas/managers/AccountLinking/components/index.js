@@ -1,4 +1,4 @@
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 export { default as Scope } from './AccountLinkScope';

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Button from '@/components/Button';
 import User from '@/components/User';
-import Button from '@/componentsV2/Button';
 import { useEditLock, useResourceLock } from '@/pages/Canvas/hooks';
 
 import { Container } from './components';

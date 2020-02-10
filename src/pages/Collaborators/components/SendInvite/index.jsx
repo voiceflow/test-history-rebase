@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 import { MODALS, PLANS, USER_ROLES } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import {

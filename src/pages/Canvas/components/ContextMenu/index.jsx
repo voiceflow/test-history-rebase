@@ -2,7 +2,7 @@ import cuid from 'cuid';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import Menu from '@/componentsV2/Menu';
+import Menu from '@/components/Menu';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { styled } from '@/hocs';
 import { ContextMenuContext, withClipboard, withEngine } from '@/pages/Canvas/contexts';

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Collapsable from '@/componentsV2/Collapsable';
-import { Paragraph, Section, Title } from '@/componentsV2/Tooltip';
-import VideoPlayer from '@/componentsV2/VideoPlayer';
+import Collapsable from '@/components/Collapsable';
+import { Paragraph, Section, Title } from '@/components/Tooltip';
+import VideoPlayer from '@/components/VideoPlayer';
 
 function HelpTooltip() {
   return (

@@ -7,10 +7,10 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { FormGroup } from 'reactstrap';
 
+import Button from '@/components/Button';
+import Dropdown from '@/components/Dropdown';
+import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
-import Dropdown from '@/componentsV2/Dropdown';
-import Input from '@/componentsV2/Input';
 import { ProductType } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { parentCtrlSelector } from '@/ducks/skill';

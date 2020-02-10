@@ -3,8 +3,8 @@ import _trim from 'lodash/trim';
 import React from 'react';
 import { Input } from 'reactstrap';
 
-import Button from '@/components/Button';
-import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
+import Button from '@/components/LegacyButton';
+import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
 import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';

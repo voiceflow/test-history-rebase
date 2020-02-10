@@ -1,5 +1,5 @@
-import ButtonContainer from '@/componentsV2/Button/components/ButtonContainer';
-import { FlexApart } from '@/componentsV2/Flex';
+import ButtonContainer from '@/components/Button/components/ButtonContainer';
+import { FlexApart } from '@/components/Flex';
 import { styled } from '@/hocs';
 import { PORT_SIZE } from '@/pages/Canvas/components/Port/components/PortContainer';
 

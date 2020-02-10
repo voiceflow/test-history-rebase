@@ -7,8 +7,8 @@ import UserListCard from '@/admin/components/UserListCard';
 import { BetaUsersFullList, BetaUsersListSearch, BetaUsersListWrapper } from '@/admin/pages/BetaProgram/styles';
 import { getBetaUsers } from '@/admin/store/ducks/admin';
 import { AdminTitle } from '@/admin/styles';
-import Button from '@/componentsV2/Button';
-import { toast } from '@/componentsV2/Toast';
+import Button from '@/components/Button';
+import { toast } from '@/components/Toast';
 
 class BetaUsersList extends React.Component {
   state = {

@@ -3,9 +3,9 @@ import './Account.css';
 import moment from 'moment';
 import React, { Component } from 'react';
 
-import Button from '@/components/Button';
 import Header from '@/components/Header';
-import Image from '@/components/Uploads/Image';
+import Button from '@/components/LegacyButton';
+import Image from '@/components/LegacyUpload/Image';
 import { checkAmazonAccount, checkGoogleAccount, deleteAmazonAccount, deleteGoogleAccount, updateAccount, userSelector } from '@/ducks/account';
 import { setConfirm, setError } from '@/ducks/modal';
 import { connect } from '@/hocs';

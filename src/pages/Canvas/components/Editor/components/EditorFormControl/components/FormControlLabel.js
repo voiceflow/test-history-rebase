@@ -1,5 +1,5 @@
-import { flexStyles } from '@/componentsV2/Flex';
-import { IconContainer } from '@/componentsV2/InfoIcon';
+import { flexStyles } from '@/components/Flex';
+import { IconContainer } from '@/components/InfoIcon';
 import { styled, units } from '@/hocs';
 
 const FormControlLabel = styled.label`

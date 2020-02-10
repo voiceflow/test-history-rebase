@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
-import Section from '@/componentsV2/Section';
-import VariablesInput from '@/componentsV2/VariablesInput';
+import OverflowMenu from '@/components/OverflowMenu';
+import Section from '@/components/Section';
+import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX, PlatformType, SLOT_REGEXP } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';

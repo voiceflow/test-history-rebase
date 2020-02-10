@@ -1,5 +1,5 @@
+import { flexStyles } from '@/components/Flex';
 import List from '@/components/List';
-import { flexStyles } from '@/componentsV2/Flex';
 import { css, styled } from '@/hocs';
 import PortContainer from '@/pages/Canvas/components/Port/components/PortContainer';
 import PortLabel from '@/pages/Canvas/components/Port/components/PortLabel';

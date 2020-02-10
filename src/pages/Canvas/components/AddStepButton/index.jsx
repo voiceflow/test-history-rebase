@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Menu from '@/componentsV2/Menu';
-import Portal from '@/componentsV2/Portal';
+import Menu from '@/components/Menu';
+import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks';
 import AddButton from '@/pages/Canvas/components/AddButton';
 import { MergeStatusContext } from '@/pages/Canvas/components/MergeOverlay/contexts';

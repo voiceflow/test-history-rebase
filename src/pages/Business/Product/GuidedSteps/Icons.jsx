@@ -4,9 +4,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Image from '@/components/Uploads/Image';
-import Button from '@/componentsV2/Button';
-import Flex from '@/componentsV2/Flex';
+import Button from '@/components/Button';
+import Flex from '@/components/Flex';
+import Image from '@/components/LegacyUpload/Image';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 

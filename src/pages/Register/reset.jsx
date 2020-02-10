@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 
 import { AuthBox } from './AuthBoxes';

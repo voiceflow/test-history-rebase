@@ -7,8 +7,8 @@ import Select from 'react-select';
 
 import { CopyContent, CopyFields, ToField } from '@/admin/pages/Copy/styles';
 import { AdminTitle } from '@/admin/styles';
-import Button from '@/components/Button';
-import { toast } from '@/componentsV2/Toast';
+import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 
 function preventDefaultOnEnter(e) {
   if (e.charCode === 13) {

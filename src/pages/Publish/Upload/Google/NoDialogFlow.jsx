@@ -4,8 +4,8 @@ import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { Alert, FormGroup } from 'reactstrap';
 
+import Button from '@/components/Button';
 import { LoadCircle } from '@/components/Loader';
-import Button from '@/componentsV2/Button';
 import { checkDialogflow, linkDialogflowCredential } from '@/ducks/publish/google';
 
 import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';

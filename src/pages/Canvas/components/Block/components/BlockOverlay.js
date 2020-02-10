@@ -1,5 +1,5 @@
-import { cardStyles } from '@/componentsV2/Card';
-import { flexCenterStyles } from '@/componentsV2/Flex';
+import { cardStyles } from '@/components/Card';
+import { flexCenterStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 import { mergeOverlayStyles } from '@/pages/Canvas/components/MergeOverlay/styles';
 

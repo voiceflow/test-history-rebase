@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Modal from '@/componentsV2/Modal';
+import Modal from '@/components/Modal';
 import { MODALS } from '@/constants';
 
 import IntentsManager from './IntentsManager';

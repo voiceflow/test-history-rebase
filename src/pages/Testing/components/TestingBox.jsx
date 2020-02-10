@@ -4,7 +4,7 @@ import withSpeechRecognition from 'react-speech-recognition';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import SvgIcon from '@/components/SvgIcon';
 
 import SpeakBox from './SpeakBox';

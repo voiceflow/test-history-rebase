@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import * as Account from '@/ducks/account';

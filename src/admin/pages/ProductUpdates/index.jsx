@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
-import Button from '@/components/Button';
-import { toast } from '@/componentsV2/Toast';
+import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 
 class ProductUpdates extends Component {
   constructor(props) {

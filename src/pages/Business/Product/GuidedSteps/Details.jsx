@@ -5,9 +5,9 @@ import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
-import Input from '@/componentsV2/Input';
-import TextArea from '@/componentsV2/TextArea';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import TextArea from '@/components/TextArea';
 import { NEW_PRODUCT_ID } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';

@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/componentsV2/DraggableList';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { reorder as reorderArray } from '@/utils/array';

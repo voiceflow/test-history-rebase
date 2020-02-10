@@ -1,6 +1,6 @@
 import React from 'react';
 
-import OverflowMenu from '@/componentsV2/OverflowMenu';
+import OverflowMenu from '@/components/OverflowMenu';
 import { Controls } from '@/pages/Canvas/components/Editor';
 
 import HelpTooltip from './HelpTooltip';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { createSelector } from 'reselect';
 
-import SSMLWithVars from '@/componentsV2/SSMLWithVars';
-import AudioUpload from '@/componentsV2/Upload/AudioUpload';
+import SSMLWithVars from '@/components/SSMLWithVars';
+import AudioUpload from '@/components/Upload/AudioUpload';
 import { RepromptType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';

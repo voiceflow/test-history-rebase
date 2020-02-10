@@ -1,5 +1,5 @@
-import Flex from '@/componentsV2/Flex';
-import { Container } from '@/componentsV2/IconButton/components';
+import Flex from '@/components/Flex';
+import { Container } from '@/components/IconButton/components';
 import { styled } from '@/hocs';
 
 const CanvasControlsZoom = styled(Flex)`

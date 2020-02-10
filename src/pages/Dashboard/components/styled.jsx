@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AvatarContainer from '@/components/Avatar/components/AvatarContainer';
-import Link from '@/components/Link';
+import Link from '@/components/LegacyLink';
 import { css, styled } from '@/hocs';
 
 export const ProjectNameWrapper = styled.div`

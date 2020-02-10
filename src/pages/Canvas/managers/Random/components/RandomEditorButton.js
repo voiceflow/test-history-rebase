@@ -1,4 +1,4 @@
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { css, styled } from '@/hocs';
 
 const RandomEditorButton = styled(Button)`

@@ -1,5 +1,5 @@
-import { baseButtonStyles } from '@/componentsV2/Button/components/BaseButton';
-import { flexApartStyles } from '@/componentsV2/Flex';
+import { baseButtonStyles } from '@/components/Button/components/BaseButton';
+import { flexApartStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 /* list-style: none; */

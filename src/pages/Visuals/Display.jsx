@@ -9,9 +9,9 @@ import { compose } from 'redux';
 import { getFormValues, isDirty, reduxForm } from 'redux-form';
 
 import AceEditor from '@/components/AceEditor';
-import Button from '@/components/Button';
+import { FormTextInput } from '@/components/Form/TextInput';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
-import { FormTextInput } from '@/componentsV2/form/TextInput';
 import { addDisplay, updateDisplay } from '@/ducks/display';
 import { setError } from '@/ducks/modal';
 import { activeSkillIDSelector } from '@/ducks/skill';

@@ -1,13 +1,13 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
+import ChatWithUsLink from '@/components/ChatLink';
 import AddUtteranceRightAction from '@/components/IntentForm/components/AddUtteranceRightAction';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import ListManagerV2 from '@/componentsV2/ListManagerV2';
-import Section, { SectionToggleVariant, UncontrolledSection } from '@/componentsV2/Section';
-import Utterance from '@/componentsV2/Utterance';
-import { SlotTag } from '@/componentsV2/VariableTag';
+import ListManager from '@/components/ListManager';
+import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import Utterance from '@/components/Utterance';
+import { SlotTag } from '@/components/VariableTag';
 import { PlatformType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
@@ -115,7 +115,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, isComman
               >
                 <FormControl>
                   <ListManagerWrapper>
-                    <ListManagerV2
+                    <ListManager
                       items={utterances}
                       addToStart
                       beforeAdd={() => utteranceRef.current.forceUpdate()}

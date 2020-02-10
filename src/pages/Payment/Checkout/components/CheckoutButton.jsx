@@ -1,8 +1,8 @@
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
+import Button from '@/components/Button';
 import Icon from '@/components/SvgIcon';
-import Button from '@/componentsV2/Button';
 import { PERIOD } from '@/constants';
 import { styled } from '@/hocs';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';

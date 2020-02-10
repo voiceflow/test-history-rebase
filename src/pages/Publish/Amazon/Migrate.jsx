@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import { checkAmazonAccount } from '@/ducks/account';
 

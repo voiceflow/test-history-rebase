@@ -6,7 +6,7 @@ import ReactJson from 'react-json-view';
 import { Alert, Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import DefaultModal from '@/components/Modal/DefaultModal';
+import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
 import { IntegrationActionType, IntegrationType } from '@/constants';
 import { setConfirm, setError } from '@/ducks/modal';

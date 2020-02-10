@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 
 export const BetaProgramWrapper = styled.div``;
 

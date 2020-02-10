@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { FlexEnd } from '@/components/Flex';
 import SvgIcon, { SvgIconContainer } from '@/components/SvgIcon';
 import User, { MemberIcon } from '@/components/User';
-import { FlexEnd } from '@/componentsV2/Flex';
 import { styled, units } from '@/hocs';
 
 const CombinedBlockHandle = ({ icon, color, lockOwner, className }, ref) => (

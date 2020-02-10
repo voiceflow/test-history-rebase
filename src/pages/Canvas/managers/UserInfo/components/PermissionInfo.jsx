@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ProductSelect from '@/components/ProductSelect';
-import VariableSelect from '@/componentsV2/VariableSelect';
+import VariableSelect from '@/components/VariableSelect';
 import { PERMISSIONS_WITH_VARIABLE_MAPS, PermissionType, ProductType } from '@/constants';
 import * as Product from '@/ducks/product';
 import { connect } from '@/hocs';

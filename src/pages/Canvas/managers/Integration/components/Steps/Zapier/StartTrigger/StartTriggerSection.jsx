@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { Component } from 'react';
 
-import DefaultModal from '@/components/Modal/DefaultModal';
+import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
 import { userSelector } from '@/ducks/account';
 import { deleteIntegrationUser, integrationUsersErrorSelector, integrationUsersLoadingSelector, integrationUsersSelector } from '@/ducks/integration';

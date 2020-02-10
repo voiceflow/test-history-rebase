@@ -1,6 +1,6 @@
-import AddMinusButton from '@/componentsV2/AddMinusButton';
-import Flex from '@/componentsV2/Flex';
-import Input from '@/componentsV2/Input';
+import AddMinusButton from '@/components/AddMinusButton';
+import Flex from '@/components/Flex';
+import Input from '@/components/Input';
 import { styled } from '@/hocs';
 
 export { default as DraggableItem } from './DraggableItem';

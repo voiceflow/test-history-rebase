@@ -1,13 +1,13 @@
 import React from 'react';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
-import Input from '@/componentsV2/Input';
-import SSML from '@/componentsV2/SSML';
-import Section, { SectionToggleVariant } from '@/componentsV2/Section';
-import ClickableText from '@/componentsV2/Text/ClickableText';
-import { toast } from '@/componentsV2/Toast';
-import AudioUpload from '@/componentsV2/Upload/AudioUpload';
+import SSML from '@/components/SSML';
+import Section, { SectionToggleVariant } from '@/components/Section';
+import ClickableText from '@/components/Text/ClickableText';
+import { toast } from '@/components/Toast';
+import AudioUpload from '@/components/Upload/AudioUpload';
 import { INVOCATION_NAME_REGEX } from '@/constants';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';

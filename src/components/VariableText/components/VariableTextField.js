@@ -1,4 +1,4 @@
-import { inputStyle } from '@/componentsV2/Input/styles';
+import { inputStyle } from '@/components/Input/styles';
 import { styled } from '@/hocs';
 
 const VariableTextField = styled.div`

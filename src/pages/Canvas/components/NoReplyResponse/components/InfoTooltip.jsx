@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Section as TooltipSection, Title } from '@/componentsV2/Tooltip';
+import { Section as TooltipSection, Title } from '@/components/Tooltip';
 
 const InfoTooltip = () => (
   <>

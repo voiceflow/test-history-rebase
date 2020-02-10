@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Section from '@/componentsV2/Section';
-import SelectInputGroup from '@/componentsV2/SelectInputGroup';
+import Section from '@/components/Section';
+import SelectInputGroup from '@/components/SelectInputGroup';
 import { IntegrationActionType } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 

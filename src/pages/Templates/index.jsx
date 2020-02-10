@@ -6,7 +6,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
-import Button from '@/components/Button';
+import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import { userSelector } from '@/ducks/account';
 import { addProjectToList } from '@/ducks/lists';

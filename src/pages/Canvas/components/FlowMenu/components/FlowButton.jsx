@@ -3,10 +3,10 @@ import _ from 'lodash';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
+import Dropdown from '@/components/Dropdown';
+import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
 import { Members } from '@/components/User';
-import Dropdown from '@/componentsV2/Dropdown';
-import Input from '@/componentsV2/Input';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';

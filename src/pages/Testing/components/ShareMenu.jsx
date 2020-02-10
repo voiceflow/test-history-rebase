@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '@/components/Button';
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
+import Button from '@/components/LegacyButton';
+import { MenuContainer } from '@/components/Menu';
 import { Spinner } from '@/components/Spinner';
-import { MenuContainer } from '@/componentsV2/Menu';
 import { FadeDownContainer } from '@/styles/animations';
 
 const ShareMenuContainer = styled(MenuContainer)`

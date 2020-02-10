@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '@/components/Button';
-import Badge from '@/componentsV2/Badge';
+import Badge from '@/components/Badge';
+import Button from '@/components/LegacyButton';
 import { Section } from '@/pages/Canvas/components/Editor';
 
 import ChoiceOldInput from './ChoiceOldInput';

@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
-import OverflowMenu from '@/componentsV2/OverflowMenu';
+import OverflowMenu from '@/components/OverflowMenu';
 import { allProductsSelector, hasProductsSelector, productByIDSelector } from '@/ducks/product';
 import { goToEditProduct, goToNewProduct, goToProducts } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';

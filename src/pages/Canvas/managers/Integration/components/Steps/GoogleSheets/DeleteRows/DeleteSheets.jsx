@@ -1,6 +1,6 @@
 import React from 'react';
 
-import VariablesInput from '@/componentsV2/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 import { styled } from '@/hocs';
 
 import NextStepButton from '../../components/NextStepButton';

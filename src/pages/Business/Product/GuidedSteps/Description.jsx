@@ -6,8 +6,8 @@ import moize from 'moize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '@/componentsV2/Button';
-import TextArea from '@/componentsV2/TextArea';
+import Button from '@/components/Button';
+import TextArea from '@/components/TextArea';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 

@@ -2,8 +2,8 @@ import React from 'react';
 
 import IntentForm, { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import OverflowMenu from '@/componentsV2/OverflowMenu';
-import Section from '@/componentsV2/Section';
+import OverflowMenu from '@/components/OverflowMenu';
+import Section from '@/components/Section';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as Skill from '@/ducks/skill';

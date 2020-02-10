@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal, { ModalBody, ModalHeader } from '@/components/Modal';
+import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { clearHelp } from '@/ducks/alerts';
 
 const Alerts = ({ showHelp, helpHeader, helpMessage, helpLink, helpVideo, clearHelp }) => {

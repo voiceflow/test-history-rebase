@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Paragraph, Section, Title } from '@/componentsV2/Tooltip';
-import VideoPlayer from '@/componentsV2/VideoPlayer';
+import { Paragraph, Section, Title } from '@/components/Tooltip';
+import VideoPlayer from '@/components/VideoPlayer';
 
 import { VIDEO_LINK } from '../constants';
 

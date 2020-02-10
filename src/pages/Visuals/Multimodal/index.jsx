@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '@/components/Button';
 import EmptyCard from '@/components/Cards/EmptyCard';
 import VoiceCards from '@/components/Cards/VoiceCards';
+import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import { allDisplaysSelector, deleteDisplay } from '@/ducks/display';
 import { setConfirm } from '@/ducks/modal';

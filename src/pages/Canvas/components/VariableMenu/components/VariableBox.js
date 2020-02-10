@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { SvgIconContainer } from '@/components/SvgIcon';
-import { SlotTag, VariableTag } from '@/componentsV2/VariableTag';
+import { SlotTag, VariableTag } from '@/components/VariableTag';
 import { units } from '@/hocs';
 
 const VariableBox = styled.div`

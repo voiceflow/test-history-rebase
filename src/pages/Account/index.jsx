@@ -223,7 +223,4 @@ const mapDispatchToProps = {
   updateAccount,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Account);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

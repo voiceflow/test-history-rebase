@@ -77,8 +77,4 @@ const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadPro
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(SelectedProduct);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SelectedProduct);

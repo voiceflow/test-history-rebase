@@ -8,6 +8,9 @@
     "@hot-loader/react-dom",
     "@commitlint/*",
     "@voiceflow/*",
+    "@types/*",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
     "stylelint*",
     "babel-*",
     "eslint-*",
@@ -23,6 +26,8 @@
     "husky",
     "lint-staged",
     "cz-conventional-changelog",
+    "prettier",
+    "prettier-eslint",
     "prettier-eslint-cli",
     "prettier-stylelint",
     "react-router",
@@ -34,6 +39,7 @@
     "esm",
     "ignore-styles",
     "mock-local-storage",
-    "nyc"
+    "nyc",
+    "typescript"
   ]
 }

@@ -1,3 +1,4 @@
+import Clipboard from 'clipboard';
 import _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
@@ -69,8 +70,6 @@ class ClipboardButton extends React.Component {
     const options = this.props.options || this.propsWith(/^option-/, true);
     // eslint-disable-next-line react/no-string-refs
     const element = React.version.match(/0\.13(.*)/) ? this.refs.element.getDOMNode() : this.element;
-    // eslint-disable-next-line global-require
-    const Clipboard = require('clipboard');
     this.clipboard = new Clipboard(element, options);
 
     const callbacks = this.propsWith(/^on/, true);

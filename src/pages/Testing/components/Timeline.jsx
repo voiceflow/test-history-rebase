@@ -298,10 +298,4 @@ const mapDispatchToProps = {
   enterFlow: updateDiagramID,
 };
 
-export default compose(
-  withEventualEngine,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Timeline);
+export default compose(withEventualEngine, connect(mapStateToProps, mapDispatchToProps))(Timeline);

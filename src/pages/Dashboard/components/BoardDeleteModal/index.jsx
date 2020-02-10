@@ -70,7 +70,4 @@ const mapDispatchToProps = {
   deleteWorkspace,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardDeleteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(BoardDeleteModal);

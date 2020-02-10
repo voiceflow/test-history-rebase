@@ -109,12 +109,4 @@ const mergeProps = ({ node, parent: getParentData }) => {
   return { parent };
 };
 
-export default compose(
-  connect(
-    mapStateToProps,
-    null,
-    mergeProps
-  ),
-  withTheme,
-  React.memo
-)(EditSidebar);
+export default compose(connect(mapStateToProps, null, mergeProps), withTheme, React.memo)(EditSidebar);

@@ -27,7 +27,4 @@ const mapDispatchToProps = {
   toggle: clearModal,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StandardModal);
+export default connect(mapStateToProps, mapDispatchToProps)(StandardModal);

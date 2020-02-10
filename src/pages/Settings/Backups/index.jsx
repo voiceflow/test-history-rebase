@@ -88,7 +88,4 @@ const mapDispatchToProps = {
   goToCanvas,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Backups);
+export default connect(mapStateToProps, mapDispatchToProps)(Backups);

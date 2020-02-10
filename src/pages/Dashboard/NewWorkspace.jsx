@@ -105,7 +105,4 @@ const mapDispatchToProps = {
   createWorkspace,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewWorkspace);
+export default connect(null, mapDispatchToProps)(NewWorkspace);

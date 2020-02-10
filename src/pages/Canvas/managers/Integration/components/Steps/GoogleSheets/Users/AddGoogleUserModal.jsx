@@ -76,7 +76,4 @@ const mapDispatchToProps = {
   addUser: (body) => addIntegrationUser(GOOGLE_SHEETS, body),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddGoogleUserModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddGoogleUserModal);

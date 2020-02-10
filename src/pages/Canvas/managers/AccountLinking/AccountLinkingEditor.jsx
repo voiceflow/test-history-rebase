@@ -165,7 +165,4 @@ const mapDispatchToProps = {
   getAccountLinking,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(AccountLinkingEditor);
+export default connect(null, mapDispatchToProps)(AccountLinkingEditor);

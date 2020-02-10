@@ -10,9 +10,7 @@ export const CornerActionButton = styled(SvgIcon)`
   right: 10px;
   cursor: pointer;
   color: #becedc;
-  ${transition('color')}
-
-  :hover {
+  ${transition('color')} :hover {
     color: #8da2b5;
   }
 `;

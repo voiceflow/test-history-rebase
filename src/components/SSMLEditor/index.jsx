@@ -113,7 +113,10 @@ class SSMLEditor extends Component {
   onSearchChange = ({ value }) => {
     const { variables = [] } = this.props;
     this.setState({
-      suggestions: defaultSuggestionsFilter(value, variables.map((v) => ({ name: v }))),
+      suggestions: defaultSuggestionsFilter(
+        value,
+        variables.map((v) => ({ name: v }))
+      ),
     });
   };
 

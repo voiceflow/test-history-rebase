@@ -26,25 +26,13 @@ export default skillMetaReducer;
 export const updateSkillMeta = (properties, meta) => createAction(UPDATE_SKILL_META, { ...properties }, meta);
 
 // SELECTORS
-export const skillMetaSelector = createSelector(
-  activeSkillSelector,
-  ({ meta }) => meta
-);
+export const skillMetaSelector = createSelector(activeSkillSelector, ({ meta }) => meta);
 
-export const skillCreatedSelector = createSelector(
-  skillMetaSelector,
-  ({ created }) => new Date(created)
-);
+export const skillCreatedSelector = createSelector(skillMetaSelector, ({ created }) => new Date(created));
 
-export const invNameSelector = createSelector(
-  skillMetaSelector,
-  ({ invName }) => invName
-);
+export const invNameSelector = createSelector(skillMetaSelector, ({ invName }) => invName);
 
-export const accountLinkingSelector = createSelector(
-  skillMetaSelector,
-  ({ accountLinking }) => accountLinking
-);
+export const accountLinkingSelector = createSelector(skillMetaSelector, ({ accountLinking }) => accountLinking);
 
 // ACTIONS
 export const updateInvName = (invName) => async (dispatch, getState) => {

@@ -104,8 +104,4 @@ const mergeProps = ({ product: productByIDSelector }, { updateProduct }, { produ
   updateProduct: (product) => updateProduct(productID, product),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(DetailsForm);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DetailsForm);

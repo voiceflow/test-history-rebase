@@ -93,7 +93,4 @@ const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Flow);
+export default connect(mapStateToProps, mapDispatchToProps)(Flow);

@@ -64,10 +64,7 @@ export default creatorFocusReducer;
 
 // selectors
 
-const rootSelector = createSelector(
-  creatorStateSelector,
-  createRootSelector(FOCUS_STATE_KEY)
-);
+const rootSelector = createSelector(creatorStateSelector, createRootSelector(FOCUS_STATE_KEY));
 
 export { rootSelector as creatorFocusSelector };
 

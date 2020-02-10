@@ -125,7 +125,4 @@ const mapDispatchToProps = {
   setActiveSkill,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserTesting);
+export default connect(mapStateToProps, mapDispatchToProps)(UserTesting);

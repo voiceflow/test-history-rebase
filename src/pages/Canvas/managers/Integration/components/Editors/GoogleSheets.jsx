@@ -167,7 +167,4 @@ const mapDispatchToProps = {
 
 const GoogleSheetsWithSteps = DropdownStepEditor(GoogleSheetsEditor, Step.SELECT_ACTION);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GoogleSheetsWithSteps);
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleSheetsWithSteps);

@@ -250,7 +250,4 @@ class ChargeTeamGroup extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { refundCharge, cancelSubscription, editTrial }
-)(ChargeTeamGroup);
+export default connect(null, { refundCharge, cancelSubscription, editTrial })(ChargeTeamGroup);

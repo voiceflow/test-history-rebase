@@ -42,7 +42,4 @@ const mapDispatchToProps = {
   handleSessionTakeover: Realtime.handleRealtimeTakeover,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectLockGate);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectLockGate);

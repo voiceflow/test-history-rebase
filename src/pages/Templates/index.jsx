@@ -202,7 +202,4 @@ const mapDispatchToProps = {
   goToCanvas,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Templates);
+export default connect(mapStateToProps, mapDispatchToProps)(Templates);

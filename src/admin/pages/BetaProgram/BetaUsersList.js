@@ -83,7 +83,4 @@ class BetaUsersList extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { getBetaUsers }
-)(BetaUsersList);
+export default connect(null, { getBetaUsers })(BetaUsersList);

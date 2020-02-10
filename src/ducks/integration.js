@@ -87,20 +87,11 @@ export default function skillReducer(state = initialState, action) {
 // Selectors
 export const integrationUsersStateSelector = createRootSelector(STATE_KEY);
 
-export const integrationUsersSelector = createSelector(
-  integrationUsersStateSelector,
-  ({ integration_users }) => integration_users
-);
+export const integrationUsersSelector = createSelector(integrationUsersStateSelector, ({ integration_users }) => integration_users);
 
-export const integrationUsersLoadingSelector = createSelector(
-  integrationUsersStateSelector,
-  ({ loading }) => loading
-);
+export const integrationUsersLoadingSelector = createSelector(integrationUsersStateSelector, ({ loading }) => loading);
 
-export const integrationUsersErrorSelector = createSelector(
-  integrationUsersStateSelector,
-  ({ error }) => error
-);
+export const integrationUsersErrorSelector = createSelector(integrationUsersStateSelector, ({ error }) => error);
 
 export const fetchIntegrationUsersBegin = () => ({
   type: FETCH_INTEGRATION_USERS_BEGIN,

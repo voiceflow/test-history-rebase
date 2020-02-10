@@ -102,7 +102,4 @@ const mapDispatchToProps = {
   updateCurrentWorkspaceItem,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardSettingsModal);
+export default connect(mapStateToProps, mapDispatchToProps)(BoardSettingsModal);

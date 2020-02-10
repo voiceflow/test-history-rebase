@@ -78,7 +78,4 @@ GoogleLoginForm.propTypes = {
   onLoad: PropTypes.func,
 };
 
-export default connect(
-  null,
-  { createGoogleSession }
-)(GoogleLoginForm);
+export default connect(null, { createGoogleSession })(GoogleLoginForm);

@@ -105,7 +105,4 @@ const mapDispatchToProps = {
   setConfirm,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LegacyMappings);
+export default connect(mapStateToProps, mapDispatchToProps)(LegacyMappings);

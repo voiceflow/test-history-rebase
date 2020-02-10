@@ -111,7 +111,7 @@ const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entity
       return addedText;
     }
 
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     addedText += processNodes(node.childNodes);
 
     const closeTag = `</${nodeName}>`;

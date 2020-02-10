@@ -1,5 +1,8 @@
 import { createBlockAdapter } from './utils';
 
-const exitBlockAdapter = createBlockAdapter(() => ({}), () => ({}));
+const exitBlockAdapter = createBlockAdapter(
+  () => ({}),
+  () => ({})
+);
 
 export default exitBlockAdapter;

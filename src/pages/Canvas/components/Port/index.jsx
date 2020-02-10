@@ -63,12 +63,4 @@ class Port extends React.PureComponent {
   }
 }
 
-export default compose(
-  withNode,
-  withPort,
-  withCanvas,
-  withEngine,
-  withPlatform,
-  withEditPermission,
-  withLinkCreation
-)(Port);
+export default compose(withNode, withPort, withCanvas, withEngine, withPlatform, withEditPermission, withLinkCreation)(Port);

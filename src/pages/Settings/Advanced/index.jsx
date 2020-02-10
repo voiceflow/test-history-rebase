@@ -147,7 +147,4 @@ const mapDispatchToProps = {
   saveMetaSettings,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Advanced);
+export default connect(mapStateToProps, mapDispatchToProps)(Advanced);

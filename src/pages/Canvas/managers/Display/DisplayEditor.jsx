@@ -127,8 +127,4 @@ const mergeProps = ({ selected: getDisplayByID }, _, { data }) => ({
   selected: data.displayID && getDisplayByID(data.displayID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(DisplayEditor);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DisplayEditor);

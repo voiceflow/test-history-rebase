@@ -41,7 +41,4 @@ const GetAmazonLogin = (props) => {
   );
 };
 
-export default connect(
-  null,
-  { AmazonLogin }
-)(GetAmazonLogin);
+export default connect(null, { AmazonLogin })(GetAmazonLogin);

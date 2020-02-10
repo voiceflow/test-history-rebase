@@ -11,10 +11,7 @@ const addLinkReducer = (state, { payload: { sourcePortID, targetPortID, linkID }
 
   const link = linkFactory(sourcePort, targetPort, linkID);
 
-  return compose(
-    removeAllLinksFromState(existingLinkIDs),
-    addLinkToState(link)
-  )(state);
+  return compose(removeAllLinksFromState(existingLinkIDs), addLinkToState(link))(state);
 };
 
 export default addLinkReducer;

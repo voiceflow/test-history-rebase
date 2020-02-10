@@ -119,7 +119,4 @@ function MaintenanceGate({ children, setConfirm, forceNotification }) {
   );
 }
 
-export default connect(
-  null,
-  { setConfirm, forceNotification }
-)(MaintenanceGate);
+export default connect(null, { setConfirm, forceNotification })(MaintenanceGate);

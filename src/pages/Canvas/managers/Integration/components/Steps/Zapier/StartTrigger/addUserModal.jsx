@@ -60,7 +60,4 @@ const mapDispatchToProps = {
   addUser: (body) => addIntegrationUser('Zapier', body),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FeedAddUserModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedAddUserModal);

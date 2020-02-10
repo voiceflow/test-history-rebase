@@ -131,7 +131,4 @@ const mapStateToProps = (state) => ({
   errorMessage: state.admin.errorMessage,
 });
 
-export default connect(
-  mapStateToProps,
-  { findCreator }
-)(InternalLookup);
+export default connect(mapStateToProps, { findCreator })(InternalLookup);

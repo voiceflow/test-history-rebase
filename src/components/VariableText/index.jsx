@@ -54,7 +54,10 @@ class VariableText extends React.PureComponent {
 
   onSearchChange = ({ value }) =>
     this.setState({
-      suggestions: defaultSuggestionsFilter(value, this.props.variables.map((name) => ({ name }))),
+      suggestions: defaultSuggestionsFilter(
+        value,
+        this.props.variables.map((name) => ({ name }))
+      ),
     });
 
   focusEditor = () => this.editorRef.current.focus();

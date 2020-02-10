@@ -42,7 +42,4 @@ const mapDispatchToProps = {
   updateMembers,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Collaborators);
+export default connect(mapStateToProps, mapDispatchToProps)(Collaborators);

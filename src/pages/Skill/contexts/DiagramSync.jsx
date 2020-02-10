@@ -29,8 +29,4 @@ const mergeProps = ({ activeSkill }, _, { diagramID }) => ({
   isDiagramSynced: activeSkill.diagramID === diagramID,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(DiagramSync);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DiagramSync);

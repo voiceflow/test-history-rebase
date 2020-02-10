@@ -24,8 +24,4 @@ const mergeProps = ({ selected: getProductByID }, _, { value }) => ({
   selected: value && getProductByID(value),
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(ProductSelect);
+export default connect(mapStateToProps, null, mergeProps)(ProductSelect);

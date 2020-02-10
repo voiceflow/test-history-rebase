@@ -55,7 +55,4 @@ const mapDispatchToProps = {
   removeSlot,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SlotCloud);
+export default connect(mapStateToProps, mapDispatchToProps)(SlotCloud);

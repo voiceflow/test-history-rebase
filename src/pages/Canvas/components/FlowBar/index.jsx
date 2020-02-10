@@ -75,8 +75,4 @@ const mergeProps = (_, __, { flow }) => ({
   childDiagrams: flow ? findChildren(flow) : [],
 });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-  mergeProps
-)(FlowBar);
+export default connect(null, mapDispatchToProps, mergeProps)(FlowBar);

@@ -39,7 +39,15 @@ export class Link extends React.PureComponent {
     translatePoint: ([moveX, moveY], isSource) => {
       const [[startX, startY], [endX, endY]] = this.points;
 
-      const nextPoints = isSource ? [[startX + moveX, startY + moveY], [endX, endY]] : [[startX, startY], [endX + moveX, endY + moveY]];
+      const nextPoints = isSource
+        ? [
+            [startX + moveX, startY + moveY],
+            [endX, endY],
+          ]
+        : [
+            [startX, startY],
+            [endX + moveX, endY + moveY],
+          ];
       // eslint-disable-next-line react/no-direct-mutation-state
       this.points = nextPoints;
 
@@ -113,11 +121,4 @@ export class Link extends React.PureComponent {
   }
 }
 
-export default compose(
-  withLink,
-  withLinkLifecycle,
-  withEngine,
-  withCanvas,
-  withPlatform,
-  withEditPermission
-)(Link);
+export default compose(withLink, withLinkLifecycle, withEngine, withCanvas, withPlatform, withEditPermission)(Link);

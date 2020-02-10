@@ -25,7 +25,4 @@ const mapStateToProps = {
   viewers: activeDiagramViewersSelector,
 };
 
-export default compose(
-  withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceMembersLoadingGate),
-  connect(mapStateToProps)
-)(CanvasViewers);
+export default compose(withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceMembersLoadingGate), connect(mapStateToProps))(CanvasViewers);

@@ -27,8 +27,4 @@ const mergeProps = ({ diagram: getDiagramByID }, _, { diagramID }) => ({
   diagram: diagramID && getDiagramByID(diagramID),
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(CombinedBlockEnterFlow);
+export default connect(mapStateToProps, null, mergeProps)(CombinedBlockEnterFlow);

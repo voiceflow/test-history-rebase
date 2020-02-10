@@ -108,10 +108,4 @@ const mapDispatchToProps = {
   toggleHidden: toggleCreatorMenuHidden,
 };
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  withTheme
-)(CanvasMenu);
+export default compose(connect(mapStateToProps, mapDispatchToProps), withTheme)(CanvasMenu);

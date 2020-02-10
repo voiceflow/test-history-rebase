@@ -9,6 +9,13 @@ import AbstractOverlay, { connectOverlay } from './AbstractOverlay';
 import Cursor from './RealtimeOverlayCursor';
 import Nametag from './RealtimeOverlayNametag';
 
+function clearTimer(timers, id) {
+  if (timers[id] !== null) {
+    clearTimeout(timers[id]);
+    timers[id] = null;
+  }
+}
+
 class RealtimeCursorOverlay extends AbstractOverlay {
   cursorLocations = {};
 
@@ -109,10 +116,3 @@ class RealtimeCursorOverlay extends AbstractOverlay {
 }
 
 export default connectOverlay(RealtimeCursorOverlay);
-
-function clearTimer(timers, id) {
-  if (timers[id] !== null) {
-    clearTimeout(timers[id]);
-    timers[id] = null;
-  }
-}

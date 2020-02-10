@@ -16,7 +16,4 @@ function EditorSection({ data, autoSave = true, initialOpen = false, ...props },
   return <UncontrolledSection {...collapseProps} {...props} ref={ref} />;
 }
 
-export default compose(
-  withNamespace,
-  React.forwardRef
-)(EditorSection);
+export default compose(withNamespace, React.forwardRef)(EditorSection);

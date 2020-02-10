@@ -31,8 +31,4 @@ const mergeProps = (_, { closeCanvasError }, { index }) => ({
   closeCanvasError: () => closeCanvasError(index),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-  mergeProps
-)(CanvasWarning);
+export default connect(null, mapDispatchToProps, mergeProps)(CanvasWarning);

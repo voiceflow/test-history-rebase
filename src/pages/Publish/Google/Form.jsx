@@ -293,7 +293,4 @@ const mapDispatchToProps = {
   updatePublishInfo,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GooglePublish);
+export default connect(mapStateToProps, mapDispatchToProps)(GooglePublish);

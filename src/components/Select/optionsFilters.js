@@ -9,7 +9,7 @@ const multilevelSearch = (matched, notMatched, searchLabel, option, params) => {
   if (matchOption(searchLabel, params.getOptionLabel, params.getOptionValue)(option)) {
     matched.push(option);
   } else {
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const { matchedOptions } = searchableOptionsFilter(option.options, searchLabel, params);
 
     if (matchedOptions.length) {

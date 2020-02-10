@@ -205,11 +205,7 @@ const mergeProps = ({ slotsMap, getIntentByID, getIntentSlotByIntentIDSlotID }, 
   intentSlot: getIntentSlotByIntentIDSlotID(activePath.intentID, activePath.id),
 });
 
-const ConnectedIntentSlotForm = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(IntentSlotForm);
+const ConnectedIntentSlotForm = connect(mapStateToProps, mapDispatchToProps, mergeProps)(IntentSlotForm);
 
 export default ConnectedIntentSlotForm;
 

@@ -99,7 +99,4 @@ const mapDispatchToProps = {
   googleLogin,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SocialLogin);
+export default connect(null, mapDispatchToProps)(SocialLogin);

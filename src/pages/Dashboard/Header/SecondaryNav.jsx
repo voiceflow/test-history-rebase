@@ -115,7 +115,4 @@ const mapDispatchToProps = {
   leaveWorkspace,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SecondaryNav);
+export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNav);

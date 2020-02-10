@@ -131,7 +131,4 @@ const mapDispatchToProps = {
   readNotifications,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RightNavSection);
+export default connect(mapStateToProps, mapDispatchToProps)(RightNavSection);

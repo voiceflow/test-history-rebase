@@ -198,10 +198,4 @@ class CombinedBlock extends React.PureComponent {
   }
 }
 
-export default compose(
-  withNode,
-  withNodeData,
-  withEngine,
-  withEditPermission,
-  withManager
-)(CombinedBlock);
+export default compose(withNode, withNodeData, withEngine, withEditPermission, withManager)(CombinedBlock);

@@ -505,7 +505,4 @@ const mapDispatchToProps = {
   trackOnboardingChoice: Tracking.trackOnboardingChoice,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Onboarding);
+export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);

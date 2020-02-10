@@ -154,7 +154,4 @@ class PlanModal extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { updateWorkspace }
-)(PlanModal);
+export default connect(null, { updateWorkspace })(PlanModal);

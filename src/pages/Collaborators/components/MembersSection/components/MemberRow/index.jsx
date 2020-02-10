@@ -133,7 +133,4 @@ const MapDispatchToProps = {
   updateInvite,
 };
 
-export default connect(
-  mapStateToProps,
-  MapDispatchToProps
-)(MemberRow);
+export default connect(mapStateToProps, MapDispatchToProps)(MemberRow);

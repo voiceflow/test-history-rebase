@@ -52,12 +52,4 @@ const mergeProps = ({ platform, diagram: getDiagramByID }, _, { data }) => {
   };
 };
 
-export default compose(
-  withNode,
-  withNodeData,
-  connect(
-    mapStateToProps,
-    null,
-    mergeProps
-  )
-)(CommandBlock);
+export default compose(withNode, withNodeData, connect(mapStateToProps, null, mergeProps))(CommandBlock);

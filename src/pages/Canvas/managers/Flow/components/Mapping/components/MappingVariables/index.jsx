@@ -74,8 +74,4 @@ const mergeProps = ({ flowVariables: getVariables }, { addVariableToDiagram }, {
   addVariableToFlow: (name) => addVariableToDiagram(diagramID, name),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(MappingVariables);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(MappingVariables);

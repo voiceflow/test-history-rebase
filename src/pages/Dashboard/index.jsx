@@ -352,7 +352,4 @@ const mapDispatchToProps = {
   fetchNotifications: Notifications.fetchNotifications,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DashBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);

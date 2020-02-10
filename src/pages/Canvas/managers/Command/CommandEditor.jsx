@@ -75,11 +75,7 @@ const mergeProps = ({ platform, getIntentByID, diagramByID }, { goToDiagram }, {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
   // TODO: remove this when duplicate functionality is implemented and we can use defaults
   withHeaderActions([
     {

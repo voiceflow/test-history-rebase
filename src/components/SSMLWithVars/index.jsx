@@ -36,12 +36,4 @@ const mapDispatchToProps = {
   addGlobalVariable,
 };
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    null,
-    { forwardRef: true }
-  ),
-  React.forwardRef
-)(SSMLWithVars);
+export default compose(connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }), React.forwardRef)(SSMLWithVars);

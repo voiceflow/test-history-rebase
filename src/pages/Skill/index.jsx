@@ -168,11 +168,7 @@ const mergeProps = ({ activeSkill }, { updateProjectName, updateSkillName }) => 
 });
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
   withBatchLoadingGate(
     [
       ProjectLoadingGate,

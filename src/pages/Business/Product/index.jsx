@@ -217,11 +217,4 @@ const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProd
   };
 };
 
-export default compose(
-  React.memo,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
-  )
-)(ProductEditPage);
+export default compose(React.memo, connect(mapStateToProps, mapDispatchToProps, mergeProps))(ProductEditPage);

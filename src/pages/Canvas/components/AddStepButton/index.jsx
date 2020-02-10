@@ -27,14 +27,7 @@ function AddStepButton({ onAdd, options }) {
             <Popper placement="bottom" positionFixed eventsEnabled>
               {({ ref, style, placement }) => (
                 <div ref={ref} style={{ ...style, zIndex: 50 }} data-placement={placement}>
-                  <Menu
-                    searchable
-                    options={options}
-                    onSelect={compose(
-                      onClose,
-                      onAdd
-                    )}
-                  />
+                  <Menu searchable options={options} onSelect={compose(onClose, onAdd)} />
                 </div>
               )}
             </Popper>

@@ -86,12 +86,4 @@ const mapDispatchToProps = {
   moveLink: (movement) => Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink(movement)),
 };
 
-export default compose(
-  withCanvas,
-  withLinkCreation,
-  withEngine,
-  connect(
-    null,
-    mapDispatchToProps
-  )
-)(NewLink);
+export default compose(withCanvas, withLinkCreation, withEngine, connect(null, mapDispatchToProps))(NewLink);

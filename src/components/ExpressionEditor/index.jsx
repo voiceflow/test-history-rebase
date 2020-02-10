@@ -23,9 +23,4 @@ const mapStateToProps = {
   variables: allVariablesSelector,
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(ExpressionEditor);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(ExpressionEditor);

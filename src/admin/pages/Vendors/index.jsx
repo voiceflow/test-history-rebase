@@ -88,7 +88,4 @@ const mapStateToProps = (state) => ({
   creator: state.admin.creator,
 });
 
-export default connect(
-  mapStateToProps,
-  { findCreator, getVendors }
-)(Vendors);
+export default connect(mapStateToProps, { findCreator, getVendors })(Vendors);

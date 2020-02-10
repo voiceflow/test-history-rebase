@@ -30,10 +30,7 @@ export default fulfillmentReducer;
 
 // SELECTORS
 
-export const fulfillmentSelector = createSelector(
-  skillMetaSelector,
-  ({ fulfillment }) => (intentID) => fulfillment?.[intentID]
-);
+export const fulfillmentSelector = createSelector(skillMetaSelector, ({ fulfillment }) => (intentID) => fulfillment?.[intentID]);
 
 // ACTIONS
 

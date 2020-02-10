@@ -105,7 +105,4 @@ const mapStateToProps = (state) => ({
   creator: state.admin.betaCreator,
 });
 
-export default connect(
-  mapStateToProps,
-  { findBetaCreator }
-)(BetaProgram);
+export default connect(mapStateToProps, { findBetaCreator })(BetaProgram);

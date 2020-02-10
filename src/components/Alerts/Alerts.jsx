@@ -43,7 +43,4 @@ const mapDispatchToProps = {
   clearHelp,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Alerts);
+export default connect(mapStateToProps, mapDispatchToProps)(Alerts);

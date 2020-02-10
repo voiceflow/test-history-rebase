@@ -92,25 +92,13 @@ export default compositeReducer(sessionReducer, {
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const authTokenSelector = createSelector(
-  rootSelector,
-  ({ token }) => token.value
-);
+export const authTokenSelector = createSelector(rootSelector, ({ token }) => token.value);
 
-export const tabIDSelector = createSelector(
-  rootSelector,
-  ({ tabID }) => tabID.value
-);
+export const tabIDSelector = createSelector(rootSelector, ({ tabID }) => tabID.value);
 
-export const browserIDSelector = createSelector(
-  rootSelector,
-  ({ browserID }) => browserID.value
-);
+export const browserIDSelector = createSelector(rootSelector, ({ browserID }) => browserID.value);
 
-export const isWebsocketsEnabledSelector = createSelector(
-  rootSelector,
-  ({ websocketsEnabled }) => websocketsEnabled
-);
+export const isWebsocketsEnabledSelector = createSelector(rootSelector, ({ websocketsEnabled }) => websocketsEnabled);
 
 // action creators
 

@@ -20,7 +20,4 @@ const mapDispatchToProps = {
   goToDashboard: Router.goToDashboard,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(RealtimeDisabledWarning);
+export default connect(null, mapDispatchToProps)(RealtimeDisabledWarning);

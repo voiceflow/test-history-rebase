@@ -72,7 +72,4 @@ AmazonLoginButton.propTypes = {
   onLoad: PropTypes.func,
 };
 
-export default connect(
-  null,
-  { createAmazonSession }
-)(AmazonLoginButton);
+export default connect(null, { createAmazonSession })(AmazonLoginButton);

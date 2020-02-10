@@ -80,8 +80,4 @@ const mergeProps = ({ flowStructure: getFlowStructure, activeDiagramID }) => ({
   flow: getFlowStructure(activeDiagramID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(CanvasControls);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CanvasControls);

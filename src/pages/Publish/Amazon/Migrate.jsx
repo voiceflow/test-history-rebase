@@ -113,7 +113,4 @@ class Migrate extends Component {
   }
 }
 
-export default connect(
-  null,
-  { checkAmazonAccount }
-)(Migrate);
+export default connect(null, { checkAmazonAccount })(Migrate);

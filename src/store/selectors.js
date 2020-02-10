@@ -35,15 +35,12 @@ export const allVariablesSelector = createSelector(
   (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
-export const activeSlotTypes = createSelector(
-  Skill.activeSkillSelector,
-  ({ locales, platform, publishInfo }) => getSlotTypes(locales, platform, publishInfo)
+export const activeSlotTypes = createSelector(Skill.activeSkillSelector, ({ locales, platform, publishInfo }) =>
+  getSlotTypes(locales, platform, publishInfo)
 );
 
-export const activeProjectSelector = createSelector(
-  Skill.activeProjectIDSelector,
-  Project.projectByIDSelector,
-  (projectID, getProject) => getProject(projectID)
+export const activeProjectSelector = createSelector(Skill.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>
+  getProject(projectID)
 );
 
 export const isLoggingInSelector = createSelector(
@@ -57,26 +54,19 @@ export const isLoggingInSelector = createSelector(
 /**
  * gets a count of users for the active project
  */
-export const projectViewerCountSelector = createSelector(
-  Realtime.realtimeLocksSelector,
-  Workspace.activeWorkspaceSelector,
-  (locks, team) => {
-    if (!locks || !team) {
-      return 1;
-    }
-
-    return Object.values(locks.users).reduce((acc, diagramLocks) => {
-      Object.keys(diagramLocks || {}).forEach((tabID) => acc.add(tabID));
-
-      return acc;
-    }, new Set()).size;
+export const projectViewerCountSelector = createSelector(Realtime.realtimeLocksSelector, Workspace.activeWorkspaceSelector, (locks, team) => {
+  if (!locks || !team) {
+    return 1;
   }
-);
 
-export const isOnlyViewerSelector = createSelector(
-  projectViewerCountSelector,
-  (projectViewerCount) => projectViewerCount === 1
-);
+  return Object.values(locks.users).reduce((acc, diagramLocks) => {
+    Object.keys(diagramLocks || {}).forEach((tabID) => acc.add(tabID));
+
+    return acc;
+  }, new Set()).size;
+});
+
+export const isOnlyViewerSelector = createSelector(projectViewerCountSelector, (projectViewerCount) => projectViewerCount === 1);
 
 /**
  * gets all members for a given diagram
@@ -100,10 +90,8 @@ export const diagramViewersSelector = createSelector(
 /**
  * gets all members in the active diagram
  */
-export const activeDiagramViewersSelector = createSelector(
-  diagramViewersSelector,
-  Skill.activeDiagramIDSelector,
-  (getViewers, diagramID) => getViewers(diagramID)
+export const activeDiagramViewersSelector = createSelector(diagramViewersSelector, Skill.activeDiagramIDSelector, (getViewers, diagramID) =>
+  getViewers(diagramID)
 );
 
 export const diagramViewersLookupSelector = createSelector(

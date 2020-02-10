@@ -64,7 +64,4 @@ const DraggableItem = (
   );
 };
 
-export default compose(
-  React.memo,
-  React.forwardRef
-)(DraggableItem);
+export default compose(React.memo, React.forwardRef)(DraggableItem);

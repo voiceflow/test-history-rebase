@@ -17,12 +17,7 @@ import { withNodeLifecycle } from './hocs';
 
 export class Node extends React.PureComponent {
   // keep track of changes to location
-  static getDerivedStateFromProps(
-    {
-      node: { x, y },
-    },
-    { position }
-  ) {
+  static getDerivedStateFromProps({ node: { x, y } }, { position }) {
     return {
       position: [x, y],
       positionChanged: position[0] !== x || position[1] !== y,
@@ -239,10 +234,4 @@ export class Node extends React.PureComponent {
   }
 }
 
-export default compose(
-  withStaticContextMenu,
-  withNode,
-  withNodeLifecycle,
-  withEngine,
-  withEditPermission
-)(Node);
+export default compose(withStaticContextMenu, withNode, withNodeLifecycle, withEngine, withEditPermission)(Node);

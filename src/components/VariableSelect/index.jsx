@@ -35,7 +35,4 @@ const mapDispatchToProps = {
   addVariable: addGlobalVariable,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VariableSelect);
+export default connect(mapStateToProps, mapDispatchToProps)(VariableSelect);

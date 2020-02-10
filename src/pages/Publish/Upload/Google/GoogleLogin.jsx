@@ -44,7 +44,4 @@ const GetGoogleLogin = (props) => {
   );
 };
 
-export default connect(
-  null,
-  { GoogleLogin, updateGoogle }
-)(GetGoogleLogin);
+export default connect(null, { GoogleLogin, updateGoogle })(GetGoogleLogin);

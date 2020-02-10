@@ -123,8 +123,4 @@ const mapStateToProps = {
 
 const mergeProps = ({ platform = PlatformType.ALEXA }) => ({ isAlexa: platform === PlatformType.ALEXA });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(React.forwardRef(SSML));
+export default connect(mapStateToProps, null, mergeProps)(React.forwardRef(SSML));

@@ -60,7 +60,4 @@ const mapDispatchToProps = {
   loadDialogflow,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PublishGoogle);
+export default connect(mapStateToProps, mapDispatchToProps)(PublishGoogle);

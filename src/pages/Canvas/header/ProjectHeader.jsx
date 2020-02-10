@@ -47,8 +47,4 @@ const mergeProps = ({ platform }, { togglePlatform, clearHistory }) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(ProjectHeader);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectHeader);

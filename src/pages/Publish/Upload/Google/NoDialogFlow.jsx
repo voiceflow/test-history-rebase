@@ -103,7 +103,4 @@ const mapStateToProps = (state) => ({
   error: state.publish.google.error,
 });
 
-export default connect(
-  mapStateToProps,
-  { linkDialogflowCredential, checkDialogflow }
-)(NoDialogFlow);
+export default connect(mapStateToProps, { linkDialogflowCredential, checkDialogflow })(NoDialogFlow);

@@ -23,7 +23,7 @@ function IntentSelect({ intent, intents, onChange, addIntent }) {
       }, {}),
     [filteredIntents]
   );
-  const intentMissing = intent?.id && !intentLookup[(intent?.id)] && !intent?.builtIn;
+  const intentMissing = intent?.id && !intentLookup[intent?.id] && !intent?.builtIn;
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
   const isButtonDisabled = React.useCallback((newName) => filteredIntents.find(({ name }) => name === newName), [filteredIntents]);
@@ -75,8 +75,4 @@ const mergeProps = ({ intents }, _, { intents: intentOverrides }) => ({
   intents: intentOverrides || intents,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(IntentSelect);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(IntentSelect);

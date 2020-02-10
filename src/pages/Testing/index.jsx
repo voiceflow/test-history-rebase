@@ -106,7 +106,4 @@ const mapDispatchToProps = {
   saveActiveDiagram,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Testing);
+export default connect(mapStateToProps, mapDispatchToProps)(Testing);

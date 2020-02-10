@@ -78,49 +78,29 @@ export default createCRUDReducer;
 
 export const createCRUDSelectors = (modelType) => {
   const root = createRootSelector(modelType);
-  const all = createSelector(
-    root,
-    denormalize
-  );
-  const collect = createSelector(
-    root,
-    (models) => (collector) => collector(models)
-  );
-  const map = createSelector(
-    root,
-    ({ byKey }) => byKey
-  );
-  const key = createSelector(
-    root,
-    ({ allKeys }) => allKeys
-  );
+  const all = createSelector(root, denormalize);
+  const collect = createSelector(root, (models) => (collector) => collector(models));
+  const map = createSelector(root, ({ byKey }) => byKey);
+  const key = createSelector(root, ({ allKeys }) => allKeys);
 
   return {
     root,
     all,
     map,
     key,
-    findByIDs: createSelector(
-      collect,
-      (findModels) => (ids) =>
-        findModels(({ allKeys, byKey }) =>
-          ids.reduce((acc, id) => {
-            if (allKeys.includes(id)) {
-              acc.push(byKey[id]);
-            }
+    findByIDs: createSelector(collect, (findModels) => (ids) =>
+      findModels(({ allKeys, byKey }) =>
+        ids.reduce((acc, id) => {
+          if (allKeys.includes(id)) {
+            acc.push(byKey[id]);
+          }
 
-            return acc;
-          }, [])
-        )
+          return acc;
+        }, [])
+      )
     ),
-    byID: createSelector(
-      root,
-      (normalized) => (id) => getNormalizedByKey(normalized, id)
-    ),
-    has: createSelector(
-      root,
-      ({ allKeys }) => allKeys.length !== 0
-    ),
+    byID: createSelector(root, (normalized) => (id) => getNormalizedByKey(normalized, id)),
+    has: createSelector(root, ({ allKeys }) => allKeys.length !== 0),
   };
 };
 

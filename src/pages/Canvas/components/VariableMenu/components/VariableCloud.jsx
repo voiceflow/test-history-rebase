@@ -67,8 +67,4 @@ const mergeProps = ({ diagramID }, { removeFlowVariable }) => ({
   removeFlowVariable: (variable) => removeFlowVariable(diagramID, variable),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(VariableCloud);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariableCloud);

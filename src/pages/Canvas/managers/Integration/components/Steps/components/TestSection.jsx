@@ -303,7 +303,4 @@ const mapDispatchToProps = {
   setError: (error) => setError(error),
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(TestSection);
+export default connect(null, mapDispatchToProps)(TestSection);

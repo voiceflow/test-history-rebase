@@ -45,7 +45,4 @@ const mapDispatchToProps = {
   goToDashboard,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(InactivityModal);
+export default connect(null, mapDispatchToProps)(InactivityModal);

@@ -50,7 +50,4 @@ const mapDispatchToProps = {
   dismiss: clearModal,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ErrorModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorModal);

@@ -59,14 +59,8 @@ export const addLinkToState = (link) => (state) => {
   return {
     ...state,
     links: addNormalizedByKey(state.links, link.id, link),
-    linksByPortID: compose(
-      addReferenceByKey(link.source.portID, link.id),
-      addReferenceByKey(link.target.portID, link.id)
-    )(state.linksByPortID),
-    linksByNodeID: compose(
-      addReferenceByKey(sourceNodeID, link.id),
-      addReferenceByKey(targetNodeID, link.id)
-    )(state.linksByNodeID),
+    linksByPortID: compose(addReferenceByKey(link.source.portID, link.id), addReferenceByKey(link.target.portID, link.id))(state.linksByPortID),
+    linksByNodeID: compose(addReferenceByKey(sourceNodeID, link.id), addReferenceByKey(targetNodeID, link.id))(state.linksByNodeID),
     linkedNodesByNodeID: compose(
       addReferenceByKey(sourceNodeID, targetNodeID),
       addReferenceByKey(targetNodeID, sourceNodeID)
@@ -84,14 +78,8 @@ export const removeLinkFromState = (linkID) => (state) => {
   return {
     ...state,
     links: removeNormalizedByKey(state.links, linkID),
-    linksByPortID: compose(
-      removeReferenceByKey(link.source.portID, link.id),
-      removeReferenceByKey(link.target.portID, link.id)
-    )(state.linksByPortID),
-    linksByNodeID: compose(
-      removeReferenceByKey(sourceNodeID, link.id),
-      removeReferenceByKey(targetNodeID, link.id)
-    )(state.linksByNodeID),
+    linksByPortID: compose(removeReferenceByKey(link.source.portID, link.id), removeReferenceByKey(link.target.portID, link.id))(state.linksByPortID),
+    linksByNodeID: compose(removeReferenceByKey(sourceNodeID, link.id), removeReferenceByKey(targetNodeID, link.id))(state.linksByNodeID),
     linkedNodesByNodeID: compose(
       removeReferenceByKey(sourceNodeID, targetNodeID),
       removeReferenceByKey(targetNodeID, sourceNodeID)
@@ -109,18 +97,15 @@ export const removePortFromState = (portID) => (state) => ({
 export const removeAllPortsFromState = (portIDs) => compose(...portIDs.map(removePortFromState));
 
 export const removePortFromBlockInState = (portID) =>
-  compose(
-    removePortFromState(portID),
-    (state) => {
-      const port = getNormalizedByKey(state.ports, portID);
-      const node = getNormalizedByKey(state.nodes, port.nodeID);
+  compose(removePortFromState(portID), (state) => {
+    const port = getNormalizedByKey(state.ports, portID);
+    const node = getNormalizedByKey(state.nodes, port.nodeID);
 
-      return {
-        ...state,
-        nodes: patchNormalizedByKey(state.nodes, node.id, removePortFromNode(node, portID)),
-      };
-    }
-  );
+    return {
+      ...state,
+      nodes: patchNormalizedByKey(state.nodes, node.id, removePortFromNode(node, portID)),
+    };
+  });
 
 export const removeAllPortsFromBlocksInState = (portIDs) => compose(...portIDs.map(removePortFromBlockInState));
 
@@ -132,35 +117,26 @@ export const updateRootNodesInState = (nodeID, nodePatch) => (state) => ({
 });
 
 export const updateNodeInState = (node) =>
-  compose(
-    updateRootNodesInState(node.id, node),
-    (state) => ({
-      ...state,
-      nodes: updateNormalizedByKey(state.nodes, node.id, node),
-    })
-  );
+  compose(updateRootNodesInState(node.id, node), (state) => ({
+    ...state,
+    nodes: updateNormalizedByKey(state.nodes, node.id, node),
+  }));
 
 export const patchNodeInState = (nodeID, nodePatch) =>
-  compose(
-    updateRootNodesInState(nodeID, nodePatch),
-    (state) => ({
-      ...state,
-      nodes: patchNormalizedByKey(state.nodes, nodeID, nodePatch),
-    })
-  );
+  compose(updateRootNodesInState(nodeID, nodePatch), (state) => ({
+    ...state,
+    nodes: patchNormalizedByKey(state.nodes, nodeID, nodePatch),
+  }));
 
 export const addNodeToState = (node, data) =>
-  compose(
-    updateRootNodesInState(node.id, node),
-    (state) => ({
-      ...state,
-      nodes: addNormalizedByKey(state.nodes, node.id, node),
-      data: {
-        ...state.data,
-        [node.id]: data,
-      },
-    })
-  );
+  compose(updateRootNodesInState(node.id, node), (state) => ({
+    ...state,
+    nodes: addNormalizedByKey(state.nodes, node.id, node),
+    data: {
+      ...state.data,
+      [node.id]: data,
+    },
+  }));
 
 export const addAllNodesToState = (nodesWithData) => compose(...nodesWithData.map(({ node, data }) => addNodeToState(node, data)));
 
@@ -191,19 +167,12 @@ export const addPortToState = (port) => (state) => ({
 
 export const addAllPortsToState = (ports) => compose(...ports.map(addPortToState));
 
-export const addBlockToState = (node, ports, data) =>
-  compose(
-    addNodeToState(node, data),
-    addAllPortsToState(ports)
-  );
+export const addBlockToState = (node, ports, data) => compose(addNodeToState(node, data), addAllPortsToState(ports));
 
 export const addPortToBlockInState = (port) => (state) => {
   const node = getNormalizedByKey(state.nodes, port.nodeID);
 
-  return compose(
-    patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }),
-    addPortToState(port)
-  )(state);
+  return compose(patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }), addPortToState(port))(state);
 };
 
 export const updateLinkPort = (link, relationship, nodeID, portID) => ({

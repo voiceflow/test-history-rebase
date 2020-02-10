@@ -80,7 +80,4 @@ const mapStateToProps = (state) => ({
   creatorId: state.account.id,
 });
 
-export default connect(
-  mapStateToProps,
-  { logout, toggleTheme }
-)(Sidebar);
+export default connect(mapStateToProps, { logout, toggleTheme })(Sidebar);

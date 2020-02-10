@@ -20,8 +20,4 @@ const mergeProps = (_, { goToDiagram }, { diagramID }) => ({
   goToDiagram: () => goToDiagram(diagramID),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-  mergeProps
-)(EnterFlow);
+export default connect(null, mapDispatchToProps, mergeProps)(EnterFlow);

@@ -64,7 +64,4 @@ const mapDispatchToProps = {
   toggleFulfillment,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CanFulfillForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CanFulfillForm);

@@ -173,7 +173,4 @@ const mapDispatchToProps = {
   deleteUser: (integration, data) => deleteIntegrationUser(integration, data),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StartTrigger);
+export default connect(mapStateToProps, mapDispatchToProps)(StartTrigger);

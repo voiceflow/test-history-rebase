@@ -35,7 +35,4 @@ function UnlinkGoogle(props) {
   );
 }
 
-export default connect(
-  null,
-  { resetDialogflowCredential, setConfirm, setError }
-)(UnlinkGoogle);
+export default connect(null, { resetDialogflowCredential, setConfirm, setError })(UnlinkGoogle);

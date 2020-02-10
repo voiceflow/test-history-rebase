@@ -58,11 +58,6 @@ const ContextMenu = ({ className, ...props }) => {
   );
 };
 
-export default styled(
-  compose(
-    withEngine,
-    withClipboard
-  )(ContextMenu)
-)`
+export default styled(compose(withEngine, withClipboard)(ContextMenu))`
   z-index: 10;
 `;

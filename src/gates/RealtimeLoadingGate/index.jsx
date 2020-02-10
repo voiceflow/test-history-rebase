@@ -37,7 +37,4 @@ const mapDispatchToProps = {
   terminateConnection: Realtime.terminateRealtimeConnection,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RealtimeLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps)(RealtimeLoadingGate);

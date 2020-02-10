@@ -1,9 +1,9 @@
 const { default: webpackConfig } = require('./config/webpack/common');
 
 module.exports = {
-  extends: '@voiceflow/eslint-config/frontend',
-  plugins: ['prettier', 'react-hooks'],
-  parser: 'babel-eslint',
+  extends: ['@voiceflow/eslint-config/frontend', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['prettier', 'react-hooks', '@typescript-eslint'],
   rules: {
     // errors
     'no-param-reassign': ['error', { props: false }],
@@ -41,6 +41,11 @@ module.exports = {
     'lodash/import-scope': 'off',
     'sonarjs/no-duplicate-string': 'off',
     'no-prototype-builtins': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
 
     // disabled temporarily by setting as warnings
     'max-len': 'warn',
@@ -52,7 +57,7 @@ module.exports = {
     'consistent-return': 'warn',
     'sonarjs/no-duplicated-branches': 'warn',
     'sonarjs/cognitive-complexity': 'warn',
-    'react/jsx-filename-extension': 'warn',
+    'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.tsx'] }],
     'import/prefer-default-export': 'warn',
     'no-process-env': 'warn',
     'no-shadow': 'warn',
@@ -100,6 +105,16 @@ module.exports = {
       files: ['**/_suite.js', '*.unit.*'],
       rules: {
         'jest/valid-expect': 'off',
+      },
+    },
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'import/no-unresolved': 'off',
+        'import/export': 'off',
+        'no-use-before-define': 'off',
+        '@typescript-eslint/no-namespace': 'off',
+        'valid-jsdoc': 'off',
       },
     },
   ],

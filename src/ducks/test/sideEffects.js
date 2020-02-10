@@ -119,7 +119,11 @@ export const initializeTest = (options = {}) => (dispatch, getState) => {
         .filter(Boolean);
     }
 
-    const intentSlots = getSlotsForKeys(intent.inputs.map((input) => input.slots), slots, platform);
+    const intentSlots = getSlotsForKeys(
+      intent.inputs.map((input) => input.slots),
+      slots,
+      platform
+    );
     try {
       nlc.registerIntent({
         slots: intentSlots,

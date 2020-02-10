@@ -47,7 +47,4 @@ const mapDispatchToProps = {
   updateGlobal,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TestSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(TestSettings);

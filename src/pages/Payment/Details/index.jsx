@@ -38,7 +38,10 @@ function PlansDetails({
     actions: { showCheckout, setPlan },
   },
 }) {
-  const selectedPlanIndex = Math.max(plans.findIndex((option) => option.id === plan.id), 0);
+  const selectedPlanIndex = Math.max(
+    plans.findIndex((option) => option.id === plan.id),
+    0
+  );
 
   const setPlanIndex = (index) => {
     setPlan(plans[modulo(index, plans.length)]);
@@ -103,7 +106,9 @@ function PlansDetails({
             </LeftSection>
             <RightSection>
               <HighlightsText>HIGHLIGHTS</HighlightsText>
-              {plan.highlights?.map((highlight, index) => <Highlight key={index}>{highlight}</Highlight>)}
+              {plan.highlights?.map((highlight, index) => (
+                <Highlight key={index}>{highlight}</Highlight>
+              ))}
             </RightSection>
           </DetailsSection>
         </FadeLeftContainer>

@@ -44,10 +44,7 @@ export default persistReducer(PERSIST_CONFIG, recentReducer);
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const recentTestingSelector = createSelector(
-  rootSelector,
-  ({ testing }) => testing
-);
+export const recentTestingSelector = createSelector(rootSelector, ({ testing }) => testing);
 
 //  action creators
 

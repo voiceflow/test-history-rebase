@@ -84,7 +84,4 @@ const mapStateToProps = (state) => ({
   creator: state.admin.creator,
 });
 
-export default connect(
-  mapStateToProps,
-  { findCreator, getCharges }
-)(FinanceBoard);
+export default connect(mapStateToProps, { findCreator, getCharges })(FinanceBoard);

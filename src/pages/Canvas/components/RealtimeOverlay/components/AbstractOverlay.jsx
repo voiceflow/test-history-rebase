@@ -72,7 +72,4 @@ const mapStateToProps = {
   viewersLookup: diagramViewersLookupSelector,
 };
 
-export const connectOverlay = compose(
-  connect(mapStateToProps),
-  withEngine
-);
+export const connectOverlay = compose(connect(mapStateToProps), withEngine);

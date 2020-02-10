@@ -35,7 +35,11 @@ function CanvasContainer({ openMenu, undoHistory, redoHistory, children }) {
     await engine.node.add(cuid(), BlockType.COMMENT, position);
   }, []);
 
-  useHotKeys(Hotkey.COPY, preventDefault(() => clipboard.copy()), []);
+  useHotKeys(
+    Hotkey.COPY,
+    preventDefault(() => clipboard.copy()),
+    []
+  );
   useHotKeys(Hotkey.DELETE, preventDefault(deleteActive), [deleteActive]);
   useHotKeys(Hotkey.UNDO, preventDefault(undoHistory), []);
   useHotKeys(Hotkey.REDO, preventDefault(redoHistory), []);
@@ -54,7 +58,4 @@ const mapDispatchToProps = {
   redoHistory: Creator.redoHistory,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CanvasContainer);
+export default connect(null, mapDispatchToProps)(CanvasContainer);

@@ -25,15 +25,13 @@ export const {
 
 export const { add: addSlot, addMany: addSlots, update: updateSlot, remove: removeSlot, replace: replaceSlots } = createCRUDActionCreators(STATE_KEY);
 
-export const intentsUsingSlotSelector = createSelector(
-  allIntentsSelector,
-  (intents) => (slotID) =>
-    intents.reduce((acc, intent) => {
-      if (intent.slots.allKeys.includes(slotID)) {
-        acc.push(intent);
-      }
-      return acc;
-    }, [])
+export const intentsUsingSlotSelector = createSelector(allIntentsSelector, (intents) => (slotID) =>
+  intents.reduce((acc, intent) => {
+    if (intent.slots.allKeys.includes(slotID)) {
+      acc.push(intent);
+    }
+    return acc;
+  }, [])
 );
 
 export const slotNamesSelector = createSelector(

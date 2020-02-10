@@ -8,65 +8,34 @@ import { LockType, STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const realtimeDiagramIDSelector = createSelector(
-  rootSelector,
-  ({ diagramID }) => diagramID
+export const realtimeDiagramIDSelector = createSelector(rootSelector, ({ diagramID }) => diagramID);
+
+export const realtimeLocksSelector = createSelector(rootSelector, ({ locks }) => locks);
+
+export const isRealtimeConnectedSelector = createSelector(rootSelector, ({ connected }) => connected);
+
+export const isErrorStateSelector = createSelector(rootSelector, ({ errorState }) => errorState);
+
+export const lastRealtimeTimestampSelector = createSelector(rootSelector, ({ lastTimestamp }) => lastTimestamp);
+
+export const isNodeLockedSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => !!blocks[lockType][nodeID]);
+
+export const isNodeMovementLockedSelector = createSelector(isNodeLockedSelector, (isNodeLocked) => (nodeID) =>
+  isNodeLocked(LockType.MOVEMENT, nodeID)
 );
 
-export const realtimeLocksSelector = createSelector(
-  rootSelector,
-  ({ locks }) => locks
-);
+export const isNodeEditLockedSelector = createSelector(isNodeLockedSelector, (isNodeLocked) => (nodeID) => isNodeLocked(LockType.EDIT, nodeID));
 
-export const isRealtimeConnectedSelector = createSelector(
-  rootSelector,
-  ({ connected }) => connected
-);
+export const deletionLockedNodesSelector = createSelector(realtimeLocksSelector, ({ blocks }) => ({
+  ...blocks[LockType.MOVEMENT],
+  ...blocks[LockType.EDIT],
+}));
 
-export const isErrorStateSelector = createSelector(
-  rootSelector,
-  ({ errorState }) => errorState
-);
+export const lockOwnerTabIDSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => blocks[lockType][nodeID]);
 
-export const lastRealtimeTimestampSelector = createSelector(
-  rootSelector,
-  ({ lastTimestamp }) => lastTimestamp
-);
+export const reourceLockOwnerTabIDSelector = createSelector(realtimeLocksSelector, ({ resources }) => (resourceType) => resources[resourceType]);
 
-export const isNodeLockedSelector = createSelector(
-  realtimeLocksSelector,
-  ({ blocks }) => (lockType, nodeID) => !!blocks[lockType][nodeID]
-);
-
-export const isNodeMovementLockedSelector = createSelector(
-  isNodeLockedSelector,
-  (isNodeLocked) => (nodeID) => isNodeLocked(LockType.MOVEMENT, nodeID)
-);
-
-export const isNodeEditLockedSelector = createSelector(
-  isNodeLockedSelector,
-  (isNodeLocked) => (nodeID) => isNodeLocked(LockType.EDIT, nodeID)
-);
-
-export const deletionLockedNodesSelector = createSelector(
-  realtimeLocksSelector,
-  ({ blocks }) => ({ ...blocks[LockType.MOVEMENT], ...blocks[LockType.EDIT] })
-);
-
-export const lockOwnerTabIDSelector = createSelector(
-  realtimeLocksSelector,
-  ({ blocks }) => (lockType, nodeID) => blocks[lockType][nodeID]
-);
-
-export const reourceLockOwnerTabIDSelector = createSelector(
-  realtimeLocksSelector,
-  ({ resources }) => (resourceType) => resources[resourceType]
-);
-
-export const isSessionBusy = createSelector(
-  rootSelector,
-  ({ sessionBusy }) => sessionBusy
-);
+export const isSessionBusy = createSelector(rootSelector, ({ sessionBusy }) => sessionBusy);
 
 /**
  * get the tabID by the creatorID
@@ -97,10 +66,7 @@ export const lockOwnerSelector = createSelector(
 /**
  * get the team member who has the node edit locked
  */
-export const editLockOwnerSelector = createSelector(
-  lockOwnerSelector,
-  (getLockOwner) => (nodeID) => getLockOwner(LockType.EDIT, nodeID)
-);
+export const editLockOwnerSelector = createSelector(lockOwnerSelector, (getLockOwner) => (nodeID) => getLockOwner(LockType.EDIT, nodeID));
 
 /**
  * get the team member who has the resource locked
@@ -124,7 +90,4 @@ export const resourceLockOwnerSelector = createSelector(
   }
 );
 
-export const isResourceLockedSelector = createSelector(
-  realtimeLocksSelector,
-  (locks) => (resourceID) => !!locks.resources[resourceID]
-);
+export const isResourceLockedSelector = createSelector(realtimeLocksSelector, (locks) => (resourceID) => !!locks.resources[resourceID]);

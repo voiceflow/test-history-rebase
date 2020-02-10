@@ -127,8 +127,4 @@ const mergeProps = ({ skillID }, { goToNewDisplay, goToDisplay, deleteDisplay })
   goToDisplay: (displayID) => goToDisplay(skillID, displayID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(Multimodal);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Multimodal);

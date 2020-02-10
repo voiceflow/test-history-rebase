@@ -5,6 +5,22 @@ import { Table } from 'reactstrap';
 
 import TablePagination from './TablePagination';
 
+function parseRequest(rawRequest) {
+  const request = JSON.parse(rawRequest);
+
+  return (
+    <>
+      <td>
+        <p className="mb-0 text-danger">{request.error.type}</p>
+        <p className="mt-0">{request.error.message}</p>
+      </td>
+      <td>
+        <ReactJson collapsed src={request} enableClipboard={false} collapseStringsAfterLength={40} />
+      </td>
+    </>
+  );
+}
+
 class LogTable extends React.PureComponent {
   state = {
     page: 0,
@@ -69,19 +85,3 @@ class LogTable extends React.PureComponent {
 }
 
 export default LogTable;
-
-function parseRequest(rawRequest) {
-  const request = JSON.parse(rawRequest);
-
-  return (
-    <>
-      <td>
-        <p className="mb-0 text-danger">{request.error.type}</p>
-        <p className="mt-0">{request.error.message}</p>
-      </td>
-      <td>
-        <ReactJson collapsed src={request} enableClipboard={false} collapseStringsAfterLength={40} />
-      </td>
-    </>
-  );
-}

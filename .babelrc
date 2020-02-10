@@ -1,5 +1,13 @@
 {
-  "presets": ["react-app"],
+  "presets": [
+    [
+      "react-app",
+      {
+        "flow": false,
+        "typescript": true
+      }
+    ]
+  ],
   "plugins": [
     "babel-plugin-lodash",
     "react-hot-loader/babel",
@@ -31,7 +39,10 @@
   ],
   "env": {
     "test": {
-      "plugins": ["@babel/plugin-transform-modules-commonjs", "require-context-hook"]
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        "require-context-hook"
+      ]
     }
   }
 }

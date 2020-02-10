@@ -60,7 +60,4 @@ const mapDispatchToProps = {
   updateIntent: Intent.updateIntent,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IntentManager);
+export default connect(mapStateToProps, mapDispatchToProps)(IntentManager);

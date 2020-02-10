@@ -33,6 +33,17 @@ export const getGlobalHeaders = () =>
     return acc;
   }, {});
 
+/* eslint-disable no-console */
+function debugRequest(url, opts, body) {
+  console.warn(`%c${opts.method || 'GET'} %c${url}`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE);
+  if (typeof body === 'string') {
+    console.warn(`%cbody: "%c%${body}%c"`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE, BOLD_FONT_STYLE);
+  } else if (body) {
+    console.warn('%cbody:', BOLD_FONT_STYLE, body);
+  }
+}
+/* eslint-enable no-console */
+
 async function rawFetch(url, { body, json = true, ...rawOpts } = {}) {
   let opts = {
     ...DEFAULT_FETCH_OPTIONS,
@@ -96,14 +107,3 @@ const fetch = Object.assign(rawFetch, {
 });
 
 export default fetch;
-
-/* eslint-disable no-console */
-function debugRequest(url, opts, body) {
-  console.warn(`%c${opts.method || 'GET'} %c${url}`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE);
-  if (typeof body === 'string') {
-    console.warn(`%cbody: "%c%${body}%c"`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE, BOLD_FONT_STYLE);
-  } else if (body) {
-    console.warn('%cbody:', BOLD_FONT_STYLE, body);
-  }
-}
-/* eslint-enable no-console */

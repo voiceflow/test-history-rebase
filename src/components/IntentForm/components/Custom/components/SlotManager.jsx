@@ -76,7 +76,4 @@ const mapDispatchToProps = {
   reorderIntentSlots: Intent.reorderIntentSlots,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SlotManager);
+export default connect(mapStateToProps, mapDispatchToProps)(SlotManager);

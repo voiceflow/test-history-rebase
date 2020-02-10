@@ -59,7 +59,4 @@ const mapDispatchToProps = {
   setError,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ActionGroup);
+export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

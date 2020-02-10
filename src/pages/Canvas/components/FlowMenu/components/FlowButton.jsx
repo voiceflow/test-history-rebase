@@ -134,8 +134,4 @@ const mergeProps = ({ viewers: getViewers }, { copyDiagram, deleteDiagram, renam
   goToDiagram: () => goToDiagram(id),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(FlowButton);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FlowButton);

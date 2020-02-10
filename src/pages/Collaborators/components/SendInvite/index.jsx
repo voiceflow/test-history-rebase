@@ -17,7 +17,10 @@ import { connect } from '@/hocs';
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
 
-const OPTIONS_ARRAY = [{ value: USER_ROLES.EDITOR, label: 'can edit' }, { value: USER_ROLES.VIEWER, label: 'can view' }];
+const OPTIONS_ARRAY = [
+  { value: USER_ROLES.EDITOR, label: 'can edit' },
+  { value: USER_ROLES.VIEWER, label: 'can view' },
+];
 
 function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, usedEditorSeats, usedViewerSeats }) {
   const [email, setEmail] = React.useState('');

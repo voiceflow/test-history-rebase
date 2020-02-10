@@ -69,8 +69,4 @@ const mergeProps = ({ diagramByID }, { goToDiagram }, { data }) => ({
   goToDiagram: () => goToDiagram(data.diagramID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(FlowEditor);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FlowEditor);

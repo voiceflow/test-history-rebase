@@ -209,14 +209,6 @@ const mapDispatchToProps = {
   updateWorkspace: fetchWorkspace,
 };
 
-export const withPaymentProvider = withProvider(
-  compose(
-    withStripe,
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )
-  )(PaymentContextProvider)
-);
+export const withPaymentProvider = withProvider(compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(PaymentContextProvider));
 
 export const withPayment = withContext(PaymentContext, 'payment');

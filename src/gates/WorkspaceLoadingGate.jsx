@@ -23,8 +23,4 @@ const mergeProps = (_, { fetchWorkspaces }) => ({
   loadWorkspace: fetchWorkspaces,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(WorkspaceLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspaceLoadingGate);

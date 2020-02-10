@@ -169,7 +169,4 @@ const mapDispatchToProps = {
   signup,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SignupForm);
+export default connect(null, mapDispatchToProps)(SignupForm);

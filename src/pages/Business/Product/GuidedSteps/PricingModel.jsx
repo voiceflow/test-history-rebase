@@ -43,7 +43,10 @@ export const PRODUCT_TYPES = [
   { value: ProductType.SUBSCRIPTION, label: 'Subscription' },
 ];
 
-export const SUBSCRIPTION_OPTIONS = [{ value: 'MONTHLY', label: 'Monthly' }, { value: 'YEARLY', label: 'Yearly' }];
+export const SUBSCRIPTION_OPTIONS = [
+  { value: 'MONTHLY', label: 'Monthly' },
+  { value: 'YEARLY', label: 'Yearly' },
+];
 
 function PricingForm({ product, updateProduct, changeStep, parentCtrl }) {
   const onTypeChange = (value) => () => {
@@ -182,8 +185,4 @@ const mergeProps = ({ product: productByIDSelector }, { updateProduct }, { produ
   updateProduct: (product) => updateProduct(productID, product),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(PricingForm);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(PricingForm);

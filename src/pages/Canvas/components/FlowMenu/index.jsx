@@ -57,7 +57,4 @@ const mapDispatchToProps = {
   setActiveTab: UI.setActiveFlowMenuTab,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FlowMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(FlowMenu);

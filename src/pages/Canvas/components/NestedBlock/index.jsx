@@ -116,11 +116,4 @@ class NestedBlock extends React.PureComponent {
   }
 }
 
-export default compose(
-  withNode,
-  withNodeLifecycle,
-  withEngine,
-  withCanvas,
-  withOverlay,
-  withEditPermission
-)(NestedBlock);
+export default compose(withNode, withNodeLifecycle, withEngine, withCanvas, withOverlay, withEditPermission)(NestedBlock);

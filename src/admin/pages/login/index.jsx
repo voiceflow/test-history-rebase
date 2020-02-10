@@ -99,7 +99,4 @@ const LoginForm = ({ login, location }) => {
   );
 };
 
-export default connect(
-  null,
-  { login }
-)(LoginForm);
+export default connect(null, { login })(LoginForm);

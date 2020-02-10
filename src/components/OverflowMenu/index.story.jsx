@@ -22,6 +22,9 @@ export const sameActionsForMenuItem = () => <OverflowMenu options={MENU_OPTIONS}
 
 export const differentActionsForMenuItem = () => (
   <OverflowMenu
-    options={[{ label: 'Label 1', onClick: () => alert('clicked Label 1') }, { label: 'Label 2', onClick: () => alert('clicked Label 2') }]}
+    options={[
+      { label: 'Label 1', onClick: () => alert('clicked Label 1') },
+      { label: 'Label 2', onClick: () => alert('clicked Label 2') },
+    ]}
   />
 );

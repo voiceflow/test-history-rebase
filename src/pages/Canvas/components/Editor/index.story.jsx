@@ -38,7 +38,10 @@ export const normal = withDecorators(() => (
     <EngineProvider value={{ saveHistory: action('saveHistory') }}>
       <Drawer direction="left" width={450} open>
         <Editor
-          path={[{ label: 'Blocks', path: 'block' }, { label: 'Welcome Block', path: '123413' }]}
+          path={[
+            { label: 'Blocks', path: 'block' },
+            { label: 'Welcome Block', path: '123413' },
+          ]}
           name={text('name', 'name')}
           onRename={action('onRename')}
           renameRevision={text('renameRevision')}

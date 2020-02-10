@@ -71,7 +71,4 @@ const mapDispatchToProps = {
   unlockResource: () => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectTitle);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectTitle);

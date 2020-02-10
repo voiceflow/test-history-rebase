@@ -23,8 +23,4 @@ const mergeProps = ({ activeWorkspaceID }, { getMembers }) => ({
   loadWorkspaceMembers: () => getMembers(activeWorkspaceID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(WorkspaceMembersLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspaceMembersLoadingGate);

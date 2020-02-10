@@ -67,8 +67,4 @@ const mergeProps = ({ skillID, platform }, { goToTestDiagram, goToPublish }) => 
   goToPublish: () => goToPublish(skillID, platform),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(SkillSubHeader);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SkillSubHeader);

@@ -13,16 +13,11 @@ import GroupSelection from './components/GroupSelection';
 import NodeLayer from './components/NodeLayer';
 import { useCursorControls } from './hooks';
 
-const withInitialViewport = connect(
-  { viewport: activeDiagramViewportSelector },
-  null,
-  null,
-  {
-    // ignore all further updates to the viewport
-    // eslint-disable-next-line lodash/prefer-constant
-    areStatesEqual: () => true,
-  }
-);
+const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {
+  // ignore all further updates to the viewport
+  // eslint-disable-next-line lodash/prefer-constant
+  areStatesEqual: () => true,
+});
 
 const CanvasDiagram = ({ viewport, renderLinks }) => {
   const engine = React.useContext(EngineContext);

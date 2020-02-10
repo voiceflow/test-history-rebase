@@ -32,7 +32,4 @@ const Payment = ({
 };
 
 // provider and consumer within the same component
-export default compose(
-  withPaymentProvider,
-  withPayment
-)(Payment);
+export default compose(withPaymentProvider, withPayment)(Payment);

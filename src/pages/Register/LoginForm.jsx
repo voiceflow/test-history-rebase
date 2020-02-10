@@ -122,7 +122,4 @@ const mapDispatchToProps = {
   basicAuthLogin,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(LoginForm);
+export default connect(null, mapDispatchToProps)(LoginForm);

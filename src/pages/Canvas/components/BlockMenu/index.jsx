@@ -50,7 +50,4 @@ const mapDispatchToProps = {
   toggleSection: toggleBlockMenuSection,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlockMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(BlockMenu);

@@ -267,7 +267,4 @@ const mapDispatchToProps = {
   getImportToken,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Basic);
+export default connect(mapStateToProps, mapDispatchToProps)(Basic);

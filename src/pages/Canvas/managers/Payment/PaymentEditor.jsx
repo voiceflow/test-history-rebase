@@ -74,8 +74,4 @@ const mergeProps = ({ selectedProduct: getProductByID, skillID }, { goToEditProd
   goToNewProduct: () => goToNewProduct(skillID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(PaymentEditor);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(PaymentEditor);

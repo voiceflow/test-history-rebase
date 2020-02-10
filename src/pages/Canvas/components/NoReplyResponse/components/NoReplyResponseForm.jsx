@@ -11,10 +11,7 @@ import { FormControl, Section } from '@/pages/Canvas/components/Editor';
 
 import ResponseTypeSelect from './ResponseTypeSelect';
 
-const focusedNodeRepromptSelector = createSelector(
-  Creator.focusedNodeDataSelector,
-  (data) => data && data.reprompt
-);
+const focusedNodeRepromptSelector = createSelector(Creator.focusedNodeDataSelector, (data) => data && data.reprompt);
 
 const NoReplyResponseForm = ({ focus, reprompt }) => {
   const updateData = useUpdateData(focus.target);

@@ -55,7 +55,4 @@ const mapDispatchToProps = {
   logout,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

@@ -65,8 +65,4 @@ const mergeProps = ({ platform, getIntentByID }, _, { data }) => ({
   intent: data[platform].intent ? getIntentByID(data[platform].intent) : DEFAULT_INTENT,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(IntentEditor);
+export default connect(mapStateToProps, null, mergeProps)(IntentEditor);

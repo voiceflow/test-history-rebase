@@ -143,7 +143,4 @@ const mapDispatchToProps = {
   updateIntent: Intent.updateIntent,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UtteranceManager);
+export default connect(mapStateToProps, mapDispatchToProps)(UtteranceManager);

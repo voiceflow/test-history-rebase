@@ -104,10 +104,7 @@ export const addPortReducer = (state, { payload: { nodeID, portID, port } }) => 
 export const addManyLinksReducer = (state, { payload: links }) => addAllLinksToState(links)(state);
 
 export const removePortReducer = (state, { payload: portID }) =>
-  compose(
-    removePortFromBlockInState(portID),
-    removeAllLinksFromState(getLinkIDsByPortID(state)(portID))
-  )(state);
+  compose(removePortFromBlockInState(portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
 
 export const reorderPortReducer = (state, { payload: { nodeID, from, to } }) => reorderNodePorts(nodeID, from, to)(state);
 
@@ -186,119 +183,55 @@ export default undoable(creatorDiagramReducer, {
 
 // selectors
 
-const rootHistorySelector = createSelector(
-  creatorStateSelector,
-  createRootSelector(DIAGRAM_STATE_KEY)
-);
+const rootHistorySelector = createSelector(creatorStateSelector, createRootSelector(DIAGRAM_STATE_KEY));
 
-const rootSelector = createSelector(
-  rootHistorySelector,
-  ({ present }) => present
-);
+const rootSelector = createSelector(rootHistorySelector, ({ present }) => present);
 
 export { rootSelector as creatorDiagramSelector };
 
-export const creatorDiagramIDSelector = createSelector(
-  rootSelector,
-  ({ diagramID }) => diagramID
+export const creatorDiagramIDSelector = createSelector(rootSelector, ({ diagramID }) => diagramID);
+
+export const rootNodeIDsSelector = createSelector(rootSelector, ({ rootNodes }) => rootNodes);
+
+export const nodeByIDSelector = createSelector(rootSelector, ({ nodes }) => (id) => getNormalizedByKey(nodes, id));
+
+export const allNodesByIDsSelector = createSelector(rootSelector, ({ nodes }) => (ids) => getAllNormalizedByKeys(nodes, ids));
+
+export const allLinkIDsSelector = createSelector(rootSelector, ({ links }) => links.allKeys);
+
+export const allLinksSelector = createSelector(rootSelector, ({ links }) => denormalize(links));
+
+export const linkByIDSelector = createSelector(rootSelector, ({ links }) => (id) => getNormalizedByKey(links, id));
+
+export const allLinksByIDsSelector = createSelector(rootSelector, ({ links }) => (ids) => getAllNormalizedByKeys(links, ids));
+
+export const dataByNodeIDSelector = createSelector(rootSelector, ({ data }) => (nodeID) => data[nodeID]);
+
+export const allNodeDataSelector = createSelector(rootSelector, ({ nodes, data }) => nodes.allKeys.map((nodeID) => data[nodeID]));
+
+export const portByIDSelector = createSelector(rootSelector, ({ ports }) => (id) => getNormalizedByKey(ports, id));
+
+export const allPortsByIDsSelector = createSelector(rootSelector, ({ ports }) => (ids) => getAllNormalizedByKeys(ports, ids));
+
+export const linkIDsByNodeIDSelector = createSelector(rootSelector, getLinkIDsByNodeID);
+
+export const linkedNodeIDsByNodeIDSelector = createSelector(rootSelector, getLinkedNodeIDsByNodeID);
+
+export const linksByNodeIDSelector = createSelector(allLinksByIDsSelector, linkIDsByNodeIDSelector, (getLinks, getLinkIDs) => (nodeID) =>
+  getLinks(getLinkIDs(nodeID))
 );
 
-export const rootNodeIDsSelector = createSelector(
-  rootSelector,
-  ({ rootNodes }) => rootNodes
+export const hasLinksByNodeIDSelector = createSelector(linksByNodeIDSelector, (getLinks) => (nodeID) => !!getLinks(nodeID).length);
+
+export const linkIDsByPortIDSelector = createSelector(rootSelector, getLinkIDsByPortID);
+
+export const linksByPortIDSelector = createSelector(allLinksByIDsSelector, linkIDsByPortIDSelector, (getLinks, getLinkIDs) => (portID) =>
+  getLinks(getLinkIDs(portID))
 );
 
-export const nodeByIDSelector = createSelector(
-  rootSelector,
-  ({ nodes }) => (id) => getNormalizedByKey(nodes, id)
-);
+export const hasLinksByPortIDSelector = createSelector(linksByPortIDSelector, (getLinks) => (portID) => !!getLinks(portID).length);
 
-export const allNodesByIDsSelector = createSelector(
-  rootSelector,
-  ({ nodes }) => (ids) => getAllNormalizedByKeys(nodes, ids)
-);
-
-export const allLinkIDsSelector = createSelector(
-  rootSelector,
-  ({ links }) => links.allKeys
-);
-
-export const allLinksSelector = createSelector(
-  rootSelector,
-  ({ links }) => denormalize(links)
-);
-
-export const linkByIDSelector = createSelector(
-  rootSelector,
-  ({ links }) => (id) => getNormalizedByKey(links, id)
-);
-
-export const allLinksByIDsSelector = createSelector(
-  rootSelector,
-  ({ links }) => (ids) => getAllNormalizedByKeys(links, ids)
-);
-
-export const dataByNodeIDSelector = createSelector(
-  rootSelector,
-  ({ data }) => (nodeID) => data[nodeID]
-);
-
-export const allNodeDataSelector = createSelector(
-  rootSelector,
-  ({ nodes, data }) => nodes.allKeys.map((nodeID) => data[nodeID])
-);
-
-export const portByIDSelector = createSelector(
-  rootSelector,
-  ({ ports }) => (id) => getNormalizedByKey(ports, id)
-);
-
-export const allPortsByIDsSelector = createSelector(
-  rootSelector,
-  ({ ports }) => (ids) => getAllNormalizedByKeys(ports, ids)
-);
-
-export const linkIDsByNodeIDSelector = createSelector(
-  rootSelector,
-  getLinkIDsByNodeID
-);
-
-export const linkedNodeIDsByNodeIDSelector = createSelector(
-  rootSelector,
-  getLinkedNodeIDsByNodeID
-);
-
-export const linksByNodeIDSelector = createSelector(
-  allLinksByIDsSelector,
-  linkIDsByNodeIDSelector,
-  (getLinks, getLinkIDs) => (nodeID) => getLinks(getLinkIDs(nodeID))
-);
-
-export const hasLinksByNodeIDSelector = createSelector(
-  linksByNodeIDSelector,
-  (getLinks) => (nodeID) => !!getLinks(nodeID).length
-);
-
-export const linkIDsByPortIDSelector = createSelector(
-  rootSelector,
-  getLinkIDsByPortID
-);
-
-export const linksByPortIDSelector = createSelector(
-  allLinksByIDsSelector,
-  linkIDsByPortIDSelector,
-  (getLinks, getLinkIDs) => (portID) => getLinks(getLinkIDs(portID))
-);
-
-export const hasLinksByPortIDSelector = createSelector(
-  linksByPortIDSelector,
-  (getLinks) => (portID) => !!getLinks(portID).length
-);
-
-export const sectionStateSelector = createSelector(
-  rootSelector,
-  ({ sections }) => (key) => sections[key]
-);
+export const sectionStateSelector = createSelector(rootSelector, ({ sections }) => (key) => sections[key]);
 
 // action creators
 

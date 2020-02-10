@@ -104,7 +104,4 @@ const mapDispatchToProps = {
   addIntent: Intent.addIntent,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IntentManager);
+export default connect(mapStateToProps, mapDispatchToProps)(IntentManager);

@@ -19,7 +19,7 @@ function Tabs({ as = 'button', options, selected, onChange, innerRef }) {
 
   React.useEffect(() => {
     const selectedOption = options.find(({ value }) => value === selected);
-    const selectedNode = tabsRef.current[(selectedOption?.value)];
+    const selectedNode = tabsRef.current[selectedOption?.value];
     let animationFrame;
 
     if (selectedOption?.color) {

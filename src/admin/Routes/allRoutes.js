@@ -37,7 +37,4 @@ const mapStateToProps = (state) => ({
   user: state.account,
 });
 
-export default connect(
-  mapStateToProps,
-  { checkSession }
-)(AllRoutes);
+export default connect(mapStateToProps, { checkSession })(AllRoutes);

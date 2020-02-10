@@ -67,7 +67,4 @@ const mapDispatchToProps = {
   updateVendor,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VendorSelectList);
+export default connect(mapStateToProps, mapDispatchToProps)(VendorSelectList);

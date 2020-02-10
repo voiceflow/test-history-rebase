@@ -71,9 +71,4 @@ const mergeProps = ({ intent: getIntentByID }, _, { item, platform, onUpdate }) 
   onUpdate: (data) => onUpdate({ [platform]: { ...item[platform], ...data } }),
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps,
-  { forwardRef: true }
-)(React.forwardRef(DraggableItem));
+export default connect(mapStateToProps, null, mergeProps, { forwardRef: true })(React.forwardRef(DraggableItem));

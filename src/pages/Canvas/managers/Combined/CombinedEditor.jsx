@@ -42,8 +42,4 @@ const mergeProps = ({ dataSelector, nodeSelector }, _, { data }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(CombinedEditor);
+export default connect(mapStateToProps, null, mergeProps)(CombinedEditor);

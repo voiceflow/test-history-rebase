@@ -127,7 +127,4 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
 const mapDispatchToProps = {
   setError,
 };
-export default connect(
-  null,
-  mapDispatchToProps
-)(SelectGoogleSheet);
+export default connect(null, mapDispatchToProps)(SelectGoogleSheet);

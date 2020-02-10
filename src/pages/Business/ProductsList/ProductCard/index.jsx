@@ -120,8 +120,4 @@ const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }
   goToEditProduct: () => goToEditProduct(skillID, productID),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(ProductCard);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProductCard);

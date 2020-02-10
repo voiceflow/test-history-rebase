@@ -10,9 +10,9 @@ export default function HelpTooltip() {
         useful details that would make the voice response too verbose or too difficult to understand as speech.
       </Paragraph>
       <ul>
-        <li>A simple card displays plain text. You provide text for the card title and content.</li>
+        <li>A simple card displays plain text. You provide text for the card title and content.</li>
         <li>
-          A standard card also displays plain text, but can include an image. You provide the text for the title and content, and the URL for the
+          A standard card also displays plain text, but can include an image. You provide the text for the title and content, and the URL for the
           image to display.
         </li>
       </ul>

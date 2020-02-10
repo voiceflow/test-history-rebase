@@ -21,7 +21,4 @@ const mapDispatchToProps = {
   goToLogin,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AccountLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountLoadingGate);

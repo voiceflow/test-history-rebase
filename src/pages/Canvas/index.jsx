@@ -60,7 +60,4 @@ const Canvas = ({ isTesting }) => {
   );
 };
 
-export default compose(
-  React.memo,
-  withBatchLoadingGate(DiagramLoadingGate)
-)(Canvas);
+export default compose(React.memo, withBatchLoadingGate(DiagramLoadingGate))(Canvas);

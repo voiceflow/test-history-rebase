@@ -39,7 +39,4 @@ const mapDispatchToProps = {
   goToCurrentCanvas,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TestingHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(TestingHeader);

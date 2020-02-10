@@ -207,8 +207,16 @@ export default class Form extends Component {
 
     this.setState(
       ({ values, errors }) => ({
-        values: setIn(values, field, (getIn(values, field) || []).filter((_, j) => i !== j)),
-        errors: setIn(errors, field, (getIn(errors, field) || []).filter((_, j) => i !== j)),
+        values: setIn(
+          values,
+          field,
+          (getIn(values, field) || []).filter((_, j) => i !== j)
+        ),
+        errors: setIn(
+          errors,
+          field,
+          (getIn(errors, field) || []).filter((_, j) => i !== j)
+        ),
       }),
       onBlur ? () => onBlur('field', this.state) : undefined
     );

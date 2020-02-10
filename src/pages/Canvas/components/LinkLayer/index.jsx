@@ -28,9 +28,4 @@ const mapStateToProps = {
   linkIDs: allLinkIDsSelector,
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  null,
-  { forwardRef: true }
-)(LinkLayer);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(LinkLayer);

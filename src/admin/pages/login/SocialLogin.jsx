@@ -62,7 +62,4 @@ const mapDispatchToProps = (dispatch) => ({
   googleLogin: (user) => dispatch(googleLogin(user)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SocialLogin);
+export default connect(null, mapDispatchToProps)(SocialLogin);

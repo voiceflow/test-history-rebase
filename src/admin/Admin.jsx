@@ -64,7 +64,4 @@ const mapStateToProps = (state) => ({
   theme: state.admin.theme,
 });
 
-export default connect(
-  mapStateToProps,
-  { checkSession }
-)(Admin);
+export default connect(mapStateToProps, { checkSession })(Admin);

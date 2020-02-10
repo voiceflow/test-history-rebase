@@ -19,7 +19,4 @@ const NoVendors = ({ resetAlexaUpload }) => (
   </UploadPromptWrapper>
 );
 
-export default connect(
-  null,
-  { resetAlexaUpload }
-)(NoVendors);
+export default connect(null, { resetAlexaUpload })(NoVendors);

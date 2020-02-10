@@ -1,7 +1,7 @@
 import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import { goToDashboard } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';

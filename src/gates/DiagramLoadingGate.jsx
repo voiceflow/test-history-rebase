@@ -41,11 +41,7 @@ const mergeProps = ({ diagramID, creatorDiagramID }, { loadDiagram }) => ({
   loadDiagram: () => loadDiagram(diagramID),
 });
 
-const DiagramLoadingGate = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(RawDiagramLoadingGate);
+const DiagramLoadingGate = connect(mapStateToProps, mapDispatchToProps, mergeProps)(RawDiagramLoadingGate);
 
 export default DiagramLoadingGate;
 

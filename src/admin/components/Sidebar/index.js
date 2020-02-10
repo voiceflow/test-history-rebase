@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import Toggle from 'react-toggle';
 
 import { SidebarWrapper } from '@/admin/components/Sidebar/styles';
 import { history } from '@/admin/store';
 import { logout } from '@/admin/store/ducks/account';
 import { THEMES, toggleTheme } from '@/admin/store/ducks/admin';
+import Toggle from '@/components/Toggle';
 
 const Sidebar = (props) => {
   return (
@@ -66,7 +66,6 @@ const Sidebar = (props) => {
           Jank mode
           <Toggle
             checked={props.theme === THEMES.dark}
-            icons={false}
             onChange={() => props.toggleTheme(props.theme === THEMES.dark ? THEMES.light : THEMES.dark)}
           />
         </div>
@@ -80,7 +79,4 @@ const mapStateToProps = (state) => ({
   creatorId: state.account.id,
 });
 
-export default connect(
-  mapStateToProps,
-  { logout, toggleTheme }
-)(Sidebar);
+export default connect(mapStateToProps, { logout, toggleTheme })(Sidebar);

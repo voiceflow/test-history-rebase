@@ -1,5 +1,5 @@
+import { inputStyle } from '@/components/Input/styles';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import { inputStyle } from '@/componentsV2/Input/styles';
 import { css, styled } from '@/hocs';
 
 import { OrientationType } from '../constants';

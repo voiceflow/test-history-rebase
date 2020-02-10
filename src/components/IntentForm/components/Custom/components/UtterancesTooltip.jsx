@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Section, Title } from '@/componentsV2/Tooltip';
+import { Section, Title } from '@/components/Tooltip';
 
 export default function UtterancesTooltip() {
   return (

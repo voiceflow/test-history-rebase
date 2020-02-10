@@ -95,25 +95,13 @@ export default persistReducer(PERSIST_CONFIG, uiReducer);
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const openBlockMenuSectionsSelector = createSelector(
-  rootSelector,
-  ({ blockMenu: { openSections } }) => openSections
-);
+export const openBlockMenuSectionsSelector = createSelector(rootSelector, ({ blockMenu: { openSections } }) => openSections);
 
-export const activeCreatorMenuSelector = createSelector(
-  rootSelector,
-  ({ creatorMenu: { activeMenu } }) => activeMenu
-);
+export const activeCreatorMenuSelector = createSelector(rootSelector, ({ creatorMenu: { activeMenu } }) => activeMenu);
 
-export const isCreatorMenuHiddenSelector = createSelector(
-  rootSelector,
-  ({ creatorMenu: { isHidden } }) => isHidden
-);
+export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creatorMenu: { isHidden } }) => isHidden);
 
-export const activeFlowMenuTabSelector = createSelector(
-  rootSelector,
-  ({ flowMenu: { activeTab } }) => activeTab
-);
+export const activeFlowMenuTabSelector = createSelector(rootSelector, ({ flowMenu: { activeTab } }) => activeTab);
 
 //  action creators
 

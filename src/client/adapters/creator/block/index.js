@@ -47,8 +47,14 @@ const blockAdapter = {
   // internal
   [BlockType.START]: identityAdapter,
   [BlockType.COMMAND]: commandBlockAdapter,
-  [BlockType.COMBINED]: createSimpleAdapter(() => ({}), () => ({})),
-  [BlockType.COMMENT]: createSimpleAdapter(() => ({}), () => ({})),
+  [BlockType.COMBINED]: createSimpleAdapter(
+    () => ({}),
+    () => ({})
+  ),
+  [BlockType.COMMENT]: createSimpleAdapter(
+    () => ({}),
+    () => ({})
+  ),
   // user defined
   [BlockType.CANCEL_PAYMENT]: cancelPaymentBlockAdapter,
   [BlockType.CAPTURE]: captureBlockAdapter,

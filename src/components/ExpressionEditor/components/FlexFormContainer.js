@@ -1,5 +1,5 @@
-import { flexStyles } from '@/componentsV2/Flex';
-import { SearchInputIcon } from '@/componentsV2/Select/components';
+import { flexStyles } from '@/components/Flex';
+import { SearchInputIcon } from '@/components/Select/components';
 import { styled, units } from '@/hocs';
 
 import ExpressionMenuToggle from './ExpressionMenuToggle';

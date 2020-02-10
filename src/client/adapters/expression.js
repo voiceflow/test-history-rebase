@@ -14,6 +14,7 @@ const expressionAdapter = createAdapter(
     return {
       id: cuid.slug(),
       type,
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       value: convertExpressionValueFromDB(type, value),
       depth,
     };
@@ -25,6 +26,7 @@ const expressionAdapter = createAdapter(
 
     return {
       type,
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       value: convertExpressionValueToDB(type, value),
       depth,
     };

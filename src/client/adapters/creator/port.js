@@ -1,5 +1,5 @@
 import { BlockType, PlatformType } from '@/constants';
-import PortLabels from '@/containers/CanvasV2/managers/labels';
+import PortLabels from '@/pages/Canvas/managers/labels';
 
 import { createAdapter } from '../utils';
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Flex from '@/componentsV2/Flex';
+import Flex from '@/components/Flex';
 
 const PageHeader = styled(Flex)`
   height: 70px;

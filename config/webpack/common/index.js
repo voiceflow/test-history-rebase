@@ -2,6 +2,8 @@ const { action } = require('webpack-nano/argv');
 const WebpackBar = require('webpackbar');
 const webpack = require('webpack');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const path = require('path');
 
 const paths = require('../../paths');
 const { BASE_HREF, IS_PRODUCTION, ENV } = require('../config');
@@ -12,11 +14,12 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.css'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.css'],
     alias: {
       '@': paths.sourceDir,
       lodash: 'lodash-es',
     },
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../../../tsconfig.build.json') })],
   },
 
   plugins: [

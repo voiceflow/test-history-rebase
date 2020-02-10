@@ -1,4 +1,4 @@
-import Input from '@/componentsV2/Input';
+import Input from '@/components/Input';
 import { styled } from '@/hocs';
 
 import { OrientationType } from '../constants';

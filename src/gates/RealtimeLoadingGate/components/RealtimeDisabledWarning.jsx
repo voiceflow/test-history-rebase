@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Error from '@/components/ErrorPages/Error';
-import { FlexCenter } from '@/componentsV2/Flex';
+import { FlexCenter } from '@/components/Flex';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
@@ -20,7 +20,4 @@ const mapDispatchToProps = {
   goToDashboard: Router.goToDashboard,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(RealtimeDisabledWarning);
+export default connect(null, mapDispatchToProps)(RealtimeDisabledWarning);

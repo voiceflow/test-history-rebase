@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { FlexApart } from '@/componentsV2/Flex';
+import { FlexApart } from '@/components/Flex';
 
 const PageSubHeader = styled(FlexApart)`
   box-sizing: border-box;

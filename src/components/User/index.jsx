@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import FlexCenter from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import FlexCenter from '@/componentsV2/Flex';
 
 import { AddMemberIcon, MemberIcon, MembersContainer, MembersWrapper } from './components';
 

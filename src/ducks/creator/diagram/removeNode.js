@@ -5,28 +5,6 @@ import { getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
 import { patchNodeInState, removeAllBlocksFromState, removeBlockFromState } from './utils';
 
-const removeNodeReducer = (state, { payload: nodeID }) => removeSingleNode(nodeID)(state);
-
-export default removeNodeReducer;
-
-export const removeManyNodesReducer = (state, { payload: nodeIDs }) => compose(...nodeIDs.map(removeSingleNode))(state);
-
-export function removeSingleNode(nodeID) {
-  return (state) => {
-    const node = getNormalizedByKey(state.nodes, nodeID);
-
-    if (node.type === BlockType.COMBINED) {
-      return removeCombinedNode(state, node);
-    }
-
-    if (node.parentNode) {
-      return removeNestedNode(state, node);
-    }
-
-    return removeBlockFromState(node)(state);
-  };
-}
-
 export function removeNestedNode(state, node) {
   const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
   const index = parentNode.combinedNodes.indexOf(node.id);
@@ -60,3 +38,25 @@ export function removeCombinedNode(state, node) {
 
   return removeAllBlocksFromState([...combinedNodes, node])(state);
 }
+
+export function removeSingleNode(nodeID) {
+  return (state) => {
+    const node = getNormalizedByKey(state.nodes, nodeID);
+
+    if (node.type === BlockType.COMBINED) {
+      return removeCombinedNode(state, node);
+    }
+
+    if (node.parentNode) {
+      return removeNestedNode(state, node);
+    }
+
+    return removeBlockFromState(node)(state);
+  };
+}
+
+export const removeManyNodesReducer = (state, { payload: nodeIDs }) => compose(...nodeIDs.map(removeSingleNode))(state);
+
+const removeNodeReducer = (state, { payload: nodeID }) => removeSingleNode(nodeID)(state);
+
+export default removeNodeReducer;

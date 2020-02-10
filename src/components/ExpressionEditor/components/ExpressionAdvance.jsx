@@ -2,8 +2,8 @@ import cn from 'classnames';
 import _isObject from 'lodash/isObject';
 import React from 'react';
 
+import { VariableTag } from '@/components/VariableTag';
 import VariableText from '@/components/VariableText';
-import { VariableTag } from '@/componentsV2/VariableTag';
 import { ExpressionType } from '@/constants';
 
 import ExpressionOperator from './ExpressionOperator';

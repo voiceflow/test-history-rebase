@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select from '@/componentsV2/Select';
+import Select from '@/components/Select';
 import { allProductsSelector, productByIDSelector } from '@/ducks/product';
 import { connect } from '@/hocs';
 
@@ -24,8 +24,4 @@ const mergeProps = ({ selected: getProductByID }, _, { value }) => ({
   selected: value && getProductByID(value),
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergeProps
-)(ProductSelect);
+export default connect(mapStateToProps, null, mergeProps)(ProductSelect);

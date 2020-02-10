@@ -51,9 +51,8 @@ export default function notificationsReducer(state = initialState, action) {
 // Selectors
 export const notificationsStateSelector = createRootSelector(STATE_KEY);
 
-export const notificationsSelector = createSelector(
-  notificationsStateSelector,
-  ({ forced, notifications }) => (forced ? [forced, ...notifications] : notifications)
+export const notificationsSelector = createSelector(notificationsStateSelector, ({ forced, notifications }) =>
+  forced ? [forced, ...notifications] : notifications
 );
 
 export const setNotifications = (payload) => ({ type: SET_NOTIFICATIONS, payload });

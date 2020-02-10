@@ -3,26 +3,26 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
-import LoginForm from '@/containers/Register/LoginForm';
-import SignupForm from '@/containers/Register/SignupForm';
-import Reset from '@/containers/Register/reset';
-import ResetPassword from '@/containers/Register/resetPassword';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
+import LoginForm from '@/pages/Register/LoginForm';
+import SignupForm from '@/pages/Register/SignupForm';
+import Reset from '@/pages/Register/reset';
+import ResetPassword from '@/pages/Register/resetPassword';
 import { RootRoutes } from '@/utils/routes';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-const SSML = React.lazy(() => import('@/containers/SSML'));
+const SSML = React.lazy(() => import('@/pages/SSML'));
 const Legal = React.lazy(() => import('@/components/Legal'));
-const Skill = React.lazy(() => import('@/containers/Skill'));
-const Account = React.lazy(() => import('@/containers/Account'));
+const Skill = React.lazy(() => import('@/pages/Skill'));
+const Account = React.lazy(() => import('@/pages/Account'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
 const Reference = React.lazy(() => import('@/components/Reference'));
-const UserTesting = React.lazy(() => import('@/containers/UserTesting'));
-const Workspace = React.lazy(() => import('@/containers/Workspace'));
-const NewWorkspace = React.lazy(() => import('@/containers/Dashboard/NewWorkspace'));
+const UserTesting = React.lazy(() => import('@/pages/UserTesting'));
+const Workspace = React.lazy(() => import('@/pages/Workspace'));
+const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
 const Routes = ({ authToken }) => (
   <Suspense fallback={<FullSpinner name="Assets" />}>

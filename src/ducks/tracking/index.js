@@ -46,10 +46,7 @@ export default trackingReducer;
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const onboardingChoicesSelector = createSelector(
-  rootSelector,
-  ({ onboarding }) => onboarding
-);
+export const onboardingChoicesSelector = createSelector(rootSelector, ({ onboarding }) => onboarding);
 
 // action creators
 

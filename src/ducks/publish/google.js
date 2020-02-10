@@ -14,10 +14,7 @@ export const PLATFORM = PlatformType.GOOGLE;
 export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
 export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
 
-export const googleIDSelector = createSelector(
-  publishInfoSelector,
-  ({ googleID }) => googleID
-);
+export const googleIDSelector = createSelector(publishInfoSelector, ({ googleID }) => googleID);
 
 export const GOOGLE_STATES = {
   IDLE: {

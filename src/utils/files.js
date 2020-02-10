@@ -1,4 +1,4 @@
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 
 // eslint-disable-next-line import/prefer-default-export
 export const handleJSONFileRead = async (file, fileReader, requiredProps = [], cb) => {

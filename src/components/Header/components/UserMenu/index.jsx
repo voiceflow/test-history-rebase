@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Dropdown from '@/components/Dropdown';
+import Menu, { MenuItem } from '@/components/Menu';
 import User from '@/components/User';
-import Dropdown from '@/componentsV2/Dropdown';
-import Menu, { MenuItem } from '@/componentsV2/Menu';
 import { userSelector } from '@/ducks/account';
 import { logout } from '@/ducks/session';
 import { connect, styled } from '@/hocs';
@@ -55,7 +55,4 @@ const mapDispatchToProps = {
   logout,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

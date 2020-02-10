@@ -45,7 +45,4 @@ const mapDispatchToProps = {
   disableWebsockets: Session.disableWebsockets,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SocketLoadingGate);
+export default connect(null, mapDispatchToProps)(SocketLoadingGate);

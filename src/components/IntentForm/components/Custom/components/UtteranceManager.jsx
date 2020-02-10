@@ -1,19 +1,19 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import ChatWithUsLink from '@/componentsV2/ChatLink';
-import ListManagerV2 from '@/componentsV2/ListManagerV2';
-import { SectionToggleVariant } from '@/componentsV2/Section';
-import Utterance from '@/componentsV2/Utterance';
+import ChatWithUsLink from '@/components/ChatLink';
+import ListManager from '@/components/ListManager';
+import { SectionToggleVariant } from '@/components/Section';
+import Utterance from '@/components/Utterance';
 import { MODALS } from '@/constants';
-import { FormControl } from '@/containers/CanvasV2/components/Editor';
-import EditorSection from '@/containers/CanvasV2/components/EditorSection';
-import ErrorMessage from '@/containers/CanvasV2/components/ErrorMessage';
 import { useModals } from '@/contexts/ModalsContext';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
+import { FormControl } from '@/pages/Canvas/components/Editor';
+import EditorSection from '@/pages/Canvas/components/EditorSection';
+import ErrorMessage from '@/pages/Canvas/components/ErrorMessage';
 
 import AddUtteranceRightAction from '../../AddUtteranceRightAction';
 import ListManagerWrapper from '../../ListManagerWrapper';
@@ -89,7 +89,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
     >
       <FormControl>
         <ListManagerWrapper>
-          <ListManagerV2
+          <ListManager
             items={intent.inputs}
             addToStart
             beforeAdd={() => utteranceRef.current.forceUpdate()}
@@ -143,7 +143,4 @@ const mapDispatchToProps = {
   updateIntent: Intent.updateIntent,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UtteranceManager);
+export default connect(mapStateToProps, mapDispatchToProps)(UtteranceManager);

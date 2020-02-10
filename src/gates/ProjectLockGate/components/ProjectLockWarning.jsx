@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Button from '@/components/Button';
 import SessionLocked from '@/components/ErrorPages/SessionLocked';
-import Button from '@/componentsV2/Button';
 
 const ProjectLockWarning = ({ onTakeover }) => (
   <SessionLocked>

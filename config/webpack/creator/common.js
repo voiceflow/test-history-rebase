@@ -19,7 +19,7 @@ module.exports = merge(commonConfig, {
     ? []
     : [
         circularDependencyPlugin({
-          exclude: /node_modules|src\/componentsV2\/Select\/components\/Menu(Options)?\/index\.jsx/,
+          exclude: /node_modules|src\/components\/Select\/components\/Menu(Options)?\/index\.jsx/,
         }),
         new UnusedFilesWebpackPlugin({
           failOnUnused: IS_PRODUCTION,
@@ -34,29 +34,29 @@ module.exports = merge(commonConfig, {
               '**/*.story.*',
               '**/*.unit.*',
               '**/*.it.*',
-              '**/containers/admin/**/*',
+              '**/pages/admin/**/*',
               'svgs/**/*.svg',
               'admin/**/*',
               'utils/testing/**/*',
               'utils/string.js',
               'utils/number.js',
-              'containers/CanvasV2/managers/Display/templates/*.json',
-              'containers/CanvasV2/managers/Integration/zapier.png',
+              'pages/Canvas/managers/Display/templates/*.json',
+              'pages/Canvas/managers/Integration/zapier.png',
 
               // TODO: remove when re-enabling display editor
-              'componentsV2/Upload/JsonUpload/**/*',
+              'components/Upload/JsonUpload/**/*',
               'utils/files.js',
-              'containers/CanvasV2/managers/Display/**/*',
+              'pages/Canvas/managers/Display/**/*',
               
               // TODO: validate whether these components will be used
-              'components/Uploads/**/*',
-              'containers/CanvasV2/components/Block/NewBlock/**/*',
-              'containers/CanvasV2/components/Step/**/*',
-              'componentsV2/CaptionedIconButton/**/*',
-              'componentsV2/Dropdown/**/*',
-              'componentsV2/DropdownButton/**/*',
-              'componentsV2/Link/**/*',
-              'componentsV2/Title/**/*'
+              'components/LegacyUpload/**/*',
+              'pages/Canvas/components/Block/NewBlock/**/*',
+              'pages/Canvas/components/Step/**/*',
+              'components/CaptionedIconButton/**/*',
+              'components/Dropdown/**/*',
+              'components/DropdownButton/**/*',
+              'components/Link/**/*',
+              'components/Title/**/*'
             ],
           },
         }),

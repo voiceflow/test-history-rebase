@@ -1,5 +1,5 @@
+import { FlexApart } from '@/components/Flex';
 import { SvgIconContainer } from '@/components/SvgIcon';
-import { FlexApart } from '@/componentsV2/Flex';
 import { styled } from '@/hocs';
 
 const ExpandingListSectionHeader = styled(FlexApart)`

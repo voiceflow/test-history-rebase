@@ -1,9 +1,9 @@
 import React from 'react';
 import { InputGroup } from 'reactstrap';
 
+import Dropdown from '@/components/Dropdown';
+import { SectionToggleVariant } from '@/components/Section';
 import Icon from '@/components/SvgIcon';
-import Dropdown from '@/componentsV2/Dropdown';
-import { SectionToggleVariant } from '@/componentsV2/Section';
 import { css, styled } from '@/hocs';
 
 import DropdownButton from './components/DropdownButton';

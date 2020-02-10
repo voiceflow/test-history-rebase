@@ -48,15 +48,9 @@ export default function accountReducer(state = INITIAL_STATE, action) {
 
 export const userSelector = createRootSelector(STATE_KEY);
 
-export const userIDSelector = createSelector(
-  userSelector,
-  ({ creator_id }) => creator_id
-);
+export const userIDSelector = createSelector(userSelector, ({ creator_id }) => creator_id);
 
-export const amazonAccountSelector = createSelector(
-  userSelector,
-  ({ amazon }) => amazon
-);
+export const amazonAccountSelector = createSelector(userSelector, ({ amazon }) => amazon);
 
 // action creators
 

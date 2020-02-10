@@ -1,7 +1,3 @@
-export const findAncestors = (obj) => recursiveReduce(({ parents }) => parents)(obj).reverse();
-
-export const findChildren = recursiveReduce(({ children }) => children);
-
 function recursiveReduce(getItems, visited = new Set()) {
   return (obj) => {
     const items = getItems(obj);
@@ -27,3 +23,7 @@ function recursiveReduce(getItems, visited = new Set()) {
     return items;
   };
 }
+
+export const findAncestors = (obj) => recursiveReduce(({ parents }) => parents)(obj).reverse();
+
+export const findChildren = recursiveReduce(({ children }) => children);

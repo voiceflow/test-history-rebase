@@ -119,6 +119,7 @@ function createRealtimeSocketClient(client) {
 
         onReconnect();
 
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         client.once('connect_error', handleDisconnect);
       }
 

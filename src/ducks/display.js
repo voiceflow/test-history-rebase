@@ -1,5 +1,5 @@
 import client from '@/client';
-import { toast } from '@/componentsV2/Toast';
+import { toast } from '@/components/Toast';
 
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 

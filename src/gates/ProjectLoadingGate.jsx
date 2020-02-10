@@ -26,8 +26,4 @@ const mergeProps = ({ activeSkill }, { loadSkill, setError }, { versionID, diagr
   loadProject: () => loadSkill(versionID, diagramID).catch(setError),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(ProjectLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectLoadingGate);

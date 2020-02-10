@@ -78,27 +78,21 @@ export const {
   key: allDiagramIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const subDiagramsByIDSelector = createSelector(
-  diagramByIDSelector,
-  (getDiagram) => (diagramID) => getDiagram(diagramID)?.subDiagrams || []
-);
+export const subDiagramsByIDSelector = createSelector(diagramByIDSelector, (getDiagram) => (diagramID) => getDiagram(diagramID)?.subDiagrams || []);
 
-export const flowStructureSelector = createSelector(
-  rootDiagramsSelector,
-  ({ byKey, allKeys }) => (diagramID) => {
-    const flows = allKeys.reduce((acc, key) => Object.assign(acc, { [key]: { id: byKey[key].id, name: byKey[key].name } }), {});
+export const flowStructureSelector = createSelector(rootDiagramsSelector, ({ byKey, allKeys }) => (diagramID) => {
+  const flows = allKeys.reduce((acc, key) => Object.assign(acc, { [key]: { id: byKey[key].id, name: byKey[key].name } }), {});
 
-    allKeys.forEach((id) => {
-      flows[id].children = byKey[id].subDiagrams.map((subDiagramID) => flows[subDiagramID]).filter(Boolean);
-      flows[id].parents = allKeys
-        .filter((subDiagramID) => byKey[subDiagramID].subDiagrams.includes(id))
-        .map((subDiagramID) => flows[subDiagramID])
-        .filter(Boolean);
-    });
+  allKeys.forEach((id) => {
+    flows[id].children = byKey[id].subDiagrams.map((subDiagramID) => flows[subDiagramID]).filter(Boolean);
+    flows[id].parents = allKeys
+      .filter((subDiagramID) => byKey[subDiagramID].subDiagrams.includes(id))
+      .map((subDiagramID) => flows[subDiagramID])
+      .filter(Boolean);
+  });
 
-    return flows[diagramID];
-  }
-);
+  return flows[diagramID];
+});
 
 // action creators
 

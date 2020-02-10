@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Info Icon Rich Content 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
+}
+
+.c0 {
+  cursor: pointer;
+  color: #5d9df5;
+  font-size: 15px;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c0:hover {
+  color: #4886da;
+}
+
+.c1 {
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  color: #becedc;
+  top: 3px;
+}
+
+.c1:hover {
+  color: #8da2b5;
+}
+
+<div
+  className="c0"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+  >
+    <span
+      className="c2 c3"
+      color="currentColor"
+      size={16}
+    >
+      <svg
+        data-file-name="SvgInfo"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Info Icon Text 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c3:active {
+  color: currentColor;
+  opacity: 1;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
+}
+
+.c0 {
+  cursor: pointer;
+  color: #5d9df5;
+  font-size: 15px;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c0:hover {
+  color: #4886da;
+}
+
+.c1 {
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  color: #becedc;
+  top: 3px;
+}
+
+.c1:hover {
+  color: #8da2b5;
+}
+
+<div
+  className="c0"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+  >
+    <span
+      className="c2 c3"
+      color="currentColor"
+      size={16}
+    >
+      <svg
+        data-file-name="SvgInfo"
+      />
+    </span>
+  </div>
+</div>
+`;

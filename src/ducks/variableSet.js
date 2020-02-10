@@ -60,46 +60,25 @@ const rootSelector = createRootSelector(STATE_KEY);
 
 export { rootSelector as variableSetSelector };
 
-export const variablesByDiagramIDSelector = createSelector(
-  rootSelector,
-  (state) => (diagramID) => state[diagramID] || []
+export const variablesByDiagramIDSelector = createSelector(rootSelector, (state) => (diagramID) => state[diagramID] || []);
+
+export const hasVariablesByDiagramIDSelector = createSelector(variablesByDiagramIDSelector, (variables) => (diagramID) =>
+  !!variables(diagramID).length
 );
 
-export const hasVariablesByDiagramIDSelector = createSelector(
-  variablesByDiagramIDSelector,
-  (variables) => (diagramID) => !!variables(diagramID).length
-);
-
-export const activeDiagramVariables = createSelector(
-  creatorDiagramIDSelector,
-  variablesByDiagramIDSelector,
-  (diagramID, variablesByDiagramID) => variablesByDiagramID(diagramID)
+export const activeDiagramVariables = createSelector(creatorDiagramIDSelector, variablesByDiagramIDSelector, (diagramID, variablesByDiagramID) =>
+  variablesByDiagramID(diagramID)
 );
 
 // action creators
 
 export const replaceVariableSet = (variableSet, meta) => createAction(REPLACE_VARIABLE_SET, variableSet, meta);
 
-export const replaceVariableSetDiagram = (diagramID, variables) => {
-  return createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
-};
-
-export const addVariableToDiagram = (diagramID, name) => (dispatch) => {
-  dispatch(createAction(ADD_VARIABLE, name, { diagramID }));
-  // eslint-disable-next-line no-use-before-define
-  dispatch(saveVariableSet(diagramID));
-};
+export const replaceVariableSetDiagram = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
 
 export const removeVariableFromDiagram = (diagramID, name) => createAction(REMOVE_VARIABLE, name, { diagramID });
 
 // side effects
-
-export const loadVariableSetForDiagram = (diagramID) => async (dispatch) => {
-  const variables = await client.diagram.findVariables(diagramID);
-  dispatch(replaceVariableSetDiagram(diagramID, variables));
-
-  return variables;
-};
 
 export const saveVariableSet = (diagramID) => async (_, getState) => {
   const state = getState();
@@ -110,6 +89,19 @@ export const saveVariableSet = (diagramID) => async (_, getState) => {
   if (!hasIdenticalMembers(remoteDiagramVariables, variables)) {
     await client.diagram.updateVariables(diagramID, variables);
   }
+};
+
+export const addVariableToDiagram = (diagramID, name) => (dispatch) => {
+  dispatch(createAction(ADD_VARIABLE, name, { diagramID }));
+  // eslint-disable-next-line no-use-before-define
+  dispatch(saveVariableSet(diagramID));
+};
+
+export const loadVariableSetForDiagram = (diagramID) => async (dispatch) => {
+  const variables = await client.diagram.findVariables(diagramID);
+  dispatch(replaceVariableSetDiagram(diagramID, variables));
+
+  return variables;
 };
 
 export const saveActiveDiagramVariables = () => async (dispatch, getState) => {

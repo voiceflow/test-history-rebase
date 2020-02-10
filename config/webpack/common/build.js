@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
+const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const paths = require('../../paths');
 const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('../config');
@@ -13,6 +14,7 @@ module.exports = merge(
   {
     plugins: [
       new CleanWebpackPlugin(),
+      new ForkTSCheckerWebpackPlugin({ checkSyntacticErrors: true, compilerOptions: { skipLibCheck: true } }),
       new HtmlWebpackPlugin({
         inject: true,
         template: paths.indexHTML,
@@ -45,7 +47,7 @@ module.exports = merge(
         {
           oneOf: [
             {
-              test: /\.(js|jsx)$/,
+              test: /\.[jt]sx?$/,
               include: paths.sourceDir,
               loader: 'babel-loader',
               options: {

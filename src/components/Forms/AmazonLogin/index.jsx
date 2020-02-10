@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
 import { createAmazonSession } from '@/ducks/account';
 
@@ -72,7 +72,4 @@ AmazonLoginButton.propTypes = {
   onLoad: PropTypes.func,
 };
 
-export default connect(
-  null,
-  { createAmazonSession }
-)(AmazonLoginButton);
+export default connect(null, { createAmazonSession })(AmazonLoginButton);

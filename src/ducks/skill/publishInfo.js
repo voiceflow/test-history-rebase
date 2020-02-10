@@ -24,16 +24,10 @@ export default publishInfoReducer;
 
 // selectors
 
-export const publishInfoSelector = createSelector(
-  activeSkillSelector,
-  ({ publishInfo }) => publishInfo
-);
+export const publishInfoSelector = createSelector(activeSkillSelector, ({ publishInfo }) => publishInfo);
 
 export const publishPlatformSelectors = PLATFORMS.reduce((selectors, platform) => {
-  selectors[platform] = createSelector(
-    activeSkillSelector,
-    ({ publishInfo }) => publishInfo[platform]
-  );
+  selectors[platform] = createSelector(activeSkillSelector, ({ publishInfo }) => publishInfo[platform]);
   return selectors;
 }, {});
 

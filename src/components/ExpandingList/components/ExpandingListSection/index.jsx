@@ -2,8 +2,8 @@ import React from 'react';
 import { Collapse } from 'reactstrap';
 
 import List from '@/components/ExpandingList/components/ExpandingListItems';
+import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import Flex from '@/componentsV2/Flex';
 
 import { Container, DropdownArrowContainer, Header, Indicator } from './components';
 

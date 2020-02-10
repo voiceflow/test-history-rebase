@@ -5,7 +5,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Button from '@/componentsV2/Button';
+import Button from '@/components/Button';
 
 import SingleStep from './SingleStep';
 import GuidedStepsWrapper from './styles';

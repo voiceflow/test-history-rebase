@@ -4,16 +4,16 @@ import { Redirect, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import Sidebar from '@/admin/components/Sidebar';
-import BetaProgram from '@/admin/containers/BetaProgram';
-import BetaUsersList from '@/admin/containers/BetaProgram/BetaUsersList';
-import Copy from '@/admin/containers/Copy';
-import Coupon from '@/admin/containers/Coupon';
-import FinanceBoard from '@/admin/containers/Finance';
-import Home from '@/admin/containers/Home';
-import ProductUpdates from '@/admin/containers/ProductUpdates';
-import SkillLookup from '@/admin/containers/SkillLookup';
-import Template from '@/admin/containers/Templates';
-import Vendors from '@/admin/containers/Vendors';
+import BetaProgram from '@/admin/pages/BetaProgram';
+import BetaUsersList from '@/admin/pages/BetaProgram/BetaUsersList';
+import Copy from '@/admin/pages/Copy';
+import Coupon from '@/admin/pages/Coupon';
+import FinanceBoard from '@/admin/pages/Finance';
+import Home from '@/admin/pages/Home';
+import ProductUpdates from '@/admin/pages/ProductUpdates';
+import SkillLookup from '@/admin/pages/SkillLookup';
+import Template from '@/admin/pages/Templates';
+import Vendors from '@/admin/pages/Vendors';
 import { checkSession } from '@/admin/store/ducks/account';
 import { mainTheme, mappedThemes } from '@/admin/styles/theme';
 import theme from '@/styles/theme';
@@ -64,7 +64,4 @@ const mapStateToProps = (state) => ({
   theme: state.admin.theme,
 });
 
-export default connect(
-  mapStateToProps,
-  { checkSession }
-)(Admin);
+export default connect(mapStateToProps, { checkSession })(Admin);

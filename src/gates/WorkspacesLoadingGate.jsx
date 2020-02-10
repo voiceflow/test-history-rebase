@@ -124,8 +124,4 @@ const mergeProps = ({ user }, { trackInvitationAccepted }) => ({
   trackInvitationAccepted: (workspaceID) => trackInvitationAccepted(workspaceID, user.email),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(WorkspacesLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspacesLoadingGate);

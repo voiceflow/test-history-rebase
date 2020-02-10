@@ -25,20 +25,11 @@ export const PLATFORM = PlatformType.ALEXA;
 export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
 export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
 
-export const amznIDSelector = createSelector(
-  publishInfoSelector,
-  ({ amznID }) => amznID
-);
+export const amznIDSelector = createSelector(publishInfoSelector, ({ amznID }) => amznID);
 
-export const reviewSelector = createSelector(
-  publishInfoSelector,
-  ({ review }) => review
-);
+export const reviewSelector = createSelector(publishInfoSelector, ({ review }) => review);
 
-export const vendorIdSelector = createSelector(
-  publishInfoSelector,
-  ({ vendorId }) => vendorId
-);
+export const vendorIdSelector = createSelector(publishInfoSelector, ({ vendorId }) => vendorId);
 
 /*
   flags:

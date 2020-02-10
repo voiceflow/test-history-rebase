@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Flex, { FlexApart } from '@/components/Flex';
+import Select from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
-import Flex, { FlexApart } from '@/componentsV2/Flex';
-import Select from '@/componentsV2/Select';
 import { connect } from '@/hocs';
 import { activeSlotTypes } from '@/store/selectors';
 

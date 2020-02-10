@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Error from '@/components/ErrorPages/Error';
+import { FlexCenter } from '@/components/Flex';
 import { Spinner } from '@/components/Spinner';
-import { FlexCenter } from '@/componentsV2/Flex';
 
 const RealtimeConnectionWarning = () => (
   <FlexCenter style={{ height: '100%' }} fullWidth>

@@ -1,4 +1,4 @@
-import Badge from '@/componentsV2/Badge';
+import Badge from '@/components/Badge';
 import { styled } from '@/hocs';
 
 const AddUtteranceRightAction = styled(Badge)`

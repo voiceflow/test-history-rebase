@@ -1,7 +1,7 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import BatchLoadingGate from '@/componentsV2/BatchLoadingGate';
+import BatchLoadingGate from '@/components/BatchLoadingGate';
 
 // eslint-disable-next-line import/prefer-default-export
 export const withBatchLoadingGate = (...gates) => (Component) =>

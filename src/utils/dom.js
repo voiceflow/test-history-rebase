@@ -61,6 +61,20 @@ export const getScrollbarWidth = () => {
 };
 
 /**
+ * Get the CSS Value
+ * @param {node} node
+ * @param {string} property (CSS Property, not Style Object)
+ * @return {string}
+ */
+export function getCSSValue(node, property) {
+  if (!node) {
+    return '';
+  }
+
+  return window.getComputedStyle(node).getPropertyValue(property);
+}
+
+/**
  * Find the closest node which has a scroll (overflow: auto)
  * @param {node} node
  * @return {node}
@@ -117,20 +131,6 @@ export const findClosestNode = (currentNode, name) => {
   }
   return findClosestNode(parentNode, name);
 };
-
-/**
- * Get the CSS Value
- * @param {node} node
- * @param {string} property (CSS Property, not Style Object)
- * @return {string}
- */
-export function getCSSValue(node, property) {
-  if (!node) {
-    return '';
-  }
-
-  return window.getComputedStyle(node).getPropertyValue(property);
-}
 
 /**
  * Set the offset of the element depending on the width of the scroll

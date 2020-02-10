@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import { UserListCardWrapper } from '@/admin/components/UserListCard/styles';
-import User from '@/admin/containers/Home/components/User';
+import User from '@/admin/pages/Home/components/User';
 
 const UserListCard = (props) => {
   const { user } = props;

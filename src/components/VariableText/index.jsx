@@ -5,7 +5,7 @@ import React from 'react';
 
 import { draftJSContentAdapter } from '@/client/adapters/draft';
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { InlineVariableTag } from '@/componentsV2/VariableTag';
+import { InlineVariableTag } from '@/components/VariableTag';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 import { swallowEvent } from '@/utils/dom';
@@ -54,7 +54,10 @@ class VariableText extends React.PureComponent {
 
   onSearchChange = ({ value }) =>
     this.setState({
-      suggestions: defaultSuggestionsFilter(value, this.props.variables.map((name) => ({ name }))),
+      suggestions: defaultSuggestionsFilter(
+        value,
+        this.props.variables.map((name) => ({ name }))
+      ),
     });
 
   focusEditor = () => this.editorRef.current.focus();

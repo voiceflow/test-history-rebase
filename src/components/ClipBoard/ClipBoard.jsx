@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import { flexEndStyles } from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import { flexEndStyles } from '@/componentsV2/Flex';
 import Locked from '@/svgs/locked.svg';
 import Unlocked from '@/svgs/unlocked.svg';
 

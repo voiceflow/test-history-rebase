@@ -30,7 +30,4 @@ const mapDispatchToProps = {
   updateWorkspace: Workspace.updateWorkspace,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(GlobalSocketSubscriptionsLoadingGate);
+export default connect(null, mapDispatchToProps)(GlobalSocketSubscriptionsLoadingGate);

@@ -1,11 +1,11 @@
 import React from 'react';
 
+import Flex from '@/components/Flex';
+import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import Icon, { SvgIconContainer } from '@/components/SvgIcon';
-import Flex from '@/componentsV2/Flex';
-import Section, { Header, HeaderContent, StatusContent } from '@/componentsV2/Section';
-import ClickableText from '@/componentsV2/Text/ClickableText';
-import { Paragraph } from '@/componentsV2/Tooltip';
-import { SlotTag, VariableTag } from '@/componentsV2/VariableTag';
+import ClickableText from '@/components/Text/ClickableText';
+import { Paragraph } from '@/components/Tooltip';
+import { SlotTag, VariableTag } from '@/components/VariableTag';
 import { setConfirm } from '@/ducks/modal';
 import * as Slot from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
@@ -105,7 +105,4 @@ const mapDispatchToProps = {
   setConfirm,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LegacyMappings);
+export default connect(mapStateToProps, mapDispatchToProps)(LegacyMappings);

@@ -1,0 +1,348 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Upload/Primitive/Link With Back Button 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 14px;
+  height: 14px;
+  color: #8da2b5;
+  opacity: 0.8;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c3:hover {
+  color: #8da2b5;
+  opacity: 1;
+}
+
+.c3:active {
+  color: #8da2b5;
+  opacity: 1;
+}
+
+.c8 {
+  cursor: pointer;
+  min-width: 22px;
+  display: inline-block;
+  height: 22.4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background: linear-gradient(180deg,#eff5f6a3 0%,#eef4f6 100%),#ffffff;
+  border: 1px solid #d4d9e6;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0px #d4d9e6;
+  border-radius: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: center;
+}
+
+.c10 .c2 {
+  color: #fff;
+}
+
+.c11 .c2 {
+  color: #6e849a;
+}
+
+.c1 {
+  min-height: 42px;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans,Arial,sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 10px 16px;
+  line-height: 22px;
+  cursor: text;
+  -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1:disabled {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1:active,
+.c1:focus,
+.c1:focus-within {
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  outline: 0;
+}
+
+.c1[disabled] {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1[disabled] input {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1 > * {
+  margin-right: 12px;
+}
+
+.c1 > *:last-child {
+  margin-right: 0;
+}
+
+.c1 > .c7:last-child {
+  margin-right: -6px;
+}
+
+.c5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 50%;
+}
+
+.c5 > * {
+  width: 100%;
+}
+
+.c6 {
+  width: 100%;
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.c9 {
+  margin-top: 5px;
+  color: #e91e63;
+  position: absolute;
+  font-size: 13px;
+}
+
+.c4 {
+  -webkit-transition: color 0.15s ease,-webkit-transform 0.15s ease;
+  -webkit-transition: color 0.15s ease,transform 0.15s ease;
+  transition: color 0.15s ease,transform 0.15s ease;
+  cursor: pointer;
+}
+
+.c4:hover {
+  -webkit-transform: translateX(-4px);
+  -ms-transform: translateX(-4px);
+  transform: translateX(-4px);
+}
+
+.c0 {
+  position: relative;
+  width: 100%;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    onClick={[Function]}
+  >
+    <span
+      className="c2 c3 c4"
+      color="#8da2b5"
+      onClick={[Function]}
+      size={14}
+    >
+      <svg
+        data-file-name="SvgBack"
+      />
+    </span>
+    <div
+      className="c5"
+    >
+      <input
+        className="c6"
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="placeholder"
+      />
+    </div>
+    <span
+      className="c7 c8"
+      onClick={[Function]}
+    >
+      Enter
+    </span>
+  </div>
+  <div
+    className="c9"
+  />
+</div>
+`;
+
+exports[`Storyshots Upload/Primitive/Link Without Back Button 1`] = `
+.c5 {
+  cursor: pointer;
+  min-width: 22px;
+  display: inline-block;
+  height: 22.4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background: linear-gradient(180deg,#eff5f6a3 0%,#eef4f6 100%),#ffffff;
+  border: 1px solid #d4d9e6;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0px #d4d9e6;
+  border-radius: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: center;
+}
+
+.c1 {
+  min-height: 42px;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans,Arial,sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 10px 16px;
+  line-height: 22px;
+  cursor: text;
+  -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c1:disabled {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1:active,
+.c1:focus,
+.c1:focus-within {
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  outline: 0;
+}
+
+.c1[disabled] {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1[disabled] input {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c1 > * {
+  margin-right: 12px;
+}
+
+.c1 > *:last-child {
+  margin-right: 0;
+}
+
+.c1 > .c4:last-child {
+  margin-right: -6px;
+}
+
+.c2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 50%;
+}
+
+.c2 > * {
+  width: 100%;
+}
+
+.c3 {
+  width: 100%;
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.c6 {
+  margin-top: 5px;
+  color: #e91e63;
+  position: absolute;
+  font-size: 13px;
+}
+
+.c0 {
+  position: relative;
+  width: 100%;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    onClick={[Function]}
+  >
+    <div
+      className="c2"
+    >
+      <input
+        className="c3"
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="placeholder"
+      />
+    </div>
+    <span
+      className="c4 c5"
+      onClick={[Function]}
+    >
+      Enter
+    </span>
+  </div>
+  <div
+    className="c6"
+  />
+</div>
+`;

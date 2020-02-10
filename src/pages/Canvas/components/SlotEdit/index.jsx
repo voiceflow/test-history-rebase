@@ -17,6 +17,7 @@ import * as Slot from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
 import { activeSlotTypes } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
+import { formatIntentName } from '@/utils/intent';
 
 import { ColorSelector } from './components';
 import CustomLine from './components/CustomLine';
@@ -101,7 +102,7 @@ function SlotEdit({ isCreate, name = '', color = _sample(SLOT_COLORS), type, inp
   return (
     <>
       <Section status={<SlotTag color={selectedColor}>{slotName}</SlotTag>} dividers={false} variant="tertiary" header="Slot Name">
-        <Input value={slotName} onChange={(e) => setSlotName(e.target.value)} placeholder="Enter Slot Name" />
+        <Input value={slotName} onChange={(e) => setSlotName(formatIntentName(e.target.value))} placeholder="Enter Slot Name" />
       </Section>
       <Section dividers={false} variant="tertiary" header="Slot Type">
         <Select

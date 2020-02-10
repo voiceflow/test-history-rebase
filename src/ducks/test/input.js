@@ -1,8 +1,11 @@
+import { utils } from '@voiceflow/common';
 import _ from 'lodash';
 
 import { updateDialog } from './actions';
 import { testSelector } from './selectors';
 import { updateState } from './sideEffects';
+
+const { formatName } = utils.intent;
 
 const fallbackIntent = 'AMAZON.FallbackIntent';
 
@@ -30,9 +33,10 @@ const manageInput = (input) => async (dispatch, getState) => {
       if (slots) {
         const formattedSlots = slots.reduce((acc, slot) => {
           const { name, value } = slot;
+          const formattedName = formatName(name);
           if (value) {
-            acc[name] = {
-              name,
+            acc[formattedName] = {
+              name: formattedName,
               value,
             };
           }

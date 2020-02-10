@@ -48,6 +48,7 @@ export default function Select({
   multiLevelDropdown,
   showNotMatchedOptions,
   createInputPlaceholder,
+  rightAction,
   clearable = false,
 }) {
   const optionLabel = getOptionLabel(value) || '';
@@ -235,6 +236,7 @@ export default function Select({
     borderLess,
     placeholder,
     isDropDownOpened,
+    rightAction,
   };
 
   React.useEffect(() => {

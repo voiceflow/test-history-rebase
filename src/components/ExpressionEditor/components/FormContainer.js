@@ -33,23 +33,6 @@ const FormContainer = styled.div`
     border: none;
   }
 
-  & .type-button-container {
-    position: absolute;
-    top: 9px;
-    right: 8px;
-    display: flex;
-    align-items: center;
-
-    & > * {
-      margin-left: 16px;
-      cursor: pointer;
-    }
-
-    &:first-child {
-      margin: 0;
-    }
-  }
-
   & .type-button {
     display: inline-flex;
     align-items: center;

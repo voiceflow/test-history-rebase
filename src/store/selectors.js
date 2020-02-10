@@ -31,9 +31,8 @@ export const activeDiagramViewportSelector = createSelector(
 export const allVariablesSelector = createSelector(
   Skill.globalVariablesSelector,
   activeDiagramVariablesSelector,
-  Slot.allSlotsSelector,
-  (globalVariables, activeDiagramVariables, slots) =>
-    _uniq([...slots.map(({ name }) => name), ...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables])
+  Slot.slotNamesSelector,
+  (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
 export const activeSlotTypes = createSelector(

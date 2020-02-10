@@ -35,3 +35,8 @@ export const intentsUsingSlotSelector = createSelector(
       return acc;
     }, [])
 );
+
+export const slotNamesSelector = createSelector(
+  allSlotsSelector,
+  (slots) => slots.map(({ name }) => name)
+);

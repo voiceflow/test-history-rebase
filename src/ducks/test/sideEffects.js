@@ -17,7 +17,7 @@ import {
   activeSkillMetaSelector,
   globalVariablesSelector,
 } from '@/ducks/skill';
-import { allSlotsSelector } from '@/ducks/slot';
+import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
 
 import { resetTime, updateTest } from './actions';
 import { TEST_STATUS } from './constants';
@@ -31,15 +31,15 @@ export const resetState = () => (dispatch, getState) => {
   const state = getState();
   const projectID = activeProjectIDSelector(state);
   const globalVariables = globalVariablesSelector(state);
+  const slotNames = slotNamesSelector(state);
   const platform = activePlatformSelector(state);
 
   const testState = testStateSelector(state);
 
   let currentGlobals = {};
-  if (globalVariables)
-    globalVariables.forEach((name) => {
-      currentGlobals[name] = 0;
-    });
+  [...globalVariables, ...slotNames].forEach((name) => {
+    currentGlobals[name] = 0;
+  });
 
   currentGlobals = {
     ...currentGlobals,

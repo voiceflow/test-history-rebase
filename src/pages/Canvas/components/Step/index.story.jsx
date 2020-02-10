@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import NewBlock from '../Block/NewBlock';
-import Step, { Item, Section } from '.';
+import Step, { ElseItem, Item, Section } from '.';
 
 const getProps = () => {
   const onClickPort = action('click port');
@@ -120,6 +120,28 @@ export const withMultipleSections = () => (
       <Section>
         <Item withPort={false} {...getProps()} />
       </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withElse = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+      <ElseItem />
+    </Step>
+  </NewBlock>
+);
+
+export const withElseConnected = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" isConnected {...getProps()} />
+      </Section>
+      <ElseItem isConnected />
     </Step>
   </NewBlock>
 );

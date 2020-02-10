@@ -60,6 +60,7 @@ export const UncontrolledSection = React.forwardRef(
     ref
   ) => {
     const hasHeader = !!(prefix || suffix || header || tooltip || dropdown || status || count || collapseVariant || isLink);
+    const clickHandler = onClick || (headerToggle ? toggle : undefined);
 
     return (
       <Container
@@ -76,13 +77,7 @@ export const UncontrolledSection = React.forwardRef(
         {...props}
       >
         {hasHeader && (
-          <Header
-            ref={headerRef}
-            isDragging={isDragging}
-            isNested={isNested}
-            containerToggle={!!onClick || headerToggle}
-            onClick={onClick || (headerToggle ? toggle : undefined)}
-          >
+          <Header ref={headerRef} isDragging={isDragging} isNested={isNested} containerToggle={!!clickHandler} onClick={clickHandler}>
             {(prefix || header || tooltip || dropdown) && (
               <HeaderContent>
                 {prefix && <PrefixContainer>{_.isString(prefix) ? <SvgIcon color="#787878" icon={prefix} /> : prefix}</PrefixContainer>}
@@ -101,7 +96,9 @@ export const UncontrolledSection = React.forwardRef(
                 {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
                 {Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
                 {suffix && <PrefixContainer>{_.isString(suffix) ? <SvgIcon color="#becedc" icon={suffix} /> : suffix}</PrefixContainer>}
-                {collapseVariant && <CollapseTrigger onToggle={swallowEvent(toggle)} isCollapsed={isCollapsed} variant={collapseVariant} />}
+                {collapseVariant && (
+                  <CollapseTrigger onToggle={clickHandler ? undefined : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />
+                )}
               </StatusContent>
             )}
           </Header>

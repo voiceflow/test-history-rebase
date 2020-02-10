@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React from 'react';
-import Toggle from 'react-toggle';
 import { Button, Col, Form, FormGroup, Label, Table } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import Input from '@/components/Input';
 import { toast } from '@/components/Toast';
+import Toggle from '@/components/Toggle';
 
 class Template extends React.Component {
   constructor(props) {
@@ -142,7 +142,6 @@ class Template extends React.Component {
                 <label>Hidden: </label>
                 <Toggle
                   checked={curorder < 0}
-                  icons={false}
                   disabled={false}
                   onChange={() => this.handleInputChange({ target: { name: 'template_index', value: -curorder } })}
                 />

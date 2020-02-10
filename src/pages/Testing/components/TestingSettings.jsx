@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import Toggle from 'react-toggle';
 
+import Toggle from '@/components/Toggle';
 import { GlobalVariable } from '@/constants';
 import { recentTestingSelector, updateRecentTesting } from '@/ducks/recent';
 import { testGlobalsSelector, updateGlobal } from '@/ducks/test';
@@ -31,7 +31,7 @@ const TestSettings = ({ open, settings, updateSettings, globals, updateGlobal })
     <Tooltip title="Debug mode shows you the paths, variables, and flows you’re using as you’re testing your project" position="left">
       <div style={{ padding: '18px 20px' }} className="space-between pointer" onClick={() => updateSettings({ debug: !settings.debug })}>
         <label className="mb-0">Debug Mode</label>
-        <Toggle checked={settings.debug} icons={false} readOnly />
+        <Toggle checked={settings.debug} readOnly />
       </div>
     </Tooltip>
   </div>

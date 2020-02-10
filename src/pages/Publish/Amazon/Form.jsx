@@ -2,7 +2,6 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import Select from 'react-select';
-import Toggle from 'react-toggle';
 import { Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 import { compose } from 'redux';
 import { getFormValues, reduxForm } from 'redux-form';
@@ -16,6 +15,7 @@ import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
 import Image from '@/components/LegacyUpload/Image';
 import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
+import Toggle from '@/components/Toggle';
 import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { amznIDSelector, reviewSelector } from '@/ducks/publish/alexa';
@@ -500,7 +500,7 @@ class Skill extends Component {
             <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
             <div className="d-flex">
               <u className="mr-2">{copa ? 'YES' : 'NO'}</u>
-              <Toggle checked={copa} icons={false} onChange={() => this.setState({ copa: !copa }, this.updateTerms)} />
+              <Toggle checked={copa} onChange={() => this.setState({ copa: !copa }, this.updateTerms)} />
             </div>
           </FormGroup>
         </>

@@ -802,7 +802,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
               <div>
                 <div
                   className="c26"
-                  onClick={[Function]}
                 >
                   <span
                     className="c11 c27"

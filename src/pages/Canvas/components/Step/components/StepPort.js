@@ -3,7 +3,7 @@ import { css, styled, units } from '@/hocs';
 const PORT_LEFT_PADDING = 12;
 const PORT_SIZE = 14;
 
-const Port = styled.div`
+const StepPort = styled.div`
   position: relative;
   height: ${({ theme }) => theme.components.step.minHeight}px;
   width: ${({ theme }) => PORT_LEFT_PADDING + PORT_SIZE + theme.unit * 2}px;
@@ -38,4 +38,4 @@ const Port = styled.div`
   }
 `;
 
-export default Port;
+export default StepPort;

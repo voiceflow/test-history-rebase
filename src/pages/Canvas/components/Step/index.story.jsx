@@ -145,3 +145,13 @@ export const withElseConnected = () => (
     </Step>
   </NewBlock>
 );
+
+export const withImage = () => (
+  <NewBlock name="Block">
+    <Step image="https://picsum.photos/seed/picsum/200/300">
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+    </Step>
+  </NewBlock>
+);

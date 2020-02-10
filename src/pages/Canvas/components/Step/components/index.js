@@ -1,4 +1,6 @@
 export { default as IconContainer } from './StepIconContainer';
+export { default as Image } from './StepImage';
+export { default as ImageContainer } from './StepImageContainer';
 export { default as Container } from './StepContainer';
 export { default as Port } from './StepPort';
 export { default as LabelText } from './StepLabelText';

@@ -43,6 +43,9 @@ module.exports = merge(commonConfig, {
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
 
+              // TODO: remove when releasing step redesign
+              'pages/Canvas/managers/*/*Step/**/*',
+
               // TODO: remove when re-enabling display editor
               'components/Upload/JsonUpload/**/*',
               'utils/files.js',

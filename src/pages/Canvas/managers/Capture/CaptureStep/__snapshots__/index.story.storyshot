@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
+exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
   opacity: 0.8;
 }
 
@@ -16,20 +16,20 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
 }
 
 .c11:hover {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
 .c11:active {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
-.c16 .c10 {
+.c15 .c10 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c16 .c10 {
   color: #6e849a;
 }
 
@@ -84,21 +84,6 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   margin-right: 16px;
 }
 
-.c15 {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  background: url(https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg) no-repeat center center;
-  background-size: cover;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
-}
-
-.c14 {
-  padding: 0 12px 12px 12px;
-  height: 180px;
-  width: 100%;
-}
-
 .c8 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -139,7 +124,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c17 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -165,7 +150,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -174,7 +159,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -202,6 +187,10 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   color: #62778c;
 }
 
+.c13 {
+  color: #132144;
+}
+
 <div
   className="c0"
 >
@@ -211,7 +200,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
     <span
       className="c2"
     >
-      Card Block
+      Capture Block
     </span>
   </header>
   <section
@@ -231,43 +220,47 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
           >
             <span
               className="c10 c11"
-              color="#616c60"
+              color="#58457a"
               size={16}
             >
               <svg
-                data-file-name="SvgLogs"
+                data-file-name="SvgMicrophone"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            Hi {name}, welcome to Hogwarts
+            Capture 
+            <span
+              className="c13"
+            >
+              {FirstName}
+            </span>
+             to 
+            <span
+              className="c13"
+            >
+              {Name}
+            </span>
           </span>
           <div
-            className="c13"
+            className="c14"
             onClick={[Function]}
           />
         </div>
-      </div>
-      <div
-        className="c14"
-      >
-        <div
-          className="c15"
-        />
       </div>
     </div>
   </section>
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
+exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
   opacity: 0.8;
 }
 
@@ -278,20 +271,20 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
 }
 
 .c11:hover {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
 .c11:active {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
-.c14 .c10 {
+.c15 .c10 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c10 {
   color: #6e849a;
 }
 
@@ -408,11 +401,11 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
+.c17 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -421,7 +414,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -448,6 +441,10 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   color: #62778c;
 }
 
+.c13 {
+  color: #132144;
+}
+
 <div
   className="c0"
 >
@@ -457,7 +454,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
     <span
       className="c2"
     >
-      Card Block
+      Capture Block
     </span>
   </header>
   <section
@@ -477,21 +474,32 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
           >
             <span
               className="c10 c11"
-              color="#616c60"
+              color="#58457a"
               size={16}
             >
               <svg
-                data-file-name="SvgLogs"
+                data-file-name="SvgMicrophone"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            Hi {name}, welcome to Hogwarts
+            Capture 
+            <span
+              className="c13"
+            >
+              {FirstName}
+            </span>
+             to 
+            <span
+              className="c13"
+            >
+              {Name}
+            </span>
           </span>
           <div
-            className="c13"
+            className="c14"
             onClick={[Function]}
           />
         </div>
@@ -501,12 +509,12 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
+exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
   opacity: 0.8;
 }
 
@@ -517,12 +525,12 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 }
 
 .c11:hover {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
 .c11:active {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
@@ -644,10 +652,6 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 }
 
 .c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c16 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -697,7 +701,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
     <span
       className="c2"
     >
-      Card Block
+      Capture Block
     </span>
   </header>
   <section
@@ -717,18 +721,18 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
           >
             <span
               className="c10 c11"
-              color="#616c60"
+              color="#58457a"
               size={16}
             >
               <svg
-                data-file-name="SvgLogs"
+                data-file-name="SvgMicrophone"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            This card has no content
+            Capture a user response
           </span>
           <div
             className="c13"
@@ -741,12 +745,12 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
+exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
   opacity: 0.8;
 }
 
@@ -757,20 +761,20 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
 }
 
 .c11:hover {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
 .c11:active {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
+}
+
+.c15 .c10 {
+  color: #fff;
 }
 
 .c16 .c10 {
-  color: #fff;
-}
-
-.c17 .c10 {
   color: #6e849a;
 }
 
@@ -825,19 +829,255 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   margin-right: 16px;
 }
 
-.c15 {
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
   width: 100%;
-  height: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
   border-radius: 5px;
-  background: url(https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg) no-repeat center center;
-  background-size: cover;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 {
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      Capture Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#58457a"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgMicrophone"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            Capture 
+            <span
+              className="c13"
+            >
+              {UK_First_name}
+            </span>
+             to 
+            <span
+              className="c13"
+            >
+              {Name}
+            </span>
+          </span>
+          <div
+            className="c14"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #58457a;
+  opacity: 0.8;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11:hover {
+  color: #58457a;
+  opacity: 1;
+}
+
+.c11:active {
+  color: #58457a;
+  opacity: 1;
+}
+
+.c15 .c10 {
+  color: #fff;
+}
+
+.c16 .c10 {
+  color: #6e849a;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
   padding: 0 12px 12px 12px;
-  height: 180px;
-  width: 100%;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
 }
 
 .c8 {
@@ -902,11 +1142,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -915,7 +1151,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -943,6 +1179,10 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   color: #62778c;
 }
 
+.c13 {
+  color: #132144;
+}
+
 <div
   className="c0"
 >
@@ -952,7 +1192,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
     <span
       className="c2"
     >
-      Card Block
+      Capture Block
     </span>
   </header>
   <section
@@ -972,43 +1212,47 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
           >
             <span
               className="c10 c11"
-              color="#616c60"
+              color="#58457a"
               size={16}
             >
               <svg
-                data-file-name="SvgLogs"
+                data-file-name="SvgMicrophone"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            Hi {name}, welcome to Hogwarts
+            Capture 
+            <span
+              className="c13"
+            >
+              {FirstName}
+            </span>
+             to 
+            <span
+              className="c13"
+            >
+              {Name}
+            </span>
           </span>
           <div
-            className="c13"
+            className="c14"
             onClick={[Function]}
           />
         </div>
-      </div>
-      <div
-        className="c14"
-      >
-        <div
-          className="c15"
-        />
       </div>
     </div>
   </section>
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
+exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
   opacity: 0.8;
 }
 
@@ -1019,12 +1263,12 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
 }
 
 .c11:hover {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
 .c11:active {
-  color: #616c60;
+  color: #58457a;
   opacity: 1;
 }
 
@@ -1149,45 +1393,18 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
 }
 
 .c13 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  cursor: copy;
-  padding-left: 12px;
-  margin: -16px -16px -16px 0;
-}
-
-.c13::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
+  color: #132144;
 }
 
 <div
@@ -1199,7 +1416,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
     <span
       className="c2"
     >
-      Card Block
+      Capture Block
     </span>
   </header>
   <section
@@ -1219,471 +1436,29 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
           >
             <span
               className="c10 c11"
-              color="#616c60"
+              color="#58457a"
               size={16}
             >
               <svg
-                data-file-name="SvgLogs"
+                data-file-name="SvgMicrophone"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            Hi {name}, welcome to Hogwarts
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-  opacity: 0.8;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c14 .c10 {
-  color: #fff;
-}
-
-.c15 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  width: 16px;
-  margin-right: 16px;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c16 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c13 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  cursor: copy;
-  padding-left: 12px;
-  margin: -16px -16px -16px 0;
-}
-
-.c13::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Card Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
+            Capture 
             <span
-              className="c10 c11"
-              color="#616c60"
-              size={16}
+              className="c13"
             >
-              <svg
-                data-file-name="SvgLogs"
-              />
+              {FirstName}
             </span>
-          </div>
-          <span
-            className="c12"
-          >
-            Hi {name}, welcome to Hogwarts; a magical school of whimsy and mystery
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-  opacity: 0.8;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c13 .c10 {
-  color: #fff;
-}
-
-.c14 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  width: 16px;
-  margin-right: 16px;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c15 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Card Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
+             to 
             <span
-              className="c10 c11"
-              color="#616c60"
-              size={16}
+              className="c13"
             >
-              <svg
-                data-file-name="SvgLogs"
-              />
+              {Name}
             </span>
-          </div>
-          <span
-            className="c12"
-          >
-            Hi {name}, welcome to Hogwarts
           </span>
         </div>
       </div>

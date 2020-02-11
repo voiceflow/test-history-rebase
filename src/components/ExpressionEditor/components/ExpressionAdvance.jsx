@@ -11,7 +11,7 @@ import OperatorButton from './OperatorButton';
 
 const BLANK_SPACE_PATTERN = /^\s+$/;
 
-function ExpressionAdvance({ value, depth, onChange, isPreview, variables, onUpdateType }) {
+function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType }) {
   if (isPreview) {
     return !_isObject(value) || value[0] === '' ? (
       <span className="math unknown">?</span>

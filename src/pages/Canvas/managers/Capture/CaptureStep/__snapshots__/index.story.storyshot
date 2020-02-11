@@ -655,6 +655,10 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
+.c16 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
 .c13 {
   position: relative;
   height: 54px;
@@ -888,6 +892,10 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
 }
 
 .c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c17 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1142,6 +1150,10 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
+.c17 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
 .c14 {
   position: relative;
   height: 54px;
@@ -1390,6 +1402,10 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
 }
 
 .c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c16 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 

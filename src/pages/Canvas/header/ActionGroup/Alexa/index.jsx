@@ -7,7 +7,7 @@ import { ALEXA_STAGES, ALEXA_STATES, resetAlexaUpload } from '@/ducks/publish/al
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 
 import { Close, PopupContainer, PopupTransition } from '../styled';
-import UploadButton from './UploadButton';
+import Upload from './Upload';
 
 const AlexaActionGroup = (props) => {
   const { stage, id, amazon, checkAmazonAccount, getVendors, resetAlexaUpload } = props;
@@ -31,7 +31,7 @@ const AlexaActionGroup = (props) => {
 
   return (
     <>
-      <UploadButton setPopup={setOpen} />
+      <Upload setPopup={setOpen} />
       <PopupContainer open={open}>
         <Close onClick={() => setOpen(false)} />
         <PopupTransition>

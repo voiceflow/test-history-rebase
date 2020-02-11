@@ -10,13 +10,13 @@ const DROPDOWN_VARIANTS = {
   secondary: SecondaryDropdownButton,
 };
 
-function DropdownButton({ variant, options, onSelect, disabled, children }) {
+function DropdownButton({ variant, options, menu, onSelect, disabled, children, dropdownProps, buttonProps }) {
   const Component = DROPDOWN_VARIANTS[variant] || PrimaryDropdownButton;
 
   return (
-    <Dropdown options={options} onSelect={onSelect} placement="bottom-end">
+    <Dropdown options={options} menu={menu} onSelect={onSelect} placement="bottom-end" {...dropdownProps}>
       {(ref, onToggle) => (
-        <Component disabled={disabled} onToggle={onToggle} ref={ref}>
+        <Component disabled={disabled} onToggle={onToggle} ref={ref} buttonProps={buttonProps}>
           {children}
         </Component>
       )}

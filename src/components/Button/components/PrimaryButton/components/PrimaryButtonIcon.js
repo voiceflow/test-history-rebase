@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const PrimaryButtonIcon = styled.span`
   margin-right: 6px;
-  padding: 9px;
+  padding: 7px;
   border-radius: 50%;
   height: 30px;
   width: 30px;

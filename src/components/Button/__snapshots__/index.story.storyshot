@@ -65,8 +65,8 @@ exports[`Storyshots Button Primary 1`] = `
 exports[`Storyshots Button Primary With Icon 1`] = `
 .c3 {
   box-sizing: content-box;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   color: #FFF;
   opacity: 0.8;
 }
@@ -89,7 +89,7 @@ exports[`Storyshots Button Primary With Icon 1`] = `
 
 .c2 {
   margin-right: 6px;
-  padding: 9px;
+  padding: 7px;
   border-radius: 50%;
   height: 30px;
   width: 30px;
@@ -161,7 +161,7 @@ exports[`Storyshots Button Primary With Icon 1`] = `
     <span
       className="c3"
       color="#FFF"
-      size={12}
+      size={16}
     >
       <svg
         data-file-name="SvgPlus"

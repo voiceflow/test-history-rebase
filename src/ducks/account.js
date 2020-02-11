@@ -52,6 +52,8 @@ export const userIDSelector = createSelector(userSelector, ({ creator_id }) => c
 
 export const amazonAccountSelector = createSelector(userSelector, ({ amazon }) => amazon);
 
+export const amazonVendorsSelector = createSelector(amazonAccountSelector, (amazon) => amazon?.vendors ?? []);
+
 // action creators
 
 export const resetAccount = () => createAction(RESET_ACCOUNT);

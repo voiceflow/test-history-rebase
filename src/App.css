@@ -2428,27 +2428,6 @@ kbd {
   }
 }
 
-.multi-vendor-tooltip {
-  width: 165px;
-}
-
-.vendor-button {
-  width: 100%;
-  margin: 0 !important;
-  border-radius: 0 !important;
-  cursor: pointer;
-}
-
-.vendor-button > span {
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.vendor-button:hover {
-  background-color: #ececec;
-}
-
 /* extra */
 
 .sidenav {

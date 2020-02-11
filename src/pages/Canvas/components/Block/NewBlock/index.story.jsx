@@ -26,6 +26,11 @@ const getProps = () => ({
   children: MOCK_STEPS,
 });
 
+export default {
+  title: 'Creator/New Block',
+  component: NewBlock,
+};
+
 export const standard = () => <NewBlock name="New Block 1" {...getProps()} />;
 
 export const blue = () => <NewBlock name="New Block 1" variant="blue" {...getProps()} />;

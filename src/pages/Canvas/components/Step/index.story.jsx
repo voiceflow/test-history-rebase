@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import NewBlock from '../Block/NewBlock';
-import Step, { ElseItem, Item, Section } from '.';
+import Step, { ElseItem, FailureItem, Item, Section, SuccessItem } from '.';
 
 const getProps = () => {
   const onClickPort = action('click port');
@@ -11,6 +11,11 @@ const getProps = () => {
     label: 'Step',
     onClickPort,
   };
+};
+
+export default {
+  title: 'Creator/Step',
+  component: Step,
 };
 
 export const primary = () => (
@@ -151,6 +156,34 @@ export const withImage = () => (
     <Step image="https://picsum.photos/seed/picsum/200/300">
       <Section>
         <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withSuccessFail = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item isConnected {...getProps()} />
+      </Section>
+      <Section>
+        <FailureItem isConnected />
+        <SuccessItem />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withCustomSuccessFail = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item isConnected {...getProps()} />
+      </Section>
+      <Section>
+        <FailureItem label="Declined" />
+        <SuccessItem label="Successfully Cancelled" isConnected />
       </Section>
     </Step>
   </NewBlock>

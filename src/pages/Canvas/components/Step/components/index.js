@@ -7,3 +7,5 @@ export { default as LabelText } from './StepLabelText';
 export { default as Section } from './StepSection';
 export { default as Item } from './StepItem';
 export { default as ElseItem } from './ElseStepItem';
+export { default as SuccessItem } from './SuccessStepItem';
+export { default as FailureItem } from './FailureStepItem';

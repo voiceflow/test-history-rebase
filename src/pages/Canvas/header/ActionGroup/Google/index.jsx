@@ -8,7 +8,7 @@ import { GOOGLE_STAGES, GOOGLE_STATES, resetGoogleUpload } from '@/ducks/publish
 import UploadGoogle from '@/pages/Publish/Upload/Google';
 
 import { Close, PopupContainer, PopupTransition } from '../styled';
-import UploadButton from './UploadButton';
+import Upload from './Upload';
 
 const GoogleActionGroup = (props) => {
   const { stage, id, google, checkGoogleAccount, resetGoogleUpload } = props;
@@ -33,7 +33,7 @@ const GoogleActionGroup = (props) => {
 
   return (
     <>
-      <UploadButton setPopup={setOpen} />
+      <Upload setPopup={setOpen} />
       {[GOOGLE_STAGES.GOOGLE_LOGIN, GOOGLE_STAGES.NO_DIALOGFLOW].includes(stage) ? (
         <Modal isOpen={open} contentClassName="overflow-hidden" toggle={close}>
           <ModalHeader toggle={close}>{GOOGLE_STATES[stage].description}</ModalHeader>

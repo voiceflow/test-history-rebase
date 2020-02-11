@@ -6,10 +6,10 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Toggle } from './components';
 
-function DropdownButton({ disabled, onToggle, children }, ref) {
+function DropdownButton({ disabled, onToggle, children, buttonProps }, ref) {
   return (
     <Container ref={ref} inline>
-      <PrimaryButton disabled={disabled} canHover={false}>
+      <PrimaryButton disabled={disabled} canHover={false} {...buttonProps}>
         {children}
       </PrimaryButton>
       <PrimaryButtonContainer disabled={disabled} canHover={false} onClick={onToggle}>

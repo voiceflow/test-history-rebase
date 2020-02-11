@@ -1,0 +1,14 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import RandomStep from '.';
+
+<Meta title="Creator/Steps/Random Step" component={RandomStep} />
+
+# Random Step
+
+<Preview>
+  <Story name="single path">{stories.singlePath()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="many paths">{stories.manyPaths()}</Story>
+</Preview>

@@ -1,0 +1,1181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/New Block Active State 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 12px 32px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #132144;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Blue 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(197,231,246,0.8),#c5e7f6);
+  box-shadow: 0 0 0 1.3px #2a94d450;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px #2a94d450,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f7ec0;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Disabled State 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+  opacity: 0.7;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Green 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(229,238,229,0.8),#e5eee5);
+  box-shadow: 0 0 0 1.3px #68906850;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px #68906850 ,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7a6b;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Long Name 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      Block with a veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery long name
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Purple 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(232,222,238,0.8),#e8deee);
+  box-shadow: 0 0 0 1.3px #9888a250;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px #9888a250,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #765e84;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Red 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(255,216,226,0.8),#ffd8e2);
+  box-shadow: 0 0 0 1.3px #b88b9750;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px #b88b9750,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #a84862;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Regular State 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Selected State 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+  border-color: #5d9df5;
+  box-shadow: none;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #132144;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block Standard 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/New Block State Transitions 1`] = `
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      New Block 1
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      Step 1
+    </div>
+    <div
+      className="c4"
+    >
+      Step 2
+    </div>
+    <div
+      className="c4"
+    >
+      Step 3
+    </div>
+    <div
+      className="c4"
+    >
+      Step 4
+    </div>
+    <div
+      className="c4"
+    >
+      Step 5
+    </div>
+  </section>
+</div>
+`;

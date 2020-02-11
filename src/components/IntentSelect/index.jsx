@@ -6,9 +6,12 @@ import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
 
-import { MissingIntentMessage } from './components';
+import { MissingIntentMessage, Option } from './components';
 
 const getOptionValue = (option) => option.id;
+const labelRenderer = (option, searchLabel, getOptionLabel, getOptionValue, options) => (
+  <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} options={options} />
+);
 
 function IntentSelect({ intent, intents, onChange, addIntent }) {
   const intentID = intent?.id;
@@ -56,6 +59,7 @@ function IntentSelect({ intent, intents, onChange, addIntent }) {
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         isButtonDisabled={isButtonDisabled}
+        renderOptionLabel={labelRenderer}
         createInputPlaceholder="Name new intent"
       />
       {intentMissing && <MissingIntentMessage variant="warning" message="Intent is broken or has been deleted." />}

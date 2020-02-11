@@ -130,3 +130,5 @@ export { default as randomLoop } from './random.svg';
 export { default as stopCircle } from './stop-circle.svg';
 export { default as amazon } from './brands/amazon.svg';
 export { default as google } from './brands/google.svg';
+export { default as else } from './else.svg';
+export { default as microphone } from './solid/microphone.svg';

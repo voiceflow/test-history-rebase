@@ -4,9 +4,9 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Toggle } from './components';
 
-function DropdownButton({ disabled, onToggle, children }, ref) {
+function DropdownButton({ disabled, onToggle, children, buttonProps }, ref) {
   return (
-    <Container disabled={disabled} canHover={false} onClick={onToggle} ref={ref}>
+    <Container disabled={disabled} canHover={false} onClick={onToggle} ref={ref} {...buttonProps}>
       {children}
       <Toggle>
         <SvgIcon icon="caretDown" width={10} />

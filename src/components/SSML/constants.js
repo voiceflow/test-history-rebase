@@ -107,17 +107,17 @@ export const UNIVERSAL_TAGS = {
 };
 
 export const ALEXA_DEFAULT_TAGS = {
-  'amazon:domain': {
-    color: '#F5A623',
-    attributes: {
-      name: {
-        type: 'select',
-        options: ['news', 'music'],
-        default: 'news',
-        required: true,
-      },
-    },
-  },
+  // 'amazon:domain': {
+  //   color: '#F5A623',
+  //   attributes: {
+  //     name: {
+  //       type: 'select',
+  //       options: ['news', 'music'],
+  //       default: 'news',
+  //       required: true,
+  //     },
+  //   },
+  // },
   'amazon:effect': {
     color: '#4E6FF9',
     attributes: {
@@ -129,22 +129,22 @@ export const ALEXA_DEFAULT_TAGS = {
       },
     },
   },
-  'amazon:emotion': {
-    color: '#E72D75',
-    attributes: {
-      name: {
-        type: 'select',
-        options: ['excited', 'disappointed'],
-        default: 'excited',
-        required: true,
-      },
-      intensity: {
-        type: 'select',
-        options: ['low', 'medium', 'high'],
-        required: true,
-      },
-    },
-  },
+  // 'amazon:emotion': {
+  //   color: '#E72D75',
+  //   attributes: {
+  //     name: {
+  //       type: 'select',
+  //       options: ['excited', 'disappointed'],
+  //       default: 'excited',
+  //       required: true,
+  //     },
+  //     intensity: {
+  //       type: 'select',
+  //       options: ['low', 'medium', 'high'],
+  //       required: true,
+  //     },
+  //   },
+  // },
   'say-as': {
     color: '#C79839',
     attributes: {

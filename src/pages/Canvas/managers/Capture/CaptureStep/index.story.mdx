@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import CaptureStep from '.';
+
+<Meta title="Creator/Steps/Capture Step" component={CaptureStep} />
+
+# Capture Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="with variables">{stories.withVariables()}</Story>
+  <Story name="with long variables">{stories.withLongVariables()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+  <Story name="active">{stories.active()}</Story>
+</Preview>

@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import CardStep from '.';
+
+<Meta title="Creator/Steps/Card Step" component={CardStep} />
+
+# Card Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="with label">{stories.withLabel()}</Story>
+  <Story name="with long label">{stories.withLongLabel()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+  <Story name="with image">{stories.withImage()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+</Preview>

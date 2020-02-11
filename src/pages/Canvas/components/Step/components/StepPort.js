@@ -3,7 +3,9 @@ import { css, styled, units } from '@/hocs';
 const PORT_LEFT_PADDING = 12;
 const PORT_SIZE = 14;
 
-const Port = styled.div`
+const getPortColor = ({ color = '#6e849a' }) => color;
+
+const StepPort = styled.div`
   position: relative;
   height: ${({ theme }) => theme.components.step.minHeight}px;
   width: ${({ theme }) => PORT_LEFT_PADDING + PORT_SIZE + theme.unit * 2}px;
@@ -19,7 +21,7 @@ const Port = styled.div`
     left: ${PORT_SIZE / 2 + PORT_LEFT_PADDING}px;
     transform: translate(-50%, -50%);
     box-sizing: content-box;
-    box-shadow: 0 0 0 1px #6e849a;
+    box-shadow: 0 0 0 1px ${getPortColor};
     border-radius: 50%;
 
     ${({ isConnected }) =>
@@ -27,15 +29,15 @@ const Port = styled.div`
         ? css`
             height: 9px;
             width: 9px;
-            background: linear-gradient(to bottom, rgba(98, 119, 140, 0.12), rgba(98, 119, 140, 0.24) 100%);
+            background: ${({ color = '#62778c' }) => `linear-gradient(to bottom, ${color}1f, ${color}3d 100%)`};
           `
         : css`
             height: 5px;
             width: 5px;
-            background-color: #6e849a;
+            background-color: ${getPortColor};
             border: 4px solid white;
           `}
   }
 `;
 
-export default Port;
+export default StepPort;

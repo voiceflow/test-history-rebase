@@ -26,6 +26,7 @@ module.exports = {
     'class-methods-use-this': ['error', { exceptMethods: ['render'] }],
     'lodash/preferred-alias': ['error', { ignoreMethods: ['first'] }],
     'react-hooks/rules-of-hooks': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
 
     // disabled
     'react/no-unescaped-entities': 'off',

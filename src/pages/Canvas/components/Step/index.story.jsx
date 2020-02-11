@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import NewBlock from '../Block/NewBlock';
-import Step from '.';
+import Step, { ElseItem, FailureItem, Item, Section, SuccessItem } from '.';
 
 const getProps = () => {
   const onClickPort = action('click port');
@@ -13,15 +13,28 @@ const getProps = () => {
   };
 };
 
+export default {
+  title: 'Creator/Step',
+  component: Step,
+};
+
 export const primary = () => (
   <NewBlock name="Block">
-    <Step {...getProps()} label="Primary Step" />
+    <Step>
+      <Section>
+        <Item {...getProps()} label="Primary Step" />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const secondary = () => (
   <NewBlock name="Block">
-    <Step labelVariant="secondary" {...getProps()} label="Secondary Step" />
+    <Step>
+      <Section>
+        <Item labelVariant="secondary" {...getProps()} label="Secondary Step" />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
@@ -30,43 +43,148 @@ export const withPlaceholder = () => {
 
   return (
     <NewBlock name="Block">
-      <Step labelVariant="secondary" placeholder="This step has a placeholder" {...props} />
+      <Step>
+        <Section>
+          <Item labelVariant="secondary" placeholder="This step has a placeholder" {...props} />
+        </Section>
+      </Step>
     </NewBlock>
   );
 };
 
 export const withIcon = () => (
   <NewBlock name="Block">
-    <Step icon="code" iconColor="red" {...getProps()} label="Step With Icon" />
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} label="Step With Icon" />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const withoutPort = () => (
   <NewBlock name="Block">
-    <Step withPort={false} {...getProps()} label="Step Without Port  " />
+    <Step>
+      <Section>
+        <Item withPort={false} {...getProps()} label="Step Without Port  " />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const withLongLabel = () => (
   <NewBlock name="Block">
-    <Step {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+    <Step>
+      <Section>
+        <Item {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const withLongLabelAndNoPort = () => (
   <NewBlock name="Block">
-    <Step withPort={false} {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+    <Step>
+      <Section>
+        <Item withPort={false} {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const active = () => (
   <NewBlock name="Block">
-    <Step isActive {...getProps()} />
+    <Step isActive>
+      <Section>
+        <Item {...getProps()} />
+      </Section>
+    </Step>
   </NewBlock>
 );
 
 export const withConnectedPort = () => (
   <NewBlock name="Block">
-    <Step isConnected {...getProps()} />
+    <Step>
+      <Section>
+        <Item isConnected {...getProps()} />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withMultipleSections = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+      <Section>
+        <Item isConnected {...getProps()} />
+        <Item {...getProps()} label="Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation." />
+      </Section>
+      <Section>
+        <Item withPort={false} {...getProps()} />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withElse = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+      <ElseItem />
+    </Step>
+  </NewBlock>
+);
+
+export const withElseConnected = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item icon="code" iconColor="red" isConnected {...getProps()} />
+      </Section>
+      <ElseItem isConnected />
+    </Step>
+  </NewBlock>
+);
+
+export const withImage = () => (
+  <NewBlock name="Block">
+    <Step image="https://picsum.photos/seed/picsum/200/300">
+      <Section>
+        <Item icon="code" iconColor="red" {...getProps()} />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withSuccessFail = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item isConnected {...getProps()} />
+      </Section>
+      <Section>
+        <FailureItem isConnected />
+        <SuccessItem />
+      </Section>
+    </Step>
+  </NewBlock>
+);
+
+export const withCustomSuccessFail = () => (
+  <NewBlock name="Block">
+    <Step>
+      <Section>
+        <Item isConnected {...getProps()} />
+      </Section>
+      <Section>
+        <FailureItem label="Declined" />
+        <SuccessItem label="Successfully Cancelled" isConnected />
+      </Section>
+    </Step>
   </NewBlock>
 );

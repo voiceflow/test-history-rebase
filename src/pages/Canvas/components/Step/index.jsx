@@ -1,17 +1,20 @@
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
+import { Container, Image, ImageContainer } from './components';
 
-import { Container, IconContainer, LabelText, Port } from './components';
-import { LabelVariant } from './constants';
+export * from './components';
 
-const Step = ({ icon, iconColor, label, placeholder, labelVariant = LabelVariant.PRIMARY, withPort = true, isActive, isConnected, onClickPort }) => {
+const Step = ({ isActive, image, children }) => {
   return (
     <Container isActive={isActive}>
-      <IconContainer>{icon && <SvgIcon icon={icon} color={iconColor} />}</IconContainer>
-      <LabelText variant={label ? labelVariant : LabelVariant.PLACEHOLDER}>{label || placeholder}</LabelText>
-      {withPort && <Port isConnected={isConnected} onClick={onClickPort} />}
+      {children}
+      {image && (
+        <ImageContainer>
+          <Image image={image} />
+        </ImageContainer>
+      )}
     </Container>
   );
 };
+
 export default Step;

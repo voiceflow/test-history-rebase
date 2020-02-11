@@ -195,6 +195,7 @@ export const resetAlexaUpload = () => (dispatch) => {
 };
 
 export const publishStateSelector = createPublishStateSelector(PLATFORM);
+export const publishStageSelector = createSelector(publishStateSelector, ({ stage }) => stage);
 const uploadStep = createUploadStep(PLATFORM);
 
 // STEP 8 (optional)

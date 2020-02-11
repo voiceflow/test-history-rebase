@@ -247,29 +247,25 @@ export default function Select({
 
   return (
     <Manager>
-      <SelectWrapper
-        as={wrapperTag}
-        ref={setInputWrapperRef}
-        onFocus={!labelSearchable ? onOpenMenu : null}
-        onClick={!labelSearchable ? onOpenMenu : null}
-        tabIndex={labelSearchable ? -1 : 0}
-        minWidth={minWidth}
-        isFocused={opened}
-        className={className}
-        fullWidth={fullWidth}
-        clearable={clearable}
-      >
-        <Reference
-          innerRef={(ref) => {
-            inputRef.current = ref;
-          }}
-        >
-          {({ ref }) =>
-            triggerRenderer ? (
-              triggerRenderer({ ...inputProps, value: searchLabel, ref })
+      <Reference innerRef={setInputWrapperRef}>
+        {({ ref }) => (
+          <SelectWrapper
+            as={wrapperTag}
+            ref={ref}
+            onFocus={!labelSearchable ? onOpenMenu : null}
+            onClick={!labelSearchable ? onOpenMenu : null}
+            tabIndex={labelSearchable ? -1 : 0}
+            minWidth={minWidth}
+            isFocused={opened}
+            className={className}
+            fullWidth={fullWidth}
+            clearable={clearable}
+          >
+            {triggerRenderer ? (
+              triggerRenderer({ ...inputProps, value: searchLabel, ref: inputRef })
             ) : (
               <Flex>
-                <SearchInput {...inputProps} value={label || searchLabel} ref={ref} type="search" autoComplete="off" clearable={clearable} />
+                <SearchInput {...inputProps} value={label || searchLabel} ref={inputRef} type="search" autoComplete="off" clearable={clearable} />
 
                 {!withIcon && (
                   <SearchInputIcon
@@ -280,10 +276,10 @@ export default function Select({
                   />
                 )}
               </Flex>
-            )
-          }
-        </Reference>
-      </SelectWrapper>
+            )}
+          </SelectWrapper>
+        )}
+      </Reference>
 
       {inline && (
         <Portal>

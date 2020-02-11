@@ -46,7 +46,8 @@ const SearchInput = styled(Input)`
       padding-right: ${units(9)}px;
     `}
 
-  &::-webkit-search-cancel-button {
+  &::-webkit-search-cancel-button,
+  input::-webkit-search-cancel-button {
     display: none;
   }
 `;

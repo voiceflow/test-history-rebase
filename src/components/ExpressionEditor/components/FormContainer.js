@@ -39,6 +39,7 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 26px;
     height: 26px;
+    margin: -6px;
     border: 0;
     border-radius: 5px;
     color: #8da2b5;

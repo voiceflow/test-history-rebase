@@ -10,7 +10,8 @@ const FlexFormContainer = styled(FormContainer)`
 
   ${ExpressionMenuToggle} {
     position: absolute;
-    right: ${units()}px;
+    top: 13px;
+    right: 16px;
   }
 
   ${SearchInputIcon} {

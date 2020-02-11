@@ -3,12 +3,11 @@ import _isObject from 'lodash/isObject';
 import React from 'react';
 
 import { VariableTag } from '@/components/VariableTag';
-import VariableText from '@/components/VariableText';
+import VariablesInput from '@/components/VariablesInput';
 import { ExpressionType } from '@/constants';
 
-import ExpressionOperator from './ExpressionOperator';
 import FormContainer from './FormContainer';
-import OperatorDropdown from './OperatorDropdown';
+import OperatorButton from './OperatorButton';
 
 const BLANK_SPACE_PATTERN = /^\s+$/;
 
@@ -34,19 +33,13 @@ function ExpressionAdvance({ value, depth, onChange, isPreview, variables, onUpd
 
   return (
     <FormContainer className={cn('expression-block', ExpressionType.ADVANCE)}>
-      <VariableText
+      <VariablesInput
         value={value}
-        onChange={onChange}
-        variables={variables}
-        className={cn('editor', 'form-control', 'auto-height', 'oneline', { 'is-invalid': value.error })}
+        onBlur={({ text }) => onChange(text)}
         placeholder="Enter your expression here"
+        multiline
+        rightAction={<OperatorButton depth={depth} onUpdateType={onUpdateType} />}
       />
-
-      <div className="type-button-container">
-        <OperatorDropdown update={onUpdateType} className="type-button" depth={depth}>
-          <ExpressionOperator type="select" />
-        </OperatorDropdown>
-      </div>
     </FormContainer>
   );
 }

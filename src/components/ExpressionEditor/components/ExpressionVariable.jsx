@@ -5,9 +5,8 @@ import VariableSelect from '@/components/VariableSelect';
 import { VariableTag } from '@/components/VariableTag';
 import { ExpressionType } from '@/constants';
 
-import ExpressionOperator from './ExpressionOperator';
 import FlexFormContainer from './FlexFormContainer';
-import OperatorDropdown from './OperatorDropdown';
+import OperatorButton from './OperatorButton';
 
 function ExpressionVariable({ value, depth, onChange, isPreview, onUpdateType }) {
   if (isPreview) {
@@ -16,11 +15,7 @@ function ExpressionVariable({ value, depth, onChange, isPreview, onUpdateType })
 
   return (
     <FlexFormContainer className={cn('expression-block', ExpressionType.VARIABLE)}>
-      <VariableSelect value={value} onChange={onChange} fullWidth />
-
-      <OperatorDropdown update={onUpdateType} className="type-button" depth={depth}>
-        <ExpressionOperator type="select" />
-      </OperatorDropdown>
+      <VariableSelect value={value} onChange={onChange} fullWidth rightAction={<OperatorButton depth={depth} onUpdateType={onUpdateType} />} />
     </FlexFormContainer>
   );
 }

@@ -4,6 +4,7 @@ import { Manager, Popper, Reference } from 'react-popper';
 import Portal from '@/components/Portal';
 import { ExpressionType } from '@/constants';
 import { useDismissable } from '@/hooks/dismiss';
+import { swallowEvent } from '@/utils/dom';
 
 import { GROUPS, MAX_DEPTH } from '../constants';
 import ExpressionGroup from './ExpressionGroup';
@@ -28,7 +29,7 @@ function OperatorDropdown({ depth, children, update, className }) {
     <Manager>
       <Reference>
         {({ ref }) => (
-          <ExpressionMenuToggle ref={ref} isOpened={open} onClick={toggleOpen} className={className}>
+          <ExpressionMenuToggle ref={ref} isOpened={open} onClick={swallowEvent(toggleOpen)} className={className}>
             {children}
           </ExpressionMenuToggle>
         )}

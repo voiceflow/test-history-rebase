@@ -4,9 +4,8 @@ import React from 'react';
 import Input from '@/components/Input';
 import { ExpressionType } from '@/constants';
 
-import ExpressionOperator from './ExpressionOperator';
 import FormContainer from './FormContainer';
-import OperatorDropdown from './OperatorDropdown';
+import OperatorButton from './OperatorButton';
 
 const DOUBLE_QUOTE_PATTERN = /"/g;
 
@@ -29,13 +28,7 @@ function ExpressionValue({ value, depth, onChange, isPreview, onUpdateType }) {
 
   return (
     <FormContainer className={cn('expression-block', ExpressionType.VALUE)}>
-      <div className="type-button-container">
-        <OperatorDropdown update={onUpdateType} className="type-button" depth={depth}>
-          <ExpressionOperator type="select" />
-        </OperatorDropdown>
-      </div>
-
-      <Input placeholder="Value" value={value} onChange={onChangeInput} />
+      <Input placeholder="Value" value={value} onChange={onChangeInput} rightAction={<OperatorButton depth={depth} onUpdateType={onUpdateType} />} />
     </FormContainer>
   );
 }

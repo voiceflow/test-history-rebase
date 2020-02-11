@@ -1,8 +1,8 @@
 import cuid from 'cuid';
 
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { ExpressionType } from '@/constants';
 
-import { draftJSContentAdapter } from './draft';
 import { createAdapter } from './utils';
 
 const expressionAdapter = createAdapter(
@@ -38,7 +38,7 @@ export default expressionAdapter;
 function convertExpressionValueFromDB(type, value) {
   switch (type) {
     case ExpressionType.ADVANCE:
-      return draftJSContentAdapter.fromDB(value);
+      return textEditorContentAdapter.fromDB(value);
     case ExpressionType.VARIABLE:
       return value.value;
     case ExpressionType.NOT:
@@ -61,7 +61,7 @@ function convertExpressionValueFromDB(type, value) {
 function convertExpressionValueToDB(type, value) {
   switch (type) {
     case ExpressionType.ADVANCE:
-      return draftJSContentAdapter.toDB(value);
+      return textEditorContentAdapter.toDB(value);
     case ExpressionType.VARIABLE:
       return { value };
     case ExpressionType.NOT:

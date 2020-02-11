@@ -1,19 +1,18 @@
 import React from 'react';
 
+import { useHoveredXmlTag } from '../hooks';
 import Tag from './Tag';
 
 export default function CloseTag({ store, tags, entityKey, contentState, offsetKey, globalStore }) {
   const { key, tag, text, linkedKey } = contentState.getEntity(entityKey).getData();
-  const hoveredTagKey = store.get('hoveredTagKey');
+  const hoveredTagKey = useHoveredXmlTag(key, linkedKey, store);
 
   const onMouseEnter = React.useCallback(() => {
     if (globalStore.get('readOnly')) {
       return;
     }
 
-    store.set('hoveredTagKey', key);
-
-    store.forceRerender();
+    store.forceRerenderTags(key);
   }, [globalStore, key, store]);
 
   const onMouseLeave = React.useCallback(() => {
@@ -21,9 +20,7 @@ export default function CloseTag({ store, tags, entityKey, contentState, offsetK
       return;
     }
 
-    store.set('hoveredTagKey', null);
-
-    store.forceRerender();
+    store.forceRerenderTags();
   }, [globalStore, store]);
 
   return (

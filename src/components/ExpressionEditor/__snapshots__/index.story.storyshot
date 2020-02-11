@@ -98,7 +98,7 @@ Array [
   border: 1px solid #d2dae2;
   border-radius: 6px;
   padding: 10px 16px;
-  line-height: 22px;
+  line-height: 20px;
   cursor: text;
   -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
   transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
@@ -185,7 +185,8 @@ Array [
   width: 100%;
 }
 
-.c12::-webkit-search-cancel-button {
+.c12::-webkit-search-cancel-button,
+.c12 input::-webkit-search-cancel-button {
   display: none;
 }
 
@@ -254,6 +255,7 @@ Array [
   justify-content: center;
   width: 26px;
   height: 26px;
+  margin: -6px;
   border: 0;
   border-radius: 5px;
   color: #8da2b5;
@@ -436,6 +438,7 @@ Array [
   justify-content: center;
   width: 26px;
   height: 26px;
+  margin: -6px;
   border: 0;
   border-radius: 5px;
   color: #8da2b5;
@@ -558,7 +561,8 @@ Array [
 
 .c8 .c15 {
   position: absolute;
-  right: 8px;
+  top: 13px;
+  right: 16px;
 }
 
 .c8 .c17 {

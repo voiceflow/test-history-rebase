@@ -6,23 +6,12 @@ exports[`Storyshots Overflow Menu Different Actions For Menu Item 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c3:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c0 {
@@ -105,23 +94,12 @@ exports[`Storyshots Overflow Menu Same Actions For Menu Item 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c3:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c0 {

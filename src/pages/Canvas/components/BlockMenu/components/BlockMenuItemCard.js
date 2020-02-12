@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import { flexStyles } from '@/components/Flex';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { css, styled, units } from '@/hocs';
 
 import MenuTooltipContainer from './MenuTooltipContainer';
@@ -34,7 +34,7 @@ const BlockMenuItemCard = styled(Card)`
     cursor: grabbing;
   }
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
       color: #BECEDC;
       margin-right: ${units(1.5)}px;
   }

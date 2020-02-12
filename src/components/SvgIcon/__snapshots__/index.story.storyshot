@@ -8,23 +8,12 @@ exports[`Storyshots SVG Icon Normal 1`] = `
   width: 24px;
   height: 24px;
   color: #000;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: #000;
-  opacity: 1;
-}
-
-.c1:active {
-  color: #000;
-  opacity: 1;
 }
 
 .c2 .c0 {
@@ -54,23 +43,12 @@ exports[`Storyshots SVG Icon With Height And Width 1`] = `
   width: 24px;
   height: 24px;
   color: #000;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: #000;
-  opacity: 1;
-}
-
-.c1:active {
-  color: #000;
-  opacity: 1;
 }
 
 .c2 .c0 {
@@ -102,23 +80,12 @@ exports[`Storyshots SVG Icon With Many Transitions 1`] = `
   width: 24px;
   height: 24px;
   color: #000;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: #000;
-  opacity: 1;
-}
-
-.c1:active {
-  color: #000;
-  opacity: 1;
 }
 
 .c2 .c0 {

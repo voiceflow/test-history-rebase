@@ -22,7 +22,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c12 > svg {
@@ -31,22 +30,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   height: inherit;
 }
 
-.c12:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c12:active {
-  color: currentColor;
-  opacity: 1;
-}
-
 .c36 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6E849A;
-  opacity: 0.8;
 }
 
 .c36 > svg {
@@ -55,22 +43,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   height: inherit;
 }
 
-.c36:hover {
-  color: #6E849A;
-  opacity: 1;
-}
-
-.c36:active {
-  color: #6E849A;
-  opacity: 1;
-}
-
 .c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #787878;
-  opacity: 0.8;
 }
 
 .c20 > svg {
@@ -79,38 +56,17 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   height: inherit;
 }
 
-.c20:hover {
-  color: #787878;
-  opacity: 1;
-}
-
-.c20:active {
-  color: #787878;
-  opacity: 1;
-}
-
 .c27 {
   box-sizing: content-box;
   width: 12px;
   height: 12px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c27 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c27:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c27:active {
-  color: #BECEDC;
-  opacity: 1;
 }
 
 .c10 {

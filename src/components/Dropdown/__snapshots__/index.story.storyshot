@@ -6,23 +6,12 @@ exports[`Storyshots Dropdown Normal 1`] = `
   width: 15px;
   height: 15px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c1:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c0 {
@@ -105,23 +94,12 @@ exports[`Storyshots Dropdown With Custom Menu 1`] = `
   width: 15px;
   height: 15px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c1:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c0 {

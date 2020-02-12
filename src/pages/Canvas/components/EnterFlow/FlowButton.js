@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const EnterFlowButton = styled(Button)`
@@ -30,7 +30,7 @@ const EnterFlowButton = styled(Button)`
     align-items: center;
   }
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     transition: none;
   }
 `;

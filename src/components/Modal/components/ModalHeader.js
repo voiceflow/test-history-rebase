@@ -1,5 +1,5 @@
 import { flexApartStyles } from '@/components/Flex';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled, units } from '@/hocs';
 
 const ModalHeader = styled.header`
@@ -11,7 +11,7 @@ const ModalHeader = styled.header`
   font-weight: 600;
   text-transform: uppercase;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     cursor: pointer;
   }
 `;

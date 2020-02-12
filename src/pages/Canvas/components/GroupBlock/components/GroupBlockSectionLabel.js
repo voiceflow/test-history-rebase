@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const GroupBlockSectionLabel = styled.div`
@@ -13,7 +13,7 @@ const GroupBlockSectionLabel = styled.div`
   padding: 0px 20px;
   text-align: center;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     position: absolute;
     left: 8px;
     top: 3px;

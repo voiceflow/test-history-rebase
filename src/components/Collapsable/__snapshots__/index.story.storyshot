@@ -37,23 +37,12 @@ exports[`Storyshots Collapsable Uncontrolled With Title 1`] = `
   width: 10px;
   height: 10px;
   color: #6E849A;
-  opacity: 0.8;
 }
 
 .c2 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c2:hover {
-  color: #6E849A;
-  opacity: 1;
-}
-
-.c2:active {
-  color: #6E849A;
-  opacity: 1;
 }
 
 .c1 {

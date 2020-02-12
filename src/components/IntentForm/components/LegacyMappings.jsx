@@ -2,7 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
-import Icon, { SvgIconContainer } from '@/components/SvgIcon';
+import SvgIcon, { Container as SvgIconContainer } from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/ClickableText';
 import { Paragraph } from '@/components/Tooltip';
 import { SlotTag, VariableTag } from '@/components/VariableTag';
@@ -13,26 +13,29 @@ import { connect, styled } from '@/hocs';
 // TODO: Deprecate this component once legacy mapping is completely deprecated
 
 const LegacySection = styled(Section)`
+  padding-bottom: 12px;
+
   ${Header} {
     padding-bottom: 12px;
   }
+
   ${HeaderContent} {
     color: #949db0;
   }
+
   ${StatusContent} {
     font-size: 15px;
   }
-
-  padding-bottom: 12px;
 `;
 
 const LegacyMappingRow = styled(Flex)`
   opacity: 0.5;
+  margin-bottom: 6px;
+
   ${SvgIconContainer} {
     color: #949db0;
     margin: 0 5px;
   }
-  margin-bottom: 6px;
 `;
 
 function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [], isNested = false }) {
@@ -89,7 +92,7 @@ function LegacyMappings({ intent, setConfirm, onDelete, slotByID, mappings = [],
       {validMappings.map(({ variable, slot }, index) => (
         <LegacyMappingRow key={index}>
           <SlotTag color={slot.color}>{slot.name}</SlotTag>
-          <Icon icon="next" />
+          <SvgIcon icon="next" />
           <VariableTag>{`{${variable}}`}</VariableTag>
         </LegacyMappingRow>
       ))}

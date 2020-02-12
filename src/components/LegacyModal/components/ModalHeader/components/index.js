@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled, units } from '@/hocs';
 
 export const ModalHeaderContainer = styled.div`
@@ -19,7 +19,7 @@ export const ModalHeaderContainer = styled.div`
     margin-bottom: 0px;
   }
 
-  & > ${SvgIconContainer} {
+  & > ${SvgIcon.Container} {
     padding: 10px;
     margin: -10px;
     cursor: pointer;

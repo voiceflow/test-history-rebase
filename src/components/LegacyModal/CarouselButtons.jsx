@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IconButton from '@/components/IconButton';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled, transition } from '@/hocs';
 
 import ModalBody from './components/ModalBody';
@@ -24,7 +24,7 @@ const Container = styled(ModalBody)`
 `;
 const LeftButton = styled(CarouselButton)`
   left: -60px;
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     position: relative;
     right: 1px;
   }
@@ -32,7 +32,8 @@ const LeftButton = styled(CarouselButton)`
 
 const RightButton = styled(CarouselButton)`
   right: -60px;
-  ${SvgIconContainer} {
+
+  ${SvgIcon.Container} {
     position: relative;
     left: 1px;
   }

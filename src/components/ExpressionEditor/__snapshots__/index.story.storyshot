@@ -18,7 +18,6 @@ Array [
   width: 16px;
   height: 16px;
   color: #6E849A;
-  opacity: 0.8;
 }
 
 .c4 > svg {
@@ -27,38 +26,17 @@ Array [
   height: inherit;
 }
 
-.c4:hover {
-  color: #6E849A;
-  opacity: 1;
-}
-
-.c4:active {
-  color: #6E849A;
-  opacity: 1;
-}
-
 .c16 {
   box-sizing: content-box;
   width: 10px;
   height: 10px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c16:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c16:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c20 .c3 {

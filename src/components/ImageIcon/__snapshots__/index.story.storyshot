@@ -34,23 +34,12 @@ exports[`Storyshots Image Icon Normal 1`] = `
   width: inheritpx;
   height: inheritpx;
   color: #d4d9e6;
-  opacity: 0.8;
 }
 
 .c2 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c2:hover {
-  color: #d4d9e6;
-  opacity: 1;
-}
-
-.c2:active {
-  color: #d4d9e6;
-  opacity: 1;
 }
 
 .c3 .c1 {

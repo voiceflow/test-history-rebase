@@ -17,7 +17,6 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
   width: 20px;
   height: 20px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c12 > svg {
@@ -26,38 +25,17 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
   height: inherit;
 }
 
-.c12:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c12:active {
-  color: #BECEDC;
-  opacity: 1;
-}
-
 .c4 {
   box-sizing: content-box;
   width: 12px;
   height: 12px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c4:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c4:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c13 .c3 {

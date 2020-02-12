@@ -6,23 +6,12 @@ exports[`Storyshots Dropdown Button Primary 1`] = `
   width: 10px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c6 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c6:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c6:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c2 {
@@ -161,23 +150,12 @@ exports[`Storyshots Dropdown Button Secondary 1`] = `
   width: 10px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c3:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c0 {

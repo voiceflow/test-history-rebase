@@ -6,23 +6,12 @@ exports[`Storyshots Upload/Icon Large 1`] = `
   width: 30px;
   height: 30px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c4:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c4:active {
-  color: #BECEDC;
-  opacity: 1;
 }
 
 .c5 .c3 {
@@ -141,23 +130,12 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
   width: 25px;
   height: 25px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c4:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c4:active {
-  color: #BECEDC;
-  opacity: 1;
 }
 
 .c5 .c3 {
@@ -276,23 +254,12 @@ exports[`Storyshots Upload/Icon Small 1`] = `
   width: 20px;
   height: 20px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c4:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c4:active {
-  color: #BECEDC;
-  opacity: 1;
 }
 
 .c5 .c3 {
@@ -411,23 +378,12 @@ exports[`Storyshots Upload/Icon Xlarge 1`] = `
   width: 37.5px;
   height: 37.5px;
   color: #BECEDC;
-  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c4:hover {
-  color: #BECEDC;
-  opacity: 1;
-}
-
-.c4:active {
-  color: #BECEDC;
-  opacity: 1;
 }
 
 .c5 .c3 {

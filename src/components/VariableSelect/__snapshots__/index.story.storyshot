@@ -17,23 +17,12 @@ exports[`Storyshots Variable Select Normal 1`] = `
   width: 10px;
   height: 10px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c5 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c5:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c5:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c8 .c4 {

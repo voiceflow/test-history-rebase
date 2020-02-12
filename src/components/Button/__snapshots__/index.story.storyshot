@@ -68,23 +68,12 @@ exports[`Storyshots Button Primary With Icon 1`] = `
   width: 16px;
   height: 16px;
   color: #FFF;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: #FFF;
-  opacity: 1;
-}
-
-.c3:active {
-  color: #FFF;
-  opacity: 1;
 }
 
 .c2 {
@@ -233,23 +222,12 @@ exports[`Storyshots Button Secondary With Icon 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c2 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c2:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c2:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c1 {

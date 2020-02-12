@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { css, styled, transition } from '@/hocs';
 
 const BillingDropdown = styled.div`
@@ -19,7 +19,7 @@ const BillingDropdown = styled.div`
        color: #5d9df5;
      `}
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     display: inline-block;
     margin-left: 5px;
   }

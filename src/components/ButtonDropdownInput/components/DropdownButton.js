@@ -1,5 +1,5 @@
 import { inputStyle } from '@/components/Input/styles';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { css, styled } from '@/hocs';
 
 import { OrientationType } from '../constants';
@@ -34,7 +34,8 @@ const DropdownButton = styled.button`
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}
-  ${SvgIconContainer} {
+
+  ${SvgIcon.Container} {
     margin-left: 5px;
     margin-top: 2px;
   }
@@ -52,6 +53,7 @@ const DropdownButton = styled.button`
     box-shadow: none !important;
     border-color: #d2dae2 !important;
   }
+
   :hover {
     color: #5d9df5 !important;
   }

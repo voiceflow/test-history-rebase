@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Flex, { FlexCenter } from '@/components/Flex';
+import Flex from '@/components/Flex';
 import useAudioPlayer from '@/hooks/audioPlayer';
 import { getAudioTitle } from '@/utils/audio';
 import { swallowEvent } from '@/utils/dom';
@@ -26,7 +26,7 @@ const formatTime = (num) => {
 function AudioPlayer({ link, onClose, autoplay = false, showDuration = false }) {
   const containerRef = React.useRef();
 
-  const { ref: audioElementRef, error, curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay });
+  const { ref: audioElementRef, curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay });
 
   const jumpToTime = ({ clientX: xCoord }) => {
     const widthOfContainer = containerRef.current.offsetWidth;
@@ -42,19 +42,17 @@ function AudioPlayer({ link, onClose, autoplay = false, showDuration = false }) 
 
   const percent = (curTime / audioDuration) * 100;
 
-  const ControlsContainer = error ? FlexCenter : Flex;
-
   return (
     <Container ref={containerRef} onClick={jumpToTime}>
       <ProgressBar percent={percent} />
 
-      <ControlsContainer fullWidth>
-        {!error && <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'play'} />}
+      <Flex fullWidth>
+        <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'play'} />
 
         <FileNameContainer>
           <Tooltip title={link}>{getAudioTitle(link)}</Tooltip>
         </FileNameContainer>
-      </ControlsContainer>
+      </Flex>
 
       {showDuration && (
         <DurationText>

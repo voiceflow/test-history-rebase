@@ -1,6 +1,7 @@
 import toLower from 'lodash/toLower';
 import React, { Fragment } from 'react';
 
+import { useHoveredXmlTag } from '../hooks';
 import { updateAttribute } from '../utils';
 import AttributeValue from './AttributeValue';
 import Tag from './Tag';
@@ -8,17 +9,16 @@ import Tag from './Tag';
 export default function OpenTag({ tags, store, entityKey, contentState, offsetKey, globalStore }) {
   const { key, text, tag, attributes, isSingle, linkedKey } = contentState.getEntity(entityKey).getData();
   const tagData = tags[tag];
-  const hoveredTagKey = store.get('hoveredTagKey');
   const attributesNames = Object.keys(attributes || {});
+
+  const hoveredTagKey = useHoveredXmlTag(key, linkedKey, store);
 
   const onMouseEnter = React.useCallback(() => {
     if (globalStore.get('readOnly')) {
       return;
     }
 
-    store.set('hoveredTagKey', key);
-
-    store.forceRerender();
+    store.forceRerenderTags(key);
   }, [key, store, globalStore]);
 
   const onMouseLeave = React.useCallback(() => {
@@ -26,9 +26,7 @@ export default function OpenTag({ tags, store, entityKey, contentState, offsetKe
       return;
     }
 
-    store.set('hoveredTagKey', null);
-
-    store.forceRerender();
+    store.forceRerenderTags();
   }, [store, globalStore]);
 
   const onUpdateAttribute = React.useCallback(
@@ -36,6 +34,7 @@ export default function OpenTag({ tags, store, entityKey, contentState, offsetKe
       const editorState = store.getEditorState();
 
       store.setEditorState(updateAttribute(editorState, entityKey, { name, value }));
+      store.forceRerenderTags();
     },
     [store, entityKey]
   );

@@ -1,5 +1,3 @@
-import { EditorState } from 'draft-js';
-
 import Store from '../store';
 
 const TAGS_HISTORY_KEY = 'vf-text-editor-xml-tags-history';
@@ -9,6 +7,7 @@ class XMLStore extends Store {
   constructor(type, data) {
     super(data);
 
+    this.tags = new Map(); // eslint-disable-line compat/compat
     this.TAGS_HISTORY_KEY = `${TAGS_HISTORY_KEY}-${type}`;
 
     try {
@@ -17,6 +16,16 @@ class XMLStore extends Store {
       this.tagsHistory = [];
     }
   }
+
+  registerTag = (key, linkedKey, forceUpdate) => {
+    this.tags.set(`key-${key}`, forceUpdate);
+    this.tags.set(`linked-key-${linkedKey}`, forceUpdate);
+  };
+
+  unRegisterTag = (key, linkedKey) => {
+    this.tags.delete(`key-${key}`);
+    this.tags.delete(`linked-key-${linkedKey}`);
+  };
 
   getTagsToHistory = () => {
     return [...this.tagsHistory];
@@ -32,10 +41,15 @@ class XMLStore extends Store {
     localStorage.setItem(this.TAGS_HISTORY_KEY, JSON.stringify(this.tagsHistory));
   };
 
-  forceRerender = () => {
-    const editorState = this.getEditorState();
+  forceRerenderTags = (key) => {
+    const prevHoveredTagKey = this.get('hoveredTagKey');
 
-    this.setEditorState(EditorState.forceSelection(editorState, editorState.getSelection()));
+    this.set('hoveredTagKey', key);
+
+    this.tags.get(`key-${key}`)?.();
+    this.tags.get(`linked-key-${key}`)?.();
+    this.tags.get(`key-${prevHoveredTagKey}`)?.();
+    this.tags.get(`linked-key-${prevHoveredTagKey}`)?.();
   };
 }
 

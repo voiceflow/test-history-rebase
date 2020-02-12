@@ -27,7 +27,7 @@ const SvgIcon = compose(
   const iconColors = theme.components.icon[variant];
 
   return (
-    <Container size={size} color={color} {...iconColors} {...props} ref={ref}>
+    <Container size={size} color={color} variant={variant} {...iconColors} {...props} ref={ref}>
       <IconElement />
     </Container>
   );

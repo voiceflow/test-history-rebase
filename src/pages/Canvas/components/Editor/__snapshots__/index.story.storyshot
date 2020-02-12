@@ -35,12 +35,23 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   width: 16px;
   height: 16px;
   color: #6E849A;
+  opacity: 0.8;
 }
 
 .c36 > svg {
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c36:hover {
+  color: #6E849A;
+  opacity: 1;
+}
+
+.c36:active {
+  color: #6E849A;
+  opacity: 1;
 }
 
 .c20 {

@@ -18,12 +18,23 @@ Array [
   width: 16px;
   height: 16px;
   color: #6E849A;
+  opacity: 0.8;
 }
 
 .c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c4:hover {
+  color: #6E849A;
+  opacity: 1;
+}
+
+.c4:active {
+  color: #6E849A;
+  opacity: 1;
 }
 
 .c16 {

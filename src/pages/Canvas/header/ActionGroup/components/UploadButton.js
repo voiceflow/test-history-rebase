@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import { Icon, Label } from '@/components/Button/components/PrimaryButton/components';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { css, styled } from '@/hocs';
 import { Spin } from '@/styles/animations';
 
@@ -13,7 +13,7 @@ const UploadButton = styled(Button).attrs({ speed: 2000, icon: 'publishSpin' })`
 
   ${Icon} {
     background: linear-gradient(-180deg, #427fcf 0%, #125bc1 68%);
-    ${SvgIconContainer} {
+    ${SvgIcon.Container} {
       display: block;
       opacity: 1;
       ${({ isUploading }) => isUploading && Spin}
@@ -22,8 +22,8 @@ const UploadButton = styled(Button).attrs({ speed: 2000, icon: 'publishSpin' })`
 
   ${Label} {
     width: 156px;
-    text-align: left;
     padding-right: 0;
+    text-align: left;
   }
 `;
 

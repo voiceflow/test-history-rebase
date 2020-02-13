@@ -99,7 +99,8 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
         />
       ) : (
         <AdvancedEditor
-          datasourceJSON={datasource}
+          display={selected}
+          datasource={datasource}
           aplCommands={aplCommands}
           createDisplay={createDisplay}
           updateDisplay={updateDisplayData}

@@ -376,7 +376,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   margin-right: 12px;
 }
 
-.c19 {
+.c19:not(:last-child) {
   margin-right: 12px;
 }
 

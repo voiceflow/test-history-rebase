@@ -2,14 +2,17 @@ import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import { SectionToggleVariant } from '@/components/Section';
+import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/ClickableText';
+import { toast } from '@/components/Toast';
 import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { DataTypes, download } from '@/utils/dom';
 import { handleJSONFileRead } from '@/utils/files';
 
-function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommands = '' }) {
+function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommands = '', datasource = '', display }) {
   const removeFile = () => {
     onChange({ jsonFileName: null, displayID: null, datasource: null });
   };
@@ -42,31 +45,65 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
     fileReader.readAsText(acceptedFiles[0]);
   };
 
+  const downloadAPL = () => {
+    try {
+      const document = JSON.parse(display.document);
+      const datasources = JSON.parse(display.datasource);
+      download(jsonFileName, JSON.stringify({ document, datasources }, null, '\t'), DataTypes.JSON);
+    } catch (err) {
+      toast.error('Invalid JSON Format');
+    }
+  };
+
   return (
     <>
-      <EditorSection isDividerNested>
-        <FormControl label="JSON File" contentBottomUnits={0}>
-          <JsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
-          <ClickableText link={APL_TOOL_LINK}>Authoring Tool</ClickableText>
-        </FormControl>
+      <EditorSection
+        variant="tertiary"
+        header="JSON File"
+        isDividerNested
+        suffix={display && <SvgIcon variant="standard" icon="downloads" onClick={downloadAPL} size={14} />}
+      >
+        <JsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
+        <ClickableText link={APL_TOOL_LINK}>Authoring Tool</ClickableText>
       </EditorSection>
-      <EditorSection header="APL Commands" isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
-        <FormControl>
-          <AceEditor
-            name="apl_commands_editor"
-            mode="json"
-            onChange={(aplCommands) => onChange({ aplCommands })}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter
-            highlightActiveLine
-            value={aplCommands}
-            setOptions={{
-              tabSize: 2,
-            }}
-          />
-        </FormControl>
-      </EditorSection>
+      {jsonFileName && (
+        <>
+          <EditorSection header="Datasource" namespace={['datasource']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
+            <FormControl>
+              <AceEditor
+                name="datasourceEditor"
+                mode="json"
+                onChange={(datasource) => onChange({ datasource })}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter
+                highlightActiveLine
+                value={datasource}
+                setOptions={{
+                  tabSize: 2,
+                }}
+              />
+            </FormControl>
+          </EditorSection>
+          <EditorSection header="APL Commands" namespace={['aplCommand']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
+            <FormControl>
+              <AceEditor
+                name="aplCommandEditor"
+                mode="json"
+                onChange={(aplCommands) => onChange({ aplCommands })}
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter
+                highlightActiveLine
+                value={aplCommands}
+                setOptions={{
+                  tabSize: 2,
+                }}
+              />
+            </FormControl>
+          </EditorSection>
+        </>
+      )}
     </>
   );
 }

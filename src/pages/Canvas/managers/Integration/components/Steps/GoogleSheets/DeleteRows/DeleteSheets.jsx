@@ -30,7 +30,7 @@ function DeleteSheets({ data, onChange, openNextStep }) {
         <LineItemContainer>
           <Label>Start Row</Label>
           <ValueContainer>
-            <VariablesInput value={data.start_row} onChange={({ text }) => onChange({ start_row: text })} placeholder="Row Number to Start Delete" />
+            <VariablesInput value={data.start_row} onBlur={({ text }) => onChange({ start_row: text })} placeholder="Row Number to Start Delete" />
           </ValueContainer>
         </LineItemContainer>
         <LineItemContainer>

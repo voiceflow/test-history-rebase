@@ -277,3 +277,21 @@ export const moveCursorToEnd = (el) => {
 };
 
 export const withTargetValue = (task) => (e) => task(e.target.value);
+
+export const DataTypes = {
+  TEXT: 'text/plain;charset=utf-8',
+  JSON: 'text/json;charset=utf-8',
+};
+
+export const download = (filename, text, data = DataTypes.TEXT) => {
+  const element = document.createElement('a');
+  element.setAttribute('href', `data:${data},${encodeURIComponent(text)}`);
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};

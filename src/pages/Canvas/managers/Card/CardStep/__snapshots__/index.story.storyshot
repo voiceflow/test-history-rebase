@@ -6,23 +6,12 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -268,23 +257,12 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -507,23 +485,12 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -747,23 +714,12 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -1009,23 +965,12 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -1249,23 +1194,12 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -1489,23 +1423,12 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   width: 16px;
   height: 16px;
   color: #616c60;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #616c60;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #616c60;
-  opacity: 1;
 }
 
 .c13 .c10 {

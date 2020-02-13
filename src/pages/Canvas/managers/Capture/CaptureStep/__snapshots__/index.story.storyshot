@@ -6,23 +6,12 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c15 .c10 {
@@ -261,23 +250,12 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c15 .c10 {
@@ -515,23 +493,12 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -755,23 +722,12 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c15 .c10 {
@@ -1010,23 +966,12 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c15 .c10 {
@@ -1265,23 +1210,12 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   width: 16px;
   height: 16px;
   color: #58457a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #58457a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #58457a;
-  opacity: 1;
 }
 
 .c14 .c10 {

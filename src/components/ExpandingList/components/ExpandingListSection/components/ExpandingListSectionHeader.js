@@ -1,5 +1,5 @@
 import { FlexApart } from '@/components/Flex';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const ExpandingListSectionHeader = styled(FlexApart)`
@@ -9,7 +9,7 @@ const ExpandingListSectionHeader = styled(FlexApart)`
   font-size: 13px;
   margin-bottom: 6px;
 
-  & ${SvgIconContainer} {
+  & ${SvgIcon.Container} {
     margin-right: ${({ theme }) => theme.unit * 0.1}px;
     color: #8da2b5;
   }

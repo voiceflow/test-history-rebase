@@ -1,50 +1,14 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { css, styled, withTheme } from '@/hocs';
-import { Spin } from '@/styles/animations/Spin';
+import { withTheme } from '@/hocs';
 import * as ICONS from '@/svgs';
 import { compose } from '@/utils/functional';
 
-export const SvgIconContainer = styled.span`
-  ${({ theme, transition }) => transition && theme.transition(...(_isString(transition) ? [transition] : transition))}
-  box-sizing: content-box;
-  width: ${({ size, width = size }) => width}px;
-  height: ${({ size, height = size }) => height}px;
-  color: ${({ color }) => color};
-  opacity: 0.8;
+import { Container } from './components';
 
-  ${({ spin }) =>
-    spin &&
-    css`
-      display: block;
-      ${Spin}
-    `}
-
-  ${({ ignoreEvents }) =>
-    ignoreEvents &&
-    css`
-      pointer-events: none;
-    `}
-
-  & > svg {
-    display: block;
-    width: inherit;
-    height: inherit;
-  }
-
-  &:hover {
-    color: ${({ hoverColor, color }) => hoverColor || color};
-    opacity: 1;
-  }
-
-  &:active {
-    color: ${({ activeColor, hoverColor, color }) => activeColor || hoverColor || color};
-    opacity: 1;
-  }
-`;
+export * from './components';
 
 const SvgIcon = compose(
   React.memo,
@@ -63,9 +27,9 @@ const SvgIcon = compose(
   const iconColors = theme.components.icon[variant];
 
   return (
-    <SvgIconContainer size={size} color={color} {...iconColors} {...props} ref={ref}>
+    <Container size={size} color={color} variant={variant} {...iconColors} {...props} ref={ref}>
       <IconElement />
-    </SvgIconContainer>
+    </Container>
   );
 });
 

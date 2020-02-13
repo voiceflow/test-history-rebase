@@ -1,4 +1,4 @@
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 import IconButtonContainer from './IconButtonContainer';
@@ -9,7 +9,7 @@ const OutlineIconButtonContainer = styled(IconButtonContainer)`
   background: #fff;
   color: #8da2b5;
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     opacity: 1;
   }
 

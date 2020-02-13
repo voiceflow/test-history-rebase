@@ -1,5 +1,5 @@
 import Select from '@/components/Select';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import TextEditor from '@/components/TextEditor';
 import { styled } from '@/hocs';
 
@@ -14,7 +14,7 @@ export const VoiceSelect = styled(Select)`
 export const Editor = styled(TextEditor)`
   align-items: flex-start;
 
-  & > ${SvgIconContainer} {
+  & > ${SvgIcon.Container} {
     margin-top: 3px;
   }
 

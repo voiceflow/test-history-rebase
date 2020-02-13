@@ -6,23 +6,12 @@ exports[`Storyshots Add-Minus Button Minus 1`] = `
   width: 11px;
   height: 11px;
   color: #fff;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: #fff;
-  opacity: 1;
-}
-
-.c1:active {
-  color: #fff;
-  opacity: 1;
 }
 
 .c0 {
@@ -64,23 +53,12 @@ exports[`Storyshots Add-Minus Button Plus 1`] = `
   width: 11px;
   height: 11px;
   color: #fff;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: #fff;
-  opacity: 1;
-}
-
-.c1:active {
-  color: #fff;
-  opacity: 1;
 }
 
 .c0 {

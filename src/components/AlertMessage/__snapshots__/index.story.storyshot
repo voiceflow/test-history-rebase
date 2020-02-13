@@ -85,23 +85,12 @@ exports[`Storyshots Alert Message Success 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c1:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c2 {
@@ -155,23 +144,12 @@ exports[`Storyshots Alert Message Warning 1`] = `
   width: 16px;
   height: 16px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c1 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c1:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c1:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c2 {

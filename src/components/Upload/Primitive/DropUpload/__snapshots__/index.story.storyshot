@@ -6,23 +6,12 @@ exports[`Storyshots Upload/Primitive/Drop Normal 1`] = `
   width: 12px;
   height: 12px;
   color: currentColor;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: currentColor;
-  opacity: 1;
-}
-
-.c3:active {
-  color: currentColor;
-  opacity: 1;
 }
 
 .c7 .c2 {

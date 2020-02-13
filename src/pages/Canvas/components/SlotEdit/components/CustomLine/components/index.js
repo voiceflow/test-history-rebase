@@ -1,5 +1,5 @@
 import Flex from '@/components/Flex';
-import { SvgIconContainer } from '@/components/SvgIcon';
+import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 export const ValueContainer = styled.div`
@@ -22,9 +22,10 @@ export const ButtonContainer = styled.div`
   opacity: 0.85;
   background-color: ${(props) => (props.disabled ? '#D4D9E6' : '#6E849A')};
 
-  ${SvgIconContainer} {
+  ${SvgIcon.Container} {
     color: white;
   }
+
   :hover {
     opacity: 1;
   }

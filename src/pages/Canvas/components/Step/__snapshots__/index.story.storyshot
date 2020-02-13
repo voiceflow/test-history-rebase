@@ -789,7 +789,6 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   width: 16px;
   height: 16px;
   color: #d94c4c;
-  opacity: 0.8;
 }
 
 .c13 > svg {
@@ -798,38 +797,17 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   height: inherit;
 }
 
-.c13:hover {
-  color: #d94c4c;
-  opacity: 1;
-}
-
-.c13:active {
-  color: #d94c4c;
-  opacity: 1;
-}
-
 .c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
-  opacity: 0.8;
 }
 
 .c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c15:hover {
-  color: #279745;
-  opacity: 1;
-}
-
-.c15:active {
-  color: #279745;
-  opacity: 1;
 }
 
 .c17 .c12 {
@@ -1151,7 +1129,6 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   width: 16px;
   height: 16px;
   color: red;
-  opacity: 0.8;
 }
 
 .c11 > svg {
@@ -1160,38 +1137,17 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   height: inherit;
 }
 
-.c11:hover {
-  color: red;
-  opacity: 1;
-}
-
-.c11:active {
-  color: red;
-  opacity: 1;
-}
-
 .c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c17 .c10 {
@@ -1482,7 +1438,6 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   width: 16px;
   height: 16px;
   color: red;
-  opacity: 0.8;
 }
 
 .c11 > svg {
@@ -1491,38 +1446,17 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   height: inherit;
 }
 
-.c11:hover {
-  color: red;
-  opacity: 1;
-}
-
-.c11:active {
-  color: red;
-  opacity: 1;
-}
-
 .c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c17 .c10 {
@@ -1811,23 +1745,12 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   width: 16px;
   height: 16px;
   color: red;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: red;
-  opacity: 1;
-}
-
-.c11:active {
-  color: red;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -2047,23 +1970,12 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   width: 16px;
   height: 16px;
   color: red;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: red;
-  opacity: 1;
-}
-
-.c11:active {
-  color: red;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -2666,23 +2578,12 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   width: 16px;
   height: 16px;
   color: red;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: red;
-  opacity: 1;
-}
-
-.c11:active {
-  color: red;
-  opacity: 1;
 }
 
 .c15 .c10 {
@@ -3178,7 +3079,6 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   width: 16px;
   height: 16px;
   color: #d94c4c;
-  opacity: 0.8;
 }
 
 .c13 > svg {
@@ -3187,38 +3087,17 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   height: inherit;
 }
 
-.c13:hover {
-  color: #d94c4c;
-  opacity: 1;
-}
-
-.c13:active {
-  color: #d94c4c;
-  opacity: 1;
-}
-
 .c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
-  opacity: 0.8;
 }
 
 .c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c15:hover {
-  color: #279745;
-  opacity: 1;
-}
-
-.c15:active {
-  color: #279745;
-  opacity: 1;
 }
 
 .c17 .c12 {

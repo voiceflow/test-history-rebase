@@ -42,23 +42,12 @@ Array [
   width: 10px;
   height: 10px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c16:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c16:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c20 .c3 {

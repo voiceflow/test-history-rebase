@@ -6,23 +6,12 @@ exports[`Storyshots Upload/Primitive/Link With Back Button 1`] = `
   width: 14px;
   height: 14px;
   color: #8da2b5;
-  opacity: 0.8;
 }
 
 .c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c3:hover {
-  color: #8da2b5;
-  opacity: 1;
-}
-
-.c3:active {
-  color: #8da2b5;
-  opacity: 1;
 }
 
 .c8 {

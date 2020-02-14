@@ -20,10 +20,6 @@ const expressionAdapter = createAdapter(
     };
   },
   ({ type, value, depth }) => {
-    if (!value || typeof value !== 'object') {
-      return { type, value, depth };
-    }
-
     return {
       type,
       // eslint-disable-next-line @typescript-eslint/no-use-before-define

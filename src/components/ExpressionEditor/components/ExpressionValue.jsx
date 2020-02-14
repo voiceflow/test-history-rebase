@@ -19,7 +19,7 @@ function ExpressionValue({ value, depth, onChange, isPreview, onUpdateType }) {
 
     const strValue = value.toString();
 
-    return Number.isNaN(strValue) ? (
+    return Number.isNaN(+strValue) ? (
       <span className="value">{strValue.replace(DOUBLE_QUOTE_PATTERN, "'")}</span>
     ) : (
       <span className="math value">{parseInt(strValue, 10)}</span>

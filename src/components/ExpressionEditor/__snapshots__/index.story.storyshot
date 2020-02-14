@@ -660,9 +660,9 @@ Array [
            
         </span>
         <span
-          className="math value"
+          className="value"
         >
-          NaN
+          asdasdas
         </span>
         <span
           className="parenthesis"

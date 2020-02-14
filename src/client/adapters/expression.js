@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import _isObject from 'lodash/isObject';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { ExpressionType } from '@/constants';
@@ -24,11 +25,15 @@ const expressionAdapter = createAdapter(
 export default expressionAdapter;
 
 function convertExpressionValueFromDB(type, value) {
+  if (!value || !_isObject(value)) {
+    return value;
+  }
+
   switch (type) {
     case ExpressionType.ADVANCE:
-      return typeof value === 'object' ? textEditorContentAdapter.fromDB(value) : value;
+      return textEditorContentAdapter.fromDB(value);
     case ExpressionType.VARIABLE:
-      return value?.value ?? value;
+      return value.value;
     case ExpressionType.NOT:
       return expressionAdapter.fromDB(value);
     case ExpressionType.OR:

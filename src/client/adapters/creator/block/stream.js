@@ -1,4 +1,5 @@
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import { transformVariables } from '@/utils/slot';
 
 import { createBlockAdapter } from './utils';
 
@@ -13,7 +14,7 @@ const streamBlockAdapter = createBlockAdapter(
     loop,
   }),
   ({ audio, title, description, iconImage, backgroundImage, customPause, loop }) => ({
-    audio,
+    audio: transformVariables(audio),
     title: textEditorContentAdapter.toDB(title),
     description: textEditorContentAdapter.toDB(description),
     icon_img: iconImage,

@@ -1,4 +1,4 @@
-import './Account.css';
+import '../Account.css';
 
 import axios from 'axios';
 import throttle from 'lodash/throttle';
@@ -11,9 +11,9 @@ import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { signup } from '@/ducks/session';
 
-import { AuthBox } from './AuthBoxes';
-import AuthenticationContainer from './AuthenticationWrapper';
-import SocialLogin from './SocialLogin';
+import { AuthBox } from '../AuthBoxes';
+import AuthenticationContainer from '../AuthenticationWrapper';
+import SocialLogin from '../SocialLogin';
 
 export const SignupForm = ({ signup, history, promo, location }) => {
   const query = queryString.parse(location.search);
@@ -39,7 +39,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
       name,
       email,
       password,
-      coupon,
+      coupon: coupon.toLowerCase(),
     }).catch((err) => {
       setSignupError(err.body.data);
     });
@@ -128,7 +128,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                 <ControlledInput
                   type="text"
                   name="promo"
-                  onChange={(e) => onCouponChange(e.target.value)}
+                  onChange={(e) => onCouponChange(e.target.value.toUpperCase())}
                   placeholder="Promo Code"
                   value={coupon}
                   complete={couponValid}

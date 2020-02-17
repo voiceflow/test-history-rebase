@@ -5,7 +5,7 @@ import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import VariablesInput from '@/components/VariablesInput';
 import { useDidUpdateEffect } from '@/hooks/lifecycle';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { transformVariables } from '@/utils/slot';
+import { transformVariablesToReadable } from '@/utils/slot';
 
 import dataSourceTemplate from '../../templates/datasourceTemplate';
 import documentTemplate from '../../templates/documentTemplate';
@@ -13,7 +13,7 @@ import documentTemplate from '../../templates/documentTemplate';
 const injectDatasourceValues = (datasourceTemplate, header = '', backgroundImageURL) => {
   // The property name of the datasource object that houses the data
   const datasourceProperty = 'bodyTemplate7Data';
-  datasourceTemplate[datasourceProperty].title = transformVariables(header);
+  datasourceTemplate[datasourceProperty].title = transformVariablesToReadable(header);
   datasourceTemplate[datasourceProperty].image.sources[0].url = backgroundImageURL;
   datasourceTemplate[datasourceProperty].image.sources[1].url = backgroundImageURL;
 };

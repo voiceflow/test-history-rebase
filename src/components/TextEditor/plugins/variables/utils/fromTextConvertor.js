@@ -2,30 +2,31 @@ import { genKey } from 'draft-js';
 import _isString from 'lodash/isString';
 
 import { SLOT_REGEXP } from '@/constants';
+import { transformVariablesFromReadable } from '@/utils/slot';
 
 import { EntityType, Mutability } from '../../constants';
 
-const PASTED_VARIABLE_REGEXP = /{([^ .[\]{}]*?)}/g;
-
-const matchVariables = (variable = '', fromPastedText = false) => {
-  if (Array.isArray(variable)) {
-    return variable;
+const matchVariables = (text = '', fromPastedText = false) => {
+  if (Array.isArray(text)) {
+    return text;
   }
 
-  const matches = [...variable.matchAll(fromPastedText ? PASTED_VARIABLE_REGEXP : SLOT_REGEXP)];
+  const textWithFormatedVars = transformVariablesFromReadable(text);
+
+  const matches = [...textWithFormatedVars.matchAll(SLOT_REGEXP)];
 
   if (matches.length === 0) {
-    return [variable];
+    return [textWithFormatedVars];
   }
 
   const parsed = [];
 
   matches.forEach((match, i) => {
     if (i === 0) {
-      parsed.push(variable.substring(i, match.index));
+      parsed.push(textWithFormatedVars.substring(i, match.index));
     } else {
       const prevMatch = matches[i - 1];
-      parsed.push(variable.substring(prevMatch.index + prevMatch[0].length, match.index));
+      parsed.push(textWithFormatedVars.substring(prevMatch.index + prevMatch[0].length, match.index));
     }
 
     if (match[1] && (fromPastedText || match[2])) {
@@ -37,13 +38,13 @@ const matchVariables = (variable = '', fromPastedText = false) => {
 
   const lastMatch = matches[matches.length - 1];
 
-  parsed.push(variable.substring(lastMatch.index + lastMatch[0].length, variable.length));
+  parsed.push(textWithFormatedVars.substring(lastMatch.index + lastMatch[0].length, textWithFormatedVars.length));
 
   return parsed;
 };
 
-const fromTextConvertor = ({ fromPastedText } = {}) => ({ variables = [] } = {}) => (next) => (value, { cursor, entityMap, entityRanges }) => {
-  const matchedVariables = matchVariables(value, fromPastedText);
+const fromTextConvertor = () => ({ variables = [] } = {}) => (next) => (value, { cursor, entityMap, entityRanges }) => {
+  const matchedVariables = matchVariables(value);
   let nextCursor = cursor;
 
   const variablesIdMap = variables.reduce((obj, variable) => Object.assign(obj, { [variable.id]: variable }), {});

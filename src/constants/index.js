@@ -394,7 +394,7 @@ export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
 export const SLOT_REGEXP = /{{\[([^ .[\]{}]*?)]\.([^ .[\]{}]*?)}}/g;
 export const VARIABLE_REGEXP = /^{.*}$/;
-export const VARIABLE_STRING_REGEXP = /{.*}/g;
+export const VARIABLE_STRING_REGEXP = /{([^ .[\]{}]*?)}/g;
 
 export const FILTERED_AMAZON_INTENTS = [
   'ScrollUpIntent',

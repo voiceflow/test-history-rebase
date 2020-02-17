@@ -39,9 +39,8 @@ export const DiagramButton = styled.button.attrs(({ depth }) => ({
 
   &:hover {
     background-color: #eef4f6bd !important;
-      opacity: 1;
-      background: none;
-    }
+    opacity: 1;
+    background: none;
   }
 
   &::before {

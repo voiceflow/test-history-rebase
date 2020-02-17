@@ -9,7 +9,7 @@ import { NoProductLabel, NoProductMessage, PaymentContainer } from '../managers/
 function NoProducts({ goToNewProduct }) {
   return (
     <PaymentContainer column>
-      <SvgIcon icon="safe" variant="standard" size="auto" />
+      <SvgIcon icon="safe" size="auto" />
       <NoProductLabel>No Products Exist</NoProductLabel>
       <NoProductMessage>Create a product to add it to this block</NoProductMessage>
       <Button variant="secondary" onClick={stopPropagation(goToNewProduct)}>

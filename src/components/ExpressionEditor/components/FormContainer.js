@@ -71,7 +71,7 @@ const FormContainer = styled.div`
     font-weight: 600;
     width: 100%;
     margin: 4px 0;
-    padding: 5px 5px;
+    padding: 5px 6px;
     overflow: hidden;
     color: #8da2b5;
     cursor: pointer;

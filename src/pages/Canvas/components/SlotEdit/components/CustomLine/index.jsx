@@ -15,7 +15,7 @@ function CustomLine({ remove, value: { value, synonyms }, onChange }) {
         <Input value={synonyms} onChange={(e) => onChange({ synonyms: e.target.value })} placeholder="Slot Synonyms (optional)" />
       </SynonymContainer>
       <ButtonContainer>
-        <SvgIcon variant="standard" size={11} icon="zoomOut" onClick={() => remove()} />
+        <SvgIcon variant="standard" clickable size={11} icon="zoomOut" onClick={() => remove()} />
       </ButtonContainer>
     </Container>
   );

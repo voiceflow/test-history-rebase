@@ -29,19 +29,28 @@ const SvgIconContainer = styled.span`
     height: inherit;
   }
 
-  ${({ variant, activeColor, hoverColor, color }) =>
-    variant === 'standard' &&
+  ${({ clickable }) =>
+    clickable &&
     css`
+      display: block;
+      cursor: pointer;
       opacity: 0.8;
 
+      &:hover,
+      &:active {
+        opacity: 1;
+      }
+    `}
+
+  ${({ variant, activeColor, hoverColor, color }) =>
+    variant &&
+    css`
       &:hover {
         color: ${hoverColor || color};
-        opacity: 1;
       }
 
       &:active {
         color: ${activeColor || hoverColor || color};
-        opacity: 1;
       }
     `}
 `;

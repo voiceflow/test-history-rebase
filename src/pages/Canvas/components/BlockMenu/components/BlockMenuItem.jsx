@@ -25,7 +25,7 @@ const BlockMenuItem = ({ value, platform }) => {
       {value.label}
       <MenuTooltipContainer>
         <Tooltip distance={10} title={tip} position="bottom" theme="menu">
-          <SvgIcon icon="info" size={16} variant="standard" />
+          <SvgIcon icon="info" size={16} clickable variant="standard" />
         </Tooltip>
       </MenuTooltipContainer>
     </BlockMenuItemCard>

@@ -24,7 +24,7 @@ const Modal = ({ id, title, isSmall = true, children }) => {
       <Container isSmall={isSmall}>
         <Header>
           {title}
-          <SvgIcon icon="close" variant="standard" size={12} onClick={toggleOpen} />
+          <SvgIcon icon="close" variant="standard" clickable size={12} onClick={toggleOpen} />
         </Header>
         {children}
       </Container>

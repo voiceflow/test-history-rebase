@@ -30,30 +30,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   height: inherit;
 }
 
-.c36 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #6E849A;
-  opacity: 0.8;
-}
-
-.c36 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c36:hover {
-  color: #6E849A;
-  opacity: 1;
-}
-
-.c36:active {
-  color: #6E849A;
-  opacity: 1;
-}
-
 .c20 {
   box-sizing: content-box;
   width: 16px;
@@ -78,6 +54,35 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c27:hover {
+  color: #BECEDC;
+}
+
+.c27:active {
+  color: #BECEDC;
+}
+
+.c36 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c36 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c36:hover {
+  color: #6E849A;
+}
+
+.c36:active {
+  color: #6E849A;
 }
 
 .c10 {

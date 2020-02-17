@@ -38,7 +38,7 @@ function ExpressionNot({
         <ExpressionOperator type={type} />
 
         <div role="button" tabIndex="0" className="type-button" onClick={onCollapse}>
-          <SvgIcon icon="trash" size={16} variant="standard" />
+          <SvgIcon icon="trash" size={16} />
         </div>
       </OperatorDropdown>
 

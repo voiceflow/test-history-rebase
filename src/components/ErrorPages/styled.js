@@ -20,7 +20,7 @@ export const Page404Wrapper = styled.div`
   }
 
   p {
-    color: #8c94a6;
+    color: #62778c;
     margin-top: 1rem;
   }
 `;
@@ -33,7 +33,7 @@ export const ErrorBoundaryWrapper = styled.div`
   }
 
   p {
-    color: #8c94a6;
+    color: #62778c;
     margin-top: 1rem;
   }
 `;

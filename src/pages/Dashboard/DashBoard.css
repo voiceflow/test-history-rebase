@@ -343,7 +343,7 @@
 .projects-list__list-item {
   margin-bottom: 12px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 7px;
 }
 
 .main-list-body.still .projects-list__item:active {

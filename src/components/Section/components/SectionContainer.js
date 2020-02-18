@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition, units } from '@/hocs';
 
 import { SectionVariant } from '../constants';
 import ContentContainer from './ContentContainer';
@@ -13,10 +13,10 @@ export const draggingStyles = css`
 `;
 
 export const draggingPreviewStyles = css`
-  margin: 0 16px;
+  margin: 0 ${units(2)}px;
   background: linear-gradient(180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%), rgba(255, 255, 255, 0.8);
   border-radius: 7px;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
+  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 ${units()}px ${units(2)}px 0 rgba(17, 49, 96, 0.16);
 
   &::before {
     display: none;
@@ -27,7 +27,7 @@ export const dividersStyles = css`
   &::before {
     position: absolute;
     top: 0;
-    left: ${({ isDividerNested }) => (isDividerNested ? 32 : 0)}px;
+    left: ${({ isDividerNested, theme }) => (isDividerNested ? theme.unit * 4 : 0)}px;
     right: 0;
     display: block;
     height: 1px;
@@ -55,7 +55,7 @@ const SectionContainer = styled.div`
   ${({ isNested }) =>
     isNested &&
     css`
-      margin: 0 -32px;
+      margin: 0 -${units(4)}px;
     `}
 
   ${({ isDraggingPreview }) => isDraggingPreview && draggingPreviewStyles}
@@ -87,14 +87,12 @@ const SectionContainer = styled.div`
     if (variant === SectionVariant.tertiary) {
       return css`
         ${Header} {
-          height: 40px;
+          height: ${units(5)}px;
         }
 
         ${ContentContainer} {
-          padding-bottom: 10px;
+          padding-bottom: ${units(2)}px;
         }
-        padding-top: 10px;
-        padding-bottom: 10px;
       `;
     }
   }}

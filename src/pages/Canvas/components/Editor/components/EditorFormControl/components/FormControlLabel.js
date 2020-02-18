@@ -5,7 +5,7 @@ import { styled, units } from '@/hocs';
 const FormControlLabel = styled.label`
   ${flexStyles}
 
-  margin-bottom: 12px;
+  margin-bottom: 11px;
 
   ${IconContainer} {
     margin-left: ${units(2)}px;

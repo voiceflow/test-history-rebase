@@ -121,7 +121,7 @@ class Account extends Component {
         <Header withLogo history={this.props.history} />
         <div id="app" className="pt-6">
           <div className="container my-5 pt-4">
-            <h5 className="ml-3">Profile</h5>
+            <label className="dark mb-3">Profile</label>
             <div className="mb-5 card d-flex flex-row p-4">
               <Image className="icon-image large-icon mr-4" path="/user/profile/picture" image={user.image} update={this.uploadProfile} replace />
               <div className="helper-text super-center border-left pl-4">
@@ -143,10 +143,10 @@ class Account extends Component {
                 </div>
               </div>
             </div>
-            <h5 className="ml-3">Developer Integration</h5>
+            <label className="dark mb-3">Developer Integrations</label>
             <div className="card mb-5">
               <div className={amazon ? 'pl-4 pr-4 pt-4 space-between' : 'p-4 space-between'}>
-                <h4 className="mb-0 text-muted">Amazon</h4>
+                <h5 className="mb-0 text-muted">Alexa Developer Console</h5>
                 <div className="super-center">{this.amazonButton()}</div>
               </div>
               {amazon && (
@@ -175,7 +175,7 @@ class Account extends Component {
             </div>
             <div className="card mb-5">
               <div className="p-4 space-between">
-                <h4 className="mb-0 text-muted">Google</h4>
+                <h5 className="mb-0 text-muted">Dialogflow</h5>
                 <div className="super-center">{this.googleButton()}</div>
               </div>
               {google && google.profile && (

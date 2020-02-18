@@ -12,10 +12,10 @@ const UNIVERSAL_SAY_AS_OPTS = ['cardinal', 'ordinal', 'characters', 'fraction', 
 
 export const UNIVERSAL_TAGS = {
   speak: {
-    color: '#5D9DF5',
+    color: '#4f9ed1',
   },
   break: {
-    color: '#0F7EC0',
+    color: '#4f9ed1',
     isSingle: true,
     attributes: {
       time: {
@@ -44,13 +44,13 @@ export const UNIVERSAL_TAGS = {
     },
   },
   p: {
-    color: '#0F7EC0',
+    color: '#4f9ed1',
   },
   s: {
-    color: '#0F7EC0',
+    color: '#4f9ed1',
   },
   sub: {
-    color: '#C24689',
+    color: '#c24689',
     attributes: {
       alias: {
         type: 'text',
@@ -60,7 +60,7 @@ export const UNIVERSAL_TAGS = {
     },
   },
   prosody: {
-    color: '#3F8860',
+    color: '#4e6ff9',
     attributes: {
       rate: {
         type: 'text-select',
@@ -95,7 +95,7 @@ export const UNIVERSAL_TAGS = {
     },
   },
   emphasis: {
-    color: '#8DA2B5',
+    color: '#8f8e94',
     attributes: {
       level: {
         type: 'select',
@@ -108,7 +108,7 @@ export const UNIVERSAL_TAGS = {
 
 export const ALEXA_DEFAULT_TAGS = {
   // 'amazon:domain': {
-  //   color: '#F5A623',
+  //   color: '#e26d5a',
   //   attributes: {
   //     name: {
   //       type: 'select',
@@ -119,7 +119,7 @@ export const ALEXA_DEFAULT_TAGS = {
   //   },
   // },
   'amazon:effect': {
-    color: '#4E6FF9',
+    color: '#3f8860',
     attributes: {
       name: {
         type: 'select',
@@ -130,7 +130,7 @@ export const ALEXA_DEFAULT_TAGS = {
     },
   },
   // 'amazon:emotion': {
-  //   color: '#E72D75',
+  //   color: '#4fa9b3',
   //   attributes: {
   //     name: {
   //       type: 'select',
@@ -146,7 +146,7 @@ export const ALEXA_DEFAULT_TAGS = {
   //   },
   // },
   'say-as': {
-    color: '#C79839',
+    color: '#c79839',
     attributes: {
       'interpret-as': {
         type: 'select',
@@ -163,7 +163,7 @@ export const ALEXA_DEFAULT_TAGS = {
     },
   },
   audio: {
-    color: '#33E5BD',
+    color: '#c998a4',
     attributes: {
       src: {
         type: 'text',
@@ -185,7 +185,7 @@ export const ALEXA_DEFAULT_TAGS = {
     },
   },
   phoneme: {
-    color: '#4F58A0',
+    color: '#4f58a0',
     attributes: {
       alphabet: {
         type: 'select',
@@ -201,7 +201,7 @@ export const ALEXA_DEFAULT_TAGS = {
     },
   },
   voice: {
-    color: '#3E9840',
+    color: '#3e9840',
     attributes: {
       name: {
         type: 'select',
@@ -211,7 +211,7 @@ export const ALEXA_DEFAULT_TAGS = {
     },
   },
   w: {
-    color: '#C79839',
+    color: '#c79839',
     attributes: {
       role: {
         type: 'select',
@@ -225,7 +225,7 @@ export const ALEXA_DEFAULT_TAGS = {
 
 export const GOOGLE_DEFAULT_TAGS = {
   mark: {
-    color: '#C24689',
+    color: '#c24689',
     attributes: {
       name: {
         type: 'text',
@@ -235,13 +235,13 @@ export const GOOGLE_DEFAULT_TAGS = {
     },
   },
   par: {
-    color: '#0F7EC0',
+    color: '#0f7ec0',
   },
   seq: {
-    color: '#0F7EC0',
+    color: '#0f7ec0',
   },
   'say-as': {
-    color: '#C79839',
+    color: '#c79839',
     attributes: {
       'interpret-as': {
         type: 'select',
@@ -258,7 +258,7 @@ export const GOOGLE_DEFAULT_TAGS = {
     },
   },
   audio: {
-    color: '#33E5BD',
+    color: '#c998a4',
     attributes: {
       src: {
         type: 'text',

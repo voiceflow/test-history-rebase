@@ -243,7 +243,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  margin-right: 16px;
+  margin-right: 12px;
   opacity: 1;
 }
 
@@ -261,7 +261,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: auto;
-  padding: 22px 32px;
+  padding: 20px 32px;
   overflow: visible;
   cursor: default;
   cursor: pointer;
@@ -281,7 +281,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: auto;
-  padding: 22px 32px;
+  padding: 20px 32px;
   overflow: visible;
   cursor: default;
 }
@@ -328,8 +328,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 .c31 {
   position: relative;
   background-color: #fff;
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
 .c31:not(:first-child)::before {
@@ -354,7 +352,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 }
 
 .c31 .c28 {
-  padding-bottom: 10px;
+  padding-bottom: 16px;
 }
 
 .c35 {
@@ -382,7 +380,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 }
 
 .c19:not(:last-child) {
-  margin-right: 12px;
+  margin-right: 16px;
 }
 
 .c18 {
@@ -529,7 +527,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   padding: 0 32px;
   height: 100px;
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #dfe3ed;
   background-color: #fff;
   z-index: 1;

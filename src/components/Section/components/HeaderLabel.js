@@ -6,7 +6,7 @@ const HeaderLabel = styled.div`
 
   /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
   min-width: 0;
-  margin-right: ${units(2)}px;
+  margin-right: ${units(1.5)}px;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 

@@ -61,7 +61,7 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
                   width={24}
                   height={13}
                   style={{ transform: `rotate(${settingsOpen ? 0 : 90}deg)` }}
-                  color="#90a2b3"
+                  color="#8da2b5"
                   transition="transform"
                 />
               </div>

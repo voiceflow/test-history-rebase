@@ -16,13 +16,11 @@ export default styled(AceEditor).attrs({
   highlightActiveLine: true,
   editorProps: { $blockScrolling: true },
 })`
-  box-shadow: 0 0 3px #d0d8e7;
   ${({ fullHeight }) =>
     fullHeight &&
     css`
       height: 100% !important;
     `}
-  border-radius: 5px;
 
   .ace_custom_variable {
     display: inline;
@@ -40,17 +38,13 @@ export default styled(AceEditor).attrs({
     }
   }
   .ace_gutter-active-line {
-    margin-top: 30px;
-  }
-
-  .ace_string {
-    color: #436282 !important;
+    margin-top: 0;
   }
 
   .ace_gutter {
-    background: #fff !important;
-    color: #62778c !important;
-    border-right: 1px solid #d2dae2;
+    background: #fdfdfd !important;
+    color: #8da2b5 !important;
+    border-right: 1px solid #eaeff4;
   }
 
   ${({ variant }) => {

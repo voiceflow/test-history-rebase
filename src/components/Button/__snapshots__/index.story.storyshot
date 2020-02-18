@@ -24,7 +24,7 @@ exports[`Storyshots Button Primary 1`] = `
   line-height: 18px;
   width: auto;
   color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17,49,96,0.10),0 4px 8px 0 rgba(17,49,96,0.16);
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.1),0 4px 8px 0 rgba(17,49,96,0.16);
   font-weight: 600;
   background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
   -webkit-transition: all 0.15s ease-out;
@@ -109,7 +109,7 @@ exports[`Storyshots Button Primary With Icon 1`] = `
   line-height: 18px;
   width: auto;
   color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17,49,96,0.10),0 4px 8px 0 rgba(17,49,96,0.16);
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.1),0 4px 8px 0 rgba(17,49,96,0.16);
   font-weight: 600;
   background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
   -webkit-transition: all 0.15s ease-out;

@@ -87,15 +87,15 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
 }
 
 .c5 {
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
   position: absolute;
   padding: 5px;
   margin: -5px;
   top: 10px;
   right: 10px;
   cursor: pointer;
-  color: #becedc;
-  -webkit-transition: color 0.15s ease;
-  transition: color 0.15s ease;
+  color: #8da2b5;
 }
 
 .c5:hover {

@@ -59,7 +59,7 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
         />
       )}
     >
-      <Section isDividerNested>
+      <Section>
         <FormControl>
           <label htmlFor="audio-url">Audio Url or Variable</label>
           <VariablesInput

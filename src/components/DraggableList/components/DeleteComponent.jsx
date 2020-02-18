@@ -10,9 +10,11 @@ const DeleteComponentWrapper = styled.div.attrs({ column: true })`
   bottom: 0;
   ${flexApartStyles}
   width: 100%;
-  height: 90px;
-  background: #ffffff;
-  padding-top: 16px;
+  height: 110px;
+  background: #fdfdfd;
+  border-top: 1px solid #eaeff4;
+  border-bottom: 1px solid #eaeff4;
+  padding-top: 22px;
   padding-bottom: 8px;
 `;
 

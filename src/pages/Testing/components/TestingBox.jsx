@@ -220,7 +220,7 @@ class TestBox extends React.PureComponent {
                 width={24}
                 height={13}
                 style={{ transform: `rotate(${inputOpen ? -90 : 90}deg)` }}
-                color="#90a2b3"
+                color="#8da2b5"
                 transition="transform"
               />
             </div>

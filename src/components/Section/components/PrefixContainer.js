@@ -1,8 +1,8 @@
-import { styled } from '@/hocs';
+import { styled, units } from '@/hocs';
 
 const PrefixContainer = styled.div`
   &:not(:last-child) {
-    margin-right: 12px;
+    margin-right: ${units(2)}px;
   }
 `;
 

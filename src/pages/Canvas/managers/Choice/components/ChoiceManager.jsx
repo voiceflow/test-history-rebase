@@ -76,6 +76,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
             options={[
               {
                 label: 'Add Path',
+                icon: 'choice',
                 onClick: () => addChoice(scrollToBottom),
               },
             ]}

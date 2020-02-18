@@ -1,21 +1,20 @@
 import ButtonContainer from '@/components/Button/components/ButtonContainer';
-import { css, styled, transition } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import Icon from './PrimaryButtonIcon';
 
 const PrimaryButtonContainer = styled(ButtonContainer)`
   color: #fff;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.10), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
   background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
   transition: all 0.15s ease-out;
   background-size: 1px 52px;
-  /* ${transition()} */
 
   ${({ disabled, canHover }) =>
     disabled
       ? css`
-          background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 68%);
+          background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 100%);
           box-shadow: none;
 
           & ${Icon} {
@@ -26,8 +25,6 @@ const PrimaryButtonContainer = styled(ButtonContainer)`
         css`
           &:hover {
             background-position: 0px;
-            /* background-image: linear-gradient(-180deg, #5d9df5 0%, #1f79f3 78%);
-            box-shadow: 0 0 4px 0 rgba(17, 49, 96, 0.18), 0 4px 8px 0 rgba(17, 49, 96, 0.16); */
           }
         `}
 

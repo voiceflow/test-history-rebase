@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled, units } from '@/hocs';
 
 const AddCollaborators = styled.p`
   margin-bottom: 0;
@@ -13,7 +13,7 @@ const AddCollaborators = styled.p`
 
   /* stylelint-disable */
   & > * {
-    padding-right: 6px;
+    padding-right: ${units()}px;
   }
 
   & > span > svg {

@@ -69,15 +69,15 @@ export const SignupForm = ({ signup, history, promo, location }) => {
   );
 
   const onCouponChange = React.useCallback(async (value) => {
-    setCoupon(value);
+    setCoupon(value.toUpperCase());
     verifyCoupon(value);
-  });
+  }, []);
 
   const isSignupDisabled = coupon && !couponValid;
 
   useEffect(() => {
     if (promo && query.coupon) onCouponChange(query.coupon);
-  }, [onCouponChange, promo, query.coupon]);
+  }, [promo, query.coupon]);
 
   return (
     <AuthenticationContainer dark>
@@ -128,7 +128,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                 <ControlledInput
                   type="text"
                   name="promo"
-                  onChange={(e) => onCouponChange(e.target.value.toUpperCase())}
+                  onChange={(e) => onCouponChange(e.target.value)}
                   placeholder="Promo Code"
                   value={coupon}
                   complete={couponValid}

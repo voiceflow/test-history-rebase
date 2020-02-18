@@ -6,23 +6,12 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   width: 16px;
   height: 16px;
   color: #d94c4c;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #d94c4c;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #d94c4c;
-  opacity: 1;
 }
 
 .c13 .c10 {
@@ -215,23 +204,12 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   width: 16px;
   height: 16px;
   color: #d94c4c;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #d94c4c;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #d94c4c;
-  opacity: 1;
 }
 
 .c13 .c10 {
@@ -424,23 +402,12 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   width: 16px;
   height: 16px;
   color: #d94c4c;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #d94c4c;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #d94c4c;
-  opacity: 1;
 }
 
 .c13 .c10 {

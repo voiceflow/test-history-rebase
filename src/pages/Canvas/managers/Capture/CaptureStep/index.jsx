@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-
-import { VariableLabel } from './components';
+import Step, { Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 const CaptureStep = ({ fromVariable, toVariable, isConnected, onClickPort, withPort = true, isActive }) => (
   <Step isActive={isActive}>

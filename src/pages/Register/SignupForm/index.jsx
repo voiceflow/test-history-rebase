@@ -71,7 +71,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
   const onCouponChange = React.useCallback(async (value) => {
     setCoupon(value.toUpperCase());
     verifyCoupon(value);
-  }, []);
+  });
 
   const isSignupDisabled = coupon && !couponValid;
 

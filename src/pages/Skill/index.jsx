@@ -24,8 +24,8 @@ import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
 import InactivityModal from '@/pages/Inactivity';
+import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
-import Migrate from '@/pages/Publish/Amazon/Migrate';
 import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import Testing from '@/pages/Testing';
 import Visuals from '@/pages/Visuals';

@@ -28,9 +28,11 @@ const projectClient = {
 
   getImportToken: (projectID) => fetch(`exportProject/${projectID}`),
 
-  getLiveVersion: (projectId) => fetch(`${PROJECT_PATH}/${projectId}/live_version`),
+  getLiveVersion: (projectID) => fetch(`${PROJECT_PATH}/${projectID}/live_version`),
 
-  getVersions: (projectId) => fetch(`${PROJECT_PATH}/${projectId}/versions`),
+  getVersions: (projectID) => fetch(`${PROJECT_PATH}/${projectID}/versions`),
+
+  updateAmznId: (projectID, vendorID, AmznID) => fetch.patch(`${PROJECT_PATH}/${projectID}/amzn_id`, { id: AmznID.trim(), vendorID }),
 };
 
 export default projectClient;

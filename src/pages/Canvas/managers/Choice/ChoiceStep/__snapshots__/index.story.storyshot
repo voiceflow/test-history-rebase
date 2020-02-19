@@ -6,7 +6,6 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
@@ -15,38 +14,17 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   height: inherit;
 }
 
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
-}
-
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3a5999;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3a5999;
-  opacity: 1;
 }
 
 .c17 .c10 {
@@ -370,7 +348,6 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
@@ -379,38 +356,17 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   height: inherit;
 }
 
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
-}
-
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3a5999;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3a5999;
-  opacity: 1;
 }
 
 .c17 .c10 {
@@ -732,23 +688,12 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #6e849a;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -972,7 +917,6 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
@@ -981,38 +925,17 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   height: inherit;
 }
 
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
-}
-
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3a5999;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3a5999;
-  opacity: 1;
 }
 
 .c17 .c10 {
@@ -1336,7 +1259,6 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   width: 16px;
   height: 16px;
   color: #6e849a;
-  opacity: 0.8;
 }
 
 .c14 > svg {
@@ -1345,38 +1267,17 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   height: inherit;
 }
 
-.c14:hover {
-  color: #6e849a;
-  opacity: 1;
-}
-
-.c14:active {
-  color: #6e849a;
-  opacity: 1;
-}
-
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3a5999;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3a5999;
-  opacity: 1;
 }
 
 .c17 .c10 {

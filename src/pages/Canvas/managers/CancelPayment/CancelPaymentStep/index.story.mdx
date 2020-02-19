@@ -1,0 +1,13 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import CancelPaymentStep from '.';
+
+<Meta title="Creator/Steps/Cancel Payment Step" component={CancelPaymentStep} />
+
+# Cancel Payment Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="with product">{stories.withProduct()}</Story>
+</Preview>

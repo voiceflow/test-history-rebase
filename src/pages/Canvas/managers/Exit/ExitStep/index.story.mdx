@@ -1,0 +1,14 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import ExitStep from '.';
+
+<Meta title="Creator/Steps/Exit Step" component={ExitStep} />
+
+# Exit Step
+
+<Preview>
+  <Story name="alexa">{stories.alexa()}</Story>
+  <Story name="google">{stories.google()}</Story>
+  <Story name="active">{stories.active()}</Story>
+</Preview>

@@ -591,7 +591,7 @@ small {
 }
 
 .ace-tm .ace_gutter-active-line {
-  background-color: #eef4f675 !important;
+  background-color: #eef4f6 !important;
 }
 
 .alert-danger {
@@ -678,9 +678,9 @@ small {
   z-index: 100;
   background-color: rgba(255, 255, 255, 0.9);
   background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%);
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
+  border-radius: 7px;
+  box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.16);
+  user-select: none;
   pointer-events: none;
 }
 
@@ -841,11 +841,11 @@ hr.full-width {
 }
 
 .ace-tm .ace_marker-layer .ace_active-line {
-  background-color: #eef4f675 !important;
+  background-color: #eef4f6 !important;
 }
 
 .ace_folding-enabled > .ace_gutter-cell {
-  padding-right: 15px !important;
+  padding-right: 16px !important;
 }
 
 .ace-tm .ace_comment {
@@ -1020,7 +1020,7 @@ hr.full-width {
 .card {
   padding: 0;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   border-radius: 10px;
   transition-duration: 172ms;
   will-change: transform, box-shadow;
@@ -1028,7 +1028,7 @@ hr.full-width {
 
 .project-card .card,
 .container .card {
-  box-shadow: 0 2px 4px 0 rgba(14, 30, 37, 0.12);
+  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
 }
 
 .pricing-card {
@@ -1089,7 +1089,7 @@ hr.full-width {
 
 label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 11px;
   color: #62778c !important;
   font-weight: 600 !important;
   font-size: 15px !important;
@@ -1199,7 +1199,7 @@ textarea.form-control::placeholder,
 }
 
 .input-group-text-bg {
-  height: 45px;
+  height: 42px;
   color: #62778c;
   font-weight: 600;
   background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
@@ -1691,7 +1691,7 @@ body.modal-open {
   padding: 5px 10px;
   color: #8da2b5;
   font-size: 12px;
-  background-color: #fff;
+  background-color: #fdfdfd;
 }
 
 .fa-facebook {
@@ -1833,6 +1833,8 @@ body.modal-open {
 .tippy-tooltip [x-circle] {
   width: 140%;
   background: linear-gradient(-180deg, rgba(17, 49, 96, 0.85), #113160);
+  background-color: #fff;
+  border: 1px solid #113160;
 }
 
 .port.in.combine-port.moving {

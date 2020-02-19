@@ -7,7 +7,7 @@ import { Spinner } from '@/components/Spinner';
 
 const RealtimeConnectionWarning = () => (
   <FlexCenter style={{ height: '100%' }} fullWidth>
-    <Error icon={<Spinner message="Reconnecting..." />} message="Something went wrong. Try reloading the page.">
+    <Error icon={<Spinner />} message="We’re attempting to restore your connection">
       <Link to="" onClick={() => window.location.reload()} className="btn btn-primary mt-3">
         Reload Page
       </Link>

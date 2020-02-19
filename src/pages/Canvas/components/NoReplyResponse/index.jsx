@@ -24,7 +24,6 @@ const NoReplyResponse = ({ pushToPath }) => {
 
   return (
     <Section
-      variant="secondary"
       header="No Reply Response"
       tooltip={<InfoTooltip />}
       tooltipProps={{ helpTitle: null, helpMessage: null }}

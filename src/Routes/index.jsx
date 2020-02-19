@@ -38,6 +38,7 @@ const Routes = ({ authToken }) => (
       <Route exact path={['/creator/terms', '/creator/privacy_policy']} name="Privacy Policy" component={Legal} />
       {/* Team routes */}
 
+      <Redirect exact from="/workspace" to="/dashboard" />
       <PrivateRoute exact path="/workspace/new" component={NewWorkspace} />
       <PrivateRoute path={['/workspace', '/dashboard', '/onboarding']} component={Workspace} />
 

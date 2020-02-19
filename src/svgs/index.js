@@ -132,3 +132,7 @@ export { default as amazon } from './brands/amazon.svg';
 export { default as google } from './brands/google.svg';
 export { default as else } from './else.svg';
 export { default as microphone } from './solid/microphone.svg';
+export { default as exitFullscreen } from './exit-fullscreen.svg';
+export { default as purchase } from './purchase.svg';
+export { default as flow } from './flow.svg';
+export { default as barGraph } from './bar-graph.svg';

@@ -12,7 +12,7 @@ export const ModalHeaderContainer = styled.div`
   /* adding important caused the padding to work */
 
   & > h5 {
-    color: #8c94a6;
+    color: #62778c;
     font-weight: 600;
     font-size: 15px;
     text-transform: uppercase;
@@ -33,5 +33,5 @@ export const ModalHeaderContainer = styled.div`
 `;
 
 export const HeaderTextContainer = styled.div`
-  margin-right: 8px;
+  margin-right: 12px;
 `;

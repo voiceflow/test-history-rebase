@@ -24,7 +24,7 @@ function TestingHeader({ goToCurrentCanvas, status }) {
       <SubTitleGroup>
         <ShareTest />
       </SubTitleGroup>
-      <Button variant="secondary" onClick={goToCurrentCanvas}>
+      <Button icon="exitFullscreen" variant="secondary" onClick={goToCurrentCanvas}>
         Return to Canvas
       </Button>
     </>

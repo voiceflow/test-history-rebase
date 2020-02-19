@@ -1,0 +1,13 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+import * as stories from './index.story';
+import ChoiceStep from '.';
+
+<Meta title="Creator/Steps/Choice Step" component={ChoiceStep} />
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="single choice">{stories.single()}</Story>
+  <Story name="multiple choices">{stories.multiple()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+</Preview>

@@ -1,9 +1,9 @@
 import { FlexApart } from '@/components/Flex';
-import { css, styled } from '@/hocs';
+import { css, styled, units } from '@/hocs';
 
 const SectionHeader = styled(FlexApart)`
   height: auto;
-  padding: 22px 32px;
+  padding: ${units(2.5)}px ${units(4)}px;
   overflow: visible;
   cursor: default;
 

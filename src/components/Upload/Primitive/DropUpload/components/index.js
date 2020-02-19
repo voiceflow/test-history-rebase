@@ -3,14 +3,16 @@ import SvgIcon from '@/components/SvgIcon';
 import { styled, transition } from '@/hocs';
 
 export const CornerActionButton = styled(SvgIcon)`
+  ${transition('color')}
   position: absolute;
   padding: 5px;
   margin: -5px;
   top: 10px;
   right: 10px;
   cursor: pointer;
-  color: #becedc;
-  ${transition('color')} :hover {
+  color: #8da2b5;
+
+  :hover {
     color: #8da2b5;
   }
 `;

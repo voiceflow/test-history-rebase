@@ -1,6 +1,6 @@
 import Flex from '@/components/Flex';
 import IconButton from '@/components/IconButton';
-import { styled, transition } from '@/hocs';
+import { styled, transition, units } from '@/hocs';
 
 export const UpgradeText = styled.div`
   color: #132144;
@@ -14,7 +14,7 @@ export const UpgradeIcon = styled(IconButton)`
   background: #e9f5ee;
   border-color: #cae3d4;
   box-shadow: inset 0 0 0 2px #fff !important;
-  margin-right: 10px;
+  margin-right: ${units(2)}px;
   pointer-events: none;
   user-select: none;
   ${transition(['border'])}

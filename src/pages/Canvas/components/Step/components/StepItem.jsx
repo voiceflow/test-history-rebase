@@ -18,11 +18,14 @@ const StepItem = ({
   portColor,
   isConnected,
   onClickPort,
+  onClick,
 }) => {
   return (
     <Container>
-      <IconContainer>{icon && <SvgIcon icon={icon} color={iconColor} />}</IconContainer>
-      <LabelText variant={label ? labelVariant : LabelVariant.PLACEHOLDER}>{label || placeholder}</LabelText>
+      <IconContainer>{icon && <SvgIcon size={16} icon={icon} color={iconColor} />}</IconContainer>
+      <LabelText variant={label ? labelVariant : LabelVariant.PLACEHOLDER} onClick={onClick}>
+        {label || placeholder}
+      </LabelText>
       {withPort && <Port isConnected={isConnected} onClick={onClickPort} color={portColor} />}
     </Container>
   );

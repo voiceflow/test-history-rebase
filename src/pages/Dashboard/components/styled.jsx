@@ -63,14 +63,12 @@ export const ProjectListItem = styled(({ isActive, ...props }) => <Link {...prop
   display: flex;
   min-width: 0;
   padding: 15px 23px;
-  background: #fff;
   border: 1px solid #eaeff4;
   border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
 
   &:hover {
-    background: #fff;
     border-color: transparent;
     box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
   }

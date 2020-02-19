@@ -5,7 +5,6 @@ import { BlockType } from '@/constants';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import UserAltIcon from '@/svgs/solid/user-alt.svg';
 
-import ChoiceBlock from './ChoiceBlock';
 import ChoiceEditor from './ChoiceEditor';
 
 const EDITORS_BY_PATH = {
@@ -16,7 +15,6 @@ const EDITORS_BY_PATH = {
 const ChoiceManager = {
   type: BlockType.CHOICE,
   icon: UserAltIcon,
-  block: ChoiceBlock,
 
   editor: ChoiceEditor,
   editorsByPath: EDITORS_BY_PATH,

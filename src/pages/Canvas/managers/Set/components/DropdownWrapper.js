@@ -2,7 +2,7 @@ import Flex from '@/components/Flex';
 import { styled, units } from '@/hocs';
 
 const DropdownWrapper = styled(Flex)`
-  margin-left: -8px;
+  margin-left: -${units(0.5)}px;
 
   & > * {
     margin-right: ${units()}px;

@@ -30,7 +30,7 @@ const VariableCloud = ({ diagramVariables, variables, removeFlowVariable, remove
         <VariableBox>
           {diagramVariables.map((variable) => (
             <VariableTag key={variable} className="global">
-              {`{${variable}}`} <SvgIcon variant="standard" icon="close" onClick={() => removeFlowVariable(variable)} size={9} />
+              {`{${variable}}`} <SvgIcon variant="standard" clickable icon="close" onClick={() => removeFlowVariable(variable)} size={9} />
             </VariableTag>
           ))}
         </VariableBox>
@@ -45,7 +45,7 @@ const VariableCloud = ({ diagramVariables, variables, removeFlowVariable, remove
       ))}
       {variables.map((variable) => (
         <VariableTag key={variable} className="global">
-          {`{${variable}}`} <SvgIcon variant="standard" icon="close" onClick={() => removeGlobalVariable(variable)} size={9} />
+          {`{${variable}}`} <SvgIcon variant="standard" clickable icon="close" onClick={() => removeGlobalVariable(variable)} size={9} />
         </VariableTag>
       ))}
     </VariableBox>

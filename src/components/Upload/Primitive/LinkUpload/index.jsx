@@ -5,7 +5,7 @@ import Badge from '@/components/Badge';
 import Input from '@/components/Input';
 import VariablesInput from '@/components/VariablesInput';
 import { stopPropagation, withKeyPress } from '@/utils/dom';
-import { transformVariables } from '@/utils/slot';
+import { transformVariablesToReadable } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';
 
@@ -52,8 +52,10 @@ function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVa
           {...inputProps}
           ref={variablesRef}
           creatable={false}
-          rightAction={<Badge onClick={() => validateAndUpdate(transformVariables(variablesRef.current.getCurrentValue().text))}>Enter</Badge>}
-          onEnterPress={() => validateAndUpdate(transformVariables(variablesRef.current.getCurrentValue().text))}
+          rightAction={
+            <Badge onClick={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current.getCurrentValue().text))}>Enter</Badge>
+          }
+          onEnterPress={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current.getCurrentValue().text))}
           onEditorStateChange={error ? () => setError(null) : null}
         />
       ) : (

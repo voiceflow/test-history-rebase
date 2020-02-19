@@ -36,7 +36,7 @@ function FlowBar({ withMenu, withDrawer, goToRootDiagram, flow, parentDiagrams, 
       </Section>
 
       <Section>
-        <SvgIcon icon="flows" size={12} variant="standard" />
+        <SvgIcon icon="flows" size={12} />
         {flow.name}
       </Section>
 

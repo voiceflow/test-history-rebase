@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import UserInfoStep from '.';
+
+<Meta title="Creator/Steps/User Info Step" component={UserInfoStep} />
+
+# User Info Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="without ports">{stories.withoutPorts()}</Story>
+  <Story name="with user permissions">{stories.withPermissions()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+</Preview>

@@ -239,10 +239,10 @@ export const DashBoard = (props) => {
               <div className="h-100 d-flex justify-content-center">
                 <div className="align-self-center">
                   <div className="text-center">
-                    <img src="/create.svg" alt="skill-icon" width="100" height="127" className="mb-1" />
+                    <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
                   </div>
-                  <label className="dark text-center">No Projects Found</label>
-                  <div className="text-muted mt-3 mb-2">This workspace has no projects yet, create one.</div>
+                  <label className="dark text-center mb-3">No Projects Found</label>
+                  <div className="text-muted mb-2">This workspace has no projects, create one.</div>
                   <Link to="/workspace/template" className="no-underline super-center">
                     <Button isPrimary className="mt-3" id="createskill">
                       New Project

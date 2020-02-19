@@ -5,6 +5,7 @@ import { Button, Col, Form, FormGroup, Input as Select, Label, Table } from 'rea
 import { AdminTitle } from '@/admin/styles';
 import Input from '@/components/Input';
 import { toast } from '@/components/Toast';
+import { PLANS } from '@/constants';
 
 class Coupon extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Coupon extends React.Component {
 
     this.state = {
       coupons: [],
-      coupon: { plan: 1 },
+      coupon: { plan: PLANS.pro },
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -112,9 +113,9 @@ class Coupon extends React.Component {
               </Label>
               <Col sm={10}>
                 <Select name="plan" id="plan" type="select" value={this.state.coupon.plan} onChange={this.handleInputChange}>
-                  <option value="pro">Pro</option>
-                  <option value="team">Team</option>
-                  <option value="enterprise">Enterprise</option>
+                  <option value={PLANS.pro}>Pro</option>
+                  <option value={PLANS.team}>Team</option>
+                  <option value={PLANS.enterprise}>Enterprise</option>
                 </Select>
               </Col>
             </FormGroup>

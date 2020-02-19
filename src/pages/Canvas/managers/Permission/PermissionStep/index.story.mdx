@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import PermissionStep from '.';
+
+<Meta title="Creator/Steps/Permission Step" component={PermissionStep} />
+
+# Permission Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="with permissions">{stories.withPermissions()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+  <Story name="active">{stories.active()}</Story>
+</Preview>

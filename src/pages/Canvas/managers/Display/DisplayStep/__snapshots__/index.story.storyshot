@@ -6,23 +6,12 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -268,23 +257,12 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -529,23 +507,12 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -768,23 +735,12 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -1030,23 +986,12 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c16 .c10 {
@@ -1292,23 +1237,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c14 .c10 {
@@ -1532,23 +1466,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   width: 16px;
   height: 16px;
   color: #3c6997;
-  opacity: 0.8;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
-}
-
-.c11:hover {
-  color: #3c6997;
-  opacity: 1;
-}
-
-.c11:active {
-  color: #3c6997;
-  opacity: 1;
 }
 
 .c15 .c10 {

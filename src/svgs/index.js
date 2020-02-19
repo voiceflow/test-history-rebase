@@ -134,3 +134,4 @@ export { default as else } from './else.svg';
 export { default as microphone } from './solid/microphone.svg';
 export { default as exitFullscreen } from './exit-fullscreen.svg';
 export { default as purchase } from './purchase.svg';
+export { default as flow } from './flow.svg';

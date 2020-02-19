@@ -1,40 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
-.c15 {
+exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c13 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -44,7 +31,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #558B2F;
+  color: #3C6997;
 }
 
 .c11 > svg {
@@ -53,11 +40,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   height: inherit;
 }
 
-.c20 .c10 {
+.c19 .c10 {
   color: #fff;
 }
 
-.c21 .c10 {
+.c20 .c10 {
   color: #6e849a;
 }
 
@@ -152,7 +139,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c5:not(:first-of-type) {
+.c21 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -178,7 +165,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -187,7 +174,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c19::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -205,7 +192,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c17 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -214,7 +201,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c17::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -232,7 +219,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -252,7 +239,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c13 {
   color: #132144;
 }
 
@@ -265,7 +252,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
     <span
       className="c2"
     >
-      Payment Block
+      User Info Block
     </span>
   </header>
   <section
@@ -285,44 +272,23 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
           >
             <span
               className="c10 c11"
-              color="#558B2F"
+              color="#3C6997"
               size={16}
             >
               <svg
-                data-file-name="SvgPurchase"
+                data-file-name="SvgBarGraph"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            New York Times Quiz
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
             <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
+              className="c13"
             >
-              <svg
-                data-file-name="SvgAlexa"
-              />
+              Request: 
             </span>
-          </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
+            Email, User Name, Credit Card
           </span>
         </div>
       </div>
@@ -336,7 +302,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             className="c9"
           >
             <span
-              className="c10 c15"
+              className="c10 c14"
               color="#d94c4c"
               size={16}
             >
@@ -346,22 +312,12 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             </span>
           </div>
           <span
-            className="c12"
+            className="c15"
           >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
+            No Access
           </span>
           <div
-            className="c17"
+            className="c16"
             color="#d94c4c"
           />
         </div>
@@ -372,7 +328,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             className="c9"
           >
             <span
-              className="c10 c18"
+              className="c10 c17"
               color="#279745"
               size={16}
             >
@@ -382,12 +338,12 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             </span>
           </div>
           <span
-            className="c14"
+            className="c15"
           >
-            Purchased
+            Success
           </span>
           <div
-            className="c19"
+            className="c18"
             color="#279745"
           />
         </div>
@@ -397,41 +353,28 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
-.c15 {
+exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c13 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -441,7 +384,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #558B2F;
+  color: #3C6997;
 }
 
 .c11 > svg {
@@ -450,11 +393,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   height: inherit;
 }
 
-.c20 .c10 {
+.c19 .c10 {
   color: #fff;
 }
 
-.c21 .c10 {
+.c20 .c10 {
   color: #6e849a;
 }
 
@@ -571,11 +514,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c5:not(:first-of-type) {
+.c21 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -584,7 +527,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c17::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -601,7 +544,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c19 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -610,7 +553,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   margin: -16px -16px -16px 0;
 }
 
-.c19::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -627,7 +570,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -647,7 +590,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c13 {
   color: #132144;
 }
 
@@ -660,7 +603,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
     <span
       className="c2"
     >
-      Payment Block
+      User Info Block
     </span>
   </header>
   <section
@@ -680,44 +623,23 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
           >
             <span
               className="c10 c11"
-              color="#558B2F"
+              color="#3C6997"
               size={16}
             >
               <svg
-                data-file-name="SvgPurchase"
+                data-file-name="SvgBarGraph"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            New York Times Quiz
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
             <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
+              className="c13"
             >
-              <svg
-                data-file-name="SvgAlexa"
-              />
+              Request: 
             </span>
-          </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
+            Email, User Name, Credit Card
           </span>
         </div>
       </div>
@@ -731,7 +653,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             className="c9"
           >
             <span
-              className="c10 c15"
+              className="c10 c14"
               color="#d94c4c"
               size={16}
             >
@@ -741,22 +663,12 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             </span>
           </div>
           <span
-            className="c12"
+            className="c15"
           >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
+            No Access
           </span>
           <div
-            className="c17"
+            className="c16"
             color="#d94c4c"
           />
         </div>
@@ -767,7 +679,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             className="c9"
           >
             <span
-              className="c10 c18"
+              className="c10 c17"
               color="#279745"
               size={16}
             >
@@ -777,12 +689,12 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             </span>
           </div>
           <span
-            className="c14"
+            className="c15"
           >
-            Purchased
+            Success
           </span>
           <div
-            className="c19"
+            className="c18"
             color="#279745"
           />
         </div>
@@ -792,236 +704,12 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #558B2F;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 .c10 {
-  color: #fff;
-}
-
-.c14 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  width: 16px;
-  margin-right: 16px;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c15 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgPurchase"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            Select a product
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
+exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 .c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #d94c4c;
 }
 
 .c13 > svg {
@@ -1030,11 +718,24 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   height: inherit;
 }
 
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #558B2F;
+  color: #3C6997;
 }
 
 .c11 > svg {
@@ -1043,11 +744,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   height: inherit;
 }
 
-.c21 .c10 {
+.c18 .c10 {
   color: #fff;
 }
 
-.c22 .c10 {
+.c19 .c10 {
   color: #6e849a;
 }
 
@@ -1164,35 +865,8 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c23 .c5:not(:first-of-type) {
+.c20 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c20 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  cursor: copy;
-  padding-left: 12px;
-  margin: -16px -16px -16px 0;
-}
-
-.c20::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #279745;
-  border: 4px solid white;
 }
 
 .c17 {
@@ -1214,6 +888,33 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #d94c4c;
   border-radius: 50%;
   height: 5px;
@@ -1222,7 +923,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border: 4px solid white;
 }
 
-.c19 {
+.c14 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1239,21 +940,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #62778c;
-}
-
-.c14 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   color: #8da2b5;
-}
-
-.c16 {
-  color: #132144;
 }
 
 <div
@@ -1265,7 +952,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
     <span
       className="c2"
     >
-      Payment Block
+      User Info Block
     </span>
   </header>
   <section
@@ -1285,18 +972,18 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
           >
             <span
               className="c10 c11"
-              color="#558B2F"
+              color="#3C6997"
               size={16}
             >
               <svg
-                data-file-name="SvgPurchase"
+                data-file-name="SvgBarGraph"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            New York Times Quiz
+            Request user information
           </span>
         </div>
       </div>
@@ -1311,32 +998,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
           >
             <span
               className="c10 c13"
-              color="#616c60"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgAlexa"
-              />
-            </span>
-          </div>
-          <span
-            className="c14"
-          >
-            Add Upsell Message
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c15"
               color="#d94c4c"
               size={16}
             >
@@ -1346,22 +1007,12 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             </span>
           </div>
           <span
-            className="c12"
+            className="c14"
           >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
+            No Access
           </span>
           <div
-            className="c17"
+            className="c15"
             color="#d94c4c"
           />
         </div>
@@ -1372,7 +1023,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             className="c9"
           >
             <span
-              className="c10 c18"
+              className="c10 c16"
               color="#279745"
               size={16}
             >
@@ -1382,12 +1033,12 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             </span>
           </div>
           <span
-            className="c19"
+            className="c14"
           >
-            Purchased
+            Success
           </span>
           <div
-            className="c20"
+            className="c17"
             color="#279745"
           />
         </div>
@@ -1397,41 +1048,28 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = `
-.c15 {
+exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c13 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1441,20 +1079,20 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #558B2F;
+  color: #3C6997;
 }
 
 .c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c19 .c10 {
+  color: #fff;
 }
 
 .c20 .c10 {
-  color: #fff;
-}
-
-.c21 .c10 {
   color: #6e849a;
 }
 
@@ -1571,11 +1209,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c5:not(:first-of-type) {
+.c21 .c5:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1584,7 +1222,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   margin: -16px -16px -16px 0;
 }
 
-.c19::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -1602,7 +1240,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border: 4px solid white;
 }
 
-.c17 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1611,7 +1249,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   margin: -16px -16px -16px 0;
 }
 
-.c17::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1629,7 +1267,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1649,7 +1287,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   color: #62778c;
 }
 
-.c16 {
+.c13 {
   color: #132144;
 }
 
@@ -1662,7 +1300,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
     <span
       className="c2"
     >
-      Payment Block
+      User Info Block
     </span>
   </header>
   <section
@@ -1682,44 +1320,23 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
           >
             <span
               className="c10 c11"
-              color="#558B2F"
+              color="#3C6997"
               size={16}
             >
               <svg
-                data-file-name="SvgPurchase"
+                data-file-name="SvgBarGraph"
               />
             </span>
           </div>
           <span
             className="c12"
           >
-            New York Times Quiz
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
             <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
+              className="c13"
             >
-              <svg
-                data-file-name="SvgAlexa"
-              />
+              Request: 
             </span>
-          </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
+            Email, User Name, Credit Card
           </span>
         </div>
       </div>
@@ -1733,7 +1350,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             className="c9"
           >
             <span
-              className="c10 c15"
+              className="c10 c14"
               color="#d94c4c"
               size={16}
             >
@@ -1743,22 +1360,12 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             </span>
           </div>
           <span
-            className="c12"
+            className="c15"
           >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
+            No Access
           </span>
           <div
-            className="c17"
+            className="c16"
             color="#d94c4c"
           />
         </div>
@@ -1769,7 +1376,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             className="c9"
           >
             <span
-              className="c10 c18"
+              className="c10 c17"
               color="#279745"
               size={16}
             >
@@ -1779,16 +1386,226 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             </span>
           </div>
           <span
-            className="c14"
+            className="c15"
           >
-            Purchased
+            Success
           </span>
           <div
-            className="c19"
+            className="c18"
             color="#279745"
           />
         </div>
       </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3C6997;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 .c10 {
+  color: #fff;
+}
+
+.c15 .c10 {
+  color: #6e849a;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c16 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 {
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      User Info Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#3C6997"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgBarGraph"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            <span
+              className="c13"
+            >
+              Request: 
+            </span>
+            Email, User Name, Credit Card
+          </span>
+        </div>
+      </div>
+      <div
+        className="c5 c6"
+      />
     </div>
   </section>
 </div>

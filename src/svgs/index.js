@@ -135,3 +135,4 @@ export { default as microphone } from './solid/microphone.svg';
 export { default as exitFullscreen } from './exit-fullscreen.svg';
 export { default as purchase } from './purchase.svg';
 export { default as flow } from './flow.svg';
+export { default as barGraph } from './bar-graph.svg';

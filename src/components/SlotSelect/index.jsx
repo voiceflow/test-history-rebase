@@ -35,6 +35,7 @@ const SlotSelect = ({ value, onChange, className, slotTypes, ...props }) => {
       options={slotTypes}
       getOptionValue={(option) => option.value}
       renderOptionLabel={slotOptionRenderer}
+      searchable
       {...props}
     />
   );

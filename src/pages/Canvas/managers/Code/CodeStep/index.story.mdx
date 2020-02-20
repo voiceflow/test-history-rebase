@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import CodeStep from '.';
+
+<Meta title="Creator/Steps/Code Step" component={CodeStep} />
+
+# Code Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="empty without ports">{stories.emptyWithoutPorts()}</Story>
+  <Story name="code added">{stories.codeAdded()}</Story>
+  <Story name="without ports">{stories.withoutPorts()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+</Preview>

@@ -138,3 +138,4 @@ export { default as barGraph } from './bar-graph.svg';
 export { default as lock } from './lock.svg';
 export { default as openLock } from './open-lock.svg';
 export { default as zapier } from './zapier.svg';
+export { default as accountLinking } from './account-linking.svg';

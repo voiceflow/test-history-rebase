@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import AccountLinkingStep from '.';
+
+<Meta title="Creator/Steps/Account Linking Step" component={AccountLinkingStep} />
+
+# Account Linking Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="configured">{stories.configured()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+  <Story name="active">{stories.active()}</Story>
+</Preview>

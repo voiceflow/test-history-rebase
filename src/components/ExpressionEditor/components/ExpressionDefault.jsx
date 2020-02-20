@@ -11,6 +11,7 @@ import OperatorDropdown from './OperatorDropdown';
 function ExpressionDefault({
   type,
   value,
+  depth,
   onChange,
   variables,
   isPreview,
@@ -20,24 +21,27 @@ function ExpressionDefault({
   expressionify,
   formComponent: FormComponent,
 }) {
+  const sameLevel = LEVELS[type]?.has?.(parentType);
+  const withParenthesis = !!depth && !sameLevel;
+
   if (isPreview) {
     if (ARITHMETIC.includes(type)) {
-      let first = expressionify(value[0]);
+      let first = expressionify(value[0], { parentType: type, depth: depth + 1 });
 
       if (first.props.className && !first.props.className.startsWith('math')) {
         first = <span className="NaN" />;
       }
 
-      let second = expressionify(value[1]);
+      let second = expressionify(value[1], { parentType: type, depth: depth + 1 });
       if (second.props.className && !second.props.className.startsWith('math')) {
         second = <span className="NaN" />;
       }
 
       return (
         <span className="math brackets">
-          <span className="parenthesis">( </span>
+          {withParenthesis && <span className="parenthesis">( </span>}
           {first} {<ExpressionOperator type={type} />} {second}
-          <span className="parenthesis"> )</span>
+          {withParenthesis && <span className="parenthesis"> )</span>}
         </span>
       );
     }
@@ -45,22 +49,22 @@ function ExpressionDefault({
     if (type) {
       return (
         <span className="brackets">
-          <span className="parenthesis">( </span>
-          {expressionify(value[0])}
+          {withParenthesis && <span className="parenthesis">( </span>}
+          {expressionify(value[0], { parentType: type, depth: depth + 1 })}
           <span> </span>
           <span className={type}>
             <ExpressionOperator type={type} />
           </span>
           <span> </span>
-          {expressionify(value[1])}
-          <span className="parenthesis"> )</span>
+          {expressionify(value[1], { parentType: type, depth: depth + 1 })}
+          {withParenthesis && <span className="parenthesis"> )</span>}
         </span>
       );
     }
   }
 
   return (
-    <FormContainer className={cn('expression-block composite', type, { same: LEVELS[type]?.has?.(parentType) })}>
+    <FormContainer className={cn('expression-block composite', type, { same: sameLevel })}>
       <FormComponent value={value[0]} onChange={(v) => onChange([v, value[1]])} parentType={type} variables={variables} />
 
       <OperatorDropdown update={onUpdateType} className="operator">

@@ -2,6 +2,7 @@ import cn from 'classnames';
 import _isObject from 'lodash/isObject';
 import React from 'react';
 
+import { matchVariables } from '@/components/TextEditor/plugins/variables/utils/fromTextConvertor';
 import { VariableTag } from '@/components/VariableTag';
 import VariablesInput from '@/components/VariablesInput';
 import { ExpressionType } from '@/constants';
@@ -13,11 +14,13 @@ const BLANK_SPACE_PATTERN = /^\s+$/;
 
 function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType }) {
   if (isPreview) {
-    return !_isObject(value) || value[0] === '' ? (
+    const matched = _isObject(value) ? value : matchVariables(value);
+
+    return !matched.length ? (
       <span className="math unknown">?</span>
     ) : (
       <span className="math brackets">
-        {value.map((valuePart, index) =>
+        {matched.map((valuePart, index) =>
           _isObject(valuePart) ? (
             <VariableTag key={{ index }}>{`{${valuePart.name}}`}</VariableTag>
           ) : (

@@ -616,11 +616,6 @@ Array [
         className="brackets"
       >
         <span
-          className="parenthesis"
-        >
-          ( 
-        </span>
-        <span
           className="c1"
         >
           {timestamp}
@@ -632,7 +627,7 @@ Array [
           className="equals"
         >
           <span
-            className="c2"
+            className="c2 plus"
           >
             <span
               className="c3 c4"
@@ -652,11 +647,6 @@ Array [
           className="value"
         >
           asdasdas
-        </span>
-        <span
-          className="parenthesis"
-        >
-           )
         </span>
       </span>
     </div>
@@ -700,7 +690,7 @@ Array [
                 onClick={[Function]}
               >
                 <span
-                  className="c2"
+                  className="c2 plus"
                 >
                   <span
                     className="c3 c4"
@@ -732,7 +722,7 @@ Array [
         onClick={[Function]}
       >
         <span
-          className="c2"
+          className="c2 plus"
         >
           <span
             className="c3 c4"
@@ -783,7 +773,7 @@ Array [
             onClick={[Function]}
           >
             <span
-              className="c2"
+              className="c2 plus"
             >
               <span
                 className="c3 c4"

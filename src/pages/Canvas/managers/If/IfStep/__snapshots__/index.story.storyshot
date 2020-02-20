@@ -1,0 +1,2021 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Steps/If Step Active 1`] = `
+.c17 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c20 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c22 .c10 {
+  color: #fff;
+}
+
+.c23 .c10 {
+  color: #6e849a;
+}
+
+.c15 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+}
+
+.c15.default {
+  color: #62778c;
+}
+
+.c16 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c24 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5d9df5;
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c21 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c21::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 .c14 {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.c13 .plus,
+.c13 .minus,
+.c13 .times,
+.c13 .divide,
+.c13 .equals,
+.c13 .greater,
+.c13 .less,
+.c13 .and,
+.c13 .or,
+.c13 .not {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.c13 .plus::before,
+.c13 .minus::before,
+.c13 .times::before,
+.c13 .divide::before,
+.c13 .equals::before,
+.c13 .greater::before,
+.c13 .less::before,
+.c13 .and::before,
+.c13 .or::before,
+.c13 .not::before {
+  display: inline;
+}
+
+.c13 .plus > span,
+.c13 .minus > span,
+.c13 .times > span,
+.c13 .divide > span,
+.c13 .equals > span,
+.c13 .greater > span,
+.c13 .less > span,
+.c13 .and > span,
+.c13 .or > span,
+.c13 .not > span {
+  display: none;
+}
+
+.c13 .plus::before {
+  content: '+';
+}
+
+.c13 .minus::before {
+  content: '−';
+}
+
+.c13 .times::before {
+  content: '×';
+}
+
+.c13 .divide::before {
+  content: '÷';
+}
+
+.c13 .equals::before {
+  content: '=';
+}
+
+.c13 .greater::before {
+  content: '>';
+}
+
+.c13 .less::before {
+  content: '>';
+}
+
+.c13 .and::before {
+  content: '&&';
+}
+
+.c13 .or::before {
+  content: '||';
+}
+
+.c13 .not::before {
+  content: '≠';
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      If Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#f86683"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgIf"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="brackets"
+              >
+                <span
+                  className="c14 c15"
+                >
+                  {timestamp}
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="less"
+                >
+                  <span
+                    className="c16 plus"
+                  >
+                    <span
+                      className="c10 c17"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgLess"
+                      />
+                    </span>
+                  </span>
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="math value"
+                >
+                  212
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c18"
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          />
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="math brackets"
+              >
+                <span
+                  className="math value"
+                >
+                  4
+                </span>
+                 
+                <span
+                  className="c16 plus"
+                >
+                  <span
+                    className="c10 c17"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <svg
+                      data-file-name="SvgDivide"
+                    />
+                  </span>
+                </span>
+                 
+                <span
+                  className="brackets"
+                >
+                  <span
+                    className="parenthesis"
+                  >
+                    ( 
+                  </span>
+                  <span
+                    className="math value"
+                  >
+                    5
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c16 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
+                    </span>
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="math brackets"
+                  >
+                    
+                    <span
+                      className="c14 c15"
+                    >
+                      {sessions}
+                    </span>
+                    .includes('en')
+                  </span>
+                  <span
+                    className="parenthesis"
+                  >
+                     )
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c19"
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          />
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="brackets"
+              >
+                <span
+                  className="c14 c15"
+                >
+                  {timestamp}
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="less"
+                >
+                  <span
+                    className="c16 plus"
+                  >
+                    <span
+                      className="c10 c17"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgLess"
+                      />
+                    </span>
+                  </span>
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="math value"
+                >
+                  212
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c18"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c20"
+              color="#6e849a"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgElse"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            Else
+          </span>
+          <div
+            className="c21"
+            color="#8da2b5"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c16 .c10 {
+  color: #fff;
+}
+
+.c17 .c10 {
+  color: #6e849a;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c18 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #8da2b5;
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      If Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#f86683"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgIf"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            Add IF statement
+          </span>
+        </div>
+      </div>
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c13"
+              color="#6e849a"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgElse"
+              />
+            </span>
+          </div>
+          <span
+            className="c14"
+          >
+            Else
+          </span>
+          <div
+            className="c15"
+            color="#8da2b5"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
+.c17 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c20 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c22 .c10 {
+  color: #fff;
+}
+
+.c23 .c10 {
+  color: #6e849a;
+}
+
+.c15 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+}
+
+.c15.default {
+  color: #62778c;
+}
+
+.c16 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c24 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c21 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c21::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 .c14 {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.c13 .plus,
+.c13 .minus,
+.c13 .times,
+.c13 .divide,
+.c13 .equals,
+.c13 .greater,
+.c13 .less,
+.c13 .and,
+.c13 .or,
+.c13 .not {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.c13 .plus::before,
+.c13 .minus::before,
+.c13 .times::before,
+.c13 .divide::before,
+.c13 .equals::before,
+.c13 .greater::before,
+.c13 .less::before,
+.c13 .and::before,
+.c13 .or::before,
+.c13 .not::before {
+  display: inline;
+}
+
+.c13 .plus > span,
+.c13 .minus > span,
+.c13 .times > span,
+.c13 .divide > span,
+.c13 .equals > span,
+.c13 .greater > span,
+.c13 .less > span,
+.c13 .and > span,
+.c13 .or > span,
+.c13 .not > span {
+  display: none;
+}
+
+.c13 .plus::before {
+  content: '+';
+}
+
+.c13 .minus::before {
+  content: '−';
+}
+
+.c13 .times::before {
+  content: '×';
+}
+
+.c13 .divide::before {
+  content: '÷';
+}
+
+.c13 .equals::before {
+  content: '=';
+}
+
+.c13 .greater::before {
+  content: '>';
+}
+
+.c13 .less::before {
+  content: '>';
+}
+
+.c13 .and::before {
+  content: '&&';
+}
+
+.c13 .or::before {
+  content: '||';
+}
+
+.c13 .not::before {
+  content: '≠';
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      If Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#f86683"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgIf"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="brackets"
+              >
+                <span
+                  className="c14 c15"
+                >
+                  {timestamp}
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="less"
+                >
+                  <span
+                    className="c16 plus"
+                  >
+                    <span
+                      className="c10 c17"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgLess"
+                      />
+                    </span>
+                  </span>
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="math value"
+                >
+                  212
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c18"
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          />
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="math brackets"
+              >
+                <span
+                  className="math value"
+                >
+                  4
+                </span>
+                 
+                <span
+                  className="c16 plus"
+                >
+                  <span
+                    className="c10 c17"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <svg
+                      data-file-name="SvgDivide"
+                    />
+                  </span>
+                </span>
+                 
+                <span
+                  className="brackets"
+                >
+                  <span
+                    className="parenthesis"
+                  >
+                    ( 
+                  </span>
+                  <span
+                    className="math value"
+                  >
+                    5
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c16 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
+                    </span>
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="math brackets"
+                  >
+                    
+                    <span
+                      className="c14 c15"
+                    >
+                      {sessions}
+                    </span>
+                    .includes('en')
+                  </span>
+                  <span
+                    className="parenthesis"
+                  >
+                     )
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c19"
+            onClick={[Function]}
+          />
+        </div>
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          />
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="brackets"
+              >
+                <span
+                  className="c14 c15"
+                >
+                  {timestamp}
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="less"
+                >
+                  <span
+                    className="c16 plus"
+                  >
+                    <span
+                      className="c10 c17"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgLess"
+                      />
+                    </span>
+                  </span>
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="math value"
+                >
+                  212
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c18"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c20"
+              color="#6e849a"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgElse"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            Else
+          </span>
+          <div
+            className="c21"
+            color="#8da2b5"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/If Step Single 1`] = `
+.c17 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c21 .c10 {
+  color: #fff;
+}
+
+.c22 .c10 {
+  color: #6e849a;
+}
+
+.c15 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+}
+
+.c15.default {
+  color: #62778c;
+}
+
+.c16 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.c2 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c3 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c9 {
+  width: 16px;
+  margin-right: 16px;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c6 .c7:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c4 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c23 .c5:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  cursor: copy;
+  padding-left: 12px;
+  margin: -16px -16px -16px 0;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
+}
+
+.c12 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 .c14 {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.c13 .plus,
+.c13 .minus,
+.c13 .times,
+.c13 .divide,
+.c13 .equals,
+.c13 .greater,
+.c13 .less,
+.c13 .and,
+.c13 .or,
+.c13 .not {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.c13 .plus::before,
+.c13 .minus::before,
+.c13 .times::before,
+.c13 .divide::before,
+.c13 .equals::before,
+.c13 .greater::before,
+.c13 .less::before,
+.c13 .and::before,
+.c13 .or::before,
+.c13 .not::before {
+  display: inline;
+}
+
+.c13 .plus > span,
+.c13 .minus > span,
+.c13 .times > span,
+.c13 .divide > span,
+.c13 .equals > span,
+.c13 .greater > span,
+.c13 .less > span,
+.c13 .and > span,
+.c13 .or > span,
+.c13 .not > span {
+  display: none;
+}
+
+.c13 .plus::before {
+  content: '+';
+}
+
+.c13 .minus::before {
+  content: '−';
+}
+
+.c13 .times::before {
+  content: '×';
+}
+
+.c13 .divide::before {
+  content: '÷';
+}
+
+.c13 .equals::before {
+  content: '=';
+}
+
+.c13 .greater::before {
+  content: '>';
+}
+
+.c13 .less::before {
+  content: '>';
+}
+
+.c13 .and::before {
+  content: '&&';
+}
+
+.c13 .or::before {
+  content: '||';
+}
+
+.c13 .not::before {
+  content: '≠';
+}
+
+<div
+  className="c0"
+>
+  <header
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      If Block
+    </span>
+  </header>
+  <section
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c11"
+              color="#f86683"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgIf"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            <span
+              className="c13 expressionfy"
+            >
+              <span
+                className="brackets"
+              >
+                <span
+                  className="c14 c15"
+                >
+                  {timestamp}
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="less"
+                >
+                  <span
+                    className="c16 plus"
+                  >
+                    <span
+                      className="c10 c17"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgLess"
+                      />
+                    </span>
+                  </span>
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  className="math value"
+                >
+                  212
+                </span>
+              </span>
+            </span>
+          </span>
+          <div
+            className="c18"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+      <div
+        className="c5 c6"
+      >
+        <div
+          className="c7 c8"
+        >
+          <div
+            className="c9"
+          >
+            <span
+              className="c10 c19"
+              color="#6e849a"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgElse"
+              />
+            </span>
+          </div>
+          <span
+            className="c12"
+          >
+            Else
+          </span>
+          <div
+            className="c20"
+            color="#8da2b5"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

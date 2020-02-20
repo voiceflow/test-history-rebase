@@ -126,6 +126,7 @@ export { default as link } from './regular/link.svg';
 export { default as pause } from './pause.svg';
 export { default as random } from './solid/random.svg';
 export { default as randomLoop } from './random.svg';
+export { default as if } from './if.svg';
 export { default as stopCircle } from './stop-circle.svg';
 export { default as amazon } from './brands/amazon.svg';
 export { default as google } from './brands/google.svg';

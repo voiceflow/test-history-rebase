@@ -19,16 +19,16 @@ const OPERATORS = {
   [ExpressionType.EQUALS]: <SvgIcon icon="equals" />,
   [ExpressionType.GREATER]: <SvgIcon icon="greater" />,
   [ExpressionType.LESS]: <SvgIcon icon="less" />,
-  [ExpressionType.AND]: 'AND',
-  [ExpressionType.OR]: 'OR',
-  [ExpressionType.NOT]: 'NOT',
-  [ExpressionType.VALUE]: 'Value',
-  [ExpressionType.VARIABLE]: 'Variable',
-  [ExpressionType.ADVANCE]: 'Expression',
+  [ExpressionType.AND]: <span>AND</span>,
+  [ExpressionType.OR]: <span>OR</span>,
+  [ExpressionType.NOT]: <span>NOT</span>,
+  [ExpressionType.VALUE]: <span>Value</span>,
+  [ExpressionType.VARIABLE]: <span>Variable</span>,
+  [ExpressionType.ADVANCE]: <span>Expression</span>,
 };
 
 function ExpressionOperator({ type }) {
-  return <Wrapper>{OPERATORS[type]}</Wrapper>;
+  return <Wrapper className={ExpressionType.PLUS}>{OPERATORS[type]}</Wrapper>;
 }
 
 export default React.memo(ExpressionOperator);

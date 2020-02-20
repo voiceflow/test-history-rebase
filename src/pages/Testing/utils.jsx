@@ -183,6 +183,12 @@ export const getUserTestOutputs = async (trace, ending, state) => {
         type,
       };
       dom.push(outputBlock);
+    } else if (type === 'Interaction') {
+      const outputBlock = {
+        node: block.line.id,
+        type,
+      };
+      dom.push(outputBlock);
     } else if (type === 'Flow') {
       const outputBlock = {
         node: block.line.id,

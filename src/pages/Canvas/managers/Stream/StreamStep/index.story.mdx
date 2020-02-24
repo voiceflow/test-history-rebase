@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import StreamStep from '.';
+
+<Meta title="Creator/Steps/Stream Step" component={StreamStep} />
+
+# Stream Step
+
+<Preview>
+  <Story name="empty Google">{stories.emptyGoogle()}</Story>
+  <Story name="empty Alexa">{stories.emptyAlexa()}</Story>
+  <Story name="with audio added">{stories.withAudioAdded()}</Story>
+  <Story name="with custom pause">{stories.withCustomPause()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+</Preview>

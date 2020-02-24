@@ -140,3 +140,4 @@ export { default as lock } from './lock.svg';
 export { default as openLock } from './open-lock.svg';
 export { default as zapier } from './zapier.svg';
 export { default as accountLinking } from './account-linking.svg';
+export { default as audioPlayer } from './audio-player.svg';

@@ -108,13 +108,22 @@ const cleanupDisplayMiddleware = (store) => (next) => (action) => {
   if (action.type === Creator.REMOVE_MANY_NODES || action.type === Creator.REMOVE_NODE) {
     const state = store.getState();
     const nodeIDs = action.type === Creator.REMOVE_NODE ? [action.payload] : action.payload;
-    nodeIDs.forEach((nodeID) => {
-      const nodeData = Creator.dataByNodeIDSelector(state)(nodeID);
-      const { type, displayID, version } = nodeData;
-      if (type === BlockType.DISPLAY && displayID && version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
-        store.dispatch(Display.deleteDisplay(nodeData.displayID));
-      }
-    });
+
+    const cleanupDisplayData = (nodeIDArray) => {
+      nodeIDArray.forEach((nodeID) => {
+        const nodeData = Creator.dataByNodeIDSelector(state)(nodeID);
+        const { type, displayID, version } = nodeData;
+        if (type === BlockType.COMBINED) {
+          const { combinedNodes } = Creator.nodeByIDSelector(state)(nodeID);
+          return cleanupDisplayData(combinedNodes);
+        }
+        if (type === BlockType.DISPLAY && displayID && version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
+          store.dispatch(Display.deleteDisplay(nodeData.displayID));
+        }
+      });
+    };
+
+    cleanupDisplayData(nodeIDs);
   }
   next(action);
 };

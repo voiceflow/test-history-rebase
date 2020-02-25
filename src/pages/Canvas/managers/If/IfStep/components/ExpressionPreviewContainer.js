@@ -52,19 +52,19 @@ const ExpressionPreviewContainer = styled.span`
     content: '=';
   }
   .greater::before {
-    content: '>';
+    content: '\003e';
   }
   .less::before {
-    content: '>';
+    content: '\003c';
   }
   .and::before {
-    content: '&&';
+    content: 'AND';
   }
   .or::before {
-    content: '||';
+    content: 'OR';
   }
   .not::before {
-    content: '≠';
+    content: 'NOT';
   }
 `;
 

@@ -12,9 +12,9 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { DataTypes, download } from '@/utils/dom';
 import { handleJSONFileRead } from '@/utils/files';
 
-function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommand = '', datasource = '', display }) {
+function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommands = '', datasource = '', display }) {
   const removeFile = () => {
-    onChange({ jsonFileName: null, displayID: null, datasource: null, aplCommand: null });
+    onChange({ jsonFileName: null, displayID: null, datasource: null, aplCommands: null, settings: null });
   };
 
   const customOnDropAccept = async (acceptedFiles) => {
@@ -28,21 +28,21 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
 
       const documentString = JSON.stringify(document, null, '\t');
       const datasourceString = JSON.stringify(datasource, null, '\t');
-      const aplCommandString = JSON.stringify(commands, null, '\t');
+      const aplCommandsString = JSON.stringify(commands, null, '\t');
 
       const payload = {
         document: documentString,
         datasource: datasourceString,
-        aplCommand: aplCommandString,
+        aplCommands: aplCommandsString,
         title: fileName,
       };
 
       if (displayID) {
         await updateDisplay(skillID, displayID, payload);
-        onChange({ jsonFileName: fileName, datasource: datasourceString, aplCommand: aplCommandString });
+        onChange({ jsonFileName: fileName, datasource: datasourceString, aplCommands: aplCommandsString });
       } else {
         const displayID = await createDisplay(skillID, payload);
-        onChange({ displayID, jsonFileName: fileName, datasource: datasourceString, aplCommand: aplCommandString });
+        onChange({ displayID, jsonFileName: fileName, datasource: datasourceString, aplCommands: aplCommandsString });
       }
     };
 
@@ -93,17 +93,17 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
               />
             </FormControl>
           </EditorSection>
-          <EditorSection header="APL Commands" namespace={['aplCommand']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
+          <EditorSection header="APL Commands" namespace={['aplCommands']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
             <FormControl>
               <AceEditor
                 name="aplCommandEditor"
                 mode="json"
-                onChange={(aplCommand) => onChange({ aplCommand })}
+                onChange={(aplCommands) => onChange({ aplCommands })}
                 fontSize={14}
                 showPrintMargin={false}
                 showGutter
                 highlightActiveLine
-                value={aplCommand}
+                value={aplCommands}
                 setOptions={{
                   tabSize: 2,
                 }}

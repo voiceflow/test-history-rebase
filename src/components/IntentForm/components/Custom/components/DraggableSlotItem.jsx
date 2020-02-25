@@ -14,7 +14,7 @@ const DraggableSlotItem = ({ itemKey, onClick, item, slotsMap, intentSlotsMap, i
   const slot = slotsMap[item];
   const intentSlot = intentSlotsMap[item];
 
-  if (!intentSlot) {
+  if (!intentSlot || !slot) {
     return null;
   }
 

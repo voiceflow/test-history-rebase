@@ -14,7 +14,7 @@ import { handleJSONFileRead } from '@/utils/files';
 
 function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommands = '', datasource = '', display }) {
   const removeFile = () => {
-    onChange({ jsonFileName: null, displayID: null, datasource: null, aplCommands: null, settings: null });
+    onChange({ jsonFileName: null, displayID: null, datasource: null, aplCommands: null });
   };
 
   const customOnDropAccept = async (acceptedFiles) => {
@@ -28,21 +28,21 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
 
       const documentString = JSON.stringify(document, null, '\t');
       const datasourceString = JSON.stringify(datasource, null, '\t');
-      const aplCommandsString = JSON.stringify(commands, null, '\t');
+      const aplCommandString = JSON.stringify(commands, null, '\t');
 
       const payload = {
         document: documentString,
         datasource: datasourceString,
-        aplCommands: aplCommandsString,
+        aplCommand: aplCommandString,
         title: fileName,
       };
 
       if (displayID) {
         await updateDisplay(skillID, displayID, payload);
-        onChange({ jsonFileName: fileName, datasource: datasourceString, aplCommands: aplCommandsString });
+        onChange({ jsonFileName: fileName, datasource: datasourceString, aplCommand: aplCommandString });
       } else {
         const displayID = await createDisplay(skillID, payload);
-        onChange({ displayID, jsonFileName: fileName, datasource: datasourceString, aplCommands: aplCommandsString });
+        onChange({ displayID, jsonFileName: fileName, datasource: datasourceString, aplCommand: aplCommandString });
       }
     };
 
@@ -93,17 +93,17 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
               />
             </FormControl>
           </EditorSection>
-          <EditorSection header="APL Commands" namespace={['aplCommands']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
+          <EditorSection header="APL Commands" namespace={['aplCommand']} isDividerNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
             <FormControl>
               <AceEditor
                 name="aplCommandEditor"
                 mode="json"
-                onChange={(aplCommands) => onChange({ aplCommands })}
+                onChange={(aplCommand) => onChange({ aplCommand })}
                 fontSize={14}
                 showPrintMargin={false}
                 showGutter
                 highlightActiveLine
-                value={aplCommands}
+                value={aplCommand}
                 setOptions={{
                   tabSize: 2,
                 }}

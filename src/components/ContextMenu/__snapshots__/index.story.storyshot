@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Context Menu Base 1`] = `
+<div
+  onContextMenu={[Function]}
+  style={
+    Object {
+      "padding": "20px",
+    }
+  }
+>
+  Menu is opened
+</div>
+`;

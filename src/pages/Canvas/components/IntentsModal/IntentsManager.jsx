@@ -72,6 +72,7 @@ const IntentManager = ({ intents, intentsIDs, removeIntent, reorder, addIntent }
           <DraggableList
             type="intents"
             items={intents}
+            filter={filter}
             onDelete={(_, intent) => {
               removeIntent(intent.item.id);
             }}
@@ -81,7 +82,7 @@ const IntentManager = ({ intents, intentsIDs, removeIntent, reorder, addIntent }
             itemComponent={DraggableItem}
             deleteComponent={DeleteComponent}
             previewComponent={DraggableItem}
-            filter={filter}
+            withContextMenuDelete
           />
         </ListContainer>
       </ListSection>

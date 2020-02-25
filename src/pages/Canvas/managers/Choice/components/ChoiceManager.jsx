@@ -94,6 +94,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
       <DraggableList
         type="interaction-editor"
         items={items}
+        footer={hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
         onDelete={onRemove}
         onReorder={reorderChoice}
         onEndDrag={toggleDragging}
@@ -104,7 +105,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
-        footer={hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
+        withContextMenuDelete
       />
     </Content>
   );

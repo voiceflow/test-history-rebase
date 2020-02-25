@@ -92,6 +92,7 @@ function SpeakEditor({ data, platform, onChange }) {
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
+        withContextMenuDelete
       />
     </Content>
   );

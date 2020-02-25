@@ -9,7 +9,19 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PermissionInfo from './PermissionInfo';
 
 const DraggableItem = (
-  { itemKey, item, selectedPermissions, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef },
+  {
+    item,
+    itemKey,
+    onUpdate,
+    isOnlyItem,
+    isDragging,
+    onContextMenu,
+    latestCreatedKey,
+    connectedDragRef,
+    isDraggingPreview,
+    isContextMenuOpen,
+    selectedPermissions,
+  },
   ref
 ) => {
   const updateSelected = React.useCallback((selected) => onUpdate({ selected }), [onUpdate]);
@@ -26,6 +38,8 @@ const DraggableItem = (
       headerToggle
       headerRef={connectedDragRef}
       isDraggingPreview={isDraggingPreview}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
         <>

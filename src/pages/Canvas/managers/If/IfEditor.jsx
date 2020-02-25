@@ -110,6 +110,7 @@ function IfEditor({ data, onChange, focusedNode }) {
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
+        withContextMenuDelete
       />
     </Content>
   );

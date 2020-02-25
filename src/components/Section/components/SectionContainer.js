@@ -111,6 +111,12 @@ const SectionContainer = styled.div`
         }
       }
     `}
+  
+  ${({ isContextMenuOpen }) =>
+    isContextMenuOpen &&
+    css`
+      background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%);
+    `}    
 `;
 
 export default SectionContainer;

@@ -53,6 +53,7 @@ function UserInfoEditor({ data, onChange }) {
         partialDragItem
         deleteComponent={DeleteComponent}
         previewComponent={DraggableItem}
+        withContextMenuDelete
       />
     </Content>
   );

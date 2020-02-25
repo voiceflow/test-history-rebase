@@ -1,4 +1,7 @@
+import cn from 'classnames';
 import React from 'react';
+
+import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 
 import TextEditor from './TextEditor';
 import { Input } from './components';
@@ -13,7 +16,7 @@ const TextEditorInput = ({ icon, variant, iconProps, className, wrapperProps, le
     error={error}
     variant={variant}
     disabled={disabled}
-    className={className}
+    className={cn(CONTEXT_MENU_IGNORED_CLASS_NAME, className)}
     iconProps={iconProps}
     leftAction={leftAction}
     rightAction={rightAction}

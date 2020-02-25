@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX, VARIABLE_STRING_REGEXP } from '@/constants';
 import { withUpload } from '@/hocs';
@@ -44,6 +45,7 @@ function DropAudio({ isLoading, onDropAccepted, onDropRejected, error, setError,
       clearError={() => setError(null)}
       onDropRejected={onDropRejected}
       isLoading={isLoading}
+      className={CONTEXT_MENU_IGNORED_CLASS_NAME}
       error={error}
       label="audio file"
       onUpdate={update}

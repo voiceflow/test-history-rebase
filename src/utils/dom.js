@@ -295,3 +295,17 @@ export const download = (filename, text, data = DataTypes.TEXT) => {
 
   document.body.removeChild(element);
 };
+
+export const buildVirtualElement = ([left, top]) => ({
+  getBoundingClientRect: () => ({
+    width: 0,
+    height: 0,
+    top,
+    left,
+    right: left,
+    bottom: top,
+  }),
+
+  clientWidth: 0,
+  clientHeight: 0,
+});

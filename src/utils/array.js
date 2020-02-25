@@ -53,3 +53,10 @@ export const hasIdenticalMembers = (lhs, rhs) => {
 
   return !lhs.some((value) => !rhs.includes(value));
 };
+
+export const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    // eslint-disable-next-line callback-return,no-await-in-loop
+    await callback(array[index], index, array);
+  }
+};

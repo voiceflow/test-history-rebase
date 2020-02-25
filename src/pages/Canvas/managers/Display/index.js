@@ -31,7 +31,7 @@ const DisplayManager = {
       updateOnChange: false,
       backgroundImage: null,
       splashHeader: '',
-      jsonFile: null,
+      jsonFileName: null,
       version: VERSIONS.EDITORS_REDESIGN,
     },
   }),

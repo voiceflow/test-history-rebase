@@ -6,7 +6,7 @@ import { transformVariablesFromReadable } from '@/utils/slot';
 
 import { EntityType, Mutability } from '../../constants';
 
-const matchVariables = (text = '', fromPastedText = false) => {
+export const matchVariables = (text = '', fromPastedText = false) => {
   if (Array.isArray(text)) {
     return text;
   }

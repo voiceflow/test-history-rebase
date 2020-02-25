@@ -6,10 +6,10 @@ import Menu from '@/components/Menu';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { styled } from '@/hocs';
 import { ContextMenuContext, withClipboard, withEngine } from '@/pages/Canvas/contexts';
+import { buildVirtualElement } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
 import { CanvasAction, TARGET_OPTIONS } from './constants';
-import { buildVirtualElement } from './utils';
 
 const OPTION_HANDLERS = {
   [CanvasAction.PASTE]: ({ position }, { engine }) => engine.paste(localStorage.getItem(CLIPBOARD_DATA_KEY), engine.canvas.transformPoint(position)),

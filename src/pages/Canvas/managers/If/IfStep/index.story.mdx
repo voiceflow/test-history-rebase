@@ -1,0 +1,14 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+import * as stories from './index.story';
+import IfStep from '.';
+
+<Meta title="Creator/Steps/If Step" component={IfStep} />
+
+# If Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="single expression">{stories.single()}</Story>
+  <Story name="multiple expression">{stories.multiple()}</Story>
+  <Story name="active">{stories.active()}</Story>
+</Preview>

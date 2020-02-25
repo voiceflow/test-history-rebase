@@ -67,6 +67,7 @@ function SetEditor({ data, onChange }) {
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
+        withContextMenuDelete
       />
     </Content>
   );

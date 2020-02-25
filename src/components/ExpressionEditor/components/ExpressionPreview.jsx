@@ -10,7 +10,7 @@ import ExpressionValue from './ExpressionValue';
 import ExpressionVariable from './ExpressionVariable';
 import PreviewContainer from './PreviewContainer';
 
-const expressionify = (expression, depth = 0) => {
+const expressionify = (expression, { parentType, depth = 0 } = {}) => {
   if (!expression) {
     return <div>err</div>;
   }
@@ -21,25 +21,43 @@ const expressionify = (expression, depth = 0) => {
 
   switch (expression.type) {
     case ExpressionType.ADVANCE:
-      return <ExpressionAdvance value={expression.value} isPreview />;
+      return <ExpressionAdvance depth={depth} value={expression.value} isPreview />;
     case ExpressionType.VALUE:
-      return <ExpressionValue value={expression.value} isPreview />;
+      return <ExpressionValue depth={depth} value={expression.value} isPreview />;
     case ExpressionType.VARIABLE:
-      return <ExpressionVariable value={expression.value} isPreview />;
+      return <ExpressionVariable depth={depth} value={expression.value} isPreview />;
     case ExpressionType.NOT:
-      return <ExpressionNot value={expression.value} expressionify={expressionify} isPreview />;
+      return (
+        <ExpressionNot
+          type={expression.type}
+          depth={depth}
+          value={expression.value}
+          isPreview
+          parentType={parentType}
+          expressionify={expressionify}
+        />
+      );
     default:
-      return <ExpressionDefault type={expression.type} value={expression.value} expressionify={expressionify} isPreview />;
+      return (
+        <ExpressionDefault
+          type={expression.type}
+          depth={depth}
+          value={expression.value}
+          isPreview
+          parentType={parentType}
+          expressionify={expressionify}
+        />
+      );
   }
 };
 
-function ExpressionPreview({ expression, ...props }) {
+function ExpressionPreview({ expression, container: Container = PreviewContainer, ...props }) {
   if (!expression) return null;
 
   return (
-    <PreviewContainer className="expressionfy" {...props}>
+    <Container className="expressionfy" {...props}>
       {expressionify(expression)}
-    </PreviewContainer>
+    </Container>
   );
 }
 

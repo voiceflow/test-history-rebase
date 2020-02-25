@@ -8,7 +8,10 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 import DropdownWrapper from './DropdownWrapper';
 
-const DraggableItem = ({ itemKey, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef }, ref) => {
+const DraggableItem = (
+  { itemKey, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
+  ref
+) => {
   const updateExpression = React.useCallback((expression) => onUpdate({ expression: { ...item.expression, ...expression } }), [
     item.expression,
     onUpdate,
@@ -33,6 +36,8 @@ const DraggableItem = ({ itemKey, item, isOnlyItem, isDragging, isDraggingPrevie
       isDragging={isDragging}
       headerToggle
       isDraggingPreview={isDraggingPreview}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
         <FormControl>

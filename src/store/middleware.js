@@ -6,7 +6,7 @@ import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED, TRACKING_ENABLED } from '@/config';
-import { NEW_PRODUCT_ID } from '@/constants';
+import { BlockType, NEW_PRODUCT_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Display from '@/ducks/display';
@@ -18,6 +18,7 @@ import * as Slot from '@/ducks/slot';
 import * as User from '@/ducks/user';
 import { CRUD_ADD, CRUD_REMOVE, CRUD_UPDATE } from '@/ducks/utils/crud';
 import * as VariableSet from '@/ducks/variableSet';
+import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
 import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramViewersSelector } from './selectors';
@@ -103,6 +104,30 @@ const creatorHistoryMiddleware = (store) => (next) => (action) => {
   }
 };
 
+const cleanupDisplayMiddleware = (store) => (next) => (action) => {
+  if (action.type === Creator.REMOVE_MANY_NODES || action.type === Creator.REMOVE_NODE) {
+    const state = store.getState();
+    const nodeIDs = action.type === Creator.REMOVE_NODE ? [action.payload] : action.payload;
+
+    const cleanupDisplayData = (nodeIDArray) => {
+      nodeIDArray.forEach((nodeID) => {
+        const nodeData = Creator.dataByNodeIDSelector(state)(nodeID);
+        const { type, displayID, version } = nodeData;
+        if (type === BlockType.COMBINED) {
+          const { combinedNodes } = Creator.nodeByIDSelector(state)(nodeID);
+          return cleanupDisplayData(combinedNodes);
+        }
+        if (type === BlockType.DISPLAY && displayID && version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
+          store.dispatch(Display.deleteDisplay(nodeData.displayID));
+        }
+      });
+    };
+
+    cleanupDisplayData(nodeIDs);
+  }
+  next(action);
+};
+
 // reset the creator state when navigating to the canvas from elsewhere in the app
 const creatorResetMiddleware = (store) => (next) => (action) => {
   if (action.type === LOCATION_CHANGE) {
@@ -128,6 +153,7 @@ const createMiddleware = (history) => {
     thunk,
     creatorHistoryMiddleware,
     creatorResetMiddleware,
+    cleanupDisplayMiddleware,
     createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents),
     createAutosaveMiddleware(createStructuredSelector({ platform: Skill.activePlatformSelector }), savePlatformAndActiveDiagram, [
       Skill.SET_ACTIVE_SKILL,

@@ -85,7 +85,12 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
   return !version ? null : (
     <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
       <Section variant="tertiary" header="Display Type">
-        <RadioGroup options={DISPLAY_OPTIONS} checked={displayType} onChange={changeDisplayType} disabled={!!jsonFileName} />
+        <RadioGroup
+          options={DISPLAY_OPTIONS}
+          checked={displayType}
+          onChange={changeDisplayType}
+          disabled={!!jsonFileName && displayType === DisplayType.ADVANCED}
+        />
       </Section>
       {displayType === DisplayType.SPLASH ? (
         <SplashEditor

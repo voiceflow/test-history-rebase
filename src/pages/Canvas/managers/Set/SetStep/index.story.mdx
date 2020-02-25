@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import SetsStep from '.';
+
+<Meta title="Creator/Steps/Set Step" component={SetsStep} />
+
+# Set Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="single expression">{stories.singleExpression()}</Story>
+  <Story name="multiple expression">{stories.multipleExpression()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+</Preview>

@@ -23,6 +23,8 @@ const DraggableItem = (
     intents,
     pushToPath,
     connectedDragRef,
+    onContextMenu,
+    isContextMenuOpen,
   },
   ref
 ) => {
@@ -46,6 +48,8 @@ const DraggableItem = (
       headerToggle
       headerRef={connectedDragRef}
       isDraggingPreview={isDraggingPreview}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
         <>

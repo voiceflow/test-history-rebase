@@ -62,6 +62,16 @@ export const extractProject = (skill) => ({
   slots: [],
 });
 
-export const extractIntents = (skill) => intentAdapter.mapFromDB(skill.intents);
+export const extractIntents = (skill) => {
+  const slotsMap = skill.slots.reduce((obj, { key }) => Object.assign(obj, { [key]: true }), {});
+
+  const intents = skill.intents.map((intent) => ({
+    ...intent,
+    slots: intent.slots.filter((slot) => slotsMap[slot.id]),
+    inputs: intent.inputs.map((input) => ({ ...input, slots: input.slots.filter((id) => slotsMap[id]) })),
+  }));
+
+  return intentAdapter.mapFromDB(intents);
+};
 
 export const extractSlots = (skill) => slotAdapter.mapFromDB(skill.slots);

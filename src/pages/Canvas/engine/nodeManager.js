@@ -121,7 +121,7 @@ class NodeManager extends EngineConsumer {
   }
 
   async duplicate(nodeID) {
-    const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
+    const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID, this.dispatch);
 
     this.engine.saveHistory();
     this.engine.focus.set(duplicateNodeID);

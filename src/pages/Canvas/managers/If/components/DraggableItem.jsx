@@ -6,7 +6,10 @@ import { SectionToggleVariant } from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
-const DraggableItem = ({ itemKey, index, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef }, ref) => {
+const DraggableItem = (
+  { itemKey, index, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
+  ref
+) => {
   const isNew = itemKey === latestCreatedKey;
 
   return (
@@ -21,6 +24,8 @@ const DraggableItem = ({ itemKey, index, item, isOnlyItem, isDragging, isDraggin
       headerToggle
       headerRef={connectedDragRef}
       isDraggingPreview={isDraggingPreview}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
         <FormControl>

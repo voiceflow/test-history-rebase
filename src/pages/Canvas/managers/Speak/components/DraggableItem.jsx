@@ -13,7 +13,20 @@ import { compose } from '@/utils/functional';
 import AudioIcon from './AudioIcon';
 
 const DraggableItem = (
-  { itemKey, item, platform, isRandomized, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef },
+  {
+    item,
+    itemKey,
+    onUpdate,
+    platform,
+    isOnlyItem,
+    isDragging,
+    isRandomized,
+    onContextMenu,
+    latestCreatedKey,
+    connectedDragRef,
+    isDraggingPreview,
+    isContextMenuOpen,
+  },
   ref
 ) => {
   const { url, type, voice, content } = item;
@@ -43,6 +56,8 @@ const DraggableItem = (
       headerToggle
       collapseVariant={!isDragging && !isDraggingPreview && SectionToggleVariant.ARROW}
       isDraggingPreview={isDraggingPreview}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
         <FormControl>

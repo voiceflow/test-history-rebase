@@ -8,6 +8,8 @@ import { HOVER_THROTTLE_TIMEOUT } from './constants';
 function DraggableList({
   type,
   items,
+  filter,
+  footer = null,
   onDrop,
   onDelete,
   itemProps,
@@ -22,8 +24,7 @@ function DraggableList({
   deleteComponent,
   partialDragItem,
   previewComponent,
-  filter,
-  footer = null,
+  withContextMenuDelete,
 }) {
   const handlers = React.useRef({});
   const [dragging, updateDragging] = React.useState(false);
@@ -86,6 +87,7 @@ function DraggableList({
                 handlers={handlers}
                 partialDrag={partialDragItem}
                 itemComponent={itemComponent}
+                withContextMenuDelete={withContextMenuDelete}
               />
             );
 
@@ -103,9 +105,11 @@ function DraggableList({
                 item={item}
                 type={type}
                 index={i}
+                onRemove={onDeleteDrop}
                 handlers={handlers}
                 partialDrag={partialDragItem}
                 itemComponent={itemComponent}
+                withContextMenuDelete={withContextMenuDelete}
               />
             );
 

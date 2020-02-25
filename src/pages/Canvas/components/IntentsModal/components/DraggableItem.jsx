@@ -18,7 +18,7 @@ const IntentSection = styled(Section)`
     `}
 `;
 
-const DraggableItem = ({ item, isDragging, isDraggingPreview, selectedIntentID, setSelectedIntentID }, ref) => {
+const DraggableItem = ({ item, isDragging, isDraggingPreview, selectedIntentID, setSelectedIntentID, onContextMenu, isContextMenuOpen }, ref) => {
   return (
     <IntentSection
       ref={ref}
@@ -28,6 +28,8 @@ const DraggableItem = ({ item, isDragging, isDraggingPreview, selectedIntentID, 
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
       onClick={() => setSelectedIntentID(item.id)}
+      onContextMenu={onContextMenu}
+      isContextMenuOpen={isContextMenuOpen}
     />
   );
 };

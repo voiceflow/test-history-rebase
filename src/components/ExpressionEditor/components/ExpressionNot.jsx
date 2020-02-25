@@ -22,18 +22,20 @@ function ExpressionNot({
   expressionify,
   formComponent: FormComponent,
 }) {
+  const sameLevel = LEVELS[type]?.has?.(parentType);
+
   if (isPreview) {
     return (
       <span className="brackets">
-        <span className="parenthesis">( </span>
-        <span className="not">NOT</span> {expressionify(value)}
-        <span className="parenthesis"> )</span>
+        {!sameLevel && <span className="parenthesis">( </span>}
+        <span className="not">NOT</span> {expressionify(value, { parentType: type, depth: depth + 1 })}
+        {!sameLevel && <span className="parenthesis"> )</span>}
       </span>
     );
   }
 
   return (
-    <FormContainer className={cn('expression-block composite', ExpressionType.NOT, { same: LEVELS[ExpressionType.NOT]?.has?.(parentType) })}>
+    <FormContainer className={cn('expression-block composite', ExpressionType.NOT, { same: sameLevel })}>
       <OperatorDropdown update={onUpdateType} depth={depth} className="operator">
         <ExpressionOperator type={type} />
 

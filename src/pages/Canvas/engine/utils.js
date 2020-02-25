@@ -1,7 +1,9 @@
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
+import { duplicateDisplay } from '@/ducks/display';
 import { NODE_MANAGERS } from '@/pages/Canvas/managers';
+import { asyncForEach } from '@/utils/array';
 
 export class EngineConsumer {
   constructor(engine) {
@@ -49,17 +51,16 @@ export const cloneLink = ({ getPortID, getNodeID }) => (link) => ({
   },
 });
 
-export const cloneNodeWithData = ({ getNodeID, getPortID }) => ({ node, data }) => {
+export const cloneNodeWithData = ({ getNodeID, getPortID }, dispatch, skillID) => async ({ node, data }) => {
   let originNode = node;
   let originNodeData = data;
 
   const newID = getNodeID(originNode.id);
 
-  // Some blocks (ex. display) point to redux for some of it's data, for UX purposes, in some cases we want to just create a fresh node
-  if (originNode.type === BlockType.DISPLAY) {
-    const emptyBlockData = NODE_MANAGERS[originNode.type].factory();
-    originNodeData = { ...originNodeData, ...emptyBlockData.data };
-    originNode = { ...originNode, ...emptyBlockData.node, ports: originNode.ports };
+  if (originNode.type === BlockType.DISPLAY && originNodeData.displayID) {
+    const newDisplayID = await dispatch(duplicateDisplay(originNodeData.displayID, skillID));
+    originNodeData = { ...originNodeData, displayID: newDisplayID };
+    originNode = { ...originNode, ports: originNode.ports };
   }
 
   return {
@@ -117,12 +118,17 @@ export const mergeEntityMaps = (lhs, rhs) => ({
   links: [...lhs.links, ...rhs.links],
 });
 
-export const cloneEntityMap = ({ nodesWithData, ports, links }) => {
+export const cloneEntityMap = async ({ nodesWithData, ports, links }, dispatch, skillID) => {
   const context = createCloneContext();
 
   const clonedPorts = ports.map(clonePort(context));
 
-  const clonedNodesWithData = nodesWithData.map(cloneNodeWithData(context));
+  const clonedNodesWithData = [];
+
+  await asyncForEach(nodesWithData, async (nodeData) => {
+    const clonedNodeData = await cloneNodeWithData(context, dispatch, skillID)(nodeData);
+    clonedNodesWithData.push(clonedNodeData);
+  });
 
   const clonedLinks = links.map(cloneLink(context));
 

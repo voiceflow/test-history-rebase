@@ -46,7 +46,13 @@ export function useDismissable(defaultValue = false, onClose, autoDismiss = fals
     if (isOpen) {
       document.addEventListener('click', handleClose);
 
-      return removeRootListener;
+      return () => {
+        if (autoDismiss) {
+          overlay.setHandler(null);
+        }
+
+        removeRootListener();
+      };
     }
 
     removeRootListener();

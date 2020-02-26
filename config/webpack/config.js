@@ -1,5 +1,20 @@
+/* eslint-disable @typescript-eslint/no-var-requires, camelcase */
+
 const branch = require('git-branch');
-const { action, env, logrocket, intercom, ga, tracking, debug, debugNet, debugHttp, debugRealtime, debugSocket } = require('webpack-nano/argv');
+const {
+  action,
+  env,
+  logrocket,
+  intercom,
+  ga,
+  tracking,
+  debug,
+  debugNet,
+  debugHttp,
+  debugRealtime,
+  debugSocket,
+  ff_blockRedesign,
+} = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
 const ENV_PREFIX = 'VF_APP_';
@@ -21,10 +36,16 @@ module.exports = {
   ENV: {
     NODE_ENV,
     BUILD_ENV: env || process.env.BUILD_ENV || 'local',
+
+    // analytics
     LOGROCKET_ENABLED: logrocket && 'true',
     INTERCOM_ENABLED: intercom && 'true',
     GA_ENABLED: ga && 'true',
     TRACKING_ENABLED: tracking && 'true',
+
+    // feature flags
+    FF_BLOCK_REDESIGN: ff_blockRedesign && 'true',
+
     API_HOST: 'localhost',
     ...ENV,
     VERSION: ENV.VERSION || `(${branch.sync()})`,

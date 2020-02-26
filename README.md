@@ -192,6 +192,19 @@ You are also able to use the flag `--ga` to enable it from the command line.
 yarn start --ga
 ```
 
+### Feature Flags
+
+All feature flags environment variables begin with `VF_APP_FF_` and flags for the command line begin with `--ff_`.
+You can invoke the feature by setting the appropriate environment variable or passing the appropriate command line flag.
+
+```sh
+VF_APP_FF_BLOCK_REDESIGN='true'
+```
+
+```sh
+yarn start --ff_blockRedesign
+```
+
 ## Previewing in an ephmeral environment
 
 1. Ask Frank (@Fran) <<frank@voiceflow.com>> for an ephemeral environment

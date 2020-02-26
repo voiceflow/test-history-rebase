@@ -20,6 +20,7 @@ export const isSafari = DEVICE_INFO.browser === 'Safari';
 export const NODE_ENV = process.env.NODE_ENV;
 export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
+export const IS_TEST = NODE_ENV === 'test';
 
 export const BUILD_ENV = process.env.BUILD_ENV;
 export const CREATOR_URL = 'creator.voiceflow.com';

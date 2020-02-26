@@ -775,7 +775,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                 >
                   <span
                     className="c11 c27"
-                    color="#BECEDC"
+                    color="currentColor"
                     size={12}
                   >
                     <svg
@@ -960,7 +960,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
               >
                 <span
                   className="c11 c36"
-                  color="#6E849A"
+                  color="currentColor"
                   size={16}
                 >
                   <svg
@@ -990,7 +990,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                 >
                   <span
                     className="c11 c27"
-                    color="#BECEDC"
+                    color="currentColor"
                     size={12}
                   >
                     <svg

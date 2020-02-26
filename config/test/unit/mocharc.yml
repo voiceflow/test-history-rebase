@@ -1,8 +1,6 @@
 require:
   - jsdom-global
   - mock-local-storage
-  - esm
-  - ./config/test/unit/registerBabel
   - ignore-styles
 
 timeout: 4000
@@ -12,3 +10,4 @@ recursive: true
 spec:
   - ./config/test/unit/setup.js
   - ./test/**/*.unit.js
+  - ./test/**/*.unit.ts

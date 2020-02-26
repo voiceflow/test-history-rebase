@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AlertMessage from './index';
+import AlertMessage from '.';
 
 export default {
   title: 'Alert Message',

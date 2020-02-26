@@ -1,0 +1,419 @@
+import { constants } from '@voiceflow/common';
+
+export const SLOT_TYPES = constants.slots;
+export const CUSTOM_SLOT_TYPE = 'Custom';
+export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
+
+export const ROOT_DIAGRAM_NAME = 'ROOT';
+export const DIAGRAM_ID_SEPARATOR = '::';
+
+export const NEW_PRODUCT_ID = 'new';
+export const DEFAULT_PRODUCT_PHRASE = 'Alexa, ';
+
+export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
+
+export const FlowTab = {
+  STRUCTURE: 'structure',
+  FLOW: 'flow',
+};
+
+export const BlockCategoryType = {
+  BASIC: 'basic',
+  LOGIC: 'logic',
+  ADVANCED: 'advanced',
+  VISUAL: 'visual',
+  USER: 'user',
+};
+
+export const DragItem = {
+  BLOCK_MENU: 'blockMenu',
+};
+
+export const SessionType = {
+  GOOGLE: 'google',
+  FACEBOOK: 'facebook',
+  BASIC_AUTH: 'session',
+  SIGN_UP: 'user',
+};
+
+export enum PlatformType {
+  ALEXA = 'alexa',
+  GOOGLE = 'google',
+}
+
+export const ProductType = {
+  ENTITLEMENT: 'ENTITLEMENT',
+  CONSUMABLE: 'CONSUMABLE',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+};
+
+export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE];
+
+export const GlobalVariable = {
+  SESSIONS: 'sessions',
+  USER_ID: 'user_id',
+  TIMESTAMP: 'timestamp',
+  PLATFORM: 'platform',
+  LOCALE: 'locale',
+};
+
+export const GLOBAL_VARIABLES = [
+  GlobalVariable.SESSIONS,
+  GlobalVariable.USER_ID,
+  GlobalVariable.TIMESTAMP,
+  GlobalVariable.PLATFORM,
+  GlobalVariable.LOCALE,
+];
+
+export const BlockType = {
+  // internal
+  START: 'start',
+  COMBINED: 'combined',
+  COMMAND: 'command',
+  COMMENT: 'comment',
+  // basic
+  SPEAK: 'speak',
+  CHOICE_OLD: 'choice',
+  // logic
+  SET: 'set',
+  IF: 'if',
+  CAPTURE: 'capture',
+  RANDOM: 'random',
+  // advanced
+  CHOICE: 'interaction',
+  INTENT: 'intent',
+  STREAM: 'stream',
+  INTEGRATION: 'integration',
+  FLOW: 'flow',
+  CODE: 'code',
+  EXIT: 'exit',
+  // visuals
+  CARD: 'card',
+  DISPLAY: 'display',
+  // user
+  PERMISSION: 'permission',
+  ACCOUNT_LINKING: 'account_linking',
+  USER_INFO: 'user_info',
+  PAYMENT: 'payment',
+  CANCEL_PAYMENT: 'cancel_payment',
+  REMINDER: 'reminder',
+  DEPRECATED: 'deprecated',
+};
+
+export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];
+export const NO_EDITOR_BLOCKS = [...INTERNAL_BLOCKS, BlockType.DEPRECATED];
+
+export enum PermissionType {
+  USER_EMAIL = 'alexa::profile:email:read',
+  USER_NAME = 'alexa::profile:name:read',
+  USER_PHONE = 'alexa::profile:mobile_number:read',
+  USER_PERSON = 'alexa::person_id:read',
+  USER_GEOLOCATION = 'alexa::devices:all:geolocation:read',
+  REMINDERS = 'alexa::alerts:reminders:skill:readwrite',
+  NOTIFICATIONS = 'alexa::devices:all:notifications:write',
+  ACCOUNT_LINKING = 'UNOFFICIAL::account_linking',
+  PRODUCT = 'UNOFFICIAL::product',
+  ISP = 'UNOFFICIAL::isp',
+}
+
+export const PERMISSIONS = [
+  {
+    name: 'User Email',
+    value: PermissionType.USER_EMAIL,
+    variableMap: true,
+  },
+  {
+    name: 'User Name',
+    value: PermissionType.USER_NAME,
+    variableMap: true,
+  },
+  {
+    name: 'User Phone Number',
+    value: PermissionType.USER_PHONE,
+    variableMap: true,
+  },
+  {
+    name: 'Location Services',
+    value: PermissionType.USER_GEOLOCATION,
+    variableMap: true,
+  },
+  {
+    name: 'Reminders',
+    value: PermissionType.REMINDERS,
+  },
+  {
+    name: 'Notifications',
+    value: PermissionType.NOTIFICATIONS,
+  },
+  {
+    name: 'Skill Personalization',
+    value: PermissionType.USER_PERSON,
+    variableMap: true,
+  },
+  {
+    name: 'Account Linking',
+    value: PermissionType.ACCOUNT_LINKING,
+    variableMap: true,
+  },
+  {
+    name: 'Product',
+    value: PermissionType.PRODUCT,
+  },
+  {
+    name: 'ISP',
+    value: PermissionType.ISP,
+  },
+  // Removed for now, amazon pay permissions broken
+];
+
+export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(({ value }) => value);
+
+export const PERMISSION_LABELS: Record<PermissionType, string> = PERMISSIONS.reduce<Record<string, string>>(
+  (acc, permission) => Object.assign(acc, { [permission.value]: permission.name }),
+  {}
+);
+
+export const ExpressionType = {
+  PLUS: 'plus',
+  MINUS: 'minus',
+  TIMES: 'times',
+  DIVIDE: 'divide',
+  EQUALS: 'equals',
+  GREATER: 'greater',
+  LESS: 'less',
+  AND: 'and',
+  OR: 'or',
+  NOT: 'not',
+  VALUE: 'value',
+  VARIABLE: 'variable',
+  ADVANCE: 'advance',
+};
+
+export const ReminderType = {
+  TIMER: 'timer',
+  SCHEDULED: 'scheduled',
+};
+
+export const CardType = {
+  SIMPLE: 'simple',
+  STANDARD: 'standard',
+};
+
+export const DialogType = {
+  AUDIO: 'audio',
+  VOICE: 'voice',
+};
+
+export const KeyCodes = {
+  ENTER: 13,
+};
+
+export const IntegrationType = {
+  CUSTOM_API: 'Custom API',
+  GOOGLE_SHEETS: 'Google Sheets',
+  ZAPIER: 'Zapier',
+};
+
+export const IntegrationActionType = {
+  CUSTOM_API: {
+    GET: 'Make a GET Request',
+    POST: 'Make a POST Request',
+    PUT: 'Make a PUT Request',
+    DELETE: 'Make a DELETE Request',
+    PATCH: 'Make a PATCH Request',
+  },
+  GOOGLE_SHEETS: {
+    RETRIEVE_DATA: 'Retrieve Data',
+    CREATE_DATA: 'Create Data',
+    UPDATE_DATA: 'Update Data',
+    DELETE_DATA: 'Delete Data',
+  },
+  ZAPIER: {
+    START_A_ZAP: 'Start a Zap',
+  },
+};
+
+const EMPTY_KEY_VALUE_ITEM = {
+  key: [],
+  val: '',
+};
+
+// Integration default data models
+export const INTEGRATION_DATA_MODELS = {
+  CUSTOM_API: {
+    selectedIntegration: 'Custom API',
+    headers: [EMPTY_KEY_VALUE_ITEM],
+    url: '',
+    mapping: [
+      {
+        path: [],
+        var: null,
+      },
+    ],
+    bodyInputType: 'formData',
+    body: [EMPTY_KEY_VALUE_ITEM],
+    parameters: [EMPTY_KEY_VALUE_ITEM],
+    content: '',
+    selectedAction: IntegrationActionType.CUSTOM_API.GET,
+  },
+  GOOGLE_SHEETS: {
+    selectedIntegration: 'Google Sheets',
+    selectedAction: '',
+    user: {},
+    spreadsheet: null,
+    sheet: null,
+    header_column: null,
+    match_value: [],
+    row_values: [],
+    row_number: [],
+    mapping: [],
+    start_row: [],
+    end_row: [],
+  },
+  ZAPIER: {
+    user: {},
+    selectedIntegration: 'Zapier',
+    selectedAction: IntegrationActionType.ZAPIER.START_A_ZAP,
+    value: [],
+  },
+};
+
+export const RESPONSE_COLOR_CODES = {
+  GREEN: '#349d51',
+  YELLOW: '#e1d40b',
+  RED: '#e91e63',
+};
+
+export const RepromptType = {
+  TEXT: 'text',
+  AUDIO: 'audio',
+};
+
+export const PERIOD = {
+  monthly: 'MO',
+  annually: 'YR',
+};
+
+export const PERIOD_NAME = {
+  [PERIOD.monthly]: 'Monthly',
+  [PERIOD.annually]: 'Yearly',
+};
+
+export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
+
+export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
+
+export const IMAGE_FILE_FORMATS = ['image/jpeg', 'image/png'];
+
+export const AV_FILE_FORMATS = [
+  'audio/pcm',
+  'audio/aiff',
+  'audio/aac',
+  'audio/x-wav',
+  'audio/x-aiff',
+  'audio/alac',
+  'audio/mpeg',
+  'audio/mp2',
+  'audio/mp3',
+  'audio/aa',
+  'audio/flac',
+  'audio/x-flac',
+  'audio/x-wav',
+  'audio/vnd.wave',
+  'audio/wav',
+  'audio/wave',
+  'audio/x-pn-wav',
+  'audio/ogg',
+];
+
+export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
+
+export const MODALS = {
+  PAYMENT: 'payment',
+  COLLABORATORS: 'collaborators',
+  BILLING: 'billing',
+
+  BOARD_DELETE: 'board-delete',
+  BOARD_SETTINGS: 'board-settings',
+
+  SUCCESS: 'success',
+
+  SLOT_EDIT: 'slot-edit',
+  INTENTS: 'intents',
+
+  DISPLAY_PREVIEW: 'display-preview',
+};
+
+export const USER_ROLES = {
+  ADMIN: 'admin',
+  EDITOR: 'editor',
+  VIEWER: 'viewer',
+};
+
+export const FEATURE_IDS = {
+  ADD_COLLABORATORS: 'ADD_COLLABORATORS',
+  WORKSPACE_SETTINGS: 'WORKSPACE_SETTINGS',
+  UPGRADE_WORKSPACE: 'UPGRADE_WORKSPACE',
+  EDIT_CANVAS: 'EDIT_CANVAS',
+};
+
+export const FEATURE_PERMISSIONS = {
+  ADD_COLLABORATORS: [USER_ROLES.ADMIN],
+  WORKSPACE_SETTINGS: [USER_ROLES.ADMIN],
+  UPGRADE_WORKSPACE: [USER_ROLES.ADMIN],
+  EDIT_CANVAS: [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+};
+
+export const PLANS = {
+  pro: 'pro',
+  team: 'team',
+  enterprise: 'enterprise',
+};
+
+export const EDITOR_SEAT_ROLES = [USER_ROLES.EDITOR, USER_ROLES.ADMIN];
+
+export const UNLIMITED_SEAT_NUMBER = 100;
+
+export const SLOT_COLORS = [
+  '#4F9ED1',
+  '#4FA9B3',
+  '#A086C4',
+  '#E26D5A',
+  '#E04F78',
+  '#BF395B',
+  '#5C6BC0',
+  '#3A5999',
+  '#457A53',
+  '#3A7685',
+  '#BF9677',
+  '#4C4C4C',
+];
+
+export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
+
+export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
+export const SLOT_REGEXP = /{{\[([^ .[\]{}]*?)]\.([^ .[\]{}]*?)}}/g;
+export const VARIABLE_REGEXP = /^{.*}$/;
+export const VARIABLE_STRING_REGEXP = /{([^ .[\]{}]*?)}/g;
+
+export const FILTERED_AMAZON_INTENTS = [
+  'ScrollUpIntent',
+  'ScrollRightIntent',
+  'ScrollLeftIntent',
+  'ScrollDownIntent',
+  'PageUpIntent',
+  'PageDownIntent',
+  'NavigateSettingsIntent',
+  'NavigateHomeIntent',
+];
+
+export const INVOCATION_NAME_REGEX = /^[\s'.A-Za-z]*$/;
+
+export enum IconVariant {
+  STANDARD = 'standard',
+  POPOVER = 'popover',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+  BLUE = 'blue',
+  WHITE = 'white',
+}

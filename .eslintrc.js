@@ -95,11 +95,19 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.story.jsx', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/*'],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*'],
       rules: {
-        'import/no-extraneous-dependencies': 'off',
+        'import/no-extraneous-dependencies': [
+          'error',
+          {
+            devDependencies: true,
+          },
+        ],
+        'no-secrets/no-secrets': 'off',
+        'xss/no-mixed-html': 'off',
         'react-hooks/rules-of-hooks': 'off',
         'lodash/prefer-constant': 'off',
+        'import/prefer-default-export': 'off',
       },
     },
     {

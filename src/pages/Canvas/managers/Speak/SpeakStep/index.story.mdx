@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import SpeakStep from '.';
+
+<Meta title="Creator/Steps/Speak Step" component={SpeakStep} />
+
+# Speak Step
+
+<Preview>
+  <Story name="empty">{stories.empty()}</Story>
+  <Story name="single active">{stories.singleActive()}</Story>
+  <Story name="multi steps">{stories.multiSteps()}</Story>
+  <Story name="random">{stories.random()}</Story>
+  <Story name="without port">{stories.withoutPort()}</Story>
+</Preview>

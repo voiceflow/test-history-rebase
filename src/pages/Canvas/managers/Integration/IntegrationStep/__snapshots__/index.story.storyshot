@@ -95,8 +95,24 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -169,9 +185,12 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c17::before {
@@ -196,9 +215,12 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -439,8 +461,24 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -513,9 +551,12 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c18::before {
@@ -540,9 +581,12 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c16::before {
@@ -793,8 +837,24 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -867,9 +927,12 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -893,9 +956,12 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c17::before {
@@ -1122,8 +1188,24 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -1196,9 +1278,12 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c16::before {
@@ -1223,9 +1308,12 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -1453,8 +1541,24 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -1527,9 +1631,12 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c16::before {
@@ -1554,9 +1661,12 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -1797,8 +1907,24 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -1871,9 +1997,12 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c17::before {
@@ -1898,9 +2027,12 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -2115,8 +2247,24 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -2339,8 +2487,24 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -2413,9 +2577,12 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c17::before {
@@ -2440,9 +2607,12 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -2683,8 +2853,24 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -2757,9 +2943,12 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c17::before {
@@ -2784,9 +2973,12 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {

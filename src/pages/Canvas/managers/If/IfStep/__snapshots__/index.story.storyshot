@@ -118,8 +118,24 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -181,7 +197,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5d9df5;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
 .c4 .c5:not(:first-of-type) {
@@ -192,9 +208,12 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c18::before {
@@ -219,9 +238,12 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c19::before {
@@ -245,9 +267,12 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c21::before {
@@ -637,8 +662,24 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -711,9 +752,12 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c15::before {
@@ -951,8 +995,24 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -1025,9 +1085,12 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c18::before {
@@ -1052,9 +1115,12 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c19::before {
@@ -1078,9 +1144,12 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c21::before {
@@ -1506,8 +1575,24 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
 }
 
 .c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   width: 16px;
+  height: 22px;
   margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
 }
 
 .c8 {
@@ -1580,9 +1665,12 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c18::before {
@@ -1607,9 +1695,12 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
 .c20::before {

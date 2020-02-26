@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 function PaymentStep({
   productLabel,
@@ -29,7 +29,7 @@ function PaymentStep({
                   <VariableLabel>Declined</VariableLabel> or <VariableLabel>Error</VariableLabel>
                 </>
               }
-              labelVariant={LabelVariant.SECONDARY}
+              labelVariant={StepLabelVariant.SECONDARY}
               isConnected={isConnectedFailPort}
               onClickPort={onFailPortClick}
             />

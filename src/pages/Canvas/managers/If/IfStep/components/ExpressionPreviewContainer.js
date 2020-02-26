@@ -1,6 +1,6 @@
 import { VariableTag } from '@/components/VariableTag';
+import { StepLabelVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 const ExpressionPreviewContainer = styled.span`
   ${VariableTag} {
@@ -8,7 +8,7 @@ const ExpressionPreviewContainer = styled.span`
     padding: 0;
     border: none;
     background: none;
-    color: ${({ theme }) => theme.components.step.labelText.variants[LabelVariant.PRIMARY]};
+    color: ${({ theme }) => theme.components.blockStep.labelText.variants[StepLabelVariant.PRIMARY]};
     line-height: inherit;
     font-size: inherit;
     font-weight: inherit;

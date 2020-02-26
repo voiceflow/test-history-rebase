@@ -33,6 +33,7 @@ function ActionGroup(props) {
                 disabled={isViewer}
                 active={isEnabled}
                 variant="outline"
+                preventFocusStyle
                 icon="cog"
                 large
                 onClick={toggle}

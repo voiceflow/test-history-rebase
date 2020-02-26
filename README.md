@@ -11,7 +11,7 @@ In order to run this package locally, make sure you have `yarn` and `brew` insta
 
 ### Package Manager
 
-This Repository Relies on `yarn` and does not work with `npm`
+This Repository Relies on `yarn` and does not work with `npm`.
 
 ### Install Dependencies
 

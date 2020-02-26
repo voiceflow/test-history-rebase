@@ -1,5 +1,5 @@
 import * as SvgIcon from '@/components/SvgIcon';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import IconButtonContainer from './IconButtonContainer';
 
@@ -26,12 +26,16 @@ const OutlineIconButtonContainer = styled(IconButtonContainer)`
     border: 1px solid #e2e9ec;
   }
 
-  &:focus {
-    background: #eef4f6cc;
-    color: #132144;
-    box-shadow: none !important;
-    border: 1px solid #e2e9ec;
-  }
+  ${({ preventFocusStyle }) =>
+    !preventFocusStyle &&
+    css`
+      &:focus {
+        background: #eef4f6cc;
+        color: #132144;
+        box-shadow: none !important;
+        border: 1px solid #e2e9ec;
+      }
+    `}
 `;
 
 export default OutlineIconButtonContainer;

@@ -1,41 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -58,7 +58,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -77,11 +77,15 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -102,7 +106,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -117,7 +121,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -132,7 +136,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -142,11 +146,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -164,11 +168,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -180,7 +184,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -198,7 +202,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -208,7 +212,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -221,134 +225,138 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              How_to_train_your_dragon.mp3
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            How_to_train_your_dragon.mp3
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#3a5999"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgChoice"
-              />
+              <span
+                className="c11 c14"
+                color="#3a5999"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgChoice"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Next
             </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c14"
+          <div
+            className="c8 c9"
           >
-            Next
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
-          >
-            Previous
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Previous
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -371,7 +379,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -390,11 +398,15 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -415,7 +427,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -430,7 +442,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -445,7 +457,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -455,7 +467,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -473,15 +485,15 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -493,7 +505,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -510,7 +522,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -520,7 +532,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -533,134 +545,138 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              How_to_train_your_dragon.mp3
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            How_to_train_your_dragon.mp3
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#3a5999"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgChoice"
-              />
+              <span
+                className="c11 c14"
+                color="#3a5999"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgChoice"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Next
             </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c14"
+          <div
+            className="c8 c9"
           >
-            Next
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
-          >
-            Previous
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Previous
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -683,7 +699,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -702,11 +718,15 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -727,7 +747,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -742,7 +762,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -757,7 +777,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -767,7 +787,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -785,15 +805,15 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -805,7 +825,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -823,7 +843,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -833,7 +853,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -846,121 +866,125 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Add an Audio file, URL or variable
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            Add an Audio file, URL or variable
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#3a5999"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgChoice"
-              />
+              <span
+                className="c11 c14"
+                color="#3a5999"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgChoice"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Next
             </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c14"
+          <div
+            className="c8 c9"
           >
-            Next
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
-          >
-            Previous
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Previous
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 .c10 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -983,7 +1007,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1002,11 +1026,15 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1027,7 +1055,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1042,7 +1070,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1057,7 +1085,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1067,7 +1095,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1085,15 +1113,15 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1105,7 +1133,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -1123,7 +1151,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1136,92 +1164,96 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Add an Audio file, URL or variable
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Add an Audio file, URL or variable
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1244,7 +1276,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1263,11 +1295,15 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1288,7 +1324,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1303,7 +1339,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1318,7 +1354,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1328,7 +1364,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1346,15 +1382,15 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1366,7 +1402,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1384,7 +1420,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1394,7 +1430,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1407,134 +1443,138 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              How_to_train_your_dragon.mp3
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            How_to_train_your_dragon.mp3
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#3a5999"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgChoice"
-              />
+              <span
+                className="c11 c14"
+                color="#3a5999"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgChoice"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Next
             </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c14"
+          <div
+            className="c8 c9"
           >
-            Next
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
-          >
-            Previous
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Previous
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1557,7 +1597,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1576,11 +1616,15 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1601,7 +1645,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1616,7 +1660,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1631,7 +1675,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1641,7 +1685,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1659,15 +1703,15 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1679,7 +1723,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1697,7 +1741,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1707,7 +1751,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1720,110 +1764,114 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#4f98c6"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAudioPlayer"
-              />
+              <span
+                className="c11 c12"
+                color="#4f98c6"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAudioPlayer"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              How_to_train_your_dragon.mp3
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            How_to_train_your_dragon.mp3
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#3a5999"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgChoice"
-              />
+              <span
+                className="c11 c14"
+                color="#3a5999"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgChoice"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Next
             </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c14"
+          <div
+            className="c8 c9"
           >
-            Next
-          </span>
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Previous
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
           <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
+            className="c8 c9"
           >
-            Previous
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c14"
-          >
-            Pause
-          </span>
-          <div
-            className="c15"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c15"
+            >
+              Pause
+            </span>
+            <div
+              className="c16"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;

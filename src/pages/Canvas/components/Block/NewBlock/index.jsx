@@ -1,15 +1,17 @@
 import React from 'react';
 
-import OverflowText from '@/components/Text/OverflowText';
+import { Container } from './components';
+import MultiSectionBlock from './components/MultiSectionBlock';
+import SingleSectionBlock from './components/SingleSectionBlock';
 
-import { Container, Content, Header } from './components';
+export const SECTIONS_VARIANT = {
+  SINGLE_SECTION: 'single',
+  MULTI_SECTION: 'multi',
+};
 
-const NewBlock = ({ variant = 'standard', state = 'regular', name, children }) => (
+const NewBlock = ({ sectionsVariant = SECTIONS_VARIANT.SINGLE_SECTION, variant = 'standard', state = 'regular', ...props }) => (
   <Container variant={variant} state={state}>
-    <Header variant={variant} state={state}>
-      <OverflowText>{name}</OverflowText>
-    </Header>
-    <Content>{children}</Content>
+    {sectionsVariant === SECTIONS_VARIANT.SINGLE_SECTION ? <SingleSectionBlock variant={variant} {...props} /> : <MultiSectionBlock {...props} />}
   </Container>
 );
 

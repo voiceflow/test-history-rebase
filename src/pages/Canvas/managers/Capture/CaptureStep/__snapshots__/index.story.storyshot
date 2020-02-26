@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -45,7 +45,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -64,11 +64,15 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -89,7 +93,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -104,7 +108,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -119,7 +123,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -129,11 +133,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c5:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,11 +155,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -167,7 +171,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -185,7 +189,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -195,97 +199,101 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   color: #62778c;
 }
 
-.c13 {
+.c14 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {FirstName}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Capture 
-            <span
-              className="c13"
-            >
-              {FirstName}
-            </span>
-             to 
-            <span
-              className="c13"
-            >
-              {Name}
-            </span>
-          </span>
-          <div
-            className="c14"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -308,7 +316,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -327,11 +335,15 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -352,7 +364,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -367,7 +379,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -382,7 +394,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -392,7 +404,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -410,15 +422,15 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c5:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -430,7 +442,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -447,7 +459,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -457,97 +469,101 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   color: #62778c;
 }
 
-.c13 {
+.c14 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {FirstName}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Capture 
-            <span
-              className="c13"
-            >
-              {FirstName}
-            </span>
-             to 
-            <span
-              className="c13"
-            >
-              {Name}
-            </span>
-          </span>
-          <div
-            className="c14"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 .c10 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -570,7 +586,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -589,11 +605,15 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -614,7 +634,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -629,7 +649,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -644,7 +664,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -654,7 +674,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -672,15 +692,15 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -692,7 +712,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -710,7 +730,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -723,79 +743,83 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture a user response
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Capture a user response
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -818,7 +842,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -837,11 +861,15 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -862,7 +890,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -877,7 +905,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -892,7 +920,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -902,7 +930,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -920,15 +948,15 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c5:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -940,7 +968,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -958,7 +986,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -968,97 +996,101 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   color: #62778c;
 }
 
-.c13 {
+.c14 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {UK_First_name}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Capture 
-            <span
-              className="c13"
-            >
-              {UK_First_name}
-            </span>
-             to 
-            <span
-              className="c13"
-            >
-              {Name}
-            </span>
-          </span>
-          <div
-            className="c14"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1081,7 +1113,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1100,11 +1132,15 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1125,7 +1161,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1140,7 +1176,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1155,7 +1191,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1165,7 +1201,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1183,15 +1219,15 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c5:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1203,7 +1239,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -1221,7 +1257,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1231,97 +1267,101 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   color: #62778c;
 }
 
-.c13 {
+.c14 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {FirstName}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Capture 
-            <span
-              className="c13"
-            >
-              {FirstName}
-            </span>
-             to 
-            <span
-              className="c13"
-            >
-              {Name}
-            </span>
-          </span>
-          <div
-            className="c14"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #58457a;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 .c10 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1344,7 +1384,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1363,11 +1403,15 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1388,7 +1432,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1403,7 +1447,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1418,7 +1462,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1428,7 +1472,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1446,15 +1490,15 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1464,66 +1508,70 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c13 {
+.c14 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Capture Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Capture Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#58457a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgMicrophone"
-              />
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {FirstName}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            Capture 
-            <span
-              className="c13"
-            >
-              {FirstName}
-            </span>
-             to 
-            <span
-              className="c13"
-            >
-              {Name}
-            </span>
-          </span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;

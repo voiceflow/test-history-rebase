@@ -1,41 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 .c10 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c10 {
+.c21 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -49,16 +49,16 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   display: inline-block;
   vertical-align: middle;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -81,7 +81,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -100,11 +100,15 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -125,7 +129,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -140,7 +144,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -155,7 +159,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -165,11 +169,11 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c5:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -187,11 +191,11 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -203,7 +207,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -221,7 +225,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -231,7 +235,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   color: #62778c;
 }
 
-.c13 .c15 {
+.c14 .c16 {
   display: inline;
   padding: 0;
   border: none;
@@ -242,114 +246,114 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="value"
+                >
+                  basic string
+                </span>
+              </span>
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
-            >
-              <span
-                className="value"
-              >
-                basic string
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="brackets"
+                className="c14 expressionfy"
               >
                 <span
-                  className="value"
-                >
-                  value 1
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="or"
+                  className="brackets"
                 >
                   <span
-                    className="c14 plus"
+                    className="value"
                   >
-                    <span>
-                      OR
+                    value 1
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c15 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="value"
-                >
-                  value 2
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="value"
+                  >
+                    value 2
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
+          </div>
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="math brackets"
+                className="c14 expressionfy"
               >
                 <span
                   className="math brackets"
@@ -361,26 +365,55 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                       className="math brackets"
                     >
                       <span
-                        className="parenthesis"
+                        className="math brackets"
                       >
-                        ( 
-                      </span>
-                      <span
-                        className="c15 c16"
-                      >
-                        {user_id}
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="c16 c17"
+                        >
+                          {user_id}
+                        </span>
+                         
+                        <span
+                          className="c15 plus"
+                        >
+                          <span
+                            className="c11 c18"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgTimes"
+                            />
+                          </span>
+                        </span>
+                         
+                        <span
+                          className="value"
+                        >
+                          value 3
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
                       </span>
                        
                       <span
-                        className="c14 plus"
+                        className="c15 plus"
                       >
                         <span
-                          className="c10 c17"
+                          className="c11 c18"
                           color="currentColor"
                           size={16}
                         >
                           <svg
-                            data-file-name="SvgTimes"
+                            data-file-name="SvgSubtract"
                           />
                         </span>
                       </span>
@@ -388,41 +421,36 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                       <span
                         className="value"
                       >
-                        value 3
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        value 4
                       </span>
                     </span>
                      
                     <span
-                      className="c14 plus"
+                      className="c15 plus"
                     >
                       <span
-                        className="c10 c17"
+                        className="c11 c18"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgSubtract"
+                          data-file-name="SvgAdd"
                         />
                       </span>
                     </span>
                      
                     <span
-                      className="value"
+                      className="c16 c17"
                     >
-                      value 4
+                      {locale}
                     </span>
                   </span>
                    
                   <span
-                    className="c14 plus"
+                    className="c15 plus"
                   >
                     <span
-                      className="c10 c17"
+                      className="c11 c18"
                       color="currentColor"
                       size={16}
                     >
@@ -433,81 +461,61 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                   </span>
                    
                   <span
-                    className="c15 c16"
+                    className="math brackets"
                   >
-                    {locale}
+                    value 5
                   </span>
-                </span>
-                 
-                <span
-                  className="c14 plus"
-                >
-                  <span
-                    className="c10 c17"
-                    color="currentColor"
-                    size={16}
-                  >
-                    <svg
-                      data-file-name="SvgAdd"
-                    />
-                  </span>
-                </span>
-                 
-                <span
-                  className="math brackets"
-                >
-                  value 5
                 </span>
               </span>
             </span>
-          </span>
-          <div
-            className="c18"
-            onClick={[Function]}
-          />
+            <div
+              className="c19"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 .c10 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c10 {
+.c21 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -521,16 +529,16 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   display: inline-block;
   vertical-align: middle;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -553,7 +561,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -572,11 +580,15 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -597,7 +609,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -612,7 +624,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -627,7 +639,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -637,7 +649,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -655,15 +667,15 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c5:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -675,7 +687,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -692,7 +704,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -702,7 +714,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   color: #62778c;
 }
 
-.c13 .c15 {
+.c14 .c16 {
   display: inline;
   padding: 0;
   border: none;
@@ -713,114 +725,114 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="value"
+                >
+                  basic string
+                </span>
+              </span>
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
-            >
-              <span
-                className="value"
-              >
-                basic string
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="brackets"
+                className="c14 expressionfy"
               >
                 <span
-                  className="value"
-                >
-                  value 1
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="or"
+                  className="brackets"
                 >
                   <span
-                    className="c14 plus"
+                    className="value"
                   >
-                    <span>
-                      OR
+                    value 1
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c15 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="value"
-                >
-                  value 2
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="value"
+                  >
+                    value 2
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
+          </div>
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="math brackets"
+                className="c14 expressionfy"
               >
                 <span
                   className="math brackets"
@@ -832,26 +844,55 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                       className="math brackets"
                     >
                       <span
-                        className="parenthesis"
+                        className="math brackets"
                       >
-                        ( 
-                      </span>
-                      <span
-                        className="c15 c16"
-                      >
-                        {user_id}
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="c16 c17"
+                        >
+                          {user_id}
+                        </span>
+                         
+                        <span
+                          className="c15 plus"
+                        >
+                          <span
+                            className="c11 c18"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgTimes"
+                            />
+                          </span>
+                        </span>
+                         
+                        <span
+                          className="value"
+                        >
+                          value 3
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
                       </span>
                        
                       <span
-                        className="c14 plus"
+                        className="c15 plus"
                       >
                         <span
-                          className="c10 c17"
+                          className="c11 c18"
                           color="currentColor"
                           size={16}
                         >
                           <svg
-                            data-file-name="SvgTimes"
+                            data-file-name="SvgSubtract"
                           />
                         </span>
                       </span>
@@ -859,41 +900,36 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                       <span
                         className="value"
                       >
-                        value 3
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        value 4
                       </span>
                     </span>
                      
                     <span
-                      className="c14 plus"
+                      className="c15 plus"
                     >
                       <span
-                        className="c10 c17"
+                        className="c11 c18"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgSubtract"
+                          data-file-name="SvgAdd"
                         />
                       </span>
                     </span>
                      
                     <span
-                      className="value"
+                      className="c16 c17"
                     >
-                      value 4
+                      {locale}
                     </span>
                   </span>
                    
                   <span
-                    className="c14 plus"
+                    className="c15 plus"
                   >
                     <span
-                      className="c10 c17"
+                      className="c11 c18"
                       color="currentColor"
                       size={16}
                     >
@@ -904,68 +940,48 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                   </span>
                    
                   <span
-                    className="c15 c16"
+                    className="math brackets"
                   >
-                    {locale}
+                    value 5
                   </span>
-                </span>
-                 
-                <span
-                  className="c14 plus"
-                >
-                  <span
-                    className="c10 c17"
-                    color="currentColor"
-                    size={16}
-                  >
-                    <svg
-                      data-file-name="SvgAdd"
-                    />
-                  </span>
-                </span>
-                 
-                <span
-                  className="math brackets"
-                >
-                  value 5
                 </span>
               </span>
             </span>
-          </span>
-          <div
-            className="c18"
-            onClick={[Function]}
-          />
+            <div
+              className="c19"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 .c10 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -988,7 +1004,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1007,11 +1023,15 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1032,7 +1052,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1047,7 +1067,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1062,7 +1082,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1072,7 +1092,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1090,15 +1110,15 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c5:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1110,7 +1130,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -1128,7 +1148,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1141,87 +1161,558 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Set variable to...
             </span>
+            <div
+              className="c14"
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Set variable to...
-          </span>
-          <div
-            className="c13"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 .c10 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c10 {
+.c21 .c11 {
+  color: #6e849a;
+}
+
+.c17 {
+  display: inline-block;
+  padding: 0px 4px 1px 4px;
+  color: #62778c;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #eef4f6a8;
+  border-radius: 7px;
+  border: 1px solid #dfe5ea;
+  cursor: default;
+  line-height: 20px;
+  text-align: center;
+}
+
+.c17.default {
+  color: #62778c;
+}
+
+.c15 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.c3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c22 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 .c16 {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <header
+      className="c2"
+    >
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="value"
+                >
+                  basic string
+                </span>
+              </span>
+            </span>
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="brackets"
+                >
+                  <span
+                    className="value"
+                  >
+                    value 1
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c15 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
+                    </span>
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="value"
+                  >
+                    value 2
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="math brackets"
+                >
+                  <span
+                    className="math brackets"
+                  >
+                    <span
+                      className="math brackets"
+                    >
+                      <span
+                        className="math brackets"
+                      >
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="c16 c17"
+                        >
+                          {user_id}
+                        </span>
+                         
+                        <span
+                          className="c15 plus"
+                        >
+                          <span
+                            className="c11 c18"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgTimes"
+                            />
+                          </span>
+                        </span>
+                         
+                        <span
+                          className="value"
+                        >
+                          value 3
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
+                      </span>
+                       
+                      <span
+                        className="c15 plus"
+                      >
+                        <span
+                          className="c11 c18"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgSubtract"
+                          />
+                        </span>
+                      </span>
+                       
+                      <span
+                        className="value"
+                      >
+                        value 4
+                      </span>
+                    </span>
+                     
+                    <span
+                      className="c15 plus"
+                    >
+                      <span
+                        className="c11 c18"
+                        color="currentColor"
+                        size={16}
+                      >
+                        <svg
+                          data-file-name="SvgAdd"
+                        />
+                      </span>
+                    </span>
+                     
+                    <span
+                      className="c16 c17"
+                    >
+                      {locale}
+                    </span>
+                  </span>
+                   
+                  <span
+                    className="c15 plus"
+                  >
+                    <span
+                      className="c11 c18"
+                      color="currentColor"
+                      size={16}
+                    >
+                      <svg
+                        data-file-name="SvgAdd"
+                      />
+                    </span>
+                  </span>
+                   
+                  <span
+                    className="math brackets"
+                  >
+                    value 5
+                  </span>
+                </span>
+              </span>
+            </span>
+            <div
+              className="c19"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #5590b5;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 .c11 {
+  color: #fff;
+}
+
+.c20 .c11 {
   color: #6e849a;
 }
 
@@ -1243,12 +1734,12 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   color: #62778c;
 }
 
-.c14 {
+.c17 {
   display: inline-block;
   vertical-align: middle;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1271,7 +1762,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1290,11 +1781,15 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1315,7 +1810,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1330,7 +1825,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1345,7 +1840,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1355,7 +1850,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1373,11 +1868,11 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c5:not(:first-of-type) {
+.c21 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1411,7 +1906,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1421,7 +1916,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   color: #62778c;
 }
 
-.c13 .c15 {
+.c14 .c15 {
   display: inline;
   padding: 0;
   border: none;
@@ -1432,585 +1927,130 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCode"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
+            <div
+              className="c10"
             >
               <span
-                className="value"
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
               >
-                basic string
+                <svg
+                  data-file-name="SvgCode"
+                />
               </span>
-            </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c12"
-          >
+            </div>
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="brackets"
+                className="c14 expressionfy"
               >
                 <span
-                  className="value"
+                  className="brackets"
                 >
-                  value 1
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="or"
-                >
-                  <span
-                    className="c14 plus"
-                  >
-                    <span>
-                      OR
-                    </span>
-                  </span>
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="value"
-                >
-                  value 2
-                </span>
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
-            >
-              <span
-                className="math brackets"
-              >
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math brackets"
-                  >
-                    <span
-                      className="math brackets"
-                    >
-                      <span
-                        className="parenthesis"
-                      >
-                        ( 
-                      </span>
-                      <span
-                        className="c15 c16"
-                      >
-                        {user_id}
-                      </span>
-                       
-                      <span
-                        className="c14 plus"
-                      >
-                        <span
-                          className="c10 c17"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgTimes"
-                          />
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="value"
-                      >
-                        value 3
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c14 plus"
-                    >
-                      <span
-                        className="c10 c17"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgSubtract"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="value"
-                    >
-                      value 4
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="c14 plus"
-                  >
-                    <span
-                      className="c10 c17"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgAdd"
-                      />
-                    </span>
-                  </span>
-                   
                   <span
                     className="c15 c16"
                   >
-                    {locale}
+                    {user_id}
                   </span>
-                </span>
-                 
-                <span
-                  className="c14 plus"
-                >
-                  <span
-                    className="c10 c17"
-                    color="currentColor"
-                    size={16}
-                  >
-                    <svg
-                      data-file-name="SvgAdd"
-                    />
+                  <span>
+                     
                   </span>
-                </span>
-                 
-                <span
-                  className="math brackets"
-                >
-                  value 5
-                </span>
-              </span>
-            </span>
-          </span>
-          <div
-            className="c18"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #5590b5;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c18 .c10 {
-  color: #fff;
-}
-
-.c19 .c10 {
-  color: #6e849a;
-}
-
-.c15 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c15.default {
-  color: #62778c;
-}
-
-.c16 {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c20 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c17 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c17::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c13 .c14 {
-  display: inline;
-  padding: 0;
-  border: none;
-  background: none;
-  color: #132144;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCode"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
-            >
-              <span
-                className="brackets"
-              >
-                <span
-                  className="c14 c15"
-                >
-                  {user_id}
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="or"
-                >
                   <span
-                    className="c16 plus"
+                    className="or"
                   >
-                    <span>
-                      OR
+                    <span
+                      className="c17 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="value"
-                >
-                  single set
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="value"
+                  >
+                    single set
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-          <div
-            className="c17"
-            onClick={[Function]}
-          />
+            <div
+              className="c18"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 .c10 {
+.c19 .c11 {
   color: #fff;
 }
 
-.c19 .c10 {
+.c20 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -2024,16 +2064,16 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   display: inline-block;
   vertical-align: middle;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2056,7 +2096,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2075,11 +2115,15 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2100,7 +2144,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2115,7 +2159,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2130,7 +2174,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2140,7 +2184,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2158,15 +2202,15 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c20 .c5:not(:first-of-type) {
+.c21 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2176,7 +2220,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c13 .c15 {
+.c14 .c16 {
   display: inline;
   padding: 0;
   border: none;
@@ -2187,114 +2231,114 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Set Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Set Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#5590b5"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="#5590b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c14 expressionfy"
+              >
+                <span
+                  className="value"
+                >
+                  basic string
+                </span>
+              </span>
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c13 expressionfy"
-            >
-              <span
-                className="value"
-              >
-                basic string
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="brackets"
+                className="c14 expressionfy"
               >
                 <span
-                  className="value"
-                >
-                  value 1
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="or"
+                  className="brackets"
                 >
                   <span
-                    className="c14 plus"
+                    className="value"
                   >
-                    <span>
-                      OR
+                    value 1
+                  </span>
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="or"
+                  >
+                    <span
+                      className="c15 plus"
+                    >
+                      <span>
+                        OR
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span>
-                   
-                </span>
-                <span
-                  className="value"
-                >
-                  value 2
+                  <span>
+                     
+                  </span>
+                  <span
+                    className="value"
+                  >
+                    value 2
+                  </span>
                 </span>
               </span>
             </span>
-          </span>
-        </div>
-        <div
-          className="c7 c8"
-        >
+          </div>
           <div
-            className="c9"
-          />
-          <span
-            className="c12"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            />
             <span
-              className="c13 expressionfy"
+              className="c13"
             >
               <span
-                className="math brackets"
+                className="c14 expressionfy"
               >
                 <span
                   className="math brackets"
@@ -2306,26 +2350,55 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                       className="math brackets"
                     >
                       <span
-                        className="parenthesis"
+                        className="math brackets"
                       >
-                        ( 
-                      </span>
-                      <span
-                        className="c15 c16"
-                      >
-                        {user_id}
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="c16 c17"
+                        >
+                          {user_id}
+                        </span>
+                         
+                        <span
+                          className="c15 plus"
+                        >
+                          <span
+                            className="c11 c18"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgTimes"
+                            />
+                          </span>
+                        </span>
+                         
+                        <span
+                          className="value"
+                        >
+                          value 3
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
                       </span>
                        
                       <span
-                        className="c14 plus"
+                        className="c15 plus"
                       >
                         <span
-                          className="c10 c17"
+                          className="c11 c18"
                           color="currentColor"
                           size={16}
                         >
                           <svg
-                            data-file-name="SvgTimes"
+                            data-file-name="SvgSubtract"
                           />
                         </span>
                       </span>
@@ -2333,41 +2406,36 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                       <span
                         className="value"
                       >
-                        value 3
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        value 4
                       </span>
                     </span>
                      
                     <span
-                      className="c14 plus"
+                      className="c15 plus"
                     >
                       <span
-                        className="c10 c17"
+                        className="c11 c18"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgSubtract"
+                          data-file-name="SvgAdd"
                         />
                       </span>
                     </span>
                      
                     <span
-                      className="value"
+                      className="c16 c17"
                     >
-                      value 4
+                      {locale}
                     </span>
                   </span>
                    
                   <span
-                    className="c14 plus"
+                    className="c15 plus"
                   >
                     <span
-                      className="c10 c17"
+                      className="c11 c18"
                       color="currentColor"
                       size={16}
                     >
@@ -2378,37 +2446,17 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                   </span>
                    
                   <span
-                    className="c15 c16"
+                    className="math brackets"
                   >
-                    {locale}
+                    value 5
                   </span>
-                </span>
-                 
-                <span
-                  className="c14 plus"
-                >
-                  <span
-                    className="c10 c17"
-                    color="currentColor"
-                    size={16}
-                  >
-                    <svg
-                      data-file-name="SvgAdd"
-                    />
-                  </span>
-                </span>
-                 
-                <span
-                  className="math brackets"
-                >
-                  value 5
                 </span>
               </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;

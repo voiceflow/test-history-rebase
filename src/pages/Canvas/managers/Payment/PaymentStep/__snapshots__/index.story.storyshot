@@ -1,67 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
-.c15 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #616c60;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #558B2F;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 .c10 {
+.c21 .c11 {
   color: #fff;
 }
 
-.c21 .c10 {
+.c22 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,7 +84,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -103,11 +103,15 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,7 +132,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -143,7 +147,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -158,7 +162,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -168,11 +172,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c5:not(:first-of-type) {
+.c23 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -190,1057 +194,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #279745;
-  border: 4px solid white;
-}
-
-.c17 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c17::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
-.c14 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c16 {
-  color: #132144;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgPurchase"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            New York Times Quiz
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgAlexa"
-              />
-            </span>
-          </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c15"
-              color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
-          </span>
-          <div
-            className="c17"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c18"
-              color="#279745"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
-            </span>
-          </div>
-          <span
-            className="c14"
-          >
-            Purchased
-          </span>
-          <div
-            className="c19"
-            color="#279745"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c13 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #558B2F;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c20 .c10 {
-  color: #fff;
-}
-
-.c21 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c22 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c17 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c17::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
-}
-
-.c14 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c16 {
-  color: #132144;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgPurchase"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            New York Times Quiz
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgAlexa"
-              />
-            </span>
-          </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
-          </span>
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c15"
-              color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
-          </span>
-          <div
-            className="c17"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c18"
-              color="#279745"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
-            </span>
-          </div>
-          <span
-            className="c14"
-          >
-            Purchased
-          </span>
-          <div
-            className="c19"
-            color="#279745"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #558B2F;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 .c10 {
-  color: #fff;
-}
-
-.c14 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c15 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c12 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
-}
-
-<div
-  className="c0"
->
-  <header
-    className="c1"
-  >
-    <span
-      className="c2"
-    >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
-      className="c4"
-    >
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgPurchase"
-              />
-            </span>
-          </div>
-          <span
-            className="c12"
-          >
-            Select a product
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c13 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c13 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c11 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #558B2F;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c21 .c10 {
-  color: #fff;
-}
-
-.c22 .c10 {
-  color: #6e849a;
-}
-
-.c2 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c3 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c6 .c7:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c4 .c5:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c23 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1274,7 +228,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border: 4px solid white;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1286,7 +240,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   cursor: copy;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -1304,7 +258,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border: 4px solid white;
 }
 
-.c19 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1314,7 +268,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1324,223 +278,217 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   color: #62778c;
 }
 
-.c14 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
-}
-
-.c16 {
+.c17 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgPurchase"
-              />
+              <span
+                className="c11 c12"
+                color="#558B2F"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgPurchase"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              New York Times Quiz
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            New York Times Quiz
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAlexa"
-              />
+              <span
+                className="c11 c14"
+                color="#616c60"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAlexa"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              If you'd like to access the full collection, visit NYT website
             </span>
           </div>
-          <span
-            className="c14"
-          >
-            Add Upsell Message
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
             <span
-              className="c10 c15"
+              className="c13"
+            >
+              <span
+                className="c17"
+              >
+                Declined
+              </span>
+               or 
+              <span
+                className="c17"
+              >
+                Error
+              </span>
+            </span>
+            <div
+              className="c18"
               color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
-          </span>
           <div
-            className="c17"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
             <span
-              className="c10 c18"
+              className="c15"
+            >
+              Purchased
+            </span>
+            <div
+              className="c20"
               color="#279745"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c19"
-          >
-            Purchased
-          </span>
-          <div
-            className="c20"
-            color="#279745"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = `
-.c15 {
+exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #616c60;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #558B2F;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 .c10 {
+.c21 .c11 {
   color: #fff;
 }
 
-.c21 .c10 {
+.c22 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1563,7 +511,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1582,11 +530,15 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
+.c1 {
+  position: relative;
+}
+
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1607,7 +559,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   align-self: start;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1622,7 +574,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1637,7 +589,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1647,7 +599,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1665,15 +617,15 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c5:not(:first-of-type) {
+.c23 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1685,7 +637,654 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   cursor: copy;
 }
 
-.c19::before {
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
+}
+
+.c15 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c17 {
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <header
+      className="c2"
+    >
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#558B2F"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgPurchase"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              New York Times Quiz
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c14"
+                color="#616c60"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAlexa"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              If you'd like to access the full collection, visit NYT website
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c17"
+              >
+                Declined
+              </span>
+               or 
+              <span
+                className="c17"
+              >
+                Error
+              </span>
+            </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Purchased
+            </span>
+            <div
+              className="c20"
+              color="#279745"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #558B2F;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 .c11 {
+  color: #fff;
+}
+
+.c15 .c11 {
+  color: #6e849a;
+}
+
+.c3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c16 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #8da2b5;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <header
+      className="c2"
+    >
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#558B2F"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgPurchase"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Select a product
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #d94c4c;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #558B2F;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c22 .c11 {
+  color: #fff;
+}
+
+.c23 .c11 {
+  color: #6e849a;
+}
+
+.c3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c24 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c21 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c21::before {
   position: absolute;
   display: block;
   content: '';
@@ -1703,7 +1302,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border: 4px solid white;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1715,7 +1314,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   cursor: copy;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -1733,7 +1332,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border: 4px solid white;
 }
 
-.c14 {
+.c20 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1743,7 +1342,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   color: #132144;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1753,147 +1352,588 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   color: #62778c;
 }
 
-.c16 {
+.c15 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #8da2b5;
+}
+
+.c17 {
   color: #132144;
 }
 
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Payment Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="#558B2F"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgPurchase"
-              />
+              <span
+                className="c11 c12"
+                color="#558B2F"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgPurchase"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              New York Times Quiz
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            New York Times Quiz
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c13"
-              color="#616c60"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgAlexa"
-              />
+              <span
+                className="c11 c14"
+                color="#616c60"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAlexa"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Add Upsell Message
             </span>
           </div>
-          <span
-            className="c14"
-          >
-            If you'd like to access the full collection, visit NYT website
-          </span>
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
             <span
-              className="c10 c15"
+              className="c13"
+            >
+              <span
+                className="c17"
+              >
+                Declined
+              </span>
+               or 
+              <span
+                className="c17"
+              >
+                Error
+              </span>
+            </span>
+            <div
+              className="c18"
               color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c12"
-          >
-            <span
-              className="c16"
-            >
-              Declined
-            </span>
-             or 
-            <span
-              className="c16"
-            >
-              Error
-            </span>
-          </span>
           <div
-            className="c17"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
             <span
-              className="c10 c18"
+              className="c20"
+            >
+              Purchased
+            </span>
+            <div
+              className="c21"
               color="#279745"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c14"
-          >
-            Purchased
-          </span>
-          <div
-            className="c19"
-            color="#279745"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = `
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #d94c4c;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #558B2F;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c21 .c11 {
+  color: #fff;
+}
+
+.c22 .c11 {
+  color: #6e849a;
+}
+
+.c3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c23 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c15 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c17 {
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <header
+      className="c2"
+    >
+      <span
+        className="c3"
+      >
+        Payment Block
+      </span>
+    </header>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#558B2F"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgPurchase"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              New York Times Quiz
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c14"
+                color="#616c60"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgAlexa"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              If you'd like to access the full collection, visit NYT website
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <span
+                className="c17"
+              >
+                Declined
+              </span>
+               or 
+              <span
+                className="c17"
+              >
+                Error
+              </span>
+            </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              Purchased
+            </span>
+            <div
+              className="c20"
+              color="#279745"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 `;

@@ -18,7 +18,7 @@ function PlanOptionCard({ plan, active, selectPlan, period }) {
 
       <PriceContainer>
         {price && <Price>${price}</Price>}
-        <PriceDescription>{price ? 'editor/mo' : 'Contact Us'}</PriceDescription>
+        <PriceDescription>{price ? 'Per Editor / Per Month' : 'Contact Us'}</PriceDescription>
       </PriceContainer>
     </Container>
   );

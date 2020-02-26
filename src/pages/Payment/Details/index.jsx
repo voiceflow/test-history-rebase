@@ -6,6 +6,7 @@ import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
 import BubbleText from '@/components/Text/BubbleText';
+import { PLANS } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
@@ -55,27 +56,29 @@ function PlansDetails({
   };
 
   const tabsOptions = React.useMemo(() => {
-    return plans.map((option) => {
-      const price = option.pricing?.MO?.price;
-      const dollarPrice = price ? price / 100 : null;
-      return {
-        value: option.id,
-        label: (
-          <TabContainer>
-            {option.name}
-            {dollarPrice ? (
-              <TabPriceContainer>
-                <DollarText>${dollarPrice}</DollarText>
-                /mo
-              </TabPriceContainer>
-            ) : (
-              <TabPriceContainer>Custom </TabPriceContainer>
-            )}
-          </TabContainer>
-        ),
-        color: option.color,
-      };
-    });
+    return plans
+      .filter(({ id }) => id !== PLANS.enterprise)
+      .map((option) => {
+        const price = option.pricing?.MO?.price;
+        const dollarPrice = price ? price / 100 : null;
+        return {
+          value: option.id,
+          label: (
+            <TabContainer>
+              {option.name}
+              {dollarPrice ? (
+                <TabPriceContainer>
+                  <DollarText>${dollarPrice}</DollarText>
+                  /mo
+                </TabPriceContainer>
+              ) : (
+                <TabPriceContainer>Custom </TabPriceContainer>
+              )}
+            </TabContainer>
+          ),
+          color: option.color,
+        };
+      });
   });
 
   return (

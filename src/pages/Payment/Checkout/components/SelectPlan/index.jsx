@@ -2,6 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
+import { PLANS } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 
@@ -32,9 +33,11 @@ function SelectPlan({
       />
       <StepSection>
         <Flex>
-          {plans.map((option) => (
-            <PlanOptionCard key={option.id} plan={option} active={plan.id === option.id} selectPlan={setPlan} period={period} />
-          ))}
+          {plans
+            .filter(({ id }) => id !== PLANS.enterprise)
+            .map((option) => (
+              <PlanOptionCard key={option.id} plan={option} active={plan.id === option.id} selectPlan={setPlan} period={period} />
+            ))}
         </Flex>
       </StepSection>
     </>

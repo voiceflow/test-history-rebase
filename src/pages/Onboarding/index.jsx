@@ -1,8 +1,7 @@
 import './onboarding.css';
 
-import axios from 'axios';
 import cn from 'classnames';
-import React, { Component } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import Select from 'react-select';
 import { Form, FormGroup, Input } from 'reactstrap';
@@ -11,25 +10,17 @@ import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import * as Account from '@/ducks/account';
+import * as OnboardingDuck from '@/ducks/onboarding';
 import * as Router from '@/ducks/router';
+import * as Template from '@/ducks/template';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ButtonCard } from '@/pages/Onboarding/container';
 
 const CLASS_MUTED = 'text-muted';
-const PROG_XP = (xp) => {
-  switch (xp) {
-    case 'intermediate':
-      return 'OKAY';
-    case 'expert':
-      return 'GOD';
-    default:
-      return 'NOOB';
-  }
-};
-
-const user_roles = [
+const SHOW_CALENDLY_NUMBER = 20;
+const USER_ROLES = [
   { value: 'designer', label: 'Designer' },
   { value: 'developer', label: 'Developer' },
   { value: 'product', label: 'Product' },
@@ -51,140 +42,85 @@ const selectStyle = {
   }),
 };
 
-const SHOW_CALENDLY_NUMBER = 20;
-class Onboarding extends Component {
-  constructor(props) {
-    super(props);
+class Onboarding extends React.Component {
+  state = {
+    stage: null,
+    company_name: '',
+    company_role: '',
+    new_company_role: '',
+    company_size: '',
+    type: '',
+    experience: '',
+    design: false,
+    build: false,
+    loading: false,
+    check: true,
+  };
 
-    this.state = {
-      stage: null,
-      company_name: '',
-      company_role: '',
-      new_company_role: '',
-      company_size: '',
-      type: '',
-      experience: '',
-      templates: [],
-      design: false,
-      build: false,
-      loading: false,
-      check: true,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSizeSelection = this.handleSizeSelection.bind(this);
-    this.handleIndustrySelection = this.handleIndustrySelection.bind(this);
-    this.renderModalContent = this.renderModalContent.bind(this);
-    this.submitSurvey = this.submitSurvey.bind(this);
-    this.closeSurvey = this.closeSurvey.bind(this);
-  }
-
-  closeSurvey() {
-    this.props.goToHome();
-  }
-
-  handleChange(event) {
+  handleChange = (event) =>
     this.setState({
       saved: false,
       [event.target.name]: event.target.value,
     });
-  }
 
-  createSkill = () => {
-    const { templates } = this.state;
-    const { goToCanvas, goToDashboard, workspaceID } = this.props;
+  createSkill = async () => {
+    const { goToCanvas, goToDashboard, workspaceID, createProject } = this.props;
 
-    // Onboarding Failsafe
-    if (!Array.isArray(templates) || !templates[0] || !templates[0].module_id) {
-      return goToDashboard();
-    }
-
-    const module_id = templates[0].module_id;
-    axios
-      .post(`/team/${workspaceID}/copy/module/${module_id}`, {
+    try {
+      const project = await createProject(workspaceID, {
         name: 'My First Project',
         locales: ['en-US'],
         platform: 'alexa',
-      })
-      .then((res) => {
-        if (res.data.skill_id && res.data.diagram) {
-          setTimeout(() => goToCanvas(res.data.skill_id, res.data.diagram), 3000);
-        } else {
-          throw new Error('Invalid Response Format');
-        }
-      })
-      .catch((err) => {
-        console.error(err);
+      });
+
+      setTimeout(() => goToCanvas(project.skill_id, project.diagram), 3000);
+    } catch (err) {
+      if (err instanceof Workspace.NoValidTemplateError) {
+        goToDashboard();
+      } else {
+        // eslint-disable-next-line no-alert
         alert('unable to create skill');
-      });
+      }
+    }
   };
 
-  loadDefaultTemplates = () => {
-    axios
-      .get('/template/all')
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          this.setState({
-            templates: res.data,
-          });
-          // preload images for performance
-          this.images = [];
-          res.data.forEach((template, i) => {
-            this.images[i] = new Image();
-            this.images[i].src = template.module_icon;
-          });
-        } else {
-          throw new Error('Malformed Response');
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.response);
-        alert('Unable to Retrieve Templates');
-      });
+  loadDefaultTemplates = async () => {
+    try {
+      const templates = await this.props.loadTemplates();
+
+      this.images = templates.map((template) => Object.assign(new Image(), { src: template.icon }));
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert('Unable to Retrieve Templates');
+    }
   };
 
-  submitSurvey() {
-    const s = this.state;
-    this.setState({
-      loading: true,
-    });
-    axios
-      .post('/onboard', {
-        usage_type: s.type,
-        programming: s.experience,
-        company_name: s.company_name,
-        company_role: s.company_role,
-        company_size: s.company_size,
-        new_company_role: s.new_company_role,
-        purpose: s.purpose,
-        design: s.design,
-        build: s.build,
-      })
-      .then(() => {
-        localStorage.setItem('onboarding', PROG_XP(s.experience));
-        this.createSkill();
-      })
-      .catch(() => {
-        localStorage.setItem('onboarding', PROG_XP(s.experience));
-        this.createSkill();
-      })
-      .then(() => this.props.trackOnboardingComplete());
-  }
+  submitSurvey = async () => {
+    const { submitSurvey, trackOnboardingComplete } = this.props;
+    const state = this.state;
 
-  handleSizeSelection(value) {
-    this.setState({
-      saved: false,
-      company_size: value,
-    });
-  }
+    this.setState({ loading: true });
 
-  handleIndustrySelection(value) {
-    this.setState({
-      saved: false,
-      industry: value,
-    });
-  }
+    try {
+      await submitSurvey({
+        usage_type: state.type,
+        programming: state.experience,
+        company_name: state.company_name,
+        company_role: state.company_role,
+        company_size: state.company_size,
+        new_company_role: state.new_company_role,
+        purpose: state.purpose,
+        design: state.design,
+        build: state.build,
+      });
+    } catch (err) {
+      console.error('failed to submit onboarding survey', err);
+    }
+
+    await this.createSkill();
+
+    trackOnboardingComplete();
+  };
 
   componentDidMount() {
     // preload images
@@ -346,7 +282,7 @@ class Onboarding extends Component {
                       this.setState({ company_role: selected.value });
                     }}
                     placeholder="Your Role"
-                    options={user_roles}
+                    options={USER_ROLES}
                     styles={selectStyle}
                   />
                 </FormGroup>
@@ -496,13 +432,15 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goToHome: Router.goToHome,
   goToCanvas: Router.goToCanvas,
   goToDashboard: Router.goToDashboard,
   trackOnboardingBegin: Tracking.trackOnboardingBegin,
   trackOnboardingComplete: Tracking.trackOnboardingComplete,
   trackOnboardingStage: Tracking.trackOnboardingStage,
   trackOnboardingChoice: Tracking.trackOnboardingChoice,
+  loadTemplates: Template.loadTemplates,
+  createProject: Workspace.createProject,
+  submitSurvey: OnboardingDuck.submitSurvey,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);

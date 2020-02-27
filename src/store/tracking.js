@@ -21,28 +21,15 @@ const SEGMENT_EVENTS = {
     };
   }),
 
-  [Tracking.TRACK_INVITATION_SENT]: trackEvent(({ payload: { email, workspaceID } }) => ({
-    name: 'Send Invitation Email',
+  [Tracking.TRACK_SESSION_DURATION]: trackEvent(({ payload: duration }) => ({
+    name: 'Creator Session Duration',
     properties: {
-      invitation_email: email,
-      invitation_workspace_id: workspaceID,
+      duration,
     },
   })),
 
-  [Tracking.TRACK_INVITATION_CANCELLED]: trackEvent(({ payload: { email, workspaceID } }) => ({
-    name: 'Cancel Invitation',
-    properties: {
-      invitation_email: email,
-      invitation_workspace_id: workspaceID,
-    },
-  })),
-
-  [Tracking.TRACK_INVITATION_ACCEPTED]: trackEvent(({ payload: { email, workspaceID } }) => ({
-    name: 'Accept Invitation',
-    properties: {
-      invitation_email: email,
-      invitation_workspace_id: workspaceID,
-    },
+  [Tracking.TRACK_SESSION_BEGIN]: trackEvent(() => ({
+    name: 'Begin New Session',
   })),
 };
 

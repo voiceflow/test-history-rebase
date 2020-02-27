@@ -7,6 +7,7 @@ const {
   logrocket,
   intercom,
   ga,
+  segment,
   tracking,
   debug,
   debugNet,
@@ -41,6 +42,7 @@ module.exports = {
     LOGROCKET_ENABLED: logrocket && 'true',
     INTERCOM_ENABLED: intercom && 'true',
     GA_ENABLED: ga && 'true',
+    SEGMENT_ENABLED: segment && 'true',
     TRACKING_ENABLED: tracking && 'true',
 
     // feature flags

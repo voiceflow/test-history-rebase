@@ -34,6 +34,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'lodash/prefer-lodash-chain': 'off',
     'import/no-named-as-default': 'off',
+    'import/extensions': 'off',
     'require-jsdoc': 'off',
     'filenames/match-regex': 'off',
     'filenames/match-exported': 'off',
@@ -89,6 +90,7 @@ module.exports = {
         config: webpackConfig,
       },
     },
+    'import/extensions': ['.js', '.ts', '.jsx', '.tsx'],
     react: {
       version: 'detect',
     },

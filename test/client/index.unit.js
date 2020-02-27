@@ -3,7 +3,7 @@ import client from '@/client';
 
 suite('Client - Root', ({ expect }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.eql([
+    expect(Object.keys(client)).to.have.members([
       'session',
       'analytics',
       'diagram',
@@ -18,6 +18,8 @@ suite('Client - Root', ({ expect }) => {
       'socket',
       'product',
       'file',
+      'template',
+      'onboarding',
     ]);
   });
 });

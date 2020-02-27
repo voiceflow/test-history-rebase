@@ -1,4 +1,4 @@
-import { createAdapter } from './utils';
+import { AdapterNotImplementedError, createAdapter } from './utils';
 
 const projectAdapter = createAdapter(
   ({ project_id, skill_id, name, diagram, locales, module, reference, created, islive, small_icon, large_icon }) => ({
@@ -14,7 +14,9 @@ const projectAdapter = createAdapter(
     smallIcon: small_icon,
     largeIcon: large_icon,
   }),
-  () => ({})
+  () => {
+    throw new AdapterNotImplementedError();
+  }
 );
 
 export default projectAdapter;

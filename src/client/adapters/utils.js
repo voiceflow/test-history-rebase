@@ -1,6 +1,12 @@
 import { IS_PRODUCTION } from '@/config';
 import { identity } from '@/utils/functional';
 
+export class AdapterNotImplementedError extends Error {
+  constructor() {
+    super('adapter not implemented');
+  }
+}
+
 export const createSimpleAdapter = (fromDB, toDB, options = {}) => ({
   fromDB:
     !IS_PRODUCTION && options.debug

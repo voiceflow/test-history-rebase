@@ -79,7 +79,7 @@
     "react-intercom": "^1.0.14",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-popper": "^1.3.3",
-    "react-redux": "^7.1.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.0.0",
     "react-segment": "^0.1.8",
     "react-select": "^2.1.0",
@@ -134,6 +134,7 @@
     "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "@types/react-redux": "^7.1.7",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "@voiceflow/commitlint-config": "^1.0.1",
@@ -169,7 +170,7 @@
     "eslint-config-react-app": "^3.0.6",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-plugin-flowtype": "2.50.1",
-    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^2.3.0",
@@ -244,7 +245,7 @@
       "fixpack",
       "git add"
     ],
-    "**/*.{js,jsx}": [
+    "**/*.{js,ts,jsx,tsx}": [
       "eslint --fix",
       "prettier-eslint --write",
       "git add"
@@ -274,8 +275,8 @@
     "lint": "yarn lint:js && yarn lint:css",
     "lint:css": "stylelint src/**/*.css",
     "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile ./cache.dockerfile ./admin.dockerfile ./storybook.dockerfile",
-    "lint:js": "eslint \"src/**/*.{js,jsx}\"",
-    "lint:js:fix": "eslint \"src/**/*.{js,jsx}\" --fix --rule 'react-hooks/exhaustive-deps: off'",
+    "lint:js": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint:js:fix": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --fix --rule 'react-hooks/exhaustive-deps: off'",
     "lint:quiet": "yarn lint:js --quiet && yarn lint:css --quiet",
     "local": "yarn start",
     "postinstall": "patch-package",

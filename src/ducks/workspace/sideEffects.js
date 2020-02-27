@@ -1,115 +1,16 @@
-import { createSelector } from 'reselect';
-
 import client from '@/client';
 import { toast } from '@/components/Toast';
-import { EDITOR_SEAT_ROLES } from '@/constants';
-import { getAlternativeColor } from '@/utils/colors';
+import { deleteNormalize, normalize } from '@/ducks/_normalize';
+import * as Modal from '@/ducks/modal';
+import * as Template from '@/ducks/template';
+import * as Tracking from '@/ducks/tracking';
 
-import Normalize, { deleteNormalize, normalize } from './_normalize';
-import * as Modal from './modal';
-import * as Tracking from './tracking';
-import { createRootSelector } from './utils';
+import { updateCurrentWorkspace, updateWorkspace, updateWorkspaces } from './actions';
+import { NoValidTemplateError } from './constants';
+import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector } from './selectors';
+import { extractErrorFromResponseData, extractErrorMessages } from './utils';
 
-export const STATE_KEY = 'workspace';
-
-const MEMBER_UPDATE_ERR = 'Unable to Update Members';
-const WORKSPACE_FALLBACK_ERROR_MESSAGE = 'Error updating Workspace';
-const initialState = {
-  activeWorkspaceID: localStorage.getItem('team'),
-  byId: {},
-  allIds: [],
-};
-
-const extractErrorMessages = (err) => {
-  const errors = err?.body?.errors || err?.body || {};
-
-  const errorMessage = Object.keys(errors).reduce((str, key) => {
-    const error = errors[key];
-
-    return `${str}${error.message || error}\n`;
-  }, '');
-
-  return errorMessage || WORKSPACE_FALLBACK_ERROR_MESSAGE;
-};
-
-const extractErrorFromResponseData = (err, defaultMessage) =>
-  err?.response?.data || err?.body?.data || (err && JSON.stringify(err)) || defaultMessage;
-
-// reducers
-
-export default function workspaceReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'UPDATE_CURRENT_WORKSPACE':
-      localStorage.setItem('team', action.payload);
-      return {
-        ...state,
-        activeWorkspaceID: action.payload,
-      };
-    case 'UPDATE_WORKSPACES':
-      return {
-        ...state,
-        byId: action.payload.byId,
-        allIds: action.payload.allIds,
-      };
-    default:
-      return state;
-  }
-}
-
-// selectors
-
-const rootSelector = createRootSelector(STATE_KEY);
-
-export const activeWorkspaceIDSelector = createSelector(rootSelector, ({ activeWorkspaceID }) => activeWorkspaceID);
-
-export const activeWorkspaceSelector = createSelector(rootSelector, activeWorkspaceIDSelector, ({ byId }, workspaceID) => byId[workspaceID]);
-
-export const workspaceNumberOfSeatsSelector = createSelector(activeWorkspaceSelector, ({ seats }) => seats);
-
-export const planTypeSelector = createSelector(activeWorkspaceSelector, ({ plan }) => plan);
-
-export const onPaidPlan = createSelector(planTypeSelector, (plan) => !!plan);
-
-export const workspaceByIDSelector = createSelector(rootSelector, ({ byId }) => (workspaceID) => byId[workspaceID]);
-
-export const activeWorkspaceMembersSelector = createSelector(activeWorkspaceSelector, (activeWorkspace) => activeWorkspace?.members || []);
-
-export const seatLimits = createSelector(activeWorkspaceSelector, ({ seatLimits }) => seatLimits);
-
-export const usedEditorSeats = createSelector(
-  activeWorkspaceMembersSelector,
-  (members) => members.filter((member) => EDITOR_SEAT_ROLES.includes(member.role)).length || 1
-);
-
-export const usedViewerSeats = createSelector(
-  activeWorkspaceMembersSelector,
-  (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
-);
-
-export const allWorkspacesSelector = createSelector(rootSelector, ({ allIds, byId }) => allIds.map((workspaceID) => byId[workspaceID]));
-
-export const workspaceMemberSelector = createSelector(activeWorkspaceMembersSelector, (members) => (creatorID) =>
-  members?.find((member) => String(member.creator_id) === creatorID) || null
-);
-
-export const distinctWorkspaceMemberSelector = createSelector(workspaceMemberSelector, (getWorkspaceMember) => (creatorID, tabID) => {
-  const workspaceMember = getWorkspaceMember(creatorID);
-
-  return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
-});
-
-// actions
-
-const updateWorkspaces = ({ byId, allIds }) => ({
-  type: 'UPDATE_WORKSPACES',
-  payload: { byId, allIds },
-});
-
-const Workspaces = new Normalize('id', 'workspace', updateWorkspaces);
-
-export const updateWorkspace = (workspaceId, data) => (dispatch) => dispatch(Workspaces.update({ id: workspaceId, data }));
-
-export const updateCurrentWorkspace = (workspaceId) => ({ type: 'UPDATE_CURRENT_WORKSPACE', payload: workspaceId });
+const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
 export const updateCurrentWorkspaceItem = (payload) => (dispatch, getState) => {
   const workspaceId = activeWorkspaceIDSelector(getState());
@@ -177,7 +78,7 @@ export const leaveWorkspace = () => async (dispatch, getState) => {
     dispatch(removeWorkspace(targetWorkspaceId));
     toast.success('Successfully left workspace');
   } catch (err) {
-    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
 
     return Promise.reject();
   }
@@ -202,7 +103,7 @@ export const createWorkspace = (data) => async (dispatch) => {
   try {
     return client.workspace.createWorkspace(data);
   } catch (err) {
-    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
 
     return Promise.reject();
   }
@@ -221,7 +122,7 @@ export const updateMembers = (members, options) => async (dispatch, getState) =>
 
     dispatch(updateCurrentWorkspaceItem(workspace));
   } catch (err) {
-    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERR)));
+    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
 
     return Promise.reject();
   }
@@ -372,11 +273,35 @@ export const getMembers = (workspaceId) => {
     try {
       const members = await client.workspace.findMembers(workspaceId);
 
-      dispatch(Workspaces.update({ id: workspaceId, data: { members } }));
+      dispatch(updateWorkspace(workspaceId, { members }));
     } catch (err) {
       toast.error('Unable to retrieve members');
 
       return Promise.reject();
     }
   };
+};
+
+export const createProject = (workspaceID, project) => async (_, getState) => {
+  const templates = Template.allTemplatesSelector(getState());
+
+  // onboarding failsafe
+  if (!templates[0]?.moduleID) {
+    throw new NoValidTemplateError();
+  }
+
+  const { moduleID } = templates[0];
+
+  try {
+    const createdProject = await client.workspace.createProjectFromModule(workspaceID, moduleID, project);
+
+    if (createdProject.skill_id && createdProject.diagram) {
+      return createdProject;
+    }
+
+    throw new Error('Invalid Response Format');
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };

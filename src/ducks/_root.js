@@ -21,6 +21,7 @@ import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
+import template, * as Template from '@/ducks/template';
 import test, * as Test from '@/ducks/test';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
@@ -60,4 +61,5 @@ export default (history) =>
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
+    [Template.STATE_KEY]: template,
   });

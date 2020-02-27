@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 const PermissionStep = ({ permissions, isConnected, onClickPort, withPort = true, isActive }) => {
   const labelText = (
@@ -16,7 +16,7 @@ const PermissionStep = ({ permissions, isConnected, onClickPort, withPort = true
       <Section>
         <Item
           label={!!permissions.length && labelText}
-          labelVariant={LabelVariant.SECONDARY}
+          labelVariant={StepLabelVariant.SECONDARY}
           isConnected={isConnected}
           onClickPort={onClickPort}
           withPort={withPort}

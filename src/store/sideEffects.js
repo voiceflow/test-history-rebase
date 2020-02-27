@@ -36,7 +36,9 @@ export const copyProject = (projectID, workspaceID, boardID) => async (dispatch,
   }
 
   dispatch(addProject(copiedProject.id, copiedProject));
-  if (boardID) dispatch(addProjectToList(boardID, copiedProject.id));
+  if (boardID) {
+    await dispatch(addProjectToList(boardID, copiedProject.id));
+  }
 };
 
 export const importProject = (workspaceID, importToken) => async (dispatch, getState) => {
@@ -44,7 +46,7 @@ export const importProject = (workspaceID, importToken) => async (dispatch, getS
   const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
   if (activeWorkspaceID === workspaceID) {
     dispatch(addProject(importedProject.id, importedProject));
-    dispatch(addProjectToList(null, importedProject.id));
+    await dispatch(addProjectToList(null, importedProject.id));
   }
 };
 

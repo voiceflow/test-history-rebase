@@ -50,3 +50,10 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
 };
 
 export default GlobalProviders;
+
+// eslint-disable-next-line react/display-name
+export const withGlobalProviders = (Component) => ({ history, store, persistor, ...props }) => (
+  <GlobalProviders history={history} store={store} persistor={persistor}>
+    <Component {...props} />
+  </GlobalProviders>
+);

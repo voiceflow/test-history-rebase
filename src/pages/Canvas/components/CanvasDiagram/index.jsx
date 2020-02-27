@@ -19,7 +19,7 @@ const withInitialViewport = connect({ viewport: activeDiagramViewportSelector },
   areStatesEqual: () => true,
 });
 
-const CanvasDiagram = ({ viewport, renderLinks }) => {
+const CanvasDiagram = ({ viewport }) => {
   const engine = React.useContext(EngineContext);
   const groupSelection = React.useContext(GroupSelectionContext);
   const contextMenu = React.useContext(ContextMenuContext);
@@ -59,7 +59,7 @@ const CanvasDiagram = ({ viewport, renderLinks }) => {
       onShiftClick={startGroupSelection}
       innerRef={connectBlockDrop}
     >
-      <LinkLayer renderLinks={renderLinks} />
+      <LinkLayer />
       <NodeLayer />
       <GroupSelection />
     </Canvas>

@@ -11,7 +11,7 @@ In order to run this package locally, make sure you have `yarn` and `brew` insta
 
 ### Package Manager
 
-This Repository Relies on `yarn` and does not work with `npm`
+This Repository Relies on `yarn` and does not work with `npm`.
 
 ### Install Dependencies
 
@@ -190,6 +190,34 @@ You are also able to use the flag `--ga` to enable it from the command line.
 
 ```sh
 yarn start --ga
+```
+
+### Segment
+
+To enable Segment tracking when running locally, set the environment variable `VF_APP_SEGMENT_ENABLED` to `"true"`
+in the `.env.local` file in this directory. If this file doesn't exist then create one.
+
+```sh
+VF_APP_SEGMENT_ENABLED='true'
+```
+
+You are also able to use the flag `--segment` to enable it from the command line.
+
+```sh
+yarn start --segment
+```
+
+### Feature Flags
+
+All feature flags environment variables begin with `VF_APP_FF_` and flags for the command line begin with `--ff_`.
+You can invoke the feature by setting the appropriate environment variable or passing the appropriate command line flag.
+
+```sh
+VF_APP_FF_BLOCK_REDESIGN='true'
+```
+
+```sh
+yarn start --ff_blockRedesign
 ```
 
 ## Previewing in an ephmeral environment

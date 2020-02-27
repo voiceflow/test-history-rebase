@@ -20,6 +20,7 @@ module.exports = ({ config }) =>
       alias: {
         '@': paths.sourceDir,
       },
+      extensions: ['.ts', '.tsx'],
     },
 
     module: {
@@ -27,12 +28,12 @@ module.exports = ({ config }) =>
         {
           oneOf: [
             {
-              test: /\.story\.jsx$/,
+              test: /\.story\.[jt]sx?$/,
               loaders: [BABEL_LOADER, require.resolve('@storybook/source-loader')],
               enforce: 'pre',
             },
             {
-              test: /\.(js|jsx)$/,
+              test: /\.[jt]sx?$/,
               include: paths.sourceDir,
               ...BABEL_LOADER,
             },

@@ -7,10 +7,9 @@ import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { diagramByIDSelector } from '@/ducks/diagram';
 import * as Realtime from '@/ducks/realtime';
-import { activePlatformSelector, isRootDiagramSelector } from '@/ducks/skill';
+import { isRootDiagramSelector } from '@/ducks/skill';
 import { setCanvasError } from '@/ducks/user';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
-import { useEnableDisable } from '@/hooks';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
@@ -58,9 +57,8 @@ export class Engine {
 
   supportedLinks = [];
 
-  constructor(store, finalize, mousePosition, realtimeSubscription) {
+  constructor(store, mousePosition, realtimeSubscription) {
     this.store = store;
-    this.finalize = finalize;
     this.mousePosition = mousePosition;
     this.linkIDs = Creator.allLinkIDsSelector(store.getState());
 
@@ -157,21 +155,6 @@ export class Engine {
 
     if (links.length) {
       this.supportedLinks.push(...links.map((link) => link.id));
-
-      const platform = activePlatformSelector(this.store.getState());
-      if (
-        this.supportedLinks.length ===
-        this.linkIDs
-          .map(this.getLinkByID)
-          .filter(Boolean)
-          .filter((link) => {
-            const port = this.getPortByID(link.source.portID);
-
-            return !port.platform || port.platform === platform;
-          }).length
-      ) {
-        this.finalize();
-      }
     }
   }
 
@@ -354,24 +337,18 @@ export class Engine {
   }
 }
 
-const createEngine = moize.simple(
-  (store, finalize, mousePosition, realtimeSubscription) => new Engine(store, finalize, mousePosition, realtimeSubscription)
-);
+const createEngine = moize.simple((store, mousePosition, realtimeSubscription) => new Engine(store, mousePosition, realtimeSubscription));
 
 function useEngine() {
   const store = useStore();
-  const state = store.getState();
-  const linkIDs = Creator.allLinkIDsSelector(state);
-  const [isFinalized, finalize] = useEnableDisable(linkIDs.length === 0);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = React.useMemo(() => createEngine(store, finalize, mousePosition, realtimeSubscription));
+  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription));
 
   React.useEffect(() => () => engine.teardown(), [engine]);
 
   return {
     engine,
-    isFinalized,
   };
 }
 

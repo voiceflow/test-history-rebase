@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 function StreamStep({
   audio,
@@ -29,7 +29,7 @@ function StreamStep({
             label={audio}
             isConnected={isConnected}
             placeholder="Add an Audio file, URL or variable"
-            labelVariant={LabelVariant.SECONDARY}
+            labelVariant={StepLabelVariant.SECONDARY}
           />
         </Section>
       </Step>
@@ -43,7 +43,7 @@ function StreamStep({
           iconColor="#4f98c6"
           label={audio}
           placeholder="Add an Audio file, URL or variable"
-          labelVariant={LabelVariant.SECONDARY}
+          labelVariant={StepLabelVariant.SECONDARY}
           withPort={false}
         />
       </Section>

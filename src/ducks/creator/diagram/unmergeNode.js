@@ -1,3 +1,4 @@
+import { BLOCK_REDESIGN_ENABLED } from '@/config/features';
 import { without } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
@@ -38,6 +39,17 @@ const unmergeNodeReducer = (
   }
 
   const remainingNodeID = parentNode.combinedNodes[index === 0 ? 1 : 0];
+
+  if (BLOCK_REDESIGN_ENABLED && parentNode.combinedNodes.length === 1) {
+    return compose(
+      removeBlockFromState(parentNode),
+      patchNodeInState(node.id, {
+        parentNode: null,
+        x,
+        y,
+      })
+    )(state);
+  }
 
   return compose(
     removeBlockFromState(parentNode),

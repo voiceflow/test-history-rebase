@@ -1,8 +1,8 @@
 module.exports = {
-  moduleFileExtensions: ['json', 'js', 'jsx'],
+  moduleFileExtensions: ['json', 'js', 'jsx', 'ts', 'tsx'],
   rootDir: '../../..',
   roots: ['<rootDir>/src', '<rootDir>/test'],
-  testMatch: ['**/storyshots.setup.js', '**/*.it.jsx'],
+  testMatch: ['**/storyshots.setup.js', '**/*.it.[jt]sx'],
   setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.js'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
@@ -16,9 +16,10 @@ module.exports = {
     '^react-dnd-touch-backend$': 'react-dnd-touch-backend/dist/cjs',
   },
   transform: {
-    '^.+\\.svg$': 'jest-svg-transformer',
-    '^.+\\.story\\.jsx$': '@storybook/addon-storyshots/injectFileName',
+    '^.+\\.svg$': '<rootDir>/config/test/integration/transforms/svg',
+    '^.+\\.story\\.[jt]sx$': '@storybook/addon-storyshots/injectFileName',
     '^.+\\.jsx?$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest',
   },
   transformIgnorePatterns: ['/node_modules/'],
 };

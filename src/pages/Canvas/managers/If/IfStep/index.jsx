@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 import { ExpressionPreviewContainer } from './components';
 
@@ -16,7 +16,7 @@ function IfStep({ expressions, onElseClickPort: onClickElsePort, isElseConnected
               key={index}
               icon={index === 0 && 'if'}
               label={<ExpressionPreview expression={value} container={ExpressionPreviewContainer} />}
-              labelVariant={LabelVariant.SECONDARY}
+              labelVariant={StepLabelVariant.SECONDARY}
               iconColor="#f86683"
               isConnected={isConnected}
               onClickPort={onClickPort}

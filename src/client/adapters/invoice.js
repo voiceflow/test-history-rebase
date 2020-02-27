@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { createSimpleAdapter } from './utils';
+import { AdapterNotImplementedError, createSimpleAdapter } from './utils';
 
 const timestampToDate = (timestamp) => {
   return moment.unix(timestamp).format('MMMM Do YYYY');
@@ -31,7 +31,9 @@ const invoiceAdapter = createSimpleAdapter(
         : null,
     };
   },
-  () => ({})
+  () => {
+    throw new AdapterNotImplementedError();
+  }
 );
 
 export default invoiceAdapter;

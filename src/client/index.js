@@ -4,10 +4,12 @@ import diagram from './diagram';
 import display from './display';
 import file from './file';
 import list from './lists';
+import onboarding from './onboarding';
 import product from './product';
 import project from './project';
 import session from './session';
 import skill from './skill';
+import template from './template';
 import testing from './testing';
 import user from './user';
 import workspace from './workspace';
@@ -27,6 +29,8 @@ const client = {
   socket: null,
   product,
   file,
+  template,
+  onboarding,
 };
 
 export default client;

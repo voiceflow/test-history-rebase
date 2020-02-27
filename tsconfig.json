@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "allowJs": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "react",
     /* Strictness Checks */
     "alwaysStrict": true,

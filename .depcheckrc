@@ -36,7 +36,6 @@
     "@storybook/addon-storyshots",
     "jest-styled-components",
     "lodash-es",
-    "esm",
     "ignore-styles",
     "mock-local-storage",
     "nyc",

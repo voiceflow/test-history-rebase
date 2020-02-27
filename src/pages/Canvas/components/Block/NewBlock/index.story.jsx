@@ -5,7 +5,7 @@ import { FlexCenter } from '@/components/Flex';
 import { BlockState } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-import NewBlock from '.';
+import NewBlock, { SECTIONS_VARIANT } from '.';
 
 const MockStep = styled(FlexCenter)`
   height: 54px;
@@ -22,8 +22,30 @@ const MOCK_STEPS = (
   </>
 );
 
+const MOCK_STEPS_SHORT = (
+  <>
+    <MockStep>Step 1</MockStep>
+    <MockStep>Step 2</MockStep>
+  </>
+);
+
 const getProps = () => ({
   children: MOCK_STEPS,
+});
+
+const getMultiSectionProps = () => ({
+  sections: [
+    {
+      name: 'Section 1',
+      icon: 'home',
+      children: MOCK_STEPS_SHORT,
+    },
+    {
+      icon: 'home',
+      name: 'Section 2 blah blah blah blah blah blah blah blah',
+      children: MOCK_STEPS_SHORT,
+    },
+  ],
 });
 
 export default {
@@ -50,6 +72,8 @@ export const activeState = () => <NewBlock name="New Block 1" state={BlockState.
 export const selectedState = () => <NewBlock name="New Block 1" state={BlockState.SELECTED} {...getProps()} />;
 
 export const disabledState = () => <NewBlock name="New Block 1" state={BlockState.DISABLED} {...getProps()} />;
+
+export const subSections = () => <NewBlock sectionsVariant={SECTIONS_VARIANT.MULTI_SECTION} {...getMultiSectionProps()} />;
 
 export const stateTransitions = () => {
   const activeState = select(

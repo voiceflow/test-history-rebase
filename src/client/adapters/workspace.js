@@ -1,4 +1,4 @@
-import { createAdapter } from './utils';
+import { AdapterNotImplementedError, createAdapter } from './utils';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
@@ -27,7 +27,9 @@ const workspaceAdapter = createAdapter(
       members,
     };
   },
-  () => ({})
+  () => {
+    throw new AdapterNotImplementedError();
+  }
 );
 
 export default workspaceAdapter;

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Step Active 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -24,7 +24,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43,16 +43,36 @@ exports[`Storyshots Creator/Step Active 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -67,7 +87,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -82,7 +102,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -92,11 +112,11 @@ exports[`Storyshots Creator/Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c12 .c5:not(:first-of-type) {
+.c13 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -111,23 +131,26 @@ exports[`Storyshots Creator/Step Active 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5d9df5;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -145,7 +168,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,48 +181,52 @@ exports[`Storyshots Creator/Step Active 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step Primary 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -222,7 +249,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -241,16 +268,36 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -265,7 +312,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -280,7 +327,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -290,7 +337,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -308,20 +355,23 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -339,7 +389,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -352,48 +402,52 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Primary Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Primary Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step Secondary 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -416,7 +470,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -435,16 +489,36 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -459,7 +533,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -474,7 +548,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -484,7 +558,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -502,20 +576,23 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -533,7 +610,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -546,48 +623,52 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Secondary Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Secondary Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Connected Port 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -610,7 +691,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -629,16 +710,36 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -653,7 +754,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -668,7 +769,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -678,7 +779,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -696,24 +797,27 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c12 .c5:not(:first-of-type) {
+.c13 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -730,7 +834,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -743,82 +847,86 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c15 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 .c12 {
+.c18 .c13 {
   color: #fff;
 }
 
-.c18 .c12 {
+.c19 .c13 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -841,7 +949,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -860,16 +968,36 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -884,7 +1012,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -899,7 +1027,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -909,7 +1037,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -927,24 +1055,27 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c5:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -961,16 +1092,19 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -988,16 +1122,19 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   border: 4px solid white;
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1014,7 +1151,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1027,138 +1164,142 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
+            <div
+              className="c10"
+            />
             <span
-              className="c12 c13"
+              className="c11"
+            >
+              Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c13 c14"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c11"
+            >
+              Declined
+            </span>
+            <div
+              className="c15"
               color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c10"
-          >
-            Declined
-          </span>
           <div
-            className="c14"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c13 c16"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
             <span
-              className="c12 c15"
-              color="#279745"
-              size={16}
+              className="c11"
             >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
+              Successfully Cancelled
             </span>
+            <div
+              className="c17"
+              color="#279745"
+            />
           </div>
-          <span
-            className="c10"
-          >
-            Successfully Cancelled
-          </span>
-          <div
-            className="c16"
-            color="#279745"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Else 1`] = `
-.c11 {
+.c15 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c15 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: red;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #6e849a;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c17 .c10 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c10 {
+.c19 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1181,7 +1322,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1200,16 +1341,36 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1224,7 +1385,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1239,7 +1400,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1249,7 +1410,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1267,24 +1428,27 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c5:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -1302,16 +1466,19 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   border: 4px solid white;
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1329,7 +1496,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1339,7 +1506,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1352,122 +1519,126 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="red"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="red"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Step
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Step
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c14"
-              color="#6e849a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgElse"
-              />
+              <span
+                className="c11 c15"
+                color="#6e849a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgElse"
+                />
+              </span>
+            </div>
+            <span
+              className="c16"
+            >
+              Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+            />
           </div>
-          <span
-            className="c15"
-          >
-            Else
-          </span>
-          <div
-            className="c16"
-            color="#8da2b5"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Else Connected 1`] = `
-.c11 {
+.c15 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c15 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: red;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #6e849a;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c17 .c10 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c10 {
+.c19 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1490,7 +1661,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1509,16 +1680,36 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1533,7 +1724,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1548,7 +1739,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1558,7 +1749,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1576,24 +1767,27 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c5:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -1610,16 +1804,19 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1636,7 +1833,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1646,7 +1843,7 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1659,109 +1856,113 @@ exports[`Storyshots Creator/Step With Else Connected 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="red"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="red"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Step
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Step
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c14"
-              color="#6e849a"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgElse"
-              />
+              <span
+                className="c11 c15"
+                color="#6e849a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgElse"
+                />
+              </span>
+            </div>
+            <span
+              className="c16"
+            >
+              Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+            />
           </div>
-          <span
-            className="c15"
-          >
-            Else
-          </span>
-          <div
-            className="c16"
-            color="#8da2b5"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Icon 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: red;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 .c10 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1784,7 +1985,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1803,16 +2004,36 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1827,7 +2048,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1842,7 +2063,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1852,7 +2073,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1870,20 +2091,23 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -1901,7 +2125,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1914,79 +2138,83 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="red"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="red"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Step With Icon
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Step With Icon
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Image 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: red;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c10 {
+.c18 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2009,7 +2237,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2028,16 +2256,36 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c15 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c16 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -2046,13 +2294,13 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c14 {
+.c15 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2067,7 +2315,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2082,7 +2330,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2092,7 +2340,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2110,24 +2358,27 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c5:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -2145,7 +2396,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   border: 4px solid white;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2158,65 +2409,69 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="red"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="red"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Step
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
           </div>
-          <span
-            className="c12"
-          >
-            Step
-          </span>
+        </div>
+        <div
+          className="c15"
+        >
           <div
-            className="c13"
-            onClick={[Function]}
+            className="c16"
           />
         </div>
       </div>
-      <div
-        className="c14"
-      >
-        <div
-          className="c15"
-        />
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Long Label 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2239,7 +2494,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2258,16 +2513,36 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2282,7 +2557,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2297,7 +2572,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2307,7 +2582,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2325,20 +2600,23 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -2356,7 +2634,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2369,48 +2647,52 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2433,7 +2715,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2452,16 +2734,36 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2476,7 +2778,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2491,7 +2793,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2501,7 +2803,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2519,11 +2821,11 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2536,65 +2838,69 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-          </span>
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
-.c11 {
+.c12 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: red;
 }
 
-.c11 > svg {
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c10 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c10 {
+.c17 .c11 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2617,7 +2923,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2636,16 +2942,36 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2660,7 +2986,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2675,7 +3001,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2685,7 +3011,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2703,24 +3029,27 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c5:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c13 {
+.c14 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c13::before {
+.c14::before {
   position: absolute;
   display: block;
   content: '';
@@ -2738,16 +3067,19 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   border: 4px solid white;
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -2764,7 +3096,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2777,110 +3109,114 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
+            className="c8 c9"
           >
-            <span
-              className="c10 c11"
-              color="red"
-              size={16}
+            <div
+              className="c10"
             >
-              <svg
-                data-file-name="SvgCode"
-              />
+              <span
+                className="c11 c12"
+                color="red"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCode"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Step
+            </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              Step
+            </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+            </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              Step
             </span>
           </div>
-          <span
-            className="c12"
-          >
-            Step
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
         </div>
       </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c12"
-          >
-            Step
-          </span>
-          <div
-            className="c14"
-            onClick={[Function]}
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c12"
-          >
-            Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-          </span>
-          <div
-            className="c13"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          />
-          <span
-            className="c12"
-          >
-            Step
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Placeholder 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2903,7 +3239,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2922,16 +3258,36 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2946,7 +3302,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2961,7 +3317,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2971,7 +3327,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2989,20 +3345,23 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -3020,7 +3379,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3033,82 +3392,86 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            This step has a placeholder
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              This step has a placeholder
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step With Success Fail 1`] = `
-.c13 {
+.c14 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c13 > svg {
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c15 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 .c12 {
+.c18 .c13 {
   color: #fff;
 }
 
-.c18 .c12 {
+.c19 .c13 {
   color: #6e849a;
 }
 
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3131,7 +3494,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3150,16 +3513,36 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3174,7 +3557,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3189,7 +3572,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -3199,7 +3582,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3217,24 +3600,27 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c5:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c11 {
+.c12 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c11::before {
+.c12::before {
   position: absolute;
   display: block;
   content: '';
@@ -3251,16 +3637,19 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c14 {
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -3277,16 +3666,19 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
-  cursor: copy;
-  padding-left: 12px;
   margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -3304,7 +3696,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   border: 4px solid white;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3317,104 +3709,108 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Step
-          </span>
-          <div
-            className="c11"
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-      <div
-        className="c5 c6"
-      >
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
-          >
+            <div
+              className="c10"
+            />
             <span
-              className="c12 c13"
+              className="c11"
+            >
+              Step
+            </span>
+            <div
+              className="c12"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c13 c14"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c11"
+            >
+              Failure
+            </span>
+            <div
+              className="c15"
               color="#d94c4c"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgError"
-              />
-            </span>
+            />
           </div>
-          <span
-            className="c10"
-          >
-            Failure
-          </span>
           <div
-            className="c14"
-            color="#d94c4c"
-          />
-        </div>
-        <div
-          className="c7 c8"
-        >
-          <div
-            className="c9"
+            className="c8 c9"
           >
+            <div
+              className="c10"
+            >
+              <span
+                className="c13 c16"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
             <span
-              className="c12 c15"
-              color="#279745"
-              size={16}
+              className="c11"
             >
-              <svg
-                data-file-name="SvgCheckmark"
-              />
+              Success
             </span>
+            <div
+              className="c17"
+              color="#279745"
+            />
           </div>
-          <span
-            className="c10"
-          >
-            Success
-          </span>
-          <div
-            className="c16"
-            color="#279745"
-          />
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;
 
 exports[`Storyshots Creator/Step Without Port 1`] = `
-.c2 {
+.c3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3437,7 +3833,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3456,16 +3852,36 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c3 > *:not(:last-child) {
+.c4 > *:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.c9 {
-  width: 16px;
-  margin-right: 16px;
+.c1 {
+  position: relative;
 }
 
-.c8 {
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3480,7 +3896,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3495,7 +3911,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   width: 100%;
 }
 
-.c6 .c7:not(:first-of-type)::before {
+.c7 .c8:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -3505,7 +3921,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3523,11 +3939,11 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.c4 .c5:not(:first-of-type) {
+.c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c10 {
+.c11 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3540,38 +3956,42 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 <div
   className="c0"
 >
-  <header
+  <div
     className="c1"
   >
-    <span
+    <header
       className="c2"
     >
-      Block
-    </span>
-  </header>
-  <section
-    className="c3"
-  >
-    <div
+      <span
+        className="c3"
+      >
+        Block
+      </span>
+    </header>
+    <section
       className="c4"
     >
       <div
-        className="c5 c6"
+        className="c5"
       >
         <div
-          className="c7 c8"
+          className="c6 c7"
         >
           <div
-            className="c9"
-          />
-          <span
-            className="c10"
+            className="c8 c9"
           >
-            Step Without Port  
-          </span>
+            <div
+              className="c10"
+            />
+            <span
+              className="c11"
+            >
+              Step Without Port  
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 `;

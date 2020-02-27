@@ -34,6 +34,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'lodash/prefer-lodash-chain': 'off',
     'import/no-named-as-default': 'off',
+    'import/extensions': 'off',
     'require-jsdoc': 'off',
     'filenames/match-regex': 'off',
     'filenames/match-exported': 'off',
@@ -89,17 +90,26 @@ module.exports = {
         config: webpackConfig,
       },
     },
+    'import/extensions': ['.js', '.ts', '.jsx', '.tsx'],
     react: {
       version: 'detect',
     },
   },
   overrides: [
     {
-      files: ['*.story.jsx', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/*'],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*'],
       rules: {
-        'import/no-extraneous-dependencies': 'off',
+        'import/no-extraneous-dependencies': [
+          'error',
+          {
+            devDependencies: true,
+          },
+        ],
+        'no-secrets/no-secrets': 'off',
+        'xss/no-mixed-html': 'off',
         'react-hooks/rules-of-hooks': 'off',
         'lodash/prefer-constant': 'off',
+        'import/prefer-default-export': 'off',
       },
     },
     {

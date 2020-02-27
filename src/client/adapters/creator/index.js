@@ -1,4 +1,10 @@
+import cuid from 'cuid';
+
+import { BLOCK_REDESIGN_ENABLED } from '@/config/features';
+import { BlockType } from '@/constants';
+
 import { createSimpleAdapter } from '../utils';
+import { DB_BLOCK_TYPE_FROM_APP } from './block';
 import linkAdapter from './link';
 import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
@@ -21,12 +27,35 @@ const creatorAdapter = createSimpleAdapter(
     };
 
     diagram.nodes.forEach((node) => {
-      rootNodes.push(node.id);
+      let _node = node; // eslint-disable-line no-underscore-dangle
 
-      registerNode(node);
+      if (BLOCK_REDESIGN_ENABLED && !_node.parentNode && !_node.combines) {
+        const nodeID = cuid();
 
-      if (node.combines) {
-        node.combines.forEach((combinedNode) => registerNode(combinedNode, node.id));
+        _node = {
+          x: node.x,
+          y: node.y,
+          id: nodeID,
+          name: node.name || 'Block',
+          type: BlockType.COMBINED,
+          extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED] },
+          ports: [],
+          parentNode: null,
+          combines: [
+            {
+              ...node,
+              parentNode: nodeID,
+            },
+          ],
+        };
+      }
+
+      rootNodes.push(_node.id);
+
+      registerNode(_node);
+
+      if (_node.combines) {
+        _node.combines.forEach((combinedNode) => registerNode(combinedNode, _node.id));
       }
     });
 
@@ -44,7 +73,11 @@ const creatorAdapter = createSimpleAdapter(
       data,
     };
   },
-  () => ({})
+  (diagram) => {
+    const nodes = diagram.nodes.map((node) => (node.combines?.length === 1 ? { ...node.combines[0], name: node.name, parentNode: null } : node));
+
+    return { ...diagram, nodes };
+  }
 );
 
 export default creatorAdapter;

@@ -18,6 +18,8 @@ const workspaceClient = {
 
   updateMembers: (workspaceID, payload) => fetch.patch(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, payload),
 
+  createProjectFromModule: (workspaceID, moduleID, project) => fetch.post(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/copy/module/${moduleID}`, project),
+
   findProjects: (workspaceID) => fetch(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/projects`).then(projectAdapter.mapFromDB),
 
   deleteWorkspace: (workspaceID) => fetch.delete(`${WORKSPACES_PATH}/${workspaceID}`),

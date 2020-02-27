@@ -1,8 +1,10 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import creatorAdapter from '@/client/adapters/creator';
 import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
+import { BLOCK_REDESIGN_ENABLED } from '@/config/features';
 import { BlockType } from '@/constants';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import { hasIdenticalMembers } from '@/utils/array';
@@ -194,7 +196,7 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
     nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
   };
 
-  const dataString = JSON.stringify(updatedData);
+  const dataString = JSON.stringify(BLOCK_REDESIGN_ENABLED ? creatorAdapter.toDB(updatedData) : updatedData);
 
   if (Buffer.from(dataString).length > MAX_DIAGRAM_SIZE) {
     await dispatch(

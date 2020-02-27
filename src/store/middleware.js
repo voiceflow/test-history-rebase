@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
-import { LOGROCKET_ENABLED, TRACKING_ENABLED } from '@/config';
+import { LOGROCKET_ENABLED } from '@/config';
 import { BlockType, NEW_PRODUCT_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -190,7 +190,7 @@ const createMiddleware = (history) => {
       }),
       [Skill.SET_ACTIVE_SKILL, VariableSet.REPLACE_VARIABLE_SET_DIAGRAM, Creator.INITIALIZE_CREATOR, Creator.RESET_CREATOR]
     ),
-    ...(TRACKING_ENABLED ? createTrackingMiddleware() : []),
+    ...createTrackingMiddleware(),
   ];
 
   if (LOGROCKET_ENABLED) {

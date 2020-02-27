@@ -28,7 +28,12 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
       const documentString = JSON.stringify(document, null, '\t');
       const datasourceString = JSON.stringify(datasource, null, '\t');
 
-      const payload = { document: documentString, datasource: datasourceString, title: fileName };
+      const payload = {
+        document: documentString,
+        datasource: datasourceString,
+        title: fileName,
+      };
+
       if (displayID) {
         await updateDisplay(skillID, displayID, payload);
         onChange({ jsonFileName: fileName, datasource: datasourceString });

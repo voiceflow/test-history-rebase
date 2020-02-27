@@ -1,6 +1,5 @@
 import './Template.css';
 
-import axios from 'axios';
 import _ from 'lodash';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -8,10 +7,11 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
-import { userSelector } from '@/ducks/account';
-import { addProjectToList } from '@/ducks/lists';
-import { goToCanvas } from '@/ducks/router';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as List from '@/ducks/lists';
+import * as Router from '@/ducks/router';
+import * as Template from '@/ducks/template';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
 import LOCALE_MAP from '../../services/LocaleMap';
@@ -19,32 +19,20 @@ import LocalCheckbox from './components/LocalCheckBox';
 import LocaleLabelFlex from './components/LocaleLabelFlex';
 
 class Templates extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    stage: 0,
+    loading: false,
+    name: '',
+    locales: ['en-US'],
+    error: '',
+    google: false,
+    alexa: false,
+  };
 
-    this.state = {
-      stage: 0,
-      loading: false,
-      templates: [],
-      name: '',
-      locales: ['en-US'],
-      error: '',
-      template: {},
-      google: false,
-      alexa: false,
-    };
-
-    this.createProject = this.createProject.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.saveSettings = this.saveSettings.bind(this);
-    this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = (event) =>
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
 
   onLocaleBtnClick(locale) {
     let { locales } = this.state;
@@ -63,73 +51,52 @@ class Templates extends React.Component {
     });
   }
 
-  saveSettings() {
-    const { stage, name, locales, templates } = this.state;
+  saveSettings = async () => {
+    const { stage, name, locales } = this.state;
     if (stage === 0) {
       if (name.trim() && Array.isArray(locales) && locales.length !== 0) {
-        this.createProject(templates[0].module_id);
+        await this.createProject();
       } else {
         this.setState({ error: 'Please Complete All Fields' });
       }
     }
-  }
+  };
 
   componentDidMount() {
     this.loadDefaultTemplates();
   }
 
-  createProject(moduleId) {
-    const { workspaceID, computedMatch, addProjectToList, goToCanvas } = this.props;
+  async createProject() {
+    const { workspaceID, computedMatch, addProjectToList, goToCanvas, createProject } = this.props;
     const { name, locales, google } = this.state;
 
     this.setState({ loading: true });
 
-    if (localStorage.getItem('is_first_session') === 'true') {
-      axios.post('/analytics/track_first_project').catch((err) => {
-        console.error(err);
-      });
-    }
-
-    axios
-      .post(`/team/${workspaceID}/copy/module/${moduleId}`, {
+    try {
+      const project = await createProject(workspaceID, {
         name,
         locales,
         platform: google ? 'google' : 'alexa',
-      })
-      .then((res) => {
-        if (res.data.skill_id && res.data.diagram) {
-          const listID = computedMatch?.params?.listID;
-          if (listID) {
-            addProjectToList(listID, res.data.project_id);
-          }
-          setTimeout(() => goToCanvas(res.data.skill_id, res.data.diagram, true), 3000);
-        } else {
-          throw new Error('Invalid Response Format');
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('unable to create skill');
       });
+
+      const listID = computedMatch?.params?.listID;
+      if (listID) {
+        await addProjectToList(listID, project.project_id);
+      }
+
+      setTimeout(() => goToCanvas(project.skill_id, project.diagram, true), 3000);
+    } catch (err) {
+      alert('unable to create skill');
+    }
   }
 
-  loadDefaultTemplates() {
-    axios
-      .get('/template/all')
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          this.setState({
-            templates: res.data,
-          });
-        } else {
-          throw new Error('Malformed Response');
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.response);
-        alert('Unable to Retrieve Templates');
-      });
+  async loadDefaultTemplates() {
+    try {
+      await this.props.loadTemplates();
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert('Unable to Retrieve Templates');
+    }
   }
 
   render() {
@@ -163,22 +130,14 @@ class Templates extends React.Component {
             </div>
             <label className="mt-4 mb-3 form-title">Select Regions</label>
             <div className="grid-col-3 mx--1">
-              {LOCALE_MAP.map((locale, i) => {
-                return (
-                  <LocalCheckbox
-                    checked={locales.includes(locale.value)}
-                    key={i}
-                    onChange={() => {
-                      this.onLocaleBtnClick(locale.value);
-                    }}
-                  >
-                    <LocaleLabelFlex>
-                      <span>{locale.name}</span>
-                      <img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name} />
-                    </LocaleLabelFlex>
-                  </LocalCheckbox>
-                );
-              })}
+              {LOCALE_MAP.map((locale, index) => (
+                <LocalCheckbox checked={locales.includes(locale.value)} key={index} onChange={() => this.onLocaleBtnClick(locale.value)}>
+                  <LocaleLabelFlex>
+                    <span>{locale.name}</span>
+                    <img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name} />
+                  </LocaleLabelFlex>
+                </LocalCheckbox>
+              ))}
             </div>
             <div className="mt-5">
               <Button isPrimary varient="contained" onClick={this.saveSettings}>
@@ -193,13 +152,15 @@ class Templates extends React.Component {
 }
 
 const mapStateToProps = {
-  user: userSelector,
-  workspaceID: activeWorkspaceIDSelector,
+  user: Account.userSelector,
+  workspaceID: Workspace.activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
-  addProjectToList,
-  goToCanvas,
+  addProjectToList: List.addProjectToList,
+  goToCanvas: Router.goToCanvas,
+  loadTemplates: Template.loadTemplates,
+  createProject: Workspace.createProject,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Templates);

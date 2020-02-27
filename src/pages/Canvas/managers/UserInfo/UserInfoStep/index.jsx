@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 function UserInfo({ userPermissions, withPorts = true, isConnectedFail, onClickFailPort, isConnectedSuccess, onClickSuccessPort, isActive }) {
   return (
@@ -18,7 +18,7 @@ function UserInfo({ userPermissions, withPorts = true, isConnectedFail, onClickF
               </>
             )
           }
-          labelVariant={LabelVariant.SECONDARY}
+          labelVariant={StepLabelVariant.SECONDARY}
           placeholder="Request user information"
           withPort={false}
         />

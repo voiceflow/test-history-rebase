@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 function CodeStep({ codeAdded, withPorts = true, isConnectedFail, onClickFailPort, isConnectedSuccess, onClickSuccessPort, isActive }) {
   return (
@@ -12,7 +12,7 @@ function CodeStep({ codeAdded, withPorts = true, isConnectedFail, onClickFailPor
           label={codeAdded && 'Custom code added'}
           withPort={false}
           iconColor="#cdad32"
-          labelVariant={LabelVariant.SECONDARY}
+          labelVariant={StepLabelVariant.SECONDARY}
           placeholder="Enter custom code snippet"
         />
       </Section>

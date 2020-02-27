@@ -9,14 +9,13 @@ import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
-import { trackSessionTime } from '@/ducks/analytics';
 import { updateProjectName } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
 import { ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useCanvasTracking, useEnableDisable } from '@/hooks';
 import Business from '@/pages/Business';
 import Canvas from '@/pages/Canvas';
 import CanvasMenu from '@/pages/Canvas/components/CanvasMenu';
@@ -67,24 +66,12 @@ function RenderCanvas({ diagramID, isTesting }) {
   );
 }
 
-function Skill(props) {
-  const { match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer } = props;
+function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
 
-  const timeMounted = null;
   const idleTimer = React.useRef();
   const isTesting = activePage === 'test';
-
-  React.useEffect(() => {
-    if (window.performance?.navigation.type === 1) {
-      const { skill } = props;
-
-      const timeUnmounted = new Date();
-
-      skill && props.trackSessionTime(timeUnmounted - timeMounted, skill.skill_id);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setActive = React.useCallback(() => {
     onActive();
@@ -95,6 +82,8 @@ function Skill(props) {
     onIdle();
     idleTimer.current.pause();
   }, [onIdle]);
+
+  useCanvasTracking(activeSkill.id);
 
   if (error) {
     return (
@@ -154,7 +143,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  trackSessionTime,
   goToDashboard,
   updateProjectName,
   updateSkillName: saveSkillSettings,

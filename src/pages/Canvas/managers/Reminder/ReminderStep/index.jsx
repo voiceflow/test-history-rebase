@@ -1,13 +1,20 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
-import { LabelVariant } from '@/pages/Canvas/components/Step/constants';
 
 function Reminder({ label, withPorts = true, isConnectedFail, onClickFailPort, isConnectedSuccess, onClickSuccessPort, isActive }) {
   return (
     <Step isActive={isActive}>
       <Section>
-        <Item icon="clock" iconColor="#c998a4" label={label} labelVariant={LabelVariant.SECONDARY} placeholder="Set a reminder" withPort={false} />
+        <Item
+          icon="clock"
+          iconColor="#c998a4"
+          label={label}
+          labelVariant={StepLabelVariant.SECONDARY}
+          placeholder="Set a reminder"
+          withPort={false}
+        />
       </Section>
       <Section>
         {withPorts && (

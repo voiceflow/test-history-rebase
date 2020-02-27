@@ -10,6 +10,8 @@
   "dependencies": {
     "@redux-beacon/segment": "^1.1.0",
     "@seznam/compose-react-refs": "^1.0.2",
+    "@types/recompose": "^0.30.7",
+    "@types/styled-components": "^4.4.3",
     "@voiceflow/apl-renderer": "^1.0.0",
     "@voiceflow/common": "^6.2.0",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
@@ -77,7 +79,7 @@
     "react-intercom": "^1.0.14",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-popper": "^1.3.3",
-    "react-redux": "^7.1.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.0.0",
     "react-segment": "^0.1.8",
     "react-select": "^2.1.0",
@@ -118,7 +120,6 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
     "@babel/plugin-proposal-optional-chaining": "^7.6.0",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "@babel/register": "^7.7.4",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@hot-loader/react-dom": "^16.8.6",
@@ -130,8 +131,10 @@
     "@storybook/react": "^5.3.0-beta.31",
     "@storybook/source-loader": "^5.2.8",
     "@svgr/webpack": "2.4.1",
+    "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "@types/react-redux": "^7.1.7",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "@voiceflow/commitlint-config": "^1.0.1",
@@ -167,11 +170,10 @@
     "eslint-config-react-app": "^3.0.6",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-plugin-flowtype": "2.50.1",
-    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "esm": "^3.2.25",
     "exargs": "^1.0.0",
     "file-loader": "2.0.0",
     "fixpack": "^2.3.1",
@@ -218,6 +220,8 @@
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-order": "^3.0.0",
     "terser-webpack-plugin": "1.1.0",
+    "ts-jest": "24",
+    "ts-mocha": "^6.0.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "^3.7.5",
     "webpack": "^4.35.3",
@@ -241,7 +245,7 @@
       "fixpack",
       "git add"
     ],
-    "**/*.{js,jsx}": [
+    "**/*.{js,ts,jsx,tsx}": [
       "eslint --fix",
       "prettier-eslint --write",
       "git add"
@@ -271,8 +275,8 @@
     "lint": "yarn lint:js && yarn lint:css",
     "lint:css": "stylelint src/**/*.css",
     "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile ./cache.dockerfile ./admin.dockerfile ./storybook.dockerfile",
-    "lint:js": "eslint \"src/**/*.{js,jsx}\"",
-    "lint:js:fix": "eslint \"src/**/*.{js,jsx}\" --fix --rule 'react-hooks/exhaustive-deps: off'",
+    "lint:js": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint:js:fix": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --fix --rule 'react-hooks/exhaustive-deps: off'",
     "lint:quiet": "yarn lint:js --quiet && yarn lint:css --quiet",
     "local": "yarn start",
     "postinstall": "patch-package",
@@ -288,6 +292,6 @@
     "test": "yarn test:unit && yarn test:integration",
     "test:dependencies": "depcheck $(exargs .depcheckrc)",
     "test:integration": "NODE_ENV=test jest --config config/test/integration/jest.config.js",
-    "test:unit": "NODE_ENV=test nyc mocha --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc ts-mocha --paths --config config/test/unit/mocharc.yml"
   }
 }

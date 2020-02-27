@@ -41,6 +41,7 @@ class Canvas extends React.PureComponent {
 
     setPosition: (position, options) => {
       this.position = position;
+      this.onChange();
       this.styleRenderLayer(options);
     },
 

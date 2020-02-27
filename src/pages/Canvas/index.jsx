@@ -23,7 +23,7 @@ import { CanvasProviders, HelpModalConsumer, ShortcutModalConsumer } from './con
 import useEngine from './engine';
 
 const Canvas = ({ isTesting }) => {
-  const { engine, isFinalized } = useEngine();
+  const { engine } = useEngine();
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1) {
@@ -35,7 +35,7 @@ const Canvas = ({ isTesting }) => {
     <CanvasProviders engine={engine} isTesting={isTesting}>
       <Container>
         <ContextMenu />
-        <CanvasDiagram renderLinks={isFinalized} />
+        <CanvasDiagram />
         <RealtimeOverlay />
         <EditSidebar />
         <Spotlight />

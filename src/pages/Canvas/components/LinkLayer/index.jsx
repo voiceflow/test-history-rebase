@@ -9,17 +9,16 @@ import { LinkIDProvider } from '@/pages/Canvas/contexts';
 import LinkLayerSvg from './components/LinkLayerSvg';
 import NewLink from './components/NewLink';
 
-const LinkLayer = ({ renderLinks, linkIDs }) => (
+const LinkLayer = ({ linkIDs }) => (
   <LinkLayerSvg>
     <defs>
       <LinkHeadMarker />
     </defs>
-    {renderLinks &&
-      linkIDs.map((linkID) => (
-        <LinkIDProvider value={linkID} key={linkID}>
-          <Link />
-        </LinkIDProvider>
-      ))}
+    {linkIDs.map((linkID) => (
+      <LinkIDProvider value={linkID} key={linkID}>
+        <Link />
+      </LinkIDProvider>
+    ))}
     <NewLink />
   </LinkLayerSvg>
 );

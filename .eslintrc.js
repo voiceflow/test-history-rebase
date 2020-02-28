@@ -113,6 +113,12 @@ module.exports = {
       },
     },
     {
+      files: ['config/**/*'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
       files: ['**/_suite.js', '*.unit.*'],
       rules: {
         'jest/valid-expect': 'off',

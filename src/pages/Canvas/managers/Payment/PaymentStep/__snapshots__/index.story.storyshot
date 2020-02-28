@@ -1,6 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c16 {
   box-sizing: content-box;
   width: 16px;
@@ -22,19 +35,6 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 .c19 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -428,6 +428,19 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c16 {
   box-sizing: content-box;
   width: 16px;
@@ -449,19 +462,6 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 .c19 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1075,6 +1075,19 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c16 {
   box-sizing: content-box;
   width: 16px;
@@ -1096,19 +1109,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 .c19 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1512,6 +1512,19 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = `
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c16 {
   box-sizing: content-box;
   width: 16px;
@@ -1533,19 +1546,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
 }
 
 .c19 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;

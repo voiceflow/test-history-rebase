@@ -12,6 +12,7 @@ const PermissionsProvider = ({ userId, activeWorkspaceMembers, children }) => {
     return member.creator_id === userId;
   });
   const userRole = creatorMember?.role;
+
   return <RolePermissionsContext.Provider value={{ userRole }}>{children}</RolePermissionsContext.Provider>;
 };
 

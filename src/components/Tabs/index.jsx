@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useKeygen } from '@/components/KeyedComponent';
+import TippyTooltip from '@/components/TippyTooltip';
 
 import ActiveLine from './components/ActiveLine';
 import Tab from './components/Tab';
@@ -45,19 +46,29 @@ function Tabs({ as = 'button', options, selected, onChange, innerRef }) {
 
   return (
     <Wrapper>
-      {options.map(({ value, label, color, ...tabProps }) => (
-        <Tab
-          {...tabProps}
-          {...{ [innerRef ? 'innerRef' : 'ref']: onRef(value) }}
-          color={color}
-          as={as}
-          key={genKey(value)}
-          onClick={() => onChange(value)}
-          isActive={selected === value}
-        >
-          {label}
-        </Tab>
-      ))}
+      {options.map(({ value, label, color, tooltip, ...tabProps }) => {
+        const tab = (
+          <Tab
+            {...tabProps}
+            {...{ [innerRef ? 'innerRef' : 'ref']: tooltip ? null : onRef(value) }}
+            color={color}
+            as={as}
+            key={genKey(value)}
+            onClick={() => onChange(value)}
+            isActive={selected === value}
+          >
+            {label}
+          </Tab>
+        );
+
+        return tooltip ? (
+          <TippyTooltip {...tooltip} tag="div" key={genKey(value)} ref={(instance) => onRef(value)(instance?.tooltipDOM)} className="tab-tooltip">
+            {tab}
+          </TippyTooltip>
+        ) : (
+          tab
+        );
+      })}
 
       <ActiveLine color={activeLineColor} ref={activeLineRef} />
     </Wrapper>

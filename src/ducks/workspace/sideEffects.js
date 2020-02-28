@@ -286,14 +286,14 @@ export const createProject = (workspaceID, project) => async (_, getState) => {
   const templates = Template.allTemplatesSelector(getState());
 
   // onboarding failsafe
-  if (!templates[0]?.moduleID) {
+  if (!templates[0]?.id) {
     throw new NoValidTemplateError();
   }
 
-  const { moduleID } = templates[0];
+  const { id: templateID } = templates[0];
 
   try {
-    const createdProject = await client.workspace.createProjectFromModule(workspaceID, moduleID, project);
+    const createdProject = await client.workspace.createProjectFromModule(workspaceID, templateID, project);
 
     if (createdProject.skill_id && createdProject.diagram) {
       return createdProject;

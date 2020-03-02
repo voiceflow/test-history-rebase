@@ -19,18 +19,22 @@ export const CLOSE_CANVAS_ERROR = 'CLOSE_CANVAS_ERROR';
 
 // reducers
 
+const canvasErrorReducer = (state, { payload: error }) => ({
+  ...state,
+  canvasError: update(state.canvasError, { $splice: [[0, 1, error]] }),
+});
+
+const closeCanvasErrorReducer = (state, { payload: index }) => ({
+  ...state,
+  canvasError: update(state.canvasError, { $splice: [[index, 1]] }),
+});
+
 export default function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CANVAS_ERROR:
-      return {
-        ...state,
-        canvasError: update(state.canvasError, { $splice: [[0, 1, action.payload]] }),
-      };
+      return canvasErrorReducer(state, action);
     case CLOSE_CANVAS_ERROR:
-      return {
-        ...state,
-        canvasError: update(state.canvasError, { $splice: [[action.payload, 1]] }),
-      };
+      return closeCanvasErrorReducer(state, action);
     default:
       return state;
   }
@@ -42,4 +46,4 @@ export const setCanvasInfo = (error) => createAction(CANVAS_ERROR, { msg: error,
 
 export const setCanvasError = (error) => createAction(CANVAS_ERROR, { msg: error, icon: WARNING_ICON });
 
-export const closeCanvasError = (idx) => createAction(CLOSE_CANVAS_ERROR, idx);
+export const closeCanvasError = (index) => createAction(CLOSE_CANVAS_ERROR, index);

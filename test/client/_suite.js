@@ -1,5 +1,5 @@
 import { createSuite } from '@/../test/_suite';
-import * as Fetch from '@/client/fetch';
+import fetch, * as Fetch from '@/client/fetch';
 import { identity } from '@/utils/functional';
 
 export default createSuite((utils) => ({
@@ -7,7 +7,7 @@ export default createSuite((utils) => ({
 
   stubFetch: (methodOrResult, result) => {
     if (result) {
-      return utils.stub(Fetch.default, methodOrResult).returns(Promise.resolve(result));
+      return utils.stub(fetch, methodOrResult).returns(Promise.resolve(result));
     }
 
     return utils.stub(Fetch, 'default').returns(Promise.resolve(methodOrResult));

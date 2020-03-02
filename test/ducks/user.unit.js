@@ -9,13 +9,13 @@ const MOCK_STATE = {
   menuOpen: false,
 };
 
-suite('Ducks - User', ({ describeReducer }) => {
-  describeReducer(User, MOCK_STATE, (utils) => {
+suite(User, MOCK_STATE)('Ducks - User', ({ describeReducer }) => {
+  describeReducer(({ expectAction }) => {
     describe('setCanvasError()', () => {
       it('should set a canvas error message', () => {
         const message = 'did not pass spec';
 
-        utils.expectDiff(User.setCanvasError(message), { canvasError: [{ msg: message, icon: '/yellow-error.svg' }] });
+        expectAction(User.setCanvasError(message)).toModify({ canvasError: [{ msg: message, icon: '/yellow-error.svg' }] });
       });
     });
 
@@ -23,13 +23,13 @@ suite('Ducks - User', ({ describeReducer }) => {
       it('should set a canvas info message', () => {
         const message = 'it worked!';
 
-        utils.expectDiff(User.setCanvasInfo(message), { canvasError: [{ msg: message, icon: '/green-check.svg' }] });
+        expectAction(User.setCanvasInfo(message)).toModify({ canvasError: [{ msg: message, icon: '/green-check.svg' }] });
       });
     });
 
     describe('closeCanvasError()', () => {
       it('should clear a canvas message', () => {
-        utils.expectDiff(User.closeCanvasError(0), { canvasError: [] });
+        expectAction(User.closeCanvasError(0)).toModify({ canvasError: [] });
       });
     });
   });

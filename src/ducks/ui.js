@@ -8,13 +8,7 @@ import { withoutValue } from '@/utils/array';
 import { createAction, createRootSelector } from './utils';
 
 export const STATE_KEY = 'ui';
-
-const PERSIST_CONFIG = {
-  key: STATE_KEY,
-  storage: storageLocal,
-};
-
-const DEFAULT_STATE = {
+export const INITIAL_STATE = {
   creatorMenu: {
     activeMenu: null,
     isHidden: false,
@@ -26,6 +20,11 @@ const DEFAULT_STATE = {
     activeTab: FlowTab.STRUCTURE,
   },
   local: {},
+};
+
+const PERSIST_CONFIG = {
+  key: STATE_KEY,
+  storage: storageLocal,
 };
 
 // actions
@@ -80,7 +79,7 @@ export const toggleCreatorMenuHiddenReducer = (state) => ({
   },
 });
 
-const uiReducer = (state = DEFAULT_STATE, action) => {
+const uiReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOGGLE_BLOCK_MENU_SECTION:
       return toggleBlockMenuSectionReducer(state, action);

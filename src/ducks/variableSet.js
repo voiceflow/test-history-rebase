@@ -6,6 +6,8 @@ import { hasIdenticalMembers, withoutValue } from '@/utils/array';
 
 import { createAction, createPureReducer, createRootSelector } from './utils';
 
+export const INITIAL_STATE = {};
+export const INITIAL_VARIABLE_SET = [];
 export const STATE_KEY = 'variableSet';
 
 // actions
@@ -14,10 +16,8 @@ export const ADD_VARIABLE = 'VARIABLE:ADD';
 export const REMOVE_VARIABLE = 'VARIABLE:REMOVE';
 export const REPLACE_VARIABLE_SET_DIAGRAM = 'VARIABLE_SET_DIAGRAM:REPLACE';
 export const REPLACE_VARIABLE_SET = 'VARIABLE_SET:REPLACE';
-// reducers
 
-const DEFAULT_STATE = {};
-const DEFAULT_VARIABLE_SET = [];
+// reducers
 
 const replaceVariableSetDiagramReducer = (state, { payload: { diagramID, variables } }) => ({
   ...state,
@@ -30,7 +30,7 @@ const addVariableReducer = (state, { payload: variable }) => [...state, variable
 
 const removeVariableReducer = (state, { payload: variable }) => withoutValue(state, variable);
 
-const variableReducer = createPureReducer((state = DEFAULT_VARIABLE_SET, action) => {
+const variableReducer = createPureReducer((state = INITIAL_VARIABLE_SET, action) => {
   switch (action.type) {
     case ADD_VARIABLE:
       return addVariableReducer(state, action);
@@ -41,7 +41,7 @@ const variableReducer = createPureReducer((state = DEFAULT_VARIABLE_SET, action)
   }
 });
 
-const variableSetReducer = (state = DEFAULT_STATE, action) => {
+const variableSetReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case REPLACE_VARIABLE_SET_DIAGRAM:
       return replaceVariableSetDiagramReducer(state, action);
@@ -76,6 +76,8 @@ export const replaceVariableSet = (variableSet, meta) => createAction(REPLACE_VA
 
 export const replaceVariableSetDiagram = (diagramID, variables) => createAction(REPLACE_VARIABLE_SET_DIAGRAM, { diagramID, variables });
 
+export const addVariableToDiagram = (diagramID, name) => createAction(ADD_VARIABLE, name, { diagramID });
+
 export const removeVariableFromDiagram = (diagramID, name) => createAction(REMOVE_VARIABLE, name, { diagramID });
 
 // side effects
@@ -91,8 +93,8 @@ export const saveVariableSet = (diagramID) => async (_, getState) => {
   }
 };
 
-export const addVariableToDiagram = (diagramID, name) => (dispatch) => {
-  dispatch(createAction(ADD_VARIABLE, name, { diagramID }));
+export const addVariableToDiagramAndSave = (diagramID, name) => (dispatch) => {
+  dispatch(addVariableToDiagram(diagramID, name));
   // eslint-disable-next-line no-use-before-define
   dispatch(saveVariableSet(diagramID));
 };

@@ -25,7 +25,6 @@ import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
 
 import Routes from './Routes';
-import Alerts from './components/Alerts/Alerts';
 import { withGlobalProviders } from './contexts/GlobalProviders';
 
 const App = () => {
@@ -41,7 +40,6 @@ const App = () => {
       <ErrorModal />
       <ModalBackdrop />
       <Modal />
-      <Alerts />
       <ToastContainer />
       <Routes />
       <IntercomChat />

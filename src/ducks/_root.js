@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
-import alerts from '@/ducks/alerts';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
 import display, * as Display from '@/ducks/display';
@@ -40,7 +39,6 @@ export default (history) =>
     [Account.STATE_KEY]: account,
     integrationUsers,
     [Test.STATE_KEY]: test,
-    alerts,
     publish,
     form: formReducer,
 

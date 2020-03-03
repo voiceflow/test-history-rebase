@@ -417,3 +417,7 @@ export enum IconVariant {
   BLUE = 'blue',
   WHITE = 'white',
 }
+
+export enum KeyCode {
+  ENTER = 13,
+}

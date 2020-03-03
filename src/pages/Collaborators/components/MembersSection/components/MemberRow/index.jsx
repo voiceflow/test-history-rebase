@@ -15,7 +15,7 @@ import {
   workspaceNumberOfSeatsSelector,
 } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
+import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
 

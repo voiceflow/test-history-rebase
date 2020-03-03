@@ -410,10 +410,18 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   bottom: 0;
 }
 
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: laeTZU 180ms ease-in-out;
-  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation: gycLFU 180ms ease-in-out;
+  animation: gycLFU 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -578,14 +586,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   overflow: hidden;
   -webkit-transition: background-color 0.15s ease,box-shadow 0.15s ease;
   transition: background-color 0.15s ease,box-shadow 0.15s ease;
-}
-
-.c12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
 }
 
 <div
@@ -1179,8 +1179,10 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                 "display": "none",
                 "height": 6,
                 "left": 2,
+                "opacity": 0,
                 "position": "absolute",
                 "right": 2,
+                "transition": "opacity 200ms",
               }
             }
           >
@@ -1202,7 +1204,9 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             style={
               Object {
                 "display": "none",
+                "opacity": 0,
                 "position": "absolute",
+                "transition": "opacity 200ms",
                 "width": 6,
               }
             }
@@ -1635,10 +1639,18 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   bottom: 0;
 }
 
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: laeTZU 180ms ease-in-out;
-  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation: gycLFU 180ms ease-in-out;
+  animation: gycLFU 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -1767,6 +1779,9 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   -webkit-transition: -webkit-transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   -webkit-transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
+  -webkit-transform: translateX(0) translateZ(0);
+  -ms-transform: translateX(0) translateZ(0);
+  transform: translateX(0) translateZ(0);
 }
 
 .c0:after {
@@ -1794,20 +1809,12 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #f9f9f9;
-  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
   -webkit-transition: background-color 0.15s ease,box-shadow 0.15s ease;
   transition: background-color 0.15s ease,box-shadow 0.15s ease;
-}
-
-.c12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
 }
 
 <div
@@ -1823,8 +1830,8 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 >
   <aside
     className="c0"
-    onMouseEnter={null}
-    onMouseLeave={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
   >
     <div
       className="c1"
@@ -2401,8 +2408,10 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                 "display": "none",
                 "height": 6,
                 "left": 2,
+                "opacity": 0,
                 "position": "absolute",
                 "right": 2,
+                "transition": "opacity 200ms",
               }
             }
           >
@@ -2424,7 +2433,9 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             style={
               Object {
                 "display": "none",
+                "opacity": 0,
                 "position": "absolute",
+                "transition": "opacity 200ms",
                 "width": 6,
               }
             }
@@ -2439,6 +2450,648 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                 }
               }
             />
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+`;
+
+exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
+.c10 {
+  box-sizing: content-box;
+  width: 15px;
+  height: 15px;
+  color: currentColor;
+}
+
+.c10 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #8da2b5;
+}
+
+.c20 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c23 .c9 {
+  color: #fff;
+}
+
+.c24 .c9 {
+  color: #6e849a;
+}
+
+.c18 {
+  min-height: 42px;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans,Arial,sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 10px 16px;
+  line-height: 20px;
+  cursor: text;
+  -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c18:disabled {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c18:active,
+.c18:focus,
+.c18:focus-within {
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  outline: 0;
+}
+
+.c18[disabled] {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c18[disabled] input {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c18 > * {
+  margin-right: 12px;
+}
+
+.c18 > *:last-child {
+  margin-right: 0;
+}
+
+.c18 > .c25:last-child {
+  margin-right: -6px;
+}
+
+.c21 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 50%;
+}
+
+.c21 > * {
+  width: 100%;
+}
+
+.c22 {
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  color: #5d9df5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.c6:focus,
+.c6:active {
+  outline: 0;
+}
+
+.c6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #848da0;
+  -webkit-filter: brightness(90%);
+  filter: brightness(90%);
+}
+
+.c6:hover {
+  color: #5d9df5;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 100%;
+  padding: 0 24px;
+  background: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: capitalize;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  color: #949db0;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c5:focus,
+.c5:active {
+  outline: 0;
+}
+
+.c5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #848da0;
+  -webkit-filter: brightness(90%);
+  filter: brightness(90%);
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.c3 .c4 {
+  height: 100%;
+}
+
+.c3 .tab-tooltip {
+  height: 100%;
+}
+
+.c16 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c16:hover {
+  background-color: #becedc;
+}
+
+.c15 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
+}
+
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-animation: kctwvn 180ms ease-in-out;
+  animation: kctwvn 180ms ease-in-out;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.c19 {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.c19::-webkit-input-placeholder {
+  line-height: 22px;
+}
+
+.c19::-moz-placeholder {
+  line-height: 22px;
+}
+
+.c19:-ms-input-placeholder {
+  line-height: 22px;
+}
+
+.c19::placeholder {
+  line-height: 22px;
+}
+
+.c13 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c13 .ReactVirtualized__List {
+  outline: none !important;
+}
+
+.c17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  height: 56px;
+  border-top: 1px solid #e2e9ec;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.c14 {
+  position: relative;
+  width: 100%;
+  padding: 13px 0;
+  overflow-x: hidden;
+}
+
+.c11 {
+  display: inline-block;
+  cursor: pointer;
+  color: #95a6bd;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c11:hover {
+  color: #6e849a;
+}
+
+.c2 {
+  width: 100%;
+  height: 42px;
+  padding: 0 16px;
+  background-color: #fff;
+  box-shadow: 0 0 1px 0 rgba(19,33,68,0.08),0 1px 3px 0 rgba(19,33,68,0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.c2 .c4 {
+  font-size: 13px;
+  padding: 0 12px;
+}
+
+.c8 {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.c0 {
+  width: 250px;
+  padding-right: 16px;
+  position: absolute;
+  left: 0;
+  top: 60px;
+  bottom: 60px;
+  -webkit-transform: translateX(-234px) translateZ(0);
+  -ms-transform: translateX(-234px) translateZ(0);
+  transform: translateX(-234px) translateZ(0);
+  -webkit-transition: -webkit-transform 350ms cubic-bezier(0.075,0.82,0.165,1);
+  -webkit-transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
+  transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
+  -webkit-transform: translateX(0) translateZ(0);
+  -ms-transform: translateX(0) translateZ(0);
+  transform: translateX(0) translateZ(0);
+}
+
+.c0:after {
+  display: block;
+  width: 4px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  border-radius: 3px;
+  opacity: 0.5;
+  background-image: linear-gradient(to bottom,rgba(110,132,154,0.85),#6e849a);
+  content: '';
+  pointer-events: none;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 234px;
+  height: 100%;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow: hidden;
+  -webkit-transition: background-color 0.15s ease,box-shadow 0.15s ease;
+  transition: background-color 0.15s ease,box-shadow 0.15s ease;
+}
+
+<div
+  style={
+    Object {
+      "height": "100vh",
+      "minHeight": "500px",
+      "overflow": "hidden",
+      "position": "relative",
+      "width": "400px",
+    }
+  }
+>
+  <aside
+    className="c0"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="tab-tooltip"
+            style={
+              Object {
+                "display": "inline",
+              }
+            }
+            title={null}
+          >
+            <button
+              className="c4 c5"
+              onClick={[Function]}
+            >
+              STEPS
+            </button>
+          </div>
+          <div
+            className="tab-tooltip"
+            style={
+              Object {
+                "display": "inline",
+              }
+            }
+            title={null}
+          >
+            <button
+              className="c4 c6"
+              onClick={[Function]}
+            >
+              FLOWS
+            </button>
+          </div>
+          <div
+            className="c7"
+            color={null}
+          />
+        </div>
+        <div
+          className="c8"
+        >
+          <div
+            className=""
+            style={
+              Object {
+                "display": "inline",
+              }
+            }
+            title={null}
+          >
+            <span
+              className="c9 c10 c11"
+              color="currentColor"
+              onClick={[Function]}
+              size={15}
+            >
+              <svg
+                data-file-name="SvgLock"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c12"
+      >
+        <div
+          className="c13"
+        >
+          <div
+            style={
+              Object {
+                "height": "100%",
+                "overflow": "hidden",
+                "position": "relative",
+                "width": "100%",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "WebkitOverflowScrolling": "touch",
+                  "bottom": 0,
+                  "left": 0,
+                  "marginBottom": 0,
+                  "marginRight": 0,
+                  "overflow": "scroll",
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            >
+              <div
+                className="c14"
+              />
+            </div>
+            <div
+              style={
+                Object {
+                  "borderRadius": 3,
+                  "bottom": 2,
+                  "display": "none",
+                  "height": 6,
+                  "left": 2,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 2,
+                  "transition": "opacity 200ms",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "backgroundColor": "rgba(0,0,0,.2)",
+                    "borderRadius": "inherit",
+                    "cursor": "pointer",
+                    "display": "block",
+                    "height": "100%",
+                    "position": "relative",
+                  }
+                }
+              />
+            </div>
+            <div
+              className="c15"
+              style={
+                Object {
+                  "display": "none",
+                  "opacity": 0,
+                  "position": "absolute",
+                  "transition": "opacity 200ms",
+                  "width": 6,
+                }
+              }
+            >
+              <div
+                className="c16"
+                style={
+                  Object {
+                    "display": "block",
+                    "position": "relative",
+                    "width": "100%",
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="c17"
+        >
+          <div
+            className="c18 c19"
+            onClick={[Function]}
+          >
+            <span
+              className="c9 c20"
+              color="#8da2b5"
+              size={16}
+            >
+              <svg
+                data-file-name="SvgSearch"
+              />
+            </span>
+            <div
+              className="c21"
+            >
+              <input
+                className="c22"
+                onChange={[Function]}
+                placeholder="Search flows"
+                value=""
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2948,10 +3601,18 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   bottom: 0;
 }
 
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: laeTZU 180ms ease-in-out;
-  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation: gycLFU 180ms ease-in-out;
+  animation: gycLFU 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -3116,14 +3777,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   overflow: hidden;
   -webkit-transition: background-color 0.15s ease,box-shadow 0.15s ease;
   transition: background-color 0.15s ease,box-shadow 0.15s ease;
-}
-
-.c12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
 }
 
 <div
@@ -4057,8 +4710,10 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                 "display": "none",
                 "height": 6,
                 "left": 2,
+                "opacity": 0,
                 "position": "absolute",
                 "right": 2,
+                "transition": "opacity 200ms",
               }
             }
           >
@@ -4080,7 +4735,9 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             style={
               Object {
                 "display": "none",
+                "opacity": 0,
                 "position": "absolute",
+                "transition": "opacity 200ms",
                 "width": 6,
               }
             }
@@ -4539,10 +5196,18 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   bottom: 0;
 }
 
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: laeTZU 180ms ease-in-out;
-  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation: gycLFU 180ms ease-in-out;
+  animation: gycLFU 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -4707,14 +5372,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   overflow: hidden;
   -webkit-transition: background-color 0.15s ease,box-shadow 0.15s ease;
   transition: background-color 0.15s ease,box-shadow 0.15s ease;
-}
-
-.c12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
 }
 
 <div
@@ -5431,8 +6088,10 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                 "display": "none",
                 "height": 6,
                 "left": 2,
+                "opacity": 0,
                 "position": "absolute",
                 "right": 2,
+                "transition": "opacity 200ms",
               }
             }
           >
@@ -5454,7 +6113,9 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             style={
               Object {
                 "display": "none",
+                "opacity": 0,
                 "position": "absolute",
+                "transition": "opacity 200ms",
                 "width": 6,
               }
             }

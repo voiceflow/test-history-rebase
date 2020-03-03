@@ -110,6 +110,7 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'off',
         'lodash/prefer-constant': 'off',
         'import/prefer-default-export': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
     {

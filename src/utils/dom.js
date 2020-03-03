@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import { KeyCode } from '@/constants';
+
 export const getNodePosition = (node) => {
   const box = node.getBoundingClientRect();
   const body = document.body;
@@ -243,6 +245,8 @@ export const withKeyPress = (charCode, cb) => (event) => {
 };
 
 export const swallowKeyPress = (charCode) => withKeyPress(charCode, preventDefault());
+
+export const withEnterPress = (cb) => withKeyPress(KeyCode.ENTER, cb);
 
 export const copyJSONPath = (copy_event) => {
   const total_path = copy_event.namespace.slice();

@@ -9,7 +9,7 @@ import { StandaloneIntentSlotForm } from '@/components/IntentSlotForm';
 import Section from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
+import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 import { formatIntentName } from '@/utils/intent';
 
 const IntentManager = ({ intentID, intentsMap, removeIntent, updateIntent }) => {

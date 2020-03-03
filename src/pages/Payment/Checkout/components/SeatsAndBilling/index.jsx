@@ -8,7 +8,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { PERIOD, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
+import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import StepHeading from '../StepHeading';
 import BillingDropdown from './components/BillingDropdown';

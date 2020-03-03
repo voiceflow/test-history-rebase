@@ -288,10 +288,10 @@
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key --static-dir=public",
     "storybook:build": "build-storybook --output-dir storybook_build --static-dir=public --quiet",
     "tdd:integration": "yarn test:integration --watchAll=true",
-    "tdd:unit": "yarn test:unit --watch",
+    "tdd:unit": "NODE_ENV=test ts-mocha --paths --config config/test/unit/mocharc.yml --watch",
     "test": "yarn test:unit && yarn test:integration",
     "test:dependencies": "depcheck $(exargs .depcheckrc)",
     "test:integration": "NODE_ENV=test jest --config config/test/integration/jest.config.js",
-    "test:unit": "NODE_ENV=test nyc ts-mocha --paths --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc --nycrc-path config/.nycrc.json ts-mocha --paths --config config/test/unit/mocharc.yml"
   }
 }

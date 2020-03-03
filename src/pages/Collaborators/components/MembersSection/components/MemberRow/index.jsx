@@ -3,7 +3,7 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Menu from '@/components/Menu';
 import { toast } from '@/components/Toast';
-import { USER_ROLES } from '@/constants';
+import { UserRole } from '@/constants';
 import {
   cancelInvite,
   deleteMember,
@@ -25,11 +25,11 @@ const isVerifiedMember = (member) => {
 
 const getRoleVerb = (role) => {
   switch (role) {
-    case USER_ROLES.ADMIN:
+    case UserRole.ADMIN:
       return 'Owner';
-    case USER_ROLES.EDITOR:
+    case UserRole.EDITOR:
       return 'Can edit';
-    case USER_ROLES.VIEWER:
+    case UserRole.VIEWER:
     default:
       return 'Can view';
   }
@@ -54,10 +54,10 @@ const MemberRow = ({
       return;
     }
 
-    if (role === USER_ROLES.EDITOR && numberOfUsedEditorSeats >= seats) {
+    if (role === UserRole.EDITOR && numberOfUsedEditorSeats >= seats) {
       return toast.error('You have reached your max editor seats usage.');
     }
-    if (role === USER_ROLES.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
+    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
       return toast.error('You have reached your max viewer seats usage.');
     }
 
@@ -90,10 +90,10 @@ const MemberRow = ({
       <PermissionDropdown
         menu={
           <Menu>
-            <DropdownItem onClick={() => changePermission(USER_ROLES.EDITOR)} active={member.role === USER_ROLES.EDITOR}>
+            <DropdownItem onClick={() => changePermission(UserRole.EDITOR)} active={member.role === UserRole.EDITOR}>
               Can Edit
             </DropdownItem>
-            <DropdownItem onClick={() => changePermission(USER_ROLES.VIEWER)} active={member.role === USER_ROLES.VIEWER}>
+            <DropdownItem onClick={() => changePermission(UserRole.VIEWER)} active={member.role === UserRole.VIEWER}>
               Can View
             </DropdownItem>
             <DropdownItem divider />

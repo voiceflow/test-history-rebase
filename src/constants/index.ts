@@ -344,11 +344,11 @@ export const MODALS = {
   DISPLAY_PREVIEW: 'display-preview',
 };
 
-export const USER_ROLES = {
-  ADMIN: 'admin',
-  EDITOR: 'editor',
-  VIEWER: 'viewer',
-};
+export enum UserRole {
+  ADMIN = 'admin',
+  EDITOR = 'editor',
+  VIEWER = 'viewer',
+}
 
 export const FEATURE_IDS = {
   ADD_COLLABORATORS: 'ADD_COLLABORATORS',
@@ -358,10 +358,10 @@ export const FEATURE_IDS = {
 };
 
 export const FEATURE_PERMISSIONS = {
-  ADD_COLLABORATORS: [USER_ROLES.ADMIN],
-  WORKSPACE_SETTINGS: [USER_ROLES.ADMIN],
-  UPGRADE_WORKSPACE: [USER_ROLES.ADMIN],
-  EDIT_CANVAS: [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+  ADD_COLLABORATORS: [UserRole.ADMIN],
+  WORKSPACE_SETTINGS: [UserRole.ADMIN],
+  UPGRADE_WORKSPACE: [UserRole.ADMIN],
+  EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
 export const PLANS = {
@@ -370,7 +370,7 @@ export const PLANS = {
   enterprise: 'enterprise',
 };
 
-export const EDITOR_SEAT_ROLES = [USER_ROLES.EDITOR, USER_ROLES.ADMIN];
+export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
 
 export const UNLIMITED_SEAT_NUMBER = 100;
 

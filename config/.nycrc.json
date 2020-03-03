@@ -1,5 +1,23 @@
 {
-  "exclude": ["coverage/**", "tests/**", "build/**", "scratch.js", "index.js", ".*.js", "src/envSetup.js", "public/**", "scripts/**", "config/**"],
-  "reporter": ["html", "text", "text-summary", "lcov"],
-  "all": true
+  "exclude": [
+    "coverage/**",
+    "test/**",
+    ".storybook/**",
+    "build/**",
+    "scratch.js",
+    "index.js",
+    ".*.js",
+    "src/**/*.it.*",
+    "src/**/*.story.*",
+    "public/**",
+    "scripts/**",
+    "config/**"
+  ],
+  "reporter": [
+    "html",
+    "text",
+    "text-summary",
+    "lcov"
+  ],
+  "report-dir": "nyc_coverage"
 }

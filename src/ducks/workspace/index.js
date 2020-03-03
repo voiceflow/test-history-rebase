@@ -5,7 +5,7 @@ export * from './selectors';
 export * from './actions';
 export * from './sideEffects';
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   activeWorkspaceID: localStorage.getItem('team'),
   byId: {},
   allIds: [],
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 export default function workspaceReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case UPDATE_CURRENT_WORKSPACE:
-      localStorage.setItem('team', action.payload);
+      window.localStorage.setItem('team', action.payload);
       return {
         ...state,
         activeWorkspaceID: action.payload,

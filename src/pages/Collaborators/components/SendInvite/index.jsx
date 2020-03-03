@@ -2,7 +2,7 @@ import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import { toast } from '@/components/Toast';
-import { MODALS, PLANS, USER_ROLES } from '@/constants';
+import { MODALS, PLANS, UserRole } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import {
   activeWorkspaceMembersSelector,
@@ -18,8 +18,8 @@ import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
 
 const OPTIONS_ARRAY = [
-  { value: USER_ROLES.EDITOR, label: 'can edit' },
-  { value: USER_ROLES.VIEWER, label: 'can view' },
+  { value: UserRole.EDITOR, label: 'can edit' },
+  { value: UserRole.VIEWER, label: 'can view' },
 ];
 
 function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, usedEditorSeats, usedViewerSeats }) {
@@ -33,12 +33,12 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
     const paidEditorSeats = numberOfSeats;
     const numberOfUsedEditorSeats = usedEditorSeats;
 
-    if (numberOfUsedEditorSeats >= paidEditorSeats && permissionType.value === USER_ROLES.EDITOR) {
+    if (numberOfUsedEditorSeats >= paidEditorSeats && permissionType.value === UserRole.EDITOR) {
       return openPaymentsModal();
     }
 
     const viewerLimit = seatLimits.viewer;
-    if (usedViewerSeats >= viewerLimit && permissionType.value === USER_ROLES.VIEWER) {
+    if (usedViewerSeats >= viewerLimit && permissionType.value === UserRole.VIEWER) {
       return toast.error('Viewer limit reached.');
     }
 

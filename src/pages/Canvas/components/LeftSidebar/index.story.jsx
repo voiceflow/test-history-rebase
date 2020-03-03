@@ -2,7 +2,7 @@ import React from 'react';
 
 import { composeDecorators, withDnD, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
-import { USER_ROLES } from '@/constants';
+import { UserRole } from '@/constants';
 import { OverlayProvider } from '@/contexts/OverlayContext';
 import { RolePermissionsProvider } from '@/contexts/RolePermissionsContext';
 import { EditPermissionProvider } from '@/pages/Canvas/contexts';
@@ -215,9 +215,9 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
         byId: {
           1: {
             members: [
-              { name: 'User', image: 'https://picsum.photos/200', creator_id: userId, role: USER_ROLES.ADMIN },
-              { name: 'Manager', image: '5891FB|EFF5FF', creator_id: '2', role: USER_ROLES.ADMIN },
-              { name: 'Admin', image: 'https://picsum.photos/200?1', creator_id: '3', role: USER_ROLES.ADMIN },
+              { name: 'User', image: 'https://picsum.photos/200', creator_id: userId, role: UserRole.ADMIN },
+              { name: 'Manager', image: '5891FB|EFF5FF', creator_id: '2', role: UserRole.ADMIN },
+              { name: 'Admin', image: 'https://picsum.photos/200?1', creator_id: '3', role: UserRole.ADMIN },
             ],
           },
         },

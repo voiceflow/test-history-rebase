@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@1.0.2
+
 executors:
   node-executor:
     working_directory: ~/voiceflow # directory where steps will run
@@ -76,9 +79,15 @@ jobs:
             - run:
                 name: (Unit Tests)
                 command: yarn test:unit
+            - codecov/upload:
+                file: nyc_coverage/lcov.info
+                flags: unit
             - run:
                 name: (Integration Tests)
-                command: yarn test:integration --detectOpenHandles
+                command: yarn test:integration --coverage --detectOpenHandles
+            - codecov/upload:
+                file: jest_coverage/lcov.info
+                flags: integration
             - run:
                 name: (Code Style)
                 command: yarn lint:quiet

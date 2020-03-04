@@ -2,7 +2,7 @@ import { utils } from '@voiceflow/common';
 import _ from 'lodash';
 
 import client from '@/client';
-import slotAdapter from '@/client/adapters/slot';
+import slotAdapter, { spreadSynonyms } from '@/client/adapters/slot';
 import { allIntentsSelector } from '@/ducks/intent';
 import { allSlotsSelector } from '@/ducks/slot';
 
@@ -53,7 +53,7 @@ const manageDialog = (input) => async (dispatch, getState) => {
     }));
 
     if (dialog.status === DialogStatus.PROMPT && dialog.slot && intent) {
-      const formattedSlots = slotAdapter.mapToDB(slots).map(slotAdapter.spreadSynonyms);
+      const formattedSlots = slotAdapter.mapToDB(slots).map(spreadSynonyms);
 
       const currentIntentSlot = dialog.slot;
       const extracted = await client.testing.entityExtract({

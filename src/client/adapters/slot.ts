@@ -4,8 +4,24 @@ import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@/constants';
 
 import { createAdapter } from './utils';
 
-const slotAdapter = createAdapter(
-  ({ key, name, inputs, color, type, required }) => ({
+export interface RawSlot {
+  key: string;
+  name: string;
+  type?: { value?: string };
+  color?: string;
+  inputs: string[];
+}
+
+export interface Slot {
+  id: string;
+  name: string;
+  type: string | null;
+  inputs: { id: string; value: string; synonyms: string }[];
+  color: string | undefined;
+}
+
+const slotAdapter = createAdapter<RawSlot, Slot>(
+  ({ key, name, inputs, color, type }) => ({
     id: key,
     name,
     type: (type && (type.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : type.value)) || null,
@@ -18,22 +34,20 @@ const slotAdapter = createAdapter(
         synonyms: synonyms.slice(1).join(','),
       };
     }),
-    required,
   }),
-  ({ id, name, inputs, color, type, required }) => ({
+  ({ id, name, inputs, color, type }) => ({
     key: id,
     name,
     type: { value: type || CUSTOM_SLOT_TYPE },
     color,
     inputs: inputs.map(({ value, synonyms }) => (synonyms ? `${value},${synonyms}` : value)),
-    required,
   })
 );
 
-slotAdapter.spreadSynonyms = (slot) => {
+export const spreadSynonyms = (slot: RawSlot) => {
   return {
     ...slot,
-    inputs: slot.inputs.reduce((acc, input) => {
+    inputs: slot.inputs.reduce<string[]>((acc, input) => {
       return [
         ...acc,
         ...input

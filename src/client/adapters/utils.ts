@@ -7,10 +7,16 @@ export class AdapterNotImplementedError extends Error {
   }
 }
 
-export const createSimpleAdapter = (fromDB, toDB, options = {}) => ({
+export interface Options {
+  debug?: boolean;
+}
+
+export type Adapter<I, O> = (value: I, ...args: any[]) => O;
+
+export const createSimpleAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<APP, DB>, options: Options = {}) => ({
   fromDB:
     !IS_PRODUCTION && options.debug
-      ? (dbValue, ...args) => {
+      ? (dbValue: DB, ...args: any[]) => {
           // eslint-disable-next-line no-console
           console.log('adapter called with value from DB:', dbValue);
 
@@ -24,11 +30,11 @@ export const createSimpleAdapter = (fromDB, toDB, options = {}) => ({
       : fromDB,
   toDB:
     !IS_PRODUCTION && options.debug
-      ? (appValue, ...args) => {
+      ? (appValue: APP, ...args: any[]) => {
           // eslint-disable-next-line no-console
           console.log('adapter called with value from the store:', appValue);
 
-          const result = fromDB(appValue, ...args);
+          const result = toDB(appValue, ...args);
 
           // eslint-disable-next-line no-console
           console.log('converted store value to:', result);
@@ -38,9 +44,9 @@ export const createSimpleAdapter = (fromDB, toDB, options = {}) => ({
       : toDB,
 });
 
-export const createAdapter = (fromDB, toDB, options = {}) => ({
+export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<APP, DB>, options: Options = {}) => ({
   ...createSimpleAdapter(fromDB, toDB, options),
-  mapFromDB: (dbValues) => {
+  mapFromDB: (dbValues: DB[]) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from DB:', dbValues);
@@ -55,7 +61,7 @@ export const createAdapter = (fromDB, toDB, options = {}) => ({
 
     return result;
   },
-  mapToDB: (appValues) => {
+  mapToDB: (appValues: APP[]) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from store:', appValues);

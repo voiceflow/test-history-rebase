@@ -20,6 +20,9 @@ export const createSuite = (createUtils) =>
 
         return localStorage;
       },
+      mockDate: (ms) => {
+        sandbox.stub(Date, 'now').returns(ms);
+      },
       expect: chai.expect,
     };
 

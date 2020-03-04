@@ -1,6 +1,7 @@
 import cuid from 'cuid';
 import { partition as _partition } from 'lodash';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -26,9 +27,10 @@ class NodeManager extends EngineConsumer {
 
     unmerge: (nodeID, position) => {
       const { parentNode } = this.engine.getNodeByID(nodeID);
+      const isBlockRedesignEnabled = this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN);
 
       this.saveLocation(parentNode);
-      this.dispatch(Creator.unmergeNode(nodeID, position));
+      this.dispatch(Creator.unmergeNode(nodeID, position, { isBlockRedesignEnabled }));
       this.redrawNestedLinks(parentNode);
     },
 

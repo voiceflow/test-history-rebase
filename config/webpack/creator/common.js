@@ -49,10 +49,8 @@ module.exports = merge(commonConfig, {
               'pages/Canvas/components/LeftSidebar/**/*',
               'components/CustomScrollbars/**/*',
 
-              // TODO: remove when re-enabling display editor
-              'components/Upload/JsonUpload/**/*',
-              'utils/files.js',
-              'pages/Canvas/managers/Display/**/*',
+              // TODO: remove when adding a feature flag
+              'hooks/feature.js',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',

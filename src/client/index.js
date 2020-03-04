@@ -2,6 +2,7 @@ import analytics from './analytics';
 import clipboard from './clipboard';
 import diagram from './diagram';
 import display from './display';
+import feature from './feature';
 import file from './file';
 import list from './lists';
 import onboarding from './onboarding';
@@ -31,6 +32,7 @@ const client = {
   file,
   template,
   onboarding,
+  feature,
 };
 
 export default client;

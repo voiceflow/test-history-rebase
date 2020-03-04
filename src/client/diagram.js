@@ -6,9 +6,9 @@ const DIAGRAM_PATH = 'diagram';
 const VARIABLES_PATH = 'variables';
 
 const diagramClient = {
-  getData: (diagramID, platform) =>
+  getData: (diagramID, platform, isBlockRedesignEnabled) =>
     fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram, timestamp = [] }) => ({
-      data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform),
+      data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform, isBlockRedesignEnabled),
       variables: diagram.variables || [],
       timestamp,
     })),

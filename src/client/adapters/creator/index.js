@@ -1,6 +1,5 @@
 import cuid from 'cuid';
 
-import { BLOCK_REDESIGN_ENABLED } from '@/config/features';
 import { BlockType } from '@/constants';
 
 import { createSimpleAdapter } from '../utils';
@@ -11,7 +10,7 @@ import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
 const creatorAdapter = createSimpleAdapter(
-  (diagram, platform) => {
+  (diagram, platform, isBlockRedesignEnabled) => {
     const rootNodes = [];
     const nodes = [];
     const ports = [];
@@ -29,7 +28,7 @@ const creatorAdapter = createSimpleAdapter(
     diagram.nodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      if (BLOCK_REDESIGN_ENABLED && !_node.parentNode && !_node.combines) {
+      if (isBlockRedesignEnabled && !_node.parentNode && !_node.combines) {
         const nodeID = cuid();
 
         _node = {

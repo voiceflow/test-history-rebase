@@ -6,6 +6,7 @@ import account, * as Account from '@/ducks/account';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
 import display, * as Display from '@/ducks/display';
+import feature, * as Feature from '@/ducks/feature';
 import integrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
 import list from '@/ducks/lists';
@@ -60,4 +61,5 @@ export default (history) =>
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
     [Template.STATE_KEY]: template,
+    [Feature.STATE_KEY]: feature,
   });

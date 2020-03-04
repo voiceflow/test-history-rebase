@@ -1,7 +1,8 @@
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
-import { duplicateDisplay } from '@/ducks/display';
+import * as Display from '@/ducks/display';
+import * as Feature from '@/ducks/feature';
 import { NODE_MANAGERS } from '@/pages/Canvas/managers';
 import { asyncForEach } from '@/utils/array';
 
@@ -16,6 +17,10 @@ export class EngineConsumer {
 
   select(selector) {
     return selector(this.engine.store.getState());
+  }
+
+  isFeatureEnabled(featureID) {
+    return this.select(Feature.isFeatureEnabledSelector)(featureID);
   }
 }
 
@@ -58,7 +63,7 @@ export const cloneNodeWithData = ({ getNodeID, getPortID }, dispatch, skillID) =
   const newID = getNodeID(originNode.id);
 
   if (originNode.type === BlockType.DISPLAY && originNodeData.displayID) {
-    const newDisplayID = await dispatch(duplicateDisplay(originNodeData.displayID, skillID));
+    const newDisplayID = await dispatch(Display.duplicateDisplay(originNodeData.displayID, skillID));
     originNodeData = { ...originNodeData, displayID: newDisplayID };
     originNode = { ...originNode, ports: originNode.ports };
   }

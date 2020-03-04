@@ -45,6 +45,7 @@ module.exports = merge(commonConfig, {
 
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
+              'pages/Canvas/managers/Start/StartBlock/**/*',
               'pages/Canvas/components/LeftSidebar/**/*',
               'components/CustomScrollbars/**/*',
 

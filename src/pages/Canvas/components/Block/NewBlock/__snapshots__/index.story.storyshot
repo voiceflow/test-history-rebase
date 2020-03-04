@@ -37,7 +37,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   height: 54px;
   font-size: 15px;
   font-weight: 600;
-  color: #62778c;
+  color: #132144;
 }
 
 .c4 > *:not(:last-child) {
@@ -960,7 +960,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   height: 54px;
   font-size: 15px;
   font-weight: 600;
-  color: #62778c;
+  color: #132144;
 }
 
 .c4 > *:not(:last-child) {

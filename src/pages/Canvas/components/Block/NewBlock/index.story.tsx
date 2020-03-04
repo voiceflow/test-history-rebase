@@ -2,10 +2,11 @@ import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
-import { BlockState } from '@/constants/canvas';
+import { Icon } from '@/components/SvgIcon';
+import { BlockState, BlockVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-import NewBlock, { SECTIONS_VARIANT } from '.';
+import NewBlock, { SectionsVariant } from '.';
 
 const MockStep = styled(FlexCenter)`
   height: 54px;
@@ -37,11 +38,11 @@ const getMultiSectionProps = () => ({
   sections: [
     {
       name: 'Section 1',
-      icon: 'home',
+      icon: 'home' as Icon,
       children: MOCK_STEPS_SHORT,
     },
     {
-      icon: 'home',
+      icon: 'home' as Icon,
       name: 'Section 2 blah blah blah blah blah blah blah blah',
       children: MOCK_STEPS_SHORT,
     },
@@ -55,13 +56,13 @@ export default {
 
 export const standard = () => <NewBlock name="New Block 1" {...getProps()} />;
 
-export const blue = () => <NewBlock name="New Block 1" variant="blue" {...getProps()} />;
+export const blue = () => <NewBlock name="New Block 1" variant={BlockVariant.BLUE} {...getProps()} />;
 
-export const red = () => <NewBlock name="New Block 1" variant="red" {...getProps()} />;
+export const red = () => <NewBlock name="New Block 1" variant={BlockVariant.RED} {...getProps()} />;
 
-export const green = () => <NewBlock name="New Block 1" variant="green" {...getProps()} />;
+export const green = () => <NewBlock name="New Block 1" variant={BlockVariant.GREEN} {...getProps()} />;
 
-export const purple = () => <NewBlock name="New Block 1" variant="purple" {...getProps()} />;
+export const purple = () => <NewBlock name="New Block 1" variant={BlockVariant.PURLPLE} {...getProps()} />;
 
 export const longName = () => <NewBlock name="Block with a veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery long name" {...getProps()} />;
 
@@ -73,7 +74,7 @@ export const selectedState = () => <NewBlock name="New Block 1" state={BlockStat
 
 export const disabledState = () => <NewBlock name="New Block 1" state={BlockState.DISABLED} {...getProps()} />;
 
-export const subSections = () => <NewBlock sectionsVariant={SECTIONS_VARIANT.MULTI_SECTION} {...getMultiSectionProps()} />;
+export const subSections = () => <NewBlock sectionsVariant={SectionsVariant.MULTI_SECTION} {...getMultiSectionProps()} />;
 
 export const stateTransitions = () => {
   const activeState = select(

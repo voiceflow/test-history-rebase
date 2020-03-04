@@ -1,7 +1,13 @@
-import { BlockState } from '@/constants/canvas';
+import { BlockState, BlockVariant } from '@/constants/canvas';
 import { css, styled, transition } from '@/hocs';
+import { Theme } from '@/styles/theme';
 
-const stateStyles = ({ state, variant, theme }) => {
+type NewBlockContainerProps = {
+  state: BlockState;
+  variant: BlockVariant;
+};
+
+const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme: Theme }) => {
   const blockVariant = theme.components.block.variants[variant];
 
   switch (state) {
@@ -28,7 +34,7 @@ const stateStyles = ({ state, variant, theme }) => {
   }
 };
 
-const NewBlockContainer = styled.div`
+const NewBlockContainer = styled.div<NewBlockContainerProps>`
   width: ${({ theme }) => theme.components.block.width}px;
   border-radius: 8px;
   cursor: pointer;

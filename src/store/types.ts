@@ -18,7 +18,7 @@ export type ActionPayload<T> = T extends Action<any, infer R, any> ? R : never;
 
 // thunk
 
-export type Thunk<S, R = void> = (dispatch: ThunkDispatch, getState: () => S) => Promise<R> | R;
+export type Thunk<S = Record<string, any>, R = void> = (dispatch: ThunkDispatch, getState: () => S) => Promise<R> | R;
 
 export type AnyThunk = Thunk<any, any>;
 

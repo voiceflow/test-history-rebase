@@ -15,6 +15,8 @@ import testing from './testing';
 import user from './user';
 import workspace from './workspace';
 
+export * from './onboarding';
+
 const client = {
   session,
   analytics,

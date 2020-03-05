@@ -36,7 +36,7 @@ const VariablesInput = (
 
         return { id: name, name, isVariable: true };
       } catch (err) {
-        toast.error(err);
+        toast.error(err.message);
 
         return null;
       }

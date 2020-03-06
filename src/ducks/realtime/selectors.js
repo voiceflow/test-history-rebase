@@ -18,7 +18,7 @@ export const isErrorStateSelector = createSelector(rootSelector, ({ errorState }
 
 export const lastRealtimeTimestampSelector = createSelector(rootSelector, ({ lastTimestamp }) => lastTimestamp);
 
-export const isNodeLockedSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => !!blocks[lockType][nodeID]);
+export const isNodeLockedSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => !!blocks[lockType]?.[nodeID]);
 
 export const isNodeMovementLockedSelector = createSelector(isNodeLockedSelector, (isNodeLocked) => (nodeID) =>
   isNodeLocked(LockType.MOVEMENT, nodeID)
@@ -31,7 +31,7 @@ export const deletionLockedNodesSelector = createSelector(realtimeLocksSelector,
   ...blocks[LockType.EDIT],
 }));
 
-export const lockOwnerTabIDSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => blocks[lockType][nodeID]);
+export const lockOwnerTabIDSelector = createSelector(realtimeLocksSelector, ({ blocks }) => (lockType, nodeID) => blocks[lockType]?.[nodeID]);
 
 export const reourceLockOwnerTabIDSelector = createSelector(realtimeLocksSelector, ({ resources }) => (resourceType) => resources[resourceType]);
 

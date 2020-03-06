@@ -2,14 +2,19 @@
 import React from 'react';
 
 import Select from '@/components/Select';
+import { toast } from '@/components/Toast';
 import { addGlobalVariable } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 
 export const VariableSelect = ({ value, variables, addVariable, onChange, ...props }) => {
   const onCreate = (item) => {
-    addVariable(item);
-    onChange(item);
+    try {
+      addVariable(item);
+      onChange(item);
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (

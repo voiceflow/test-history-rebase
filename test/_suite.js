@@ -11,6 +11,18 @@ export const createSuite = (createUtils) =>
     const utils = {
       spy: sandbox.spy.bind(sandbox),
       stub: sandbox.stub.bind(sandbox),
+      stubLocalStorage: (getter) => {
+        const getItem = sandbox.spy(getter);
+        const setItem = sandbox.spy();
+        const localStorage = { getItem, setItem };
+
+        sandbox.stub(window, 'localStorage').get(() => localStorage);
+
+        return localStorage;
+      },
+      mockDate: (ms) => {
+        sandbox.stub(Date, 'now').returns(ms);
+      },
       expect: chai.expect,
     };
 

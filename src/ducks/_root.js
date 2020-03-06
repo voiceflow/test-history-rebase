@@ -3,10 +3,10 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
-import alerts from '@/ducks/alerts';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
 import display, * as Display from '@/ducks/display';
+import feature, * as Feature from '@/ducks/feature';
 import integrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
 import list from '@/ducks/lists';
@@ -40,7 +40,6 @@ export default (history) =>
     [Account.STATE_KEY]: account,
     integrationUsers,
     [Test.STATE_KEY]: test,
-    alerts,
     publish,
     form: formReducer,
 
@@ -62,4 +61,5 @@ export default (history) =>
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
     [Template.STATE_KEY]: template,
+    [Feature.STATE_KEY]: feature,
   });

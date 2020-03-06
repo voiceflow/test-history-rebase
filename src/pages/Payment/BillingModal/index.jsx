@@ -7,7 +7,7 @@ import { MODALS } from '@/constants';
 import { useModals } from '@/contexts/ModalsContext';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
+import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import CreditCardSection from './components/CreditCardSection';
 import InvoiceInfoSection from './components/InvoiceInfoSection';

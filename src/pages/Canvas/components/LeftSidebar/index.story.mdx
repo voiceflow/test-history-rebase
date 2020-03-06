@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import LeftSidebar from '.';
+
+<Meta title="Creator/Left Sidebar" component={LeftSidebar} />
+
+# Left Sidebar
+
+<Preview>
+  <Story name="base">{stories.base()}</Story>
+  <Story name="cant edit">{stories.cantEdit()}</Story>
+  <Story name="alexa steps">{stories.stepsAlexa()}</Story>
+  <Story name="google steps">{stories.stepsGoogle()}</Story>
+  <Story name="flows selected">{stories.flowsSelected()}</Story>
+</Preview>

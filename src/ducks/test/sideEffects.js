@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import client from '@/client';
 import intentAdapter from '@/client/adapters/intent';
-import slotAdapter from '@/client/adapters/slot';
+import slotAdapter, { spreadSynonyms } from '@/client/adapters/slot';
 import { allIntentsSelector } from '@/ducks/intent';
 import { setError } from '@/ducks/modal';
 import {
@@ -74,7 +74,7 @@ export const resetState = () => (dispatch, getState) => {
 export const initializeTest = (options = {}) => (dispatch, getState) => {
   const state = getState();
   const intents = intentAdapter.mapToDB(allIntentsSelector(state));
-  const slots = slotAdapter.mapToDB(allSlotsSelector(state)).map(slotAdapter.spreadSynonyms);
+  const slots = slotAdapter.mapToDB(allSlotsSelector(state)).map(spreadSynonyms);
   const platform = activePlatformSelector(state);
   const locales = activeLocalesSelector(state);
 

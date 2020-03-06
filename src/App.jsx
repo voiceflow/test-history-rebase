@@ -16,7 +16,7 @@ import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
 import Modal from '@/components/LegacyModal/Modal';
 import { ToastContainer } from '@/components/Toast';
-import { AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
+import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
@@ -25,7 +25,6 @@ import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
 
 import Routes from './Routes';
-import Alerts from './components/Alerts/Alerts';
 import { withGlobalProviders } from './contexts/GlobalProviders';
 
 const App = () => {
@@ -41,7 +40,6 @@ const App = () => {
       <ErrorModal />
       <ModalBackdrop />
       <Modal />
-      <Alerts />
       <ToastContainer />
       <Routes />
       <IntercomChat />
@@ -55,5 +53,5 @@ const App = () => {
 export default compose(
   hot,
   withGlobalProviders,
-  withBatchLoadingGate(SocketLoadingGate, AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate)
+  withBatchLoadingGate(SocketLoadingGate, AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate)
 )(App);

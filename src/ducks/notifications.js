@@ -1,26 +1,29 @@
 import axios from 'axios';
-import MD5 from 'crypto-js/md5';
 import moment from 'moment';
 import { createSelector } from 'reselect';
 
-import { createRootSelector } from '@/ducks/utils';
+import { createAction, createRootSelector } from '@/ducks/utils';
+import { MD5 } from '@/utils/crypto';
 
 import { userIDSelector } from './account';
 
-const FORCE_NOTIFICATION_KEY = 'FORCE_NOTIFICATION_STATE';
+export const STATE_KEY = 'notifications';
+export const INITIAL_STATE = {
+  forced: null,
+  notifications: [],
+};
+
+export const FORCE_NOTIFICATION_KEY = 'FORCE_NOTIFICATION_STATE';
+
+// actions
 
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 export const READ_NOTIFICATIONS = 'READ_NOTIFICATIONS';
 export const FORCE_NOTIFICATION = 'FORCE_NOTIFICATION';
 
-const initialState = {
-  forced: null,
-  notifications: [],
-};
+// reducers
 
-export const STATE_KEY = 'notifications';
-
-export default function notificationsReducer(state = initialState, action) {
+export default function notificationsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case SET_NOTIFICATIONS:
       return {
@@ -30,7 +33,7 @@ export default function notificationsReducer(state = initialState, action) {
     case READ_NOTIFICATIONS:
       return {
         ...state,
-        notifications: state.notifications.map((n) => ({ ...n, isNew: false })),
+        notifications: state.notifications.map((notification) => ({ ...notification, isNew: false })),
         forced: state.forced
           ? {
               ...state.forced,
@@ -48,28 +51,35 @@ export default function notificationsReducer(state = initialState, action) {
   }
 }
 
-// Selectors
+// selectors
+
 export const notificationsStateSelector = createRootSelector(STATE_KEY);
 
 export const notificationsSelector = createSelector(notificationsStateSelector, ({ forced, notifications }) =>
   forced ? [forced, ...notifications] : notifications
 );
 
-export const setNotifications = (payload) => ({ type: SET_NOTIFICATIONS, payload });
+// action creators
 
-export const forceNotification = (notification) => (dispatch) => {
+export const setNotifications = (notifications) => createAction(SET_NOTIFICATIONS, notifications);
+
+export const markNotificationAsRead = () => createAction(READ_NOTIFICATIONS);
+
+export const forceNotification = (notification, isNew) => createAction(FORCE_NOTIFICATION, { ...notification, isNew });
+
+// side effects
+
+export const forceNotificationIfNew = (notification) => (dispatch) => {
   // if the user has already received this force notification do not flag it as unread
   const notificationHash = MD5(`${notification.id}${notification.type}${notification.details}`).toString();
-  const isNew = notificationHash !== localStorage.getItem(FORCE_NOTIFICATION_KEY);
+  const isNew = notificationHash !== window.localStorage.getItem(FORCE_NOTIFICATION_KEY);
 
   if (isNew) {
-    localStorage.setItem(FORCE_NOTIFICATION_KEY, notificationHash);
+    window.localStorage.setItem(FORCE_NOTIFICATION_KEY, notificationHash);
   }
 
-  dispatch({ type: FORCE_NOTIFICATION, payload: { ...notification, isNew } });
+  dispatch(forceNotification(notification, isNew));
 };
-
-export const markNotificationAsRead = () => ({ type: READ_NOTIFICATIONS });
 
 export const fetchNotifications = () => async (dispatch, getState) => {
   const useId = userIDSelector(getState());

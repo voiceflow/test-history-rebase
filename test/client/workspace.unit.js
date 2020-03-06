@@ -5,13 +5,15 @@ import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 
-suite('Client - Workspace', ({ expect, stub, ...utils }) => {
+suite('Client - Workspace', ({ expect, stub, stubFetch, expectCall }) => {
   describe('find()', () => {
-    it('should should find all workspaces', async () => {
+    it('should find all workspaces', async () => {
       const mockWorkspaces = generate.array(3, generate.object);
-      const fetch = utils.stubFetch(mockWorkspaces);
+      const fetch = stubFetch().yields(mockWorkspaces);
 
-      await utils.expectResult(() => client.find(), mockWorkspaces, stub(workspaceAdapter, 'mapFromDB'));
+      await expectCall(client.find)
+        .withAdapter(stub(workspaceAdapter, 'mapFromDB'))
+        .toYield(mockWorkspaces);
 
       expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH);
     });
@@ -21,9 +23,11 @@ suite('Client - Workspace', ({ expect, stub, ...utils }) => {
     it('should get a workspace by its ID', async () => {
       const workspaceID = generate.string();
       const mockWorkspace = generate.object();
-      const fetch = utils.stubFetch(mockWorkspace);
+      const fetch = stubFetch().yields(mockWorkspace);
 
-      await utils.expectResult(() => client.fetchWorkspace(workspaceID), [mockWorkspace], stub(workspaceAdapter, 'mapFromDB'));
+      await expectCall(client.fetchWorkspace, workspaceID)
+        .withAdapter(stub(workspaceAdapter, 'mapFromDB'))
+        .toYield([mockWorkspace]);
 
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${workspaceID}`);
     });
@@ -32,9 +36,11 @@ suite('Client - Workspace', ({ expect, stub, ...utils }) => {
   describe('createWorkspace()', () => {
     it('should create a new workspace', async () => {
       const data = generate.object();
-      const fetch = utils.stubFetch('post', data);
+      const fetch = stubFetch('post').yields(data);
 
-      await utils.expectResult(() => client.createWorkspace(data), data, stub(workspaceAdapter, 'fromDB'));
+      await expectCall(client.createWorkspace, data)
+        .withAdapter(stub(workspaceAdapter, 'fromDB'))
+        .toYield(data);
 
       expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH, data);
     });
@@ -44,9 +50,11 @@ suite('Client - Workspace', ({ expect, stub, ...utils }) => {
     it('should create a new workspace', async () => {
       const workspaceID = generate.string();
       const mockMembers = generate.array(3, generate.object);
-      const fetch = utils.stubFetch(mockMembers);
+      const fetch = stubFetch().yields(mockMembers);
 
-      await utils.expectResult(() => client.findMembers(workspaceID), mockMembers, stub(memberAdapter, 'mapFromDB'));
+      await expectCall(client.findMembers, workspaceID)
+        .withAdapter(stub(memberAdapter, 'mapFromDB'))
+        .toYield(mockMembers);
 
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${workspaceID}/members`);
     });
@@ -56,9 +64,9 @@ suite('Client - Workspace', ({ expect, stub, ...utils }) => {
     it('should update members', async () => {
       const workspaceID = generate.string();
       const members = generate.array(3, generate.object);
-      const fetch = utils.stubFetch('patch', true);
+      const fetch = stubFetch('patch');
 
-      await utils.expectResult(() => client.updateMembers(workspaceID, members));
+      await expectCall(client.updateMembers, workspaceID, members).toYield();
 
       expect(fetch).to.be.calledWithExactly(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, members);
     });

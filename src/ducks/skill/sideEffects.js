@@ -26,9 +26,8 @@ export const addGlobalVariable = (variable) => (dispatch, getState) => {
     const variables = globalVariablesSelector(getState());
 
     if (!VALID_VARIABLE_NAME.test(variable)) {
-      throw new Error('Variables must start with an character and can not contain spaces or special characters');
+      throw new Error('Variable contains invalid characters or is greater than 16 characters');
     }
-
     if (variables.includes(variable)) {
       throw new Error(`No duplicate variables: ${variable}`);
     }

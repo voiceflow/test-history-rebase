@@ -22,4 +22,6 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   transformIgnorePatterns: ['/node_modules/'],
+  coverageDirectory: 'jest_coverage',
+  coveragePathIgnorePatterns: ['/node_modules/', '/.storybook/', '/^.+\\.svg$/', '/src\\/.+\\.it\\..+$/', '/src\\/.+\\.story\\..+$/'],
 };

@@ -1,9 +1,11 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
 import { toast } from '@/components/Toast';
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
+import * as Feature from '@/ducks/feature';
 import { fetchIntegrationUsers } from '@/ducks/integration';
 import { replaceIntents } from '@/ducks/intent';
 import { addProjectToList } from '@/ducks/lists';
@@ -51,12 +53,15 @@ export const importProject = (workspaceID, importToken) => async (dispatch, getS
 };
 
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {
-  const platform = Skill.activePlatformSelector(getState());
+  const state = getState();
+  const platform = Skill.activePlatformSelector(state);
+  const isBlockRedesignEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
+
   const {
     data: { viewport, ...creator },
     timestamp,
     variables,
-  } = await client.diagram.getData(diagramID, platform);
+  } = await client.diagram.getData(diagramID, platform, isBlockRedesignEnabled);
 
   dispatch(replaceVariableSetDiagram(diagramID, variables));
   dispatch(rehydrateViewport(diagramID, viewport));

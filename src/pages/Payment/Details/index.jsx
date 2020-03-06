@@ -9,7 +9,7 @@ import BubbleText from '@/components/Text/BubbleText';
 import { PLANS } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeLeft';
+import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import ChatWithUsLink from '../components/ChatWithUsLink';
 import {

@@ -4,8 +4,9 @@ import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
-import { BLOCK_REDESIGN_ENABLED } from '@/config/features';
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
+import * as Feature from '@/ducks/feature';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import { hasIdenticalMembers } from '@/utils/array';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
@@ -174,6 +175,7 @@ export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getSta
 export const saveActiveDiagram = () => async (dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
+  const isBlockRedesignEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
   const diagramID = Creator.creatorDiagramIDSelector(state);
 
   if (!diagramID) {
@@ -196,7 +198,7 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
     nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
   };
 
-  const dataString = JSON.stringify(BLOCK_REDESIGN_ENABLED ? creatorAdapter.toDB(updatedData) : updatedData);
+  const dataString = JSON.stringify(isBlockRedesignEnabled ? creatorAdapter.toDB(updatedData) : updatedData);
 
   if (Buffer.from(dataString).length > MAX_DIAGRAM_SIZE) {
     await dispatch(

@@ -42,15 +42,17 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
+              'store/types.ts',
 
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
+              'pages/Canvas/managers/Start/StartBlock/**/*',
+              'pages/Canvas/components/LeftSidebar/**/*',
+              'components/CustomScrollbars/**/*',
 
-              // TODO: remove when re-enabling display editor
-              'components/Upload/JsonUpload/**/*',
-              'utils/files.js',
-              'pages/Canvas/managers/Display/**/*',
-              
+              // TODO: remove when adding a feature flag
+              'hooks/feature.js',
+
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'pages/Canvas/components/Block/NewBlock/**/*',
@@ -59,7 +61,7 @@ module.exports = merge(commonConfig, {
               'components/Dropdown/**/*',
               'components/DropdownButton/**/*',
               'components/Link/**/*',
-              'components/Title/**/*'
+              'components/Title/**/*',
             ],
           },
         }),

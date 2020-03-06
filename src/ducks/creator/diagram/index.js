@@ -255,7 +255,7 @@ export const updateNodeLocation = (nodeID, [x, y]) => createAction(UPDATE_NODE_L
 export const mergeNodes = (sourceNodeID, targetNodeID, position, mergedNodeID) =>
   createAction(MERGE_NODES, { sourceNodeID, targetNodeID, position, mergedNodeID });
 
-export const unmergeNode = (nodeID, position) => createAction(UNMERGE_NODE, { nodeID, position });
+export const unmergeNode = (nodeID, position, meta) => createAction(UNMERGE_NODE, { nodeID, position }, meta);
 
 export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, nodeID, index });
 

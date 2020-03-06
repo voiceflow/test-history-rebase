@@ -7,5 +7,6 @@ export { default as AccountLoadingGate } from './AccountLoadingGate';
 export { default as ProjectLoadingGate } from './ProjectLoadingGate';
 export { default as ProjectLockGate } from './ProjectLockGate';
 export { default as RealtimeLoadingGate } from './RealtimeLoadingGate';
+export { default as FeatureLoadingGate } from './FeatureLoadingGate';
 export { default as WorkspaceMembersLoadingGate } from './WorkspaceMembersLoadingGate';
 export { default as GlobalSocketSubscriptionsLoadingGate } from './GlobalSocketSubscriptionsLoadingGate';

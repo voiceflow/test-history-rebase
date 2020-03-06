@@ -1,4 +1,4 @@
-import modalReducer, * as Modal from '@/ducks/modal';
+import * as Modal from '@/ducks/modal';
 
 import suite from './_suite';
 
@@ -8,15 +8,15 @@ const MOCK_STATE = {
   modal: { value: 'something' },
 };
 
-suite('Ducks - Modal', ({ expect, spy, describeReducer }) => {
-  describeReducer(Modal, MOCK_STATE, (utils) => {
+suite(Modal, MOCK_STATE)('Ducks - Modal', ({ expect, spy, describeReducer }) => {
+  describeReducer(({ applyAction, expectAction }) => {
     describe('setConfirm()', () => {
       const message = 'are you sure you want to quit?';
 
       it('should set a confirmation modal', () => {
         const confirmCallback = spy();
 
-        const nextState = modalReducer(MOCK_STATE, Modal.setConfirm({ message, confirm: confirmCallback }));
+        const nextState = applyAction(Modal.setConfirm({ message, confirm: confirmCallback }));
 
         expect(nextState.confirmModal.message).to.eq(message);
 
@@ -29,7 +29,7 @@ suite('Ducks - Modal', ({ expect, spy, describeReducer }) => {
         const params = ['a', 'b', 'c'];
         const confirmCallback = spy();
 
-        const nextState = modalReducer(MOCK_STATE, Modal.setConfirm({ message, params, confirm: confirmCallback }));
+        const nextState = applyAction(Modal.setConfirm({ message, params, confirm: confirmCallback }));
 
         nextState.confirmModal.confirm();
 
@@ -41,11 +41,11 @@ suite('Ducks - Modal', ({ expect, spy, describeReducer }) => {
       const message = 'failed to perform action';
 
       it('should set a simple error modal', () => {
-        utils.expectDiff(Modal.setError(message), { errorModal: { message } });
+        expectAction(Modal.setError(message)).toModify({ errorModal: { message } });
       });
 
       it('should set an error modal from an object', () => {
-        utils.expectDiff(Modal.setError({ data: message }), { errorModal: { data: message, message } });
+        expectAction(Modal.setError({ data: message })).toModify({ errorModal: { data: message, message } });
       });
     });
 
@@ -53,13 +53,13 @@ suite('Ducks - Modal', ({ expect, spy, describeReducer }) => {
       it('should set the active modal', () => {
         const modal = { value: 'prompt user' };
 
-        utils.expectDiff(Modal.setModal(modal), { modal });
+        expectAction(Modal.setModal(modal)).toModify({ modal });
       });
     });
 
     describe('clearModal()', () => {
       it('should clear all modals', () => {
-        expect(Modal.default(MOCK_STATE, Modal.clearModal())).to.eq(Modal.INITIAL_STATE);
+        expectAction(Modal.clearModal()).result.to.eq(Modal.INITIAL_STATE);
       });
     });
   });

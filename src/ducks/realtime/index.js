@@ -19,7 +19,7 @@ export * from './socket';
 export * from './sideEffects';
 export * from './selectors';
 
-const DEFAULT_STATE = {
+export const INITIAL_STATE = {
   /**
    * property "locks" will be of the shape:
    * {
@@ -41,6 +41,7 @@ const DEFAULT_STATE = {
   diagramID: null,
   lastTimestamp: null,
   connected: false,
+  errorState: false,
   sessionBusy: false,
 };
 
@@ -108,7 +109,7 @@ export const removeNodeLocksReducer = (state, { payload: { types, targets } }) =
       ...types.reduce(
         (acc, type) =>
           Object.assign(acc, {
-            [type]: Object.entries(state.locks.blocks[type])
+            [type]: Object.entries(state.locks.blocks[type] ?? {})
               .filter(([nodeID]) => !targets.includes(nodeID))
               .reduce((nodes, [key, value]) => Object.assign(nodes, { [key]: value }), {}),
           }),
@@ -149,7 +150,7 @@ export const setSessionBusyReducer = (state) => ({ ...state, sessionBusy: true }
 
 export const resetSessionBusyReducer = (state) => ({ ...state, sessionBusy: false });
 
-const realtimeReducer = (state = DEFAULT_STATE, action) => {
+const realtimeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case INITIALIZE_REALTIME:
       return initializeRealtimeReducer(state, action);
@@ -174,7 +175,7 @@ const realtimeReducer = (state = DEFAULT_STATE, action) => {
     case RESET_SESSION_BUSY:
       return resetSessionBusyReducer(state);
     case RESET_REALTIME:
-      return DEFAULT_STATE;
+      return INITIAL_STATE;
     default:
       return state;
   }

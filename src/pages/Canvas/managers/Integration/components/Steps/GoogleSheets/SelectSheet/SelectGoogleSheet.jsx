@@ -62,6 +62,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
         <div className="mr-2 text-muted">Spreadsheet </div>
         <div className="flex-fill">
           <AsyncSelect
+            menuPortalTarget={document.body}
             key={JSON.stringify(integrationsUser) + JSON.stringify(integrationsUser && integrationsUser.user_id) + selected_action}
             cacheOptions
             defaultOptions
@@ -93,6 +94,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
           <Select
             classNamePrefix="google-sheets-dropdown select-box"
             options={sheets_list}
+            menuPortalTarget={document.body}
             className="auth-dropdown"
             value={data.sheet || null}
             placeholder="Select..."

@@ -17,8 +17,7 @@ const SSMLWithVars = ({ icon = 'alexa', voice, variables, addGlobalVariable, ...
 
         return { id: name, name, isVariable: true };
       } catch (err) {
-        toast.error(err);
-
+        toast.error(err.message);
         return null;
       }
     },

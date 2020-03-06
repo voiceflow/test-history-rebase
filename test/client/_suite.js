@@ -1,31 +1,39 @@
 import { createSuite } from '@/../test/_suite';
-import * as Fetch from '@/client/fetch';
-import { identity } from '@/utils/functional';
+import fetch, * as Fetch from '@/client/fetch';
+import { identity, noop } from '@/utils/functional';
 
 export default createSuite((utils) => ({
   ...utils,
 
-  stubFetch: (methodOrResult, result) => {
-    if (result) {
-      return utils.stub(Fetch.default, methodOrResult).returns(Promise.resolve(result));
-    }
+  stubFetch: (method) => {
+    const fetchCall = method ? utils.stub(fetch, method) : utils.stub(Fetch, 'default');
 
-    return utils.stub(Fetch, 'default').returns(Promise.resolve(methodOrResult));
+    return Object.assign(fetchCall, {
+      yields: (result) => fetchCall.returns(Promise.resolve(result)),
+    });
   },
 
-  expectResult: async (promise, mockResult, adapterStub) => {
-    if (adapterStub) {
-      adapterStub.callsFake(identity);
-    }
+  expectCall: (method, ...args) => {
+    const createUtils = (runTest = noop) => ({
+      withAdapter: (adapterStub) => {
+        adapterStub.callsFake(identity);
 
-    const result = await promise();
+        return createUtils((expectedResult) => {
+          runTest(expectedResult);
 
-    if (mockResult) {
-      utils.expect(result).to.eql(mockResult);
-    }
+          utils.expect(adapterStub).to.be.calledWithExactly(expectedResult);
+        });
+      },
 
-    if (adapterStub) {
-      utils.expect(adapterStub).to.be.calledWithExactly(mockResult);
-    }
+      toYield: async (expectedResult) => {
+        const result = await method(...args);
+
+        utils.expect(result).to.eql(expectedResult);
+
+        runTest(expectedResult);
+      },
+    });
+
+    return createUtils();
   },
 }));

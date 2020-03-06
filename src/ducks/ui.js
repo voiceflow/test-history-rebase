@@ -8,13 +8,7 @@ import { withoutValue } from '@/utils/array';
 import { createAction, createRootSelector } from './utils';
 
 export const STATE_KEY = 'ui';
-
-const PERSIST_CONFIG = {
-  key: STATE_KEY,
-  storage: storageLocal,
-};
-
-const DEFAULT_STATE = {
+export const INITIAL_STATE = {
   creatorMenu: {
     activeMenu: null,
     isHidden: false,
@@ -28,12 +22,18 @@ const DEFAULT_STATE = {
   local: {},
 };
 
+const PERSIST_CONFIG = {
+  key: STATE_KEY,
+  storage: storageLocal,
+};
+
 // actions
 
 export const TOGGLE_BLOCK_MENU_SECTION = 'UI:BLOCK_MENU:TOGGLE_SECTION';
 export const SET_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ACTIVE_MENU';
 export const SET_ACTIVE_FLOW_MENU_TAB = 'UI:FLOW_MENU:SET_ACTIVE_TAB';
 export const TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN';
+export const SET_ONLY_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ONLY_ACTIVE_MENU';
 
 // reducers
 
@@ -58,6 +58,11 @@ export const setActiveCreatorMenuReducer = (state, { payload: activeMenu }) => (
   },
 });
 
+export const setOnlyActiveCreatorMenuReducer = (state, { payload: activeMenu }) => ({
+  ...state,
+  creatorMenu: { ...state.creatorMenu, activeMenu },
+});
+
 export const setActiveFlowMenuTabReducer = (state, { payload: activeTab }) => ({
   ...state,
   flowMenu: {
@@ -74,12 +79,14 @@ export const toggleCreatorMenuHiddenReducer = (state) => ({
   },
 });
 
-const uiReducer = (state = DEFAULT_STATE, action) => {
+const uiReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOGGLE_BLOCK_MENU_SECTION:
       return toggleBlockMenuSectionReducer(state, action);
     case SET_ACTIVE_CREATOR_MENU:
       return setActiveCreatorMenuReducer(state, action);
+    case SET_ONLY_ACTIVE_CREATOR_MENU:
+      return setOnlyActiveCreatorMenuReducer(state, action);
     case SET_ACTIVE_FLOW_MENU_TAB:
       return setActiveFlowMenuTabReducer(state, action);
     case TOGGLE_CREATOR_MENU_HIDDEN:
@@ -108,6 +115,8 @@ export const activeFlowMenuTabSelector = createSelector(rootSelector, ({ flowMen
 export const toggleBlockMenuSection = (section) => createAction(TOGGLE_BLOCK_MENU_SECTION, section);
 
 export const setActiveCreatorMenu = (menu) => createAction(SET_ACTIVE_CREATOR_MENU, menu);
+
+export const setOnlyActiveCreatorMenu = (menu) => createAction(SET_ONLY_ACTIVE_CREATOR_MENU, menu);
 
 export const setActiveFlowMenuTab = (tab) => createAction(SET_ACTIVE_FLOW_MENU_TAB, tab);
 

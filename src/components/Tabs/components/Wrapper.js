@@ -12,6 +12,10 @@ const TabWrapper = styled(Flex)`
   & ${Tab} {
     height: 100%;
   }
+
+  .tab-tooltip {
+    height: 100%;
+  }
 `;
 
 export default TabWrapper;

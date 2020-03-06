@@ -1,5 +1,4 @@
 require:
-  - jsdom-global
   - mock-local-storage
   - ignore-styles
 

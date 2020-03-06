@@ -17,13 +17,13 @@ export const updateDiagramViewers = (users) => async (dispatch, getState) => {
   const state = getState();
   const diagramID = Skill.activeDiagramIDSelector(state);
   const workspaceMemberSelector = Workspace.workspaceMemberSelector(state);
-  const diagramViewers = Object.values(users[diagramID]);
+  const diagramViewers = Object.values(users[diagramID] ?? {});
   const newMembers = diagramViewers.filter((viewer) => !workspaceMemberSelector(viewer));
 
   if (newMembers.length) {
     const workspaceID = Workspace.activeWorkspaceIDSelector(state);
 
-    dispatch(Workspace.getMembers(workspaceID));
+    await dispatch(Workspace.getMembers(workspaceID));
   }
 
   // reinitialize history if no other collaborators present

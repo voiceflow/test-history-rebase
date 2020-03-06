@@ -45,6 +45,8 @@ function CanvasContainer({ openMenu, undoHistory, redoHistory, children }) {
   useHotKeys(Hotkey.REDO, preventDefault(redoHistory), []);
   useHotKeys(Hotkey.COMMENT, addComment, []);
   useHotKeys(Hotkey.SPOTLIGHT, preventDefault(showSpotlight), [showSpotlight]);
+
+  // TODO: Remove when when new LeftSidebar will be added
   useHotKeys(Hotkey.OPEN_BLOCK_MENU, () => openMenu(PanelType.BLOCK_PANEL), []);
   useHotKeys(Hotkey.OPEN_FLOW_MENU, () => openMenu(PanelType.FLOW_PANEL), []);
   useHotKeys(Hotkey.OPEN_VARIABLE_MENU, () => openMenu(PanelType.VARIABLE_PANEL), []);

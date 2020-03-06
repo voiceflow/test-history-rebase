@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import StartBlock from '.';
+
+<Meta title="Creator/Start Block" component={StartBlock} />
+
+# Start Block
+
+A component to represent Start Block in a conversational flow.
+
+<Preview>
+  <Story name="alexa">{stories.alexa()}</Story>
+  <Story name="google">{stories.google()}</Story>
+  <Story name="flow start block">{stories.flowStartBlock()}</Story>
+  <Story name="flow with commands">{stories.flowWithCommands()}</Story>
+</Preview>

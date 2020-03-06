@@ -6,9 +6,9 @@ import { FormGroup, Input, Label } from 'reactstrap';
 import * as Panel from '@/components/Panel';
 import VariableBox from '@/components/VariableBox';
 import { KeyCodes } from '@/constants';
-import { setConfirm } from '@/ducks/modal';
-import { activeDiagramIDSelector, addGlobalVariable } from '@/ducks/skill';
-import { addVariableToDiagram } from '@/ducks/variableSet';
+import * as Modal from '@/ducks/modal';
+import * as Skill from '@/ducks/skill';
+import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 
@@ -72,13 +72,13 @@ const VariableForm = ({ lockOwner, prevOwner, addFlowVariable, addVariable, setC
 };
 
 const mapStateToProps = {
-  diagramID: activeDiagramIDSelector,
+  diagramID: Skill.activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
-  addVariable: addGlobalVariable,
-  addFlowVariable: addVariableToDiagram,
-  setConfirm,
+  addVariable: Skill.addGlobalVariable,
+  addFlowVariable: VariableSet.addVariableToDiagramAndSave,
+  setConfirm: Modal.setConfirm,
 };
 
 const mergeProps = ({ diagramID }, { addFlowVariable }) => ({

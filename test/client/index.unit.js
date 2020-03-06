@@ -20,6 +20,7 @@ suite('Client - Root', ({ expect }) => {
       'file',
       'template',
       'onboarding',
+      'feature',
     ]);
   });
 });

@@ -8,8 +8,8 @@ import { Alert } from 'reactstrap';
 
 import LoadingGate from '@/admin/Routes/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
-import { setConfirm } from '@/ducks/modal';
-import { forceNotification } from '@/ducks/notifications';
+import * as Modal from '@/ducks/modal';
+import * as Notifications from '@/ducks/notifications';
 import { getMaintenanceCookie } from '@/utils/cookies';
 
 import MaintenanceController from './MaintenanceController';
@@ -119,4 +119,9 @@ function MaintenanceGate({ children, setConfirm, forceNotification }) {
   );
 }
 
-export default connect(null, { setConfirm, forceNotification })(MaintenanceGate);
+const mapDispatchToProps = {
+  setConfirm: Modal.setConfirm,
+  forceNotification: Notifications.forceNotificationIfNew,
+};
+
+export default connect(null, mapDispatchToProps)(MaintenanceGate);

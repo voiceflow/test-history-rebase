@@ -9,6 +9,6 @@ module.exports = {
       onDetected({ paths, compilation }) {
         compilation.errors.push(new Error(`Circular dependency detected:\n${paths.join(' -> ')}`));
       },
-      ...opts
-    })
+      ...opts,
+    }),
 };

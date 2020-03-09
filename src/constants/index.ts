@@ -65,40 +65,40 @@ export const GLOBAL_VARIABLES = [
   GlobalVariable.LOCALE,
 ];
 
-export const BlockType = {
+export enum BlockType {
   // internal
-  START: 'start',
-  COMBINED: 'combined',
-  COMMAND: 'command',
-  COMMENT: 'comment',
+  START = 'start',
+  COMBINED = 'combined',
+  COMMAND = 'command',
+  COMMENT = 'comment',
   // basic
-  SPEAK: 'speak',
-  CHOICE_OLD: 'choice',
+  SPEAK = 'speak',
+  CHOICE_OLD = 'choice',
   // logic
-  SET: 'set',
-  IF: 'if',
-  CAPTURE: 'capture',
-  RANDOM: 'random',
+  SET = 'set',
+  IF = 'if',
+  CAPTURE = 'capture',
+  RANDOM = 'random',
   // advanced
-  CHOICE: 'interaction',
-  INTENT: 'intent',
-  STREAM: 'stream',
-  INTEGRATION: 'integration',
-  FLOW: 'flow',
-  CODE: 'code',
-  EXIT: 'exit',
+  CHOICE = 'interaction',
+  INTENT = 'intent',
+  STREAM = 'stream',
+  INTEGRATION = 'integration',
+  FLOW = 'flow',
+  CODE = 'code',
+  EXIT = 'exit',
   // visuals
-  CARD: 'card',
-  DISPLAY: 'display',
+  CARD = 'card',
+  DISPLAY = 'display',
   // user
-  PERMISSION: 'permission',
-  ACCOUNT_LINKING: 'account_linking',
-  USER_INFO: 'user_info',
-  PAYMENT: 'payment',
-  CANCEL_PAYMENT: 'cancel_payment',
-  REMINDER: 'reminder',
-  DEPRECATED: 'deprecated',
-};
+  PERMISSION = 'permission',
+  ACCOUNT_LINKING = 'account_linking',
+  USER_INFO = 'user_info',
+  PAYMENT = 'payment',
+  CANCEL_PAYMENT = 'cancel_payment',
+  REMINDER = 'reminder',
+  DEPRECATED = 'deprecated',
+}
 
 export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];
 export const NO_EDITOR_BLOCKS = [...INTERNAL_BLOCKS, BlockType.DEPRECATED];

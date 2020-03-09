@@ -8,3 +8,9 @@ export const PERMISSIONS = [
   { label: 'Location Services', value: 'alexa::devices:all:geolocation:read' },
   { label: 'Skill Personalization', value: 'alexa::person_id:read' },
 ];
+
+export const PERMISSION_LABELS = PERMISSIONS.reduce<Record<string, string>>((acc, { label, value }) => {
+  acc[value] = label;
+
+  return acc;
+}, {});

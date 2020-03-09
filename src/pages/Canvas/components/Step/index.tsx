@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Node } from '@/models';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, Image, ImageContainer } from './components';
@@ -14,6 +15,12 @@ export type BaseStepProps = {
 };
 
 export type StepProps = BaseStepProps & { children: React.ReactNode | React.ReactNode[] };
+
+export type ConnectedStepProps<T = {}> = {
+  stepProps: Pick<BaseStepProps, 'isActive' | 'onClick'> & { withPorts: boolean };
+  node: Node;
+  data: T;
+};
 
 const Step: React.FC<StepProps> = ({ isActive, onClick, image, children }) => {
   return (

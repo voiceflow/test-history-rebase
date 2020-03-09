@@ -1,11 +1,11 @@
 /* eslint-disable lodash/prefer-constant */
-/* eslint-disable react/display-name */
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-day-picker/lib/style.css';
 import '@/App.css';
 
+import { action } from '@storybook/addon-actions';
 import _noop from 'lodash/noop';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
@@ -79,3 +79,11 @@ export const withEngine = (engine) => (story) => () => (
     {story()}
   </EngineContext.Provider>
 );
+
+export const withStepDispatcher = ({ hasActiveLinks = false, onClick = action('click port') } = {}) =>
+  withEngine({
+    dispatcher: {
+      usePort: () => ({ hasActiveLinks, onClick }),
+      useNode: () => ({}),
+    },
+  });

@@ -22,9 +22,9 @@ const NodeBlock = (_, ref) => {
 
   return (
     <Block name={data.name} ref={blockRef}>
-      {node.combinedNodes.map((nodeID) => (
+      {node.combinedNodes.map((nodeID, index) => (
         <NodeIDProvider value={nodeID} key={nodeID}>
-          <NodeStep />
+          <NodeStep isLast={index === node.combinedNodes.length - 1} />
         </NodeIDProvider>
       ))}
     </Block>

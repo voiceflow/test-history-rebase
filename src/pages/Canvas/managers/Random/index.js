@@ -6,9 +6,10 @@ import RandomStep from './RandomStep';
 
 const RandomManager = {
   type: BlockType.RANDOM,
+  icon: RandomIcon,
+
   editor: RandomEditor,
   step: RandomStep,
-  icon: RandomIcon,
 
   label: 'Random',
   tip: 'Choose randomly from a set number of paths',

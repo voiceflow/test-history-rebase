@@ -5,8 +5,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 
 export type ItemProps = {
   portID?: string | null;
-  icon?: Icon;
-  label?: string;
+  icon?: Icon | null;
+  label?: React.ReactNode | null;
   onClick?: React.ReactEventHandler;
   iconColor?: string;
   portColor?: string;

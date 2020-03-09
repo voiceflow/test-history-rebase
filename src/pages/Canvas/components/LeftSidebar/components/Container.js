@@ -15,6 +15,7 @@ const Container = styled.aside`
 
   transform: translateX(-${SIDEBAR_CONTENT_WIDTH}px) translateZ(0);
   transition: transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 10;
 
   ${({ isOpen }) =>
     isOpen &&

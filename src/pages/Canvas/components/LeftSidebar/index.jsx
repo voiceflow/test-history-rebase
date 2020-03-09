@@ -10,7 +10,6 @@ import { preventDefault } from '@/utils/dom';
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
 
-// TODO: Do not forget to remove old hotkeys from the CanvasContainer.jsx
 function LeftSidebar({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
   const { canEdit } = React.useContext(EditPermissionContext);
   const selectedTab = React.useMemo(() => (Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS), [activeTab]);

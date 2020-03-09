@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -133,7 +133,7 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -159,36 +159,6 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
 .c13 {
   white-space: nowrap;
   overflow: hidden;
@@ -223,6 +193,8 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -249,10 +221,6 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
             >
               New User Flow
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -275,11 +243,11 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -416,37 +384,8 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
 .c13 {
@@ -483,6 +422,8 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -509,10 +450,6 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
             >
               New User Flow
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -535,11 +472,11 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -676,38 +613,8 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -740,6 +647,8 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -765,10 +674,6 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
             >
               Connect a flow to this step
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -791,11 +696,11 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -932,38 +837,8 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -1000,6 +875,8 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1026,10 +903,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
             >
               New User Flow
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1052,11 +925,11 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -1193,38 +1066,8 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -1261,6 +1104,8 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1287,10 +1132,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
             >
               Really long and elaborate flow name
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1492,6 +1333,8 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

@@ -14,14 +14,14 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c21 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c21 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,11 +40,11 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c23 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c24 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -182,7 +182,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c25 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -206,94 +206,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c20 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c20::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
-}
-
-.c22 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c22::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 .c13 {
@@ -334,6 +246,8 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -399,10 +313,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -489,10 +399,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -545,10 +451,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -561,7 +463,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c21"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -575,11 +477,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             >
               Else
             </span>
-            <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -615,11 +512,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -756,38 +653,8 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #8da2b5;
-  border: 4px solid white;
 }
 
 .c15 {
@@ -830,6 +697,8 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -881,10 +750,6 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             >
               Else
             </span>
-            <div
-              className="c16"
-              color="#8da2b5"
-            />
           </div>
         </div>
       </div>
@@ -907,14 +772,14 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c21 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c21 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -933,11 +798,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c23 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c24 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1097,96 +962,8 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c25 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c20 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c20::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
-}
-
-.c22 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c22::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 .c13 {
@@ -1227,6 +1004,8 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1292,10 +1071,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -1382,10 +1157,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -1438,10 +1209,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -1454,7 +1221,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c10"
             >
               <span
-                className="c11 c21"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -1468,11 +1235,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             >
               Else
             </span>
-            <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1495,14 +1257,14 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c20 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c20 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1521,11 +1283,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c22 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1685,67 +1447,8 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c24 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c21 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c21::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 .c13 {
@@ -1786,6 +1489,8 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1851,10 +1556,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
                 </span>
               </span>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -1867,7 +1568,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
               className="c10"
             >
               <span
-                className="c11 c20"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -1881,11 +1582,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             >
               Else
             </span>
-            <div
-              className="c21"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>

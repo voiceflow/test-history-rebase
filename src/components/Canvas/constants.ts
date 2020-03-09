@@ -8,15 +8,15 @@ export const PINCH_SCROLL_FACTOR = 3;
 export const MAX_CLICK_TRAVEL = 10;
 export const SCROLL_TIMEOUT = 500;
 
-export const ControlScheme = {
-  TRACKPAD: 'TRACKPAD',
-  MOUSE: 'MOUSE',
-};
+export enum ControlScheme {
+  TRACKPAD = 'TRACKPAD',
+  MOUSE = 'MOUSE',
+}
 
-export const ControlType = {
-  SCALE: 'SCALE',
-  PAN: 'PAN',
-  CLICK: 'CLICK',
-  END: 'END',
-  SHIFT_MOUSEDOWN: 'SHIFT_MOUSEDOWN',
-};
+export enum ControlType {
+  SCALE = 'SCALE',
+  PAN = 'PAN',
+  CLICK = 'CLICK',
+  END = 'END',
+  SHIFT_MOUSEDOWN = 'SHIFT_MOUSEDOWN',
+}

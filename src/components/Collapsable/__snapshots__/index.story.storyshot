@@ -89,7 +89,6 @@ exports[`Storyshots Collapsable Uncontrolled With Title 1`] = `
     <span
       className="c2 c3"
       color="#6E849A"
-      rotate={false}
       size={10}
     >
       <svg

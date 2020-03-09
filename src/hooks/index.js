@@ -15,3 +15,4 @@ export * from './forceUpdate';
 export * from './lifecycle';
 export * from './modal';
 export * from './tracking';
+export * from './feature';

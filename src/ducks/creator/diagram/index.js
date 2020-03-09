@@ -10,7 +10,7 @@ import { denormalize, getAllNormalizedByKeys, getNormalizedByKey, normalize } fr
 import { INITIALIZE_CREATOR, RESET_CREATOR } from '../actions';
 import { creatorStateSelector } from '../selectors';
 import addLinkReducer from './addLink';
-import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer } from './addNode';
+import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
 import { portFactory } from './factories';
 import insertNestedNodeReducer from './insertNestedNode';
 import mergeNodesReducer from './mergeNodes';
@@ -55,6 +55,7 @@ export const MERGE_NODES = 'CREATOR:NODE:MERGE';
 export const UNMERGE_NODE = 'CREATOR:NODE:UNMERGE';
 export const INSERT_NESTED_NODE = 'CREATOR:NODE:INSERT_NESTED';
 export const ADD_NODE = 'CREATOR:NODE:ADD';
+export const ADD_WRAPPED_NODE = 'CREATOR:NODE:ADD_WRAPPED';
 export const ADD_MANY_NODES = 'CREATOR:NODE:ADD_MANY';
 export const ADD_NESTED_NODE = 'CREATOR:NODE:ADD_NESTED';
 export const REMOVE_NODE = 'CREATOR:NODE:REMOVE';
@@ -148,6 +149,8 @@ function creatorDiagramReducer(state = DEFAULT_STATE, action) {
       return insertNestedNodeReducer(state, action);
     case ADD_NODE:
       return addNodeReducer(state, action);
+    case ADD_WRAPPED_NODE:
+      return addWrappedNodeReducer(state, action);
     case ADD_MANY_NODES:
       return addManyNodesReducer(state, action);
     case ADD_NESTED_NODE:
@@ -260,6 +263,9 @@ export const unmergeNode = (nodeID, position, meta) => createAction(UNMERGE_NODE
 export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, nodeID, index });
 
 export const addNode = (node, data, nodeID) => createAction(ADD_NODE, { node: { ...node, id: nodeID }, data });
+
+export const addWrappedNode = (node, data, nodeID, parentNodeID) =>
+  createAction(ADD_WRAPPED_NODE, { node: { ...node, id: nodeID }, data, parentNodeID });
 
 export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES, { nodeGroup, position });
 

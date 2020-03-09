@@ -26,7 +26,7 @@ export class EngineConsumer {
 
 export function nodeFactory(type) {
   const { factory } = NODE_MANAGERS[type];
-  const { node, data } = factory();
+  const { node, data } = factory?.() ?? { node: {}, data: {} };
 
   return {
     node: {

@@ -14,14 +14,14 @@ function CombinedEditor({ nestedBlocks }) {
 
   return (
     <Content>
-      {nestedBlocks.map(({ type, nodeID, name }) => (
+      {nestedBlocks.map(({ type, nodeID, name }, index) => (
         <Section
           key={nodeID}
           prefix={<SvgIcon icon={getManager(type)?.icon} color={getBlockCategory(type)?.color} />}
           header={name}
           isLink
           onClick={() => engine.focus.set(nodeID)}
-          isDividerNested
+          isDividerNested={index !== 0}
         />
       ))}
     </Content>

@@ -1,58 +1,49 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
+import { withEngine } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
-import RandomStep from '.';
+import { RandomStep } from '.';
 
-const getProps = () => {
-  const onClickPort = action('click port');
+const withDispatcher = ({ hasActiveLinks = false, onClick = action('click port') } = {}) =>
+  withEngine({
+    dispatcher: {
+      usePort: () => ({ hasActiveLinks, onClick }),
+      useNode: () => ({}),
+    },
+  });
 
-  return {
-    paths: [
-      {
-        isConnected: false,
-        onClickPort,
-      },
-    ],
-  };
-};
+const getProps = () => ({
+  ports: ['abc'],
+});
 
 export default {
   title: 'Creator/Steps/Random Step',
   component: RandomStep,
 };
 
-export const singlePath = () => (
+export const singlePath = withDispatcher()(() => (
   <NewBlock name="Random Block">
     <RandomStep {...getProps()} />
   </NewBlock>
-);
+));
 
-export const manyPaths = () => (
+export const manyPaths = withDispatcher()(() => (
   <NewBlock name="Random Block">
-    <RandomStep
-      {...getProps()}
-      paths={[
-        {
-          isConnected: false,
-          onClickPort: action('click port 1'),
-        },
-        {
-          isConnected: true,
-          onClickPort: action('click port 2'),
-        },
-        {
-          isConnected: true,
-          onClickPort: action('click port 3'),
-        },
-      ]}
-    />
+    <RandomStep {...getProps()} ports={['abc', 'def', 'ghi']} />
   </NewBlock>
-);
+));
 
-export const active = () => (
+export const active = withDispatcher()(() => (
   <NewBlock name="Random Block">
     <RandomStep {...getProps()} isActive />
   </NewBlock>
-);
+));
+
+// eslint-disable-next-line sonarjs/no-identical-functions
+export const connected = withDispatcher({ hasActiveLinks: true })(() => (
+  <NewBlock name="Random Block">
+    <RandomStep {...getProps()} />
+  </NewBlock>
+));

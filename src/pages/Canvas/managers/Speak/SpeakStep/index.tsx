@@ -10,9 +10,10 @@ export type SpeakStepItem = {
 };
 
 export type SpeakStepProps = BaseStepProps &
-  Pick<ItemProps, 'withPort' | 'isConnected' | 'onClickPort'> & {
+  Pick<ItemProps, 'portID'> & {
     items: SpeakStepItem[];
     random?: boolean;
+    withPort?: boolean;
     platform: PlatformType;
   };
 
@@ -27,11 +28,9 @@ enum IconColor {
   DEFAULT = '#8f8e94',
 }
 
-const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, isActive, withPort, onClickPort, isConnected }) => {
+const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, platform, isActive, portID }) => {
   const itemProps = {
     portColor: '#6e849a',
-    isConnected,
-    onClickPort,
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
   };
 
@@ -47,7 +46,7 @@ const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, isActive
               key={`${label}-${index}`}
               label={label}
               icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
-              withPort={index === itemsToRender.length - 1 && withPort}
+              portID={withPort && index === itemsToRender.length - 1 ? portID : null}
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
@@ -55,7 +54,7 @@ const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, isActive
             />
           ))
         ) : (
-          <Item {...itemProps} icon={Icon.TEXT} withPort={false} iconColor={IconColor.DEFAULT} />
+          <Item {...itemProps} icon={Icon.TEXT} iconColor={IconColor.DEFAULT} />
         )}
       </Section>
     </Step>

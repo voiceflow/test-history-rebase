@@ -4,10 +4,20 @@ import { FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { withContext } from '@/hocs';
 
-export const EditPermissionContext = React.createContext(null);
+type EditPermissionValue = {
+  isViewer: boolean;
+  isTesting: boolean;
+  canEdit: boolean;
+};
+
+export const EditPermissionContext = React.createContext<EditPermissionValue | null>(null);
 export const { Consumer: EditPermissionConsumer } = EditPermissionContext;
 
-export const EditPermissionProvider = ({ isTesting, children }) => {
+export type EditPermissionProviderProps = {
+  isTesting: boolean;
+};
+
+export const EditPermissionProvider: React.FC<EditPermissionProviderProps> = ({ isTesting, children }) => {
   const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
   const canEdit = canEditCanvas && !isTesting;
 

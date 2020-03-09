@@ -12,6 +12,7 @@ import { compose } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
 import GroupNodeRenderer from './components/GroupNodeRenderer';
+import NodeBlock from './components/NodeBlock';
 import Container from './components/NodeContainer';
 import { withNodeLifecycle } from './hocs';
 
@@ -211,8 +212,10 @@ export class Node extends React.PureComponent {
 
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
+    } else if (node.type === BlockType.COMBINED) {
+      nodeEl = <NodeBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
-      nodeEl = <GroupNodeRenderer combinedNodeIDs={node.combinedNodes} ref={this.blockRef} />;
+      nodeEl = <GroupNodeRenderer ref={this.blockRef} />;
     } else {
       nodeEl = <Block ref={this.blockRef} />;
     }

@@ -1,6 +1,23 @@
+import _styled, {
+  ThemedCssFunction,
+  ThemedStyledInterface,
+  ThemedStyledProps,
+  WithThemeFnInterface,
+  css as _css,
+  withTheme as _withTheme,
+} from 'styled-components';
+
 import { Theme } from '@/styles/theme';
 
-export { default as styled, css, keyframes, createGlobalStyle, withTheme } from 'styled-components';
+export { keyframes, createGlobalStyle } from 'styled-components';
+
+export type StyledProps<P> = ThemedStyledProps<P, Theme>;
+
+export const withTheme: WithThemeFnInterface<Theme> = _withTheme;
+
+export const styled: ThemedStyledInterface<Theme> = _styled;
+
+export const css: ThemedCssFunction<Theme> = _css;
 
 export const transition = (...properties: string[]) => ({ theme }: { theme: Theme }): string => theme.transition(...properties);
 

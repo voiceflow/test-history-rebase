@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import NewBlock, { MultiSectionBlockProps, NewBlockProps, SectionsVariant } from '@/pages/Canvas/components/Block/NewBlock';
+import NewBlock, { NewBlockProps, SectionItemProps, SectionsVariant } from '@/pages/Canvas/components/Block/NewBlock';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 
 import { CommandStep } from './components';
@@ -15,7 +15,7 @@ export type BaseStartBlockProps = Omit<NewBlockProps, 'sectionVariant'> & {
 } & ({ commands?: never; onCommandClick?: never } | { commands: Command[]; onCommandClick: (id: string) => void });
 
 const HomeStartBlock: React.FC<BaseStartBlockProps> = ({ isActive, platform, invocationName, ...props }) => {
-  const sections: MultiSectionBlockProps['sections'] = [
+  const sections: SectionItemProps[] = [
     {
       name: 'Home',
       icon: 'home',

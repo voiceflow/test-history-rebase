@@ -14,14 +14,14 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,11 +40,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c18 .c11 {
   color: #6e849a;
 }
 
@@ -159,7 +159,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -185,66 +185,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #279745;
-  border: 4px solid white;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c15 {
   white-space: nowrap;
   overflow: hidden;
@@ -285,6 +225,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -336,10 +278,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             >
               No Access
             </span>
-            <div
-              className="c16"
-              color="#d94c4c"
-            />
           </div>
           <div
             className="c8 c9"
@@ -348,7 +286,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c16"
                 color="#279745"
                 size={16}
               >
@@ -362,10 +300,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             >
               Success
             </span>
-            <div
-              className="c18"
-              color="#279745"
-            />
           </div>
         </div>
       </div>
@@ -388,14 +322,14 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -414,11 +348,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c18 .c11 {
   color: #6e849a;
 }
 
@@ -555,66 +489,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
-}
-
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
 }
 
 .c15 {
@@ -657,6 +533,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -708,10 +586,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             >
               No Access
             </span>
-            <div
-              className="c16"
-              color="#d94c4c"
-            />
           </div>
           <div
             className="c8 c9"
@@ -720,7 +594,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c16"
                 color="#279745"
                 size={16}
               >
@@ -734,10 +608,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             >
               Success
             </span>
-            <div
-              className="c18"
-              color="#279745"
-            />
           </div>
         </div>
       </div>
@@ -760,14 +630,14 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -786,11 +656,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c18 .c11 {
   color: #6e849a;
 }
 
@@ -927,68 +797,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #279745;
-  border: 4px solid white;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
 }
 
 .c15 {
@@ -1031,6 +841,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1082,10 +894,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             >
               No Access
             </span>
-            <div
-              className="c16"
-              color="#d94c4c"
-            />
           </div>
           <div
             className="c8 c9"
@@ -1094,7 +902,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c16"
                 color="#279745"
                 size={16}
               >
@@ -1108,10 +916,6 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             >
               Success
             </span>
-            <div
-              className="c18"
-              color="#279745"
-            />
           </div>
         </div>
       </div>
@@ -1134,14 +938,14 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1160,11 +964,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c18 .c11 {
   color: #6e849a;
 }
 
@@ -1301,68 +1105,8 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #279745;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #279745;
-  border: 4px solid white;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
 }
 
 .c15 {
@@ -1405,6 +1149,8 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1456,10 +1202,6 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             >
               No Access
             </span>
-            <div
-              className="c16"
-              color="#d94c4c"
-            />
           </div>
           <div
             className="c8 c9"
@@ -1468,7 +1210,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c16"
                 color="#279745"
                 size={16}
               >
@@ -1482,10 +1224,6 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             >
               Success
             </span>
-            <div
-              className="c18"
-              color="#279745"
-            />
           </div>
         </div>
       </div>
@@ -1683,6 +1421,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

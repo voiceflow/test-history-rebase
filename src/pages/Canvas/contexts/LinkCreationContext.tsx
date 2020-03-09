@@ -4,17 +4,27 @@ import { withContext } from '@/hocs';
 
 import { EngineContext } from './EngineContext';
 
+type LinkCreationContextValue = {
+  sourcePortID: string;
+  isDrawing: boolean;
+  completing: boolean;
+  mouseOrigin: [number, number];
+  onStart: (sourcePortID: string, mouseOrigin: [number, number]) => Promise<void>;
+  onComplete: (targetPortID: string) => Promise<void>;
+  onAbort: () => void;
+};
+
 const DEFAULT_CONTEXT = {
   sourcePortID: null,
   mouseOrigin: null,
 };
 
-export const LinkCreationContext = React.createContext(null);
+export const LinkCreationContext = React.createContext<LinkCreationContextValue | null>(null);
 export const { Consumer: LinkCreationConsumer } = LinkCreationContext;
 
-export const LinkCreationProvider = ({ children }) => {
-  const engine = React.useContext(EngineContext);
-  const [context, setContext] = React.useState(DEFAULT_CONTEXT);
+export const LinkCreationProvider: React.FC = ({ children }) => {
+  const engine = React.useContext(EngineContext)!;
+  const [context, setContext] = React.useState<{ sourcePortID: string | null; mouseOrigin: [number, number] | null }>(DEFAULT_CONTEXT);
   const [completing, setCompleting] = React.useState();
   const isDrawing = !!context.sourcePortID;
 
@@ -33,7 +43,7 @@ export const LinkCreationProvider = ({ children }) => {
   const onComplete = React.useCallback(
     async (targetPortID) => {
       setCompleting(true);
-      await engine.link.add(context.sourcePortID, targetPortID);
+      await engine.link.add(context.sourcePortID!, targetPortID);
       setCompleting(false);
       onAbort();
     },
@@ -42,7 +52,15 @@ export const LinkCreationProvider = ({ children }) => {
 
   return (
     <LinkCreationContext.Provider
-      value={{ isDrawing, sourcePortID: context.sourcePortID, mouseOrigin: context.mouseOrigin, onStart, onComplete, onAbort, completing }}
+      value={{
+        isDrawing,
+        sourcePortID: context.sourcePortID!,
+        mouseOrigin: context.mouseOrigin!,
+        onStart,
+        onComplete,
+        onAbort,
+        completing,
+      }}
     >
       {children}
     </LinkCreationContext.Provider>

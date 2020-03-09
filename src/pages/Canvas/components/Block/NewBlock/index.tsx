@@ -2,9 +2,11 @@ import React from 'react';
 
 import { BlockState, BlockVariant } from '@/constants/canvas';
 
-import { Container, MultiSectionBlock, MultiSectionBlockProps, SingleSectionBlock, SingleSectionBlockProps } from './components';
+import { Container } from './components';
+import MultiSectionBlock, { MultiSectionBlockProps } from './components/MultiSectionBlock';
+import SingleSectionBlock, { SingleSectionBlockProps } from './components/SingleSectionBlock';
 
-export { MultiSectionBlockProps, SingleSectionBlock };
+export * from './types';
 
 export enum SectionsVariant {
   MULTI_SECTION = 'multi',
@@ -20,13 +22,11 @@ export type NewBlockProps = (
   isActive?: boolean;
 };
 
-const NewBlock: React.FC<NewBlockProps> = ({
-  state = BlockState.REGULAR,
-  variant = BlockVariant.STANDARD,
-  sectionsVariant = SectionsVariant.SINGLE_SECTION,
-  ...props
-}) => (
-  <Container variant={variant} state={state}>
+const NewBlock: React.RefForwardingComponent<HTMLDivElement, NewBlockProps> = (
+  { state = BlockState.REGULAR, variant = BlockVariant.STANDARD, sectionsVariant = SectionsVariant.SINGLE_SECTION, ...props },
+  ref
+) => (
+  <Container variant={variant} state={state} ref={ref}>
     {sectionsVariant === SectionsVariant.SINGLE_SECTION ? (
       <SingleSectionBlock state={state} variant={variant} {...(props as SingleSectionBlockProps)} />
     ) : (
@@ -35,4 +35,4 @@ const NewBlock: React.FC<NewBlockProps> = ({
   </Container>
 );
 
-export default NewBlock;
+export default React.forwardRef(NewBlock);

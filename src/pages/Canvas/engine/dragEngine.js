@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
 
 import { EngineConsumer } from './utils';
@@ -29,7 +30,10 @@ class DragEngine extends EngineConsumer {
     if (target !== this.target) {
       await this.clear();
 
-      this.engine.merge.generatePredicates(target);
+      if (!this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+        this.engine.merge.generatePredicates(target);
+      }
+
       this.engine.node.drag(target);
 
       this.target = target;

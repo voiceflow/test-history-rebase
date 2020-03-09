@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import NewBlock, { MultiSectionBlockProps, SectionsVariant } from '@/pages/Canvas/components/Block/NewBlock';
+import NewBlock, { SectionItemProps, SectionsVariant } from '@/pages/Canvas/components/Block/NewBlock';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 
 import { BaseStartBlockProps } from './HomeStartBlock';
@@ -12,7 +12,7 @@ export type FlowStartBlockProps = BaseStartBlockProps & {
 };
 
 const FlowStartBlock: React.FC<FlowStartBlockProps> = ({ isActive, flowName, ...props }) => {
-  const sections: MultiSectionBlockProps['sections'] = [
+  const sections: SectionItemProps[] = [
     {
       name: flowName,
       children: (

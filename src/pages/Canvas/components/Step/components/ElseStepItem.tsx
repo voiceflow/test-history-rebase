@@ -2,10 +2,11 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 
-import Item, { StepItemProps } from './StepItem';
+import { ItemProps } from '../types';
+import Item from './StepItem';
 import Section from './StepSection';
 
-export type ElseStepItemProps = Omit<StepItemProps, 'icon' | 'label' | 'portColor' | 'iconColor' | 'labelVariant'>;
+export type ElseStepItemProps = Omit<ItemProps, 'icon' | 'label' | 'portColor' | 'iconColor' | 'labelVariant'>;
 
 const ElseStepItem: React.FC<ElseStepItemProps> = (props) => (
   <Section>

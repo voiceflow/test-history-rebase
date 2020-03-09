@@ -1,3 +1,5 @@
+/* eslint-disable lodash/prefer-constant */
+/* eslint-disable react/display-name */
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,10 +13,11 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
-import { ThemeProvider, ReduxProvider } from '@/utils/testing';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 
-import { StoryContext } from './contexts';
 import { StoryDetails } from './components';
+import { StoryContext } from './contexts';
 
 const globalDecorator = (Component) => (
   <ThemeProvider>
@@ -25,12 +28,6 @@ const globalDecorator = (Component) => (
 export default globalDecorator;
 
 export const composeDecorators = (...decorators) => (story) => decorators.reverse().reduce((acc, decorator) => () => decorator(acc), story);
-
-export const asDecorator = (hoc) => (Component) => {
-  const Wrapped = hoc(() => <Component />);
-
-  return <Wrapped />;
-};
 
 export const withRedux = (state = {}) => (Component) => (
   <ReduxProvider state={state}>
@@ -44,6 +41,7 @@ export const withModalContext = (openedId) => (Component) => (
   </ModalsContext.Provider>
 );
 
+// eslint-disable-next-line xss/no-mixed-html
 export const withDnD = (Component) => (
   <DndProvider backend={HTML5Backend}>
     <DragProvider>
@@ -68,4 +66,16 @@ export const withStoryDetails = (Component) => (
       );
     }}
   </StoryContext.Consumer>
+);
+
+export const withEngine = (engine) => (story) => () => (
+  <EngineContext.Provider
+    value={{
+      registerPort: () => null,
+      expirePort: () => null,
+      ...engine,
+    }}
+  >
+    {story()}
+  </EngineContext.Provider>
 );

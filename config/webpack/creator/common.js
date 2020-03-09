@@ -47,11 +47,8 @@ module.exports = merge(commonConfig, {
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
               'pages/Canvas/managers/Start/StartBlock/**/*',
-              'pages/Canvas/components/LeftSidebar/**/*',
+              'pages/Canvas/components/PortV2/**/*',
               'components/CustomScrollbars/**/*',
-
-              // TODO: remove when adding a feature flag
-              'hooks/feature.js',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',

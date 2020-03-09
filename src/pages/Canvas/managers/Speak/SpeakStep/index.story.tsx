@@ -2,13 +2,21 @@ import { action } from '@storybook/addon-actions';
 import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
+import { withEngine } from '@/../.storybook';
 import { PLATFORMS, PlatformType } from '@/constants';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import SpeakStep, { SpeakStepItem } from '.';
 
+const withDispatcher = ({ hasActiveLinks = false, onClick = action('click port') } = {}) =>
+  withEngine({
+    dispatcher: {
+      usePort: () => ({ hasActiveLinks, onClick }),
+      useNode: () => ({}),
+    },
+  });
+
 const getProps = () => {
-  const onClickPort = action('click port');
   const platform = select('platform', PLATFORMS, PlatformType.ALEXA);
   const items: SpeakStepItem[] = [
     { label: 'Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.' },
@@ -20,9 +28,9 @@ const getProps = () => {
   ];
 
   return {
+    portID: 'abc',
     items,
     platform,
-    onClickPort,
   };
 };
 
@@ -31,13 +39,13 @@ export default {
   component: SpeakStep,
 };
 
-export const empty = () => (
+export const empty = withDispatcher()(() => (
   <NewBlock name="Speak Block">
     <SpeakStep {...getProps()} items={[]} />
   </NewBlock>
-);
+));
 
-export const singleActive = () => {
+export const singleActive = withDispatcher()(() => {
   const { items, ...props } = getProps();
 
   return (
@@ -45,22 +53,31 @@ export const singleActive = () => {
       <SpeakStep items={[items[0]]} {...props} isActive />
     </NewBlock>
   );
-};
+});
 
-export const multiSteps = () => (
+export const connected = withDispatcher({
+  hasActiveLinks: true,
+})(() => (
   <NewBlock name="Speak Block">
-    <SpeakStep {...getProps()} isConnected />
+    <SpeakStep {...getProps()} />
   </NewBlock>
-);
+));
 
-export const random = () => (
+// eslint-disable-next-line sonarjs/no-identical-functions
+export const multiSteps = withDispatcher()(() => (
   <NewBlock name="Speak Block">
-    <SpeakStep {...getProps()} random isConnected />
+    <SpeakStep {...getProps()} />
   </NewBlock>
-);
+));
 
-export const withoutPort = () => (
+export const random = withDispatcher()(() => (
+  <NewBlock name="Speak Block">
+    <SpeakStep {...getProps()} random />
+  </NewBlock>
+));
+
+export const withoutPort = withDispatcher()(() => (
   <NewBlock name="Speak Block">
     <SpeakStep {...getProps()} random withPort={false} />
   </NewBlock>
-);
+));

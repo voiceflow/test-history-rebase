@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -93,7 +93,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -102,7 +102,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -148,7 +148,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -174,36 +174,6 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
 .c13 {
   white-space: nowrap;
   overflow: hidden;
@@ -234,6 +204,8 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -259,17 +231,13 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -292,11 +260,11 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -371,7 +339,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -380,7 +348,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -448,37 +416,8 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
 .c13 {
@@ -511,6 +450,8 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -536,17 +477,13 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -569,11 +506,11 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -710,38 +647,8 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -774,6 +681,8 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -799,9 +708,6 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
             >
               Add a multimodal display
             </span>
-            <div
-              className="c14"
-            />
           </div>
         </div>
       </div>
@@ -824,11 +730,11 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -903,7 +809,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -912,7 +818,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -980,38 +886,8 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -1044,6 +920,8 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1069,17 +947,13 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
             >
               Hi my name is Rick Sanchez and this is my Morty
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -1102,11 +976,11 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1181,7 +1055,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -1190,7 +1064,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -1258,38 +1132,8 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -1322,6 +1166,8 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1347,17 +1193,13 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -1380,11 +1222,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
 }
 
@@ -1521,38 +1363,8 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
 }
 
 .c13 {
@@ -1585,6 +1397,8 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1610,10 +1424,6 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1826,6 +1636,8 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

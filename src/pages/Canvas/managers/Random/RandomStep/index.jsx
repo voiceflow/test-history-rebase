@@ -2,22 +2,25 @@ import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 
-const RandomStep = ({ paths, isActive }) => (
-  <Step isActive={isActive}>
+export const RandomStep = ({ ports, isActive, onClick }) => (
+  <Step isActive={isActive} onClick={onClick}>
     <Section>
-      {paths.map((path, index) => (
+      {ports.map((portID, index) => (
         <Item
+          portID={portID}
           label={`Path ${index + 1}`}
-          isConnected={path.isConnected}
-          onClickPort={path.onClickPort}
           labelVariant="secondary"
           icon={index === 0 && 'randomLoop'}
           iconColor="#616c60"
-          key={index}
+          key={portID}
         />
       ))}
     </Section>
   </Step>
 );
 
-export default RandomStep;
+const ConnectedRandomStep = ({ node, stepProps }) => {
+  return <RandomStep ports={node.ports.out} {...stepProps} />;
+};
+
+export default ConnectedRandomStep;

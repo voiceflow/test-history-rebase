@@ -1,5 +1,336 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #8f8e94;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f83f55;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c17 .c11 {
+  color: #fff;
+}
+
+.c18 .c11 {
+  color: #6e849a;
+}
+
+.c3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c19 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c15 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+  display: -webkit-box;
+  max-height: 88px;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.c16 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c16::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#6e849a1f,#6e849a3d 100%);
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <header
+      className="c2"
+    >
+      <span
+        className="c3"
+      >
+        Speak Block
+      </span>
+    </header>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#8f8e94"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgSpeak"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+            </span>
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c14"
+                color="#f83f55"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgVolume"
+                />
+              </span>
+            </div>
+            <span
+              className="c15"
+            >
+              man_breathing_heavily(loud).mp3
+            </span>
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#8f8e94"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgSpeak"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+            </span>
+            <div
+              className="c16"
+              color="#6e849a"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
 .c12 {
   box-sizing: content-box;
@@ -189,6 +520,8 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -394,35 +727,6 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#6e849a1f,#6e849a3d 100%);
-}
-
 .c15 {
   white-space: nowrap;
   overflow: hidden;
@@ -448,6 +752,36 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
   -webkit-line-clamp: 4;
 }
 
+.c16 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c16::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 <div
   className="c0"
 >
@@ -468,6 +802,8 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -541,6 +877,7 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
               className="c16"
               color="#6e849a"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -709,6 +1046,21 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+  display: -webkit-box;
+  max-height: 88px;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
 .c14 {
   position: relative;
   height: 54px;
@@ -733,24 +1085,10 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
   box-sizing: content-box;
   box-shadow: 0 0 0 1px #6e849a;
   border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#6e849a1f,#6e849a3d 100%);
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-  display: -webkit-box;
-  max-height: 88px;
-  white-space: normal;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -773,6 +1111,8 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -802,6 +1142,7 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
               className="c14"
               color="#6e849a"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -970,6 +1311,21 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+  display: -webkit-box;
+  max-height: 88px;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
 .c14 {
   position: relative;
   height: 54px;
@@ -1000,21 +1356,6 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
   border: 4px solid white;
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-  display: -webkit-box;
-  max-height: 88px;
-  white-space: normal;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-}
-
 <div
   className="c0"
 >
@@ -1035,6 +1376,8 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1064,6 +1407,7 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
               className="c14"
               color="#6e849a"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -1267,6 +1611,8 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

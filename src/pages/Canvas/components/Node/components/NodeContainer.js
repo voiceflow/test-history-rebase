@@ -1,4 +1,5 @@
 import { css, styled } from '@/hocs';
+import NewBlockContainer from '@/pages/Canvas/components/Block/NewBlock/components/NewBlockContainer';
 
 const NodeContainer = styled.div`
   position: absolute;
@@ -29,6 +30,11 @@ const NodeContainer = styled.div`
   &:focus,
   &:focus-within {
     z-index: 20;
+  }
+
+  ${NewBlockContainer} {
+    position: absolute;
+    transform: translateX(-50%);
   }
 `;
 

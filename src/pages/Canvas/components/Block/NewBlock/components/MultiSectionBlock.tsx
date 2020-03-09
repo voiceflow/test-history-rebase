@@ -2,10 +2,11 @@ import React from 'react';
 
 import { BlockState, BlockVariant } from '@/constants/canvas';
 
-import Section, { NewBlockSectionProps } from './NewBlockSection';
+import { SectionItemProps } from '../types';
+import Section from './NewBlockSection';
 
 export type MultiSectionBlockProps = {
-  sections: React.PropsWithChildren<WithOptional<NewBlockSectionProps, 'state' | 'variant'>>[];
+  sections: SectionItemProps[];
 };
 
 const MultiSectionBlock: React.FC<MultiSectionBlockProps> = ({ sections }) => (

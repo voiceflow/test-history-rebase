@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
+import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
 
 import { EngineConsumer } from './utils';
@@ -36,7 +37,10 @@ class RealtimeEngine extends EngineConsumer {
         targets.forEach((nodeID) => this.engine.node.redraw(nodeID));
       }
     },
-    [Realtime.ADD_NODE]: ({ node, data, nodeID }) => this.engine.node.internal.add(node, data, nodeID),
+    [Realtime.ADD_NODE]: ({ node, data, nodeID, parentNodeID }) =>
+      this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)
+        ? this.engine.node.internal.addWrapped(node, data, nodeID, parentNodeID)
+        : this.engine.node.internal.add(node, data, nodeID),
     [Realtime.ADD_MANY_NODES]: ({ nodeGroup, position }) => this.engine.node.internal.addMany(nodeGroup, position),
     [Realtime.ADD_NESTED_NODE]: ({ parentNodeID, nodeID, node, data, mergedNodeID }) =>
       this.engine.node.internal.addNested(parentNodeID, nodeID, node, data, mergedNodeID),

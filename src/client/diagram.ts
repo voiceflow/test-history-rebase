@@ -8,18 +8,20 @@ const DIAGRAM_PATH = 'diagram';
 const VARIABLES_PATH = 'variables';
 
 const diagramClient = {
-  getData: (diagramID: string, platform: PlatformType, isBlockRedesignEnabled: boolean): Promise<unknown> =>
-    fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram, timestamp = [] }) => ({
-      data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform, isBlockRedesignEnabled),
-      variables: diagram.variables || [],
-      timestamp,
-    })),
+  getData: (diagramID: string, platform: PlatformType, isBlockRedesignEnabled: boolean) =>
+    fetch
+      .get<{ diagram: { data: string; variables?: string[] }; timestamp: number }>(`${DIAGRAM_PATH}/${diagramID}`)
+      .then(({ diagram, timestamp }) => ({
+        data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform, isBlockRedesignEnabled),
+        variables: diagram.variables || [],
+        timestamp,
+      })),
 
-  get: (diagramID: string): Promise<unknown> => fetch(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram }) => diagramAdapter.fromDB(diagram)),
+  get: (diagramID: string) => fetch.get<{ diagram: unknown }>(`${DIAGRAM_PATH}/${diagramID}`).then(({ diagram }) => diagramAdapter.fromDB(diagram)),
 
-  create: (diagram: unknown) => fetch.post(`${DIAGRAM_PATH}?new=1`, diagram),
+  create: (diagram: object) => fetch.post(`${DIAGRAM_PATH}?new=1`, diagram),
 
-  copy: (diagramID: string, name: string) => fetch(`${DIAGRAM_PATH}/copy/${diagramID}?name=${encodeURI(name)}`),
+  copy: (diagramID: string, name: string) => fetch.get(`${DIAGRAM_PATH}/copy/${diagramID}?name=${encodeURI(name)}`),
 
   delete: (diagramID: string) =>
     fetch.delete(`${DIAGRAM_PATH}/${diagramID}`).catch((err) => {
@@ -32,9 +34,9 @@ const diagramClient = {
 
   rename: (diagramID: string, name: string) => fetch.post(`${DIAGRAM_PATH}/${diagramID}/name`, { name }),
 
-  update: (diagram: unknown) => fetch.post(`${DIAGRAM_PATH}`, diagram),
+  update: (diagram: object) => fetch.post(`${DIAGRAM_PATH}`, diagram),
 
-  findVariables: (diagramID: string): Promise<string[]> => fetch(`${DIAGRAM_PATH}/${diagramID}/${VARIABLES_PATH}`),
+  findVariables: (diagramID: string): Promise<string[]> => fetch.get(`${DIAGRAM_PATH}/${diagramID}/${VARIABLES_PATH}`),
 
   updateVariables: (diagramID: string, variables: string[]) => fetch.patch(`${DIAGRAM_PATH}/${diagramID}/${VARIABLES_PATH}`, { variables }),
 };

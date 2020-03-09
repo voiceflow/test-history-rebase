@@ -2,7 +2,7 @@ import productAdapter from './adapters/product';
 import fetch from './fetch';
 
 const productClient = {
-  get: (versionID, productID) => fetch(`skill/${versionID}/product/${productID}`),
+  get: (versionID, productID) => fetch.get(`skill/${versionID}/product/${productID}`),
 
   create: (product) => fetch.post('skill/product?new=1', productAdapter.toDB(product)),
 
@@ -12,7 +12,7 @@ const productClient = {
 
   delete: (versionID, productID) => fetch.delete(`skill/${versionID}/product/${productID}`),
 
-  findProducts: (versionID) => fetch(`skill/${versionID}/products`).then(productAdapter.mapFromDB),
+  findProducts: (versionID) => fetch.get(`skill/${versionID}/products`).then(productAdapter.mapFromDB),
 };
 
 export default productClient;

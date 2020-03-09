@@ -26,11 +26,11 @@ const projectClient = {
 
   updateVendorId: (projectID, vendorId) => fetch.post(`${PROJECT_PATH}/${projectID}/vendor_id`, { vendor_id: vendorId }),
 
-  getImportToken: (projectID) => fetch(`exportProject/${projectID}`),
+  getImportToken: (projectID) => fetch.get(`exportProject/${projectID}`),
 
-  getLiveVersion: (projectID) => fetch(`${PROJECT_PATH}/${projectID}/live_version`),
+  getLiveVersion: (projectID) => fetch.get(`${PROJECT_PATH}/${projectID}/live_version`),
 
-  getVersions: (projectID) => fetch(`${PROJECT_PATH}/${projectID}/versions`),
+  getVersions: (projectID) => fetch.get(`${PROJECT_PATH}/${projectID}/versions`),
 
   updateAmznId: (projectID, vendorID, AmznID) => fetch.patch(`${PROJECT_PATH}/${projectID}/amzn_id`, { id: AmznID.trim(), vendorID }),
 };

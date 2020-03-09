@@ -7,7 +7,7 @@ const SKILL_PATH = 'skill';
 const DISPLAYS_PATH = 'multimodal/displays';
 
 const skillClient = {
-  get: (skillID) => fetch(`${SKILL_PATH}/${skillID}?simple=1&user_modules=1`),
+  get: (skillID) => fetch.get(`${SKILL_PATH}/${skillID}?simple=1&user_modules=1`),
 
   update: (skillID, body) => fetch.patch(`${SKILL_PATH}/${skillID}`, body),
 
@@ -15,13 +15,13 @@ const skillClient = {
 
   updateAccountLinking: (skillID, body) => fetch.post(`link_account/template/${skillID}`, body),
 
-  findDiagrams: (skillID) => fetch(`${SKILL_PATH}/${skillID}/diagrams`).then(diagramAdapter.mapFromDB),
+  findDiagrams: (skillID) => fetch.get(`${SKILL_PATH}/${skillID}/diagrams`).then(diagramAdapter.mapFromDB),
 
-  findProducts: (skillID) => fetch(`${SKILL_PATH}/${skillID}/products`).then(productAdapter.mapFromDB),
+  findProducts: (skillID) => fetch.get(`${SKILL_PATH}/${skillID}/products`).then(productAdapter.mapFromDB),
 
-  findDisplays: (skillID) => fetch(`${DISPLAYS_PATH}?skill_id=${skillID}`).then(displayAdapter.mapFromDB),
+  findDisplays: (skillID) => fetch.get(`${DISPLAYS_PATH}?skill_id=${skillID}`).then(displayAdapter.mapFromDB),
 
-  findAccountLinking: (skillID) => fetch(`link_account/template/${skillID}`),
+  findAccountLinking: (skillID) => fetch.get(`link_account/template/${skillID}`),
 
   restore: (versionId) => fetch.post(`${SKILL_PATH}/${versionId}/restore`),
 };

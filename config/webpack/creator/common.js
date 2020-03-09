@@ -42,7 +42,7 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
-              'store/types.ts',
+              '**/types.ts',
 
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',

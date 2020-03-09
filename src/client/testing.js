@@ -9,10 +9,11 @@ const testingClient = {
 
   interact: (state) => fetch.post(`${TESTING_PATH}/interact`, state),
 
-  createInfo: (skillID, diagramID, globals) => fetch.post(`${TESTING_PATH}/makeInfo/${skillID}`, { diagram: diagramID, globals }),
+  createInfo: (skillID, diagramID, globals) =>
+    fetch.post(`${TESTING_PATH}/makeInfo/${skillID}`, { diagram: diagramID, globals }, { cache: true, expiry: false }),
 
   getInfo: (configID) =>
-    fetch(`${TESTING_PATH}/getInfo/${configID}`).then((data) => {
+    fetch.get(`${TESTING_PATH}/getInfo/${configID}`).then((data) => {
       const skill = skillAdapter.fromDB(data.skill);
       const intents = extractIntents(data.skill);
       const slots = extractSlots(data.skill);

@@ -1,8 +1,9 @@
 import fetch from './fetch';
 
 const featureClient = {
-  isEnabled: (featureID) => fetch(`feature/${featureID}`).then(({ status }) => status),
-  find: () => fetch('features'),
+  isEnabled: (featureID) => fetch.get(`feature/${featureID}`).then(({ status }) => status),
+
+  find: () => fetch.get('features'),
 };
 
 export default featureClient;

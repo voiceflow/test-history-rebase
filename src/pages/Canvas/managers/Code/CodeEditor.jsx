@@ -34,6 +34,12 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
     }
   }, [variables]);
 
+  React.useEffect(() => {
+    if (data.code !== editorState) {
+      onUpdateEditorState(data.code);
+    }
+  }, [data.code]);
+
   return (
     <Content
       footer={() => (
@@ -60,7 +66,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
           placeholder="Enter Javascript code here"
           ref={editorRef}
           value={editorState}
-          onChange={onUpdateEditorState}
+          onChange={(value) => onUpdateEditorState(value)}
           onBlur={onUpdateCode}
           name="code"
           mode="javascript"

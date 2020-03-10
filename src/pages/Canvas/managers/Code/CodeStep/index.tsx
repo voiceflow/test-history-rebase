@@ -10,8 +10,8 @@ export type CodeStepProps = ConnectedStepProps['stepProps'] & {
   failPort: string;
 };
 
-export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, successPort, failPort, isActive }) => (
-  <Step isActive={isActive}>
+export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, successPort, failPort, isActive, onClick }) => (
+  <Step isActive={isActive} onClick={onClick}>
     <Section>
       <Item
         icon="power"

@@ -165,7 +165,7 @@ jobs:
               aws eks --region us-east-1 update-kubeconfig --name production
             fi
             BUILD_NUM=$(cat /tmp/vf-build/vars/app_build_num)
-            kubectl set image --namespace voiceflow-v1 deployment/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
+            kubectl set image --namespace voiceflow-v1 statefulset/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
   build-push-storybook:
     executor: image_builder
     steps:
@@ -282,7 +282,7 @@ jobs:
             git push origin --delete $CIRCLE_BRANCH --no-verify
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
             aws eks --region us-east-1 update-kubeconfig --name development
-            kubectl set image --namespace ephemeral-$ENV_NAME deployment/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace ephemeral-$ENV_NAME statefulset/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
             kubectl set image --namespace ephemeral-$ENV_NAME deployment/admin-ui-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
 workflows:
   build-deploy:

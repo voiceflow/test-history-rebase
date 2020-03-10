@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Editor Normal 1`] = `
-.c40 {
+.c41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,75 +17,75 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   justify-content: space-between;
 }
 
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #787878;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c27 {
+.c28 {
   box-sizing: content-box;
   width: 12px;
   height: 12px;
   color: #BECEDC;
 }
 
-.c27 > svg {
+.c28 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c27:hover {
+.c28:hover {
   color: #BECEDC;
 }
 
-.c27:active {
+.c28:active {
   color: #BECEDC;
 }
 
-.c36 {
+.c37 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6E849A;
 }
 
-.c36 > svg {
+.c37 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c36:hover {
+.c37:hover {
   color: #6E849A;
 }
 
-.c36:active {
+.c37:active {
   color: #6E849A;
 }
 
-.c10 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -107,42 +107,41 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
   background: inherit;
 }
 
-.c10:focus,
-.c10:active {
+.c11:focus,
+.c11:active {
   outline: 0;
 }
 
-.c10:active {
-  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
-  border: 1px solid #fff;
-  color: #5b9dfa;
-  box-shadow: 0 0 0 1px #5b9dfa99 !important;
-}
-
-.c10:hover {
+.c11:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c44 {
+.c11:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
+.c45 {
   height: 16px;
   width: 16px;
   margin-right: 16px;
   color: rgba(110,132,154,0.85);
 }
 
-.c42 {
+.c43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -178,21 +177,21 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   transition: all ease 0.15s;
 }
 
-.c42:focus,
-.c42:active {
+.c43:focus,
+.c43:active {
   outline: 0;
 }
 
-.c42:hover,
-.c42:active {
+.c43:hover,
+.c43:active {
   background-color: #e0ebee;
 }
 
-.c45 .c11 {
+.c46 .c12 {
   color: #fff;
 }
 
-.c46 .c11 {
+.c47 .c12 {
   color: #6e849a;
 }
 
@@ -204,7 +203,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   border-radius: 0;
 }
 
-.c23 {
+.c24 {
   cursor: pointer;
   color: #5d9df5;
   font-size: 15px;
@@ -212,11 +211,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   transition: color 0.15s ease;
 }
 
-.c23:hover {
+.c24:hover {
   color: #4886da;
 }
 
-.c24 {
+.c25 {
   -webkit-transition: color 0.15s ease;
   transition: color 0.15s ease;
   position: relative;
@@ -226,19 +225,19 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   top: 3px;
 }
 
-.c24:hover {
+.c25:hover {
   color: #8da2b5;
 }
 
-.c29 {
+.c30 {
   padding: 0 32px;
 }
 
-.c38 {
+.c39 {
   padding: 20px 32px;
 }
 
-.c22 {
+.c23 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -247,7 +246,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   opacity: 1;
 }
 
-.c17 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -267,7 +266,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   cursor: pointer;
 }
 
-.c32 {
+.c33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -286,7 +285,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   cursor: default;
 }
 
-.c37 {
+.c38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -301,16 +300,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   justify-content: center;
 }
 
-.c37:not(:last-child) {
+.c38:not(:last-child) {
   margin-right: 16px;
 }
 
-.c15 {
+.c16 {
   position: relative;
   background-color: #fff;
 }
 
-.c15:not(:first-child)::before {
+.c16:not(:first-child)::before {
   position: absolute;
   top: 0;
   left: 0px;
@@ -321,16 +320,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   content: '';
 }
 
-.c15 .c21 {
+.c16 .c22 {
   font-weight: normal;
 }
 
-.c31 {
+.c32 {
   position: relative;
   background-color: #fff;
 }
 
-.c31:not(:first-child)::before {
+.c32:not(:first-child)::before {
   position: absolute;
   top: 0;
   left: 0px;
@@ -341,26 +340,26 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   content: '';
 }
 
-.c31 .c21 {
+.c32 .c22 {
   color: #62778c;
   font-weight: 600;
   font-size: 15px;
 }
 
-.c31 .c16 {
+.c32 .c17 {
   height: 40px;
 }
 
-.c31 .c28 {
+.c32 .c29 {
   padding-bottom: 16px;
 }
 
-.c35 {
+.c36 {
   position: relative;
   background-color: #fff;
 }
 
-.c35:not(:first-child)::before {
+.c36:not(:first-child)::before {
   position: absolute;
   top: 0;
   left: 0px;
@@ -371,19 +370,19 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   content: '';
 }
 
-.c35 .c21 {
+.c36 .c22 {
   font-weight: 600;
 }
 
-.c33 {
+.c34 {
   margin-right: 12px;
 }
 
-.c19:not(:last-child) {
+.c20:not(:last-child) {
   margin-right: 16px;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -395,7 +394,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   min-width: 0;
 }
 
-.c25 {
+.c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -408,7 +407,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   font-size: 13px;
 }
 
-.c26 {
+.c27 {
   -webkit-transition: -webkit-transform 0.15s ease;
   -webkit-transition: transform 0.15s ease;
   transition: transform 0.15s ease;
@@ -419,11 +418,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   cursor: pointer;
 }
 
-.c26:hover {
+.c27:hover {
   color: #8da2b5;
 }
 
-.c34 {
+.c35 {
   position: relative;
   height: 20px;
   margin-top: -2px;
@@ -447,7 +446,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   overflow: hidden;
 }
 
-.c39 {
+.c40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -463,11 +462,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   z-index: 0;
 }
 
-.c39:not(:first-child) {
+.c40:not(:first-child) {
   border-top: 1px solid #dfe3ed;
 }
 
-.c14 {
+.c15 {
   overflow-x: hidden;
   overflow-y: auto;
   border-top: none !important;
@@ -477,15 +476,15 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   scrollbar-width: none;
 }
 
-.c14:not(:first-child) {
+.c15:not(:first-child) {
   border-top: 1px solid #dfe3ed;
 }
 
-.c14::-webkit-scrollbar {
+.c15::-webkit-scrollbar {
   display: none;
 }
 
-.c41 {
+.c42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -496,15 +495,15 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   align-items: center;
 }
 
-.c41 > *:not(:first-child) {
+.c42 > *:not(:first-child) {
   margin-left: 8px;
 }
 
-.c41 > *:not(:last-child) {
+.c42 > *:not(:last-child) {
   margin-right: 8px;
 }
 
-.c30 {
+.c31 {
   padding-bottom: 16px;
 }
 
@@ -611,7 +610,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   justify-content: space-between;
 }
 
-.c13 {
+.c14 {
   -webkit-animation: laeTZU 180ms ease-in-out;
   animation: laeTZU 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
@@ -630,8 +629,23 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   flex: 1;
 }
 
-.c43 {
+.c44 {
   color: rgba(110,132,154,0.85);
+}
+
+.c48 .c10:not(:active) {
+  box-shadow: none;
+}
+
+.c48 .c10:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.c48 .c10:not(:first-of-type) {
+  margin-left: 1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .c0 {
@@ -697,11 +711,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
           onChange={[Function]}
         />
         <button
-          className="c10"
+          className="c10 c11"
           onClick={[Function]}
         >
           <span
-            className="c11 c12"
+            className="c12 c13"
             color="currentColor"
             size={16}
           >
@@ -713,26 +727,26 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
       </div>
     </div>
     <div
-      className="c13"
+      className="c14"
     >
       <div
-        className="c14"
+        className="c15"
       >
         <div
-          className="c15"
+          className="c16"
         >
           <div
-            className="c16 c17"
+            className="c17 c18"
             onClick={[Function]}
           >
             <div
-              className="c18"
+              className="c19"
             >
               <div
-                className="c19"
+                className="c20"
               >
                 <span
-                  className="c11 c20"
+                  className="c12 c21"
                   color="#787878"
                   size={16}
                 >
@@ -742,20 +756,20 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                 </span>
               </div>
               <div
-                className="c21 c22"
+                className="c22 c23"
                 disabled={false}
               >
                 Collapsible Section, Fully Clickable
               </div>
               <div
-                className="c23"
+                className="c24"
                 onClick={[Function]}
               >
                 <div
-                  className="c24"
+                  className="c25"
                 >
                   <span
-                    className="c11 c12"
+                    className="c12 c13"
                     color="currentColor"
                     size={16}
                   >
@@ -767,14 +781,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
               </div>
             </div>
             <div
-              className="c25"
+              className="c26"
             >
               <div>
                 <div
-                  className="c26"
+                  className="c27"
                 >
                   <span
-                    className="c11 c27"
+                    className="c12 c28"
                     color="currentColor"
                     size={12}
                   >
@@ -787,14 +801,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
             </div>
           </div>
           <div
-            className="c28 c29"
+            className="c29 c30"
           >
             <div
               className="collapse"
               style={Object {}}
             >
               <div
-                className="c30"
+                className="c31"
               >
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
               </div>
@@ -802,29 +816,29 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
           </div>
         </div>
         <div
-          className="c31"
+          className="c32"
         >
           <div
-            className="c16 c32"
+            className="c17 c33"
           >
             <div
-              className="c18"
+              className="c19"
             >
               <div
-                className="c21 c22"
+                className="c22 c23"
                 disabled={false}
               >
                 Toggle in Child
               </div>
               <div
-                className="c23"
+                className="c24"
                 onClick={[Function]}
               >
                 <div
-                  className="c24"
+                  className="c25"
                 >
                   <span
-                    className="c11 c12"
+                    className="c12 c13"
                     color="currentColor"
                     size={16}
                   >
@@ -836,16 +850,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
               </div>
             </div>
             <div
-              className="c25"
+              className="c26"
             >
               <div
-                className="c33"
+                className="c34"
               >
                 3
               </div>
               <div>
                 <div
-                  className="c34"
+                  className="c35"
                 >
                   <div
                     className="react-toggle"
@@ -882,14 +896,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
             </div>
           </div>
           <div
-            className="c28 c29"
+            className="c29 c30"
           >
             <div
               className="collapse"
               style={Object {}}
             >
               <div
-                className="c30"
+                className="c31"
               >
                 <button
                   onClick={[Function]}
@@ -902,16 +916,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
           </div>
         </div>
         <div
-          className="c35"
+          className="c36"
         >
           <div
-            className="c16 c32"
+            className="c17 c33"
           >
             <div
-              className="c18"
+              className="c19"
             >
               <div
-                className="c19"
+                className="c20"
               >
                 <span
                   style={
@@ -924,7 +938,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                 </span>
               </div>
               <div
-                className="c21 c22"
+                className="c22 c23"
                 disabled={false}
               >
                 No Collapse Section
@@ -932,14 +946,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
             </div>
           </div>
           <div
-            className="c28 c29"
+            className="c29 c30"
           >
             <div
               className="collapse show"
               style={Object {}}
             >
               <div
-                className="c30"
+                className="c31"
               >
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
               </div>
@@ -947,19 +961,19 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
           </div>
         </div>
         <div
-          className="c15"
+          className="c16"
         >
           <div
-            className="c16 c32"
+            className="c17 c33"
           >
             <div
-              className="c18"
+              className="c19"
             >
               <div
-                className="c19"
+                className="c20"
               >
                 <span
-                  className="c11 c36"
+                  className="c12 c37"
                   color="currentColor"
                   size={16}
                 >
@@ -969,27 +983,27 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
                 </span>
               </div>
               <div
-                className="c21 c22"
+                className="c22 c23"
                 disabled={false}
               >
                 Fourth Section
               </div>
             </div>
             <div
-              className="c25"
+              className="c26"
             >
               <div
-                className="c37"
+                className="c38"
               >
                 Status
               </div>
               <div>
                 <div
-                  className="c26"
+                  className="c27"
                   onClick={[Function]}
                 >
                   <span
-                    className="c11 c27"
+                    className="c12 c28"
                     color="currentColor"
                     size={12}
                   >
@@ -1002,14 +1016,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
             </div>
           </div>
           <div
-            className="c28 c29"
+            className="c29 c30"
           >
             <div
               className="collapse"
               style={Object {}}
             >
               <div
-                className="c30"
+                className="c31"
               >
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
               </div>
@@ -1017,17 +1031,17 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
           </div>
         </div>
         <div
-          className="c35"
+          className="c36"
         >
           <div
-            className="c28 c38"
+            className="c29 c39"
           >
             <div
               className="collapse show"
               style={Object {}}
             >
               <div
-                className="c30"
+                className="c31"
               >
                 NO HEADER SECTION 
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
@@ -1037,10 +1051,10 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
         </div>
       </div>
       <div
-        className="c39"
+        className="c40"
       >
         <div
-          className="c40"
+          className="c41"
         >
           <div>
             <a
@@ -1050,14 +1064,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
             </a>
           </div>
           <div
-            className="c41"
+            className="c42"
           >
             <button
-              className="c42 c43"
+              className="c43 c44"
               onClick={[Function]}
             >
               <span
-                className="c11 c12"
+                className="c12 c13"
                 color="currentColor"
                 size={16}
               >
@@ -1067,14 +1081,14 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
               </span>
             </button>
             <button
-              className="c42"
+              className="c43"
               disabled={false}
             >
               <span
-                className="c44"
+                className="c45"
               >
                 <span
-                  className="c11 c12"
+                  className="c12 c13"
                   color="currentColor"
                   size={16}
                 >

@@ -2,7 +2,7 @@ import { buttonContainerStyles } from '@/components/Button/components/ButtonCont
 import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
-const SubtleIconButtonContainer = styled.button`
+const SubtleContainer = styled.button`
   ${buttonContainerStyles}
 
   & ${SvgIcon.Container} {
@@ -15,4 +15,4 @@ const SubtleIconButtonContainer = styled.button`
   }
 `;
 
-export default SubtleIconButtonContainer;
+export default SubtleContainer;

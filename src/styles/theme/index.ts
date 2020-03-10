@@ -62,6 +62,13 @@ const THEME = {
     audioPlayer: {
       height: 108,
     },
+    leftSidebar: {
+      width: 250,
+      hiddenWidth: 16,
+      get contentWidth() {
+        return this.width - this.hiddenWidth;
+      },
+    },
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

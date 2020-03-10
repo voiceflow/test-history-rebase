@@ -1,11 +1,13 @@
+import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import { composeDecorators, withDnD, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { UserRole } from '@/constants';
+import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
 import { OverlayProvider } from '@/contexts/OverlayContext';
 import { RolePermissionsProvider } from '@/contexts/RolePermissionsContext';
-import { EditPermissionProvider } from '@/pages/Canvas/contexts';
+import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 
 import LeftSidebar from '.';
 
@@ -226,14 +228,27 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
       },
     }),
     (Component) => (
-      <div style={{ width: '400px', height: '100vh', minHeight: '500px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ width: '500px', height: '100vh', minHeight: '500px', position: 'relative', overflow: 'hidden' }}>
         <RolePermissionsProvider>
           <EditPermissionProvider>
-            <OverlayProvider>
-              <Component />
-              <ConfirmModal />
-              <ErrorModal />
-            </OverlayProvider>
+            <ShortcutModalProvider>
+              <EventualEngineProvider>
+                <OverlayProvider>
+                  <RegisterEngine
+                    engine={{
+                      canvas: {
+                        zoomIn: action('zoomIn'),
+                        zoomOut: action('zoomOut'),
+                        applyTransition: action('applyTransition'),
+                      },
+                    }}
+                  />
+                  <Component />
+                  <ConfirmModal />
+                  <ErrorModal />
+                </OverlayProvider>
+              </EventualEngineProvider>
+            </ShortcutModalProvider>
           </EditPermissionProvider>
         </RolePermissionsProvider>
       </div>

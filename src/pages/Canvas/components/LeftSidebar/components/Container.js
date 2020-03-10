@@ -1,19 +1,15 @@
 import { css, styled } from '@/hocs';
 
-const WIDTH = 250;
-const HIDDEN_VISIBLE_WIDTH = 16;
-export const SIDEBAR_CONTENT_WIDTH = WIDTH - HIDDEN_VISIBLE_WIDTH;
-
 const Container = styled.aside`
-  width: ${WIDTH}px;
-  padding-right: ${HIDDEN_VISIBLE_WIDTH}px;
+  width: ${({ theme }) => theme.components.leftSidebar.width}px;
+  padding-right: ${({ theme }) => theme.components.leftSidebar.hiddenWidth}px;
 
   position: absolute;
   left: 0;
   top: 60px;
   bottom: 60px;
 
-  transform: translateX(-${SIDEBAR_CONTENT_WIDTH}px) translateZ(0);
+  transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth}px) translateZ(0);
   transition: transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1);
   z-index: 10;
 

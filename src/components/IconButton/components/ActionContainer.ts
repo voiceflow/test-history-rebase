@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import { importantStyles } from '../styles';
-import IconButtonContainer from './IconButtonContainer';
+import Container from './Container';
 
-const ActionIconButtonContainer = styled(IconButtonContainer)`
+const ActionContainer = styled(Container)`
   ${importantStyles}
 
   border: 1px solid #fff;
@@ -21,4 +21,4 @@ const ActionIconButtonContainer = styled(IconButtonContainer)`
     `};
 `;
 
-export default ActionIconButtonContainer;
+export default ActionContainer;

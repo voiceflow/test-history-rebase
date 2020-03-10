@@ -1,11 +1,16 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
+import { Tooltip, TooltipProps } from 'react-tippy';
 
 import { IS_TEST, isMac } from '@/config';
 
 import { HotkeyLabel } from './components';
 
-const TippyTooltip = ({ html, title, disabled, children, hotkey, systemHotkey, ...props }, ref) => {
+export type TippyTooltipProps = TooltipProps & {
+  hotkey?: string;
+  systemHotkey?: string;
+};
+
+const TippyTooltip: React.FC<TippyTooltipProps> = ({ html, title, disabled, children, hotkey, systemHotkey, ...props }, ref) => {
   const withHotkey = !!(hotkey || systemHotkey);
 
   // eslint-disable-next-line xss/no-mixed-html
@@ -22,7 +27,7 @@ const TippyTooltip = ({ html, title, disabled, children, hotkey, systemHotkey, .
           html
         )
       }
-      title={withHotkey ? null : title}
+      title={withHotkey ? undefined : title}
       disabled={disabled || IS_TEST}
       {...props}
     >
@@ -31,4 +36,4 @@ const TippyTooltip = ({ html, title, disabled, children, hotkey, systemHotkey, .
   );
 };
 
-export default React.forwardRef(TippyTooltip);
+export default React.forwardRef<React.Ref<Tooltip>, React.PropsWithChildren<TippyTooltipProps>>(TippyTooltip);

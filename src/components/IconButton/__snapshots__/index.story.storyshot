@@ -36,18 +36,15 @@ exports[`Storyshots Icon Button Action 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: rgba(110,132,154,0.8);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5d9df5;
@@ -59,15 +56,19 @@ exports[`Storyshots Icon Button Action 1`] = `
   outline: 0;
 }
 
-.c0:active {
-  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
-  border: 1px solid #fff;
-  color: #5b9dfa;
-  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
 .c0:hover {
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+  color: rgba(110,132,154,1);
+}
+
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
 .c0:hover {
@@ -135,15 +136,14 @@ exports[`Storyshots Icon Button Flat 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
   background: inherit;
 }
 
@@ -152,15 +152,15 @@ exports[`Storyshots Icon Button Flat 1`] = `
   outline: 0;
 }
 
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
+
 .c0:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa;
+  color: #5b9dfa !important;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
 .c3 .c1 {
@@ -224,18 +224,15 @@ exports[`Storyshots Icon Button Normal 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: rgba(110,132,154,0.8);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
 }
 
 .c0:focus,
@@ -243,15 +240,19 @@ exports[`Storyshots Icon Button Normal 1`] = `
   outline: 0;
 }
 
-.c0:active {
-  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
-  border: 1px solid #fff;
-  color: #5b9dfa;
-  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
 .c0:hover {
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+  color: rgba(110,132,154,1);
+}
+
+.c0:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
 .c3 .c1 {

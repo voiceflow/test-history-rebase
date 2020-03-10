@@ -36,15 +36,14 @@ exports[`Storyshots Dropdown Normal 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
   background: inherit;
 }
 
@@ -53,15 +52,15 @@ exports[`Storyshots Dropdown Normal 1`] = `
   outline: 0;
 }
 
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
+
 .c0:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa;
+  color: #5b9dfa !important;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
 <button
@@ -124,15 +123,14 @@ exports[`Storyshots Dropdown With Custom Menu 1`] = `
   font-size: 15px;
   line-height: 18px;
   width: auto;
-  width: 42px;
   border: 0;
-  color: #8da2b5;
   background-color: #fff;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease;
-  transition: all 0.15s ease;
-  height: 36px;
-  width: 36px;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
   background: inherit;
 }
 
@@ -141,15 +139,15 @@ exports[`Storyshots Dropdown With Custom Menu 1`] = `
   outline: 0;
 }
 
+.c0:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
+
 .c0:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa;
+  color: #5b9dfa !important;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
 <button

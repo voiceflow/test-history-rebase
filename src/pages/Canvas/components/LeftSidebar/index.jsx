@@ -4,6 +4,7 @@ import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useEnableDisable, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import CanvasControlsV2 from '@/pages/Canvas/components/CanvasControlsV2';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
 
@@ -36,14 +37,18 @@ function LeftSidebar({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
   const isOpen = (!isHidden || isOpenByHover) && canEdit;
 
   return (
-    <Container isOpen={isOpen} onMouseEnter={canEdit ? openByHover : null} onMouseLeave={canEdit ? closeByLoseHover : null}>
-      <Content isOpen={isOpen} activeTab={selectedTab}>
-        <Header tabs={TABS} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={selectActiveTab} />
+    <>
+      <Container isOpen={isOpen} onMouseEnter={canEdit ? openByHover : null} onMouseLeave={canEdit ? closeByLoseHover : null}>
+        <Content isOpen={isOpen} activeTab={selectedTab}>
+          <Header tabs={TABS} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={selectActiveTab} />
 
-        {selectedTab === Tab.STEPS && <Steps />}
-        {selectedTab === Tab.FLOWS && <Flows isOpen={isOpen} />}
-      </Content>
-    </Container>
+          {selectedTab === Tab.STEPS && <Steps />}
+          {selectedTab === Tab.FLOWS && <Flows isOpen={isOpen} />}
+        </Content>
+      </Container>
+
+      <CanvasControlsV2 />
+    </>
   );
 }
 

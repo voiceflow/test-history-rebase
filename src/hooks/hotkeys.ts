@@ -1,10 +1,10 @@
-import hotkeys from 'hotkeys-js';
+import hotkeys, { KeyHandler } from 'hotkeys-js';
 import { useCallback, useEffect } from 'react';
 
-import HOTKEY_MAPPING from '@/keymap';
+import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
 
 // eslint-disable-next-line import/prefer-default-export
-export function useHotKeys(key, callback, deps = []) {
+export function useHotKeys(key: Hotkey, callback: KeyHandler, deps: any[] = []) {
   const memoisedCallback = useCallback(callback, deps);
 
   useEffect(() => {

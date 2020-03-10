@@ -20,6 +20,7 @@ function Menu(
     disabled,
     onSelect,
     children,
+    maxHeight,
     fullWidth,
     searchable,
     scrollbarsRef,
@@ -54,7 +55,7 @@ function Menu(
       <FadeDownContainer length={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable}
-        <Scrollbars ref={scrollbarsRef} className="scrollbars" autoHeight autoHide hideTracksWhenNotNeeded>
+        <Scrollbars ref={scrollbarsRef} className="scrollbars" autoHeight autoHide autoHeightMax={maxHeight} hideTracksWhenNotNeeded>
           {children ||
             visibleOptions.map(({ value, label, onClick }) => (
               <Item

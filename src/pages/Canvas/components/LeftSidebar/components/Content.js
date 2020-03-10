@@ -1,11 +1,10 @@
 import { styled, transition } from '@/hocs';
 
 import { Tab } from '../constants';
-import { SIDEBAR_CONTENT_WIDTH } from './Container';
 
 const Content = styled.div`
   display: flex;
-  width: ${SIDEBAR_CONTENT_WIDTH}px;
+  width: ${({ theme }) => theme.components.leftSidebar.contentWidth}px;
   height: 100%;
   flex-direction: column;
   background-color: ${({ activeTab }) => (activeTab === Tab.STEPS ? '#f9f9f9' : '#fff')};

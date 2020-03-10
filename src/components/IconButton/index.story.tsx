@@ -2,11 +2,11 @@ import { action as storybookAction } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
 
-import IconButton from '.';
+import IconButton, { IconButtonVariant } from '.';
 
 const getProps = () => ({
-  disabled: boolean('Disabled', false),
   onClick: storybookAction('click'),
+  disabled: boolean('Disabled', false),
 });
 
 export default {
@@ -16,6 +16,6 @@ export default {
 
 export const normal = () => <IconButton icon="elipsis" {...getProps()} />;
 
-export const flat = () => <IconButton icon="elipsis" variant="flat" {...getProps()} />;
+export const flat = () => <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} {...getProps()} />;
 
-export const action = () => <IconButton icon="elipsis" variant="action" {...getProps()} />;
+export const action = () => <IconButton icon="elipsis" variant={IconButtonVariant.ACTION} {...getProps()} />;

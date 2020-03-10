@@ -3,6 +3,7 @@ import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import ProjectDiagramIcon from '@/svgs/solid/project-diagram.svg';
 
 import ChoiceOldEditor from './ChoiceOldEditor';
+import ChoiceOldStep from './ChoiceOldStep';
 
 const EDITORS_BY_PATH = {
   noReplyResponse: NoReplyResponseForm,
@@ -13,6 +14,7 @@ const ChoiceOldManager = {
   icon: ProjectDiagramIcon,
 
   editor: ChoiceOldEditor,
+  step: ChoiceOldStep,
   editorsByPath: EDITORS_BY_PATH,
 
   label: 'Choice (old)',

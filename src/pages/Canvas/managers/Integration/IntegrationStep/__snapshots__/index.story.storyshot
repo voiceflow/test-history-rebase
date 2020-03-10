@@ -226,7 +226,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -538,7 +537,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -852,7 +850,6 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1147,7 +1144,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1442,7 +1438,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1750,7 +1745,6 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -2022,7 +2016,6 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -2282,7 +2275,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -2590,7 +2582,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

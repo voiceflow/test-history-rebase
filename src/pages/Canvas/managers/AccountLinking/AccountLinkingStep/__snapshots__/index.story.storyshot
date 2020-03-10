@@ -190,7 +190,6 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -414,7 +413,6 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -638,7 +636,6 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -862,7 +859,6 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1086,7 +1082,6 @@ exports[`Storyshots Creator/Steps/Account Linking Step Without Port 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

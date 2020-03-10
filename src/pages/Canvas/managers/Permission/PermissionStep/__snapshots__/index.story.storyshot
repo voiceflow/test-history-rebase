@@ -224,7 +224,6 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -491,7 +490,6 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -755,7 +753,6 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1018,7 +1015,6 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1256,7 +1252,6 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

@@ -213,7 +213,6 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -498,7 +497,6 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -783,7 +781,6 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1045,7 +1042,6 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1292,7 +1288,6 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1577,7 +1572,6 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

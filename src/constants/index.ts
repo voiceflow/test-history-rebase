@@ -284,10 +284,10 @@ export const RESPONSE_COLOR_CODES = {
   RED: '#e91e63',
 };
 
-export const RepromptType = {
-  TEXT: 'text',
-  AUDIO: 'audio',
-};
+export enum RepromptType {
+  TEXT = 'text',
+  AUDIO = 'audio',
+}
 
 export const PERIOD = {
   monthly: 'MO',

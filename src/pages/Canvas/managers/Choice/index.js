@@ -6,6 +6,7 @@ import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import UserAltIcon from '@/svgs/solid/user-alt.svg';
 
 import ChoiceEditor from './ChoiceEditor';
+import ChoiceStep from './ChoiceStep';
 
 const EDITORS_BY_PATH = {
   slot: IntentSlotForm,
@@ -17,6 +18,8 @@ const ChoiceManager = {
   icon: UserAltIcon,
 
   editor: ChoiceEditor,
+  step: ChoiceStep,
+
   editorsByPath: EDITORS_BY_PATH,
 
   label: 'Choice',
@@ -39,8 +42,8 @@ const ChoiceManager = {
       choices: [
         {
           id: cuid.slug(),
-          alexa: [{}],
-          google: [{}],
+          alexa: {},
+          google: {},
         },
       ],
     },

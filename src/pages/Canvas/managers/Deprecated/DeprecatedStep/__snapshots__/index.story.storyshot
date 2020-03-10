@@ -191,7 +191,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
         className="c5"
         onClick={[Function]}
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -416,7 +415,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
         className="c5"
         onClick={[Function]}
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

@@ -299,7 +299,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -348,7 +347,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -386,7 +384,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -616,7 +613,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -915,7 +911,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -964,7 +959,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1002,7 +996,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
       <div
         className="c17"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1341,7 +1334,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -1390,7 +1382,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -1428,7 +1419,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       <div
         className="c8"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"

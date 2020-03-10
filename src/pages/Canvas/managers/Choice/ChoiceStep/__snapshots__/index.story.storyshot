@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -27,11 +27,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -146,7 +146,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -182,7 +182,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -190,6 +190,66 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -213,7 +273,6 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -239,6 +298,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             >
               Order Pizza
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -251,6 +315,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             >
               Order my favourite
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -263,6 +332,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             >
               Where is my order?
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -275,7 +349,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -285,10 +359,16 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -298,14 +378,14 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -324,11 +404,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -465,7 +545,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -479,7 +559,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -487,6 +567,64 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 <div
@@ -510,7 +648,6 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -536,6 +673,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             >
               Order Pizza
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -548,6 +690,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             >
               Order my favourite
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -560,6 +707,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             >
               Where is my order?
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -572,7 +724,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -582,10 +734,16 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -608,11 +766,11 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -749,7 +907,7 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -761,6 +919,36 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
 }
 
 <div
@@ -784,7 +972,6 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -810,6 +997,12 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
             >
               Else
             </span>
+            <div
+              className="c14"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -819,14 +1012,14 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -845,11 +1038,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -986,7 +1179,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1000,7 +1193,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1008,6 +1201,66 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -1031,7 +1284,6 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1057,6 +1309,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             >
               Order Pizza
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -1069,6 +1326,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             >
               Order my favourite
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -1081,6 +1343,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             >
               Where is my order?
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -1093,7 +1360,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -1103,10 +1370,16 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1116,14 +1389,14 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1142,11 +1415,11 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -1283,7 +1556,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1297,7 +1570,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   color: #132144;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1305,6 +1578,66 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -1328,7 +1661,6 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1354,6 +1686,11 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
             >
               Order Pizza
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -1366,7 +1703,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -1376,10 +1713,16 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               Else
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>

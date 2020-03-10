@@ -247,7 +247,6 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -521,7 +520,6 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -803,7 +801,6 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1112,7 +1109,6 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1377,7 +1373,6 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1612,7 +1607,6 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

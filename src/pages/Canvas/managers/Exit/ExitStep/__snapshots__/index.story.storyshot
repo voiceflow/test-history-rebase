@@ -190,7 +190,6 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -414,7 +413,6 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -638,7 +636,6 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

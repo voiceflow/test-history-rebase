@@ -247,7 +247,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -698,7 +697,6 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1005,7 +1003,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1490,7 +1487,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

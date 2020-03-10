@@ -243,7 +243,6 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -604,7 +603,6 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -912,7 +910,6 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1199,7 +1196,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1560,7 +1556,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

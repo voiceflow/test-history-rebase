@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { EngineContext, ManagerContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
 
 const NodeStep = ({ isLast }) => {
   const { nodeID, node, isHighlighted } = useNode();
   const { data } = useNodeData();
+  const platform = React.useContext(PlatformContext);
   const getManager = React.useContext(ManagerContext);
-  const { step: StepComponent } = getManager(data.type);
   const engine = React.useContext(EngineContext);
+  const { step: StepComponent } = getManager(data.type);
 
   const stepProps = {
     isActive: isHighlighted,
@@ -22,7 +23,7 @@ const NodeStep = ({ isLast }) => {
     return <DeprecatedStepComponent {...stepProps} />;
   }
 
-  return <StepComponent node={node} data={data} stepProps={stepProps} />;
+  return <StepComponent node={node} data={data} stepProps={stepProps} platform={platform} />;
 };
 
 export default NodeStep;

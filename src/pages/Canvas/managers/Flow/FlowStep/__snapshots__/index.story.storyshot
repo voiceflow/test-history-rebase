@@ -194,7 +194,6 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -423,7 +422,6 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -648,7 +646,6 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -876,7 +873,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1105,7 +1101,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1334,7 +1329,6 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
       <div
         className="c5"
         onMouseDown={[Function]}
-        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"

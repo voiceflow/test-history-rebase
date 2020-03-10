@@ -1,44 +1,57 @@
 import moment from 'moment';
 
 import { ProductType } from '@/constants';
+import { DBProduct, Product } from '@/models';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
+
+export type MergedLocale = Pick<
+  Product,
+  | 'summary'
+  | 'description'
+  | 'smallIconUri'
+  | 'largeIconUri'
+  | 'phrases'
+  | 'keywords'
+  | 'cardDescription'
+  | 'purchasePrompt'
+  | 'purchasePromptVoice'
+  | 'privacyPolicyUrl'
+>;
 
 // app to db
 
-export const getDistributionCountries = (marketPlaces) =>
+export const getDistributionCountries = (marketPlaces: Record<string, Product.MarketPlace>) =>
   Object.keys(marketPlaces)
     .map((place) => marketPlaces[place].countries)
     .reduce((a, b) => a.concat(b), []);
 
-export const formatMarketPlaces = (marketPlaces) => {
+export const formatMarketPlaces = (marketPlaces: Record<string, Product.MarketPlace>) => {
   // find any valid release date
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
 
-  return Object.keys(marketPlaces).reduce(
-    (acc, place) => ({
-      ...acc,
-      [place]: {
-        releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
-        defaultPriceListing: {
-          price: marketPlaces[place].price,
-          currency: marketPlaces[place].currency,
-        },
+  return Object.keys(marketPlaces).reduce<Record<string, DBProduct.Pricing>>((acc, place) => {
+    acc[place] = {
+      releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
+      defaultPriceListing: {
+        price: marketPlaces[place].price,
+        currency: marketPlaces[place].currency,
       },
-    }),
-    {}
-  );
+    };
+
+    return acc;
+  }, {});
 };
 
 // db to app
 
-export const parseMarketPlaces = (allPlaces, distributionCountries) =>
+export const parseMarketPlaces = (allPlaces: Record<string, DBProduct.Pricing>, distributionCountries: string[]) =>
   Object.keys(allPlaces).reduce(
     (acc, place) => ({
       ...acc,
       [place]: {
         ...allPlaces[place].defaultPriceListing,
         releaseDate: allPlaces[place].releaseDate,
-        countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place).countries.filter((country) =>
+        countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place)!.countries.filter((country) =>
           distributionCountries.includes(country)
         ),
       },
@@ -46,27 +59,27 @@ export const parseMarketPlaces = (allPlaces, distributionCountries) =>
     {}
   );
 
-export const parseLocals = (locales, privacyAndCompliance) =>
-  Object.keys(locales).reduce(
+export const parseLocales = (locales: Record<string, DBProduct.LocalePublishingInformation>, privacyAndCompliance: DBProduct.PrivacyAndCompliance) =>
+  Object.keys(locales).reduce<MergedLocale>(
     (acc, locale) => ({
       ...acc,
       summary: locales[locale].summary,
-      smallIconUri: locales[locale].smallIconUri,
-      largeIconUri: locales[locale].largeIconUri,
       description: locales[locale].description,
       phrases: locales[locale].examplePhrases,
-      keywords: locales[locale].keywords,
-      cardDescription: locales[locale].customProductPrompts.boughtCardDescription,
-      purchasePrompt: locales[locale].customProductPrompts.purchasePromptDescription,
-      purchasePromptVoice: locales[locale].customProductPrompts.purchasePromptDescriptionVoice,
-      privacyPolicyUrl: privacyAndCompliance.locales[locale].privacyPolicyUrl,
+      keywords: locales[locale].keywords || [],
+      smallIconUri: locales[locale].smallIconUri || null,
+      largeIconUri: locales[locale].largeIconUri || null,
+      cardDescription: locales[locale].customProductPrompts.boughtCardDescription || null,
+      purchasePrompt: locales[locale].customProductPrompts.purchasePromptDescription || null,
+      privacyPolicyUrl: privacyAndCompliance.locales[locale].privacyPolicyUrl || null,
+      purchasePromptVoice: locales[locale].customProductPrompts.purchasePromptDescriptionVoice || null,
     }),
-    {}
+    {} as MergedLocale
   );
 
 // product status check
 
-export const getMissingDataInfo = (product) => {
+export const getMissingDataInfo = (product: Product) => {
   const missingInfo = [];
 
   !product.summary && missingInfo.push('Short description is required');
@@ -74,7 +87,7 @@ export const getMissingDataInfo = (product) => {
   !product.taxCategory && missingInfo.push('Tax category is missing');
   !product.smallIconUri && missingInfo.push('Small icon is missing');
   !product.largeIconUri && missingInfo.push('Large icon is missing');
-  !product.phrases.length === 0 && missingInfo.push('Add atleast one phrase');
+  !product.phrases.length && missingInfo.push('Add at least one phrase');
   !product.keywords && missingInfo.push('Keywords are missing');
   !product.cardDescription && missingInfo.push('In-App card description is missing');
   !product.purchasePrompt && missingInfo.push('Purchase Prompt description is missing');
@@ -97,7 +110,7 @@ export const getMissingDataInfo = (product) => {
   return missingInfo;
 };
 
-export const isProductComplete = (product) => {
+export const isProductComplete = (product: Product) => {
   const missingInfo = getMissingDataInfo(product);
   const isComplete = !!(
     product.name &&

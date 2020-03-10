@@ -28,15 +28,12 @@ export const deleteDisplay = (displayID) => async (dispatch) => {
   dispatch(removeDisplay(displayID));
 };
 
-export const createDisplay = (skillId, data) => async (dispatch) => {
+export const createDisplay = (skillID, data) => async (dispatch) => {
   try {
-    const displayID = await client.display.create(skillId, data);
-    const addDisplayPayload = {
-      id: displayID,
-      ...data,
-    };
+    const displayID = await client.display.create(skillID, data);
+    const display = await client.display.get(displayID);
 
-    dispatch(addDisplay(displayID, addDisplayPayload));
+    dispatch(addDisplay(displayID, display));
 
     return displayID;
   } catch (e) {
@@ -44,7 +41,7 @@ export const createDisplay = (skillId, data) => async (dispatch) => {
   }
 };
 
-export const duplicateDisplay = (displayID, skillId) => async (dispatch, getState) => {
+export const duplicateDisplay = (displayID, skillID) => async (dispatch, getState) => {
   try {
     const state = getState();
     const displayData = displayByIDSelector(state)(displayID);
@@ -53,13 +50,8 @@ export const duplicateDisplay = (displayID, skillId) => async (dispatch, getStat
       datasource: displayData.datasource,
       title: displayData.title || 'title',
     };
-    const newDisplayID = await client.display.create(skillId, copyDisplayData);
-    const addDisplayPayload = {
-      id: newDisplayID,
-      ...copyDisplayData,
-    };
-    dispatch(addDisplay(newDisplayID, addDisplayPayload));
-    return newDisplayID;
+
+    return await dispatch(createDisplay(skillID, copyDisplayData));
   } catch (e) {
     toast.error('Error duplicating display');
   }

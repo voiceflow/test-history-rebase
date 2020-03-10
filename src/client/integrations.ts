@@ -1,7 +1,7 @@
 import fetch from './fetch';
 
 const integrationsClient = {
-  getZapierToken: () => fetch.get('api/token').then((res) => res),
+  getZapierToken: () => fetch.get<{ key: string }>('api/token'),
 };
 
 export default integrationsClient;

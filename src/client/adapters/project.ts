@@ -1,6 +1,8 @@
+import { DBProject, Project } from '@/models';
+
 import { AdapterNotImplementedError, createAdapter } from './utils';
 
-const projectAdapter = createAdapter(
+const projectAdapter = createAdapter<DBProject, Project>(
   ({ project_id, skill_id, name, diagram, locales, module, reference, created, islive, small_icon, large_icon }) => ({
     id: project_id,
     name,

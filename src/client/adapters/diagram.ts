@@ -1,6 +1,8 @@
+import { DBDiagram, Diagram } from '@/models';
+
 import { createAdapter } from './utils';
 
-const diagramAdapter = createAdapter(
+const diagramAdapter = createAdapter<DBDiagram, Diagram>(
   ({ id, name, sub_diagrams }) => ({
     id,
     name,

@@ -9,11 +9,11 @@ import SvgIcon from '@/components/SvgIcon';
 import { copyProduct, deleteProduct } from '@/ducks/product';
 import { goToEditProduct } from '@/ducks/router';
 import { activeSkillIDSelector } from '@/ducks/skill';
-import { isProductComplete } from '@/ducks/utils/product';
 import { connect } from '@/hocs';
 import { PRODUCT_TYPES } from '@/pages/Business/Product/GuidedSteps/PricingModel';
 import LocaleMap from '@/services/LocaleMap';
 import { stopPropagation } from '@/utils/dom';
+import { isProductComplete } from '@/utils/product';
 
 import { Container, Description, Details, Icon, Status, StatusText, SubTitle, Title, TooltipInfo } from './components';
 

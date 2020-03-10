@@ -1,10 +1,11 @@
 import cuid from 'cuid';
 
-import { formatMarketPlaces, getDistributionCountries, parseLocals, parseMarketPlaces } from '@/ducks/utils/product';
+import { DBProduct, Product } from '@/models';
+import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
 import { createAdapter } from './utils';
 
-const productAdapter = createAdapter(
+const productAdapter = createAdapter<DBProduct, Product>(
   // db to app
   ({
     id,
@@ -21,34 +22,23 @@ const productAdapter = createAdapter(
       subscriptionInformation = {},
     },
   }) => {
-    const { summary, smallIconUri, largeIconUri, description, phrases, keywords, cardDescription, purchasePrompt, privacyPolicyUrl } = parseLocals(
-      publishingInformation.locales,
-      privacyAndCompliance
-    );
+    const mergedLocale = parseLocales(publishingInformation.locales, privacyAndCompliance);
 
     return {
+      ...mergedLocale,
       id,
       name,
       skill,
       type,
       version,
       referenceName,
-      testingInstructions,
+      purchasableState: purchasableState || null,
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
-      taxCategory: publishingInformation.taxInformation.category,
       locales: Object.keys(publishingInformation.locales),
-      smallIconUri,
-      largeIconUri,
-      summary,
-      description,
-      phrases,
-      keywords,
-      cardDescription,
-      purchasePrompt,
-      purchasableState,
-      subscriptionFrequency: subscriptionInformation.subscriptionPaymentFrequency,
-      trialPeriodDays: subscriptionInformation.subscriptionTrialPeriodDays,
-      privacyPolicyUrl,
+      testingInstructions: testingInstructions || null,
+      taxCategory: publishingInformation.taxInformation.category || null,
+      subscriptionFrequency: subscriptionInformation.subscriptionPaymentFrequency || null,
+      trialPeriodDays: subscriptionInformation.subscriptionTrialPeriodDays || null,
     };
   },
   // app to db
@@ -101,34 +91,29 @@ const productAdapter = createAdapter(
         taxInformation: {
           category: taxCategory,
         },
-        locales: locales.reduce(
-          (acc, locale) => ({
-            ...acc,
-            [locale]: {
-              name,
-              smallIconUri,
-              largeIconUri,
-              summary,
-              description,
-              keywords,
-              examplePhrases: phrases,
-              customProductPrompts: {
-                boughtCardDescription: cardDescription,
-                purchasePromptDescription: purchasePrompt,
-              },
-            },
-          }),
-          {}
-        ),
-      },
-      privacyAndCompliance: {
-        locales: locales.reduce((acc, locale) => {
-          return {
-            ...acc,
-            [locale]: {
-              privacyPolicyUrl,
+        locales: locales.reduce<Record<string, DBProduct.LocalePublishingInformation>>((acc, locale) => {
+          acc[locale] = {
+            name,
+            smallIconUri,
+            largeIconUri,
+            summary,
+            description,
+            keywords,
+            examplePhrases: phrases,
+            customProductPrompts: {
+              boughtCardDescription: cardDescription,
+              purchasePromptDescription: purchasePrompt,
             },
           };
+
+          return acc;
+        }, {}),
+      },
+      privacyAndCompliance: {
+        locales: locales.reduce<Record<string, DBProduct.LocalePrivacyAndCompliance>>((acc, locale) => {
+          acc[locale] = { privacyPolicyUrl };
+
+          return acc;
         }, {}),
       },
       testingInstructions,

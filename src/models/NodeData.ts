@@ -1,4 +1,4 @@
-import { PlatformType, RepromptType, DialogType } from '@/constants';
+import { CardType, DialogType, PlatformType, RepromptType } from '@/constants';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -63,5 +63,14 @@ export namespace NodeData {
       voice?: string;
       url?: string;
     }[];
+  };
+
+  export type Card = {
+    cardType: CardType;
+    title: string;
+    content: string;
+    hasSmallImage: boolean;
+    largeImage?: string;
+    smallImage?: string;
   };
 }

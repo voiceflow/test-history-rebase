@@ -194,10 +194,10 @@ export const ReminderType = {
   SCHEDULED: 'scheduled',
 };
 
-export const CardType = {
-  SIMPLE: 'simple',
-  STANDARD: 'standard',
-};
+export enum CardType {
+  SIMPLE = 'simple',
+  STANDARD = 'standard',
+}
 
 export enum DialogType {
   AUDIO = 'audio',

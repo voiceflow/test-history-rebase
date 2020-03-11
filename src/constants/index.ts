@@ -199,10 +199,10 @@ export const CardType = {
   STANDARD: 'standard',
 };
 
-export const DialogType = {
-  AUDIO: 'audio',
-  VOICE: 'voice',
-};
+export enum DialogType {
+  AUDIO = 'audio',
+  VOICE = 'voice',
+}
 
 export const KeyCodes = {
   ENTER: 13,

@@ -1,4 +1,4 @@
-import { PlatformType, RepromptType } from '@/constants';
+import { PlatformType, RepromptType, DialogType } from '@/constants';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -51,5 +51,17 @@ export namespace NodeData {
   export type Capture = {
     variable?: string;
     slot?: string;
+  };
+
+  export type Speak = {
+    randomize: boolean;
+    dialogs: {
+      content?: string;
+      id: string;
+      open: boolean;
+      type: DialogType;
+      voice?: string;
+      url?: string;
+    }[];
   };
 }

@@ -6,7 +6,7 @@ import { withEngine } from '@/../.storybook';
 import { PLATFORMS, PlatformType } from '@/constants';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
-import SpeakStep, { SpeakStepItem } from '.';
+import { SpeakStep, SpeakStepItem } from '.';
 
 const withDispatcher = ({ hasActiveLinks = false, onClick = action('click port') } = {}) =>
   withEngine({
@@ -19,10 +19,10 @@ const withDispatcher = ({ hasActiveLinks = false, onClick = action('click port')
 const getProps = () => {
   const platform = select('platform', PLATFORMS, PlatformType.ALEXA);
   const items: SpeakStepItem[] = [
-    { label: 'Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.' },
-    { label: 'man_breathing_heavily(loud).mp3', isAudio: true },
+    { content: 'Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.' },
+    { content: 'man_breathing_heavily(loud).mp3', isAudio: true },
     {
-      label:
+      content:
         'Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.',
     },
   ];

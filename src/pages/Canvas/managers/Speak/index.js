@@ -4,11 +4,13 @@ import { BlockType, DialogType } from '@/constants';
 import CommentIcon from '@/svgs/comment.svg';
 
 import SpeakEditor from './SpeakEditor';
+import SpeakStep from './SpeakStep';
 
 const SpeakManager = {
   type: BlockType.SPEAK,
   editor: SpeakEditor,
   icon: CommentIcon,
+  step: SpeakStep,
 
   label: 'Speak',
   tip: 'Tell Alexa what to say, or play audio clips',

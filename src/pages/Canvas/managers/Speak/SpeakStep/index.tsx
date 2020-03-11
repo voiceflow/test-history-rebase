@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { PlatformType } from '@/constants';
+import { DialogType, PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { BaseStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
+import { NodeData } from '@/models';
+import Step, { BaseStepProps, ConnectedStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
 
 export type SpeakStepItem = {
-  label?: string;
+  content?: string;
+  url?: string;
   isAudio?: boolean;
 };
 
@@ -28,7 +30,7 @@ enum IconColor {
   DEFAULT = '#8f8e94',
 }
 
-const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, platform, isActive, portID }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, platform, isActive, portID }) => {
   const itemProps = {
     portColor: '#6e849a',
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
@@ -40,11 +42,11 @@ const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, p
     <Step isActive={isActive}>
       <Section>
         {itemsToRender.length ? (
-          itemsToRender.map(({ label, isAudio }, index) => (
+          itemsToRender.map(({ content, isAudio }, index) => (
             <Item
               {...itemProps}
-              key={`${label}-${index}`}
-              label={label}
+              key={`${index}`}
+              label={content}
               icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
               portID={withPort && index === itemsToRender.length - 1 ? portID : null}
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
@@ -61,4 +63,15 @@ const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, p
   );
 };
 
-export default SpeakStep;
+const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, stepProps, platform }) => {
+  const items = data.dialogs.map((dialog) => {
+    return {
+      content: dialog.content || dialog.url,
+      isAudio: dialog.type === DialogType.AUDIO,
+    };
+  });
+
+  return <SpeakStep items={items} platform={platform} random={data.randomize} portID={node.ports.out[0]} {...stepProps} />;
+};
+
+export default ConnectedSpeakStep;

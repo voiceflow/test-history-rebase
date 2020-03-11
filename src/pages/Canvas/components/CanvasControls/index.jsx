@@ -4,8 +4,8 @@ import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/components/IconButton';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
-import { diagramByIDSelector } from '@/ducks/diagram';
-import { activeDiagramIDSelector, isRootDiagramSelector } from '@/ducks/skill';
+import * as Diagram from '@/ducks/diagram';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext, ShortcutModalContext } from '@/pages/Canvas/contexts';
@@ -58,13 +58,13 @@ function CanvasControls({ withMenu, withDrawer, isRootDiagram, flow }) {
 }
 
 const mapStateToProps = {
-  isRootDiagram: isRootDiagramSelector,
-  flow: diagramByIDSelector,
-  activeDiagramID: activeDiagramIDSelector,
+  isRootDiagram: Skill.isRootDiagramSelector,
+  activeDiagramID: Skill.activeDiagramIDSelector,
+  flow: Diagram.flowStructureSelector,
 };
 
-const mergeProps = ({ flow: getFlowByID, activeDiagramID }) => ({
-  flow: getFlowByID(activeDiagramID),
+const mergeProps = ({ flow: getFlowStructure, activeDiagramID }) => ({
+  flow: getFlowStructure(activeDiagramID),
 });
 
 export default connect(mapStateToProps, null, mergeProps)(CanvasControls);

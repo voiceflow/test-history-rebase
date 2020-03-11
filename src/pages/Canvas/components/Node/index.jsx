@@ -215,7 +215,7 @@ export class Node extends React.PureComponent {
       nodeEl = <CommentBlock ref={this.blockRef} />;
     } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
       nodeEl = <NodeBlock ref={this.blockRef} />;
-    } else if (node.type === BlockType.START) {
+    } else if (isBlockRedesignEnabled && node.type === BlockType.START) {
       nodeEl = <NodeStartBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
       nodeEl = <GroupNodeRenderer ref={this.blockRef} />;

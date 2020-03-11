@@ -196,7 +196,7 @@ export class Node extends React.PureComponent {
   }
 
   render() {
-    const { node, isHighlighted } = this.props;
+    const { node, isHighlighted, isBlockRedesignEnabled } = this.props;
     const { isDragging, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
@@ -212,7 +212,7 @@ export class Node extends React.PureComponent {
 
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
-    } else if (node.type === BlockType.COMBINED) {
+    } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
       nodeEl = <NodeBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
       nodeEl = <GroupNodeRenderer ref={this.blockRef} />;

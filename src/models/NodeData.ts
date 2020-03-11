@@ -77,4 +77,8 @@ export namespace NodeData {
   export type Flow = {
     diagramID: string;
   };
+
+  export type Reminder = {
+    text: string;
+  };
 }

@@ -13,8 +13,8 @@ const getProps = () => {
     onClickPort,
     codeAdded: true,
     withPorts: true,
-    successPort: 'abc',
-    failPort: 'abc',
+    successPortID: 'abc',
+    failurePortID: 'abc',
   };
 };
 

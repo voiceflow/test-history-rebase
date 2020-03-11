@@ -11,7 +11,7 @@ import { preventDefault } from '@/utils/dom';
 import Title from './components/Title';
 import { ActiveLabel, Breadcrumbs, Divider, Label, TitleActionsWrapper, Wrapper } from './components/styled';
 
-function EditorHeader({ path = [], data, onRename, className, goToPath, renameRevision }) {
+function EditorHeader({ path = [], data, onRename, className, goToPath, hideTitle, renameRevision }) {
   const sidebar = React.useContext(SidebarContext);
   const engine = React.useContext(EngineContext);
   const { headerActions } = sidebar.state;
@@ -19,7 +19,7 @@ function EditorHeader({ path = [], data, onRename, className, goToPath, renameRe
   let fullPath = '';
 
   return (
-    <Wrapper withTitle={path.length <= 1 || !!headerActions.length} className={className}>
+    <Wrapper withTitle={!hideTitle && (path.length <= 1 || !!headerActions.length)} className={className}>
       {!!path.length && (
         <Breadcrumbs>
           {path.map(({ label }, index) => {
@@ -38,17 +38,20 @@ function EditorHeader({ path = [], data, onRename, className, goToPath, renameRe
         </Breadcrumbs>
       )}
 
-      <TitleActionsWrapper>
-        <Title name={data.name} onChange={onRename} renameRevision={renameRevision} />
-        {!!headerActions.length && (
-          <Dropdown
-            placement="bottom-end"
-            options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: (...args) => onClick({ data, engine }, ...args) }))}
-          >
-            {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="elipsis" variant="flat" onClick={onOpen} active={isOpened} />}
-          </Dropdown>
-        )}
-      </TitleActionsWrapper>
+      {!hideTitle && (
+        <TitleActionsWrapper>
+          <Title name={data.name} onChange={onRename} renameRevision={renameRevision} />
+
+          {!!headerActions.length && (
+            <Dropdown
+              placement="bottom-end"
+              options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: (...args) => onClick({ data, engine }, ...args) }))}
+            >
+              {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="elipsis" variant="flat" onClick={onOpen} active={isOpened} />}
+            </Dropdown>
+          )}
+        </TitleActionsWrapper>
+      )}
     </Wrapper>
   );
 }

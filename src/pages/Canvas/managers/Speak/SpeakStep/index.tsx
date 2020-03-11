@@ -3,7 +3,7 @@ import React from 'react';
 import { DialogType, PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
-import Step, { BaseStepProps, ConnectedStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
 
 export type SpeakStepItem = {
   content?: string;
@@ -11,11 +11,10 @@ export type SpeakStepItem = {
   isAudio?: boolean;
 };
 
-export type SpeakStepProps = BaseStepProps &
+export type SpeakStepProps = ConnectedStepProps['stepProps'] &
   Pick<ItemProps, 'portID'> & {
     items: SpeakStepItem[];
     random?: boolean;
-    withPort?: boolean;
     platform: PlatformType;
   };
 
@@ -30,7 +29,7 @@ enum IconColor {
   DEFAULT = '#8f8e94',
 }
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = true, platform, isActive, portID }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPorts, platform, isActive, portID, onClick }) => {
   const itemProps = {
     portColor: '#6e849a',
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
@@ -39,7 +38,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = 
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
-    <Step isActive={isActive}>
+    <Step isActive={isActive} onClick={onClick}>
       <Section>
         {itemsToRender.length ? (
           itemsToRender.map(({ content, isAudio }, index) => (
@@ -48,7 +47,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPort = 
               key={`${index}`}
               label={content}
               icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
-              portID={withPort && index === itemsToRender.length - 1 ? portID : null}
+              portID={withPorts && index === itemsToRender.length - 1 ? portID : null}
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}

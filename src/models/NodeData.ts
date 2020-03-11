@@ -73,4 +73,8 @@ export namespace NodeData {
     largeImage?: string;
     smallImage?: string;
   };
+
+  export type Flow = {
+    diagramID: string;
+  };
 }

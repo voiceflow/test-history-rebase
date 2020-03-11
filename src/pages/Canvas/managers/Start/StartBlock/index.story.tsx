@@ -42,8 +42,6 @@ export const alexa = withDispatcher(() => <StartBlock platform={PLATFORMS[0]} in
 
 export const google = withDispatcher(() => <StartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const flowStartBlock = withDispatcher(() => (
-  <StartBlock platform={PLATFORMS[0]} invocationName="Headspace" inFlow={true} flowName="Flow Name" />
-));
+export const flowStartBlock = withDispatcher(() => <StartBlock platform={PLATFORMS[0]} invocationName="Headspace" inFlow flowName="Flow Name" />);
 
-export const flowWithCommands = withDispatcher(() => <StartBlock inFlow={true} flowName="Flow Name" {...getFlowProps()} />);
+export const flowWithCommands = withDispatcher(() => <StartBlock inFlow flowName="Flow Name" {...getFlowProps()} />);

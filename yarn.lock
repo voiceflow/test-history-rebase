@@ -3445,6 +3445,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-input-autosize@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.0.2.tgz#6ccdfb100c21b6096c1a04c3c3fac196b0ce61c1"
+  integrity sha512-QzewaD5kog7c6w5e3dretb+50oM8RDdDvVumQKCtPjI6VHyR8lA/HxCiTrv5l9Vgbi4NCitYuix/NorOevlrng==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native@*":
   version "0.61.15"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.61.15.tgz#3b2032a9abd5e37c8a8cb0fc6a724d57811d4dbc"

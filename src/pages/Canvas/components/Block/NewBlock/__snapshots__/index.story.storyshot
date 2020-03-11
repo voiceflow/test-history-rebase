@@ -1,12 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/New Block Active State 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -35,8 +29,30 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #132144;
 }
 
@@ -71,15 +87,49 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -114,12 +164,6 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Blue 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -151,8 +195,30 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #0f7ec0;
 }
 
@@ -187,15 +253,49 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -230,12 +330,6 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Disabled State 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -264,8 +358,30 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -300,15 +416,49 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -343,12 +493,6 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Green 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -380,8 +524,30 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #6b7a6b;
 }
 
@@ -416,15 +582,49 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -459,12 +659,6 @@ exports[`Storyshots Creator/New Block Green 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Long Name 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -496,8 +690,30 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -532,15 +748,49 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block with a veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery long name
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -575,12 +825,6 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Purple 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -612,8 +856,30 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #765e84;
 }
 
@@ -648,15 +914,49 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -691,12 +991,6 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Red 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -728,8 +1022,30 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #a84862;
 }
 
@@ -764,15 +1080,49 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -807,12 +1157,6 @@ exports[`Storyshots Creator/New Block Red 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Regular State 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -844,8 +1188,30 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -880,15 +1246,49 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -923,12 +1323,6 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Selected State 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -958,8 +1352,30 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #132144;
 }
 
@@ -994,15 +1410,49 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1037,12 +1487,6 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Standard 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1074,8 +1518,30 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -1110,15 +1576,49 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1153,12 +1653,6 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block State Transitions 1`] = `
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1190,8 +1684,30 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -1226,15 +1742,49 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        New Block 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1269,31 +1819,25 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
 `;
 
 exports[`Storyshots Creator/New Block Sub Sections 1`] = `
-.c5 {
+.c9 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c5 > svg {
+.c9 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c9 .c4 {
+.c10 .c8 {
   color: #fff;
 }
 
-.c10 .c4 {
+.c11 .c8 {
   color: #6e849a;
-}
-
-.c6 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .c0 {
@@ -1327,27 +1871,66 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 42px;
-  color: #62778c;
+  text-overflow: ellipsis;
 }
 
-.c7 > *:not(:last-child) {
-  margin-bottom: 8px;
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
 }
 
 .c3 {
-  position: absolute;
-  left: 0px;
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
   padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c7 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
 }
 
 .c1 {
   position: relative;
 }
 
-.c8 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1370,14 +1953,90 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
       <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c6"
+    >
+      <div
+        className="c7"
       >
         <span
-          className="c4 c5"
+          className="c8 c9"
           color="#6e849a"
           size={16}
         >
@@ -1386,22 +2045,56 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           />
         </span>
       </div>
-      <span
-        className="c6"
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Section 1
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Section1"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Section1
+        </div>
+      </div>
+    </div>
     <section
-      className="c7"
+      className="c4"
     >
       <div
-        className="c8"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c8"
+        className="c5"
       >
         Step 2
       </div>
@@ -1410,14 +2103,14 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   <div
     className="c1"
   >
-    <header
-      className="c2"
+    <div
+      className="c6"
     >
       <div
-        className="c3"
+        className="c7"
       >
         <span
-          className="c4 c5"
+          className="c8 c9"
           color="#6e849a"
           size={16}
         >
@@ -1426,22 +2119,56 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           />
         </span>
       </div>
-      <span
-        className="c6"
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Section 2 blah blah blah blah blah blah blah blah
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Section2 Blah blah blah blah blah"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Section2 Blah blah blah blah blah
+        </div>
+      </div>
+    </div>
     <section
-      className="c7"
+      className="c4"
     >
       <div
-        className="c8"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c8"
+        className="c5"
       >
         Step 2
       </div>

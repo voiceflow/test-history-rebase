@@ -6,7 +6,7 @@ import { Icon } from '@/components/SvgIcon';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-import NewBlock, { SectionsVariant } from '.';
+import NewBlock from '.';
 
 const MockStep = styled(FlexCenter)`
   height: 54px;
@@ -30,20 +30,25 @@ const MOCK_STEPS_SHORT = (
   </>
 );
 
-const getProps = () => ({
-  children: MOCK_STEPS,
-});
+const getProps = (blockName = 'New Block') => {
+  const [name, setName] = React.useState(blockName);
+  return {
+    updateName: setName,
+    name,
+    children: MOCK_STEPS,
+  };
+};
 
 const getMultiSectionProps = () => ({
   sections: [
     {
-      name: 'Section 1',
+      name: 'Section1',
       icon: 'home' as Icon,
       children: MOCK_STEPS_SHORT,
     },
     {
       icon: 'home' as Icon,
-      name: 'Section 2 blah blah blah blah blah blah blah blah',
+      name: 'Section2 Blah blah blah blah blah',
       children: MOCK_STEPS_SHORT,
     },
   ],
@@ -54,27 +59,27 @@ export default {
   component: NewBlock,
 };
 
-export const standard = () => <NewBlock name="New Block 1" {...getProps()} />;
+export const standard = () => <NewBlock {...getProps()} />;
 
-export const blue = () => <NewBlock name="New Block 1" variant={BlockVariant.BLUE} {...getProps()} />;
+export const blue = () => <NewBlock variant={BlockVariant.BLUE} {...getProps()} />;
 
-export const red = () => <NewBlock name="New Block 1" variant={BlockVariant.RED} {...getProps()} />;
+export const red = () => <NewBlock variant={BlockVariant.RED} {...getProps()} />;
 
-export const green = () => <NewBlock name="New Block 1" variant={BlockVariant.GREEN} {...getProps()} />;
+export const green = () => <NewBlock variant={BlockVariant.GREEN} {...getProps()} />;
 
-export const purple = () => <NewBlock name="New Block 1" variant={BlockVariant.PURLPLE} {...getProps()} />;
+export const purple = () => <NewBlock variant={BlockVariant.PURPLE} {...getProps()} />;
 
-export const longName = () => <NewBlock name="Block with a veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery long name" {...getProps()} />;
+export const longName = () => <NewBlock {...getProps()} />;
 
-export const regularState = () => <NewBlock name="New Block 1" {...getProps()} />;
+export const regularState = () => <NewBlock {...getProps()} />;
 
-export const activeState = () => <NewBlock name="New Block 1" state={BlockState.ACTIVE} {...getProps()} />;
+export const activeState = () => <NewBlock state={BlockState.ACTIVE} {...getProps()} />;
 
-export const selectedState = () => <NewBlock name="New Block 1" state={BlockState.SELECTED} {...getProps()} />;
+export const selectedState = () => <NewBlock state={BlockState.SELECTED} {...getProps()} />;
 
-export const disabledState = () => <NewBlock name="New Block 1" state={BlockState.DISABLED} {...getProps()} />;
+export const disabledState = () => <NewBlock state={BlockState.DISABLED} {...getProps()} />;
 
-export const subSections = () => <NewBlock sectionsVariant={SectionsVariant.MULTI_SECTION} {...getMultiSectionProps()} />;
+export const subSections = () => <NewBlock {...getProps()} {...getMultiSectionProps()} />;
 
 export const stateTransitions = () => {
   const activeState = select(

@@ -48,13 +48,11 @@ module.exports = merge(commonConfig, {
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
               'pages/Canvas/managers/Start/StartBlock/**/*',
-              'pages/Canvas/components/PortV2/**/*',
+              'pages/Canvas/managers/Command/CommandStep.tsx',
               'components/CustomScrollbars/**/*',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
-              'pages/Canvas/components/Block/NewBlock/**/*',
-              'pages/Canvas/components/Step/**/*',
               'components/CaptionedIconButton/**/*',
               'components/Dropdown/**/*',
               'components/DropdownButton/**/*',

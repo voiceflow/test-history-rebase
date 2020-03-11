@@ -14,5 +14,4 @@ export type ItemProps = {
   labelVariant?: StepLabelVariant;
   multilineLabel?: boolean;
   labelLineClamp?: number;
-  portComponent?: React.FC<{ portID: string }>;
 };

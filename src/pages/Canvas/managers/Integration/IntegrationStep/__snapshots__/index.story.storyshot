@@ -48,12 +48,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -85,8 +79,30 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -211,15 +227,49 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -355,12 +405,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -392,8 +436,30 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -522,15 +588,49 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -672,12 +772,6 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -709,8 +803,30 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -835,15 +951,49 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -966,12 +1116,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1003,8 +1147,30 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -1129,15 +1295,49 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1260,12 +1460,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1297,8 +1491,30 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -1423,15 +1639,49 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1567,12 +1817,6 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1604,8 +1848,30 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -1730,15 +1996,49 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -1848,12 +2148,6 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1885,8 +2179,30 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -2001,15 +2317,49 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -2097,12 +2447,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -2134,8 +2478,30 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -2260,15 +2626,49 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
@@ -2404,12 +2804,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -2441,8 +2835,30 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
   font-size: 15px;
   font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
@@ -2567,15 +2983,49 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >

@@ -7,7 +7,7 @@ import { activeCreatorMenuSelector, isCreatorMenuHiddenSelector, setActiveCreato
 import { connect } from '@/hocs';
 import BlockMenu from '@/pages/Canvas/components/BlockMenu';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
-import CanvasReadOnly from '@/pages/Canvas/components/CanvasControls/components/CanvasReadOnly';
+import { CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import FlowMenu from '@/pages/Canvas/components/FlowMenu';
 import VariableMenu from '@/pages/Canvas/components/VariableMenu';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';

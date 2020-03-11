@@ -1,28 +1,44 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
-import Step, { BaseStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import * as Router from '@/ducks/router';
+import { connect } from '@/hocs';
+import { NodeData } from '@/models';
+import Step, { BaseStepProps, ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { MergeProps } from '@/types';
+import { stopPropagation } from '@/utils/dom';
 
 export type Command = {
-  name: string;
-  flowID: string;
+  name?: string;
 };
 
 export type CommandStepProps = Command &
   Omit<BaseStepProps, 'icon'> & {
-    onCommandClick: (id: string) => void;
+    onCommandClick: () => void;
   };
 
-const CommandStep: React.FC<CommandStepProps> = ({ name, isActive, onClick, flowID, onCommandClick }) => {
-  const onClickFlow = React.useCallback(() => onCommandClick(flowID), [onCommandClick, flowID]);
+export const CommandStep: React.FC<CommandStepProps> = ({ name, isActive, onClick, onCommandClick }) => (
+  <Step isActive={isActive} onClick={onClick}>
+    <Section>
+      <Item icon="flow" iconColor="#3c6997" label={name} onClick={stopPropagation(onCommandClick)} />
+    </Section>
+  </Step>
+);
 
-  return (
-    <Step isActive={isActive} onClick={onClick}>
-      <Section>
-        <Item icon="flow" iconColor="#3c6997" label={name} onClick={onClickFlow} />
-      </Section>
-    </Step>
-  );
+export type ConnectedCommandStep = ConnectedStepProps<NodeData.Command> & {
+  goToDiagram: () => void;
 };
 
-export default CommandStep;
+const ConnectedCommandStep: React.FC<ConnectedCommandStep> = ({ data, stepProps, goToDiagram }) => {
+  return <CommandStep onCommandClick={goToDiagram} name={data.name} {...stepProps} />;
+};
+
+const mapDispatchToProps = {
+  goToDiagram: Router.goToDiagram,
+};
+
+const mergeProps: MergeProps<{}, typeof mapDispatchToProps, ConnectedStepProps<NodeData.Command>> = (_, { goToDiagram }, { data, platform }) => ({
+  goToDiagram: () => data[platform].diagramID && goToDiagram(data[platform].diagramID),
+});
+
+export default connect(null, mapDispatchToProps, mergeProps)(ConnectedCommandStep);

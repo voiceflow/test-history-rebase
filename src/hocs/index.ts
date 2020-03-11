@@ -1,3 +1,4 @@
+export * from './compose';
 export * from './styled';
 export * from './withContext';
 export * from './withHook';

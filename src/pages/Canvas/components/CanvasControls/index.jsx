@@ -3,20 +3,18 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/components/IconButton';
-import SvgIcon from '@/components/SvgIcon';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
-import { flowStructureSelector } from '@/ducks/diagram';
-import { goToRootDiagram } from '@/ducks/router';
+import { diagramByIDSelector } from '@/ducks/diagram';
 import { activeDiagramIDSelector, isRootDiagramSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext, ShortcutModalContext } from '@/pages/Canvas/contexts';
 
-import { CanvasControlsContainer, CanvasControlsZoom, FlowControlsContainer, HomeButton } from './components';
+import { CanvasControlsContainer, CanvasControlsZoom, CanvasGoHome } from './components';
 
 const ZOOM_DELTA = 15;
 
-function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, flow }) {
+function CanvasControls({ withMenu, withDrawer, isRootDiagram, flow }) {
   const eventualEngine = React.useContext(EventualEngineContext);
   const { isTesting } = React.useContext(EditPermissionContext);
   const shortcutModal = React.useContext(ShortcutModalContext);
@@ -24,14 +22,7 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
 
   return (
     <>
-      {showFlowControls && (
-        <FlowControlsContainer withMenu={withMenu} withDrawer={withDrawer}>
-          <HomeButton onClick={goToRootDiagram}>
-            <SvgIcon icon="returnHome" size={13} color="currentColor" />
-            <span>Home</span>
-          </HomeButton>
-        </FlowControlsContainer>
-      )}
+      {showFlowControls && <CanvasGoHome withMenu={withMenu} withDrawer={withDrawer} />}
 
       <CanvasControlsContainer withMenu={withMenu} withDrawer={withDrawer}>
         <CanvasControlsZoom>
@@ -68,16 +59,12 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
 
 const mapStateToProps = {
   isRootDiagram: isRootDiagramSelector,
-  flowStructure: flowStructureSelector,
+  flow: diagramByIDSelector,
   activeDiagramID: activeDiagramIDSelector,
 };
 
-const mapDispatchToProps = {
-  goToRootDiagram,
-};
-
-const mergeProps = ({ flowStructure: getFlowStructure, activeDiagramID }) => ({
-  flow: getFlowStructure(activeDiagramID),
+const mergeProps = ({ flow: getFlowByID, activeDiagramID }) => ({
+  flow: getFlowByID(activeDiagramID),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CanvasControls);
+export default connect(mapStateToProps, null, mergeProps)(CanvasControls);

@@ -18,12 +18,12 @@ export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant
   updateName?: (name: string) => void;
 };
 
-export type NodeBlockAPI = {
+export type NewBlockAPI = {
   getBoundingClientRect: () => DOMRect;
   rename: () => void;
 };
 
-const NewBlock: React.RefForwardingComponent<{ api: NodeBlockAPI }, React.PropsWithChildren<NewBlockProps>> = (
+const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<NewBlockProps>> = (
   { state = BlockState.REGULAR, variant = BlockVariant.STANDARD, sections = [], children, ...props },
   ref
 ) => {

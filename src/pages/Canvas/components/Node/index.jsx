@@ -14,6 +14,7 @@ import MouseMovement from '@/utils/mouseMovement';
 import GroupNodeRenderer from './components/GroupNodeRenderer';
 import NodeBlock from './components/NodeBlock';
 import Container from './components/NodeContainer';
+import NodeStartBlock from './components/NodeStartBlock';
 import { withNodeLifecycle } from './hocs';
 
 export class Node extends React.PureComponent {
@@ -214,6 +215,8 @@ export class Node extends React.PureComponent {
       nodeEl = <CommentBlock ref={this.blockRef} />;
     } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
       nodeEl = <NodeBlock ref={this.blockRef} />;
+    } else if (node.type === BlockType.START) {
+      nodeEl = <NodeStartBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
       nodeEl = <GroupNodeRenderer ref={this.blockRef} />;
     } else {

@@ -32,6 +32,15 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   };
 
+  export type Command = Record<
+    PlatformType,
+    {
+      // only added some properties here
+      intent: string | null;
+      diagramID: string | undefined;
+    }
+  >;
+
   export type Reprompt = {
     type: RepromptType;
     content: string;

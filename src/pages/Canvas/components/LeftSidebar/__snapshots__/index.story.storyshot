@@ -27,6 +27,19 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
+.c56 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+}
+
+.c56 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c48 {
   box-sizing: content-box;
   width: 14px;
@@ -38,6 +51,27 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c58 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c58 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c58:hover {
+  color: #6E849A;
+}
+
+.c58:active {
+  color: #6E849A;
 }
 
 .c18 {
@@ -222,6 +256,19 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
+.c51 {
+  box-sizing: content-box;
+  width: 13px;
+  height: 13px;
+  color: currentColor;
+}
+
+.c51 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c44 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -275,6 +322,52 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
+.c54 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  opacity: 0.5;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c54:focus,
+.c54:active {
+  outline: 0;
+}
+
+.c54:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
 .c17 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -322,11 +415,11 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transform: rotate(0deg);
 }
 
-.c49 .c9 {
+.c59 .c9 {
   color: #fff;
 }
 
-.c50 .c9 {
+.c60 .c9 {
   color: #6e849a;
 }
 
@@ -549,6 +642,196 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 
 .c42 {
   margin-right: 14px;
+}
+
+.c49 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c50 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c50 > *:first-child {
+  margin-right: 5px;
+}
+
+.c50:hover {
+  color: #62778c;
+}
+
+.c52 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 20;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 450px;
+  margin-left: -225px;
+  position: absolute;
+  padding: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  left: 50%;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  border-radius: 5px 5px 0px 0px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-animation: flowbar 0.3s ease,fadein 0.3s ease;
+  animation: flowbar 0.3s ease,fadein 0.3s ease;
+}
+
+.c53 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c53 > span {
+  margin-right: 5px;
+}
+
+.c55 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c55 > span {
+  margin-right: 5px;
+}
+
+.c57 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c57 > span {
+  margin-right: 5px;
 }
 
 .c40 {
@@ -1491,6 +1774,83 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
           </button>
         </div>
       </div>
+    </div>
+  </div>
+  <div
+    className="c49"
+  >
+    <div
+      className="c50"
+      onClick={[Function]}
+    >
+      <span
+        className="c9 c51"
+        color="currentColor"
+        size={13}
+      >
+        <svg
+          data-file-name="SvgReturnHome"
+        />
+      </span>
+      <span>
+        Home
+      </span>
+    </div>
+  </div>
+  <div
+    className="c52"
+  >
+    <div
+      className="c53"
+    >
+      <button
+        className="c43 c54"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c45"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgBack"
+          />
+        </span>
+      </button>
+    </div>
+    <div
+      className="c55"
+    >
+      <span
+        className="c9 c56"
+        color="currentColor"
+        size={12}
+      >
+        <svg
+          data-file-name="SvgFlows"
+        />
+      </span>
+      BEG Flow
+    </div>
+    <div
+      className="c57"
+    >
+      <button
+        className="c43 c54"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c58"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNext"
+          />
+        </span>
+      </button>
     </div>
   </div>
 </div>
@@ -1523,6 +1883,19 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
+.c56 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+}
+
+.c56 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c48 {
   box-sizing: content-box;
   width: 14px;
@@ -1534,6 +1907,27 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c58 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c58 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c58:hover {
+  color: #6E849A;
+}
+
+.c58:active {
+  color: #6E849A;
 }
 
 .c18 {
@@ -1718,6 +2112,19 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
+.c51 {
+  box-sizing: content-box;
+  width: 13px;
+  height: 13px;
+  color: currentColor;
+}
+
+.c51 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c44 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1771,6 +2178,52 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
+.c54 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  opacity: 0.5;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c54:focus,
+.c54:active {
+  outline: 0;
+}
+
+.c54:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
 .c17 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1818,11 +2271,11 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transform: rotate(0deg);
 }
 
-.c49 .c9 {
+.c59 .c9 {
   color: #fff;
 }
 
-.c50 .c9 {
+.c60 .c9 {
   color: #6e849a;
 }
 
@@ -2045,6 +2498,196 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 
 .c42 {
   margin-right: 14px;
+}
+
+.c49 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c50 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c50 > *:first-child {
+  margin-right: 5px;
+}
+
+.c50:hover {
+  color: #62778c;
+}
+
+.c52 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 20;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 450px;
+  margin-left: -225px;
+  position: absolute;
+  padding: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  left: 50%;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  border-radius: 5px 5px 0px 0px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-animation: flowbar 0.3s ease,fadein 0.3s ease;
+  animation: flowbar 0.3s ease,fadein 0.3s ease;
+}
+
+.c53 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c53 > span {
+  margin-right: 5px;
+}
+
+.c55 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c55 > span {
+  margin-right: 5px;
+}
+
+.c57 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c57 > span {
+  margin-right: 5px;
 }
 
 .c40 {
@@ -2989,6 +3632,83 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="c49"
+  >
+    <div
+      className="c50"
+      onClick={[Function]}
+    >
+      <span
+        className="c9 c51"
+        color="currentColor"
+        size={13}
+      >
+        <svg
+          data-file-name="SvgReturnHome"
+        />
+      </span>
+      <span>
+        Home
+      </span>
+    </div>
+  </div>
+  <div
+    className="c52"
+  >
+    <div
+      className="c53"
+    >
+      <button
+        className="c43 c54"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c45"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgBack"
+          />
+        </span>
+      </button>
+    </div>
+    <div
+      className="c55"
+    >
+      <span
+        className="c9 c56"
+        color="currentColor"
+        size={12}
+      >
+        <svg
+          data-file-name="SvgFlows"
+        />
+      </span>
+      BEG Flow
+    </div>
+    <div
+      className="c57"
+    >
+      <button
+        className="c43 c54"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c58"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNext"
+          />
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
@@ -3019,6 +3739,19 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   height: inherit;
 }
 
+.c38 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+}
+
+.c38 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c30 {
   box-sizing: content-box;
   width: 14px;
@@ -3027,6 +3760,40 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 }
 
 .c30 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c40 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c40 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c40:hover {
+  color: #6E849A;
+}
+
+.c40:active {
+  color: #6E849A;
+}
+
+.c33 {
+  box-sizing: content-box;
+  width: 13px;
+  height: 13px;
+  color: currentColor;
+}
+
+.c33 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3098,11 +3865,57 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c31 .c9 {
+.c36 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  opacity: 0.5;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c36:focus,
+.c36:active {
+  outline: 0;
+}
+
+.c36:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
+.c41 .c9 {
   color: #fff;
 }
 
-.c32 .c9 {
+.c42 .c9 {
   color: #6e849a;
 }
 
@@ -3164,7 +3977,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   margin-right: 0;
 }
 
-.c18 > .c33:last-child {
+.c18 > .c43:last-child {
   margin-right: -6px;
 }
 
@@ -3406,6 +4219,196 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 
 .c24 {
   margin-right: 14px;
+}
+
+.c31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c32 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c32 > *:first-child {
+  margin-right: 5px;
+}
+
+.c32:hover {
+  color: #62778c;
+}
+
+.c34 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 20;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 450px;
+  margin-left: -225px;
+  position: absolute;
+  padding: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  left: 50%;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  border-radius: 5px 5px 0px 0px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-animation: flowbar 0.3s ease,fadein 0.3s ease;
+  animation: flowbar 0.3s ease,fadein 0.3s ease;
+}
+
+.c35 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c35 > span {
+  margin-right: 5px;
+}
+
+.c37 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c37 > span {
+  margin-right: 5px;
+}
+
+.c39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c39 > span {
+  margin-right: 5px;
 }
 
 .c16 {
@@ -3899,6 +4902,83 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="c31"
+  >
+    <div
+      className="c32"
+      onClick={[Function]}
+    >
+      <span
+        className="c9 c33"
+        color="currentColor"
+        size={13}
+      >
+        <svg
+          data-file-name="SvgReturnHome"
+        />
+      </span>
+      <span>
+        Home
+      </span>
+    </div>
+  </div>
+  <div
+    className="c34"
+  >
+    <div
+      className="c35"
+    >
+      <button
+        className="c25 c36"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c27"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgBack"
+          />
+        </span>
+      </button>
+    </div>
+    <div
+      className="c37"
+    >
+      <span
+        className="c9 c38"
+        color="currentColor"
+        size={12}
+      >
+        <svg
+          data-file-name="SvgFlows"
+        />
+      </span>
+      BEG Flow
+    </div>
+    <div
+      className="c39"
+    >
+      <button
+        className="c25 c36"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c40"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNext"
+          />
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
@@ -3929,6 +5009,19 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
+.c63 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+}
+
+.c63 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c44 {
   box-sizing: content-box;
   width: 16px;
@@ -3953,6 +5046,27 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c65 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c65 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c65:hover {
+  color: #6E849A;
+}
+
+.c65:active {
+  color: #6E849A;
 }
 
 .c18 {
@@ -4137,6 +5251,19 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
+.c58 {
+  box-sizing: content-box;
+  width: 13px;
+  height: 13px;
+  color: currentColor;
+}
+
+.c58 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c39 {
   box-sizing: content-box;
   width: 16px;
@@ -4268,6 +5395,52 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
+.c61 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  opacity: 0.5;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c61:focus,
+.c61:active {
+  outline: 0;
+}
+
+.c61:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
 .c17 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -4315,11 +5488,11 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transform: rotate(0deg);
 }
 
-.c56 .c9 {
+.c66 .c9 {
   color: #fff;
 }
 
-.c57 .c9 {
+.c67 .c9 {
   color: #6e849a;
 }
 
@@ -4542,6 +5715,196 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 
 .c49 {
   margin-right: 14px;
+}
+
+.c56 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c57 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c57 > *:first-child {
+  margin-right: 5px;
+}
+
+.c57:hover {
+  color: #62778c;
+}
+
+.c59 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 20;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 450px;
+  margin-left: -225px;
+  position: absolute;
+  padding: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  left: 50%;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  border-radius: 5px 5px 0px 0px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-animation: flowbar 0.3s ease,fadein 0.3s ease;
+  animation: flowbar 0.3s ease,fadein 0.3s ease;
+}
+
+.c60 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c60 > span {
+  margin-right: 5px;
+}
+
+.c62 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c62 > span {
+  margin-right: 5px;
+}
+
+.c64 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c64 > span {
+  margin-right: 5px;
 }
 
 .c47 {
@@ -5826,6 +7189,83 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="c56"
+  >
+    <div
+      className="c57"
+      onClick={[Function]}
+    >
+      <span
+        className="c9 c58"
+        color="currentColor"
+        size={13}
+      >
+        <svg
+          data-file-name="SvgReturnHome"
+        />
+      </span>
+      <span>
+        Home
+      </span>
+    </div>
+  </div>
+  <div
+    className="c59"
+  >
+    <div
+      className="c60"
+    >
+      <button
+        className="c50 c61"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c52"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgBack"
+          />
+        </span>
+      </button>
+    </div>
+    <div
+      className="c62"
+    >
+      <span
+        className="c9 c63"
+        color="currentColor"
+        size={12}
+      >
+        <svg
+          data-file-name="SvgFlows"
+        />
+      </span>
+      BEG Flow
+    </div>
+    <div
+      className="c64"
+    >
+      <button
+        className="c50 c61"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c65"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNext"
+          />
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
@@ -5856,6 +7296,19 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
+.c58 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: currentColor;
+}
+
+.c58 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c50 {
   box-sizing: content-box;
   width: 14px;
@@ -5867,6 +7320,27 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   display: block;
   width: inherit;
   height: inherit;
+}
+
+.c60 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c60 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c60:hover {
+  color: #6E849A;
+}
+
+.c60:active {
+  color: #6E849A;
 }
 
 .c18 {
@@ -6051,6 +7525,19 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
+.c53 {
+  box-sizing: content-box;
+  width: 13px;
+  height: 13px;
+  color: currentColor;
+}
+
+.c53 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c39 {
   box-sizing: content-box;
   width: 16px;
@@ -6130,6 +7617,52 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
+.c56 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  opacity: 0.5;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c56:focus,
+.c56:active {
+  outline: 0;
+}
+
+.c56:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
 .c17 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6177,11 +7710,11 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transform: rotate(0deg);
 }
 
-.c51 .c9 {
+.c61 .c9 {
   color: #fff;
 }
 
-.c52 .c9 {
+.c62 .c9 {
   color: #6e849a;
 }
 
@@ -6404,6 +7937,196 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 
 .c44 {
   margin-right: 14px;
+}
+
+.c51 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c52 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c52 > *:first-child {
+  margin-right: 5px;
+}
+
+.c52:hover {
+  color: #62778c;
+}
+
+.c54 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 20;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 450px;
+  margin-left: -225px;
+  position: absolute;
+  padding: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  left: 50%;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
+  border-radius: 5px 5px 0px 0px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-animation: flowbar 0.3s ease,fadein 0.3s ease;
+  animation: flowbar 0.3s ease,fadein 0.3s ease;
+}
+
+.c55 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c55 > span {
+  margin-right: 5px;
+}
+
+.c57 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c57 > span {
+  margin-right: 5px;
+}
+
+.c59 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #62778c;
+}
+
+.c59 > span {
+  margin-right: 5px;
 }
 
 .c42 {
@@ -7469,6 +9192,83 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
           </button>
         </div>
       </div>
+    </div>
+  </div>
+  <div
+    className="c51"
+  >
+    <div
+      className="c52"
+      onClick={[Function]}
+    >
+      <span
+        className="c9 c53"
+        color="currentColor"
+        size={13}
+      >
+        <svg
+          data-file-name="SvgReturnHome"
+        />
+      </span>
+      <span>
+        Home
+      </span>
+    </div>
+  </div>
+  <div
+    className="c54"
+  >
+    <div
+      className="c55"
+    >
+      <button
+        className="c45 c56"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c47"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgBack"
+          />
+        </span>
+      </button>
+    </div>
+    <div
+      className="c57"
+    >
+      <span
+        className="c9 c58"
+        color="currentColor"
+        size={12}
+      >
+        <svg
+          data-file-name="SvgFlows"
+        />
+      </span>
+      BEG Flow
+    </div>
+    <div
+      className="c59"
+    >
+      <button
+        className="c45 c56"
+        disabled={true}
+        onClick={[Function]}
+      >
+        <span
+          className="c9 c60"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgNext"
+          />
+        </span>
+      </button>
     </div>
   </div>
 </div>

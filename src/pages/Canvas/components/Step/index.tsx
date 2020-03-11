@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import { Node } from '@/models';
+import { Node, NodeData } from '@/models';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, Image, ImageContainer } from './components';
@@ -20,7 +20,7 @@ export type StepProps = BaseStepProps & { children: React.ReactNode | React.Reac
 export type ConnectedStepProps<T = {}> = {
   stepProps: Pick<BaseStepProps, 'isActive' | 'onClick'> & { withPorts: boolean };
   node: Node;
-  data: T;
+  data: NodeData<T>;
   platform: PlatformType;
 };
 

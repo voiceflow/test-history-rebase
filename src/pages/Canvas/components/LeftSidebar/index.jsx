@@ -1,20 +1,25 @@
 import React from 'react';
 
+import * as Diagram from '@/ducks/diagram';
+import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useEnableDisable, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { CanvasGoHome, CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import CanvasControlsV2 from '@/pages/Canvas/components/CanvasControlsV2';
+import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
 
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
 
-function LeftSidebar({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
-  const { canEdit } = React.useContext(EditPermissionContext);
+function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden, selectActiveTab }) {
+  const { canEdit, isTesting } = React.useContext(EditPermissionContext);
   const selectedTab = React.useMemo(() => (Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS), [activeTab]);
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
+  const showFlowControls = !isTesting && !isRootDiagram && flow;
 
   useHotKeys(
     Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB,
@@ -48,6 +53,15 @@ function LeftSidebar({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
       </Container>
 
       <CanvasControlsV2 />
+
+      {!canEdit && <CanvasReadOnly />}
+
+      {showFlowControls && (
+        <>
+          <CanvasGoHome withMenu={false} withDrawer={canEdit} />
+          <FlowBar withMenu withDrawer={canEdit} flow={flow} />
+        </>
+      )}
     </>
   );
 }
@@ -55,6 +69,9 @@ function LeftSidebar({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
 const mapStateToProps = {
   isHidden: UI.isCreatorMenuHiddenSelector,
   activeTab: UI.activeCreatorMenuSelector,
+  activeDiagramID: Skill.activeDiagramIDSelector,
+  isRootDiagram: Skill.isRootDiagramSelector,
+  flow: Diagram.flowStructureSelector,
 };
 
 const mapDispatchToProps = {
@@ -62,4 +79,8 @@ const mapDispatchToProps = {
   selectActiveTab: UI.setOnlyActiveCreatorMenu,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeftSidebar);
+const mergeProps = ({ flow: getFlowStructure, activeDiagramID }) => ({
+  flow: getFlowStructure(activeDiagramID),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LeftSidebar);

@@ -1,36 +1,32 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withEngine } from '@/../.storybook';
+import { withStepDispatcher } from '@/../.storybook';
 import { PLATFORMS } from '@/constants';
+import { CommandStep } from '@/pages/Canvas/managers/Command/CommandStep';
 
-import StartBlock from '.';
+import StartBlock, { FlowStartBlock, HomeStartBlock } from '.';
 
-const withDispatcher = withEngine({
-  dispatcher: {
-    usePort: () => ({ onClick: () => null }),
-    useNode: () => ({}),
-  },
-});
+const COMMANDS = [
+  { name: 'Help', flowID: '1', nodeID: 'x' },
+  { name: 'Stop', flowID: '2', nodeID: 'y' },
+].map((command) => <CommandStep {...command} onCommandClick={action('click command')} key={command.nodeID} />);
 
 const getProps = () => ({
   onCommandClick: action('click command'),
+  portID: 'abc',
+  isActive: false,
 });
 
 const getHomeProps = () => ({
   ...getProps(),
-  commands: [
-    { name: 'Help', flowID: '1', portID: 'a', isActive: false },
-    { name: 'Stop', flowID: '2', portID: 'b', isActive: false },
-  ],
+  portID: 'abc',
+  commands: COMMANDS,
 });
 
 const getFlowProps = () => ({
   ...getProps(),
-  commands: [
-    { name: 'Flow Command', flowID: '1', portID: 'a', isActive: false },
-    { name: 'Contextualized Help', flowID: '2', portID: 'b', isActive: true },
-  ],
+  commands: COMMANDS,
 });
 
 export default {
@@ -38,10 +34,12 @@ export default {
   component: StartBlock,
 };
 
-export const alexa = withDispatcher(() => <StartBlock platform={PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
+export const alexa = withStepDispatcher()(() => <HomeStartBlock platform={PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const google = withDispatcher(() => <StartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
+export const google = withStepDispatcher()(() => <HomeStartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const flowStartBlock = withDispatcher(() => <StartBlock platform={PLATFORMS[0]} invocationName="Headspace" inFlow flowName="Flow Name" />);
+export const flowStartBlock = withStepDispatcher()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} commands={null} />);
 
-export const flowWithCommands = withDispatcher(() => <StartBlock inFlow flowName="Flow Name" {...getFlowProps()} />);
+export const flowWithCommands = withStepDispatcher()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);
+
+export const flowConnected = withStepDispatcher({ hasActiveLinks: true })(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);

@@ -9,6 +9,8 @@ import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
+const BLOCK_NODES = [BlockType.COMBINED, BlockType.START];
+
 const creatorAdapter = createSimpleAdapter(
   (diagram, platform, isBlockRedesignEnabled) => {
     const rootNodes = [];
@@ -28,7 +30,7 @@ const creatorAdapter = createSimpleAdapter(
     diagram.nodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      if (isBlockRedesignEnabled && !_node.parentNode && !_node.combines) {
+      if (isBlockRedesignEnabled && !BLOCK_NODES.includes(_node.type)) {
         const nodeID = cuid();
 
         _node = {

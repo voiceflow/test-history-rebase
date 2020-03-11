@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withContext } from '@/hocs';
+import { Node } from '@/models';
 
 export type Engine = {
   getLinkIDsByPortID: (portID: string) => string[];
@@ -15,6 +16,8 @@ export type Engine = {
 
   dispatcher: {
     usePort: (portID: string) => { portID: string; port: unknown; hasActiveLinks: boolean };
+    useNode: (nodeID: string) => { nodeID: string; node: Node; isHighlighted: boolean; lockOwner: unknown };
+    useNodeData: (nodeID: string) => { nodeID: string; data: unknown };
   };
 };
 

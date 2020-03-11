@@ -36,9 +36,7 @@ function IntentSelect({ intent, intents, onChange, addIntent }) {
   const onCreate = React.useCallback(
     (name) => {
       const id = cuid.slug();
-
       onSelectIntent(id);
-
       addIntent(id, { id, name: prettifyIntentName(name) });
     },
     [addIntent, onSelectIntent]

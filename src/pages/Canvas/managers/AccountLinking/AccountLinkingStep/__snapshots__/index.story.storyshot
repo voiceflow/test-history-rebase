@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -149,7 +149,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -185,6 +185,36 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 <div
   className="c0"
 >
@@ -239,6 +269,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -265,6 +296,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
             >
               Sending Account Linking card
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -287,11 +323,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -444,7 +480,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -456,6 +492,36 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -512,6 +578,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -538,6 +605,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
             >
               Sending Account Linking card
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -560,11 +632,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -717,7 +789,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -729,6 +801,35 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
 <div
@@ -785,6 +886,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -811,6 +913,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
             >
               Sending Account Linking card
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -833,11 +940,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -990,7 +1097,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1002,6 +1109,36 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #8da2b5;
+}
+
+.c14 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c14::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -1058,6 +1195,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -1084,6 +1222,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
             >
               Configure Account Linking
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1331,6 +1474,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Without Port 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div

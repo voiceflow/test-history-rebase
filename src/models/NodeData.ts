@@ -38,4 +38,9 @@ export namespace NodeData {
     audio: string | null;
     voice: string | null;
   };
+
+  export type Capture = {
+    variable?: string;
+    slot?: string;
+  };
 }

@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -149,7 +149,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -185,6 +185,36 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   color: #62778c;
 }
 
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c14 {
   color: #132144;
 }
@@ -280,6 +310,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
                 {Name}
               </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -289,6 +324,328 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #58457a;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c16 .c11 {
+  color: #fff;
+}
+
+.c17 .c11 {
+  color: #6e849a;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c14 {
+  color: #132144;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Capture Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Capture Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#58457a"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgMicrophone"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              Capture 
+              <span
+                className="c14"
+              >
+                {FirstName}
+              </span>
+               to 
+              <span
+                className="c14"
+              >
+                {Name}
+              </span>
+            </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -470,295 +827,37 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #62778c;
+  color: #8da2b5;
 }
 
 .c14 {
-  color: #132144;
-}
-
-<div
-  className="c0"
->
-  <div
-    className="c1"
-  >
-    <div
-      className="c2"
-    >
-      <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
-      >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
-          style={
-            Object {
-              "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="Capture Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
-            }
-          }
-        >
-          Capture Block
-        </div>
-      </div>
-    </div>
-    <section
-      className="c4"
-    >
-      <div
-        className="c5"
-        onMouseDown={[Function]}
-      >
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#58457a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgMicrophone"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
-            >
-              Capture 
-              <span
-                className="c14"
-              >
-                {FirstName}
-              </span>
-               to 
-              <span
-                className="c14"
-              >
-                {Name}
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #58457a;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 .c11 {
-  color: #fff;
-}
-
-.c15 .c11 {
-  color: #6e849a;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  position: relative;
   height: 54px;
-  text-overflow: ellipsis;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c3 {
-  max-width: 100%;
-}
-
-.c3 input {
-  max-width: 100%;
-  box-sizing: content-box !important;
-  -webkit-transition: background 0.15s ease;
-  transition: background 0.15s ease;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 5px;
-  text-align: center;
-  border: none;
-  white-space: nowrap;
-  background: transparent;
-  border-radius: 3px;
-  outline: none;
-  text-overflow: ellipsis;
-  cursor: auto;
-  overflow: hidden;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c7 .c8:not(:first-of-type)::before {
+.c14::before {
   position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
+  display: block;
   content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-}
-
-.c5 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c16 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 <div
@@ -841,6 +940,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
             >
               Capture a user response
             </span>
+            <div
+              className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -863,11 +967,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1020,7 +1124,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1032,6 +1136,36 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 .c14 {
@@ -1129,6 +1263,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
                 {Name}
               </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1151,11 +1290,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1308,7 +1447,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1320,6 +1459,36 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
 }
 
 .c14 {
@@ -1417,6 +1586,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
                 {Name}
               </span>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1705,6 +1879,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
                 {Name}
               </span>
             </span>
+            
           </div>
         </div>
       </div>

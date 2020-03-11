@@ -12,6 +12,7 @@ function Mapping({ data, updateInputs, updateOutputs }) {
         tooltip="Pass in variables that will be used exclusively for this flow."
         onChange={updateInputs}
       />
+
       <MappingSection
         reverse
         data={data}
@@ -19,6 +20,7 @@ function Mapping({ data, updateInputs, updateOutputs }) {
         header="Output Mapping"
         tooltip="Retrieve variables that are used in this flow."
         onChange={updateOutputs}
+        isDividerNested
       />
     </>
   );

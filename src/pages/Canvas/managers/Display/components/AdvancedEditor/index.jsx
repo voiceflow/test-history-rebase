@@ -67,6 +67,7 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
         header="JSON File"
         isDividerNested
         suffix={display && <SvgIcon variant="standard" icon="downloads" onClick={downloadAPL} size={14} />}
+        customContentStyling={{ paddingBottom: '20px' }}
       >
         <JsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
         <ClickableText link={APL_TOOL_LINK}>Authoring Tool</ClickableText>

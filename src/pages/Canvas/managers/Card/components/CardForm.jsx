@@ -17,17 +17,17 @@ function CardForm({ data, onChange, withImage }) {
         <VariablesInput value={data.title} onBlur={updateTitle} placeholder="Welcome to My Project!" />
       </FormControl>
 
-      <FormControl label="Card Text">
+      <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>
         <VariablesInput value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" />
       </FormControl>
 
       {withImage && (
         <FadeLeftContainer>
-          <FormControl label="Background Image">
+          <FormControl label="Background Image" contentBottomUnits={!data.hasSmallImage ? 0 : undefined}>
             <FullImage image={data.largeImage} update={updateLargeImage} />
           </FormControl>
           {data.hasSmallImage && (
-            <FormControl label="Small Screen Image">
+            <FormControl label="Small Screen Image" contentBottomUnits={0}>
               <FullImage image={data.smallImage} update={updateSmallImage} />
             </FormControl>
           )}

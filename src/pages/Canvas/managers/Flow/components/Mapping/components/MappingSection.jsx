@@ -8,12 +8,20 @@ import MappingVariables from './MappingVariables';
 
 export const variableMappingFactory = () => ({ from: null, to: null });
 
-function MappingSection({ data, header, items, onChange, reverse, tooltip }) {
+function MappingSection({ data, header, items, onChange, reverse, tooltip, isDividerNested }) {
   const { mapManaged, onAdd } = useManager(items, onChange, { factory: variableMappingFactory });
 
   const AddMappingButton = <AddMinusButton type="add" onClick={onAdd} />;
   return (
-    <Section variant="tertiary" header={header} status={AddMappingButton} tooltip={tooltip}>
+    <Section
+      header={header}
+      status={AddMappingButton}
+      variant="subsection"
+      tooltip={tooltip}
+      dividers
+      forceDividers
+      isDividerNested={isDividerNested}
+    >
       <MappingVariables reverse={reverse} mapManaged={mapManaged} diagramID={data.diagramID} items={items} onChange={onChange} />
     </Section>
   );

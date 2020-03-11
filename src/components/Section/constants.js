@@ -7,4 +7,5 @@ export const SectionVariant = {
   primary: 'primary',
   tertiary: 'tertiary',
   secondary: 'secondary',
+  subsection: 'subsection',
 };

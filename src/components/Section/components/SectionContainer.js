@@ -40,9 +40,9 @@ const SectionContainer = styled.div`
   position: relative;
   background-color: #fff;
   
-  ${({ dividers, isDividerNested, isNested }) =>
+  ${({ dividers, forceDividers, isDividerNested, isNested }) =>
     dividers &&
-    (isNested || isDividerNested
+    (isNested || isDividerNested || forceDividers
       ? dividersStyles
       : css`
           :not(:first-child) {
@@ -64,6 +64,7 @@ const SectionContainer = styled.div`
     ${({ variant }) => {
       switch (variant) {
         case SectionVariant.tertiary:
+        case SectionVariant.subsection:
           return css`
             color: #62778c;
             font-weight: 600;
@@ -92,6 +93,14 @@ const SectionContainer = styled.div`
 
         ${ContentContainer} {
           padding-bottom: ${units(2)}px;
+        }
+      `;
+    }
+
+    if (variant === SectionVariant.subsection) {
+      return css`
+        ${Header} {
+          padding-bottom: 11px;
         }
       `;
     }

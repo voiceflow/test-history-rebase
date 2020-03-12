@@ -3,11 +3,14 @@ import cuid from 'cuid';
 import { BlockType, PlatformType } from '@/constants';
 
 import UserInfoEditor from './UserInfoEditor';
+import UserInfoStep from './UserInfoStep';
 
 const UserInfoManager = {
   type: BlockType.USER_INFO,
-  editor: UserInfoEditor,
   icon: 'user',
+
+  editor: UserInfoEditor,
+  step: UserInfoStep,
 
   label: 'User Info',
   tip: 'Get User Information and check Permissions',

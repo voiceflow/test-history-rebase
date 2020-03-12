@@ -1,4 +1,4 @@
-import { CardType, DialogType, PlatformType, RepromptType } from '@/constants';
+import { CardType, DialogType, PermissionType, PlatformType, RepromptType } from '@/constants';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -80,5 +80,14 @@ export namespace NodeData {
 
   export type Reminder = {
     text: string;
+  };
+
+  export type UserInfo = {
+    permissions: {
+      id: string;
+      selected: PermissionType | null;
+      mapTo: string | null;
+      product: string | null;
+    }[];
   };
 }

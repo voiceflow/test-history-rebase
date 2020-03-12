@@ -1,3 +1,4 @@
+import { MemberIcon } from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { css, styled, transition } from '@/hocs';
 import { Theme } from '@/styles/theme';
@@ -43,9 +44,18 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   background-color: #fff;
   background-image: ${({ variant, theme }) => theme.components.block.variants[variant].backgroundImage};
   box-shadow: 0 0 0 1.3px ${({ variant, theme }) => theme.components.block.variants[variant].shadowColor};
+   position: relative;
   ${transition('box-shadow')}
 
   ${stateStyles}
+
+  ${MemberIcon} {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+  }
 `;
 
 export default NewBlockContainer;

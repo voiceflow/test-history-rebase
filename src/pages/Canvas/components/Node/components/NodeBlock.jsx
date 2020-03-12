@@ -6,13 +6,13 @@ import { EngineContext, NodeIDProvider, useNode, useNodeData } from '@/pages/Can
 import NodeStep from './NodeStep';
 
 const NodeBlock = (_, ref) => {
-  const { nodeID, node } = useNode();
+  const { nodeID, node, lockOwner } = useNode();
   const { data } = useNodeData();
   const engine = React.useContext(EngineContext);
   const updateName = React.useCallback((name) => engine.node.updateData(nodeID, { name }), [engine, nodeID]);
 
   return (
-    <Block name={data.name} updateName={updateName} canEditTitle ref={ref}>
+    <Block name={data.name} updateName={updateName} canEditTitle ref={ref} lockOwner={lockOwner}>
       {node.combinedNodes.map((stepNodeID, index) => (
         <NodeIDProvider value={stepNodeID} key={stepNodeID}>
           <NodeStep isLast={index === node.combinedNodes.length - 1} />

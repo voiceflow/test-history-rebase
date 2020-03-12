@@ -11,7 +11,7 @@ export type PermissionStepProps = ConnectedStepProps['stepProps'] & {
   portID: string;
 };
 
-export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, portID, isActive, withPorts, onClick }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, portID, isActive, withPorts, onClick, lockOwner }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>
@@ -20,7 +20,7 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, por
   );
 
   return (
-    <Step isActive={isActive} onClick={onClick}>
+    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
       <Section>
         <Item
           label={permissions.length ? labelText : null}

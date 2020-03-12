@@ -20,7 +20,7 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
   { isRootDiagram, diagram, invocationName, ...props },
   ref
 ) => {
-  const { node } = useNode();
+  const { node, lockOwner } = useNode();
   const platform = React.useContext(PlatformContext)!;
   const [portID] = node.ports.out;
   const commands = node.combinedNodes.map((commandNodeID) => (
@@ -30,10 +30,20 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
   ));
 
   if (isRootDiagram) {
-    return <HomeStartBlock {...props} portID={portID} platform={platform} invocationName={invocationName} commands={commands} ref={ref} />;
+    return (
+      <HomeStartBlock
+        {...props}
+        portID={portID}
+        platform={platform}
+        invocationName={invocationName}
+        commands={commands}
+        lockOwner={lockOwner}
+        ref={ref}
+      />
+    );
   }
 
-  return <FlowStartBlock {...props} portID={portID} name={diagram.name} commands={commands} ref={ref} />;
+  return <FlowStartBlock {...props} portID={portID} name={diagram.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
 };
 
 const mapStateToProps = {

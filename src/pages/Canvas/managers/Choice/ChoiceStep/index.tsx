@@ -13,9 +13,9 @@ export type ChoiceStepProps = ConnectedStepProps['stepProps'] & {
   elsePortID: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID, withPorts, isActive, onClick }) => {
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID, withPorts, isActive, lockOwner, onClick }) => {
   return (
-    <Step isActive={isActive} onClick={onClick}>
+    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
       {!!choices.length && (
         <Section>
           {choices.map(({ label, portID }, index) => (

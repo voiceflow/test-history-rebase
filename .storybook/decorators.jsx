@@ -80,10 +80,23 @@ export const withEngine = (engine) => (story) => () => (
   </EngineContext.Provider>
 );
 
-export const withStepDispatcher = ({ hasActiveLinks = false, onClick = action('click port') } = {}) =>
+export const withStepDispatcher = ({ hasActiveLinks = false, lockOwner = false, onClick = action('click port') } = {}) =>
   withEngine({
     dispatcher: {
       usePort: () => ({ hasActiveLinks, onClick }),
-      useNode: () => ({}),
+      useNode: () => ({
+        lockOwner: lockOwner
+          ? {
+              name: 'Mike',
+              email: 'mike@test.com',
+              role: 'editor',
+              image: 'E760D4|FCEFFB',
+              creator_id: 4,
+              seats: 1,
+              created: null,
+              color: '36B4D2|ECF8FA',
+            }
+          : null,
+      }),
     },
   });

@@ -8,8 +8,8 @@ export type RandomStepProps = ConnectedStepProps['stepProps'] & {
   ports: string[];
 };
 
-export const RandomStep: React.FC<RandomStepProps> = ({ ports, withPorts, isActive, onClick }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const RandomStep: React.FC<RandomStepProps> = ({ ports, withPorts, isActive, onClick, lockOwner }) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       {ports.map((portID, index) => (
         <Item

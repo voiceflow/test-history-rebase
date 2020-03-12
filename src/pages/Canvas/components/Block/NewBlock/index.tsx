@@ -1,12 +1,18 @@
 import React from 'react';
 
 import { Icon } from '@/components/SvgIcon';
+import User from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
+import { LockOwnerType } from '@/models';
 
 import { Container, Section } from './components';
 import { NewBlockHeaderProps } from './components/NewBlockHeader';
 
 export * from './types';
+
+// TODO: remove this once User component is converted into TS
+// declaring the type for component otherwise, TS implies its of RefAttribute and gives error that user prop does not exist on the component
+const LockOwner: any = User;
 
 export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant'> & {
   sections?: {
@@ -15,6 +21,7 @@ export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant
     children?: React.ReactNode;
   }[];
   isActive?: boolean;
+  lockOwner?: LockOwnerType | unknown;
   updateName?: (name: string) => void;
 };
 
@@ -24,7 +31,7 @@ export type NewBlockAPI = {
 };
 
 const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<NewBlockProps>> = (
-  { state = BlockState.REGULAR, variant = BlockVariant.STANDARD, sections = [], children, ...props },
+  { state = BlockState.REGULAR, variant = BlockVariant.STANDARD, sections = [], lockOwner, children, ...props },
   ref
 ) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -47,6 +54,7 @@ const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWi
 
   return (
     <Container variant={variant} state={state} ref={rootRef}>
+      {lockOwner && <LockOwner user={lockOwner} />}
       <Section variant={variant} state={state} isEditing={isEditing} setIsEditing={setIsEditing} titleRef={titleRef} {...props}>
         {children}
       </Section>

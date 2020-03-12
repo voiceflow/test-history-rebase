@@ -10,9 +10,20 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 12px 32px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -163,6 +174,511 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
 </div>
 `;
 
+exports[`Storyshots Creator/New Block Block User Lock 1`] = `
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 .c10 {
+  color: #fff;
+}
+
+.c13 .c10 {
+  color: #6e849a;
+}
+
+.c2 {
+  -webkit-transition: color 0.15s ease,border 0.15s ease;
+  transition: color 0.15s ease,border 0.15s ease;
+  width: 26px;
+  height: 26px;
+  line-height: 22px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  position: relative;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  cursor: default;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c2:before {
+  -webkit-transition: border 0.15s ease;
+  transition: border 0.15s ease;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(17,49,96,0.08);
+  border-radius: 100%;
+  content: '';
+}
+
+.c2:hover .c1:before {
+  border-color: rgba(17,49,96,0.13);
+}
+
+.c2 > * {
+  display: inline-block;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c14 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c15 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c16 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c17 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c20 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
+}
+
+.c5 {
+  max-width: 100%;
+}
+
+.c5 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c9 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c6 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c3 {
+  position: relative;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  style={
+    Object {
+      "padding": "50px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1 c2"
+      style={
+        Object {
+          "backgroundColor": "#ECF8FA",
+          "color": "#36B4D2",
+        }
+      }
+    >
+      M
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      >
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+        <div
+          className="c7"
+        >
+          Step 3
+        </div>
+        <div
+          className="c7"
+        >
+          Step 4
+        </div>
+        <div
+          className="c7"
+        >
+          Step 5
+        </div>
+      </section>
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c8"
+      >
+        <div
+          className="c9"
+        >
+          <span
+            className="c10 c11"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c8"
+      >
+        <div
+          className="c9"
+        >
+          <span
+            className="c10 c11"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section2 Blah blah blah blah blah"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section2 Blah blah blah blah blah
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Creator/New Block Blue 1`] = `
 .c0 {
   width: 360px;
@@ -173,12 +689,23 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(197,231,246,0.8),#c5e7f6);
   box-shadow: 0 0 0 1.3px #2a94d450;
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px #2a94d450,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -339,9 +866,20 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
   opacity: 0.7;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -502,12 +1040,23 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(229,238,229,0.8),#e5eee5);
   box-shadow: 0 0 0 1.3px #68906850;
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px #68906850 ,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -668,12 +1217,23 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -834,12 +1394,23 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(232,222,238,0.8),#e8deee);
   box-shadow: 0 0 0 1.3px #9888a250;
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px #9888a250,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1000,12 +1571,23 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(255,216,226,0.8),#ffd8e2);
   box-shadow: 0 0 0 1.3px #b88b9750;
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px #b88b9750,0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1166,12 +1748,23 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1332,10 +1925,21 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
   border-color: #5d9df5;
   box-shadow: none;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1496,12 +2100,23 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1662,12 +2277,23 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {
@@ -1818,6 +2444,533 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
 </div>
 `;
 
+exports[`Storyshots Creator/New Block Step User Lock 1`] = `
+.c9 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c9 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 .c8 {
+  color: #fff;
+}
+
+.c14 .c8 {
+  color: #6e849a;
+}
+
+.c12 {
+  -webkit-transition: color 0.15s ease,border 0.15s ease;
+  transition: color 0.15s ease,border 0.15s ease;
+  width: 26px;
+  height: 26px;
+  line-height: 22px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  position: relative;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  cursor: default;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c12:before {
+  -webkit-transition: border 0.15s ease;
+  transition: border 0.15s ease;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(17,49,96,0.08);
+  border-radius: 100%;
+  content: '';
+}
+
+.c12:hover .c11:before {
+  border-color: rgba(17,49,96,0.13);
+}
+
+.c12 > * {
+  display: inline-block;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
+}
+
+.c10 .c22:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c10 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c15 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c16 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c17 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c20 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c21 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c7 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  style={
+    Object {
+      "padding": "50px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c5"
+        >
+          Step 1
+        </div>
+        <div
+          className="c5"
+        >
+          Step 2
+        </div>
+        <div
+          className="c5"
+        >
+          Step 3
+        </div>
+        <div
+          className="c5"
+        >
+          Step 4
+        </div>
+        <div
+          className="c5"
+        >
+          Step 5
+        </div>
+      </section>
+    </div>
+    <div
+      className="c1"
+    >
+      <div
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          <span
+            className="c8 c9"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section 1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section 1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c5"
+        >
+          Step 1
+        </div>
+        <div
+          className="c5"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="New Block 1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block 1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c10"
+          onMouseDown={[Function]}
+        >
+          Order Pizza
+        </div>
+        <div
+          className="c10"
+          onMouseDown={[Function]}
+        >
+          <div
+            className="c11 c12"
+            style={
+              Object {
+                "backgroundColor": "#ECF8FA",
+                "color": "#36B4D2",
+              }
+            }
+          >
+            M
+          </div>
+          New Order
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Creator/New Block Sub Sections 1`] = `
 .c9 {
   box-sizing: content-box;
@@ -1849,12 +3002,23 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   background-color: #fff;
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c12 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c2 {

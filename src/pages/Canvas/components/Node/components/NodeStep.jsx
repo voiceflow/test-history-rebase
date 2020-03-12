@@ -4,7 +4,7 @@ import { BlockType } from '@/constants';
 import { EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
 
 const NodeStep = ({ isLast }) => {
-  const { nodeID, node, isHighlighted } = useNode();
+  const { nodeID, node, isHighlighted, lockOwner } = useNode();
   const { data } = useNodeData();
   const platform = React.useContext(PlatformContext);
   const getManager = React.useContext(ManagerContext);
@@ -12,6 +12,7 @@ const NodeStep = ({ isLast }) => {
   const { step: StepComponent } = getManager(data.type);
 
   const stepProps = {
+    lockOwner,
     isActive: isHighlighted,
     withPorts: isLast,
     onClick: () => engine.setActivation(nodeID),

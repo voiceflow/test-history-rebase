@@ -8,3 +8,4 @@ export * from './Project';
 export * from './ProjectList';
 export * from './Skill';
 export * from './Template';
+export * from './User';

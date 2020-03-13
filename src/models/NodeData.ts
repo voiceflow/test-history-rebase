@@ -1,4 +1,4 @@
-import { CardType, DialogType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import { CardType, DialogType, ExpressionType, PermissionType, PlatformType, RepromptType } from '@/constants';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -88,6 +88,21 @@ export namespace NodeData {
       selected: PermissionType | null;
       mapTo: string | null;
       product: string | null;
+    }[];
+  };
+
+  export type Expression = {
+    depth: number;
+    id: string;
+    type: ExpressionType;
+    value?: Expression[] | string;
+  };
+
+  export type Set = {
+    sets: {
+      expression: Expression;
+      id: string;
+      variable?: string;
     }[];
   };
 }

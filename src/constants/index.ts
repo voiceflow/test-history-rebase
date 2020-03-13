@@ -173,21 +173,21 @@ export const PERMISSION_LABELS: Record<PermissionType, string> = PERMISSIONS.red
   {}
 );
 
-export const ExpressionType = {
-  PLUS: 'plus',
-  MINUS: 'minus',
-  TIMES: 'times',
-  DIVIDE: 'divide',
-  EQUALS: 'equals',
-  GREATER: 'greater',
-  LESS: 'less',
-  AND: 'and',
-  OR: 'or',
-  NOT: 'not',
-  VALUE: 'value',
-  VARIABLE: 'variable',
-  ADVANCE: 'advance',
-};
+export enum ExpressionType {
+  PLUS = 'plus',
+  MINUS = 'minus',
+  TIMES = 'times',
+  DIVIDE = 'divide',
+  EQUALS = 'equals',
+  GREATER = 'greater',
+  LESS = 'less',
+  AND = 'and',
+  OR = 'or',
+  NOT = 'not',
+  VALUE = 'value',
+  VARIABLE = 'variable',
+  ADVANCE = 'advance',
+}
 
 export const ReminderType = {
   TIMER: 'timer',

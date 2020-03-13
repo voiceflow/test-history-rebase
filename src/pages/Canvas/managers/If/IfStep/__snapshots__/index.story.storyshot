@@ -342,9 +342,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -382,7 +383,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -394,9 +395,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="math brackets"
                 >
@@ -468,7 +470,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     </span>
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -480,9 +482,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -520,7 +523,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1242,9 +1245,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1282,7 +1286,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -1294,9 +1298,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="math brackets"
                 >
@@ -1368,7 +1373,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     </span>
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -1380,9 +1385,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1420,7 +1426,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1798,9 +1804,10 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1838,7 +1845,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>

@@ -30,6 +30,7 @@ function SelectMenu({
   options,
   onSelect,
   onCreate,
+  maxHeight,
   creatable,
   autoWidth,
   placement,
@@ -181,11 +182,11 @@ function SelectMenu({
 
       if (e.key === KeyCodes.ENTER || e.key === KeyCodes.TAB) {
         if (creatable && focusedIndex === 0 && cachedRef.current.newOptionLabel && !isButtonDisabled(cachedRef.current.newOptionLabel)) {
+          swallowEvent(null, true)(e);
           onCreate(cachedRef.current.newOptionLabel);
-          swallowEvent(null, true)(e);
         } else if ((!isInput || inputWrapperRef.contains(e.target)) && (!creatable || focusedIndex > 0)) {
-          onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]));
           swallowEvent(null, true)(e);
+          onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]));
         }
       } else if (e.key === KeyCodes.ESCAPE) {
         swallowEvent(null, true)(e);
@@ -242,6 +243,7 @@ function SelectMenu({
           <MenuPopoverContainer ref={ref} style={style} autoWidth={autoWidth} onMouseMove={onMouseMove}>
             <Menu
               ref={menuRef}
+              maxHeight={maxHeight}
               fullWidth
               searchable={
                 (creatable || menuSearchable) && (

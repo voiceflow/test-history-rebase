@@ -35,7 +35,7 @@ const sessionClient = {
 
     getAccount: () => fetch.get(`${SESSION_PATH}/google/access_token`),
 
-    deleteAccount: () => fetch.delete(`${SESSION_PATH}/google`),
+    deleteAccount: () => fetch.delete(`${SESSION_PATH}/google/access_token`),
   },
 };
 

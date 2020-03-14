@@ -7,6 +7,7 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
+import { FeatureFlag } from '@/config/features';
 import { FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { updateProjectName } from '@/ducks/project';
@@ -15,10 +16,11 @@ import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
 import { ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable } from '@/hooks';
+import { useCanvasTracking, useEnableDisable, useFeature } from '@/hooks';
 import Business from '@/pages/Business';
 import Canvas from '@/pages/Canvas';
 import CanvasMenu from '@/pages/Canvas/components/CanvasMenu';
+import LeftSidebar from '@/pages/Canvas/components/LeftSidebar';
 import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
@@ -47,6 +49,8 @@ const PAGES_MATCHES = {
 const TIMEOUT_COUNT = 5 * 60 * 1000;
 
 function RenderCanvas({ diagramID, isTesting }) {
+  const blockRedesign = useFeature(FeatureFlag.BLOCK_REDESIGN);
+
   return (
     <>
       {!isTesting && <DiagramSync diagramID={diagramID} />}
@@ -55,7 +59,7 @@ function RenderCanvas({ diagramID, isTesting }) {
           <ShortcutModalProvider>
             <SettingsModalProvider>
               <CanvasHeader />
-              <CanvasMenu />
+              {blockRedesign.isEnabled ? <LeftSidebar /> : <CanvasMenu />}
               <Canvas isTesting={isTesting} />
               <Testing render />
             </SettingsModalProvider>

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Button } from 'reactstrap';
 
 import { setConfirm, setError } from '@/ducks/modal';
-import { resetDialogflowCredential } from '@/ducks/publish/google';
+import { googleIDSelector, resetDialogflowCredential } from '@/ducks/publish/google';
+import { connect } from '@/hocs';
 
 function UnlinkGoogle(props) {
-  const { resetDialogflowCredential, setConfirm, google_id, setError } = props;
+  const { resetDialogflowCredential, setConfirm, googleID, setError } = props;
 
   const [loading, setLoading] = useState(false);
 
   const unlink = () => {
     setConfirm({
       warning: true,
-      text: `Are you sure you want to unlink the google project ${google_id}? You will be able to link a new google project afterwards.`,
+      text: `Are you sure you want to unlink the google project ${googleID}? You will be able to link a new google project afterwards.`,
       confirm: async () => {
         try {
           setLoading(true);
@@ -35,4 +35,9 @@ function UnlinkGoogle(props) {
   );
 }
 
-export default connect(null, { resetDialogflowCredential, setConfirm, setError })(UnlinkGoogle);
+export default connect(
+  {
+    googleID: googleIDSelector,
+  },
+  { resetDialogflowCredential, setConfirm, setError }
+)(UnlinkGoogle);

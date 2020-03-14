@@ -3,7 +3,7 @@ export enum BlockVariant {
   RED = 'red',
   BLUE = 'blue',
   GREEN = 'green',
-  PURLPLE = 'purple',
+  PURPLE = 'purple',
 }
 
 export enum BlockState {

@@ -1,0 +1,20 @@
+import Flex from '@/components/Flex';
+import { styled, units } from '@/hocs';
+
+export type FlowControlsContainerProps = {
+  withMenu: boolean;
+  withDrawer: boolean;
+};
+
+const FlowControlsContainer = styled(Flex)<FlowControlsContainerProps>`
+  position: absolute;
+  left: ${({ withMenu, withDrawer, theme }) =>
+    withMenu ? theme.components.menuBar.width + (withDrawer ? theme.components.menuDrawer.width : 0) : 20}px;
+  top: 2px;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: ${units(2)}px;
+  user-select: none;
+`;
+
+export default FlowControlsContainer;

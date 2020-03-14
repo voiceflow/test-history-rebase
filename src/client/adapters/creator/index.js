@@ -1,5 +1,3 @@
-import cuid from 'cuid';
-
 import { BlockType } from '@/constants';
 
 import { createSimpleAdapter } from '../utils';
@@ -8,6 +6,10 @@ import linkAdapter from './link';
 import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
+
+const SINGLE_BLOCK_WRAPPER_ID_PREFIX = 'singleBlockWrapper';
+
+const BLOCK_NODES = [BlockType.COMBINED, BlockType.START];
 
 const creatorAdapter = createSimpleAdapter(
   (diagram, platform, isBlockRedesignEnabled) => {
@@ -28,8 +30,9 @@ const creatorAdapter = createSimpleAdapter(
     diagram.nodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      if (isBlockRedesignEnabled && !_node.parentNode && !_node.combines) {
-        const nodeID = cuid();
+      if (isBlockRedesignEnabled && !BLOCK_NODES.includes(_node.type)) {
+        // deterministic ID generation to support realtime
+        const nodeID = `${SINGLE_BLOCK_WRAPPER_ID_PREFIX}--${_node.id}`;
 
         _node = {
           x: node.x,
@@ -73,7 +76,9 @@ const creatorAdapter = createSimpleAdapter(
     };
   },
   (diagram) => {
-    const nodes = diagram.nodes.map((node) => (node.combines?.length === 1 ? { ...node.combines[0], name: node.name, parentNode: null } : node));
+    const nodes = diagram.nodes.map((node) =>
+      node.type === BlockType.COMBINED && node.combines?.length === 1 ? { ...node.combines[0], name: node.name, parentNode: null } : node
+    );
 
     return { ...diagram, nodes };
   }

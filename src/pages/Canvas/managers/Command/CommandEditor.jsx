@@ -11,12 +11,29 @@ import { connect } from '@/hocs';
 import { withHeaderActions } from '@/pages/Canvas/components/EditSidebar/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
 import { compose } from '@/utils/functional';
+import { prettifyIntentName } from '@/utils/intent';
 
 import { Flow, HelpTooltip as FlowTooltip } from '../Flow/components';
 import { HelpMessage, HelpTooltip } from './components';
 
-function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange, pushToPath }) {
+function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange, pushToPath, getIntentByID }) {
   const onChangeData = React.useCallback((payload) => onChange({ [platform]: { ...data[platform], ...payload } }), [onChange, platform, data]);
+  const selectedIntent = data[platform].intent;
+
+  const updateBlockName = React.useCallback(
+    (intent) => {
+      const intentData = getIntentByID(intent);
+      const intentName = intentData.builtIn ? prettifyIntentName(intentData.name) : intentData.name;
+      onChange({ name: intentName });
+    },
+    [getIntentByID, onChange]
+  );
+
+  React.useEffect(() => {
+    if (selectedIntent) {
+      updateBlockName(selectedIntent);
+    }
+  }, [selectedIntent]);
 
   return (
     <Content
@@ -45,7 +62,7 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
       </Section>
 
       <Section variant="tertiary" header="Intent" tooltip={<IntentTooltip />}>
-        <IntentSelect intent={intent} onChange={onChangeData} />
+        <IntentSelect intent={intent} onChange={({ intent }) => onChangeData({ intent })} />
       </Section>
       <IntentForm intent={intent} pushToPath={pushToPath} />
       <LegacyMappings intent={intent} mappings={data[platform].mappings} onDelete={() => onChangeData({ mappings: [] })} />
@@ -71,6 +88,7 @@ const mergeProps = ({ platform, getIntentByID, diagramByID }, { goToDiagram }, {
     intent: platformData.intent && getIntentByID(platformData.intent),
     diagram: platformData.diagramID && diagramByID(platformData.diagramID),
     goToDiagram: () => goToDiagram(platformData.diagramID),
+    getIntentByID,
   };
 };
 

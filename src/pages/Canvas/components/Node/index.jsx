@@ -12,7 +12,9 @@ import { compose } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
 import GroupNodeRenderer from './components/GroupNodeRenderer';
+import NodeBlock from './components/NodeBlock';
 import Container from './components/NodeContainer';
+import NodeStartBlock from './components/NodeStartBlock';
 import { withNodeLifecycle } from './hocs';
 
 export class Node extends React.PureComponent {
@@ -195,7 +197,7 @@ export class Node extends React.PureComponent {
   }
 
   render() {
-    const { node, isHighlighted } = this.props;
+    const { node, isHighlighted, isBlockRedesignEnabled } = this.props;
     const { isDragging, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
@@ -211,8 +213,12 @@ export class Node extends React.PureComponent {
 
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
+    } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
+      nodeEl = <NodeBlock ref={this.blockRef} />;
+    } else if (isBlockRedesignEnabled && node.type === BlockType.START) {
+      nodeEl = <NodeStartBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
-      nodeEl = <GroupNodeRenderer combinedNodeIDs={node.combinedNodes} ref={this.blockRef} />;
+      nodeEl = <GroupNodeRenderer ref={this.blockRef} />;
     } else {
       nodeEl = <Block ref={this.blockRef} />;
     }

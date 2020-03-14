@@ -21,7 +21,7 @@ import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
 
 import { resetTime, updateTest } from './actions';
 import { TEST_STATUS } from './constants';
-import { testSelector, testStateSelector, testStatusSelector } from './selectors';
+import { testStateSelector, testStatusSelector } from './selectors';
 
 const SLOT_TYPES = constants.slots;
 const { DEFAULT_INTENTS } = constants.intents;
@@ -301,7 +301,6 @@ export const shareTest = () => async (dispatch, getState) => {
 
     const testState = testStateSelector(state);
     const testStatus = testStatusSelector(state);
-    const { configId, configObject } = testSelector(state);
 
     let globals;
     const store = localStorage.getItem(`TEST_VARIABLES_${projectID}`);
@@ -311,20 +310,7 @@ export const shareTest = () => async (dispatch, getState) => {
       globals = testState.globals[0];
     }
 
-    const currentConfigObject = projectID + JSON.stringify(globals);
-
-    // if nothing has changed, just send back the original config
-    if (currentConfigObject === configObject && configId) return configId;
-
-    const newConfigId = await client.testing.createInfo(skillID, diagramID, globals);
-
-    dispatch(
-      updateTest({
-        configId: newConfigId,
-        configObject: currentConfigObject,
-      })
-    );
-    return newConfigId;
+    return await client.testing.createInfo(skillID, diagramID, globals);
   } catch (err) {
     console.error(err);
     dispatch(setError('Unable to generate share link'));

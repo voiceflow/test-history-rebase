@@ -39,6 +39,7 @@
     "ignore-styles",
     "mock-local-storage",
     "nyc",
-    "typescript"
+    "typescript",
+    "utility-types"
   ]
 }

@@ -9,7 +9,7 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
 import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
-import { publishStateSelector, updatePublishInfo } from '@/ducks/publish/google';
+import { googleIDSelector, updatePublishInfo } from '@/ducks/publish/google';
 import { activeNameSelector, activeSkillIDSelector } from '@/ducks/skill';
 
 import GuidedSteps, { GuidedStepsWrapper } from '../../../components/GuidedSteps';
@@ -73,7 +73,7 @@ class GooglePublish extends Component {
   };
 
   render() {
-    const { googleId, googleEmail } = this.props;
+    const { googleID, googleEmail } = this.props;
     const { loaded, id_collapse, live } = this.state;
 
     if (!loaded)
@@ -93,7 +93,7 @@ class GooglePublish extends Component {
               </div>
             </div>
           ) : null}
-          {googleId && (
+          {googleID && (
             <div className="alert alert-success mb-4" role="alert">
               <div className="d-flex justify-content-between align-items-center">
                 <span>This Action is linked on the Google Actions Console</span>
@@ -110,11 +110,11 @@ class GooglePublish extends Component {
                   <div>
                     <span>Project ID | </span>
                     <a
-                      href={`https://console.actions.google.com/u/${googleEmail}/project/${googleId}/simulator`}
+                      href={`https://console.actions.google.com/u/${googleEmail}/project/${googleID}/simulator`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{googleId} </b>
+                      <b>{googleID} </b>
                     </a>
                   </div>
                   <UnlinkProject />
@@ -283,7 +283,7 @@ class GooglePublish extends Component {
 const mapStateToProps = (state) => ({
   user: userSelector(state),
   name: activeNameSelector(state),
-  googleId: publishStateSelector(state).googleId,
+  googleID: googleIDSelector(state),
   versionID: activeSkillIDSelector(state),
   googleEmail: state.account.google?.profile?.email || '0',
 });

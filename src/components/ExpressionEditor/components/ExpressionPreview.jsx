@@ -51,12 +51,12 @@ const expressionify = (expression, { parentType, depth = 0 } = {}) => {
   }
 };
 
-function ExpressionPreview({ expression, container: Container = PreviewContainer, ...props }) {
+function ExpressionPreview({ expression, container: Container = PreviewContainer, prefix = null, ...props }) {
   if (!expression) return null;
 
   return (
     <Container className="expressionfy" {...props}>
-      {expressionify(expression)}
+      {prefix} {expressionify(expression)}
     </Container>
   );
 }

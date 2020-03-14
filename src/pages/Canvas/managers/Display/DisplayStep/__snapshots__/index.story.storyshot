@@ -14,62 +14,12 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -93,7 +43,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -102,7 +52,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -148,7 +98,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -168,40 +118,21 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c19 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
+  z-index: 99;
 }
 
 .c13 {
@@ -214,26 +145,138 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -259,17 +302,13 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -292,62 +331,12 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -371,7 +360,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -380,7 +369,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -442,43 +431,25 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c19 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+  z-index: 99;
+}
+
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -491,26 +462,138 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -536,17 +619,13 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -569,62 +648,12 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -704,44 +733,25 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c17 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
+  z-index: 99;
+}
+
+.c16 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -754,26 +764,138 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   color: #8da2b5;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c17 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -799,9 +921,6 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
             >
               Add a multimodal display
             </span>
-            <div
-              className="c14"
-            />
           </div>
         </div>
       </div>
@@ -824,62 +943,12 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -903,7 +972,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -912,7 +981,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -974,44 +1043,25 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c19 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
+  z-index: 99;
+}
+
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -1024,26 +1074,138 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1069,17 +1231,13 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
             >
               Hi my name is Rick Sanchez and this is my Morty
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -1102,62 +1260,12 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1181,7 +1289,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   align-self: start;
 }
 
-.c16 {
+.c15 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -1190,7 +1298,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c15 {
+.c14 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -1252,44 +1360,25 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c19 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
+  z-index: 99;
+}
+
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -1302,26 +1391,138 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1347,17 +1548,13 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
-          className="c15"
+          className="c14"
         >
           <div
-            className="c16"
+            className="c15"
           />
         </div>
       </div>
@@ -1380,62 +1577,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c14 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c15 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1515,44 +1662,25 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c14 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c14::before {
+.c5 .c17 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
+  z-index: 99;
+}
+
+.c16 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -1565,26 +1693,138 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c17 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1610,10 +1850,6 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
             >
               Hi {name}, welcome to Hogwarts
             </span>
-            <div
-              className="c14"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1644,56 +1880,6 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
-}
-
 .c10 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1786,10 +1972,21 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c5 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c18 .c6:not(:first-of-type) {
@@ -1806,26 +2003,138 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   color: #62778c;
 }
 
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Display Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"

@@ -13,6 +13,8 @@ class NodeManager extends EngineConsumer {
   internal = {
     add: (node, data, nodeID) => this.dispatch(Creator.addNode(node, data, nodeID)),
 
+    addWrapped: (node, data, nodeID, parentNodeID) => this.dispatch(Creator.addWrappedNode(node, data, nodeID, parentNodeID)),
+
     addMany: (nodeGroup, position) => this.dispatch(Creator.addManyNodes(nodeGroup, position)),
 
     addNested: (parentNodeID, nodeID, node, data, mergedNodeID) => {
@@ -106,14 +108,24 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(nodeID, type, [x, y]) {
+  async add(nodeID, type, [x, y], parentNodeID = cuid()) {
     const { node, data } = nodeFactory(type);
     const augmentedNode = { ...node, x, y };
 
-    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID));
-    this.internal.add(augmentedNode, data, nodeID);
+    if (this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID));
+      this.internal.addWrapped(augmentedNode, data, nodeID, parentNodeID);
+    } else {
+      await this.addSingle(augmentedNode, data, nodeID);
+    }
+
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
+  }
+
+  async addSingle(node, data, nodeID) {
+    await this.engine.realtime.sendUpdate(Realtime.addNode(node, data, nodeID));
+    this.internal.add(node, data, nodeID);
   }
 
   async addMany(nodeGroup, position) {

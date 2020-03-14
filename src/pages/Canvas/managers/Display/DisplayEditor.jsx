@@ -8,7 +8,7 @@ import { useModals } from '@/contexts/ModalsContext';
 import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { Content } from '@/pages/Canvas/components/Editor';
+import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { AdvancedEditor, Footer, SplashEditor } from './components';
 import { DisplayType, VERSIONS } from './constants';
@@ -84,14 +84,17 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
 
   return !version ? null : (
     <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
-      <Section variant="tertiary" header="Display Type">
-        <RadioGroup
-          options={DISPLAY_OPTIONS}
-          checked={displayType}
-          onChange={changeDisplayType}
-          disabled={!!jsonFileName && displayType === DisplayType.ADVANCED}
-        />
+      <Section>
+        <FormControl label="Display Type" contentBottomUnits={0}>
+          <RadioGroup
+            options={DISPLAY_OPTIONS}
+            checked={displayType}
+            onChange={changeDisplayType}
+            disabled={!!jsonFileName && displayType === DisplayType.ADVANCED}
+          />
+        </FormControl>
       </Section>
+
       {displayType === DisplayType.SPLASH ? (
         <SplashEditor
           skillID={skillID}

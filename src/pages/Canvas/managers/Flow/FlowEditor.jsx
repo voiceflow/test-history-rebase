@@ -46,6 +46,7 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
       <Section>
         <Flow data={data} onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
       </Section>
+
       {hasVariableMapping && diagram ? (
         <FadeLeftContainer>
           <Mapping data={data} updateInputs={(inputs) => onChange({ inputs })} updateOutputs={(outputs) => onChange({ outputs })} />

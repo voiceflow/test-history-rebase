@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { PlatformType } from '@/constants';
+import { DialogType, PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { BaseStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
+import { NodeData } from '@/models';
+import Step, { ConnectedStepProps, Item, ItemProps, Section } from '@/pages/Canvas/components/Step';
 
 export type SpeakStepItem = {
-  label?: string;
+  content?: string;
+  url?: string;
   isAudio?: boolean;
 };
 
-export type SpeakStepProps = BaseStepProps &
-  Pick<ItemProps, 'withPort' | 'isConnected' | 'onClickPort'> & {
+export type SpeakStepProps = ConnectedStepProps['stepProps'] &
+  Pick<ItemProps, 'portID'> & {
     items: SpeakStepItem[];
     random?: boolean;
     platform: PlatformType;
@@ -27,27 +29,25 @@ enum IconColor {
   DEFAULT = '#8f8e94',
 }
 
-const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, isActive, withPort, onClickPort, isConnected }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPorts, platform, isActive, portID, onClick }) => {
   const itemProps = {
     portColor: '#6e849a',
-    isConnected,
-    onClickPort,
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
   };
 
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
-    <Step isActive={isActive}>
+    <Step isActive={isActive} onClick={onClick}>
       <Section>
         {itemsToRender.length ? (
-          itemsToRender.map(({ label, isAudio }, index) => (
+          itemsToRender.map(({ content, isAudio }, index) => (
             <Item
               {...itemProps}
-              key={`${label}-${index}`}
-              label={label}
+              key={`${index}`}
+              label={content}
               icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
-              withPort={index === itemsToRender.length - 1 && withPort}
+              portID={withPorts && index === itemsToRender.length - 1 ? portID : null}
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
@@ -55,11 +55,22 @@ const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, isActive
             />
           ))
         ) : (
-          <Item {...itemProps} icon={Icon.TEXT} withPort={false} iconColor={IconColor.DEFAULT} />
+          <Item {...itemProps} icon={Icon.TEXT} iconColor={IconColor.DEFAULT} />
         )}
       </Section>
     </Step>
   );
 };
 
-export default SpeakStep;
+const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, stepProps, platform }) => {
+  const items = data.dialogs.map((dialog) => {
+    return {
+      content: dialog.content || dialog.url,
+      isAudio: dialog.type === DialogType.AUDIO,
+    };
+  });
+
+  return <SpeakStep items={items} platform={platform} random={data.randomize} portID={node.ports.out[0]} {...stepProps} />;
+};
+
+export default ConnectedSpeakStep;

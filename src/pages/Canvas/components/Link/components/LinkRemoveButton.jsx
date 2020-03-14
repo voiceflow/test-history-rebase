@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IconButton from '@/components/IconButton';
-import IconButtonContainer from '@/components/IconButton/components/IconButtonContainer';
+import { Container } from '@/components/IconButton/components';
 import { styled, transition } from '@/hocs';
 
 const LINK_SIZE = 52;
@@ -16,7 +16,7 @@ export default styled(LinkRemoveButton)`
   position: relative;
   visibility: ${({ isHovering }) => (isHovering ? 'visible' : 'hidden')};
 
-  & > ${IconButtonContainer} {
+  & > ${Container} {
     position: absolute;
     top: 50%;
     left: 50%;

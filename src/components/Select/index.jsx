@@ -30,6 +30,7 @@ export default function Select({
   autoWidth = true,
   fullWidth,
   autoFocus,
+  maxHeight,
   creatable,
   className,
   borderLess,
@@ -294,6 +295,7 @@ export default function Select({
           options={optionsToRender}
           onSelect={onSelectItem}
           onCreate={onCreateItem}
+          maxHeight={maxHeight}
           autoWidth={autoWidth}
           creatable={creatable}
           placement={placement}

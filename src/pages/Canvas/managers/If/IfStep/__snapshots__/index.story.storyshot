@@ -14,14 +14,14 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c21 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c21 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,11 +40,11 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c23 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c24 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -69,56 +69,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 .c17 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -182,7 +132,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c25 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -202,98 +152,21 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
+.c5 .c23 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c20 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c20::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
-}
-
-.c22 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c22::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
+  z-index: 99;
 }
 
 .c13 {
@@ -304,6 +177,83 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
 }
 
 .c14 .c15 {
@@ -320,20 +270,55 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        If Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="If Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          If Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -357,9 +342,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -397,12 +383,8 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -413,9 +395,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="math brackets"
                 >
@@ -487,12 +470,8 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     </span>
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -503,9 +482,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -543,12 +523,8 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -561,7 +537,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c21"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -575,11 +551,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             >
               Else
             </span>
-            <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -615,62 +586,12 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -750,54 +671,25 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
+.c5 .c19 {
   position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
+  top: 6px;
+  left: 6px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #8da2b5;
-  border: 4px solid white;
+  z-index: 99;
 }
 
-.c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -810,26 +702,148 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   color: #8da2b5;
 }
 
+.c15 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c19 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
 <div
   className="c0"
 >
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        If Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="If Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          If Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -881,10 +895,6 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             >
               Else
             </span>
-            <div
-              className="c16"
-              color="#8da2b5"
-            />
           </div>
         </div>
       </div>
@@ -907,14 +917,14 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c21 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c21 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -933,11 +943,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c23 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c24 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -962,56 +972,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 .c17 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1091,102 +1051,25 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c25 .c6:not(:first-of-type) {
+.c5 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c20 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c20::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
-}
-
-.c22 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c22::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 .c13 {
@@ -1197,6 +1080,83 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
 }
 
 .c14 .c15 {
@@ -1213,20 +1173,55 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        If Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="If Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          If Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1250,9 +1245,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1290,12 +1286,8 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -1306,9 +1298,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="math brackets"
                 >
@@ -1380,12 +1373,8 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     </span>
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-            />
           </div>
           <div
             className="c8 c9"
@@ -1396,9 +1385,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1436,12 +1426,8 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -1454,7 +1440,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c10"
             >
               <span
-                className="c11 c21"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -1468,11 +1454,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             >
               Else
             </span>
-            <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>
@@ -1495,14 +1476,14 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c20 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c20 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1521,11 +1502,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c22 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1550,56 +1531,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
 .c17 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1679,73 +1610,25 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c24 .c6:not(:first-of-type) {
+.c5 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
-}
-
-.c19 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c19::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #6e849a;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #6e849a;
-  border: 4px solid white;
-}
-
-.c21 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c21::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #8da2b5;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
 }
 
 .c13 {
@@ -1756,6 +1639,83 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
 }
 
 .c14 .c15 {
@@ -1772,20 +1732,55 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        If Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="If Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          If Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1809,9 +1804,10 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                 
                 <span
                   className="brackets"
                 >
@@ -1849,12 +1845,8 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
                     212
                   </span>
                 </span>
-              </span>
+              </div>
             </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-            />
           </div>
         </div>
         <div
@@ -1867,7 +1859,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
               className="c10"
             >
               <span
-                className="c11 c20"
+                className="c11 c19"
                 color="#6e849a"
                 size={16}
               >
@@ -1881,11 +1873,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             >
               Else
             </span>
-            <div
-              className="c21"
-              color="#8da2b5"
-              onClick={[Function]}
-            />
           </div>
         </div>
       </div>

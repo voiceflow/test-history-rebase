@@ -97,7 +97,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*'],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*', '.storybook/**/*'],
       rules: {
         'import/no-extraneous-dependencies': [
           'error',
@@ -108,6 +108,7 @@ module.exports = {
         'no-secrets/no-secrets': 'off',
         'xss/no-mixed-html': 'off',
         'react-hooks/rules-of-hooks': 'off',
+        'react/display-name': 'off',
         'lodash/prefer-constant': 'off',
         'import/prefer-default-export': 'off',
         '@typescript-eslint/no-var-requires': 'off',

@@ -2,6 +2,7 @@ import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
 
 import CommandEditor from './CommandEditor';
+import CommandStep from './CommandStep';
 
 const EDITORS_BY_PATH = {
   slot: IntentSlotForm,
@@ -12,6 +13,7 @@ const CommandManager = {
   label: BlockType.COMMAND,
 
   editor: CommandEditor,
+  step: CommandStep,
   editorsByPath: EDITORS_BY_PATH,
 
   factory: () => ({

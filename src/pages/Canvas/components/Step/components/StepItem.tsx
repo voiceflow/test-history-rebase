@@ -1,38 +1,23 @@
 import React from 'react';
 
-import SvgIcon, { Icon } from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
 import { StepLabelVariant } from '@/constants/canvas';
+import PortV2 from '@/pages/Canvas/components/PortV2';
+import { PortIDProvider } from '@/pages/Canvas/contexts';
 
+import { ItemProps } from '../types';
 import IconContainer from './StepIconContainer';
 import Container from './StepItemContainer';
 import LabelText from './StepLabelText';
-import Port from './StepPort';
 
-export type StepItemProps = {
-  icon?: Icon;
-  label?: string;
-  onClick?: React.ReactEventHandler;
-  withPort?: boolean;
-  iconColor?: string;
-  portColor?: string;
-  placeholder?: string;
-  isConnected?: boolean;
-  onClickPort?: React.ReactEventHandler;
-  labelVariant?: StepLabelVariant;
-  multilineLabel?: boolean;
-  labelLineClamp?: number;
-};
-
-const Item: React.FC<StepItemProps> = ({
+const Item: React.FC<ItemProps> = ({
   icon,
   label,
   onClick,
-  withPort = true,
+  portID,
   iconColor,
   portColor,
   placeholder,
-  isConnected,
-  onClickPort,
   labelVariant = StepLabelVariant.PRIMARY,
   multilineLabel,
   labelLineClamp,
@@ -50,7 +35,11 @@ const Item: React.FC<StepItemProps> = ({
         {label || placeholder}
       </LabelText>
 
-      {withPort && <Port isConnected={isConnected} onClick={onClickPort} color={portColor} />}
+      {portID && (
+        <PortIDProvider value={portID}>
+          <PortV2 color={portColor} />
+        </PortIDProvider>
+      )}
     </Container>
   );
 };

@@ -11,7 +11,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 
-import { BackButtonContainer, BackLink, DescriptionSection, PurchasePromptPopover } from '../components';
+import { BackButtonContainer, BackLink, DescriptionSection } from '../components';
 import { AvailabilityForm, DescriptionForm, DetailsForm, IconsForm, PhrasesForm, PricingModelForm } from './GuidedSteps';
 
 class ProductEditPage extends PureComponent {
@@ -97,14 +97,6 @@ class ProductEditPage extends PureComponent {
                   <span>In-App Card Description</span> - a description of the product that displays on the skill card in the Alexa app. Include the
                   product name and any unique details about product.
                 </DescriptionSection>
-                <DescriptionSection>
-                  <span>Purchase Prompt</span> - the description of the product a customer hears when making a purchase or when they cancel a
-                  subscription. Do not include any pricing information as Amazon automatically appends the price in the purchase flow.
-                </DescriptionSection>
-                <DescriptionSection>
-                  In case of one-time purchase Alexa will provide the purchase prompt text and price before confirming the purchase.
-                </DescriptionSection>
-                <PurchasePromptPopover />
               </>
             ),
           },

@@ -4,7 +4,7 @@ import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { HelpTooltip, Section } from './components';
 
-function ExitEditor({ data }) {
+export const ExitEditor = ({ data }) => {
   return (
     <Content
       footer={() => (
@@ -22,6 +22,6 @@ function ExitEditor({ data }) {
       <Section>Exit block ends the project in its current state.</Section>
     </Content>
   );
-}
+};
 
 export default ExitEditor;

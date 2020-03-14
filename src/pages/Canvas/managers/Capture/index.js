@@ -3,6 +3,7 @@ import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import MicrophoneIcon from '@/svgs/solid/microphone.svg';
 
 import CaptureEditor from './CaptureEditor';
+import CaptureStep from './CaptureStep';
 
 const EDITORS_BY_PATH = {
   noReplyResponse: NoReplyResponseForm,
@@ -11,7 +12,7 @@ const EDITORS_BY_PATH = {
 const CaptureManager = {
   type: BlockType.CAPTURE,
   icon: MicrophoneIcon,
-
+  step: CaptureStep,
   editor: CaptureEditor,
   editorsByPath: EDITORS_BY_PATH,
 

@@ -144,3 +144,6 @@ export { default as accountLinking } from './account-linking.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as dotsGroup } from './dots-group.svg';
 export { default as inFlow } from './in-flow.svg';
+export { default as template } from './template.svg';
+export { default as shortcuts } from './shortcuts.svg';
+export { default as youtube } from './youtube.svg';

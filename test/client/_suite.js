@@ -5,7 +5,7 @@ import { identity, noop } from '@/utils/functional';
 export default createSuite((utils) => ({
   ...utils,
 
-  stubFetch: (method) => {
+  stubFetch: (method = 'get') => {
     const fetchCall = method ? utils.stub(fetch, method) : utils.stub(Fetch, 'default');
 
     return Object.assign(fetchCall, {

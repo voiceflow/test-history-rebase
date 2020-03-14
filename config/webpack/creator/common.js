@@ -42,21 +42,17 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
-              'store/types.ts',
+              '**/types.ts',
+              'models/**/*',
 
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
               'pages/Canvas/managers/Start/StartBlock/**/*',
-              'pages/Canvas/components/LeftSidebar/**/*',
+              'pages/Canvas/managers/Command/CommandStep.tsx',
               'components/CustomScrollbars/**/*',
-
-              // TODO: remove when adding a feature flag
-              'hooks/feature.js',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
-              'pages/Canvas/components/Block/NewBlock/**/*',
-              'pages/Canvas/components/Step/**/*',
               'components/CaptionedIconButton/**/*',
               'components/Dropdown/**/*',
               'components/DropdownButton/**/*',

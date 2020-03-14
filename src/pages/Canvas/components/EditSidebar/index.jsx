@@ -19,7 +19,7 @@ import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.START, BlockType.COMMENT];
+const UNEDITABLE_BLOCKS = [BlockType.COMMENT];
 
 function EditSidebar({ focus, node, parent, theme }) {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext);
@@ -51,6 +51,7 @@ function EditSidebar({ focus, node, parent, theme }) {
           path={path}
           goToPath={goToPath}
           onRename={onRename}
+          hideTitle={node.type === BlockType.START}
           hideHeader={isModal}
           renameRevision={focus.renameActiveRevision}
           prevPathLength={prevPathLength.current}

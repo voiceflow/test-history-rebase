@@ -1,38 +1,68 @@
 import React from 'react';
 
+import { Icon } from '@/components/SvgIcon';
+import User from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
+import { LockOwnerType } from '@/models';
 
-import { Container, MultiSectionBlock, MultiSectionBlockProps, SingleSectionBlock, SingleSectionBlockProps } from './components';
+import { Container, Section } from './components';
+import { NewBlockHeaderProps } from './components/NewBlockHeader';
 
-export { MultiSectionBlockProps, SingleSectionBlock };
+export * from './types';
 
-export enum SectionsVariant {
-  MULTI_SECTION = 'multi',
-  SINGLE_SECTION = 'single',
-}
+// TODO: remove this once User component is converted into TS
+// declaring the type for component otherwise, TS implies its of RefAttribute and gives error that user prop does not exist on the component
+const LockOwner: any = User;
 
-export type NewBlockProps = (
-  | ({ sectionsVariant?: SectionsVariant.SINGLE_SECTION } & WithOptional<SingleSectionBlockProps, 'state' | 'variant'>)
-  | ({ sectionsVariant: SectionsVariant.MULTI_SECTION } & MultiSectionBlockProps)
-) & {
-  state?: BlockState;
-  variant?: BlockVariant;
+export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant'> & {
+  sections?: {
+    name: string;
+    icon?: Icon;
+    children?: React.ReactNode;
+  }[];
   isActive?: boolean;
+  lockOwner?: LockOwnerType | unknown;
+  updateName?: (name: string) => void;
 };
 
-const NewBlock: React.FC<NewBlockProps> = ({
-  state = BlockState.REGULAR,
-  variant = BlockVariant.STANDARD,
-  sectionsVariant = SectionsVariant.SINGLE_SECTION,
-  ...props
-}) => (
-  <Container variant={variant} state={state}>
-    {sectionsVariant === SectionsVariant.SINGLE_SECTION ? (
-      <SingleSectionBlock state={state} variant={variant} {...(props as SingleSectionBlockProps)} />
-    ) : (
-      <MultiSectionBlock {...(props as MultiSectionBlockProps)} />
-    )}
-  </Container>
-);
+export type NewBlockAPI = {
+  getBoundingClientRect: () => DOMRect;
+  rename: () => void;
+};
 
-export default NewBlock;
+const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<NewBlockProps>> = (
+  { state = BlockState.REGULAR, variant = BlockVariant.STANDARD, sections = [], lockOwner, children, ...props },
+  ref
+) => {
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      api: {
+        getBoundingClientRect: () => rootRef.current!.getBoundingClientRect(),
+        rename: () => {
+          setIsEditing(true);
+          titleRef.current?.focus();
+        },
+      },
+    }),
+    []
+  );
+
+  return (
+    <Container variant={variant} state={state} ref={rootRef}>
+      {lockOwner && <LockOwner user={lockOwner} />}
+      <Section variant={variant} state={state} isEditing={isEditing} setIsEditing={setIsEditing} titleRef={titleRef} {...props}>
+        {children}
+      </Section>
+      {sections.map((section, index) => (
+        <Section variant={variant} state={state} {...section} key={index} />
+      ))}
+    </Container>
+  );
+};
+
+export default React.forwardRef(NewBlock);

@@ -2,7 +2,7 @@ import { VariableTag } from '@/components/VariableTag';
 import { StepLabelVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-const ExpressionPreviewContainer = styled.span`
+const ExpressionPreviewContainer = styled.div`
   ${VariableTag} {
     display: inline;
     padding: 0;

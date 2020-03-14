@@ -42,7 +42,7 @@ export const unlockNodes = (nodeIDs, lockTypes) => createLockAction(UNLOCK_NODES
 
 export const reconnectNoop = () => createAction(RECONNECT_NOOP);
 
-export const addNode = (node, data, nodeID) => createAction(ADD_NODE, { node, data, nodeID });
+export const addNode = (node, data, nodeID, parentNodeID) => createAction(ADD_NODE, { node, data, nodeID, parentNodeID });
 export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES, { nodeGroup, position });
 export const addNestedNode = (parentNodeID, nodeID, node, data, mergedNodeID) =>
   createAction(ADD_NESTED_NODE, { parentNodeID, nodeID, node, data, mergedNodeID });

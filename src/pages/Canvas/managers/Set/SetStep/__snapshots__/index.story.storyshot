@@ -1,19 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -27,85 +14,17 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c18 .c11 {
   color: #6e849a;
-}
-
-.c17 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c17.default {
-  color: #62778c;
 }
 
 .c15 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -169,7 +88,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c6:not(:first-of-type) {
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -189,13 +108,34 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c5 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -207,7 +147,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -225,17 +165,84 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
-.c14 .c16 {
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c14 .c20 {
   display: inline;
   padding: 0;
   border: none;
@@ -249,20 +256,56 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -286,15 +329,17 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var1} = 
+                 
                 <span
                   className="value"
                 >
                   basic string
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -306,9 +351,11 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var2} = 
+                 
                 <span
                   className="brackets"
                 >
@@ -340,137 +387,12 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                     value 2
                   </span>
                 </span>
-              </span>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <span
-                className="c14 expressionfy"
-              >
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math brackets"
-                  >
-                    <span
-                      className="math brackets"
-                    >
-                      <span
-                        className="math brackets"
-                      >
-                        <span
-                          className="parenthesis"
-                        >
-                          ( 
-                        </span>
-                        <span
-                          className="c16 c17"
-                        >
-                          {user_id}
-                        </span>
-                         
-                        <span
-                          className="c15 plus"
-                        >
-                          <span
-                            className="c11 c18"
-                            color="currentColor"
-                            size={16}
-                          >
-                            <svg
-                              data-file-name="SvgTimes"
-                            />
-                          </span>
-                        </span>
-                         
-                        <span
-                          className="value"
-                        >
-                          value 3
-                        </span>
-                        <span
-                          className="parenthesis"
-                        >
-                           )
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="c15 plus"
-                      >
-                        <span
-                          className="c11 c18"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgSubtract"
-                          />
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="value"
-                      >
-                        value 4
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c15 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgAdd"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c16 c17"
-                    >
-                      {locale}
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="c15 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgAdd"
-                      />
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="math brackets"
-                  >
-                    value 5
-                  </span>
-                </span>
-              </span>
+              </div>
             </span>
             <div
-              className="c19"
+              className="c16"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -481,19 +403,6 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -507,85 +416,17 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c18 .c11 {
   color: #6e849a;
-}
-
-.c17 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c17.default {
-  color: #62778c;
 }
 
 .c15 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -665,17 +506,38 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c6:not(:first-of-type) {
+.c5 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -687,7 +549,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -704,17 +566,84 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
-.c14 .c16 {
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c14 .c20 {
   display: inline;
   padding: 0;
   border: none;
@@ -728,20 +657,56 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -765,15 +730,17 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var1} = 
+                 
                 <span
                   className="value"
                 >
                   basic string
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -785,9 +752,11 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var2} = 
+                 
                 <span
                   className="brackets"
                 >
@@ -819,137 +788,12 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                     value 2
                   </span>
                 </span>
-              </span>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <span
-                className="c14 expressionfy"
-              >
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math brackets"
-                  >
-                    <span
-                      className="math brackets"
-                    >
-                      <span
-                        className="math brackets"
-                      >
-                        <span
-                          className="parenthesis"
-                        >
-                          ( 
-                        </span>
-                        <span
-                          className="c16 c17"
-                        >
-                          {user_id}
-                        </span>
-                         
-                        <span
-                          className="c15 plus"
-                        >
-                          <span
-                            className="c11 c18"
-                            color="currentColor"
-                            size={16}
-                          >
-                            <svg
-                              data-file-name="SvgTimes"
-                            />
-                          </span>
-                        </span>
-                         
-                        <span
-                          className="value"
-                        >
-                          value 3
-                        </span>
-                        <span
-                          className="parenthesis"
-                        >
-                           )
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="c15 plus"
-                      >
-                        <span
-                          className="c11 c18"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgSubtract"
-                          />
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="value"
-                      >
-                        value 4
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c15 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgAdd"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c16 c17"
-                    >
-                      {locale}
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="c15 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgAdd"
-                      />
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="math brackets"
-                  >
-                    value 5
-                  </span>
-                </span>
-              </span>
+              </div>
             </span>
             <div
-              className="c19"
+              className="c16"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -981,56 +825,6 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   color: #6e849a;
 }
 
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
-}
-
 .c10 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1108,14 +902,35 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
+.c5 .c18 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
 .c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #8da2b5;
 }
 
 .c14 {
@@ -1148,14 +963,81 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c18 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
 }
 
 <div
@@ -1164,20 +1046,56 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1205,6 +1123,8 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
             </span>
             <div
               className="c14"
+              onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -1215,19 +1135,6 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -1241,85 +1148,17 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c18 .c11 {
   color: #6e849a;
-}
-
-.c17 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c17.default {
-  color: #62778c;
 }
 
 .c15 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1399,17 +1238,38 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c6:not(:first-of-type) {
+.c5 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1421,7 +1281,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1439,17 +1299,84 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   border: 4px solid white;
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c21 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
-.c14 .c16 {
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c14 .c20 {
   display: inline;
   padding: 0;
   border: none;
@@ -1463,20 +1390,56 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1500,15 +1463,17 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var1} = 
+                 
                 <span
                   className="value"
                 >
                   basic string
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -1520,9 +1485,11 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var2} = 
+                 
                 <span
                   className="brackets"
                 >
@@ -1554,137 +1521,12 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
                     value 2
                   </span>
                 </span>
-              </span>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <span
-                className="c14 expressionfy"
-              >
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math brackets"
-                  >
-                    <span
-                      className="math brackets"
-                    >
-                      <span
-                        className="math brackets"
-                      >
-                        <span
-                          className="parenthesis"
-                        >
-                          ( 
-                        </span>
-                        <span
-                          className="c16 c17"
-                        >
-                          {user_id}
-                        </span>
-                         
-                        <span
-                          className="c15 plus"
-                        >
-                          <span
-                            className="c11 c18"
-                            color="currentColor"
-                            size={16}
-                          >
-                            <svg
-                              data-file-name="SvgTimes"
-                            />
-                          </span>
-                        </span>
-                         
-                        <span
-                          className="value"
-                        >
-                          value 3
-                        </span>
-                        <span
-                          className="parenthesis"
-                        >
-                           )
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="c15 plus"
-                      >
-                        <span
-                          className="c11 c18"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgSubtract"
-                          />
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="value"
-                      >
-                        value 4
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c15 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgAdd"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c16 c17"
-                    >
-                      {locale}
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="c15 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgAdd"
-                      />
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="math brackets"
-                  >
-                    value 5
-                  </span>
-                </span>
-              </span>
+              </div>
             </span>
             <div
-              className="c19"
+              className="c16"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -1708,85 +1550,12 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c16 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c16.default {
-  color: #62778c;
-}
-
-.c17 {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -1866,17 +1635,38 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c5 .c20 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 {
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1888,7 +1678,7 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -1906,17 +1696,84 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   border: 4px solid white;
 }
 
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c20 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
   color: #62778c;
 }
 
-.c14 .c15 {
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c14 .c19 {
   display: inline;
   padding: 0;
   border: none;
@@ -1930,20 +1787,56 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -1967,45 +1860,22 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var1} = 
+                 
                 <span
-                  className="brackets"
+                  className="value"
                 >
-                  <span
-                    className="c15 c16"
-                  >
-                    {user_id}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="or"
-                  >
-                    <span
-                      className="c17 plus"
-                    >
-                      <span>
-                        OR
-                      </span>
-                    </span>
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="value"
-                  >
-                    single set
-                  </span>
+                  basic string
                 </span>
-              </span>
+              </div>
             </span>
             <div
-              className="c18"
+              className="c15"
               onClick={[Function]}
+              onMouseDown={[Function]}
             />
           </div>
         </div>
@@ -2016,19 +1886,6 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
-.c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -2042,85 +1899,17 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c17 .c11 {
   color: #6e849a;
-}
-
-.c17 {
-  display: inline-block;
-  padding: 0px 4px 1px 4px;
-  color: #62778c;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: #eef4f6a8;
-  border-radius: 7px;
-  border: 1px solid #dfe5ea;
-  cursor: default;
-  line-height: 20px;
-  text-align: center;
-}
-
-.c17.default {
-  color: #62778c;
 }
 
 .c15 {
   display: inline-block;
   vertical-align: middle;
-}
-
-.c3 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
 }
 
 .c10 {
@@ -2200,13 +1989,24 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c5 .c20 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2220,7 +2020,84 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   color: #62778c;
 }
 
-.c14 .c16 {
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.c0 .c20 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: auto;
+  overflow: hidden;
+  color: #62778c;
+}
+
+.c4 > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c14 .c19 {
   display: inline;
   padding: 0;
   border: none;
@@ -2234,20 +2111,56 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   <div
     className="c1"
   >
-    <header
+    <div
       className="c2"
     >
-      <span
+      <div
         className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
       >
-        Set Block
-      </span>
-    </header>
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Set Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Set Block
+        </div>
+      </div>
+    </div>
     <section
       className="c4"
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <div
           className="c6 c7"
@@ -2271,15 +2184,17 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var1} = 
+                 
                 <span
                   className="value"
                 >
                   basic string
                 </span>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -2291,9 +2206,11 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14 expressionfy"
               >
+                {var2} = 
+                 
                 <span
                   className="brackets"
                 >
@@ -2325,133 +2242,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                     value 2
                   </span>
                 </span>
-              </span>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <span
-                className="c14 expressionfy"
-              >
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math brackets"
-                  >
-                    <span
-                      className="math brackets"
-                    >
-                      <span
-                        className="math brackets"
-                      >
-                        <span
-                          className="parenthesis"
-                        >
-                          ( 
-                        </span>
-                        <span
-                          className="c16 c17"
-                        >
-                          {user_id}
-                        </span>
-                         
-                        <span
-                          className="c15 plus"
-                        >
-                          <span
-                            className="c11 c18"
-                            color="currentColor"
-                            size={16}
-                          >
-                            <svg
-                              data-file-name="SvgTimes"
-                            />
-                          </span>
-                        </span>
-                         
-                        <span
-                          className="value"
-                        >
-                          value 3
-                        </span>
-                        <span
-                          className="parenthesis"
-                        >
-                           )
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="c15 plus"
-                      >
-                        <span
-                          className="c11 c18"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgSubtract"
-                          />
-                        </span>
-                      </span>
-                       
-                      <span
-                        className="value"
-                      >
-                        value 4
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c15 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgAdd"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="c16 c17"
-                    >
-                      {locale}
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="c15 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgAdd"
-                      />
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="math brackets"
-                  >
-                    value 5
-                  </span>
-                </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>

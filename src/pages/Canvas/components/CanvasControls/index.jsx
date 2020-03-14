@@ -3,20 +3,18 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/components/IconButton';
-import SvgIcon from '@/components/SvgIcon';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
-import { flowStructureSelector } from '@/ducks/diagram';
-import { goToRootDiagram } from '@/ducks/router';
-import { activeDiagramIDSelector, isRootDiagramSelector } from '@/ducks/skill';
+import * as Diagram from '@/ducks/diagram';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext, ShortcutModalContext } from '@/pages/Canvas/contexts';
 
-import { CanvasControlsContainer, CanvasControlsZoom, FlowControlsContainer, HomeButton } from './components';
+import { CanvasControlsContainer, CanvasControlsZoom, CanvasGoHome } from './components';
 
 const ZOOM_DELTA = 15;
 
-function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, flow }) {
+function CanvasControls({ withMenu, withDrawer, isRootDiagram, flow }) {
   const eventualEngine = React.useContext(EventualEngineContext);
   const { isTesting } = React.useContext(EditPermissionContext);
   const shortcutModal = React.useContext(ShortcutModalContext);
@@ -24,14 +22,7 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
 
   return (
     <>
-      {showFlowControls && (
-        <FlowControlsContainer withMenu={withMenu} withDrawer={withDrawer}>
-          <HomeButton onClick={goToRootDiagram}>
-            <SvgIcon icon="returnHome" size={13} color="currentColor" />
-            <span>Home</span>
-          </HomeButton>
-        </FlowControlsContainer>
-      )}
+      {showFlowControls && <CanvasGoHome withMenu={withMenu} withDrawer={withDrawer} />}
 
       <CanvasControlsContainer withMenu={withMenu} withDrawer={withDrawer}>
         <CanvasControlsZoom>
@@ -67,17 +58,13 @@ function CanvasControls({ withMenu, withDrawer, goToRootDiagram, isRootDiagram, 
 }
 
 const mapStateToProps = {
-  isRootDiagram: isRootDiagramSelector,
-  flowStructure: flowStructureSelector,
-  activeDiagramID: activeDiagramIDSelector,
+  isRootDiagram: Skill.isRootDiagramSelector,
+  activeDiagramID: Skill.activeDiagramIDSelector,
+  flow: Diagram.flowStructureSelector,
 };
 
-const mapDispatchToProps = {
-  goToRootDiagram,
-};
-
-const mergeProps = ({ flowStructure: getFlowStructure, activeDiagramID }) => ({
+const mergeProps = ({ flow: getFlowStructure, activeDiagramID }) => ({
   flow: getFlowStructure(activeDiagramID),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CanvasControls);
+export default connect(mapStateToProps, null, mergeProps)(CanvasControls);

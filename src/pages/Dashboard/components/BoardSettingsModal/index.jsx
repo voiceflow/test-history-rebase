@@ -19,13 +19,13 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
   const { toggle, isOpened } = useModals(MODALS.BOARD_SETTINGS);
   const { open: openDeleteModal } = useModals(MODALS.BOARD_DELETE);
 
-  const onNameChange = React.useCallback(
-    ({ target }) => {
-      updateName(target.value);
-      updateWorkspaceName(target.value);
-    },
-    [updateName, updateWorkspaceName]
-  );
+  const saveName = React.useCallback(() => {
+    if (name && name !== workspace.name) {
+      updateWorkspaceName(name);
+    } else {
+      updateName(workspace.name);
+    }
+  }, [name, updateWorkspaceName, updateName]);
 
   React.useEffect(() => {
     updateName(workspace.name);
@@ -73,7 +73,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
           )}
 
           <SettingField hr label="Name">
-            <Input name="name" value={name} onChange={onNameChange} placeholder="Board Name" />
+            <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
           </SettingField>
 
           {workspace.plan !== PLANS.enterprise && (

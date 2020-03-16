@@ -1,11 +1,14 @@
 import { BlockType, PlatformType } from '@/constants';
 
 import StreamEditor from './StreamEditor';
+import StreamStep from './StreamStep';
 
 const StreamManager = {
   type: BlockType.STREAM,
-  editor: StreamEditor,
   icon: 'play',
+
+  editor: StreamEditor,
+  step: StreamStep,
 
   label: 'Stream',
   tip: 'Stream long form audio files & URLs',

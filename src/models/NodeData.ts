@@ -105,4 +105,12 @@ export namespace NodeData {
       variable?: string;
     }[];
   };
+
+  export type Stream = {
+    audio: string;
+    iconImage: string | null;
+    backgroundImage: string | null;
+    customPause: boolean;
+    loop: boolean;
+  };
 }

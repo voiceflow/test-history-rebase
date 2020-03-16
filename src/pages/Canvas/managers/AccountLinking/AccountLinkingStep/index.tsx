@@ -12,8 +12,8 @@ export type AccountLinkingStepProps = ConnectedStepProps['stepProps'] & {
   isConfigured: boolean;
 };
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, withPorts, onClick, isActive, portID }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, withPorts, onClick, isActive, lockOwner, portID }) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       <Item
         label={isConfigured && 'Sending Account Linking card'}

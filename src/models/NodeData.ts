@@ -118,4 +118,8 @@ export namespace NodeData {
     [PlatformType.ALEXA]: { intent: string; mappings: unknown[] };
     [PlatformType.GOOGLE]: { intent: string; mappings: unknown[] };
   };
+
+  export type Payment = {
+    productID: number | null;
+  };
 }

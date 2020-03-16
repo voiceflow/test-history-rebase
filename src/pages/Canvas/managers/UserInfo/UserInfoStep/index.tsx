@@ -11,8 +11,16 @@ export type UserInfoStepProps = ConnectedStepProps['stepProps'] & {
   failurePortID: string;
 };
 
-export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, isActive, onClick, successPortID, failurePortID }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const UserInfoStep: React.FC<UserInfoStepProps> = ({
+  userPermissions,
+  withPorts,
+  isActive,
+  onClick,
+  lockOwner,
+  successPortID,
+  failurePortID,
+}) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       <Item
         icon="barGraph"

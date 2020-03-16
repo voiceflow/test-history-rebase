@@ -2,14 +2,17 @@ import { BlockType, PlatformType } from '@/constants';
 import UserMinusIcon from '@/svgs/solid/user-minus.svg';
 
 import CancelPaymentEditor from './CancelPaymentEditor';
+import CancelPaymentStep from './CancelPaymentStep';
 
 const CancelPaymentManager = {
   type: BlockType.CANCEL_PAYMENT,
-  editor: CancelPaymentEditor,
   icon: UserMinusIcon,
 
   label: 'Cancel Payment',
   tip: "Refund a purchase or cancel an user's subscription",
+
+  editor: CancelPaymentEditor,
+  step: CancelPaymentStep,
 
   addable: true,
   platforms: [PlatformType.ALEXA],

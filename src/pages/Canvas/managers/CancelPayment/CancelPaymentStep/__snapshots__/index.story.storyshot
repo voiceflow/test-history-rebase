@@ -14,11 +14,24 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c18 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -106,7 +119,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -116,8 +129,18 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
 }
 
 .c13 {
@@ -127,7 +150,67 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #8da2b5;
+  color: #62778c;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
 }
 
 .c0 {
@@ -148,7 +231,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -285,8 +368,68 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
             <span
               className="c13"
             >
-              Select a product to cancel
+              product name
             </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c14"
+            >
+              Declined
+            </span>
+            <div
+              className="c15"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c14"
+            >
+              Successfully Cancelled
+            </span>
+            <div
+              className="c17"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -309,24 +452,24 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   height: inherit;
 }
 
-.c15 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c15 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -414,7 +557,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -424,7 +567,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -448,6 +591,66 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   color: #62778c;
 }
 
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -466,7 +669,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -631,6 +834,12 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             >
               Declined
             </span>
+            <div
+              className="c15"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -639,7 +848,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c15"
+                className="c11 c16"
                 color="#279745"
                 size={16}
               >
@@ -653,6 +862,12 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             >
               Successfully Cancelled
             </span>
+            <div
+              className="c17"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>

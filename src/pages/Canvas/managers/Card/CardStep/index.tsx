@@ -10,8 +10,8 @@ export type CardStepProps = BaseStepProps & {
   title: string;
 };
 
-export const CardStep: React.FC<CardStepProps> = ({ title, isActive = true, image, portID }) => (
-  <Step isActive={isActive} image={image}>
+export const CardStep: React.FC<CardStepProps> = ({ title, isActive = true, lockOwner, image, portID, onClick }) => (
+  <Step isActive={isActive} image={image} lockOwner={lockOwner} onClick={onClick}>
     <Section>
       <Item
         portID={portID}

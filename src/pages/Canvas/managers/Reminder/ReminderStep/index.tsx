@@ -11,8 +11,8 @@ export type ReminderStepProps = ConnectedStepProps['stepProps'] & {
   failurePortID: string;
 };
 
-export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, successPortID, failurePortID, isActive, onClick }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, successPortID, failurePortID, isActive, onClick, lockOwner }) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       <Item icon="clock" iconColor="#c998a4" label={label} labelVariant={StepLabelVariant.SECONDARY} placeholder="Set a reminder" />
     </Section>

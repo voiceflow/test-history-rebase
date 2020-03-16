@@ -29,7 +29,7 @@ enum IconColor {
   DEFAULT = '#8f8e94',
 }
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPorts, platform, isActive, portID, onClick }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPorts, platform, isActive, portID, onClick, lockOwner }) => {
   const itemProps = {
     portColor: '#6e849a',
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
@@ -38,7 +38,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, withPorts, 
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
-    <Step isActive={isActive} onClick={onClick}>
+    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
       <Section>
         {itemsToRender.length ? (
           itemsToRender.map(({ content, isAudio }, index) => (

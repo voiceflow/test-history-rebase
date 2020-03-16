@@ -15,8 +15,8 @@ export type FlowStepProps = ConnectedStepProps['stepProps'] & {
   onClickFlow?: () => void;
 };
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, withPorts, isActive, onClick, onClickFlow }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, withPorts, isActive, onClick, lockOwner, onClickFlow }) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       <Item
         label={label}

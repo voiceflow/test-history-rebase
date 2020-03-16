@@ -4,6 +4,7 @@ import ArrowFromLeftIcon from '@/svgs/solid/arrow-alt-from-left.svg';
 
 import IntentBlock from './IntentBlock';
 import IntentEditor from './IntentEditor';
+import IntentStep from './IntentStep';
 
 const EDITORS_BY_PATH = {
   slot: IntentSlotForm,
@@ -14,8 +15,9 @@ const IntentManager = {
   icon: ArrowFromLeftIcon,
   block: IntentBlock,
 
-  editor: IntentEditor,
   editorsByPath: EDITORS_BY_PATH,
+  editor: IntentEditor,
+  step: IntentStep,
 
   label: 'Intent',
   tip: 'All your project to handle an intent from anywhere inside your project',

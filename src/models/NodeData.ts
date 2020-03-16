@@ -113,4 +113,9 @@ export namespace NodeData {
     customPause: boolean;
     loop: boolean;
   };
+
+  export type Intent = {
+    [PlatformType.ALEXA]: { intent: string; mappings: unknown[] };
+    [PlatformType.GOOGLE]: { intent: string; mappings: unknown[] };
+  };
 }

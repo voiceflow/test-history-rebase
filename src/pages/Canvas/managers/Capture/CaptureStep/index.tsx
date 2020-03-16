@@ -2,16 +2,16 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
-import Step, { BaseStepProps, ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
-export type CaptureStepProps = BaseStepProps & {
+export type CaptureStepProps = ConnectedStepProps['stepProps'] & {
   portID: string;
   fromVariable?: string;
   toVariable?: string;
 };
 
-export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, portID, isActive }) => (
-  <Step isActive={isActive}>
+export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, portID, isActive, onClick, lockOwner, withPorts }) => (
+  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
     <Section>
       <Item
         label={
@@ -23,7 +23,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
           )
         }
         labelVariant={StepLabelVariant.SECONDARY}
-        portID={portID}
+        portID={withPorts ? portID : null}
         icon="microphone"
         iconColor="#58457a"
         placeholder="Capture a user response"
@@ -35,6 +35,7 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
 const ConnectedCaptureStep: React.FC<ConnectedStepProps<NodeData.Capture>> = ({ data, node, stepProps }) => {
   const fromVariable = data.slot;
   const toVariable = data.variable;
+
   return <CaptureStep fromVariable={fromVariable} toVariable={toVariable} portID={node.ports.out[0]} {...data} {...stepProps} />;
 };
 

@@ -15,6 +15,7 @@ const getProps = () => {
     toVariable: 'Name',
     portID: 'fsgqe',
     isActive: false,
+    withPorts: true,
   };
 };
 
@@ -35,7 +36,7 @@ export const withVariables = withStepDispatcher()(render());
 
 export const withLongVariables = withStepDispatcher()(render({ fromVariable: 'UK_First_name', toVariable: 'Name' }));
 
-export const withoutPort = withStepDispatcher()(render({ portID: '' }));
+export const withoutPort = withStepDispatcher()(render({ withPorts: false }));
 
 export const active = withStepDispatcher()(render({ isActive: true }));
 

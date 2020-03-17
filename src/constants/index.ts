@@ -110,6 +110,8 @@ export enum PermissionType {
   USER_PERSON = 'alexa::person_id:read',
   USER_GEOLOCATION = 'alexa::devices:all:geolocation:read',
   REMINDERS = 'alexa::alerts:reminders:skill:readwrite',
+  LISTS_READ = 'alexa::household:lists:read',
+  LISTS_WRITE = 'alexa::household:lists:write',
   NOTIFICATIONS = 'alexa::devices:all:notifications:write',
   ACCOUNT_LINKING = 'UNOFFICIAL::account_linking',
   PRODUCT = 'UNOFFICIAL::product',
@@ -140,6 +142,14 @@ export const PERMISSIONS = [
   {
     name: 'Reminders',
     value: PermissionType.REMINDERS,
+  },
+  {
+    name: 'Lists Read',
+    value: PermissionType.LISTS_READ,
+  },
+  {
+    name: 'Lists Write',
+    value: PermissionType.LISTS_WRITE,
   },
   {
     name: 'Notifications',

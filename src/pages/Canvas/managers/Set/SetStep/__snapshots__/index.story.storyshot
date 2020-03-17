@@ -248,6 +248,9 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -649,6 +652,9 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -1382,6 +1388,9 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -1779,6 +1788,9 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -2103,6 +2115,9 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div

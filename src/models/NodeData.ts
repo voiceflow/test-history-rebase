@@ -114,6 +114,15 @@ export namespace NodeData {
     loop: boolean;
   };
 
+  export type If = {
+    expressions: {
+      depth: number;
+      id: string;
+      type: ExpressionType;
+      value: If[] | string | null;
+    }[];
+  };
+
   export type Intent = {
     [PlatformType.ALEXA]: { intent: string; mappings: unknown[] };
     [PlatformType.GOOGLE]: { intent: string; mappings: unknown[] };

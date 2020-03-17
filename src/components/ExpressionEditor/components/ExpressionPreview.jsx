@@ -42,7 +42,7 @@ const expressionify = (expression, { parentType, depth = 0 } = {}) => {
         <ExpressionDefault
           type={expression.type}
           depth={depth}
-          value={expression.value}
+          value={expression.value || ''}
           isPreview
           parentType={parentType}
           expressionify={expressionify}

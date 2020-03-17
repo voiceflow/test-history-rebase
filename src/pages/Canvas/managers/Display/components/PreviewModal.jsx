@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 
 import DisplayRender from './DisplayRender';
 
 function PaymentModal() {
-  const { isOpened, toggle, data } = useModals(MODALS.DISPLAY_PREVIEW);
+  const { isOpened, toggle, data } = useModals(ModalType.DISPLAY_PREVIEW);
 
   const { apl, data: displayData, documentData } = data;
 

@@ -10,7 +10,9 @@
   "dependencies": {
     "@redux-beacon/segment": "^1.1.0",
     "@seznam/compose-react-refs": "^1.0.2",
+    "@types/react-custom-scrollbars": "^4.0.6",
     "@types/react-input-autosize": "^2.0.2",
+    "@types/react-virtualized": "^9.21.8",
     "@types/recompose": "^0.30.7",
     "@types/styled-components": "^4.4.3",
     "@voiceflow/apl-renderer": "^1.0.0",

@@ -1,11 +1,11 @@
-import _noop from 'lodash/noop';
 import React from 'react';
 
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { isMac } from '@/config';
+import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
-import { useHotKeys } from '@/hooks';
+import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { preventDefault } from '@/utils/dom';
 
@@ -14,6 +14,8 @@ import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from '.
 const ZOOM_DELTA = 15;
 
 const CanvasControlsV2: React.FC = () => {
+  const { open } = useModals(ModalType.INTERACTION_MODEL);
+
   const eventualEngine = React.useContext(EventualEngineContext)!;
 
   const onZoomIn = React.useCallback(() => {
@@ -26,8 +28,8 @@ const CanvasControlsV2: React.FC = () => {
     eventualEngine.get().canvas.zoomOut(ZOOM_DELTA);
   }, [eventualEngine]);
 
-  // TODO: implement CMS modal opening
-  const onOpenCMS = React.useCallback(_noop, []);
+  // this callback is needed to do not store event object in the modals context
+  const onOpenCMS = React.useCallback(() => open(), []);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, preventDefault(onOpenCMS));
   useHotKeys(Hotkey.ZOOM_IN, preventDefault(onZoomIn));

@@ -11,6 +11,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
+import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -36,7 +37,8 @@ export const withRedux = (state = {}) => (Component) => (
 );
 
 export const withModalContext = (openedId) => (Component) => (
-  <ModalsContext.Provider value={{ openedId, open: _noop, toggle: _noop, modalData: {} }}>
+  <ModalsContext.Provider value={{ openedId, open: _noop, toggle: _noop, modalData: {}, stackModalIds: [openedId] }}>
+    <ModalBackdrop />
     <Component />
   </ModalsContext.Provider>
 );

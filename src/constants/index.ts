@@ -338,21 +338,22 @@ export const AV_FILE_FORMATS = [
 
 export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
 
-export const MODALS = {
-  PAYMENT: 'payment',
-  COLLABORATORS: 'collaborators',
-  BILLING: 'billing',
+export enum ModalType {
+  PAYMENT = 'payment',
+  COLLABORATORS = 'collaborators',
+  BILLING = 'billing',
 
-  BOARD_DELETE: 'board-delete',
-  BOARD_SETTINGS: 'board-settings',
+  BOARD_DELETE = 'board-delete',
+  BOARD_SETTINGS = 'board-settings',
 
-  SUCCESS: 'success',
+  SUCCESS = 'success',
 
-  SLOT_EDIT: 'slot-edit',
-  INTENTS: 'intents',
+  SLOT_EDIT = 'slot-edit',
+  INTENTS = 'intents',
+  INTERACTION_MODEL = 'interaction-model',
 
-  DISPLAY_PREVIEW: 'display-preview',
-};
+  DISPLAY_PREVIEW = 'display-preview',
+}
 
 export enum UserRole {
   ADMIN = 'admin',

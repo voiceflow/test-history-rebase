@@ -3,6 +3,7 @@ import _sample from 'lodash/sample';
 import React from 'react';
 
 import { ToastContainer } from '@/components/Toast';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 
 import TextEditor, { PluginType } from '.';
 
@@ -269,27 +270,19 @@ const mergeProps = (...pluginsProps) =>
     { pluginsTypes: [], pluginsProps: {} }
   );
 
-export const base = () => (
-  <div style={{ width: '500px' }}>
-    <TextEditor {...mergeProps(getProps())} />
-  </div>
+const createStory = (...props) => (
+  <TextEditorVariablesPopoverProvider value={document.body}>
+    <div style={{ width: '500px' }}>
+      <TextEditor {...mergeProps(...props)} />
+      <ToastContainer />
+    </div>
+  </TextEditorVariablesPopoverProvider>
 );
 
-export const xml = () => (
-  <div style={{ width: '500px' }}>
-    <TextEditor {...mergeProps(getProps(), getXMLProps())} />
-    <ToastContainer />
-  </div>
-);
+export const base = () => createStory(getProps());
 
-export const variables = () => (
-  <div style={{ width: '500px' }}>
-    <TextEditor {...mergeProps(getProps(), getVariablesProps())} />
-  </div>
-);
+export const xml = () => createStory(getProps(), getXMLProps());
 
-export const all = () => (
-  <div style={{ width: '500px' }}>
-    <TextEditor {...mergeProps(getProps(), getXMLProps(), getVariablesProps())} />
-  </div>
-);
+export const variables = () => createStory(getProps(), getVariablesProps());
+
+export const all = () => createStory(getProps(), getXMLProps(), getVariablesProps());

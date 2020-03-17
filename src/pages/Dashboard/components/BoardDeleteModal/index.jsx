@@ -6,17 +6,17 @@ import { Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { deleteWorkspace } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 export function BoardDeleteModal({ workspace, deleteWorkspace }) {
   const [name, updateName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);
 
-  const { close, isOpened } = useModals(MODALS.BOARD_DELETE);
-  const { close: closeSettingsModal } = useModals(MODALS.BOARD_SETTINGS);
+  const { close, isOpened } = useModals(ModalType.BOARD_DELETE);
+  const { close: closeSettingsModal } = useModals(ModalType.BOARD_SETTINGS);
 
   const onNameChange = React.useCallback(({ target }) => updateName(target.value), [updateName]);
 

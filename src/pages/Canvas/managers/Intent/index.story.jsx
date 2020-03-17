@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { composeDecorators, withRedux } from '@/../.storybook';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 
 import IntentEditor from './IntentEditor';
@@ -132,9 +133,11 @@ const withDecorators = composeDecorators(
     },
   }),
   (Component) => (
-    <div style={{ width: '480px', maxHeight: '400px', display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
-      <Component />
-    </div>
+    <TextEditorVariablesPopoverProvider value={document.body}>
+      <div style={{ width: '480px', maxHeight: '400px', display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
+        <Component />
+      </div>
+    </TextEditorVariablesPopoverProvider>
   )
 );
 

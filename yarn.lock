@@ -3438,6 +3438,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-custom-scrollbars@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-custom-scrollbars/-/react-custom-scrollbars-4.0.6.tgz#d84831ac287d8fefdf2a7dcbc12a505bcecc8092"
+  integrity sha512-QvQCSMpP59WO2UtGW4alEDRnrhxToPXxws+IzwtboDR2ookcr7z/KE29s3HHYXYwjZpxiQ/ncFhWoQwREor7+Q==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.5":
   version "16.9.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.5.tgz#5de610b04a35d07ffd8f44edad93a71032d9aaa7"
@@ -3481,6 +3488,14 @@
   resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.5.tgz#6c4d2753fa1864c98c0b2b517f67bb1f6e4c46de"
   integrity sha512-PiDL83kPMTolyZAWW3lyzO6ktooTb9tFTntVy7CA83/qFLWKLJ5bLeRboy6J6j3b1e8h2Eec6gBTEOOJRjV14A==
   dependencies:
+    "@types/react" "*"
+
+"@types/react-virtualized@^9.21.8":
+  version "9.21.8"
+  resolved "https://registry.yarnpkg.com/@types/react-virtualized/-/react-virtualized-9.21.8.tgz#dc0150a75fd6e42f33729886463ece04d03367ea"
+  integrity sha512-7fZoA0Azd2jLIE9XC37fMZgMqaJe3o3pfzGjvrzphoKjBCdT4oNl6wikvo4dDMESDnpkZ8DvVTc7aSe4DW86Ew==
+  dependencies:
+    "@types/prop-types" "*"
     "@types/react" "*"
 
 "@types/react@*":

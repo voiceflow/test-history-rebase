@@ -5,17 +5,17 @@ import { Label } from 'reactstrap';
 import { FlexApart } from '@/components/Flex';
 import * as Panel from '@/components/Panel';
 import ClickableText from '@/components/Text/ClickableText';
-import { MODALS } from '@/constants';
-import { useModalToggle } from '@/hooks';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 
 const IntentCloud = () => {
-  const toggle = useModalToggle(MODALS.INTENTS);
+  const { toggle } = useModals(ModalType.INTENTS);
 
   return (
     <Panel.Section>
       <FlexApart>
         <Label style={{ marginBottom: 0 }}>Intents</Label>
-        <ClickableText onClick={toggle}>edit</ClickableText>
+        <ClickableText onClick={() => toggle()}>edit</ClickableText>
       </FlexApart>
     </Panel.Section>
   );

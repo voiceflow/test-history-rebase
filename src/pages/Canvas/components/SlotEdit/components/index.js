@@ -1,6 +1,8 @@
 import { FlexCenter } from '@/components/Flex';
 import { styled, transition } from '@/hocs';
 
+export { default as SlotTag } from './SlotTag';
+
 export const ColorSelector = styled(FlexCenter)`
   ${transition('transform')}
   height: 26px;

@@ -14,14 +14,6 @@ exports[`Storyshots Info Icon Rich Content 1`] = `
   height: inherit;
 }
 
-.c4 .c2 {
-  color: #fff;
-}
-
-.c5 .c2 {
-  color: #6e849a;
-}
-
 .c0 {
   cursor: pointer;
   color: #5d9df5;
@@ -46,6 +38,14 @@ exports[`Storyshots Info Icon Rich Content 1`] = `
 
 .c1:hover {
   color: #8da2b5;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
 }
 
 <div
@@ -82,14 +82,6 @@ exports[`Storyshots Info Icon Text 1`] = `
   height: inherit;
 }
 
-.c4 .c2 {
-  color: #fff;
-}
-
-.c5 .c2 {
-  color: #6e849a;
-}
-
 .c0 {
   cursor: pointer;
   color: #5d9df5;
@@ -114,6 +106,14 @@ exports[`Storyshots Info Icon Text 1`] = `
 
 .c1:hover {
   color: #8da2b5;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
 }
 
 <div

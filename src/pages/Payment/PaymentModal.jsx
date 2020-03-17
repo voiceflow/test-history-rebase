@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Modal from '@/components/LegacyModal';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 
 import Payment from '.';
 
 function PaymentModal() {
-  const { isOpened, toggle, data } = useModals(MODALS.PAYMENT);
+  const { isOpened, toggle, data } = useModals(ModalType.PAYMENT);
 
   return (
     <Modal modalname="plan" isOpen={isOpened} toggle={toggle}>

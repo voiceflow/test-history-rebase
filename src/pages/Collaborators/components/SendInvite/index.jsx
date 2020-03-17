@@ -2,8 +2,7 @@ import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import { toast } from '@/components/Toast';
-import { MODALS, PLANS, UserRole } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType, PLANS, UserRole } from '@/constants';
 import {
   activeWorkspaceMembersSelector,
   planTypeSelector,
@@ -13,6 +12,7 @@ import {
   workspaceNumberOfSeatsSelector,
 } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
@@ -25,7 +25,7 @@ const OPTIONS_ARRAY = [
 function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, usedEditorSeats, usedViewerSeats }) {
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
-  const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
+  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   const onSendInviteClick = async () => {
     const role = permissionType.value;

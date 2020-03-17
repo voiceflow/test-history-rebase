@@ -17,6 +17,7 @@ export default function Select({
   label = '',
   value,
   inline = false,
+  onBlur,
   onOpen,
   onClose,
   grouped,
@@ -224,6 +225,7 @@ export default function Select({
 
   const inputProps = {
     inline,
+    onBlur,
     onFocus: searchable ? onOpenMenu : null,
     onClick: searchable ? onOpenMenu : null,
     disabled: disabled || !labelSearchable,

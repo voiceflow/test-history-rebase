@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip, TooltipProps } from 'react-tippy';
+import { Tooltip, TooltipProps, TooltipWithRef } from 'react-tippy';
 
 import { IS_TEST, isMac } from '@/config';
 
@@ -36,4 +36,4 @@ const TippyTooltip: React.FC<TippyTooltipProps> = ({ html, title, disabled, chil
   );
 };
 
-export default React.forwardRef<React.Ref<Tooltip>, React.PropsWithChildren<TippyTooltipProps>>(TippyTooltip);
+export default React.forwardRef<TooltipWithRef, React.PropsWithChildren<TippyTooltipProps>>(TippyTooltip);

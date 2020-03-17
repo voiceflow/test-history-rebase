@@ -5,6 +5,7 @@ import ShortCuts from '@/components/ShortCuts/ShortCuts';
 import { DiagramLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import IntentsModal from '@/pages/Canvas/components/IntentsModal';
+import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
 import HelpModal from '@/pages/Help';
@@ -51,6 +52,7 @@ const Canvas = ({ isTesting }) => {
 
       <SlotEditModal />
       <IntentsModal />
+      <InteractionModelModal />
       <SettingsModalConsumer>
         {({ isEnabled, toggle, type, setType }) => <SettingsModal open={isEnabled} type={type} toggle={toggle} setType={setType} />}
       </SettingsModalConsumer>

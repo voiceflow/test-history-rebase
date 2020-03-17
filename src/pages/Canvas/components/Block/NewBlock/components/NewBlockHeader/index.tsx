@@ -93,7 +93,7 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
         variant={variant}
         state={state}
         onKeyPress={withEnterPress(handleEnterPress)}
-        inputRef={(ref) => {
+        inputRef={(ref: HTMLInputElement | null) => {
           if (titleRef) {
             titleRef.current = ref;
           }

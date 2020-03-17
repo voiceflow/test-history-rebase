@@ -4,12 +4,13 @@ import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { MenuContainer } from '@/components/Menu';
 import Portal from '@/components/Portal';
+import { TextEditorVariablesPopoverConsumer } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { FadeDownContainer } from '@/styles/animations';
 import { preventDefault, stopPropagation, withKeyPress } from '@/utils/dom';
 
 const PopoverContainer = styled.div`
-  z-index: 50;
+  z-index: 1000;
   position: absolute;
 `;
 
@@ -56,43 +57,47 @@ export default React.forwardRef(
     ref
   ) => {
     return (
-      <Portal portalNode={document.body}>
-        <PopoverContainer ref={ref} onClick={stopPropagation()}>
-          <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
-            <FadeDownContainer>
-              {creatable && (
-                <>
-                  <Header focused={isFocused} onMouseEnter={onHover}>
-                    <StyledInput
-                      value={variableName}
-                      variant="inline"
-                      onChange={onChangeVariableName}
-                      onKeyPress={withKeyPress(13, onCreateMention)}
-                      placeholder={placeholder}
-                      onMouseDown={onFocusInput}
-                    />
+      <TextEditorVariablesPopoverConsumer>
+        {(portalNode) => (
+          <Portal portalNode={portalNode}>
+            <PopoverContainer ref={ref} onClick={stopPropagation()}>
+              <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
+                <FadeDownContainer>
+                  {creatable && (
+                    <>
+                      <Header focused={isFocused} onMouseEnter={onHover}>
+                        <StyledInput
+                          value={variableName}
+                          variant="inline"
+                          onChange={onChangeVariableName}
+                          onKeyPress={withKeyPress(13, onCreateMention)}
+                          placeholder={placeholder}
+                          onMouseDown={onFocusInput}
+                        />
 
-                    <Button
-                      isBtn
-                      onClick={preventDefault(onCreateMention)}
-                      disabled={!variableName || !!variablesMap[variableName]}
-                      className="pointer"
-                      isLinkLarge
-                      onMouseDown={preventDefault()}
-                    >
-                      Create
-                    </Button>
-                  </Header>
+                        <Button
+                          isBtn
+                          onClick={preventDefault(onCreateMention)}
+                          disabled={!variableName || !!variablesMap[variableName]}
+                          className="pointer"
+                          isLinkLarge
+                          onMouseDown={preventDefault()}
+                        >
+                          Create
+                        </Button>
+                      </Header>
 
-                  <Hr />
-                </>
-              )}
+                      <Hr />
+                    </>
+                  )}
 
-              {children}
-            </FadeDownContainer>
-          </MenuContainer>
-        </PopoverContainer>
-      </Portal>
+                  {children}
+                </FadeDownContainer>
+              </MenuContainer>
+            </PopoverContainer>
+          </Portal>
+        )}
+      </TextEditorVariablesPopoverConsumer>
     );
   }
 );

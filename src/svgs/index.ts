@@ -147,3 +147,5 @@ export { default as inFlow } from './in-flow.svg';
 export { default as template } from './template.svg';
 export { default as shortcuts } from './shortcuts.svg';
 export { default as youtube } from './youtube.svg';
+export { default as noIntents } from './no-intents.svg';
+export { default as noSlots } from './no-slots.svg';

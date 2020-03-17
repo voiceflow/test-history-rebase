@@ -65,6 +65,19 @@ exports[`Storyshots Alert Message Primary 1`] = `
 `;
 
 exports[`Storyshots Alert Message Success 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -78,19 +91,6 @@ exports[`Storyshots Alert Message Success 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.c1 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c1 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
 }
 
 .c2 {
@@ -124,6 +124,19 @@ exports[`Storyshots Alert Message Success 1`] = `
 `;
 
 exports[`Storyshots Alert Message Warning 1`] = `
+.c1 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c1 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -137,19 +150,6 @@ exports[`Storyshots Alert Message Warning 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.c1 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: currentColor;
-}
-
-.c1 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
 }
 
 .c2 {

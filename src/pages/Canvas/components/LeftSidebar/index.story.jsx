@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withDnD, withRedux } from '@/../.storybook';
+import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
-import { UserRole } from '@/constants';
+import { ModalType, UserRole } from '@/constants';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
 import { OverlayProvider } from '@/contexts/OverlayContext';
 import { RolePermissionsProvider } from '@/contexts/RolePermissionsContext';
@@ -19,6 +19,7 @@ export default {
 const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a409df7a789a9075c95350658' } = {}) =>
   composeDecorators(
     withDnD,
+    withModalContext(ModalType.INTERACTION_MODEL),
     withRedux({
       ui: {
         creatorMenu: {

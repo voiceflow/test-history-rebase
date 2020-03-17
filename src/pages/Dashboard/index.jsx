@@ -15,9 +15,8 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
-import { MODALS } from '@/constants';
+import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
-import { useModals } from '@/contexts/ModalsContext';
 import { unnormalize } from '@/ducks/_normalize';
 import * as Account from '@/ducks/account';
 import * as Lists from '@/ducks/lists';
@@ -25,6 +24,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
+import { useModals } from '@/hooks';
 import { useScrollHelpers } from '@/hooks/scroll';
 import { copyProject, importProject } from '@/store/sideEffects';
 
@@ -81,7 +81,7 @@ export const DashBoard = (props) => {
   const [showInfo, setShowInfo] = React.useState(false);
   const [loading_modal, toggleLoadingModal] = React.useState(false);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
-  const { open: openCollaboratorsModal } = useModals(MODALS.COLLABORATORS);
+  const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
 
   const closeImport = () => {
     toggleImport(false);

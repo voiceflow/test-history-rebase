@@ -211,7 +211,10 @@ class NodeManager extends EngineConsumer {
 
     if (this.isRemovingDefaultCommand(removableNodes) || this.isRemovingLocked(removableNodeIDs, remove)) return;
 
-    if (removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))) {
+    const isSingleCombinedWithSingleStep =
+      removableNodes.length === 1 && removableNodes[0].type === BlockType.COMBINED && removableNodes[0].combinedNodes.length === 1;
+
+    if (!isSingleCombinedWithSingleStep && removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))) {
       this.dispatch(
         setConfirm({
           warning: true,

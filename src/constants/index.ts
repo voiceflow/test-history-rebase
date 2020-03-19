@@ -432,3 +432,8 @@ export enum IconVariant {
 export enum KeyCode {
   ENTER = 13,
 }
+
+export enum DisplayType {
+  SPLASH = 'splash',
+  ADVANCED = 'advanced',
+}

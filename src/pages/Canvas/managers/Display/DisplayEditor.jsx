@@ -3,7 +3,7 @@ import React from 'react';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { ModalType } from '@/constants';
+import { DisplayType, ModalType } from '@/constants';
 import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -11,7 +11,7 @@ import { useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { AdvancedEditor, Footer, SplashEditor } from './components';
-import { DisplayType, VERSIONS } from './constants';
+import { VERSIONS } from './constants';
 
 const DISPLAY_OPTIONS = [
   {

@@ -1,16 +1,19 @@
 import { BlockType, PlatformType } from '@/constants';
 
 import DisplayEditor from './DisplayEditor';
+import DisplayStep from './DisplayStep';
 import { DisplayType, VERSIONS } from './constants';
 
 const DisplayManager = {
   type: BlockType.DISPLAY,
-  editor: DisplayEditor,
   platforms: [PlatformType.ALEXA],
   icon: 'display',
 
   label: 'Display',
   tip: 'Show a Multimodal Display on the screen using APL',
+
+  editor: DisplayEditor,
+  step: DisplayStep,
 
   addable: true,
 

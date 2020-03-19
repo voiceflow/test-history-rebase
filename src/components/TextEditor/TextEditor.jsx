@@ -41,7 +41,6 @@ function TextEditor({
   } = React.useMemo(() => createPlugins(pluginsTypes, pluginsProps, { enableReadOnly, disableReadOnly }, { textValue: value, isEmpty: !value }), []);
 
   const fromStateWithAdapter = React.useMemo(() => fromState(toTextAdapters), [toTextAdapters]);
-
   const [editorState, updateEditorState] = React.useState(() => toState(value, fromTextConvertor(pluginsProps)));
 
   store.merge({ readOnly, editorState, onEmpty, onBlur, onEnterPress, forceUpdate });

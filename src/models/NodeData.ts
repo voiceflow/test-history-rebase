@@ -1,4 +1,4 @@
-import { CardType, DialogType, ExpressionType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import { CardType, DialogType, DisplayType, ExpressionType, PermissionType, PlatformType, RepromptType } from '@/constants';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -130,5 +130,16 @@ export namespace NodeData {
 
   export type Payment = {
     productID: number | null;
+  };
+
+  export type Display = {
+    displayType?: DisplayType;
+    displayID?: string;
+    dataSource?: string;
+    aplCommands?: string;
+    backgroundImage?: string;
+    splashHeader?: string;
+    jsonFileName?: string;
+    updateOnChange?: boolean;
   };
 }

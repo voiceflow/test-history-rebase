@@ -77,7 +77,9 @@ const creatorAdapter = createSimpleAdapter(
   },
   (diagram) => {
     const nodes = diagram.nodes.map((node) =>
-      node.type === BlockType.COMBINED && node.combines?.length === 1 ? { ...node.combines[0], name: node.name, parentNode: null } : node
+      node.type === BlockType.COMBINED && node.combines?.length === 1
+        ? { ...node.combines[0], name: node.name, parentNode: null, x: node.x, y: node.y }
+        : node
     );
 
     return { ...diagram, nodes };

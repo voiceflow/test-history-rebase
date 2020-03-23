@@ -224,9 +224,17 @@ exports[`Storyshots Creator/Steps/Random Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -259,6 +267,7 @@ exports[`Storyshots Creator/Steps/Random Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -553,9 +562,17 @@ exports[`Storyshots Creator/Steps/Random Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -588,6 +605,7 @@ exports[`Storyshots Creator/Steps/Random Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -883,9 +901,17 @@ exports[`Storyshots Creator/Steps/Random Step Many Paths 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -918,6 +944,7 @@ exports[`Storyshots Creator/Steps/Random Step Many Paths 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1247,9 +1274,17 @@ exports[`Storyshots Creator/Steps/Random Step Single Path 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1282,6 +1317,7 @@ exports[`Storyshots Creator/Steps/Random Step Single Path 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

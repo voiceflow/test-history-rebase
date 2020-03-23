@@ -224,9 +224,17 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -259,6 +267,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -553,9 +562,17 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -588,6 +605,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -883,9 +901,17 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -918,6 +944,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1228,9 +1255,17 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1263,6 +1298,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1565,9 +1601,17 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1600,6 +1644,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1895,9 +1940,17 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1930,6 +1983,7 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2195,9 +2249,17 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -2230,6 +2292,7 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

@@ -247,9 +247,17 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -282,6 +290,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -642,9 +651,17 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -677,6 +694,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1038,9 +1056,17 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1073,6 +1099,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1411,9 +1438,17 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1446,6 +1481,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1764,9 +1800,17 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1799,6 +1843,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2160,9 +2205,17 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -2195,6 +2248,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

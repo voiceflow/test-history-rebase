@@ -62,9 +62,17 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #132144;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -114,6 +122,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -394,9 +403,17 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c5 input:active {
+  background: transparent;
 }
 
 .c9 {
@@ -470,6 +487,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -559,6 +577,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -633,6 +652,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -744,9 +764,17 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #0f7ec0;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -796,6 +824,7 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -918,9 +947,17 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -970,6 +1007,7 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1095,9 +1133,17 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #6b7a6b;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1147,6 +1193,7 @@ exports[`Storyshots Creator/New Block Green 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1272,9 +1319,17 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1324,6 +1379,7 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1449,9 +1505,17 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #765e84;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1501,6 +1565,7 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1626,9 +1691,17 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #a84862;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1678,6 +1751,7 @@ exports[`Storyshots Creator/New Block Red 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1803,9 +1877,17 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -1855,6 +1937,7 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1978,9 +2061,17 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #132144;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -2030,6 +2121,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2155,9 +2247,17 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -2207,6 +2307,7 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2332,9 +2433,17 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c4 > *:not(:last-child) {
@@ -2384,6 +2493,7 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2697,9 +2807,17 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c7 {
@@ -2762,6 +2880,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -2851,6 +2970,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -2912,6 +3032,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
+            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -3075,9 +3196,17 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
 }
 
 .c7 {
@@ -3133,6 +3262,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -3222,6 +3352,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -3296,6 +3427,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

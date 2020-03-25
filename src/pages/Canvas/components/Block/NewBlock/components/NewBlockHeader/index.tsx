@@ -3,7 +3,7 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { Icon } from '@/svgs/types';
-import { withEnterPress } from '@/utils/dom';
+import { unhighlightAllText, withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 
@@ -32,6 +32,7 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
 }) => {
   const [blockLabel, setBlockLabel] = React.useState(name);
   const readOnly = !isEditing || state === BlockState.DISABLED || !canEditTitle;
+
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
       setBlockLabel(name);
@@ -67,6 +68,12 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
       saveLabel();
     }
   }, [state]);
+
+  React.useEffect(() => {
+    if (readOnly) {
+      unhighlightAllText();
+    }
+  }, [readOnly]);
 
   return (
     <Container hasIcon={!!icon}>

@@ -313,3 +313,11 @@ export const buildVirtualElement = ([left, top]) => ({
   clientWidth: 0,
   clientHeight: 0,
 });
+
+export const unhighlightAllText = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges();
+  } else if (document.selection) {
+    document.selection.empty();
+  }
+};

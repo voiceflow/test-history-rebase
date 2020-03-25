@@ -30,7 +30,8 @@ const creatorAdapter = createSimpleAdapter(
     diagram.nodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      if (isBlockRedesignEnabled && !BLOCK_NODES.includes(_node.type) && _node.type !== BlockType.COMMENT) {
+      // when first time project is created no node.type exist
+      if (isBlockRedesignEnabled && _node.type && !BLOCK_NODES.includes(_node.type) && _node.type !== BlockType.COMMENT) {
         // deterministic ID generation to support realtime
         const nodeID = `${SINGLE_BLOCK_WRAPPER_ID_PREFIX}--${_node.id}`;
 

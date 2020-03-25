@@ -46,7 +46,7 @@ const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ no
 
   return (
     <StreamStep
-      audio={transformVariablesToReadable(data.audio)}
+      audio={data.audio && transformVariablesToReadable(data.audio)}
       customPause={data.customPause}
       portIDs={node.ports.out.filter(portFilter)}
       platform={platform}

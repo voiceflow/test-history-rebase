@@ -38,7 +38,7 @@ class ActivationEngine extends EngineConsumer {
    */
   setMode(mode) {
     if (mode !== this.mode) {
-      this.clear();
+      this.reset();
       this.mode = mode;
     }
   }
@@ -115,7 +115,7 @@ class ActivationEngine extends EngineConsumer {
    *
    * @returns {void}
    */
-  clear() {
+  reset() {
     // if there are any concerns regarding removing from a Set while iterating over it:
     // https://stackoverflow.com/questions/28306756/is-it-safe-to-delete-elements-in-a-set-while-iterating-with-for-of
     if (this.hasTargets) {

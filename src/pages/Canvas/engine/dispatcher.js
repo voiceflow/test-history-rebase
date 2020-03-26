@@ -127,9 +127,12 @@ class Dispatcher extends EngineConsumer {
     this.forceRedraw(DispatchChannel.LINK, linkID);
   }
 
+  reset() {
+    this.emitter.removeAllListeners();
+  }
+
   teardown() {
     this.unsubscribe();
-    this.emitter.removeAllListeners();
   }
 }
 

@@ -132,7 +132,7 @@ export class Node extends React.PureComponent {
 
     this.dragDistance = 0;
     this.holdingShift = false;
-    engine.drag.clear();
+    engine.drag.reset();
     engine.merge.cancel();
 
     this.teardownMouseListeners();

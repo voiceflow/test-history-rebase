@@ -22,6 +22,25 @@ export class EngineConsumer {
   isFeatureEnabled(featureID) {
     return this.select(Feature.isFeatureEnabledSelector)(featureID);
   }
+
+  /**
+   * clear any active data before a new diagram is being loaded
+   * @returns {void}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  reset() {
+    // noop
+  }
+
+  /**
+   * remove any subscriptions before the canvas is unmounted
+   * reset() will be called before teardown()
+   * @returns {void}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  teardown() {
+    // noop
+  }
 }
 
 export function nodeFactory(type) {

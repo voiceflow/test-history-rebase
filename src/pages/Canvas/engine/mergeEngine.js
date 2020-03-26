@@ -77,7 +77,7 @@ class MergeEngine extends EngineConsumer {
       return;
     }
 
-    this.clear();
+    this.reset();
 
     if (target && status === MergeStatus.ACCEPT) {
       const mergedNodeID = cuid();
@@ -97,7 +97,7 @@ class MergeEngine extends EngineConsumer {
     }
   }
 
-  clear() {
+  reset() {
     this.cancel();
 
     if (this.predicates.length) {

@@ -24,7 +24,7 @@ import { CanvasProviders, HelpModalConsumer, ShortcutModalConsumer } from './con
 import useEngine from './engine';
 
 const Canvas = ({ isTesting }) => {
-  const { engine } = useEngine();
+  const engine = useEngine();
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1) {

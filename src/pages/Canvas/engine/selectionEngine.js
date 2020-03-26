@@ -34,7 +34,7 @@ class SelectionEngine extends EngineConsumer {
    * @returns {void}
    */
   select(nodeID) {
-    this.engine.focus.clear();
+    this.engine.focus.reset();
 
     this.engine.activation.activate(nodeID, ActivationMode.SELECTION);
   }
@@ -58,7 +58,7 @@ class SelectionEngine extends EngineConsumer {
   toggle(nodeID) {
     if (this.engine.focus.hasTarget) {
       const focusTarget = this.engine.focus.getTarget();
-      this.engine.focus.clear();
+      this.engine.focus.reset();
       this.engine.activation.activate(focusTarget, ActivationMode.SELECTION);
     }
 
@@ -72,7 +72,7 @@ class SelectionEngine extends EngineConsumer {
    * @returns {void}
    */
   replace(targets = []) {
-    this.engine.focus.clear();
+    this.engine.focus.reset();
 
     this.engine.activation.replace(targets, ActivationMode.SELECTION);
   }
@@ -82,9 +82,9 @@ class SelectionEngine extends EngineConsumer {
    *
    * @returns {void}
    */
-  clear() {
+  reset() {
     if (this.hasTargets) {
-      this.engine.activation.clear();
+      this.engine.activation.reset();
     }
   }
 }

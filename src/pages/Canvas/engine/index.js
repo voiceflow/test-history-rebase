@@ -1,6 +1,6 @@
 import moize from 'moize';
 import React from 'react';
-import { useStore } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
@@ -10,6 +10,7 @@ import * as Realtime from '@/ducks/realtime';
 import { isRootDiagramSelector } from '@/ducks/skill';
 import { setCanvasError } from '@/ducks/user';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
+import { useTeardown } from '@/hooks';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
@@ -56,6 +57,10 @@ export class Engine {
   canvas = null;
 
   supportedLinks = [];
+
+  get services() {
+    return [this.drag, this.activation, this.focus, this.selection, this.clipboard, this.diagram, this.merge, this.link, this.port, this.node];
+  }
 
   constructor(store, mousePosition, realtimeSubscription) {
     this.store = store;
@@ -180,7 +185,7 @@ export class Engine {
       await this.node.translateMany(targets, movement);
     } else {
       if (hasMultipleActivationTargets) {
-        this.selection.clear();
+        this.selection.reset();
       }
 
       await this.drag.set(nodeID);
@@ -201,7 +206,7 @@ export class Engine {
 
     this.merge.confirm();
     this.saveHistory();
-    this.drag.clear();
+    this.drag.reset();
   }
 
   async transitionNested(nodeID, [x, y]) {
@@ -301,8 +306,8 @@ export class Engine {
   clearActivation() {
     this.saveActiveLocations();
 
-    this.focus.clear();
-    this.selection.clear();
+    this.focus.reset();
+    this.selection.reset();
   }
 
   focusHome() {
@@ -324,16 +329,13 @@ export class Engine {
     this.store.dispatch(Creator.saveHistory());
   }
 
+  async reset() {
+    await Promise.all(this.services.map((service) => service.reset()));
+  }
+
   async teardown() {
-    this.focus.clear();
-    this.selection.clear();
-    await this.drag.clear();
-    this.merge.clear();
-    this.dispatcher.teardown();
-    this.realtime.teardown();
-    this.links.clear();
-    this.ports.clear();
-    this.nodes.clear();
+    await this.reset();
+    await Promise.all(this.services.map((service) => service.teardown()));
   }
 }
 
@@ -341,15 +343,16 @@ const createEngine = moize.simple((store, mousePosition, realtimeSubscription) =
 
 function useEngine() {
   const store = useStore();
+  const currentDiagramID = useSelector(Creator.creatorDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription));
+  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription), []);
 
-  React.useEffect(() => () => engine.teardown(), [engine]);
+  React.useEffect(() => () => engine.reset(), [currentDiagramID]);
 
-  return {
-    engine,
-  };
+  useTeardown(() => engine.teardown());
+
+  return engine;
 }
 
 export default useEngine;

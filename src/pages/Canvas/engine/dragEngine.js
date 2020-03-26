@@ -28,7 +28,7 @@ class DragEngine extends EngineConsumer {
 
   async set(target) {
     if (target !== this.target) {
-      await this.clear();
+      await this.reset();
 
       if (!this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
         this.engine.merge.generatePredicates(target);
@@ -42,7 +42,7 @@ class DragEngine extends EngineConsumer {
     }
   }
 
-  async clear() {
+  async reset() {
     if (this.hasTarget) {
       const target = this.target;
       this.target = null;

@@ -45,6 +45,9 @@ module.exports = merge(commonConfig, {
               '**/types.ts',
               'models/**/*',
 
+              // TODO: remove when onboarding redesign
+              'pages/OnboardingV2/**/*',
+
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',
               'pages/Canvas/managers/Start/StartBlock/**/*',

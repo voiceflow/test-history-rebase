@@ -353,6 +353,8 @@ export enum ModalType {
   INTERACTION_MODEL = 'interaction-model',
 
   DISPLAY_PREVIEW = 'display-preview',
+
+  ONBOARDING = 'onboarding',
 }
 
 export enum UserRole {

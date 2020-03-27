@@ -1,8 +1,7 @@
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
-import { withCanvas } from '@/components/Canvas/contexts';
-import { withEditPermission, withEngine, withLinkCreation, withNode, withPlatform, withPort } from '@/pages/Canvas/contexts';
+import { withEditPermission, withEngine, withNode, withPlatform, withPort } from '@/pages/Canvas/contexts';
 import PortLabels from '@/pages/Canvas/managers/labels';
 import { swallowEvent } from '@/utils/dom';
 import { compose } from '@/utils/functional';
@@ -17,20 +16,20 @@ class Port extends React.PureComponent {
   };
 
   onStartCreateLink = swallowEvent((event) => {
-    const { portID, canvas, canDrag, linkCreation, editPermission, node, engine } = this.props;
+    const { portID, canDrag, editPermission, node, engine } = this.props;
     const canCreateLink = canDrag && editPermission.canEdit && !engine.isNodeMovementLocked(node.id);
     if (canCreateLink) {
-      linkCreation.onStart(portID, mouseEventOffset(event, canvas.getRef()));
+      engine.linkCreation.start(portID, mouseEventOffset(event, engine.canvas.getRef()));
     }
   });
 
   onEndCreateLink = (event) => {
-    const { portID, canDrop, linkCreation } = this.props;
+    const { portID, canDrop, engine } = this.props;
 
-    if (linkCreation.isDrawing && canDrop) {
+    if (engine.linkCreation.isDrawing && canDrop) {
       event.stopPropagation();
 
-      linkCreation.onComplete(portID);
+      engine.linkCreation.complete(portID);
     }
   };
 
@@ -63,4 +62,4 @@ class Port extends React.PureComponent {
   }
 }
 
-export default compose(withNode, withPort, withCanvas, withEngine, withPlatform, withEditPermission, withLinkCreation)(Port);
+export default compose(withNode, withPort, withEngine, withPlatform, withEditPermission)(Port);

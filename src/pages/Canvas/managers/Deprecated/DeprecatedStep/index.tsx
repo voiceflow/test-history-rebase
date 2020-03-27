@@ -7,8 +7,8 @@ export type DeprecatedStepProps = {
   onClick: () => void;
 };
 
-const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ isActive, onClick }) => (
-  <Step isActive={isActive} onClick={onClick}>
+const DeprecatedStep: React.FC<DeprecatedStepProps> = () => (
+  <Step>
     <Section>
       <Item icon="close" iconColor="#adadad" placeholder="Deprecated" />
     </Section>

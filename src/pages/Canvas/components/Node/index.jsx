@@ -28,6 +28,7 @@ export class Node extends React.PureComponent {
 
   state = {
     isDragging: false,
+    isBlockHighlighted: false,
     position: [null, null],
     positionChanged: false,
   };
@@ -71,6 +72,10 @@ export class Node extends React.PureComponent {
     getBlockRect: () => this.blockRef.current.api.getBoundingClientRect(),
 
     getPosition: () => this.position,
+
+    setHighlight: () => this.setState({ isBlockHighlighted: true }),
+
+    clearHighlight: () => this.setState({ isBlockHighlighted: false }),
 
     rename: () => this.blockRef.current.api.rename?.(),
 
@@ -122,12 +127,12 @@ export class Node extends React.PureComponent {
     }
   };
 
-  onMouseUp = ({ detail }) => {
+  onMouseUp = (event) => {
     const { engine, nodeID } = this.props;
 
     // do not click in case double click event
-    if (this.dragDistance < MAX_CLICK_TRAVEL && detail !== 2) {
-      this.onClick();
+    if (this.dragDistance < MAX_CLICK_TRAVEL && event.detail !== 2) {
+      this.onClick(event);
     } else if (engine.drag.isTarget(nodeID)) {
       this.onDrop();
     }
@@ -140,7 +145,13 @@ export class Node extends React.PureComponent {
     this.teardownMouseListeners();
   };
 
-  onClick = () => this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
+  onClick = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
+  };
 
   onDrag = async (event) => {
     const { engine, nodeID } = this.props;
@@ -172,9 +183,7 @@ export class Node extends React.PureComponent {
     }
   });
 
-  onDoubleClick = () => {
-    this.props.engine.node.center(this.props.nodeID);
-  };
+  onDoubleClick = () => this.props.engine.node.center(this.props.nodeID);
 
   componentDidMount() {
     this.props.engine.registerNode(this.props.node, this.api);
@@ -199,8 +208,8 @@ export class Node extends React.PureComponent {
   }
 
   render() {
-    const { node, isHighlighted, isBlockRedesignEnabled } = this.props;
-    const { isDragging, position, positionChanged } = this.state;
+    const { node, engine, isHighlighted, isBlockRedesignEnabled } = this.props;
+    const { isDragging, isBlockHighlighted, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
@@ -216,7 +225,10 @@ export class Node extends React.PureComponent {
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
     } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
-      nodeEl = <NodeBlock ref={this.blockRef} />;
+      const isFocused = engine.focus.isTarget(node.id);
+      const isSelected = engine.selection.isTarget(node.id);
+
+      nodeEl = <NodeBlock isFocused={isFocused} isSelected={isSelected} isHighlighted={isBlockHighlighted} ref={this.blockRef} />;
     } else if (isBlockRedesignEnabled && node.type === BlockType.START) {
       nodeEl = <NodeStartBlock ref={this.blockRef} />;
     } else if (INTERNAL_BLOCKS.includes(node.type)) {

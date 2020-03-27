@@ -1,6 +1,12 @@
 import React from 'react';
 
-export const MergeStatusContext = React.createContext(null);
+import { MergeStatus } from '@/pages/Canvas/constants';
+
+export type MergeStatusValue = {
+  setStatus: (status: MergeStatus) => void;
+};
+
+export const MergeStatusContext = React.createContext<MergeStatusValue | null>(null);
 export const { Consumer: MergeStatusConsumer } = MergeStatusContext;
 
 // eslint-disable-next-line react/display-name

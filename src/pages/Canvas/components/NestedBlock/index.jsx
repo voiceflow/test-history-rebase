@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import { withCanvas } from '@/components/Canvas/contexts';
 import { withOverlay } from '@/contexts';
 import { withNodeLifecycle } from '@/pages/Canvas/components/Node/hocs';
 import { getBlockCategory } from '@/pages/Canvas/constants';
@@ -116,4 +115,4 @@ class NestedBlock extends React.PureComponent {
   }
 }
 
-export default compose(withNode, withNodeLifecycle, withEngine, withCanvas, withOverlay, withEditPermission)(NestedBlock);
+export default compose(withNode, withNodeLifecycle, withEngine, withOverlay, withEditPermission)(NestedBlock);

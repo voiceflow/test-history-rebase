@@ -7,22 +7,15 @@ import { NodeData, Product as ProductType } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { MergeProps } from '@/types';
 
-export type CancelPaymentStepProps = ConnectedStepProps['stepProps'] & {
+export type CancelPaymentStepProps = {
   label?: string;
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 };
 
-export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({
-  label,
-  successPortID,
-  failurePortID,
-  isActive,
-  onClick,
-  lockOwner,
-  withPorts,
-}) => (
-  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, successPortID, failurePortID, withPorts }) => (
+  <Step>
     <Section>
       <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="trash" iconColor="#d94c4c" placeholder="Select a product to cancel" />
     </Section>
@@ -43,10 +36,10 @@ type ConnectedCancelPaymentStepProps = ConnectedStepProps<NodeData.Payment> & {
   product?: ProductType;
 };
 
-const ConnectedCancelPaymentStep: React.FC<ConnectedCancelPaymentStepProps> = ({ node, stepProps, product }) => {
+const ConnectedCancelPaymentStep: React.FC<ConnectedCancelPaymentStepProps> = ({ node, withPorts, product }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <CancelPaymentStep label={product?.name} successPortID={successPortID} failurePortID={failurePortID} {...stepProps} />;
+  return <CancelPaymentStep label={product?.name} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
 };
 
 const mapStateToProps = {

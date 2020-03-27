@@ -1,22 +1,14 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { AccountLinkingStep, AccountLinkingStepProps } from '.';
 
-const getProps = () => {
-  const onClick = action('click');
-
-  return {
-    withPorts: true,
-    isConfigured: true,
-    onClick,
-    isActive: false,
-    portID: 'igu14g',
-  };
-};
+const getProps = () => ({
+  isConfigured: true,
+  portID: 'igu14g',
+});
 
 export default {
   title: 'Creator/Steps/Account Linking Step',
@@ -29,12 +21,12 @@ const render = (props?: Partial<AccountLinkingStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render({ isConfigured: false }));
+export const empty = withStepContext()(render({ isConfigured: false }));
 
-export const configured = withStepDispatcher()(render());
+export const configured = withStepContext()(render());
 
-export const withoutPort = withStepDispatcher()(render({ withPorts: false }));
+export const withoutPort = withStepContext({ withPorts: false })(render());
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());

@@ -7,25 +7,17 @@ import { NodeData, Product as ProductType } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 import { MergeProps } from '@/types';
 
-export type PaymentStepProps = ConnectedStepProps['stepProps'] & {
+export type PaymentStepProps = {
   label?: string;
+  withPorts: boolean;
   upsellMessage?: string | null;
   successPortID: string;
   failurePortID: string;
 };
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({
-  label,
-  upsellMessage,
-  withPorts,
-  successPortID,
-  failurePortID,
-  isActive,
-  onClick,
-  lockOwner,
-}) => {
+export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, successPortID, failurePortID }) => {
   return (
-    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+    <Step>
       <Section>
         <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="purchase" iconColor="#558B2F" placeholder="Select a product" />
       </Section>
@@ -60,7 +52,7 @@ type ConnectedPaymentStepProps = ConnectedStepProps<NodeData.Payment> & {
   product?: ProductType;
 };
 
-const ConnectedPaymentStep: React.FC<ConnectedPaymentStepProps> = ({ node, stepProps, product }) => {
+const ConnectedPaymentStep: React.FC<ConnectedPaymentStepProps> = ({ node, withPorts, product }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return (
@@ -69,7 +61,7 @@ const ConnectedPaymentStep: React.FC<ConnectedPaymentStepProps> = ({ node, stepP
       upsellMessage={product?.purchasePrompt}
       successPortID={successPortID}
       failurePortID={failurePortID}
-      {...stepProps}
+      withPorts={withPorts}
     />
   );
 };

@@ -253,11 +253,12 @@ class Canvas extends React.PureComponent {
   }
 
   render() {
-    const { onRightClick, innerRef, children, disableClick } = this.props;
+    const { onRightClick, innerRef, children, disableClick, className } = this.props;
 
     return (
       <CanvasProvider value={this.api}>
         <Container
+          className={className}
           onContextMenu={onRightClick}
           onMouseDown={disableClick ? undefined : this.controls.mousedown}
           tabIndex={-1}

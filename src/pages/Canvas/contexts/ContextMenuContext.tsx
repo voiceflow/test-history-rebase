@@ -4,12 +4,24 @@ import { OverlayContext } from '@/contexts';
 import { withContext, withStaticContext } from '@/hocs';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
-export const ContextMenuContext = React.createContext(null);
+export type MenuContext = {
+  position: [number, number];
+  type: ContextMenuTarget;
+  target: string | null;
+};
+
+export type ContextMenuValue = Partial<MenuContext> & {
+  isOpen: boolean;
+  onOpen: (event: React.MouseEvent, type: ContextMenuTarget, target: string | null) => void;
+  onHide: () => void;
+};
+
+export const ContextMenuContext = React.createContext<ContextMenuValue | null>(null);
 export const { Consumer: ContextMenuConsumer } = ContextMenuContext;
 
-export function ContextMenuProvider({ children }) {
-  const overlay = React.useContext(OverlayContext);
-  const [menuContext, setMenuContext] = React.useState(null);
+export const ContextMenuProvider: React.FC = ({ children }) => {
+  const overlay = React.useContext(OverlayContext)!;
+  const [menuContext, setMenuContext] = React.useState<MenuContext | null>(null);
 
   const onHide = () => {
     if (menuContext === null) {
@@ -19,7 +31,7 @@ export function ContextMenuProvider({ children }) {
     setMenuContext(null);
     overlay.setHandler(null);
   };
-  const onOpen = (event, type = ContextMenuTarget.CANVAS, target = null) => {
+  const onOpen = (event: React.MouseEvent, type = ContextMenuTarget.CANVAS, target: string | null = null) => {
     event.preventDefault();
 
     if (!overlay.canOpen()) {
@@ -33,6 +45,7 @@ export function ContextMenuProvider({ children }) {
         overlay.setHandler(null);
       });
     }
+
     setMenuContext({ position: [event.clientX, event.clientY], type, target });
   };
 
@@ -48,7 +61,7 @@ export function ContextMenuProvider({ children }) {
       {children}
     </ContextMenuContext.Provider>
   );
-}
+};
 
 export const withContextMenu = withContext(ContextMenuContext, 'contextMenu');
 export const withStaticContextMenu = withStaticContext(ContextMenuContext, 'contextMenu');

@@ -30,7 +30,7 @@ class DragEngine extends EngineConsumer {
     if (target !== this.target) {
       await this.reset();
 
-      if (!this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      if (!this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
         this.engine.merge.generatePredicates(target);
       }
 

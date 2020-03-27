@@ -18,13 +18,13 @@ export const FlowTab = {
   FLOW: 'flow',
 };
 
-export const BlockCategoryType = {
-  BASIC: 'basic',
-  LOGIC: 'logic',
-  ADVANCED: 'advanced',
-  VISUAL: 'visual',
-  USER: 'user',
-};
+export enum BlockCategoryType {
+  BASIC = 'basic',
+  LOGIC = 'logic',
+  ADVANCED = 'advanced',
+  VISUAL = 'visual',
+  USER = 'user',
+}
 
 export const DragItem = {
   BLOCK_MENU: 'blockMenu',

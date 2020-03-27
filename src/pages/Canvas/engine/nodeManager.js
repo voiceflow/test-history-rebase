@@ -13,7 +13,8 @@ class NodeManager extends EngineConsumer {
   internal = {
     add: (node, data, nodeID) => this.dispatch(Creator.addNode(node, data, nodeID)),
 
-    addWrapped: (node, data, nodeID, parentNodeID) => this.dispatch(Creator.addWrappedNode(node, data, nodeID, parentNodeID)),
+    addWrapped: (node, data, nodeID, parentNodeID, parentPortID) =>
+      this.dispatch(Creator.addWrappedNode(node, data, nodeID, parentNodeID, parentPortID)),
 
     addMany: (nodeGroup, position) => this.dispatch(Creator.addManyNodes(nodeGroup, position)),
 
@@ -29,7 +30,7 @@ class NodeManager extends EngineConsumer {
 
     unmerge: (nodeID, position) => {
       const { parentNode } = this.engine.getNodeByID(nodeID);
-      const isBlockRedesignEnabled = this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN);
+      const isBlockRedesignEnabled = this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN);
 
       this.saveLocation(parentNode);
       this.dispatch(Creator.unmergeNode(nodeID, position, { isBlockRedesignEnabled }));
@@ -108,13 +109,14 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(nodeID, type, [x, y], factoryData, parentNodeID = cuid()) {
+  // eslint-disable-next-line max-params
+  async add(nodeID, type, [x, y], factoryData, parentNodeID = cuid(), parentPortID = cuid()) {
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y };
 
-    if (this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type !== BlockType.COMMENT) {
-      await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID));
-      this.internal.addWrapped(augmentedNode, data, nodeID, parentNodeID);
+    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type !== BlockType.COMMENT) {
+      await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID, parentPortID));
+      this.internal.addWrapped(augmentedNode, data, nodeID, parentNodeID, parentPortID);
     } else {
       await this.addSingle(augmentedNode, data, nodeID);
     }
@@ -325,7 +327,9 @@ class NodeManager extends EngineConsumer {
 
   translateAllLinks(nodeID, movement) {
     const node = this.engine.getNodeByID(nodeID);
-    if (node.type === BlockType.COMBINED) {
+    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type === BlockType.COMBINED) {
+      [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
+    } else if (node.type === BlockType.COMBINED) {
       node.combinedNodes.forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
     } else {
       this.translateLinks(nodeID, movement);

@@ -174,12 +174,17 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -304,7 +309,6 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -518,12 +522,17 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -648,7 +657,6 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -859,12 +867,17 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -989,7 +1002,6 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -1203,12 +1215,17 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -1333,7 +1350,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -1548,12 +1564,17 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -1678,7 +1699,6 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -1863,12 +1883,17 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c17 {
@@ -1993,7 +2018,6 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div

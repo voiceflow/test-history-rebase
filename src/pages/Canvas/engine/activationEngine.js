@@ -1,3 +1,6 @@
+import { FeatureFlag } from '@/config/features';
+import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
+
 import { EngineConsumer } from './utils';
 
 class ActivationEngine extends EngineConsumer {
@@ -43,6 +46,22 @@ class ActivationEngine extends EngineConsumer {
     }
   }
 
+  addActiveStyle() {
+    this.engine.canvas?.getRef().classList.add(ACTIVE_NODES_CANVAS_CLASSNAME);
+  }
+
+  removeActiveStyle() {
+    this.engine.canvas?.getRef().classList.remove(ACTIVE_NODES_CANVAS_CLASSNAME);
+  }
+
+  redrawNode(nodeID) {
+    this.engine.node.redraw(nodeID);
+
+    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      this.engine.node.redrawLinks(nodeID);
+    }
+  }
+
   /**
    * highlight the node with the given ID
    *
@@ -53,7 +72,11 @@ class ActivationEngine extends EngineConsumer {
   activate(nodeID, mode = this.mode) {
     this.setMode(mode);
     this.targets.add(nodeID);
-    this.engine.node.redraw(nodeID);
+    this.redrawNode(nodeID);
+
+    if (this.engine.isRootNode(nodeID)) {
+      this.addActiveStyle();
+    }
   }
 
   /**
@@ -64,10 +87,11 @@ class ActivationEngine extends EngineConsumer {
    */
   deactivate(nodeID) {
     this.targets.delete(nodeID);
-    this.engine.node.redraw(nodeID);
+    this.redrawNode(nodeID);
 
     if (!this.hasTargets) {
       this.mode = null;
+      this.removeActiveStyle();
     }
   }
 
@@ -108,6 +132,12 @@ class ActivationEngine extends EngineConsumer {
     });
 
     unused.forEach((nodeID) => this.deactivate(nodeID));
+
+    if (targets.length === 0) {
+      this.removeActiveStyle();
+    } else if (targets.some((nodeID) => this.engine.isRootNode(nodeID))) {
+      this.addActiveStyle();
+    }
   }
 
   /**
@@ -121,6 +151,7 @@ class ActivationEngine extends EngineConsumer {
     if (this.hasTargets) {
       this.targets.forEach((nodeID) => this.deactivate(nodeID));
       this.targets.clear();
+      this.removeActiveStyle();
     }
   }
 }

@@ -4,7 +4,7 @@ import NewBlock, { NewBlockAPI, NewBlockProps } from '@/pages/Canvas/components/
 
 import { BaseStartBlockProps } from '../types';
 
-export type BlockWithCommandsProps = BaseStartBlockProps & Pick<NewBlockProps, 'name' | 'icon' | 'lockOwner'>;
+export type BlockWithCommandsProps = BaseStartBlockProps & Pick<NewBlockProps, 'name' | 'state' | 'icon' | 'lockOwner'>;
 
 const BlockWithCommands: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<BlockWithCommandsProps>> = (
   { commands, children, ...props },

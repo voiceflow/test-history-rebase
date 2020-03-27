@@ -4,16 +4,16 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
-export type RandomStepProps = ConnectedStepProps['stepProps'] & {
+export type RandomStepProps = {
   ports: string[];
 };
 
-export const RandomStep: React.FC<RandomStepProps> = ({ ports, withPorts, isActive, onClick, lockOwner }) => (
-  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+export const RandomStep: React.FC<RandomStepProps> = ({ ports }) => (
+  <Step>
     <Section>
       {ports.map((portID, index) => (
         <Item
-          portID={withPorts ? portID : null}
+          portID={portID}
           label={`Path ${index + 1}`}
           labelVariant={StepLabelVariant.SECONDARY}
           icon={index === 0 ? 'randomLoop' : null}
@@ -25,8 +25,6 @@ export const RandomStep: React.FC<RandomStepProps> = ({ ports, withPorts, isActi
   </Step>
 );
 
-const ConnectedRandomStep: React.FC<ConnectedStepProps<NodeData.Random>> = ({ node, stepProps }) => (
-  <RandomStep ports={node.ports.out} {...stepProps} />
-);
+const ConnectedRandomStep: React.FC<ConnectedStepProps<NodeData.Random>> = ({ node }) => <RandomStep ports={node.ports.out} />;
 
 export default ConnectedRandomStep;

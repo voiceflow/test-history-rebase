@@ -2,13 +2,20 @@ import { css, styled } from '@/hocs';
 
 import { STROKE_COLOR } from '../constants';
 
-const LinkPath = styled.path`
+export type LinkPathProps = {
+  isHovering?: boolean;
+  isNewStyle?: boolean;
+  strokeColor?: string;
+};
+
+const LinkPath = styled.path<LinkPathProps>`
   stroke: rgb(141, 162, 181);
   stroke-width: 1.5px;
   fill: transparent;
 
-  ${({ isHovering }) =>
+  ${({ isHovering, isNewStyle }) =>
     isHovering &&
+    !isNewStyle &&
     css`
       stroke: ${STROKE_COLOR};
       stroke-dasharray: 10, 2;
@@ -19,7 +26,6 @@ const LinkPath = styled.path`
     strokeColor &&
     css`
       stroke: ${strokeColor};
-      stroke-dasharray: 10, 2;
     `}
 `;
 

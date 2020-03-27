@@ -75,17 +75,18 @@ const IntegrationsStepMeta: IntegrationsStepMetaType = {
   },
 };
 
-export type IntegrationStepProps = ConnectedStepProps['stepProps'] & {
+export type IntegrationStepProps = {
   data: NodeData.Integration;
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 };
 
-export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, successPortID, failurePortID, isActive, onClick, lockOwner }) => {
+export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, successPortID, failurePortID }) => {
   const step = IntegrationsStepMeta[data.selectedIntegration] as StepMeta<typeof data.selectedIntegration>;
 
   return (
-    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+    <Step>
       <Section>
         <Item
           label={step.getLabel(data)}
@@ -107,10 +108,10 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
   );
 };
 
-const ConnectedIntegrationStep: React.FC<ConnectedStepProps<NodeData.Integration>> = ({ node, data, stepProps }) => {
+const ConnectedIntegrationStep: React.FC<ConnectedStepProps<NodeData.Integration>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <IntegrationStep data={data} successPortID={successPortID} failurePortID={failurePortID} {...stepProps} />;
+  return <IntegrationStep data={data} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
 };
 
 export default ConnectedIntegrationStep;

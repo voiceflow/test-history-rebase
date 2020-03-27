@@ -7,20 +7,20 @@ import { connect } from '@/hocs';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { EMPTY_ACCOUNT_DATA } from '@/pages/Canvas/managers/AccountLinking/constants';
 
-export type AccountLinkingStepProps = ConnectedStepProps['stepProps'] & {
+export type AccountLinkingStepProps = {
   portID: string;
   isConfigured: boolean;
 };
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, withPorts, onClick, isActive, lockOwner, portID }) => (
-  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, portID }) => (
+  <Step>
     <Section>
       <Item
         label={isConfigured && 'Sending Account Linking card'}
         labelVariant={StepLabelVariant.SECONDARY}
         icon="accountLinking"
         iconColor="#645f5f"
-        portID={withPorts ? portID : null}
+        portID={portID}
         placeholder="Configure Account Linking"
       />
     </Section>
@@ -42,9 +42,10 @@ type ConnectedAccountLinkingStepProps = ConnectedStepProps & {
   };
 };
 
-const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData, stepProps }) => {
+const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData }) => {
   const notEmpty = !isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);
-  return <AccountLinkingStep portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} {...stepProps} />;
+
+  return <AccountLinkingStep portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} />;
 };
 
 const mapStateToProps = {

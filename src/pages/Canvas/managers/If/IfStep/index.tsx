@@ -9,7 +9,7 @@ import { head } from '@/utils/array';
 
 import { ExpressionPreviewContainer } from './components';
 
-export type IfStepProps = ConnectedStepProps['stepProps'] & {
+export type IfStepProps = {
   elsePortID: string;
   expressions: {
     label: JSX.Element;
@@ -17,36 +17,34 @@ export type IfStepProps = ConnectedStepProps['stepProps'] & {
   }[];
 };
 
-export const IfStep: React.FC<IfStepProps> = ({ expressions, elsePortID, lockOwner, withPorts, isActive, onClick }) => {
-  return (
-    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
-      <Section>
-        {expressions.length ? (
-          expressions.map(({ label, portID }, index) => {
-            return (
-              <Item
-                key={portID}
-                icon={index === 0 ? 'if' : null}
-                label={label}
-                labelVariant={StepLabelVariant.SECONDARY}
-                iconColor="#f86683"
-                portID={withPorts ? portID : null}
-                placeholder="Add IF statement"
-              />
-            );
-          })
-        ) : (
-          <Item icon="if" iconColor="#f86683" placeholder="Add IF statement" />
-        )}
-      </Section>
-      <ElseItem portID={elsePortID} />
-    </Step>
-  );
-};
+export const IfStep: React.FC<IfStepProps> = ({ expressions, elsePortID }) => (
+  <Step>
+    <Section>
+      {expressions.length ? (
+        expressions.map(({ label, portID }, index) => {
+          return (
+            <Item
+              key={portID}
+              icon={index === 0 ? 'if' : null}
+              label={label}
+              labelVariant={StepLabelVariant.SECONDARY}
+              iconColor="#f86683"
+              portID={portID}
+              placeholder="Add IF statement"
+            />
+          );
+        })
+      ) : (
+        <Item icon="if" iconColor="#f86683" placeholder="Add IF statement" />
+      )}
+    </Section>
+    <ElseItem portID={elsePortID} />
+  </Step>
+);
 
 type ConnectedIfStepProps = ConnectedStepProps<NodeData.If>;
 
-const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data, stepProps }) => {
+const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const expressionsByPortID = useSyncedLookup(nodeOutPorts, data.expressions);
 
@@ -61,7 +59,7 @@ const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data, stepProps
       };
     });
 
-  return <IfStep expressions={expressions} {...stepProps} elsePortID={elsePortID} />;
+  return <IfStep expressions={expressions} elsePortID={elsePortID} />;
 };
 
 export default ConnectedIfStep;

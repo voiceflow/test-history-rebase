@@ -6,18 +6,18 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-export type DisplayStepProps = ConnectedStepProps['stepProps'] & {
+export type DisplayStepProps = {
   image?: string;
   label?: string;
   portID?: string;
 };
 
-export const DisplayStep: React.FC<DisplayStepProps> = ({ label, withPorts, portID, isActive, lockOwner, onClick, image }) => (
-  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner} image={image}>
+export const DisplayStep: React.FC<DisplayStepProps> = ({ label, portID, image }) => (
+  <Step image={image}>
     <Section>
       <Item
         label={label}
-        portID={withPorts ? portID : null}
+        portID={portID}
         labelVariant={StepLabelVariant.SECONDARY}
         icon="blocks"
         iconColor="#3c6997"
@@ -31,10 +31,10 @@ export type ConnectedDisplayStepProps = ConnectedStepProps<NodeData.Display> & {
   variables: string[];
 };
 
-const ConnectedDisplayStep: React.FC<ConnectedDisplayStepProps> = ({ node, data, stepProps }) => {
+const ConnectedDisplayStep: React.FC<ConnectedDisplayStepProps> = ({ node, data }) => {
   const label = data.displayType === DisplayType.SPLASH ? transformVariablesToReadable(data.splashHeader) : data.jsonFileName;
 
-  return <DisplayStep portID={node.ports.out[0]} label={label} {...stepProps} image={data.backgroundImage} />;
+  return <DisplayStep portID={node.ports.out[0]} label={label} image={data.backgroundImage} />;
 };
 
 export default ConnectedDisplayStep;

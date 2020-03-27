@@ -2,10 +2,11 @@ import React from 'react';
 
 import User from '@/components/User';
 import { PlatformType } from '@/constants';
-import { LockOwnerType, Node, NodeData } from '@/models';
+import { Node, NodeData } from '@/models';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, Image, ImageContainer } from './components';
+import { StepAPIContext } from './contexts';
 
 export * from './components';
 export * from './types';
@@ -16,31 +17,41 @@ const LockOwner: any = User;
 
 export type BaseStepProps = {
   image?: string;
-  isActive?: boolean;
-  onClick?: () => void;
-  lockOwner?: LockOwnerType;
 };
 
 export type StepProps = BaseStepProps & { children: React.ReactNode | React.ReactNode[] };
 
 export type ConnectedStepProps<T = {}> = {
-  stepProps: Pick<BaseStepProps, 'isActive' | 'onClick' | 'lockOwner'> & { withPorts: boolean };
   node: Node;
   data: NodeData<T>;
   platform: PlatformType;
+  withPorts: boolean;
 };
 
-const Step: React.FC<StepProps> = ({ isActive, onClick, image, lockOwner, children }) => (
-  <Container isActive={isActive} onMouseDown={stopPropagation(null, true)} onClick={onClick}>
-    {lockOwner && <LockOwner user={lockOwner} />}
-    {children}
+const Step: React.FC<StepProps> = ({ image, children }) => {
+  const stepAPI = React.useContext(StepAPIContext);
 
-    {image && (
-      <ImageContainer>
-        <Image image={image} />
-      </ImageContainer>
-    )}
-  </Container>
-);
+  const el = (
+    <Container
+      {...stepAPI?.handlers}
+      isActive={stepAPI?.isActive}
+      isHovered={stepAPI?.isHovered}
+      hasLinkWarning={stepAPI?.hasLinkWarning}
+      onMouseDown={stopPropagation(null, true)}
+      ref={stepAPI?.ref}
+    >
+      {stepAPI?.lockOwner && <LockOwner user={stepAPI.lockOwner} />}
+      {children}
+
+      {image && (
+        <ImageContainer>
+          <Image image={image} />
+        </ImageContainer>
+      )}
+    </Container>
+  );
+
+  return stepAPI?.wrapElement(el) ?? el;
+};
 
 export default Step;

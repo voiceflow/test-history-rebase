@@ -5,11 +5,11 @@ import { useSelector, useStore } from 'react-redux';
 import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { diagramByIDSelector } from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
-import { isRootDiagramSelector } from '@/ducks/skill';
-import { setCanvasError } from '@/ducks/user';
+import * as Skill from '@/ducks/skill';
+import * as User from '@/ducks/user';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { useTeardown } from '@/hooks';
 
@@ -19,6 +19,7 @@ import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
 import FocusEngine from './focusEngine';
+import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MergeEngine from './mergeEngine';
 import NodeManager from './nodeManager';
@@ -34,6 +35,8 @@ export class Engine {
   focus = new FocusEngine(this);
 
   selection = new SelectionEngine(this);
+
+  linkCreation = new LinkCreationEngine(this);
 
   clipboard = new ClipboardEngine(this);
 
@@ -75,31 +78,35 @@ export class Engine {
 
   // store accessors
 
-  getNodeByID = (nodeID) => Creator.nodeByIDSelector(this.store.getState())(nodeID);
+  select = (selector) => selector(this.store.getState());
 
-  getDataByNodeID = (nodeID) => Creator.dataByNodeIDSelector(this.store.getState())(nodeID);
+  getNodeByID = (nodeID) => this.select(Creator.nodeByIDSelector)(nodeID);
 
-  isNodeMovementLocked = (nodeID) => Realtime.isNodeMovementLockedSelector(this.store.getState())(nodeID);
+  getDataByNodeID = (nodeID) => this.select(Creator.dataByNodeIDSelector)(nodeID);
 
-  getDeleteLockedNodes = () => Realtime.deletionLockedNodesSelector(this.store.getState());
+  isNodeMovementLocked = (nodeID) => this.select(Realtime.isNodeMovementLockedSelector)(nodeID);
 
-  getLinkByID = (linkID) => Creator.linkByIDSelector(this.store.getState())(linkID);
+  getDeleteLockedNodes = () => this.select(Realtime.deletionLockedNodesSelector);
 
-  getPortByID = (portID) => Creator.portByIDSelector(this.store.getState())(portID);
+  getLinkByID = (linkID) => this.select(Creator.linkByIDSelector)(linkID);
 
-  hasLinksByPortID = (portID) => Creator.hasLinksByPortIDSelector(this.store.getState())(portID);
+  getPortByID = (portID) => this.select(Creator.portByIDSelector)(portID);
 
-  getLinkIDsByPortID = (portID) => Creator.linkIDsByPortIDSelector(this.store.getState())(portID);
+  hasLinksByPortID = (portID) => this.select(Creator.hasLinksByPortIDSelector)(portID);
 
-  getLinkIDsByNodeID = (nodeID) => Creator.linkIDsByNodeIDSelector(this.store.getState())(nodeID);
+  getLinkIDsByPortID = (portID) => this.select(Creator.linkIDsByPortIDSelector)(portID);
 
-  getRootNodeIDs = () => Creator.rootNodeIDsSelector(this.store.getState());
+  getLinkIDsByNodeID = (nodeID) => this.select(Creator.linkIDsByNodeIDSelector)(nodeID);
 
-  getDiagramByID = (diagramID) => diagramByIDSelector(this.store.getState())(diagramID);
+  getRootNodeIDs = () => this.select(Creator.rootNodeIDsSelector);
 
-  isRootDiagram = () => isRootDiagramSelector(this.store.getState());
+  isRootNode = (nodeID) => this.select(Creator.isRootNodeSelector)(nodeID);
 
-  isFeatureEnabled = (featureID) => Feature.isFeatureEnabledSelector(this.store.getState())(featureID);
+  getDiagramByID = (diagramID) => this.select(Diagram.diagramByIDSelector)(diagramID);
+
+  isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
+
+  isFeatureEnabled = (featureID) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
   // entity registration methods
 
@@ -231,6 +238,18 @@ export class Engine {
   }
 
   /**
+   * check to see if a node or its parent parent is active
+   *
+   * @param {string} nodeID
+   * @returns {boolean}
+   */
+  isBranchActive(nodeID) {
+    const node = this.getNodeByID(nodeID);
+
+    return !!node.parentNode && this.isActive(node.parentNode);
+  }
+
+  /**
    * check to see if any of the nested nodes are active
    *
    * @param {string} parentNodeID
@@ -325,7 +344,7 @@ export class Engine {
   }
 
   showMergeWarning() {
-    this.store.dispatch(setCanvasError('Cannot combine blocks'));
+    this.store.dispatch(User.setCanvasError('Cannot combine blocks'));
   }
 
   saveHistory() {

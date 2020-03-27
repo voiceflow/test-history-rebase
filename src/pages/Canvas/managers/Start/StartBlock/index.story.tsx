@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import { PLATFORMS } from '@/constants';
 import { CommandStep } from '@/pages/Canvas/managers/Command/CommandStep';
 
@@ -34,12 +34,12 @@ export default {
   component: StartBlock,
 };
 
-export const alexa = withStepDispatcher()(() => <HomeStartBlock platform={PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
+export const alexa = withStepContext()(() => <HomeStartBlock platform={PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const google = withStepDispatcher()(() => <HomeStartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
+export const google = withStepContext()(() => <HomeStartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const flowStartBlock = withStepDispatcher()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} commands={null} />);
+export const flowStartBlock = withStepContext()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} commands={null} />);
 
-export const flowWithCommands = withStepDispatcher()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);
+export const flowWithCommands = withStepContext()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);
 
-export const flowConnected = withStepDispatcher({ hasActiveLinks: true })(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);
+export const flowConnected = withStepContext({ isConnected: true })(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} />);

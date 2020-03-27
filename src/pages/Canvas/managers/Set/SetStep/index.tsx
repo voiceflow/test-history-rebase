@@ -6,13 +6,13 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/components';
 
-export type SetStepProps = ConnectedStepProps['stepProps'] & {
+export type SetStepProps = {
   expressions: (JSX.Element | null)[];
   portID: string;
 };
 
-export const SetStep: React.FC<SetStepProps> = ({ expressions, onClick, isActive, portID, withPorts }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const SetStep: React.FC<SetStepProps> = ({ expressions, portID }) => (
+  <Step>
     <Section>
       {expressions.length ? (
         expressions.map((label, index) => (
@@ -22,12 +22,12 @@ export const SetStep: React.FC<SetStepProps> = ({ expressions, onClick, isActive
             icon={index === 0 ? 'code' : null}
             iconColor="#5590b5"
             key={index}
-            portID={index === expressions.length - 1 && withPorts ? portID : null}
+            portID={index === expressions.length - 1 ? portID : null}
             placeholder="Set variable to..."
           />
         ))
       ) : (
-        <Item icon="code" iconColor="#5590b5" placeholder="Set variable to..." portID={withPorts ? portID : null} />
+        <Item icon="code" iconColor="#5590b5" placeholder="Set variable to..." portID={portID} />
       )}
     </Section>
   </Step>
@@ -35,11 +35,12 @@ export const SetStep: React.FC<SetStepProps> = ({ expressions, onClick, isActive
 
 type ConnectedSetStepProps = ConnectedStepProps<NodeData.Set>;
 
-const ConnectedSetStep: React.FC<ConnectedSetStepProps> = ({ data, node, stepProps }) => {
-  const expressions = data.sets.map(({ variable, expression }) => {
-    return variable ? <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} /> : null;
-  });
-  return <SetStep expressions={expressions} portID={node.ports.out[0]} {...stepProps} />;
+const ConnectedSetStep: React.FC<ConnectedSetStepProps> = ({ data, node }) => {
+  const expressions = data.sets.map(({ variable, expression }) =>
+    variable ? <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} /> : null
+  );
+
+  return <SetStep expressions={expressions} portID={node.ports.out[0]} />;
 };
 
 export default ConnectedSetStep;

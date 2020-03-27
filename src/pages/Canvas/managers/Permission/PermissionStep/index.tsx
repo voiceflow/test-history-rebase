@@ -6,12 +6,12 @@ import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/
 
 import { PERMISSION_LABELS } from '../constants';
 
-export type PermissionStepProps = ConnectedStepProps['stepProps'] & {
+export type PermissionStepProps = {
   permissions: string[];
   portID: string;
 };
 
-export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, portID, isActive, withPorts, onClick, lockOwner }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, portID }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>
@@ -20,12 +20,12 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, por
   );
 
   return (
-    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+    <Step>
       <Section>
         <Item
           label={permissions.length ? labelText : null}
           labelVariant={StepLabelVariant.SECONDARY}
-          portID={withPorts ? portID : null}
+          portID={portID}
           icon="openLock"
           iconColor="#6e849a"
           placeholder="Send a permissions card"
@@ -35,8 +35,8 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, por
   );
 };
 
-const ConnectedPermissionStep: React.FC<ConnectedStepProps<NodeData.Permission>> = ({ node, data, stepProps }) => (
-  <PermissionStep permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])} portID={node.ports.out[0]} {...stepProps} />
+const ConnectedPermissionStep: React.FC<ConnectedStepProps<NodeData.Permission>> = ({ node, data }) => (
+  <PermissionStep permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])} portID={node.ports.out[0]} />
 );
 
 export default ConnectedPermissionStep;

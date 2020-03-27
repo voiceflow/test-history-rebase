@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import cuid from 'cuid';
 
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 
@@ -36,6 +37,24 @@ class LinkManager extends EngineConsumer {
     await this.engine.realtime.sendUpdate(Realtime.removeLink(linkID));
     this.internal.remove(linkID);
     this.engine.saveHistory();
+  }
+
+  setHighlight(linkID) {
+    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      const link = this.engine.getLinkByID(linkID);
+
+      this.engine.port.api(link.source.portID)?.setHighlight();
+      this.engine.node.api(link.target.nodeID)?.setHighlight();
+    }
+  }
+
+  clearHighlight(linkID) {
+    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      const link = this.engine.getLinkByID(linkID);
+
+      this.engine.port.api(link.source.portID)?.clearHighlight();
+      this.engine.node.api(link.target.nodeID)?.clearHighlight();
+    }
   }
 
   translatePoint(linkID, movement, isSource) {

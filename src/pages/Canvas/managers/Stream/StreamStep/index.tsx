@@ -7,19 +7,19 @@ import { usePortFilter } from '@/pages/Canvas/components/PortSet/hooks';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-export type StreamStepProps = ConnectedStepProps['stepProps'] & {
+export type StreamStepProps = {
   audio: string;
   platform: PlatformType;
   customPause: boolean;
   portIDs: string[];
 };
 
-export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, isActive, customPause, portIDs, onClick }) => {
+export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, portIDs }) => {
   const isGoogle = platform === PlatformType.GOOGLE;
   const [nextPortID, previousPortID, pausePortID] = portIDs;
 
   return (
-    <Step isActive={isActive} onClick={onClick}>
+    <Step>
       <Section>
         <Item
           icon="audioPlayer"
@@ -41,7 +41,7 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, isActiv
   );
 };
 
-const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ node, data, platform, stepProps }) => {
+const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ node, data, platform }) => {
   const portFilter = usePortFilter();
 
   return (
@@ -50,7 +50,6 @@ const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ no
       customPause={data.customPause}
       portIDs={node.ports.out.filter(portFilter)}
       platform={platform}
-      {...stepProps}
     />
   );
 };

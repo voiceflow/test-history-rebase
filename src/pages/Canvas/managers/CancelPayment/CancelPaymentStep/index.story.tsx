@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { CancelPaymentStep, CancelPaymentStepProps } from '.';
@@ -23,6 +23,6 @@ const render = (props?: Partial<CancelPaymentStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render());
+export const empty = withStepContext()(render());
 
-export const withProduct = withStepDispatcher()(render({ label: 'New York Times Quiz Pack' }));
+export const withProduct = withStepContext()(render({ label: 'New York Times Quiz Pack' }));

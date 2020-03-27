@@ -7,9 +7,10 @@ import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
-const SINGLE_BLOCK_WRAPPER_ID_PREFIX = 'singleBlockWrapper';
+const VIRTUAL_NODE_ID_PREFIX = 'virtualNode';
+const VIRTUAL_PORT_ID_PREFIX = 'virtualPort';
 
-const BLOCK_NODES = [BlockType.COMBINED, BlockType.START];
+const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 
 const creatorAdapter = createSimpleAdapter(
   (diagram, platform, isBlockRedesignEnabled) => {
@@ -17,7 +18,7 @@ const creatorAdapter = createSimpleAdapter(
     const nodes = [];
     const ports = [];
     const data = {};
-    const links = linkAdapter.mapFromDB(diagram.links);
+    const links = linkAdapter.mapFromDB(diagram.links, isBlockRedesignEnabled);
 
     const registerNode = (node, parentNode) => {
       const nodeData = nodeDataAdapter.fromDB(node.extras, node, isBlockRedesignEnabled);
@@ -30,24 +31,24 @@ const creatorAdapter = createSimpleAdapter(
     diagram.nodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      // when first time project is created no node.type exist
-      if (isBlockRedesignEnabled && _node.type && !BLOCK_NODES.includes(_node.type) && _node.type !== BlockType.COMMENT) {
+      if (isBlockRedesignEnabled && _node.type && !ROOT_NODES.includes(node.type)) {
         // deterministic ID generation to support realtime
-        const nodeID = `${SINGLE_BLOCK_WRAPPER_ID_PREFIX}--${_node.id}`;
+        const virtualNodeID = `${VIRTUAL_NODE_ID_PREFIX}--${node.id}`;
+        const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}--${node.id}`;
 
         _node = {
           x: node.x,
           y: node.y,
-          id: nodeID,
+          id: virtualNodeID,
           name: node.name || 'Block',
           type: BlockType.COMBINED,
           extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED] },
-          ports: [],
+          ports: [{ id: virtualPortID, parentNode: virtualNodeID, in: true, virtual: true }],
           parentNode: null,
           combines: [
             {
               ...node,
-              parentNode: nodeID,
+              parentNode: virtualNodeID,
             },
           ],
         };

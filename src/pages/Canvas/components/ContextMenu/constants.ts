@@ -2,15 +2,16 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
+import { ContextMenuValue, Engine } from '@/pages/Canvas/contexts';
 
-export const CanvasAction = {
-  PASTE: 'paste',
-  ADD_COMMENT: 'add_comment',
-  RENAME_BLOCK: 'rename_block',
-  COPY_BLOCK: 'copy_block',
-  DELETE_BLOCK: 'delete_block',
-  COLOR_BLOCK: 'color_block',
-};
+export enum CanvasAction {
+  PASTE = 'paste',
+  ADD_COMMENT = 'add_comment',
+  RENAME_BLOCK = 'rename_block',
+  COPY_BLOCK = 'copy_block',
+  DELETE_BLOCK = 'delete_block',
+  COLOR_BLOCK = 'color_block',
+}
 
 export const BLOCK_COLORS = [
   {
@@ -44,12 +45,20 @@ export const CANVAS_OPTIONS = [
 
 const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.COMMENT];
 
-export const BLOCK_OPTIONS = [
+export type BlockMenuOption = {
+  label: string;
+  value: CanvasAction;
+  shouldRender?: (contextMenu: ContextMenuValue, props: { engine: Engine }) => boolean;
+
+  [key: string]: any;
+};
+
+export const BLOCK_OPTIONS: BlockMenuOption[] = [
   {
     label: 'Rename',
     value: CanvasAction.RENAME_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
-      const node = engine.getNodeByID(nodeID);
+      const node = engine.getNodeByID(nodeID!);
 
       return node && !BLOCKS_WITHOUT_RENAME.includes(node.type);
     },
@@ -58,9 +67,11 @@ export const BLOCK_OPTIONS = [
     label: 'Copy Block',
     value: CanvasAction.COPY_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
-      const node = engine.getNodeByID(nodeID);
+      const node = engine.getNodeByID(nodeID!);
 
-      return node && node.type !== BlockType.COMMAND;
+      if (!node) return false;
+
+      return engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) ? node.type === BlockType.COMBINED : node.type !== BlockType.COMMAND;
     },
   },
   {
@@ -74,6 +85,7 @@ export const BLOCK_OPTIONS = [
     value: CanvasAction.DELETE_BLOCK,
   },
 ];
+
 export const TARGET_OPTIONS = {
   [ContextMenuTarget.NODE]: BLOCK_OPTIONS,
   [ContextMenuTarget.CANVAS]: CANVAS_OPTIONS,

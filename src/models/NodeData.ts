@@ -1,9 +1,21 @@
-import { CardType, DialogType, DisplayType, ExpressionType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
-import { UserType } from '@/models';
+import {
+  BlockType,
+  CardType,
+  DialogType,
+  DisplayType,
+  ExpressionType,
+  IntegrationType,
+  PermissionType,
+  PlatformType,
+  RepromptType,
+} from '@/constants';
+import { UserType } from '@/models/Integration';
 
 export type NodeData<T> = T & {
   nodeID: string;
   name: string;
+  type: BlockType;
+  blockColor: string;
 };
 
 export namespace NodeData {

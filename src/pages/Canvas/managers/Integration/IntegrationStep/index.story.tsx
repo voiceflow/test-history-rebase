@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { IntegrationStep, IntegrationStepProps } from '.';
 
-const getProps = (): Omit<IntegrationStepProps, 'data'> => {
-  return {
-    withPorts: true,
-    successPortID: 'abc',
-    failurePortID: 'abc',
-  };
-};
+const getProps = (): Omit<IntegrationStepProps, 'data'> => ({
+  withPorts: true,
+  successPortID: 'abc',
+  failurePortID: 'abc',
+});
 
 const render = (props: Pick<IntegrationStepProps, 'data'> & Partial<Omit<IntegrationStepProps, 'data'>>) => () => (
   <NewBlock name="Block">
@@ -26,7 +24,7 @@ export default {
   component: IntegrationStep,
 };
 
-export const apiEmpty = withStepDispatcher()(
+export const apiEmpty = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.CUSTOM_API,
@@ -35,7 +33,7 @@ export const apiEmpty = withStepDispatcher()(
   })
 );
 
-export const apiFilled = withStepDispatcher()(
+export const apiFilled = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.CUSTOM_API,
@@ -45,7 +43,7 @@ export const apiFilled = withStepDispatcher()(
   })
 );
 
-export const googleEmpty = withStepDispatcher()(
+export const googleEmpty = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.GOOGLE_SHEETS,
@@ -54,7 +52,7 @@ export const googleEmpty = withStepDispatcher()(
   })
 );
 
-export const googleFilled = withStepDispatcher()(
+export const googleFilled = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.GOOGLE_SHEETS,
@@ -65,7 +63,7 @@ export const googleFilled = withStepDispatcher()(
   })
 );
 
-export const zapierEmpty = withStepDispatcher()(
+export const zapierEmpty = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.ZAPIER,
@@ -74,7 +72,7 @@ export const zapierEmpty = withStepDispatcher()(
   })
 );
 
-export const zapierFilled = withStepDispatcher()(
+export const zapierFilled = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.ZAPIER,
@@ -84,7 +82,7 @@ export const zapierFilled = withStepDispatcher()(
   })
 );
 
-export const noConnector = withStepDispatcher()(
+export const noConnector = withStepContext()(
   render({
     withPorts: false,
     data: {
@@ -95,9 +93,8 @@ export const noConnector = withStepDispatcher()(
   })
 );
 
-export const active = withStepDispatcher()(
+export const active = withStepContext({ isActive: true })(
   render({
-    isActive: true,
     data: {
       integrationType: IntegrationType.ZAPIER,
       ...INTEGRATION_DATA_MODELS.ZAPIER,
@@ -106,7 +103,7 @@ export const active = withStepDispatcher()(
   })
 );
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(
+export const connected = withStepContext({ isConnected: true })(
   render({
     data: {
       integrationType: IntegrationType.GOOGLE_SHEETS,
@@ -117,7 +114,7 @@ export const connected = withStepDispatcher({ hasActiveLinks: true })(
   })
 );
 
-export const longLabel = withStepDispatcher()(
+export const longLabel = withStepContext()(
   render({
     data: {
       integrationType: IntegrationType.GOOGLE_SHEETS,

@@ -1,11 +1,13 @@
 import Flex from '@/components/Flex';
 import { MemberIcon } from '@/components/User';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import Section from './StepSection';
 
 export type StepContainerProps = {
   isActive?: boolean;
+  isHovered?: boolean;
+  hasLinkWarning?: boolean;
 };
 
 const StepContainer = styled(Flex)<StepContainerProps>`
@@ -16,6 +18,23 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06),
     0 0 0 1px ${({ isActive, theme }) => (isActive ? theme.components.blockStep.activeBorderColor : 'rgba(17, 49, 96, 0.08)')};
   position: relative;
+
+  ${({ isHovered, theme }) =>
+    isHovered &&
+    css`
+      box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px ${theme.components.blockStep.activeBorderColor};
+      cursor: copy;
+    `}
+
+  &:hover {
+    ${({ hasLinkWarning }) =>
+      hasLinkWarning &&
+      css`
+        opacity: 0.7;
+        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px rgba(17, 49, 96, 0.08);
+        cursor: not-allowed;
+      `}
+  }
 
   ${Section}:not(:first-of-type) {
     border-top: 1px solid #eaeff4;

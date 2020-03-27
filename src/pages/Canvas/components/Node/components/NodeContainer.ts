@@ -1,7 +1,13 @@
 import { css, styled } from '@/hocs';
 import NewBlockContainer from '@/pages/Canvas/components/Block/NewBlock/components/NewBlockContainer';
 
-const NodeContainer = styled.div`
+export type NodeContainerProps = {
+  isActive: boolean;
+  isDragging: boolean;
+  position: [number, number];
+};
+
+const NodeContainer = styled.div<NodeContainerProps>`
   position: absolute;
   box-sizing: content-box;
   pointer-events: auto;

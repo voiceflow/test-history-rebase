@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { DisplayStep, DisplayStepProps } from '.';
@@ -9,7 +9,7 @@ const DISPLAY_IMAGE = 'https://www.sundaypost.com/wp-content/uploads/sites/13/20
 
 const getProps = () => {
   return {
-    withPorts: true,
+    // withPorts: true,
     portID: 'display-block',
     label: 'Hi {name}, welcome to Adidas.',
     image: DISPLAY_IMAGE,
@@ -27,18 +27,18 @@ const render = (props?: Partial<DisplayStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render({ label: '', image: '' }));
+export const empty = withStepContext()(render({ label: '', image: '' }));
 
-export const withoutImage = withStepDispatcher()(render({ image: '' }));
+export const withoutImage = withStepContext()(render({ image: '' }));
 
-export const withImage = withStepDispatcher()(render());
+export const withImage = withStepContext()(render());
 
-export const longLabel = withStepDispatcher()(render({ label: 'Hi {name}, welcome to Adidas showroom in Seattle.' }));
+export const longLabel = withStepContext()(render({ label: 'Hi {name}, welcome to Adidas showroom in Seattle.' }));
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());
 
-export const withoutPort = withStepDispatcher()(render({ withPorts: false }));
+export const withoutPort = withStepContext({ withPorts: false })(render());
 
-export const advancedDisplayType = withStepDispatcher()(render({ label: 'Dogs_and_Cats.json', image: '' }));
+export const advancedDisplayType = withStepContext()(render({ label: 'Dogs_and_Cats.json', image: '' }));

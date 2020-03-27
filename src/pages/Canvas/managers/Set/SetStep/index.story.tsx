@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/components';
@@ -77,17 +76,10 @@ const SETS = [
 
 const multiExpressionsLabels = [generateSetLabel(SETS[0]), generateSetLabel(SETS[1])];
 
-const getProps = () => {
-  const onClick = action('click port');
-
-  return {
-    onClick,
-    expressions: multiExpressionsLabels,
-    portID: 'qeg13',
-    isActive: false,
-    withPorts: true,
-  };
-};
+const getProps = () => ({
+  expressions: multiExpressionsLabels,
+  portID: 'qeg13',
+});
 
 export default {
   title: 'Creator/Steps/Set Step',
@@ -100,14 +92,14 @@ const render = (props?: Partial<SetStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render({ expressions: [null] }));
+export const empty = withStepContext()(render({ expressions: [null] }));
 
-export const singleExpression = withStepDispatcher()(render({ expressions: [generateSetLabel(SETS[0])] }));
+export const singleExpression = withStepContext()(render({ expressions: [generateSetLabel(SETS[0])] }));
 
-export const multipleExpression = withStepDispatcher()(render({ expressions: multiExpressionsLabels }));
+export const multipleExpression = withStepContext()(render({ expressions: multiExpressionsLabels }));
 
-export const withoutPort = withStepDispatcher()(render({ withPorts: false, expressions: multiExpressionsLabels }));
+export const withoutPort = withStepContext({ withPorts: false })(render({ expressions: multiExpressionsLabels }));
 
-export const active = withStepDispatcher()(render({ isActive: true, expressions: multiExpressionsLabels }));
+export const active = withStepContext({ isActive: true })(render({ expressions: multiExpressionsLabels }));
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render({ expressions: multiExpressionsLabels }));
+export const connected = withStepContext({ isConnected: true })(render({ expressions: multiExpressionsLabels }));

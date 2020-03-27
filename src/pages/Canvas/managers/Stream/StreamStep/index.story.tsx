@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import { PlatformType } from '@/constants';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
@@ -27,14 +27,14 @@ export default {
   component: StreamStep,
 };
 
-export const emptyGoogle = withStepDispatcher()(render({ audio: undefined, platform: PlatformType.GOOGLE }));
+export const emptyGoogle = withStepContext()(render({ audio: undefined, platform: PlatformType.GOOGLE }));
 
-export const emptyAlexa = withStepDispatcher()(render({ audio: undefined }));
+export const emptyAlexa = withStepContext()(render({ audio: undefined }));
 
-export const withAudioAdded = withStepDispatcher()(render());
+export const withAudioAdded = withStepContext()(render());
 
-export const withCustomPause = withStepDispatcher()(render({ customPause: true }));
+export const withCustomPause = withStepContext()(render({ customPause: true }));
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());

@@ -47,21 +47,21 @@ const addNodeReducer = (state, { payload: { node, data } }) => {
 
 export default addNodeReducer;
 
-export const addWrappedNodeReducer = (state, { payload: { node, data, parentNodeID } }) => {
+export const addWrappedNodeReducer = (state, { payload: { node, data, parentNodeID, parentPortID } }) => {
   const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
-  const [parentNode, , parentNodeData] = buildNewNode(
+  const [parentNode, newRootPorts, parentNodeData] = buildNewNode(
     {
       id: parentNodeID,
       type: BlockType.COMBINED,
       x: node.x,
       y: node.y,
       combinedNodes: [node.id],
-      ports: { in: [], out: [] },
+      ports: { in: [{ id: parentPortID }], out: [] },
     },
     { name: 'Block' }
   );
 
-  return compose(addNodeToState(parentNode, parentNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
+  return compose(addNodeToState(parentNode, parentNodeData), addBlockToState(newNode, [...newPorts, ...newRootPorts], newNodeData))(state);
 };
 
 export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {

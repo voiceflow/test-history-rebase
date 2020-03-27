@@ -1,7 +1,14 @@
 import { MemberIcon } from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { css, styled, transition } from '@/hocs';
+import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
 import { Theme } from '@/styles/theme';
+
+const ACTIVE_STATES = [BlockState.ACTIVE, BlockState.SELECTED];
+
+const disabledStyles = {
+  opacity: 0.7,
+};
 
 type NewBlockContainerProps = {
   state: BlockState;
@@ -22,10 +29,14 @@ const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme
         borderColor: '#5d9df5',
         boxShadow: 'none',
       };
+    case BlockState.HOVERED:
+      return css`
+        border-color: #5d9df5;
+        box-shadow: none;
+        cursor: copy;
+      `;
     case BlockState.DISABLED:
-      return {
-        opacity: 0.7,
-      };
+      return disabledStyles;
     case BlockState.REGULAR:
     default:
       return css`
@@ -45,10 +56,15 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   background-color: #fff;
   background-image: ${({ variant, theme }) => theme.components.block.variants[variant].backgroundImage};
   box-shadow: 0 0 0 1.3px ${({ variant, theme }) => theme.components.block.variants[variant].shadowColor};
-   position: relative;
-  ${transition('box-shadow')}
+  position: relative;
+  opacity: 1;
+  ${transition('box-shadow', 'opacity')}
 
   ${stateStyles}
+
+  .${ACTIVE_NODES_CANVAS_CLASSNAME} & {
+    ${({ state }) => !ACTIVE_STATES.includes(state) && disabledStyles}
+  }
 
   ${MemberIcon} {
     position: absolute;
@@ -57,6 +73,8 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
     transform: translate(-50%, -50%);
     z-index: 99;
   }
+
+  
 `;
 
 export default NewBlockContainer;

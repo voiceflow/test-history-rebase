@@ -37,9 +37,9 @@ class RealtimeEngine extends EngineConsumer {
         targets.forEach((nodeID) => this.engine.node.redraw(nodeID));
       }
     },
-    [Realtime.ADD_NODE]: ({ node, data, nodeID, parentNodeID }) =>
-      this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)
-        ? this.engine.node.internal.addWrapped(node, data, nodeID, parentNodeID)
+    [Realtime.ADD_NODE]: ({ node, data, nodeID, parentNodeID, parentPortID }) =>
+      this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)
+        ? this.engine.node.internal.addWrapped(node, data, nodeID, parentNodeID, parentPortID)
         : this.engine.node.internal.add(node, data, nodeID),
     [Realtime.ADD_MANY_NODES]: ({ nodeGroup, position }) => this.engine.node.internal.addMany(nodeGroup, position),
     [Realtime.ADD_NESTED_NODE]: ({ parentNodeID, nodeID, node, data, mergedNodeID }) =>

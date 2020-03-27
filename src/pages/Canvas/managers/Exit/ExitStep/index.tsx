@@ -9,12 +9,12 @@ const PLATFORM_LABELS = {
   [PlatformType.GOOGLE]: 'Google Action',
 };
 
-export type ExitStepProps = ConnectedStepProps['stepProps'] & {
+export type ExitStepProps = {
   platform: PlatformType;
 };
 
-export const ExitStep: React.FC<ExitStepProps> = ({ platform, isActive, onClick }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const ExitStep: React.FC<ExitStepProps> = ({ platform }) => (
+  <Step>
     <Section>
       <Item
         label={`${PLATFORM_LABELS[platform]} ends in current state`}
@@ -27,8 +27,6 @@ export const ExitStep: React.FC<ExitStepProps> = ({ platform, isActive, onClick 
   </Step>
 );
 
-const ConnectedExitStep: React.FC<ConnectedStepProps> = ({ platform, stepProps }) => {
-  return <ExitStep {...stepProps} platform={platform} />;
-};
+const ConnectedExitStep: React.FC<ConnectedStepProps> = ({ platform }) => <ExitStep platform={platform} />;
 
 export default ConnectedExitStep;

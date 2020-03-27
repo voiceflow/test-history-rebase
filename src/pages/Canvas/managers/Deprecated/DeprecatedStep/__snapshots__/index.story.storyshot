@@ -83,10 +83,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -102,7 +98,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
   position: relative;
 }
 
@@ -118,6 +114,10 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.c16 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -140,12 +140,17 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c17 {
@@ -270,7 +275,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div
@@ -445,12 +449,17 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c17 {
@@ -575,7 +584,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
     >
       <div
         className="c5"
-        onClick={[Function]}
         onMouseDown={[Function]}
       >
         <div

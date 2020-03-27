@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
@@ -70,8 +70,9 @@ export default {
   component: IfStep,
 };
 
-export const empty = withStepDispatcher()(render({ expressions: [] }));
-export const single = withStepDispatcher()(
+export const empty = withStepContext()(render({ expressions: [] }));
+
+export const single = withStepContext()(
   render({
     expressions: [
       {
@@ -82,6 +83,6 @@ export const single = withStepDispatcher()(
   })
 );
 
-export const multiple = withStepDispatcher()(render());
+export const multiple = withStepContext()(render());
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());

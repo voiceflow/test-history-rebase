@@ -196,6 +196,8 @@ export const creatorDiagramIDSelector = createSelector(rootSelector, ({ diagramI
 
 export const rootNodeIDsSelector = createSelector(rootSelector, ({ rootNodes }) => rootNodes);
 
+export const isRootNodeSelector = createSelector(rootNodeIDsSelector, (rootNodes) => (nodeID) => rootNodes.includes(nodeID));
+
 export const nodeByIDSelector = createSelector(rootSelector, ({ nodes }) => (id) => getNormalizedByKey(nodes, id));
 
 export const allNodesByIDsSelector = createSelector(rootSelector, ({ nodes }) => (ids) => getAllNormalizedByKeys(nodes, ids));
@@ -264,8 +266,8 @@ export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(IN
 
 export const addNode = (node, data, nodeID) => createAction(ADD_NODE, { node: { ...node, id: nodeID }, data });
 
-export const addWrappedNode = (node, data, nodeID, parentNodeID) =>
-  createAction(ADD_WRAPPED_NODE, { node: { ...node, id: nodeID }, data, parentNodeID });
+export const addWrappedNode = (node, data, nodeID, parentNodeID, parentPortID) =>
+  createAction(ADD_WRAPPED_NODE, { node: { ...node, id: nodeID }, data, parentNodeID, parentPortID });
 
 export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES, { nodeGroup, position });
 

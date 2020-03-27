@@ -149,12 +149,17 @@ exports[`Storyshots Creator/Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c14 {
@@ -453,12 +458,17 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c13 {
@@ -757,12 +767,17 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c13 {
@@ -1064,12 +1079,17 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c14 {
@@ -1463,12 +1483,17 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c21 {
@@ -1875,12 +1900,17 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c20 {
@@ -2236,12 +2266,17 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c17 {
@@ -2569,12 +2604,17 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c16 {
@@ -2880,12 +2920,17 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c13 {
@@ -3154,12 +3199,17 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c12 {
@@ -3477,12 +3527,17 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c18 {
@@ -3850,12 +3905,17 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c13 {
@@ -4252,12 +4312,17 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c21 {
@@ -4620,12 +4685,17 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c14 {
@@ -4894,12 +4964,17 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
 }
 
 .c0 .c12 {

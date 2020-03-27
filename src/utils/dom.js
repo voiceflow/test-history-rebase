@@ -300,19 +300,30 @@ export const download = (filename, text, data = DataTypes.TEXT) => {
   document.body.removeChild(element);
 };
 
-export const buildVirtualElement = ([left, top]) => ({
-  getBoundingClientRect: () => ({
-    width: 0,
-    height: 0,
-    top,
-    left,
-    right: left,
-    bottom: top,
-  }),
+export const buildVirtualDOMRect = ([x, y]) => ({
+  x,
+  y,
+  width: 0,
+  height: 0,
+  left: x,
+  right: x,
+  top: y,
+  bottom: y,
 
-  clientWidth: 0,
-  clientHeight: 0,
+  toJSON() {
+    return JSON.stringify(this);
+  },
 });
+
+export const buildVirtualElement = (position) => {
+  const virtualRect = buildVirtualDOMRect(position);
+
+  return {
+    getBoundingClientRect: () => virtualRect,
+    clientWidth: 0,
+    clientHeight: 0,
+  };
+};
 
 export const unhighlightAllText = () => {
   if (window.getSelection) {

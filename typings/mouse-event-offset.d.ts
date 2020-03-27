@@ -1,5 +1,7 @@
 declare module 'mouse-event-offset' {
-  const mouseEventOffset: (event: MouseEvent, el: HTMLElement) => [number, number];
+  import React from 'react';
+
+  const mouseEventOffset: (event: MouseEvent | React.MouseEvent, el: HTMLElement) => [number, number];
 
   export default mouseEventOffset;
 }

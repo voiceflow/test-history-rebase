@@ -1,17 +1,19 @@
 import { BlockCategoryType, BlockType } from '@/constants';
 
-export const ContextMenuTarget = {
-  NODE: 'node',
-  CANVAS: 'canvas',
-};
+export const ACTIVE_NODES_CANVAS_CLASSNAME = 'canvas--nodes-active';
 
-export const MergeStatus = {
-  ACCEPT: 'accept',
-  COMBINED_ACCEPT: 'combined_accept',
-  DENY: 'deny',
-};
+export enum ContextMenuTarget {
+  NODE = 'node',
+  CANVAS = 'canvas',
+}
 
-export const BLOCK_MENU_CATEGORIES = {
+export enum MergeStatus {
+  ACCEPT = 'accept',
+  COMBINED_ACCEPT = 'combined_accept',
+  DENY = 'deny',
+}
+
+export const BLOCK_MENU_CATEGORIES: Record<BlockCategoryType, { label: string; color: string }> = {
   [BlockCategoryType.BASIC]: {
     label: 'Basic',
     color: '#42a5ff',
@@ -68,17 +70,18 @@ export const BLOCK_CATEGORIES = BLOCK_MENU.reduce(
   },
   {
     [BlockType.COMMAND]: BlockCategoryType.ADVANCED,
-  }
+  } as Record<BlockType, BlockCategoryType>
 );
 
 const DEFAULT_BLOCK = {
   color: 'lightgrey',
 };
 
-export function getBlockCategory(type) {
+export function getBlockCategory(type: BlockType) {
   if (type === BlockType.DEPRECATED) {
     return DEFAULT_BLOCK;
   }
+
   const category = BLOCK_CATEGORIES[type];
   return BLOCK_MENU_CATEGORIES[category] || DEFAULT_BLOCK;
 }

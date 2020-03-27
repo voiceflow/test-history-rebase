@@ -4,7 +4,7 @@ import React from 'react';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
-import Step, { BaseStepProps, ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { MergeProps } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
@@ -12,13 +12,12 @@ export type Command = {
   name?: string;
 };
 
-export type CommandStepProps = Command &
-  Omit<BaseStepProps, 'icon'> & {
-    onCommandClick: () => void;
-  };
+export type CommandStepProps = Command & {
+  onCommandClick: () => void;
+};
 
-export const CommandStep: React.FC<CommandStepProps> = ({ name, isActive, onClick, onCommandClick }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const CommandStep: React.FC<CommandStepProps> = ({ name, onCommandClick }) => (
+  <Step>
     <Section>
       <Item icon="flow" iconColor="#3c6997" label={name} onClick={stopPropagation(onCommandClick)} />
     </Section>
@@ -29,9 +28,7 @@ export type ConnectedCommandStep = ConnectedStepProps<NodeData.Command> & {
   goToDiagram: () => void;
 };
 
-const ConnectedCommandStep: React.FC<ConnectedCommandStep> = ({ data, stepProps, goToDiagram }) => {
-  return <CommandStep onCommandClick={goToDiagram} name={data.name} {...stepProps} />;
-};
+const ConnectedCommandStep: React.FC<ConnectedCommandStep> = ({ data, goToDiagram }) => <CommandStep onCommandClick={goToDiagram} name={data.name} />;
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,

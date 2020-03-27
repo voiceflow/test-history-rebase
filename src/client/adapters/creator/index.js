@@ -20,7 +20,7 @@ const creatorAdapter = createSimpleAdapter(
     const links = linkAdapter.mapFromDB(diagram.links);
 
     const registerNode = (node, parentNode) => {
-      const nodeData = nodeDataAdapter.fromDB(node.extras, node);
+      const nodeData = nodeDataAdapter.fromDB(node.extras, node, isBlockRedesignEnabled);
       nodes.push(nodeAdapter.fromDB(node, nodeData, parentNode));
 
       node.ports.forEach((port) => ports.push(portAdapter.fromDB(port, nodeData.type, platform)));

@@ -37,13 +37,13 @@ const CanvasDiagram = ({ viewport }) => {
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
-    drop: async ({ blockType }, monitor) => {
+    drop: async ({ blockType, factoryData }, monitor) => {
       const newNodeID = cuid();
       const { x: mouseX, y: mouseY } = monitor.getClientOffset();
 
       const position = engine.canvas.transformPoint([mouseX, mouseY]);
 
-      await engine.node.add(newNodeID, blockType, position);
+      await engine.node.add(newNodeID, blockType, position, factoryData);
     },
   });
 

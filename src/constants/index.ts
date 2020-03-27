@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { constants } from '@voiceflow/common';
 
 export const SLOT_TYPES = constants.slots;
@@ -218,13 +219,13 @@ export const KeyCodes = {
   ENTER: 13,
 };
 
-export const IntegrationType = {
-  CUSTOM_API: 'Custom API',
-  GOOGLE_SHEETS: 'Google Sheets',
-  ZAPIER: 'Zapier',
-};
+export enum IntegrationType {
+  CUSTOM_API = 'Custom API',
+  GOOGLE_SHEETS = 'Google Sheets',
+  ZAPIER = 'Zapier',
+}
 
-export const IntegrationActionType = {
+export const IntegrationActionType: Record<string, { [key: string]: string }> = {
   CUSTOM_API: {
     GET: 'Make a GET Request',
     POST: 'Make a POST Request',
@@ -251,7 +252,7 @@ const EMPTY_KEY_VALUE_ITEM = {
 // Integration default data models
 export const INTEGRATION_DATA_MODELS = {
   CUSTOM_API: {
-    selectedIntegration: 'Custom API',
+    selectedIntegration: IntegrationType.CUSTOM_API,
     headers: [EMPTY_KEY_VALUE_ITEM],
     url: '',
     mapping: [
@@ -267,7 +268,7 @@ export const INTEGRATION_DATA_MODELS = {
     selectedAction: IntegrationActionType.CUSTOM_API.GET,
   },
   GOOGLE_SHEETS: {
-    selectedIntegration: 'Google Sheets',
+    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
     selectedAction: '',
     user: {},
     spreadsheet: null,
@@ -282,7 +283,7 @@ export const INTEGRATION_DATA_MODELS = {
   },
   ZAPIER: {
     user: {},
-    selectedIntegration: 'Zapier',
+    selectedIntegration: IntegrationType.ZAPIER,
     selectedAction: IntegrationActionType.ZAPIER.START_A_ZAP,
     value: [],
   },

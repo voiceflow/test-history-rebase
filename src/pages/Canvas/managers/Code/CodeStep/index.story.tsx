@@ -1,4 +1,3 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import { withStepDispatcher } from '@/../.storybook';
@@ -7,10 +6,7 @@ import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 import { CodeStep, CodeStepProps } from '.';
 
 const getProps = () => {
-  const onClickPort = action('click port');
-
   return {
-    onClickPort,
     codeAdded: true,
     withPorts: true,
     successPortID: 'abc',

@@ -1,4 +1,4 @@
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType, IntegrationType, PlatformType } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers';
 
 export const Section = {
@@ -84,21 +84,21 @@ export const ROOT_SECTIONS = [
         icon: 'variable',
         label: 'API',
         iconColor: '#74a4bf',
-        factoryData: { type: 'API' },
+        factoryData: { selectedIntegration: IntegrationType.CUSTOM_API },
       },
       {
         type: BlockType.INTEGRATION,
         icon: 'googleSheets',
         label: 'Google Sheets',
         iconColor: '#279745',
-        factoryData: { type: 'GOOGLE' },
+        factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
       },
       {
         type: BlockType.INTEGRATION,
         icon: 'zapier',
         label: 'Zapier',
         iconColor: '#e26d5a',
-        factoryData: { type: 'ZAPIER' },
+        factoryData: { selectedIntegration: IntegrationType.ZAPIER },
       },
     ],
   },

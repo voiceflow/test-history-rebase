@@ -1,4 +1,5 @@
-import { CardType, DialogType, DisplayType, ExpressionType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import { CardType, DialogType, DisplayType, ExpressionType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import { UserType } from '@/models';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -141,5 +142,46 @@ export namespace NodeData {
     splashHeader?: string;
     jsonFileName?: string;
     updateOnChange?: boolean;
+  };
+
+  export type IntegrationDefaultProps<T extends IntegrationType> = {
+    selectedIntegration: T;
+    selectedAction?: string;
+  };
+
+  export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
+    headers?: { key: [] | string; val: string }[];
+    url?: string;
+    mapping?: { path: string | []; var: string | null }[];
+    bodyInputData?: string;
+    body?: { key: string | []; val: string }[];
+    parameters?: { key: string | []; val: string }[];
+    content?: string;
+  };
+
+  export type GoogleSheets = IntegrationDefaultProps<IntegrationType.GOOGLE_SHEETS> & {
+    user?: {};
+    spreadsheet?: { value: string; label: string } | null;
+    sheet?: { value: string; label: string } | null;
+    header_column?: string | null;
+    match_value?: [];
+    row_value?: [];
+    row_number?: [];
+    mapping?: { path: string | []; var: string }[];
+    start_row?: [];
+    end_row?: [];
+  };
+
+  export type Zapier = IntegrationDefaultProps<IntegrationType.ZAPIER> & {
+    user?: UserType;
+    value?: [] | string;
+  };
+
+  export type Integration = CustomApi | GoogleSheets | Zapier;
+
+  export type TypedIntegration = {
+    [IntegrationType.ZAPIER]: Zapier;
+    [IntegrationType.CUSTOM_API]: CustomApi;
+    [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   };
 }

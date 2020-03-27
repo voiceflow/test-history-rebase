@@ -108,9 +108,10 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(nodeID, type, [x, y], parentNodeID = cuid()) {
-    const { node, data } = nodeFactory(type);
+  async add(nodeID, type, [x, y], factoryData, parentNodeID = cuid()) {
+    const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y };
+
     if (this.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type !== BlockType.COMMENT) {
       await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID));
       this.internal.addWrapped(augmentedNode, data, nodeID, parentNodeID);

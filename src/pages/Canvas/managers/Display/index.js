@@ -7,7 +7,8 @@ import { DisplayType, VERSIONS } from './constants';
 const DisplayManager = {
   type: BlockType.DISPLAY,
   platforms: [PlatformType.ALEXA],
-  icon: 'display',
+  icon: 'blocks',
+  iconColor: '#3c6997',
 
   label: 'Display',
   tip: 'Show a Multimodal Display on the screen using APL',

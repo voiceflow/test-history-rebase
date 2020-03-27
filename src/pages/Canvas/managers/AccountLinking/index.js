@@ -1,5 +1,4 @@
 import { BlockType, PlatformType } from '@/constants';
-import LinkIcon from '@/svgs/solid/link.svg';
 
 import AccountLinkingEditor from './AccountLinkingEditor';
 import AccountLinkingStep from './AccountLinkingStep';
@@ -7,7 +6,8 @@ import AccountLinkingStep from './AccountLinkingStep';
 const AccountLinkingManager = {
   type: BlockType.ACCOUNT_LINKING,
   editor: AccountLinkingEditor,
-  icon: LinkIcon,
+  icon: 'accountLinking',
+  iconColor: '#645f5f',
   step: AccountLinkingStep,
   label: 'Account Linking',
   tip: 'Account Linking tips',

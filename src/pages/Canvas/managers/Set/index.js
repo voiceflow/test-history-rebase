@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 
 import { BlockType, ExpressionType } from '@/constants';
-import CodeIcon from '@/svgs/solid/code.svg';
 
 import SetEditor from './SetEditor';
 import SetStep from './SetStep';
@@ -9,7 +8,9 @@ import SetStep from './SetStep';
 const SetManager = {
   type: BlockType.SET,
   editor: SetEditor,
-  icon: CodeIcon,
+  icon: 'code',
+  iconColor: '#5590b5',
+
   step: SetStep,
   label: 'Set',
   tip: 'Set the value of a variable, or many variables at once',

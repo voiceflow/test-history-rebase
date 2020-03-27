@@ -1,13 +1,12 @@
 import { BlockType, PlatformType } from '@/constants';
-import UserMinusIcon from '@/svgs/solid/user-minus.svg';
 
 import CancelPaymentEditor from './CancelPaymentEditor';
 import CancelPaymentStep from './CancelPaymentStep';
 
 const CancelPaymentManager = {
   type: BlockType.CANCEL_PAYMENT,
-  icon: UserMinusIcon,
-
+  icon: 'trash',
+  iconColor: '#d94c4c',
   label: 'Cancel Payment',
   tip: "Refund a purchase or cancel an user's subscription",
 

@@ -5,7 +5,8 @@ import PaymentStep from './PaymentStep';
 
 const PaymentManager = {
   type: BlockType.PAYMENT,
-  icon: 'dollar',
+  icon: 'purchase',
+  iconColor: '#558B2F',
 
   label: 'Payment',
   tip: 'Request payment from user',

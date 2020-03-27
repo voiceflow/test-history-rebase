@@ -7,7 +7,7 @@ const IntegrationManager = {
   type: BlockType.INTEGRATION,
   editor: IntegrationEditor,
   icon: GlobeIcon,
-
+  iconColor: '',
   label: 'Integrations',
   tip: 'Integrate external services into your skill',
 

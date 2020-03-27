@@ -6,7 +6,9 @@ import CardStep from './CardStep';
 const CardManager = {
   type: BlockType.CARD,
   editor: CardEditor,
-  icon: 'card',
+  icon: 'logs',
+  iconColor: '#616c60',
+
   step: CardStep,
   label: 'Card',
   tip: 'Tell Alexa to show a card',

@@ -1,5 +1,4 @@
 import { BlockType } from '@/constants';
-import CloneIcon from '@/svgs/solid/clone.svg';
 
 import FlowBlock from './FlowBlock';
 import FlowEditor from './FlowEditor';
@@ -7,7 +6,8 @@ import FlowStep from './FlowStep';
 
 const FlowManager = {
   type: BlockType.FLOW,
-  icon: CloneIcon,
+  icon: 'flow',
+  iconColor: '#3c6997',
 
   editor: FlowEditor,
   block: FlowBlock,

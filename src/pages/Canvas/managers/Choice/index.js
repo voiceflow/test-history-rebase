@@ -3,7 +3,6 @@ import cuid from 'cuid';
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
-import UserAltIcon from '@/svgs/solid/user-alt.svg';
 
 import ChoiceEditor from './ChoiceEditor';
 import ChoiceStep from './ChoiceStep';
@@ -15,7 +14,8 @@ const EDITORS_BY_PATH = {
 
 const ChoiceManager = {
   type: BlockType.CHOICE,
-  icon: UserAltIcon,
+  icon: 'choice',
+  iconColor: '#3a5999',
 
   editor: ChoiceEditor,
   step: ChoiceStep,

@@ -1,6 +1,5 @@
 import { BlockType } from '@/constants';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
-import MicrophoneIcon from '@/svgs/solid/microphone.svg';
 
 import CaptureEditor from './CaptureEditor';
 import CaptureStep from './CaptureStep';
@@ -11,7 +10,9 @@ const EDITORS_BY_PATH = {
 
 const CaptureManager = {
   type: BlockType.CAPTURE,
-  icon: MicrophoneIcon,
+  icon: 'microphone',
+  iconColor: '#58457a',
+
   step: CaptureStep,
   editor: CaptureEditor,
   editorsByPath: EDITORS_BY_PATH,

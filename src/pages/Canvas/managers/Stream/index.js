@@ -5,7 +5,8 @@ import StreamStep from './StreamStep';
 
 const StreamManager = {
   type: BlockType.STREAM,
-  icon: 'play',
+  icon: 'blocks',
+  iconColor: '#4f98c6',
 
   editor: StreamEditor,
   step: StreamStep,

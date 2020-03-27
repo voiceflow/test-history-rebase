@@ -1,6 +1,5 @@
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
-import ArrowFromLeftIcon from '@/svgs/solid/arrow-alt-from-left.svg';
 
 import IntentBlock from './IntentBlock';
 import IntentEditor from './IntentEditor';
@@ -12,7 +11,9 @@ const EDITORS_BY_PATH = {
 
 const IntentManager = {
   type: BlockType.INTENT,
-  icon: ArrowFromLeftIcon,
+  icon: 'user',
+  iconColor: '#5589eb',
+
   block: IntentBlock,
 
   editorsByPath: EDITORS_BY_PATH,

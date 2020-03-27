@@ -1,12 +1,12 @@
 import { BlockType, PlatformType } from '@/constants';
-import LockIcon from '@/svgs/solid/lock.svg';
 
 import PermissionEditor from './PermissionEditor';
 import PermissionStep from './PermissionStep';
 
 const PermissionManager = {
   type: BlockType.PERMISSION,
-  icon: LockIcon,
+  icon: 'openLock',
+  iconColor: '#6e849a',
 
   editor: PermissionEditor,
   step: PermissionStep,

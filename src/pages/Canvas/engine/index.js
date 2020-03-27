@@ -6,6 +6,7 @@ import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { diagramByIDSelector } from '@/ducks/diagram';
+import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import { isRootDiagramSelector } from '@/ducks/skill';
 import { setCanvasError } from '@/ducks/user';
@@ -97,6 +98,8 @@ export class Engine {
   getDiagramByID = (diagramID) => diagramByIDSelector(this.store.getState())(diagramID);
 
   isRootDiagram = () => isRootDiagramSelector(this.store.getState());
+
+  isFeatureEnabled = (featureID) => Feature.isFeatureEnabledSelector(this.store.getState())(featureID);
 
   // entity registration methods
 

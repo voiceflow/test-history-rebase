@@ -1,4 +1,6 @@
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
 export const CanvasAction = {
@@ -7,7 +9,27 @@ export const CanvasAction = {
   RENAME_BLOCK: 'rename_block',
   COPY_BLOCK: 'copy_block',
   DELETE_BLOCK: 'delete_block',
+  COLOR_BLOCK: 'color_block',
 };
+
+export const BLOCK_COLORS = [
+  {
+    value: BlockVariant.BLUE,
+    label: 'Blue',
+  },
+  {
+    value: BlockVariant.GREEN,
+    label: 'Green',
+  },
+  {
+    value: BlockVariant.PURPLE,
+    label: 'Purple',
+  },
+  {
+    value: BlockVariant.RED,
+    label: 'Red',
+  },
+];
 
 export const CANVAS_OPTIONS = [
   {
@@ -40,6 +62,12 @@ export const BLOCK_OPTIONS = [
 
       return node && node.type !== BlockType.COMMAND;
     },
+  },
+  {
+    label: 'Block Color',
+    value: CanvasAction.COLOR_BLOCK,
+    options: BLOCK_COLORS,
+    shouldRender: (_, { engine }) => engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN),
   },
   {
     label: 'Delete Block',

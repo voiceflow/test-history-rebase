@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import { Manager, Reference } from 'react-popper';
 
@@ -28,6 +29,7 @@ function MenuOptions({
   multiLevelDropdown,
   childFocusItemIndex,
   onChildFocusItemIndex,
+  portalNode,
 }) {
   let groupedIndex = 0;
 
@@ -81,6 +83,7 @@ function MenuOptions({
                 focusedOptionIndex={childFocusItemIndex}
                 multiLevelDropdown={!!option.options}
                 onBackFocusToParent={onBackFocus}
+                portalNode={portalNode}
               />
             )}
           </Manager>

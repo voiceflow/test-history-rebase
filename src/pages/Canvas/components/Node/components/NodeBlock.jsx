@@ -10,9 +10,18 @@ const NodeBlock = (_, ref) => {
   const { data } = useNodeData();
   const engine = React.useContext(EngineContext);
   const updateName = React.useCallback((name) => engine.node.updateData(nodeID, { name }), [engine, nodeID]);
+  const updateBlockColor = React.useCallback((blockColor) => engine.node.updateData(nodeID, { blockColor }), [engine, nodeID]);
 
   return (
-    <Block name={data.name} updateName={updateName} canEditTitle ref={ref} lockOwner={lockOwner}>
+    <Block
+      name={data.name}
+      updateName={updateName}
+      updateBlockColor={updateBlockColor}
+      canEditTitle
+      ref={ref}
+      lockOwner={lockOwner}
+      variant={data.blockColor}
+    >
       {node.combinedNodes.map((stepNodeID, index) => (
         <NodeIDProvider value={stepNodeID} key={stepNodeID}>
           <NodeStep isLast={index === node.combinedNodes.length - 1} />

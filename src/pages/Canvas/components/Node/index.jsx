@@ -73,6 +73,8 @@ export class Node extends React.PureComponent {
     getPosition: () => this.position,
 
     rename: () => this.blockRef.current.api.rename?.(),
+
+    updateBlockColor: (blockColor) => this.blockRef.current.api.updateBlockColor?.(blockColor),
   };
 
   get isFocused() {

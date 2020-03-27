@@ -6,6 +6,7 @@ import { Theme } from '@/styles/theme';
 type NewBlockContainerProps = {
   state: BlockState;
   variant: BlockVariant;
+  blockColor?: string;
 };
 
 const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme: Theme }) => {

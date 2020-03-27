@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import _constant from 'lodash/constant';
 import React from 'react';
 import { Popper } from 'react-popper';
@@ -5,8 +6,8 @@ import { Popper } from 'react-popper';
 import Menu from '@/components/Menu';
 import Portal from '@/components/Portal';
 import { swallowEvent } from '@/utils/dom';
+import { setRef } from '@/utils/refs';
 
-import { setRef } from '../../utils';
 import MenuHeader from '../MenuHeader';
 import MenuOptions from '../MenuOptions';
 import { MenuPopoverContainer } from './components';
@@ -21,9 +22,12 @@ const KeyCodes = {
   ARROW_RIGHT: 'ArrowRight',
 };
 
-const DEFAULT_PATH = [];
+export const DEFAULT_PATH = [];
 
-function SelectMenu({
+/* this component can be used w/ Manager
+ *(e.g. Select component implementation)
+ */
+function BaseNestedMenu({
   onHide,
   isRoot = true,
   grouped,
@@ -53,6 +57,7 @@ function SelectMenu({
   onBackFocusToParent,
   onChangeSearchLabel,
   createInputPlaceholder,
+  portalNode,
 }) {
   const cachedRef = React.useRef({ blockOptionHover: false, scrollToFocusedOption: true });
   const menuRef = React.useRef();
@@ -67,7 +72,6 @@ function SelectMenu({
   const onMouseMove = React.useCallback(() => {
     cachedRef.current.blockOptionHover = false;
   }, []);
-
   const onChildFocusItemIndex = React.useCallback(
     (index) => {
       const i = index >= focusedItemOptions.length ? 0 : index;
@@ -237,7 +241,7 @@ function SelectMenu({
   };
 
   return (
-    <Portal portalNode={document.body}>
+    <Portal portalNode={portalNode || document.body}>
       <Popper placement={placement} modifiers={popoverModifiers}>
         {({ ref, style }) => (
           <MenuPopoverContainer ref={ref} style={style} autoWidth={autoWidth} onMouseMove={onMouseMove}>
@@ -297,4 +301,4 @@ function SelectMenu({
   );
 }
 
-export default SelectMenu;
+export default BaseNestedMenu;

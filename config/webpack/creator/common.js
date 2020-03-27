@@ -19,7 +19,7 @@ module.exports = merge(commonConfig, {
     ? []
     : [
         circularDependencyPlugin({
-          exclude: /node_modules|src\/components\/Select\/components\/Menu(Options)?\/index\.jsx/,
+          exclude: /node_modules|src\/components\/NestedMenu\/Menu(Options)?\/index\.jsx/,
         }),
         new UnusedFilesWebpackPlugin({
           failOnUnused: IS_PRODUCTION,

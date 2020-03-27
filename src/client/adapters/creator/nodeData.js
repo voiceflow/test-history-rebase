@@ -1,4 +1,5 @@
 import { BlockType } from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
 
 import { createSimpleAdapter } from '../utils';
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
@@ -49,11 +50,15 @@ const nodeDataAdapter = createSimpleAdapter(
       name: node.name,
       nodeID: node.id,
       path: [],
+      // blockColor cannot be null as it is being used as a 'variant' in NewBlockContainer
+      // for blocks with only one step, it will break the app
+      blockColor: dbData.color || BlockVariant.STANDARD,
     };
   },
   ({ path, ...appData }) => ({
     ...blockAdapter[appData.type].toDB(appData),
     type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
+    color: appData.blockColor || null,
   })
 );
 

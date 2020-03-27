@@ -396,6 +396,10 @@ class NodeManager extends EngineConsumer {
     const node = this.engine.getNodeByID(parentNodeID);
     node?.combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
   }
+
+  updateBlockColor(nodeID, color) {
+    this.api(nodeID).updateBlockColor?.(color);
+  }
 }
 
 export default NodeManager;

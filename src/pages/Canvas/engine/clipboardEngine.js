@@ -5,6 +5,7 @@ import { get, set } from 'idb-keyval';
 import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
 import nodeDataAdapter from '@/client/adapters/creator/nodeData';
+import { FeatureFlag } from '@/config/features';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { addDiagrams, diagramsByIDsSelector } from '@/ducks/diagram';
@@ -40,6 +41,11 @@ class ClipboardEngine extends EngineConsumer {
 
       const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
+
+      // Block includes all the nodes - parent and nested
+      const copiedBlocks = this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)
+        ? copiedNodes.filter((node) => node.type === BlockType.COMBINED)
+        : copiedNodes;
 
       const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out]));
 
@@ -84,7 +90,7 @@ class ClipboardEngine extends EngineConsumer {
 
       await set(CLIPBOARD_DATA_KEY, base64.encodeObject({ data: encryptedData, key: keyToStore }));
 
-      this.dispatch(setCanvasInfo(`${copiedNodes.length} block(s) copied to clipboard`));
+      this.dispatch(setCanvasInfo(`${copiedBlocks.length} block(s) copied to clipboard`));
     },
 
     extractData: async (copiedKey) => {

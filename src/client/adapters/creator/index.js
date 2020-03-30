@@ -10,7 +10,7 @@ import portAdapter from './port';
 const VIRTUAL_NODE_ID_PREFIX = 'virtualNode';
 const VIRTUAL_PORT_ID_PREFIX = 'virtualPort';
 
-const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT, BlockType.FLOW_START];
 
 const creatorAdapter = createSimpleAdapter(
   (diagram, platform, isBlockRedesignEnabled) => {

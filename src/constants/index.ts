@@ -72,6 +72,7 @@ export enum BlockType {
   COMBINED = 'combined',
   COMMAND = 'command',
   COMMENT = 'comment',
+  FLOW_START = 'default',
   // basic
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',

@@ -27,24 +27,24 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   height: inherit;
 }
 
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 .c4 {
+.c21 .c4 {
   color: #fff;
 }
 
-.c21 .c4 {
+.c22 .c4 {
   color: #6e849a;
 }
 
@@ -142,8 +142,37 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.c22 .c9:not(:first-of-type) {
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
+}
+
+.c18 .c9:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c18 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c15 {
@@ -156,7 +185,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #132144;
 }
 
-.c19 {
+.c20 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,7 +195,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #132144;
 }
 
-.c19:hover {
+.c20:hover {
   color: #4d8de6;
 }
 
@@ -382,7 +411,13 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     >
       <div
         className="c8"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -469,8 +504,14 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       className="c7"
     >
       <div
-        className="c8"
+        className="c18"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -482,7 +523,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               className="c13"
             >
               <span
-                className="c4 c18"
+                className="c4 c19"
                 color="#3c6997"
                 size={16}
               >
@@ -492,7 +533,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               </span>
             </div>
             <span
-              className="c19"
+              className="c20"
               onClick={[Function]}
             >
               Help
@@ -501,8 +542,14 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         </div>
       </div>
       <div
-        className="c8"
+        className="c18"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -514,7 +561,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               className="c13"
             >
               <span
-                className="c4 c18"
+                className="c4 c19"
                 color="#3c6997"
                 size={16}
               >
@@ -524,7 +571,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               </span>
             </div>
             <span
-              className="c19"
+              className="c20"
               onClick={[Function]}
             >
               Stop
@@ -841,7 +888,13 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1185,7 +1238,13 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1529,7 +1588,13 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
     >
       <div
         className="c5"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c6 c7"
@@ -1595,24 +1660,24 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   height: inherit;
 }
 
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 .c4 {
+.c21 .c4 {
   color: #fff;
 }
 
-.c21 .c4 {
+.c22 .c4 {
   color: #6e849a;
 }
 
@@ -1710,8 +1775,37 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.c22 .c9:not(:first-of-type) {
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
+}
+
+.c18 .c9:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c18 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
 }
 
 .c15 {
@@ -1724,7 +1818,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #132144;
 }
 
-.c19 {
+.c20 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1734,7 +1828,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #132144;
 }
 
-.c19:hover {
+.c20:hover {
   color: #4d8de6;
 }
 
@@ -1950,7 +2044,13 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     >
       <div
         className="c8"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -2037,8 +2137,14 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       className="c7"
     >
       <div
-        className="c8"
+        className="c18"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -2050,7 +2156,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               className="c13"
             >
               <span
-                className="c4 c18"
+                className="c4 c19"
                 color="#3c6997"
                 size={16}
               >
@@ -2060,7 +2166,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               </span>
             </div>
             <span
-              className="c19"
+              className="c20"
               onClick={[Function]}
             >
               Help
@@ -2069,8 +2175,14 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         </div>
       </div>
       <div
-        className="c8"
+        className="c18"
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
         onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
       >
         <div
           className="c9 c10"
@@ -2082,7 +2194,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               className="c13"
             >
               <span
-                className="c4 c18"
+                className="c4 c19"
                 color="#3c6997"
                 size={16}
               >
@@ -2092,7 +2204,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               </span>
             </div>
             <span
-              className="c19"
+              className="c20"
               onClick={[Function]}
             >
               Stop

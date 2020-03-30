@@ -17,6 +17,7 @@ const LockOwner: any = User;
 
 export type BaseStepProps = {
   image?: string;
+  disableHighlightStyle?: boolean;
 };
 
 export type StepProps = BaseStepProps & { children: React.ReactNode | React.ReactNode[] };
@@ -28,13 +29,13 @@ export type ConnectedStepProps<T = {}> = {
   withPorts: boolean;
 };
 
-const Step: React.FC<StepProps> = ({ image, children }) => {
+const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, children }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   const el = (
     <Container
       {...stepAPI?.handlers}
-      isActive={stepAPI?.isActive}
+      isActive={stepAPI?.isActive && !disableHighlightStyle}
       isHovered={stepAPI?.isHovered}
       hasLinkWarning={stepAPI?.hasLinkWarning}
       onMouseDown={stopPropagation(null, true)}

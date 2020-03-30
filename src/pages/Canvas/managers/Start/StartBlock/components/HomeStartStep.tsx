@@ -11,7 +11,7 @@ export type HomeStartStepProps = {
 };
 
 const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName, portID }) => (
-  <Step>
+  <Step disableHighlightStyle>
     <Section>
       <Item
         icon="addTeammate"

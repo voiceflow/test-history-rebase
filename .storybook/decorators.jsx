@@ -15,7 +15,7 @@ import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext, EngineContext } from '@/pages/Canvas/contexts';
 import { identity } from '@/utils/functional';
 import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 
@@ -90,7 +90,14 @@ export const withStepContext = ({
   onClick = action('click port'),
 } = {}) =>
   composeDecorators2(
-    withContext(StepAPIContext, { isActive, withPorts, wrapElement: identity }),
+    withContext(StepAPIContext, {
+      isActive,
+      withPorts,
+      wrapElement: identity,
+    }),
+    withContext(EditPermissionContext, {
+      canEdit: true,
+    }),
     withEngine({
       dispatcher: {
         usePort: () => ({ hasActiveLinks: isConnected, onClick }),
@@ -107,6 +114,11 @@ export const withStepContext = ({
                 color: '36B4D2|ECF8FA',
               }
             : null,
+          node: {
+            ports: {
+              in: ['abc'],
+            },
+          },
         }),
       },
     })

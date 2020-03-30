@@ -8,7 +8,7 @@ export type FlowStartStepProps = {
 };
 
 const FlowStartStep: React.FC<FlowStartStepProps> = ({ portID }) => (
-  <Step>
+  <Step disableHighlightStyle>
     <Section>
       <Item icon="inFlow" iconColor="#279745" label="Conversation continues here" labelVariant={StepLabelVariant.SECONDARY} portID={portID} />
     </Section>

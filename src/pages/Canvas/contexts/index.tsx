@@ -5,7 +5,7 @@ import { RegisterEngine } from '@/contexts/EventualEngineContext';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
-import { Node, NodeData } from '@/models';
+import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -37,7 +37,7 @@ export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = Platfo
 export const withPlatform = withContext(PlatformContext, 'platform');
 
 export type ManagerValue = {
-  step: React.RefForwardingComponent<HTMLElement, { node: Node; data: NodeData<unknown>; platform: PlatformType }>;
+  step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
 };
 
 export const ManagerContext = React.createContext<((type: BlockType) => ManagerValue) | null>(null);

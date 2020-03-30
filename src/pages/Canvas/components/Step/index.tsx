@@ -1,8 +1,6 @@
 import React from 'react';
 
 import User from '@/components/User';
-import { PlatformType } from '@/constants';
-import { Node, NodeData } from '@/models';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, Image, ImageContainer } from './components';
@@ -21,13 +19,6 @@ export type BaseStepProps = {
 };
 
 export type StepProps = BaseStepProps & { children: React.ReactNode | React.ReactNode[] };
-
-export type ConnectedStepProps<T = {}> = {
-  node: Node;
-  data: NodeData<T>;
-  platform: PlatformType;
-  withPorts: boolean;
-};
 
 const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, children }) => {
   const stepAPI = React.useContext(StepAPIContext);

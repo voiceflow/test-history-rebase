@@ -30,7 +30,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast }) => {
     <>
       {inPortID && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
       <StepAPIProvider value={stepAPI}>
-        <StepComponent node={node} data={data} platform={platform} />
+        <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
       </StepAPIProvider>
     </>
   );

@@ -1004,8 +1004,8 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -2859,8 +2859,8 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -4571,8 +4571,8 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -6090,8 +6090,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -8311,8 +8311,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);

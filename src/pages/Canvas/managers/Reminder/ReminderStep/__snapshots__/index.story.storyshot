@@ -406,11 +406,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Bulk order reminder
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -436,11 +436,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -468,11 +468,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -909,11 +909,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Bulk order reminder
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -939,11 +939,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -979,11 +979,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c21"
@@ -1413,11 +1413,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Set a reminder
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1443,11 +1443,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1475,11 +1475,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1901,11 +1901,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 This is your reminder to wash your car.
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1931,11 +1931,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1963,11 +1963,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -2293,11 +2293,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Bulk order reminder
-              </span>
+              </div>
             </span>
           </div>
         </div>

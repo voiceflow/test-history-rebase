@@ -406,11 +406,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Custom code added
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -436,11 +436,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -468,11 +468,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -894,11 +894,11 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Custom code added
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -924,11 +924,11 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -956,11 +956,11 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1397,11 +1397,11 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Custom code added
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1427,11 +1427,11 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1467,11 +1467,11 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c21"
@@ -1901,11 +1901,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Enter custom code snippet
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1931,11 +1931,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1963,11 +1963,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -2293,11 +2293,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Enter custom code snippet
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2620,11 +2620,11 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Custom code added
-              </span>
+              </div>
             </span>
           </div>
         </div>

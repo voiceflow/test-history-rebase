@@ -340,11 +340,11 @@ exports[`Storyshots Creator/Steps/Random Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 1
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -715,11 +715,11 @@ exports[`Storyshots Creator/Steps/Random Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 1
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1082,11 +1082,11 @@ exports[`Storyshots Creator/Steps/Random Step Many Paths 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 1
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1103,11 +1103,11 @@ exports[`Storyshots Creator/Steps/Random Step Many Paths 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 2
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1124,11 +1124,11 @@ exports[`Storyshots Creator/Steps/Random Step Many Paths 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 3
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1483,11 +1483,11 @@ exports[`Storyshots Creator/Steps/Random Step Single Path 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Path 1
-              </span>
+              </div>
             </span>
             <div
               className="c15"

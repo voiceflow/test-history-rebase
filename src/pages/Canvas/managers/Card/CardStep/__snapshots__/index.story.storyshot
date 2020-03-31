@@ -340,11 +340,11 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -715,11 +715,11 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1082,11 +1082,11 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 This card has no content
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1456,11 +1456,11 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1822,11 +1822,11 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2181,11 +2181,11 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts; a magical school of whimsy and mystery
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2510,11 +2510,11 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
           </div>
         </div>

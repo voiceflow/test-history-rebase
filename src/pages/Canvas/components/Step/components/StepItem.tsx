@@ -29,8 +29,10 @@ const Item: React.FC<ItemProps> = ({
   return (
     <Container>
       <IconContainer>{icon && <SvgIcon icon={icon} size={16} color={iconColor} />}</IconContainer>
-      <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER} multiline={multilineLabel} lineClamp={labelLineClamp}>
-        <StepLabelText onClick={onClick}>{label || placeholder}</StepLabelText>
+      <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
+        <StepLabelText onClick={onClick} multiline={multilineLabel} lineClamp={labelLineClamp}>
+          {label || placeholder}
+        </StepLabelText>
       </StepLabelTextContainer>
       {stepAPI?.withPorts && portID && (
         <PortIDProvider value={portID}>

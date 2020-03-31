@@ -309,11 +309,11 @@ exports[`Storyshots Creator/Step Active 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -633,11 +633,11 @@ exports[`Storyshots Creator/Step Primary 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Primary Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -957,11 +957,11 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Secondary Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -1301,11 +1301,11 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -1745,11 +1745,11 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -1788,11 +1788,11 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -1828,11 +1828,11 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -2219,11 +2219,11 @@ exports[`Storyshots Creator/Step With Else 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2254,11 +2254,11 @@ exports[`Storyshots Creator/Step With Else 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2604,11 +2604,11 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Step With Icon
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2947,11 +2947,11 @@ exports[`Storyshots Creator/Step With Image 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -3278,11 +3278,11 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -3572,11 +3572,11 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -3942,11 +3942,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -3975,11 +3975,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -4004,11 +4004,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -4037,11 +4037,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -4369,11 +4369,11 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 This step has a placeholder
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -4791,11 +4791,11 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -4826,11 +4826,11 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -4858,11 +4858,11 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -5187,11 +5187,11 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step
-              </span>
+              </div>
             </span>
             <div
               className="c13"
@@ -5481,11 +5481,11 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
             <span
               className="c11"
             >
-              <span
+              <div
                 className="c12"
               >
                 Step without port
-              </span>
+              </div>
             </span>
           </div>
         </div>

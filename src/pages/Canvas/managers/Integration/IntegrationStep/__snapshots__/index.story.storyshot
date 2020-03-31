@@ -406,11 +406,11 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Trigger a Zap
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -436,11 +436,11 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -468,11 +468,11 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -894,11 +894,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Custom API
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -924,11 +924,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -956,11 +956,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1386,7 +1386,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Send 
@@ -1396,7 +1396,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
                   GET
                 </span>
                  request
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1422,11 +1422,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -1454,11 +1454,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -1886,7 +1886,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Create Data
@@ -1896,7 +1896,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
                 >
                   Voiceflow MRR
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1922,11 +1922,11 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -1962,11 +1962,11 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c21"
@@ -2383,11 +2383,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Connect a Google Sheet
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2413,11 +2413,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2445,11 +2445,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -2862,7 +2862,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Create Data
@@ -2872,7 +2872,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
                 >
                   Voiceflow MRR
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2898,11 +2898,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -2930,11 +2930,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -3347,7 +3347,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Create Data
@@ -3357,7 +3357,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
                 >
                   Voiceflow Monthly Recurring Revenue
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -3383,11 +3383,11 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -3415,11 +3415,11 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -3749,7 +3749,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Send 
@@ -3759,7 +3759,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
                   GET
                 </span>
                  request
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -4178,11 +4178,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Trigger a Zap
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -4208,11 +4208,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -4240,11 +4240,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -4666,11 +4666,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Trigger a Zap
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -4696,11 +4696,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Failure
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -4728,11 +4728,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"

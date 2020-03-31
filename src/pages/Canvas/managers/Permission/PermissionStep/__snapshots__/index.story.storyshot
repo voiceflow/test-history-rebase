@@ -344,7 +344,7 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -353,7 +353,7 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
                   Request:
                 </span>
                  Email, Full Name, User Name
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -728,7 +728,7 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -737,7 +737,7 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
                   Request:
                 </span>
                  Email, Full Name, User Name
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -1100,11 +1100,11 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Send a permissions card
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1463,7 +1463,7 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -1472,7 +1472,7 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
                   Request:
                 </span>
                  Email, Full Name, User Name
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -1801,7 +1801,7 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -1810,7 +1810,7 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
                   Request:
                 </span>
                  Email, Full Name, User Name
-              </span>
+              </div>
             </span>
           </div>
         </div>

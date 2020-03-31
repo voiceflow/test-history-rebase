@@ -423,11 +423,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -453,11 +453,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 If you'd like to access the full collection, visit NYT website
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -483,7 +483,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -497,7 +497,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
                 >
                   Error
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -525,11 +525,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Purchased
-              </span>
+              </div>
             </span>
             <div
               className="c21"
@@ -983,11 +983,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1013,11 +1013,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 If you'd like to access the full collection, visit NYT website
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1043,7 +1043,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -1057,7 +1057,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
                 >
                   Error
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1093,11 +1093,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Purchased
-              </span>
+              </div>
             </span>
             <div
               className="c23"
@@ -1431,11 +1431,11 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Select a product
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1869,11 +1869,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Hogwarts
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1899,11 +1899,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 If you'd like to access the full collection, visit NYT website
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1929,7 +1929,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -1943,7 +1943,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
                 >
                   Error
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1971,11 +1971,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Purchased
-              </span>
+              </div>
             </span>
             <div
               className="c21"

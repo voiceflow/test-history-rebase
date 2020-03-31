@@ -393,11 +393,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 product name
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -423,11 +423,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c14"
               >
                 Declined
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -455,11 +455,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c14"
               >
                 Successfully Cancelled
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -868,11 +868,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 New York Times Quiz Pack
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -898,11 +898,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c14"
               >
                 Declined
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -930,11 +930,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c14"
               >
                 Successfully Cancelled
-              </span>
+              </div>
             </span>
             <div
               className="c18"

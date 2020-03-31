@@ -430,7 +430,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -475,7 +475,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -492,7 +492,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -571,7 +571,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -588,7 +588,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -633,7 +633,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -664,11 +664,11 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c22"
@@ -1047,11 +1047,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Add IF statement
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1077,11 +1077,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1527,7 +1527,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -1572,7 +1572,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -1589,7 +1589,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -1668,7 +1668,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -1685,7 +1685,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -1730,7 +1730,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -1761,11 +1761,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c22"
@@ -2211,7 +2211,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -2290,7 +2290,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -2321,11 +2321,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c22"

@@ -410,7 +410,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -419,7 +419,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
                   Request: 
                 </span>
                 Email, User Name, Credit Card
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -445,11 +445,11 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -477,11 +477,11 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -922,7 +922,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -931,7 +931,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
                   Request: 
                 </span>
                 Email, User Name, Credit Card
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -957,11 +957,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -997,11 +997,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c22"
@@ -1431,11 +1431,11 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Request user information
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1461,11 +1461,11 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1493,11 +1493,11 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c19"
@@ -1923,7 +1923,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -1932,7 +1932,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
                   Request: 
                 </span>
                 Email, User Name, Credit Card
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1958,11 +1958,11 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 No Access
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -1990,11 +1990,11 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Success
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -2324,7 +2324,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <span
@@ -2333,7 +2333,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
                   Request: 
                 </span>
                 Email, User Name, Credit Card
-              </span>
+              </div>
             </span>
           </div>
         </div>

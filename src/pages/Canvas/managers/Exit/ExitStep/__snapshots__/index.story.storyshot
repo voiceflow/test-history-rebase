@@ -310,11 +310,11 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Skill ends in current state
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -634,11 +634,11 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Skill ends in current state
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -958,11 +958,11 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Google Action ends in current state
-              </span>
+              </div>
             </span>
           </div>
         </div>

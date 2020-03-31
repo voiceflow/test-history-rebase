@@ -134,6 +134,10 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c14:hover {
@@ -344,12 +348,12 @@ exports[`Storyshots Creator/Steps/Flow Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
                 onClick={[Function]}
               >
                 New User Flow
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -498,6 +502,10 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c14:hover {
@@ -724,12 +732,12 @@ exports[`Storyshots Creator/Steps/Flow Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
                 onClick={[Function]}
               >
                 New User Flow
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1092,11 +1100,11 @@ exports[`Storyshots Creator/Steps/Flow Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Connect a flow to this step
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1245,6 +1253,10 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c14:hover {
@@ -1455,12 +1467,12 @@ exports[`Storyshots Creator/Steps/Flow Step With Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
                 onClick={[Function]}
               >
                 New User Flow
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1609,6 +1621,10 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c14:hover {
@@ -1819,12 +1835,12 @@ exports[`Storyshots Creator/Steps/Flow Step With Long Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
                 onClick={[Function]}
               >
                 Really long and elaborate flow name
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1973,6 +1989,10 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c14:hover {
@@ -2153,12 +2173,12 @@ exports[`Storyshots Creator/Steps/Flow Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
                 onClick={[Function]}
               >
                 New User Flow
-              </span>
+              </div>
             </span>
           </div>
         </div>

@@ -340,11 +340,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Sending Account Linking card
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -699,11 +699,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Sending Account Linking card
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1074,11 +1074,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Sending Account Linking card
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1441,11 +1441,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Configure Account Linking
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1770,11 +1770,11 @@ exports[`Storyshots Creator/Steps/Account Linking Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Sending Account Linking card
-              </span>
+              </div>
             </span>
           </div>
         </div>

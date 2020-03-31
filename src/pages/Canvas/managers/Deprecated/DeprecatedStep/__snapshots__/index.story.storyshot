@@ -310,11 +310,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Deprecated
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -634,11 +634,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Deprecated
-              </span>
+              </div>
             </span>
           </div>
         </div>

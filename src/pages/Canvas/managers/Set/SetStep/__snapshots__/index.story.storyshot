@@ -356,7 +356,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -370,7 +370,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                     basic string
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -382,7 +382,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -422,7 +422,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -809,7 +809,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -823,7 +823,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                     basic string
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -835,7 +835,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -875,7 +875,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1238,11 +1238,11 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Set variable to...
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1613,7 +1613,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -1627,7 +1627,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
                     basic string
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -1639,7 +1639,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -1679,7 +1679,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2045,7 +2045,7 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -2059,7 +2059,7 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
                     basic string
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -2400,7 +2400,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -2414,7 +2414,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                     basic string
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
           </div>
           <div
@@ -2426,7 +2426,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 <div
@@ -2466,7 +2466,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
                     </span>
                   </span>
                 </div>
-              </span>
+              </div>
             </span>
           </div>
         </div>

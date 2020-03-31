@@ -363,11 +363,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 How_to_train_your_dragon.mp3
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -393,11 +393,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Next
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -414,11 +414,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Previous
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -812,11 +812,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 How_to_train_your_dragon.mp3
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -842,11 +842,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Next
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -871,11 +871,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Previous
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1261,11 +1261,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Add an Audio file, URL or variable
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1291,11 +1291,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Next
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1312,11 +1312,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Previous
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -1671,11 +1671,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Add an Audio file, URL or variable
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2053,11 +2053,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 How_to_train_your_dragon.mp3
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2083,11 +2083,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Next
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2104,11 +2104,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Previous
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2486,11 +2486,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 How_to_train_your_dragon.mp3
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2516,11 +2516,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Next
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2537,11 +2537,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Previous
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2558,11 +2558,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
             <span
               className="c16"
             >
-              <span
+              <div
                 className="c14"
               >
                 Pause
-              </span>
+              </div>
             </span>
             <div
               className="c17"

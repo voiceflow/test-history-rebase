@@ -344,7 +344,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture 
@@ -359,7 +359,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
                 >
                   {Name}
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -734,7 +734,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture 
@@ -749,7 +749,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
                 >
                   {Name}
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -1112,11 +1112,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture a user response
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1475,7 +1475,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture 
@@ -1490,7 +1490,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
                 >
                   {Name}
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -1849,7 +1849,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture 
@@ -1864,7 +1864,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
                 >
                   {Name}
                 </span>
-              </span>
+              </div>
             </span>
             <div
               className="c16"
@@ -2193,7 +2193,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Capture 
@@ -2208,7 +2208,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
                 >
                   {Name}
                 </span>
-              </span>
+              </div>
             </span>
           </div>
         </div>

@@ -37,7 +37,7 @@ type ConnectedSetStepProps = ConnectedStepProps<NodeData.Set>;
 
 const ConnectedSetStep: React.FC<ConnectedSetStepProps> = ({ data, node }) => {
   const expressions = data.sets.map(({ variable, expression }) =>
-    variable ? <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} /> : null
+    variable ? <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} singleLine /> : null
   );
 
   return <SetStep expressions={expressions} portID={node.ports.out[0]} />;

@@ -340,11 +340,11 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -715,11 +715,11 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1082,11 +1082,11 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Create or select an intent
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1441,11 +1441,11 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1770,11 +1770,11 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
           </div>
         </div>

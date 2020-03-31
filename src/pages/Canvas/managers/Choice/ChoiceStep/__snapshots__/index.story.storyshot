@@ -393,11 +393,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -414,11 +414,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order my favourite
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -435,11 +435,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Where is my order?
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -470,11 +470,11 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -898,11 +898,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -927,11 +927,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order my favourite
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -956,11 +956,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Where is my order?
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -999,11 +999,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
             <span
               className="c19"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c20"
@@ -1367,11 +1367,11 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1780,11 +1780,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1801,11 +1801,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order my favourite
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1822,11 +1822,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Where is my order?
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1857,11 +1857,11 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c18"
@@ -2270,11 +2270,11 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Order Pizza
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2305,11 +2305,11 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
             <span
               className="c17"
             >
-              <span
+              <div
                 className="c14"
               >
                 Else
-              </span>
+              </div>
             </span>
             <div
               className="c18"

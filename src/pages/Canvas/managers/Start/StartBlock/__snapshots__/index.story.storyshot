@@ -195,6 +195,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c21:hover {
@@ -450,11 +454,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c16"
               >
                 Alexa, open Headspace
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -550,12 +554,12 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Help
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -594,12 +598,12 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Stop
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -973,11 +977,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Conversation continues here
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1348,11 +1352,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Conversation continues here
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1715,11 +1719,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Conversation continues here
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1929,6 +1933,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c21:hover {
@@ -2184,11 +2192,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c16"
               >
                 Hey Google, start Headspace
-              </span>
+              </div>
             </span>
             <div
               className="c17"
@@ -2284,12 +2292,12 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Help
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2328,12 +2336,12 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
             <span
               className="c15"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Stop
-              </span>
+              </div>
             </span>
           </div>
         </div>

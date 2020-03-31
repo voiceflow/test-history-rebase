@@ -355,11 +355,11 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -721,11 +721,11 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Dogs_and_Cats.json
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1112,11 +1112,11 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1486,11 +1486,11 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Add a multimodal display
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -1861,11 +1861,11 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas showroom in Seattle.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2242,11 +2242,11 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2608,11 +2608,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas.
-              </span>
+              </div>
             </span>
             <div
               className="c15"
@@ -2953,11 +2953,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
             <span
               className="c13"
             >
-              <span
+              <div
                 className="c14"
               >
                 Hi {name}, welcome to Adidas.
-              </span>
+              </div>
             </span>
           </div>
         </div>

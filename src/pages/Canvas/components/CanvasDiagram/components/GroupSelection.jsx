@@ -1,4 +1,3 @@
-/* eslint-disable compat/compat */
 import _ from 'lodash';
 import React from 'react';
 

@@ -9,13 +9,14 @@ import {
   PlatformType,
   RepromptType,
 } from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
 import { UserType } from '@/models/Integration';
 
 export type NodeData<T> = T & {
   nodeID: string;
   name: string;
   type: BlockType;
-  blockColor: string;
+  blockColor: BlockVariant;
 };
 
 export namespace NodeData {

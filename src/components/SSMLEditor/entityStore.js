@@ -1,5 +1,4 @@
 export default function createEntityStore(defaultStore = '{}') {
-  // eslint-disable-next-line compat/compat
   const stores = new WeakMap();
   let prev = null;
   let store = null;

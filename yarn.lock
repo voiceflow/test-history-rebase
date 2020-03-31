@@ -3398,6 +3398,11 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/number-to-words@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/number-to-words/-/number-to-words-1.2.0.tgz#b59ec27835ebe51d8dd56df58a2a66c92bc66b81"
+  integrity sha1-tZ7CeDXr5R2N1W31iipmySvGa4E=
+
 "@types/object-assign@^4.0.30":
   version "4.0.30"
   resolved "https://registry.yarnpkg.com/@types/object-assign/-/object-assign-4.0.30.tgz#8949371d5a99f4381ee0f1df0a9b7a187e07e652"

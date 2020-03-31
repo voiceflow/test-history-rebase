@@ -1,4 +1,3 @@
-import { BlockType } from '@/constants';
 import { without } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
@@ -12,12 +11,10 @@ const unmergeNodeReducer = (
       nodeID,
       position: [x, y],
     },
-    meta,
   }
 ) => {
   const node = getNormalizedByKey(state.nodes, nodeID);
   const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
-  const isBlockRedesignEnabled = meta?.isBlockRedesignEnabled;
 
   if (!parentNode) {
     return state;
@@ -41,17 +38,6 @@ const unmergeNodeReducer = (
   }
 
   const remainingNodeID = parentNode.combinedNodes[index === 0 ? 1 : 0];
-
-  if (isBlockRedesignEnabled && parentNode.type === BlockType.COMBINED && parentNode.combinedNodes.length === 1) {
-    return compose(
-      removeBlockFromState(parentNode),
-      patchNodeInState(node.id, {
-        parentNode: null,
-        x,
-        y,
-      })
-    )(state);
-  }
 
   return compose(
     removeBlockFromState(parentNode),

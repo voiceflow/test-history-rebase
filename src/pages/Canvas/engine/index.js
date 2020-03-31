@@ -22,6 +22,7 @@ import FocusEngine from './focusEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MergeEngine from './mergeEngine';
+import MergeEngineV2 from './mergeEngineV2';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
@@ -44,19 +45,19 @@ export class Engine {
 
   merge = new MergeEngine(this);
 
+  mergeV2 = new MergeEngineV2(this);
+
   link = new LinkManager(this);
 
   port = new PortManager(this);
 
   node = new NodeManager(this);
 
-  /* eslint-disable compat/compat */
   nodes = new Map();
 
   ports = new Map();
 
   links = new Map();
-  /* eslint-enable compat/compat */
 
   canvas = null;
 
@@ -94,6 +95,8 @@ export class Engine {
 
   hasLinksByPortID = (portID) => this.select(Creator.hasLinksByPortIDSelector)(portID);
 
+  hasLinksByNodeID = (portID) => this.select(Creator.hasLinksByNodeIDSelector)(portID);
+
   getLinkIDsByPortID = (portID) => this.select(Creator.linkIDsByPortIDSelector)(portID);
 
   getLinkIDsByNodeID = (nodeID) => this.select(Creator.linkIDsByNodeIDSelector)(nodeID);
@@ -106,6 +109,8 @@ export class Engine {
 
   isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
 
+  isBlockRedesignEnabled = () => this.select(Feature.isBlockRedesignEnabledSelector);
+
   isFeatureEnabled = (featureID) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
   // entity registration methods
@@ -114,12 +119,14 @@ export class Engine {
     this.canvas = canvas;
   }
 
-  registerNode({ id, x, y, type }, api) {
+  registerNode(nodeID, api) {
+    const { id, x, y, type } = this.getNodeByID(nodeID);
+
     this.nodes.set(id, { x, y, api, type });
   }
 
-  expireNode(nodeID, api) {
-    if (this.nodes.has(nodeID) && this.nodes.get(nodeID).api === api) {
+  expireNode(nodeID, instanceID) {
+    if (this.nodes.has(nodeID) && this.nodes.get(nodeID).api.instanceID === instanceID) {
       this.nodes.delete(nodeID);
     }
   }
@@ -130,8 +137,8 @@ export class Engine {
     this.addSupportedLinks(portID);
   }
 
-  expirePort(portID, api) {
-    if (this.ports.has(portID) && this.ports.get(portID).api === api) {
+  expirePort(portID, instanceID) {
+    if (this.ports.has(portID) && this.ports.get(portID).api.instanceID === instanceID) {
       this.ports.delete(portID);
     }
   }
@@ -201,22 +208,21 @@ export class Engine {
       await this.drag.set(nodeID);
       await this.node.translate(nodeID, movement);
 
-      // eslint-disable-next-line jest/no-disabled-tests
-      const mergeTarget = this.merge.predicates.find(({ test }) => test(this.mousePosition.current));
-      if (mergeTarget) {
-        this.merge.prepare(mergeTarget.id);
+      if (this.isBlockRedesignEnabled()) {
+        this.mergeV2.updateCandidates();
       } else {
-        this.merge.cancel();
+        this.merge.updateTarget();
       }
     }
   }
 
-  dropNode() {
+  async dropNode() {
     this.saveActiveLocations();
 
     this.merge.confirm();
     this.saveHistory();
-    this.drag.reset();
+
+    await this.drag.reset();
   }
 
   async transitionNested(nodeID, [x, y]) {
@@ -246,7 +252,7 @@ export class Engine {
   isBranchActive(nodeID) {
     const node = this.getNodeByID(nodeID);
 
-    return !!node.parentNode && this.isActive(node.parentNode);
+    return this.isActive(node?.parentNode ? node.parentNode : nodeID);
   }
 
   /**
@@ -300,7 +306,7 @@ export class Engine {
    * @returns {void}
    */
   copyActive(nodeID) {
-    if (nodeID) {
+    if (nodeID && this.getNodeByID(nodeID).type === BlockType.COMBINED) {
       this.clipboard.copy([nodeID]);
     } else if (this.activation.hasTargets) {
       this.clipboard.copy(this.activation.getTargets());
@@ -339,7 +345,12 @@ export class Engine {
       const [nodeID] = startNode;
 
       this.node.center(nodeID);
-      this.selection.replace([nodeID]);
+
+      if (this.isBlockRedesignEnabled()) {
+        this.focus.set(nodeID);
+      } else {
+        this.selection.replace([nodeID]);
+      }
     }
   }
 
@@ -349,6 +360,10 @@ export class Engine {
 
   saveHistory() {
     this.store.dispatch(Creator.saveHistory());
+  }
+
+  getCanvasMousePosition() {
+    return this.canvas.transformPoint(this.mousePosition.current);
   }
 
   async reset() {

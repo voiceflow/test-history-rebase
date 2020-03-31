@@ -3,7 +3,6 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-// eslint-disable-next-line compat/compat
 const cachedRecourses = new Map();
 
 function loadResource({ type, path, async, ...attrs }) {

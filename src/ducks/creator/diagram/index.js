@@ -10,12 +10,16 @@ import { denormalize, getAllNormalizedByKeys, getNormalizedByKey, normalize } fr
 import { INITIALIZE_CREATOR, RESET_CREATOR } from '../actions';
 import { creatorStateSelector } from '../selectors';
 import addLinkReducer from './addLink';
-import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
+import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer } from './addNode';
+import addNodeV2Reducer from './addNodeV2';
 import { portFactory } from './factories';
 import insertNestedNodeReducer from './insertNestedNode';
+import insertNestedNodeV2Reducer from './insertNestedNodeV2';
 import mergeNodesReducer from './mergeNodes';
 import removeNodeReducer, { removeManyNodesReducer } from './removeNode';
+import removeNodeV2Reducer, { removeManyNodesV2Reducer } from './removeNodeV2';
 import unmergeNodeReducer from './unmergeNode';
+import unmergeNodeV2Reducer from './unmergeNodeV2';
 import {
   addAllLinksToState,
   addPortToBlockInState,
@@ -55,7 +59,6 @@ export const MERGE_NODES = 'CREATOR:NODE:MERGE';
 export const UNMERGE_NODE = 'CREATOR:NODE:UNMERGE';
 export const INSERT_NESTED_NODE = 'CREATOR:NODE:INSERT_NESTED';
 export const ADD_NODE = 'CREATOR:NODE:ADD';
-export const ADD_WRAPPED_NODE = 'CREATOR:NODE:ADD_WRAPPED';
 export const ADD_MANY_NODES = 'CREATOR:NODE:ADD_MANY';
 export const ADD_NESTED_NODE = 'CREATOR:NODE:ADD_NESTED';
 export const REMOVE_NODE = 'CREATOR:NODE:REMOVE';
@@ -144,20 +147,39 @@ function creatorDiagramReducer(state = DEFAULT_STATE, action) {
     case MERGE_NODES:
       return mergeNodesReducer(state, action);
     case UNMERGE_NODE:
+      if (action.meta?.v2) {
+        return unmergeNodeV2Reducer(state, action);
+      }
+
       return unmergeNodeReducer(state, action);
+
     case INSERT_NESTED_NODE:
+      if (action.meta?.v2) {
+        return insertNestedNodeV2Reducer(state, action);
+      }
+
       return insertNestedNodeReducer(state, action);
     case ADD_NODE:
+      if (action.meta?.v2) {
+        return addNodeV2Reducer(state, action);
+      }
+
       return addNodeReducer(state, action);
-    case ADD_WRAPPED_NODE:
-      return addWrappedNodeReducer(state, action);
     case ADD_MANY_NODES:
       return addManyNodesReducer(state, action);
     case ADD_NESTED_NODE:
       return addNestedNodeReducer(state, action);
     case REMOVE_NODE:
+      if (action.meta?.v2) {
+        return removeNodeV2Reducer(state, action);
+      }
+
       return removeNodeReducer(state, action);
     case REMOVE_MANY_NODES:
+      if (action.meta?.v2) {
+        return removeManyNodesV2Reducer(state, action);
+      }
+
       return removeManyNodesReducer(state, action);
     case ADD_PORT:
       return addPortReducer(state, action);
@@ -260,14 +282,19 @@ export const updateNodeLocation = (nodeID, [x, y]) => createAction(UPDATE_NODE_L
 export const mergeNodes = (sourceNodeID, targetNodeID, position, mergedNodeID) =>
   createAction(MERGE_NODES, { sourceNodeID, targetNodeID, position, mergedNodeID });
 
-export const unmergeNode = (nodeID, position, meta) => createAction(UNMERGE_NODE, { nodeID, position }, meta);
+export const unmergeNode = (nodeID, position) => createAction(UNMERGE_NODE, { nodeID, position });
+
+export const unmergeNodeV2 = (nodeID, position, parentNodeID, parentPortID) =>
+  createAction(UNMERGE_NODE, { nodeID, position, parentNodeID, parentPortID }, { v2: true });
 
 export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, nodeID, index });
 
+export const insertNestedNodeV2 = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, nodeID, index }, { v2: true });
+
 export const addNode = (node, data, nodeID) => createAction(ADD_NODE, { node: { ...node, id: nodeID }, data });
 
-export const addWrappedNode = (node, data, nodeID, parentNodeID, parentPortID) =>
-  createAction(ADD_WRAPPED_NODE, { node: { ...node, id: nodeID }, data, parentNodeID, parentPortID });
+export const addNodeV2 = (node, data, nodeID, parentNodeID, parentPortID) =>
+  createAction(ADD_NODE, { node: { ...node, id: nodeID }, data, parentNodeID, parentPortID }, { v2: true });
 
 export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES, { nodeGroup, position });
 
@@ -284,7 +311,11 @@ export const addNestedNode = (parentNodeID, node, data, nodeID, mergedNodeID) =>
 
 export const removeNode = (nodeID) => createAction(REMOVE_NODE, nodeID);
 
+export const removeNodeV2 = (nodeID) => createAction(REMOVE_NODE, nodeID, { v2: true });
+
 export const removeNodes = (nodeIDs) => createAction(REMOVE_MANY_NODES, nodeIDs);
+
+export const removeNodesV2 = (nodeIDs) => createAction(REMOVE_MANY_NODES, nodeIDs, { v2: true });
 
 export const addPort = (nodeID, portID, port) => createAction(ADD_PORT, { nodeID, portID, port });
 

@@ -23,6 +23,8 @@ class NestedBlock extends React.PureComponent {
   mouseMovement = new MouseMovement();
 
   api = {
+    instanceID: cuid(),
+
     getPosition: () => {
       const rect = this.rootRef.current.getBoundingClientRect();
 
@@ -85,7 +87,7 @@ class NestedBlock extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.engine.registerNode(this.props.node, this.api);
+    this.props.engine.registerNode(this.props.nodeID, this.api);
   }
 
   componentWillUnmount() {

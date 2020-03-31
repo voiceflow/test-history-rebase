@@ -4,6 +4,7 @@ export const BLOCK_REDESIGN_ENABLED = process.env.FF_BLOCK_REDESIGN === 'true';
 
 export enum FeatureFlag {
   BLOCK_REDESIGN = 'block_redesign',
+  BLOCK_REDESIGN_BETA = 'block_redesign_beta',
 }
 
 export const LOCAL_FEATURE_OVERRIDES = {

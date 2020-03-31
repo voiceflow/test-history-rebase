@@ -190,6 +190,10 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -249,7 +253,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -561,6 +565,10 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -620,7 +628,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -924,6 +932,10 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -983,7 +995,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1294,6 +1306,10 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -1353,7 +1369,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1656,6 +1672,10 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -1715,7 +1735,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2011,6 +2031,10 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -2070,7 +2094,7 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2336,6 +2360,10 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2395,7 +2423,7 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

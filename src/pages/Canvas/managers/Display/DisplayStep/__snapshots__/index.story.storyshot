@@ -205,6 +205,10 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -264,7 +268,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -567,6 +571,10 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -626,7 +634,7 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -954,6 +962,10 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -1013,7 +1025,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1324,6 +1336,10 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -1383,7 +1399,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1695,6 +1711,10 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -1754,7 +1774,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2072,6 +2092,10 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -2131,7 +2155,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2434,6 +2458,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -2493,7 +2521,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2775,6 +2803,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -2834,7 +2866,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

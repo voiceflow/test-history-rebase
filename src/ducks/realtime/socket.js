@@ -47,7 +47,8 @@ export const addManyNodes = (nodeGroup, position) => createAction(ADD_MANY_NODES
 export const addNestedNode = (parentNodeID, nodeID, node, data, mergedNodeID) =>
   createAction(ADD_NESTED_NODE, { parentNodeID, nodeID, node, data, mergedNodeID });
 export const insertNestedNode = (parentNodeID, index, nodeID) => createAction(INSERT_NESTED_NODE, { parentNodeID, index, nodeID });
-export const unmergeNode = (nodeID, position) => createAction(UNMERGE_NODE, { nodeID, position });
+export const unmergeNode = (nodeID, position, parentNodeID, parentPortID) =>
+  createAction(UNMERGE_NODE, { nodeID, position, parentNodeID, parentPortID });
 export const mergeNodes = (mergedNodeID, sourceNodeID, targetNodeID, position) =>
   createAction(MERGE_NODES, { mergedNodeID, sourceNodeID, targetNodeID, position });
 export const removeNode = (nodeID) => createAction(REMOVE_NODE, nodeID);

@@ -25,11 +25,7 @@ const nodeDataAdapter = createSimpleAdapter(
           type = BlockType.CHOICE;
         } else if (Array.isArray(dbData.dialogs) && typeof dbData.randomize === 'boolean') {
           type = BlockType.SPEAK;
-        } else if (
-          // to handle the case where no integration type is selected
-          !dbData.selected_integration ||
-          (typeof dbData.selected_integration === 'string' && typeof dbData.integrations_data === 'object')
-        ) {
+        } else if (typeof dbData.selected_integration === 'string' && typeof dbData.integrations_data === 'object') {
           type = BlockType.INTEGRATION;
         }
       }

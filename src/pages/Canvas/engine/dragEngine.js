@@ -1,4 +1,3 @@
-import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
 
 import { EngineConsumer } from './utils';
@@ -30,7 +29,9 @@ class DragEngine extends EngineConsumer {
     if (target !== this.target) {
       await this.reset();
 
-      if (!this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.engine.mergeV2.initialize(target);
+      } else {
         this.engine.merge.generatePredicates(target);
       }
 
@@ -46,6 +47,10 @@ class DragEngine extends EngineConsumer {
     if (this.hasTarget) {
       const target = this.target;
       this.target = null;
+
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.engine.mergeV2.reset();
+      }
 
       await this.engine.node.translate(target, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));

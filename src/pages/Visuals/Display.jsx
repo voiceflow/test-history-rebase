@@ -183,7 +183,6 @@ class Display extends Component {
   onDropJSON(accepted, rejected) {
     const { setError } = this.props;
     if (Array.isArray(accepted) && accepted.length === 1) {
-      // eslint-disable-next-line compat/compat
       const fileReader = new FileReader();
 
       const handleFileRead = () => {

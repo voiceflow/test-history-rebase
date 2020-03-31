@@ -14,7 +14,7 @@ const BlockWithCommands: React.RefForwardingComponent<{ api: NewBlockAPI }, Reac
 ) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
   const sections = commands ? [{ name: 'Commands', children: commands }] : [];
-  const stepAPI = useStepAPI(true, true, stepRef);
+  const stepAPI = useStepAPI(true, true, false, stepRef);
 
   return (
     <StepAPIProvider value={stepAPI}>

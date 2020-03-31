@@ -2,6 +2,7 @@ import Flex from '@/components/Flex';
 import { MemberIcon } from '@/components/User';
 import { css, styled } from '@/hocs';
 
+import { stepBoxShadowStyles } from '../styles';
 import Section from './StepSection';
 
 export type StepContainerProps = {
@@ -31,8 +32,8 @@ const StepContainer = styled(Flex)<StepContainerProps>`
       hasLinkWarning &&
       css`
         opacity: 0.7;
-        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px rgba(17, 49, 96, 0.08);
         cursor: not-allowed;
+        ${stepBoxShadowStyles}
       `}
   }
 

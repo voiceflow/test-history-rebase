@@ -127,7 +127,6 @@ class Canvas extends React.PureComponent {
   applyStyles = (styles) => {
     const renderLayerEl = this.renderLayerRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       Object.keys(styles).forEach((style) => {
         renderLayerEl.style[style] = styles[style];
@@ -148,7 +147,6 @@ class Canvas extends React.PureComponent {
   styleRenderLayer({ zoom = this.zoom, position = this.position } = {}) {
     const renderLayerEl = this.renderLayerRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       renderLayerEl.style.transform = transformStyle(position, zoom);
     });

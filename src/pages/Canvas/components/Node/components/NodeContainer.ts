@@ -1,5 +1,6 @@
 import { css, styled } from '@/hocs';
 import NewBlockContainer from '@/pages/Canvas/components/Block/NewBlock/components/NewBlockContainer';
+import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type NodeContainerProps = {
   isActive: boolean;
@@ -22,7 +23,7 @@ const NodeContainer = styled.div<NodeContainerProps>`
     css`
       z-index: 10;
     `}
-
+    
   ${({ isDragging }) =>
     isDragging &&
     css`
@@ -36,6 +37,10 @@ const NodeContainer = styled.div<NodeContainerProps>`
   &:focus,
   &:focus-within {
     z-index: 20;
+  }
+
+  &.${MERGE_ACTIVE_NODE_CLASSNAME}:hover {
+    z-index: 10;
   }
 
   ${NewBlockContainer} {

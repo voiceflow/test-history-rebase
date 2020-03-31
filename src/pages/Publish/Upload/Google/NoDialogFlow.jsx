@@ -29,7 +29,6 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
   const link = (files) => {
     if (files.length === 1) {
       setLoading(true);
-      // eslint-disable-next-line compat/compat
       const reader = new FileReader();
       reader.onload = async (event) => {
         const text = event.target.result;

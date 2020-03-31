@@ -1,6 +1,7 @@
 import { BlockCategoryType, BlockType } from '@/constants';
 
 export const ACTIVE_NODES_CANVAS_CLASSNAME = 'canvas--nodes-active';
+export const MERGE_ACTIVE_NODE_CLASSNAME = 'node--merge-active';
 
 export enum ContextMenuTarget {
   NODE = 'node',

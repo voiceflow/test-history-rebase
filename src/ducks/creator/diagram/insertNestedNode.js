@@ -4,30 +4,28 @@ import { getNormalizedByKey } from '@/utils/normalized';
 
 import { getLinkIDsByPortID, patchNodeInState, removeAllLinksFromState } from './utils';
 
+export const getOutgoingLinkIDs = (state, node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getIncomingLinkIDs = (state, node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getNestedOutgoingLinkIDs = (state, node) => {
+  const combinedNodes = node.combinedNodes;
+  const lastNodeID = combinedNodes[combinedNodes.length - 1];
+  const lastNode = getNormalizedByKey(state.nodes, lastNodeID);
+
+  return getOutgoingLinkIDs(state, lastNode);
+};
+
 const insertNestedNodeReducer = (state, { payload: { parentNodeID, nodeID, index } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
+  const targetNode = getNormalizedByKey(state.nodes, nodeID);
   const nextCombinedIDs = insert(parentNode.combinedNodes, index, nodeID);
   const isLast = index === nextCombinedIDs.length - 1;
 
-  let removeLinks = [];
-  if (isLast) {
-    const combinedNodes = parentNode.combinedNodes;
-    const lastNodeId = combinedNodes[combinedNodes.length - 1];
-    const lastNode = getNormalizedByKey(state.nodes, lastNodeId);
-    const lastNodeOutPortIDs = lastNode.ports.out;
-    const lastNodeOutLinkIDs = lastNodeOutPortIDs.flatMap((portId) => getLinkIDsByPortID(state)(portId));
-
-    removeLinks = lastNodeOutLinkIDs;
-  } else {
-    const node = getNormalizedByKey(state.nodes, nodeID);
-    const outgoingPortIDs = [...node.ports.out];
-    const nodeLinkIDs = outgoingPortIDs.flatMap((portId) => getLinkIDsByPortID(state)(portId));
-
-    removeLinks = nodeLinkIDs;
-  }
+  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, parentNode) : getOutgoingLinkIDs(state, targetNode);
 
   return compose(
-    removeAllLinksFromState(removeLinks),
+    removeAllLinksFromState(oldLinks),
     patchNodeInState(parentNode.id, {
       combinedNodes: nextCombinedIDs,
     }),

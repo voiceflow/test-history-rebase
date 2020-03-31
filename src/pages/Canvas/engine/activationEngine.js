@@ -1,4 +1,3 @@
-import { FeatureFlag } from '@/config/features';
 import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { EngineConsumer } from './utils';
@@ -57,7 +56,7 @@ class ActivationEngine extends EngineConsumer {
   redrawNode(nodeID) {
     this.engine.node.redraw(nodeID);
 
-    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+    if (this.engine.isBlockRedesignEnabled()) {
       this.engine.node.redrawLinks(nodeID);
     }
   }

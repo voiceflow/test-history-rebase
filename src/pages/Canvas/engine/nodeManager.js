@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 import { partition as _partition } from 'lodash';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -11,10 +10,13 @@ import { EngineConsumer, nodeFactory } from './utils';
 
 class NodeManager extends EngineConsumer {
   internal = {
-    add: (node, data, nodeID) => this.dispatch(Creator.addNode(node, data, nodeID)),
-
-    addWrapped: (node, data, nodeID, parentNodeID, parentPortID) =>
-      this.dispatch(Creator.addWrappedNode(node, data, nodeID, parentNodeID, parentPortID)),
+    add: (node, data, nodeID, parentNodeID, parentPortID) => {
+      if (this.engine.isBlockRedesignEnabled() && node.type !== BlockType.COMMENT) {
+        this.dispatch(Creator.addNodeV2(node, data, nodeID, parentNodeID, parentPortID));
+      } else {
+        this.dispatch(Creator.addNode(node, data, nodeID));
+      }
+    },
 
     addMany: (nodeGroup, position) => this.dispatch(Creator.addManyNodes(nodeGroup, position)),
 
@@ -24,16 +26,26 @@ class NodeManager extends EngineConsumer {
     },
 
     insertNested: (parentNodeID, index, nodeID) => {
-      this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.dispatch(Creator.insertNestedNodeV2(parentNodeID, index, nodeID));
+      } else {
+        this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
+      }
+
       this.redrawNestedLinks(parentNodeID);
     },
 
-    unmerge: (nodeID, position) => {
+    unmerge: (nodeID, position, parentNodeID, parentPortID) => {
       const { parentNode } = this.engine.getNodeByID(nodeID);
-      const isBlockRedesignEnabled = this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN);
 
       this.saveLocation(parentNode);
-      this.dispatch(Creator.unmergeNode(nodeID, position, { isBlockRedesignEnabled }));
+
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.dispatch(Creator.unmergeNodeV2(nodeID, position, parentNodeID, parentPortID));
+      } else {
+        this.dispatch(Creator.unmergeNode(nodeID, position));
+      }
+
       this.redrawNestedLinks(parentNode);
     },
 
@@ -57,7 +69,11 @@ class NodeManager extends EngineConsumer {
         this.saveLocation(parentNode);
       }
 
-      this.dispatch(Creator.removeNode(nodeID));
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.dispatch(Creator.removeNodeV2(nodeID));
+      } else {
+        this.dispatch(Creator.removeNode(nodeID));
+      }
     },
 
     removeMany: (nodeIDs) => {
@@ -82,7 +98,11 @@ class NodeManager extends EngineConsumer {
         }
       });
 
-      this.dispatch(Creator.removeNodes(removedIDs));
+      if (this.engine.isBlockRedesignEnabled()) {
+        this.dispatch(Creator.removeNodesV2(removedIDs));
+      } else {
+        this.dispatch(Creator.removeNodes(removedIDs));
+      }
     },
 
     translate: (nodeID, movement) => {
@@ -114,20 +134,11 @@ class NodeManager extends EngineConsumer {
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y };
 
-    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type !== BlockType.COMMENT) {
-      await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID, parentPortID));
-      this.internal.addWrapped(augmentedNode, data, nodeID, parentNodeID, parentPortID);
-    } else {
-      await this.addSingle(augmentedNode, data, nodeID);
-    }
+    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, nodeID, parentNodeID, parentPortID));
+    this.internal.add(augmentedNode, data, nodeID, parentNodeID, parentPortID);
 
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
-  }
-
-  async addSingle(node, data, nodeID) {
-    await this.engine.realtime.sendUpdate(Realtime.addNode(node, data, nodeID));
-    this.internal.add(node, data, nodeID);
   }
 
   async addMany(nodeGroup, position) {
@@ -234,6 +245,7 @@ class NodeManager extends EngineConsumer {
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
       await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
       this.internal.remove(removeNodeID);
+
       this.engine.saveHistory();
     });
   }
@@ -260,12 +272,14 @@ class NodeManager extends EngineConsumer {
   async insertNested(parentNodeID, index, nodeID) {
     await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
     this.internal.insertNested(parentNodeID, index, nodeID);
+
     this.engine.saveHistory();
   }
 
-  async unmerge(nodeID, position) {
-    await this.engine.realtime.sendUpdate(Realtime.unmergeNode(nodeID, position));
-    this.internal.unmerge(nodeID, position);
+  async unmerge(nodeID, position, parentNodeID = cuid(), parentPortID = cuid()) {
+    await this.engine.realtime.sendUpdate(Realtime.unmergeNode(nodeID, position, parentNodeID, parentPortID));
+    this.internal.unmerge(nodeID, position, parentNodeID, parentPortID);
+
     this.engine.saveHistory();
   }
 
@@ -327,7 +341,7 @@ class NodeManager extends EngineConsumer {
 
   translateAllLinks(nodeID, movement) {
     const node = this.engine.getNodeByID(nodeID);
-    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) && node.type === BlockType.COMBINED) {
+    if (this.engine.isBlockRedesignEnabled() && node.type === BlockType.COMBINED) {
       [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
     } else if (node.type === BlockType.COMBINED) {
       node.combinedNodes.forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));

@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
-import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
 
 import { EngineConsumer } from './utils';
@@ -38,14 +37,13 @@ class RealtimeEngine extends EngineConsumer {
       }
     },
     [Realtime.ADD_NODE]: ({ node, data, nodeID, parentNodeID, parentPortID }) =>
-      this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)
-        ? this.engine.node.internal.addWrapped(node, data, nodeID, parentNodeID, parentPortID)
-        : this.engine.node.internal.add(node, data, nodeID),
+      this.engine.node.internal.add(node, data, nodeID, parentNodeID, parentPortID),
     [Realtime.ADD_MANY_NODES]: ({ nodeGroup, position }) => this.engine.node.internal.addMany(nodeGroup, position),
     [Realtime.ADD_NESTED_NODE]: ({ parentNodeID, nodeID, node, data, mergedNodeID }) =>
       this.engine.node.internal.addNested(parentNodeID, nodeID, node, data, mergedNodeID),
     [Realtime.INSERT_NESTED_NODE]: ({ parentNodeID, index, nodeID }) => this.engine.node.internal.insertNested(parentNodeID, index, nodeID),
-    [Realtime.UNMERGE_NODE]: ({ nodeID, position }) => this.engine.node.internal.unmerge(nodeID, position),
+    [Realtime.UNMERGE_NODE]: ({ nodeID, position, parentNodeID, parentPortID }) =>
+      this.engine.node.internal.unmerge(nodeID, position, parentNodeID, parentPortID),
     [Realtime.MERGE_NODES]: ({ mergedNodeID, sourceNodeID, targetNodeID, position }) =>
       this.engine.node.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, position),
     [Realtime.REMOVE_NODE]: (nodeID) => this.engine.node.internal.remove(nodeID),

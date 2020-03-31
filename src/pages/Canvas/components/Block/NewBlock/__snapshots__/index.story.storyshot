@@ -77,7 +77,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -277,6 +277,10 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c1 {
   position: absolute;
   top: 6px;
@@ -430,7 +434,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
   padding: 0 5px;
 }
 
-.c6 > *:not(:last-child) {
+.c6 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -732,6 +736,10 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -791,7 +799,7 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -921,6 +929,10 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -980,7 +992,7 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1113,6 +1125,10 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -1172,7 +1188,7 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1305,6 +1321,10 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -1364,7 +1384,7 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1497,6 +1517,10 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -1556,7 +1580,7 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1689,6 +1713,10 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -1748,7 +1776,7 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1881,6 +1909,10 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -1940,7 +1972,7 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2126,7 +2158,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2259,6 +2291,10 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -2318,7 +2354,7 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2451,6 +2487,10 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c6 {
   position: absolute;
   top: 6px;
@@ -2510,7 +2550,7 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2743,6 +2783,10 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c11 {
   position: absolute;
   top: 6px;
@@ -2896,7 +2940,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   padding: 0 5px;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3208,6 +3252,10 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c12 {
   position: absolute;
   top: 6px;
@@ -3291,7 +3339,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   padding: 0 5px;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

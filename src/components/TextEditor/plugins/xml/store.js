@@ -7,7 +7,7 @@ class XMLStore extends Store {
   constructor(type, data) {
     super(data);
 
-    this.tags = new Map(); // eslint-disable-line compat/compat
+    this.tags = new Map();
     this.TAGS_HISTORY_KEY = `${TAGS_HISTORY_KEY}-${type}`;
 
     try {

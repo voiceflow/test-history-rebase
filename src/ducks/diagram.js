@@ -4,7 +4,6 @@ import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -175,7 +174,7 @@ export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getSta
 export const saveActiveDiagram = () => async (dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
-  const isBlockRedesignEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
+  const isBlockRedesignEnabled = Feature.isBlockRedesignEnabledSelector(state);
   const diagramID = Creator.creatorDiagramIDSelector(state);
 
   if (!diagramID) {
@@ -191,11 +190,10 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
 
   if (isBlockRedesignEnabled) {
     links = links.map((link) => {
-      const targetPort = getNormalizedByKey(ports, link.target.portID);
       const targetNode = getNormalizedByKey(nodes, link.target.nodeID);
 
       // only apply this transformation to links that terminate at a virtual node
-      if (targetPort.virtual && targetNode.combinedNodes.length === 1) {
+      if (targetNode.virtual || targetNode.type === BlockType.COMBINED) {
         const actualTargetNode = getNormalizedByKey(nodes, targetNode.combinedNodes[0]);
 
         return {
@@ -219,6 +217,7 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
     zoom: viewport.zoom,
     links: linkAdapter.mapToDB(links),
     nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
+    blockRedesignOffset: isBlockRedesignEnabled,
   };
 
   const dataString = JSON.stringify(isBlockRedesignEnabled ? creatorAdapter.toDB(updatedData) : updatedData);

@@ -14,9 +14,9 @@ const PortV2: React.FC<PortV2Props> = ({ color }) => {
   const portRef = React.useRef<HTMLDivElement | null>(null);
   const { portID, hasActiveLinks } = usePort();
   const { onStart: onStartLink } = useLinkTerminal(portID);
-  const [isHighlighted, api] = usePortAPI(portRef);
+  const api = usePortAPI(portRef);
 
-  const linkProps = { isNewStyle: true, ...(isHighlighted && { strokeColor: '#2c85ff' }) };
+  const linkProps = { isNewStyle: true, ...(api.isHighlighted && { strokeColor: '#2c85ff' }) };
 
   usePortSubscription(portID, api);
 
@@ -26,11 +26,11 @@ const PortV2: React.FC<PortV2Props> = ({ color }) => {
         onMouseDown={onStartLink}
         onClick={onStartLink}
         color={color}
-        isHighlighted={isHighlighted}
+        isHighlighted={api.isHighlighted}
         isConnected={hasActiveLinks}
         ref={portRef}
       />
-      {hasActiveLinks && (
+      {(api.isHighlighted || hasActiveLinks) && (
         <Link>
           <LinkPath d={`M 0 4 L ${LINK_WIDTH} 4`} {...linkProps} />
         </Link>

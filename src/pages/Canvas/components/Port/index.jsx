@@ -1,3 +1,4 @@
+import cuid from 'cuid';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
@@ -12,6 +13,8 @@ class Port extends React.PureComponent {
   portRef = React.createRef();
 
   api = {
+    instanceID: cuid(),
+
     getRect: () => this.portRef.current.getBoundingClientRect(),
   };
 

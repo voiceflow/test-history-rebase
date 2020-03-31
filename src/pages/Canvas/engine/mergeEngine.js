@@ -178,6 +178,16 @@ class MergeEngine extends EngineConsumer {
         test: ([x, y]) => x >= left && x <= right && y >= top && y <= bottom,
       }));
   }
+
+  updateTarget() {
+    // eslint-disable-next-line jest/no-disabled-tests
+    const mergeTarget = this.predicates.find(({ test }) => test(this.engine.mousePosition.current));
+    if (mergeTarget) {
+      this.prepare(mergeTarget.id);
+    } else {
+      this.cancel();
+    }
+  }
 }
 
 export default MergeEngine;

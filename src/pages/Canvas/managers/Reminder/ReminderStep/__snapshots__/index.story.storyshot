@@ -256,6 +256,10 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -315,7 +319,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -755,6 +759,10 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c25 {
   position: absolute;
   top: 6px;
@@ -814,7 +822,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1255,6 +1263,10 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -1314,7 +1326,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1739,6 +1751,10 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -1798,7 +1814,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2127,6 +2143,10 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2186,7 +2206,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

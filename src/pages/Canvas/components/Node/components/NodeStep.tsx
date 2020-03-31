@@ -1,7 +1,9 @@
 import React from 'react';
 
+import Portal from '@/components/Portal';
 import { BlockType } from '@/constants';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
+import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
@@ -11,9 +13,10 @@ import NodePort from './NodePort';
 
 export type NodeStepProps = {
   isLast: boolean;
+  isDraggable: boolean;
 };
 
-const NodeStep: React.FC<NodeStepProps> = ({ isLast }) => {
+const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
   const { nodeID, node } = useNode();
   const { data } = useNodeData();
@@ -21,8 +24,8 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast }) => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const { step: StepComponent = getManager(BlockType.DEPRECATED).step } = getManager(data.type)!;
-  const [isHighlighted, nodeAPI] = useNodeAPI(nodeID, stepRef);
-  const stepAPI = useStepAPI(isHighlighted, isLast, stepRef);
+  const nodeAPI = useNodeAPI(nodeID, stepRef);
+  const stepAPI = useStepAPI(nodeAPI.isHighlighted, isLast, isDraggable, stepRef);
   const [inPortID] = node.ports.in;
 
   const getAnchorPoint = React.useCallback(() => {
@@ -31,13 +34,22 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast }) => {
     return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas.getZoom(), y]);
   }, []);
 
-  useNodeSubscription(nodeID, node, nodeAPI);
+  useNodeSubscription(nodeID, nodeAPI);
 
   return (
     <>
       {inPortID && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
       <StepAPIProvider value={stepAPI}>
-        <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
+        {nodeAPI.isDragging ? (
+          <>
+            <Step.Placeholder />
+            <Portal portalNode={engine.mergeV2.mergeLayer!.ref.current!}>
+              <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
+            </Portal>
+          </>
+        ) : (
+          <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
+        )}
       </StepAPIProvider>
     </>
   );

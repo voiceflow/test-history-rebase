@@ -1,7 +1,6 @@
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
@@ -55,7 +54,7 @@ export const importProject = (workspaceID, importToken) => async (dispatch, getS
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const isBlockRedesignEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
+  const isBlockRedesignEnabled = Feature.isBlockRedesignEnabledSelector(state);
 
   const {
     data: { viewport, ...creator },

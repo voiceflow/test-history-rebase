@@ -2,13 +2,14 @@ import { reorder, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import {
   addNormalizedByKey,
-  getAllNormalizedByKeys,
   getNormalizedByKey,
   patchNormalizedByKey,
   removeNormalizedByKey,
   safeAdd,
   updateNormalizedByKey,
 } from '@/utils/normalized';
+
+import { nodeFactory } from './factories';
 
 export const getLinkIDsByPortID = ({ linksByPortID }) => (portID) => linksByPortID[portID] || [];
 
@@ -183,11 +184,6 @@ export const updateLinkPort = (link, relationship, nodeID, portID) => ({
   },
 });
 
-export const remapExistingLinksToPort = (state, oldPortID, newPortID, newNodeID) =>
-  getAllNormalizedByKeys(state.links, getLinkIDsByPortID(state)(oldPortID)).map((link) =>
-    updateLinkPort(link, link.source.portID === oldPortID ? 'source' : 'target', newNodeID, newPortID)
-  );
-
 export const buildLinksByPortID = (links) =>
   links.reduce((acc, link) => {
     const sourcePortID = link.source.portID;
@@ -217,3 +213,28 @@ export const buildLinksByNodeID = (links) =>
 
     return acc;
   }, {});
+
+export const buildPortForNode = (nodeID) => (port) => ({
+  ...port,
+  nodeID,
+});
+
+export const buildNewNode = (node, data) => {
+  const inPorts = node.ports.in.map(buildPortForNode(node.id));
+  const outPorts = node.ports.out.map(buildPortForNode(node.id));
+
+  const newNodeData = {
+    ...data,
+    nodeID: node.id,
+    type: node.type,
+  };
+  const newNode = nodeFactory(node.id, {
+    ...node,
+    ports: {
+      in: inPorts.map((port) => port.id),
+      out: outPorts.map((port) => port.id),
+    },
+  });
+
+  return [newNode, [...inPorts, ...outPorts], newNodeData];
+};

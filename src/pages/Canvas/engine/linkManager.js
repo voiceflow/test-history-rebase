@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import cuid from 'cuid';
 
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 
@@ -40,7 +39,7 @@ class LinkManager extends EngineConsumer {
   }
 
   setHighlight(linkID) {
-    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+    if (this.engine.isBlockRedesignEnabled()) {
       const link = this.engine.getLinkByID(linkID);
 
       this.engine.port.api(link.source.portID)?.setHighlight();
@@ -49,7 +48,7 @@ class LinkManager extends EngineConsumer {
   }
 
   clearHighlight(linkID) {
-    if (this.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+    if (this.engine.isBlockRedesignEnabled()) {
       const link = this.engine.getLinkByID(linkID);
 
       this.engine.port.api(link.source.portID)?.clearHighlight();

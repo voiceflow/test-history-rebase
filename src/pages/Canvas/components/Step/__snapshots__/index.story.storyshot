@@ -169,6 +169,10 @@ exports[`Storyshots Creator/Step Active 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c15 {
   position: absolute;
   top: 6px;
@@ -228,7 +232,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -489,6 +493,10 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c14 {
   position: absolute;
   top: 6px;
@@ -548,7 +556,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -809,6 +817,10 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c14 {
   position: absolute;
   top: 6px;
@@ -868,7 +880,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1149,6 +1161,10 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c17 {
   position: absolute;
   top: 6px;
@@ -1208,7 +1224,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1589,6 +1605,10 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -1648,7 +1668,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2049,6 +2069,10 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -2108,7 +2132,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2430,6 +2454,10 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2489,7 +2517,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2779,6 +2807,10 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c17 {
   position: absolute;
   top: 6px;
@@ -2838,7 +2870,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3106,6 +3138,10 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c14 {
   position: absolute;
   top: 6px;
@@ -3165,7 +3201,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3396,6 +3432,10 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c13 {
   position: absolute;
   top: 6px;
@@ -3455,7 +3495,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3752,6 +3792,10 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -3811,7 +3855,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -4185,6 +4229,10 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c14 {
   position: absolute;
   top: 6px;
@@ -4244,7 +4292,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -4603,6 +4651,10 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c22 {
   position: absolute;
   top: 6px;
@@ -4662,7 +4714,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -4995,6 +5047,10 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c15 {
   position: absolute;
   top: 6px;
@@ -5054,7 +5110,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -5285,6 +5341,10 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c13 {
   position: absolute;
   top: 6px;
@@ -5344,7 +5404,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

@@ -38,6 +38,7 @@ export const withPlatform = withContext(PlatformContext, 'platform');
 
 export type ManagerValue = {
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
+  mergeTerminator?: boolean;
 };
 
 export const ManagerContext = React.createContext<((type: BlockType) => ManagerValue) | null>(null);

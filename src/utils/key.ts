@@ -1,5 +1,4 @@
 /* eslint-disable no-case-declarations */
-/* eslint-disable compat/compat */
 let lastKey = new Date().getTime();
 const globalCache = new Map();
 

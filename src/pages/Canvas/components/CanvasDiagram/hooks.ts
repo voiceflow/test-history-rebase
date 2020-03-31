@@ -1,4 +1,3 @@
-import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
 import { DEBUG_REALTIME } from '@/config';
@@ -30,9 +29,10 @@ export const useCursorControls = () => {
 
         if (engine.linkCreation.isDrawing) {
           const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition, true);
+          const sourcePortID = engine.linkCreation.sourcePortID!;
 
           engine.linkCreation.abort();
-          engine.linkCreation.start(engine.linkCreation.sourcePortID!, transformedPosition);
+          engine.linkCreation.start(sourcePortID, transformedPosition);
         }
         mousePosition.current = nextMousePosition;
         moveMouse(nextMousePosition);
@@ -52,9 +52,9 @@ export const useCursorControls = () => {
 
   React.useEffect(() => {
     if (engine.canvas) {
-      const onMouseMove = (event: MouseEvent) => {
+      const onMouseMove = () => {
         if (!engine.canvas.isPanning()) {
-          const transformedPoint = engine.canvas.transformPoint(mouseEventOffset(event, engine.canvas.getRef()), true);
+          const transformedPoint = engine.getCanvasMousePosition();
 
           mousePosition.current = transformedPoint;
 

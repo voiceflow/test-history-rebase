@@ -29,6 +29,7 @@ const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, child
       isActive={stepAPI?.isActive && !disableHighlightStyle}
       isHovered={stepAPI?.isHovered}
       hasLinkWarning={stepAPI?.hasLinkWarning}
+      draggable={stepAPI?.isDraggable}
       onMouseDown={stopPropagation(null, true)}
       ref={stepAPI?.ref}
     >

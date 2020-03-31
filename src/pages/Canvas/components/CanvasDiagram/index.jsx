@@ -6,6 +6,7 @@ import Canvas from '@/components/Canvas';
 import { DragItem } from '@/constants';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
+import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import { ContextMenuContext, EditPermissionContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 
@@ -61,6 +62,7 @@ const CanvasDiagram = ({ viewport }) => {
     >
       <LinkLayer />
       <NodeLayer />
+      <MergeLayer />
       <GroupSelection />
     </Canvas>
   );

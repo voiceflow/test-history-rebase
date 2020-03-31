@@ -70,7 +70,6 @@ class RealtimeCursorOverlay extends AbstractOverlay {
     const nextLocation = [x + moveX, y + moveY];
     this.cursorLocations[tabID] = nextLocation;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       if (!cursorEl) return;
 
@@ -82,7 +81,6 @@ class RealtimeCursorOverlay extends AbstractOverlay {
   fadeCursor(tabID) {
     const cursorEl = this.getElement(tabID);
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       if (!cursorEl) return;
 

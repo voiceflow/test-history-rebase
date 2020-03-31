@@ -3,15 +3,20 @@ import React from 'react';
 import { ThemeContext } from 'styled-components';
 
 import { BlockType } from '@/constants';
-import { useEnableDisable, useHover } from '@/hooks';
-import { Node } from '@/models';
+import { useEnableDisable, useHover, useTeardown } from '@/hooks';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EditPermissionContext, EngineContext, useNode } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EditPermissionContext, EngineContext, ManagerContext, useNode } from '@/pages/Canvas/contexts';
 import { NodeAPI, PortAPI, StepAPI } from '@/pages/Canvas/types';
 import { buildVirtualDOMRect, stopPropagation } from '@/utils/dom';
+import { isInRange } from '@/utils/number';
 
-export const useStepAPI = <T extends HTMLElement>(isForceHighlighted: boolean, withPorts: boolean, stepRef: React.RefObject<T>) => {
+export const useStepAPI = <T extends HTMLElement>(
+  isForceHighlighted: boolean,
+  withPorts: boolean,
+  isDraggable: boolean,
+  stepRef: React.RefObject<T>
+) => {
   const { nodeID, node, isHighlighted, lockOwner } = useNode();
   const editPermission = React.useContext(EditPermissionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
@@ -22,7 +27,7 @@ export const useStepAPI = <T extends HTMLElement>(isForceHighlighted: boolean, w
   const [isHovered, wrapElement, hoverHandlers] = useHover(
     {
       onStart: () => {
-        if (engine.linkCreation.isDrawing && !engine.linkCreation.isSourceNode(nodeID)) {
+        if (engine.linkCreation.isDrawing && !engine.linkCreation.containsSourcePort(node.parentNode!)) {
           if (!inPortID) {
             setLinkWarning();
             return true;
@@ -62,6 +67,7 @@ export const useStepAPI = <T extends HTMLElement>(isForceHighlighted: boolean, w
       withPorts,
       hasLinkWarning,
       isActive,
+      isDraggable,
       isHovered,
       wrapElement,
       handlers: {
@@ -83,52 +89,108 @@ export const useStepAPI = <T extends HTMLElement>(isForceHighlighted: boolean, w
             engine.linkCreation.complete(node.ports.in[0]);
           }
         },
+        onDragStart: async () => {
+          const handleMouseUp = async (event: MouseEvent) => {
+            if (!event.defaultPrevented) {
+              await engine.mergeV2.unmerge();
+            }
+
+            await engine.drag.reset();
+          };
+
+          document.addEventListener('mouseup', handleMouseUp, { once: true });
+
+          await engine.drag.set(nodeID);
+        },
         ...hoverHandlers,
       },
     }),
-    [lockOwner, withPorts, hasLinkWarning, isActive, isHovered, editPermission.canEdit, wrapElement, hoverHandlers]
+    [lockOwner, withPorts, isDraggable, hasLinkWarning, isActive, isHovered, editPermission.canEdit, wrapElement, hoverHandlers]
   );
 };
 
-export const useNodeAPI = <T extends HTMLElement>(nodeID: string, ref: React.RefObject<T>): [boolean, Required<NodeAPI>] => {
+export const useNodeAPI = <T extends HTMLElement>(nodeID: string, ref: React.RefObject<T>) => {
+  const instanceID = React.useMemo(() => cuid(), []);
   const [isHighlighted, setHighlight, clearHighlight] = useEnableDisable();
+  const [isDragging, drag, drop] = useEnableDisable();
   const engine = React.useContext(EngineContext)!;
 
-  return [
-    isHighlighted,
-    React.useMemo<Required<NodeAPI>>(
-      () => ({
-        getPosition: () => {
-          const rect = ref.current!.getBoundingClientRect();
+  return React.useMemo<Required<NodeAPI<T>>>(
+    () => ({
+      instanceID,
+      isHighlighted,
+      isDragging,
+      ref,
+      getPosition: () => {
+        const rect = ref.current!.getBoundingClientRect();
 
-          return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
-        },
-        rename: () => engine.focus.set(nodeID, { renameActiveRevision: cuid() }),
-        setHighlight,
-        clearHighlight,
-      }),
-      [] // cannot have dependencies for engine.expireNode() to function
-    ),
-  ];
+        return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
+      },
+      rename: () => engine.focus.set(nodeID, { renameActiveRevision: cuid() }),
+      setHighlight,
+      clearHighlight,
+      drag,
+      drop,
+    }),
+    [isHighlighted, isDragging]
+  );
 };
 
-export const usePortAPI = (getAnchorPoint: () => DOMRect) =>
-  React.useMemo<PortAPI>(
+export const usePortAPI = (getAnchorPoint: () => DOMRect) => {
+  const instanceID = React.useMemo(() => cuid(), []);
+
+  return React.useMemo<PortAPI>(
     () => ({
+      instanceID,
       getRect: () => {
         const { top, left } = getAnchorPoint();
         return buildVirtualDOMRect([left, top]);
       },
     }),
-    [] // cannot have dependencies for engine.expirePort() to function
+    []
   );
+};
 
-export const useNodeSubscription = (nodeID: string, node: Node, api: NodeAPI) => {
+export const useNodeSubscription = (nodeID: string, api: NodeAPI) => {
   const engine = React.useContext(EngineContext)!;
 
-  React.useEffect(() => {
-    engine.registerNode(node, api);
+  React.useEffect(() => engine.registerNode(nodeID, api), [api]);
 
-    return () => engine.expireNode(nodeID, api);
-  }, []);
+  useTeardown(() => engine.expireNode(nodeID, api.instanceID));
+};
+
+export const useMergeInfo = (index: number) => {
+  const getManager = React.useContext(ManagerContext)!;
+  const engine = React.useContext(EngineContext)!;
+  const { node } = useNode();
+
+  if (engine.drag.hasTarget) {
+    const dragTarget = engine.getNodeByID(engine.drag.target!);
+
+    if (dragTarget.parentNode) {
+      const parentNode = engine.getNodeByID(dragTarget.parentNode);
+      const sourceIndex = parentNode.combinedNodes.indexOf(dragTarget.id);
+
+      return {
+        mustNotBe: node.parentNode === dragTarget.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
+        mustBeFirst: dragTarget.type === BlockType.INTENT,
+        mustBeLast: getManager(dragTarget.type)?.mergeTerminator,
+      };
+    }
+
+    const [firstChildNodeID] = dragTarget.combinedNodes;
+    const firstChildNode = engine.getNodeByID(firstChildNodeID);
+    const lastChildNodeID = dragTarget.combinedNodes[dragTarget.combinedNodes.length - 1];
+    const lastChildNode = engine.getNodeByID(lastChildNodeID);
+
+    return {
+      mustBeFirst: firstChildNode?.type === BlockType.INTENT,
+      mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
+    };
+  }
+
+  return {
+    mustBeFirst: false,
+    mustBeLast: false,
+  };
 };

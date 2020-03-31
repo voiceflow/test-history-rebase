@@ -256,6 +256,10 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -315,7 +319,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -740,6 +744,10 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -799,7 +807,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1228,6 +1236,10 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -1287,7 +1299,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1724,6 +1736,10 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c25 {
   position: absolute;
   top: 6px;
@@ -1783,7 +1799,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2217,6 +2233,10 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c22 {
   position: absolute;
   top: 6px;
@@ -2276,7 +2296,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2692,6 +2712,10 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -2751,7 +2775,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3173,6 +3197,10 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -3232,7 +3260,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3571,6 +3599,10 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -3630,7 +3662,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3996,6 +4028,10 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -4055,7 +4091,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -4480,6 +4516,10 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -4539,7 +4579,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 

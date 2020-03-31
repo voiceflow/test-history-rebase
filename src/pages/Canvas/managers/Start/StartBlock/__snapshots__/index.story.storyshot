@@ -255,6 +255,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -338,7 +342,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   padding: 0 5px;
 }
 
-.c7 > *:not(:last-child) {
+.c7 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -414,9 +418,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     >
       <div
         className="c8"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -512,9 +518,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     >
       <div
         className="c19"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -554,9 +562,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       </div>
       <div
         className="c19"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -805,6 +815,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -864,7 +878,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -927,9 +941,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
     >
       <div
         className="c5"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -1174,6 +1190,10 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -1233,7 +1253,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1296,9 +1316,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
     >
       <div
         className="c5"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -1535,6 +1557,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -1594,7 +1620,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1657,9 +1683,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
     >
       <div
         className="c5"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -1961,6 +1989,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   opacity: 0.7;
 }
 
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -2044,7 +2076,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   padding: 0 5px;
 }
 
-.c7 > *:not(:last-child) {
+.c7 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2120,9 +2152,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     >
       <div
         className="c8"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -2218,9 +2252,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     >
       <div
         className="c19"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
@@ -2260,9 +2296,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       </div>
       <div
         className="c19"
+        draggable={false}
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
+        onDragStart={[Function]}
         onMouseDown={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}

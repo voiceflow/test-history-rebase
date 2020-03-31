@@ -1,4 +1,3 @@
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -71,14 +70,14 @@ export const BLOCK_OPTIONS: BlockMenuOption[] = [
 
       if (!node) return false;
 
-      return engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN) ? node.type === BlockType.COMBINED : node.type !== BlockType.COMMAND;
+      return engine.isBlockRedesignEnabled() ? node.type === BlockType.COMBINED : node.type !== BlockType.COMMAND;
     },
   },
   {
     label: 'Block Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
-    shouldRender: (_, { engine }) => engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN),
+    shouldRender: (_, { engine }) => engine.isBlockRedesignEnabled(),
   },
   {
     label: 'Delete Block',

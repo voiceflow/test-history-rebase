@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import { withEditPermission, withEngine, withLink, withPlatform } from '@/pages/Canvas/contexts';
 import { compose } from '@/utils/functional';
@@ -61,7 +60,7 @@ export class Link extends React.PureComponent {
   }
 
   get virtualPoints() {
-    if (!this.points || !this.props.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+    if (!this.points || !this.props.engine.isBlockRedesignEnabled()) {
       return this.points;
     }
 
@@ -83,7 +82,6 @@ export class Link extends React.PureComponent {
     const pathEl = this.pathRef.current;
     const hiddenPathEl = this.hiddenPathRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       const nextPath = buildPath(nextPoints);
 
@@ -93,9 +91,11 @@ export class Link extends React.PureComponent {
   }
 
   onMouseEnter = () => {
-    if (!this.isDraggingNode) {
+    const { linkID, engine } = this.props;
+
+    if (!this.isDraggingNode && !engine.linkCreation.isDrawing) {
       this.setState({ isHovering: true });
-      this.props.engine.link.setHighlight(this.props.linkID);
+      engine.link.setHighlight(linkID);
     }
   };
 
@@ -124,7 +124,7 @@ export class Link extends React.PureComponent {
   render() {
     const { linkID, points, editPermission, platform, engine, isActive } = this.props;
     const { isHovering, pointsChanged } = this.state;
-    const isBlockRedesignEnabled = engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN);
+    const isBlockRedesignEnabled = engine.isBlockRedesignEnabled();
 
     if (pointsChanged) {
       this.points = points;

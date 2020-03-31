@@ -1,7 +1,7 @@
 import { MemberIcon } from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { css, styled, transition } from '@/hocs';
-import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
+import { ACTIVE_NODES_CANVAS_CLASSNAME, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 import { Theme } from '@/styles/theme';
 
 import { BLOCK_CONTAINER_PADDING } from '../constants';
@@ -67,9 +67,17 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   ${stateStyles}
 
   .${ACTIVE_NODES_CANVAS_CLASSNAME} & {
-    ${({ state }) => !ACTIVE_STATES.includes(state) && disabledStyles}
-  }
+    ${({ state }) =>
+      !ACTIVE_STATES.includes(state) &&
+      css`
+        ${disabledStyles}
 
+        &:not(.${MERGE_ACTIVE_NODE_CLASSNAME}):hover {
+          opacity: 1;
+        }
+      `}
+  }
+  
   ${MemberIcon} {
     position: absolute;
     top: 6px;

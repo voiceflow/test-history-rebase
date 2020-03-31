@@ -1,7 +1,8 @@
+import cuid from 'cuid';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useTeardown } from '@/hooks';
 import { EditPermissionContext, EngineContext, useNode } from '@/pages/Canvas/contexts';
 import { PortAPI } from '@/pages/Canvas/types';
 import { swallowEvent } from '@/utils/dom';
@@ -32,20 +33,20 @@ export const useLinkTerminal = (portID: string): Record<'onStart' | 'onEnd', (ev
   return { onStart, onEnd };
 };
 
-export const usePortAPI = <T extends HTMLElement>(ref: React.RefObject<T>): [boolean, Required<PortAPI>] => {
+export const usePortAPI = <T extends HTMLElement>(ref: React.RefObject<T>) => {
+  const instanceID = React.useMemo(() => cuid(), []);
   const [isHighlighted, setHighlight, clearHighlight] = useEnableDisable();
 
-  return [
-    isHighlighted,
-    React.useMemo<Required<PortAPI>>(
-      () => ({
-        getRect: () => ref.current!.getBoundingClientRect(),
-        setHighlight,
-        clearHighlight,
-      }),
-      []
-    ),
-  ];
+  return React.useMemo<Required<PortAPI>>(
+    () => ({
+      instanceID,
+      getRect: () => ref.current!.getBoundingClientRect(),
+      isHighlighted,
+      setHighlight,
+      clearHighlight,
+    }),
+    [isHighlighted]
+  );
 };
 
 export const usePortSubscription = (portID: string, api: PortAPI) => {
@@ -53,7 +54,7 @@ export const usePortSubscription = (portID: string, api: PortAPI) => {
 
   React.useEffect(() => {
     engine.registerPort(portID, api);
+  }, [api]);
 
-    return () => engine.expirePort(portID, api);
-  }, []);
+  useTeardown(() => engine.expirePort(portID, api.instanceID));
 };

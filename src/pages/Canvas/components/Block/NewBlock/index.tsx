@@ -25,13 +25,15 @@ export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant
   lockOwner?: LockOwnerType | unknown;
   hasLinkWarning?: boolean;
   blockColor?: string;
+  showMergeOverlay?: boolean;
   updateName?: (name: string) => void;
   updateBlockColor?: (color: string) => void;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
 };
 
-export type NewBlockAPI = {
+export type NewBlockAPI<T extends HTMLElement = HTMLElement> = {
+  ref: React.RefObject<T>;
   getBoundingClientRect: () => DOMRect;
   rename: () => void;
   updateBlockColor: (color: string) => void;
@@ -61,6 +63,7 @@ const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWi
     ref,
     () => ({
       api: {
+        ref: rootRef,
         getBoundingClientRect: () => rootRef.current!.getBoundingClientRect(),
         rename: () => {
           setIsEditing(true);

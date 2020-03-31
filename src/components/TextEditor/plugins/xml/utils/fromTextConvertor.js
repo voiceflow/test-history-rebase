@@ -27,7 +27,7 @@ function removeFunkyCharactersAndUnsupportedTags(value, tags) {
     .replace(REGEX_ZWS, '')
     .replace(REGEX_SINGLE_TAG, '<$1$2></$1>')
     .replace(createSupportedOpenTagsRegex(Object.keys(tags)), '&lt;')
-    .replace(createSupportedCloseTagsRegex(Object.keys(tags)), '&lt;');
+    .replace(createSupportedCloseTagsRegex(Object.keys(tags)), '&lt;/');
 }
 
 function getSafeBodyFromHTML(html) {

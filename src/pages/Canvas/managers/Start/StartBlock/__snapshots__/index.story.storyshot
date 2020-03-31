@@ -240,6 +240,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -754,6 +755,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1104,6 +1106,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1454,6 +1457,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1873,6 +1877,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }

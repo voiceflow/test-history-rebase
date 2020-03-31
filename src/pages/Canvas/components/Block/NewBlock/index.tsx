@@ -23,6 +23,7 @@ export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant
     children?: React.ReactNode;
   }[];
   lockOwner?: LockOwnerType | unknown;
+  hasLinkWarning?: boolean;
   blockColor?: string;
   updateName?: (name: string) => void;
   updateBlockColor?: (color: string) => void;
@@ -47,6 +48,7 @@ const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWi
     updateBlockColor,
     onMouseEnter,
     onMouseLeave,
+    hasLinkWarning,
     ...props
   },
   ref
@@ -73,7 +75,7 @@ const NewBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWi
   );
 
   return (
-    <Container variant={variant} state={state} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={rootRef}>
+    <Container variant={variant} state={state} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={rootRef} hasLinkWarning={hasLinkWarning}>
       {lockOwner && <LockOwner user={lockOwner} />}
       <Section variant={variant} state={state} isEditing={isEditing} setIsEditing={setIsEditing} titleRef={titleRef} {...props}>
         {children}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BlockState } from '@/constants/canvas';
-import { useHover } from '@/hooks';
+import { useEnableDisable, useHover } from '@/hooks';
 import Block, { HEADER_HEIGHT, NewBlockAPI } from '@/pages/Canvas/components/Block/NewBlock';
 import { EngineContext, NodeIDProvider, useNode, useNodeData } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
@@ -15,12 +15,14 @@ export type NodeBlockProps = {
   isHighlighted: boolean;
 };
 
-const getBlockState = (props: NodeBlockProps) => {
+const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: any) => {
+  if (isHovered && hasLinkWarning) return BlockState.DISABLED;
+
   if (props.isFocused) return BlockState.ACTIVE;
 
   if (props.isSelected) return BlockState.SELECTED;
 
-  if (props.isHighlighted) return BlockState.HOVERED;
+  if (props.isHighlighted || isHovered) return BlockState.HOVERED;
 
   return BlockState.REGULAR;
 };
@@ -36,11 +38,17 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
     // account for the correct spacing for the header
     return buildVirtualDOMRect([x, y + 4 * engine.canvas.getZoom()]);
   }, []);
-
+  const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const [isHovered, wrapElement, hoverHandlers] = useHover(
     {
       onStart: () => {
         if (engine.linkCreation.isDrawing && !node.combinedNodes.some((childNodeID) => engine.linkCreation.isSourceNode(childNodeID))) {
+          // added inPortID for the cases if combined block itself has no IN port
+          if (!inPortID || engine.getNodeByID(node.combinedNodes[0]).ports.in.length === 0) {
+            setLinkWarning();
+            return true;
+          }
+
           const { x, y } = getAnchorPoint();
 
           engine.linkCreation.pin(inPortID, engine.canvas.transformPoint([x, y + (HEADER_HEIGHT / 2) * engine.canvas.getZoom()]));
@@ -50,7 +58,14 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
 
         return false;
       },
-      onEnd: () => engine.linkCreation.unpin(),
+      onEnd: () => {
+        if (engine.getNodeByID(node.combinedNodes[0]).ports.in.length === 0) {
+          clearLinkWarning();
+          return;
+        }
+
+        engine.linkCreation.unpin();
+      },
       cleanupOnOverride: false,
     },
     []
@@ -61,16 +76,17 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
 
   return (
     <>
-      {inPortID && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
+      {inPortID && !hasLinkWarning && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
       {wrapElement(
         <Block
           name={data.name}
-          state={isHovered ? BlockState.HOVERED : getBlockState(props)}
+          state={getBlockState(props, { isHovered, hasLinkWarning })}
           updateName={updateName}
           updateBlockColor={updateBlockColor}
           lockOwner={lockOwner}
           ref={ref}
           canEditTitle
+          hasLinkWarning={hasLinkWarning}
           {...hoverHandlers}
         >
           {node.combinedNodes.map((stepNodeID, index) => (

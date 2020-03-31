@@ -237,6 +237,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -702,6 +703,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1171,6 +1173,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1631,6 +1634,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -2089,6 +2093,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -2545,6 +2550,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -3007,6 +3013,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -3386,6 +3393,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -3800,6 +3808,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -4265,6 +4274,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }

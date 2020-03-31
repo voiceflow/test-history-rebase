@@ -186,6 +186,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -537,6 +538,7 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -896,6 +898,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1247,6 +1250,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1607,6 +1611,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -1973,6 +1978,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -2324,6 +2330,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
@@ -2654,6 +2661,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
   opacity: 1;
+  border-color: none;
   -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
   transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }

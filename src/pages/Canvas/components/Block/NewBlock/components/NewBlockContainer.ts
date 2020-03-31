@@ -14,6 +14,7 @@ type NewBlockContainerProps = {
   state: BlockState;
   variant: BlockVariant;
   blockColor?: string;
+  hasLinkWarning?: boolean;
 };
 
 const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme: Theme }) => {
@@ -58,6 +59,7 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   box-shadow: 0 0 0 1.3px ${({ variant, theme }) => theme.components.block.variants[variant].shadowColor};
   position: relative;
   opacity: 1;
+  border-color: none;
   ${transition('box-shadow', 'opacity')}
 
   ${stateStyles}
@@ -74,7 +76,11 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
     z-index: 99;
   }
 
-  
+  ${({ hasLinkWarning }) =>
+    hasLinkWarning &&
+    css`
+      cursor: not-allowed;
+    `}
 `;
 
 export default NewBlockContainer;

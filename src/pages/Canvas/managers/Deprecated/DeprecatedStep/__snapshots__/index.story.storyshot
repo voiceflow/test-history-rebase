@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -106,7 +106,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -116,7 +116,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -128,6 +128,12 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #8da2b5;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .c0 {
@@ -154,7 +160,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c17 {
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -300,7 +306,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
             <span
               className="c13"
             >
-              Deprecated
+              <span
+                className="c14"
+              >
+                Deprecated
+              </span>
             </span>
           </div>
         </div>
@@ -324,11 +334,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -416,7 +426,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -426,7 +436,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -438,6 +448,12 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #8da2b5;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .c0 {
@@ -464,7 +480,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c17 {
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -610,7 +626,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
             <span
               className="c13"
             >
-              Deprecated
+              <span
+                className="c14"
+              >
+                Deprecated
+              </span>
             </span>
           </div>
         </div>

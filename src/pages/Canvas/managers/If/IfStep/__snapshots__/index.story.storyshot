@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/If Step Active 1`] = `
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,15 +40,15 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c22 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -62,11 +62,11 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c17 {
+.c18 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -132,7 +132,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c24 .c6:not(:first-of-type) {
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -159,7 +159,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c25 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -179,7 +179,13 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   color: #62778c;
 }
 
-.c19 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -191,7 +197,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -209,7 +215,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c21 {
+.c22 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -221,7 +227,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   cursor: copy;
 }
 
-.c21::before {
+.c22::before {
   position: absolute;
   display: block;
   content: '';
@@ -263,7 +269,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c25 {
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -330,7 +336,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   position: relative;
 }
 
-.c14 .c15 {
+.c15 .c16 {
   display: inline;
   padding: 0;
   border: none;
@@ -420,115 +426,38 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <div
-                className="c14 expressionfy"
+              <span
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
-                  <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
-                  >
-                    <span
-                      className="c17 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgLess"
-                        />
-                      </span>
-                    </span>
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
-            </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14 expressionfy"
-              >
-                 
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math value"
-                  >
-                    4
-                  </span>
-                   
-                  <span
-                    className="c17 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgDivide"
-                      />
-                    </span>
-                  </span>
                    
                   <span
                     className="brackets"
                   >
                     <span
-                      className="parenthesis"
+                      className="c16 c17"
                     >
-                      ( 
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      5
+                      {timestamp}
                     </span>
                     <span>
                        
                     </span>
                     <span
-                      className="or"
+                      className="less"
                     >
                       <span
-                        className="c17 plus"
+                        className="c18 plus"
                       >
-                        <span>
-                          OR
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
                         </span>
                       </span>
                     </span>
@@ -536,27 +465,16 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                        
                     </span>
                     <span
-                      className="math brackets"
+                      className="math value"
                     >
-                      
-                      <span
-                        className="c15 c16"
-                      >
-                        {sessions}
-                      </span>
-                      .includes('en')
-                    </span>
-                    <span
-                      className="parenthesis"
-                    >
-                       )
+                      212
                     </span>
                   </span>
-                </span>
-              </div>
+                </div>
+              </span>
             </span>
             <div
-              className="c19"
+              className="c20"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -570,51 +488,151 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              <div
-                className="c14 expressionfy"
+              <span
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
+                   
                   <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
+                    className="math brackets"
                   >
                     <span
-                      className="c17 plus"
+                      className="math value"
+                    >
+                      4
+                    </span>
+                     
+                    <span
+                      className="c18 plus"
                     >
                       <span
-                        className="c11 c18"
+                        className="c11 c19"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgLess"
+                          data-file-name="SvgDivide"
                         />
                       </span>
                     </span>
-                  </span>
-                  <span>
                      
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c16 c17"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
+                    </span>
                   </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
+                </div>
+              </span>
             </span>
             <div
-              className="c19"
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <span
+                className="c14"
+              >
+                <div
+                  className="c15 expressionfy"
+                >
+                   
+                  <span
+                    className="brackets"
+                  >
+                    <span
+                      className="c16 c17"
+                    >
+                      {timestamp}
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="less"
+                    >
+                      <span
+                        className="c18 plus"
+                      >
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="math value"
+                    >
+                      212
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </span>
+            <div
+              className="c20"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -630,7 +648,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c20"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -642,10 +660,14 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              Else
+              <span
+                className="c14"
+              >
+                Else
+              </span>
             </span>
             <div
-              className="c21"
+              className="c22"
               color="#8da2b5"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -659,14 +681,14 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -685,11 +707,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -777,7 +799,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -787,7 +809,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -801,7 +823,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   color: #8da2b5;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -811,7 +833,13 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -823,7 +851,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -865,7 +893,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1011,7 +1039,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             <span
               className="c13"
             >
-              Add IF statement
+              <span
+                className="c14"
+              >
+                Add IF statement
+              </span>
             </span>
           </div>
         </div>
@@ -1025,7 +1057,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -1035,12 +1067,16 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Else
+              <span
+                className="c14"
+              >
+                Else
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#8da2b5"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1054,27 +1090,27 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1093,15 +1129,15 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c22 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -1115,11 +1151,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c17 {
+.c18 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -1208,7 +1244,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c25 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1218,7 +1254,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   z-index: 99;
 }
 
-.c24 .c6:not(:first-of-type) {
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1232,7 +1268,13 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   color: #62778c;
 }
 
-.c19 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1244,7 +1286,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -1262,7 +1304,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border: 4px solid white;
 }
 
-.c21 {
+.c22 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1274,7 +1316,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   cursor: copy;
 }
 
-.c21::before {
+.c22::before {
   position: absolute;
   display: block;
   content: '';
@@ -1316,7 +1358,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c25 {
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1383,7 +1425,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   position: relative;
 }
 
-.c14 .c15 {
+.c15 .c16 {
   display: inline;
   padding: 0;
   border: none;
@@ -1473,115 +1515,38 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <div
-                className="c14 expressionfy"
+              <span
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
-                  <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
-                  >
-                    <span
-                      className="c17 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgLess"
-                        />
-                      </span>
-                    </span>
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
-            </span>
-            <div
-              className="c19"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14 expressionfy"
-              >
-                 
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math value"
-                  >
-                    4
-                  </span>
-                   
-                  <span
-                    className="c17 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgDivide"
-                      />
-                    </span>
-                  </span>
                    
                   <span
                     className="brackets"
                   >
                     <span
-                      className="parenthesis"
+                      className="c16 c17"
                     >
-                      ( 
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      5
+                      {timestamp}
                     </span>
                     <span>
                        
                     </span>
                     <span
-                      className="or"
+                      className="less"
                     >
                       <span
-                        className="c17 plus"
+                        className="c18 plus"
                       >
-                        <span>
-                          OR
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
                         </span>
                       </span>
                     </span>
@@ -1589,27 +1554,16 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                        
                     </span>
                     <span
-                      className="math brackets"
+                      className="math value"
                     >
-                      
-                      <span
-                        className="c15 c16"
-                      >
-                        {sessions}
-                      </span>
-                      .includes('en')
-                    </span>
-                    <span
-                      className="parenthesis"
-                    >
-                       )
+                      212
                     </span>
                   </span>
-                </span>
-              </div>
+                </div>
+              </span>
             </span>
             <div
-              className="c19"
+              className="c20"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1623,51 +1577,151 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              <div
-                className="c14 expressionfy"
+              <span
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
+                   
                   <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
+                    className="math brackets"
                   >
                     <span
-                      className="c17 plus"
+                      className="math value"
+                    >
+                      4
+                    </span>
+                     
+                    <span
+                      className="c18 plus"
                     >
                       <span
-                        className="c11 c18"
+                        className="c11 c19"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgLess"
+                          data-file-name="SvgDivide"
                         />
                       </span>
                     </span>
-                  </span>
-                  <span>
                      
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c16 c17"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
+                    </span>
                   </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
+                </div>
+              </span>
             </span>
             <div
-              className="c19"
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <span
+                className="c14"
+              >
+                <div
+                  className="c15 expressionfy"
+                >
+                   
+                  <span
+                    className="brackets"
+                  >
+                    <span
+                      className="c16 c17"
+                    >
+                      {timestamp}
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="less"
+                    >
+                      <span
+                        className="c18 plus"
+                      >
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="math value"
+                    >
+                      212
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </span>
+            <div
+              className="c20"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1683,7 +1737,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c10"
             >
               <span
-                className="c11 c20"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -1695,10 +1749,14 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              Else
+              <span
+                className="c14"
+              >
+                Else
+              </span>
             </span>
             <div
-              className="c21"
+              className="c22"
               color="#8da2b5"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1712,27 +1770,27 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Single 1`] = `
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1751,15 +1809,15 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c22 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c18 {
+.c19 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -1773,11 +1831,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   text-align: center;
 }
 
-.c18.default {
+.c19.default {
   color: #62778c;
 }
 
-.c15 {
+.c16 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -1866,7 +1924,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c25 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1876,7 +1934,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   z-index: 99;
 }
 
-.c24 .c6:not(:first-of-type) {
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1890,7 +1948,13 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   color: #62778c;
 }
 
-.c19 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1902,7 +1966,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -1920,7 +1984,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border: 4px solid white;
 }
 
-.c21 {
+.c22 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1932,7 +1996,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   cursor: copy;
 }
 
-.c21::before {
+.c22::before {
   position: absolute;
   display: block;
   content: '';
@@ -1974,7 +2038,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c25 {
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2041,7 +2105,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   position: relative;
 }
 
-.c14 .c17 {
+.c15 .c18 {
   display: inline;
   padding: 0;
   border: none;
@@ -2131,85 +2195,89 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              <div
-                className="c14 expressionfy"
+              <span
+                className="c14"
               >
-                 
-                <span
-                  className="math brackets"
+                <div
+                  className="c15 expressionfy"
                 >
-                  <span
-                    className="math value"
-                  >
-                    4
-                  </span>
                    
                   <span
-                    className="c15 plus"
+                    className="math brackets"
                   >
-                    <span
-                      className="c11 c16"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgDivide"
-                      />
-                    </span>
-                  </span>
-                   
-                  <span
-                    className="brackets"
-                  >
-                    <span
-                      className="parenthesis"
-                    >
-                      ( 
-                    </span>
                     <span
                       className="math value"
                     >
-                      5
+                      4
                     </span>
-                    <span>
-                       
-                    </span>
+                     
                     <span
-                      className="or"
+                      className="c16 plus"
                     >
                       <span
-                        className="c15 plus"
+                        className="c11 c17"
+                        color="currentColor"
+                        size={16}
                       >
-                        <span>
-                          OR
+                        <svg
+                          data-file-name="SvgDivide"
+                        />
+                      </span>
+                    </span>
+                     
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c16 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
                         </span>
                       </span>
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      className="math brackets"
-                    >
-                      
-                      <span
-                        className="c17 c18"
-                      >
-                        {sessions}
+                      <span>
+                         
                       </span>
-                      .includes('en')
-                    </span>
-                    <span
-                      className="parenthesis"
-                    >
-                       )
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c18 c19"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
                     </span>
                   </span>
-                </span>
-              </div>
+                </div>
+              </span>
             </span>
             <div
-              className="c19"
+              className="c20"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -2225,7 +2293,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
               className="c10"
             >
               <span
-                className="c11 c20"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -2237,10 +2305,14 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              Else
+              <span
+                className="c14"
+              >
+                Else
+              </span>
             </span>
             <div
-              className="c21"
+              className="c22"
               color="#8da2b5"
               onClick={[Function]}
               onMouseDown={[Function]}

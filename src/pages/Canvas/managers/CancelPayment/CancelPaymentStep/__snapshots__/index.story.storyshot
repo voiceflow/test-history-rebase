@@ -14,24 +14,24 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   height: inherit;
 }
 
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #fff;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #6e849a;
 }
 
@@ -119,7 +119,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c21 {
+.c5 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -129,11 +129,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   z-index: 99;
 }
 
-.c20 .c6:not(:first-of-type) {
+.c21 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -153,7 +153,13 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   color: #62778c;
 }
 
-.c15 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -165,7 +171,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -183,7 +189,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -195,7 +201,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   cursor: copy;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -237,7 +243,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c21 {
+.c0 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -383,7 +389,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
             <span
               className="c13"
             >
-              product name
+              <span
+                className="c14"
+              >
+                product name
+              </span>
             </span>
           </div>
         </div>
@@ -407,12 +417,16 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c14"
+              className="c15"
             >
-              Declined
+              <span
+                className="c14"
+              >
+                Declined
+              </span>
             </span>
             <div
-              className="c15"
+              className="c16"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -425,7 +439,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c17"
                 color="#279745"
                 size={16}
               >
@@ -435,12 +449,16 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c14"
+              className="c15"
             >
-              Successfully Cancelled
+              <span
+                className="c14"
+              >
+                Successfully Cancelled
+              </span>
             </span>
             <div
-              className="c17"
+              className="c18"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -467,24 +485,24 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   height: inherit;
 }
 
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #fff;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #6e849a;
 }
 
@@ -572,7 +590,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c21 {
+.c5 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -582,11 +600,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   z-index: 99;
 }
 
-.c20 .c6:not(:first-of-type) {
+.c21 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c14 {
+.c15 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -606,7 +624,13 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   color: #62778c;
 }
 
-.c15 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -618,7 +642,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   cursor: copy;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -636,7 +660,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border: 4px solid white;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -648,7 +672,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   cursor: copy;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -690,7 +714,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c21 {
+.c0 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -836,7 +860,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
             <span
               className="c13"
             >
-              New York Times Quiz Pack
+              <span
+                className="c14"
+              >
+                New York Times Quiz Pack
+              </span>
             </span>
           </div>
         </div>
@@ -860,12 +888,16 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               </span>
             </div>
             <span
-              className="c14"
+              className="c15"
             >
-              Declined
+              <span
+                className="c14"
+              >
+                Declined
+              </span>
             </span>
             <div
-              className="c15"
+              className="c16"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -878,7 +910,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c17"
                 color="#279745"
                 size={16}
               >
@@ -888,12 +920,16 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               </span>
             </div>
             <span
-              className="c14"
+              className="c15"
             >
-              Successfully Cancelled
+              <span
+                className="c14"
+              >
+                Successfully Cancelled
+              </span>
             </span>
             <div
-              className="c17"
+              className="c18"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}

@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -27,11 +27,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -96,7 +96,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -123,7 +123,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -133,7 +133,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   z-index: 99;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -153,7 +153,13 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -165,7 +171,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -207,7 +213,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -353,7 +359,11 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
             <span
               className="c13"
             >
-              How_to_train_your_dragon.mp3
+              <span
+                className="c14"
+              >
+                How_to_train_your_dragon.mp3
+              </span>
             </span>
           </div>
         </div>
@@ -367,7 +377,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#3a5999"
                 size={16}
               >
@@ -377,12 +387,16 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Next
+              <span
+                className="c14"
+              >
+                Next
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -394,12 +408,16 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Previous
+              <span
+                className="c14"
+              >
+                Previous
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -412,14 +430,14 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -438,11 +456,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -530,7 +548,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -540,11 +558,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -564,7 +582,13 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -576,7 +600,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -617,7 +641,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -763,7 +787,11 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
             <span
               className="c13"
             >
-              How_to_train_your_dragon.mp3
+              <span
+                className="c14"
+              >
+                How_to_train_your_dragon.mp3
+              </span>
             </span>
           </div>
         </div>
@@ -777,7 +805,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#3a5999"
                 size={16}
               >
@@ -787,12 +815,16 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Next
+              <span
+                className="c14"
+              >
+                Next
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -804,12 +836,16 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Previous
+              <span
+                className="c14"
+              >
+                Previous
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -822,14 +858,14 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -848,11 +884,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -940,7 +976,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -950,11 +986,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -974,7 +1010,13 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   color: #8da2b5;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -986,7 +1028,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1028,7 +1070,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1174,7 +1216,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
             <span
               className="c13"
             >
-              Add an Audio file, URL or variable
+              <span
+                className="c14"
+              >
+                Add an Audio file, URL or variable
+              </span>
             </span>
           </div>
         </div>
@@ -1188,7 +1234,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#3a5999"
                 size={16}
               >
@@ -1198,12 +1244,16 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Next
+              <span
+                className="c14"
+              >
+                Next
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1215,12 +1265,16 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Previous
+              <span
+                className="c14"
+              >
+                Previous
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1246,11 +1300,11 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1338,7 +1392,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c18 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1348,7 +1402,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   z-index: 99;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1363,6 +1417,12 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
 }
 
 .c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1374,7 +1434,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -1416,7 +1476,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c18 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1562,10 +1622,14 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
             <span
               className="c13"
             >
-              Add an Audio file, URL or variable
+              <span
+                className="c14"
+              >
+                Add an Audio file, URL or variable
+              </span>
             </span>
             <div
-              className="c14"
+              className="c15"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1578,14 +1642,14 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1604,11 +1668,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -1696,7 +1760,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1706,11 +1770,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1730,7 +1794,13 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1742,7 +1812,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1784,7 +1854,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1930,7 +2000,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
             <span
               className="c13"
             >
-              How_to_train_your_dragon.mp3
+              <span
+                className="c14"
+              >
+                How_to_train_your_dragon.mp3
+              </span>
             </span>
           </div>
         </div>
@@ -1944,7 +2018,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#3a5999"
                 size={16}
               >
@@ -1954,12 +2028,16 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Next
+              <span
+                className="c14"
+              >
+                Next
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1971,12 +2049,16 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Previous
+              <span
+                className="c14"
+              >
+                Previous
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1989,14 +2071,14 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3a5999;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -2015,11 +2097,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -2107,7 +2189,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2117,11 +2199,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2141,7 +2223,13 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -2153,7 +2241,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -2195,7 +2283,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c20 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2341,7 +2429,11 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
             <span
               className="c13"
             >
-              How_to_train_your_dragon.mp3
+              <span
+                className="c14"
+              >
+                How_to_train_your_dragon.mp3
+              </span>
             </span>
           </div>
         </div>
@@ -2355,7 +2447,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#3a5999"
                 size={16}
               >
@@ -2365,12 +2457,16 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Next
+              <span
+                className="c14"
+              >
+                Next
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -2382,12 +2478,16 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Previous
+              <span
+                className="c14"
+              >
+                Previous
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -2399,12 +2499,16 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
               className="c10"
             />
             <span
-              className="c15"
+              className="c16"
             >
-              Pause
+              <span
+                className="c14"
+              >
+                Pause
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />

@@ -27,24 +27,24 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   height: inherit;
 }
 
-.c19 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c19 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c21 .c4 {
+.c22 .c4 {
   color: #fff;
 }
 
-.c22 .c4 {
+.c23 .c4 {
   color: #6e849a;
 }
 
@@ -132,7 +132,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c8 .c23 {
+.c8 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -142,7 +142,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -161,11 +161,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   position: relative;
 }
 
-.c18 .c9:not(:first-of-type) {
+.c19 .c9:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c23 {
+.c19 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -185,21 +185,23 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #132144;
 }
 
-.c20 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
 }
 
-.c20:hover {
+.c21 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c21:hover {
   color: #4d8de6;
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -211,7 +213,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -253,7 +255,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c23 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -263,7 +265,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.c17 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -442,10 +444,14 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
             <span
               className="c15"
             >
-              Alexa, open Headspace
+              <span
+                className="c16"
+              >
+                Alexa, open Headspace
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -458,7 +464,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     className="c1"
   >
     <div
-      className="c17"
+      className="c18"
     >
       <div
         className="c6"
@@ -505,7 +511,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
       className="c7"
     >
       <div
-        className="c18"
+        className="c19"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -524,7 +530,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               className="c13"
             >
               <span
-                className="c4 c19"
+                className="c4 c20"
                 color="#3c6997"
                 size={16}
               >
@@ -534,16 +540,20 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               </span>
             </div>
             <span
-              className="c20"
-              onClick={[Function]}
+              className="c15"
             >
-              Help
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Help
+              </span>
             </span>
           </div>
         </div>
       </div>
       <div
-        className="c18"
+        className="c19"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -562,7 +572,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               className="c13"
             >
               <span
-                className="c4 c19"
+                className="c4 c20"
                 color="#3c6997"
                 size={16}
               >
@@ -572,10 +582,14 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
               </span>
             </div>
             <span
-              className="c20"
-              onClick={[Function]}
+              className="c15"
             >
-              Stop
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Stop
+              </span>
             </span>
           </div>
         </div>
@@ -599,11 +613,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -691,7 +705,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c18 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -701,7 +715,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -716,6 +730,12 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -727,7 +747,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -768,7 +788,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c18 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -920,10 +940,14 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
             <span
               className="c13"
             >
-              Conversation continues here
+              <span
+                className="c14"
+              >
+                Conversation continues here
+              </span>
             </span>
             <div
-              className="c14"
+              className="c15"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -949,11 +973,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1041,7 +1065,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c18 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1051,7 +1075,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   z-index: 99;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1066,6 +1090,12 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 }
 
 .c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1077,7 +1107,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -1119,7 +1149,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c18 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1271,10 +1301,14 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
             <span
               className="c13"
             >
-              Conversation continues here
+              <span
+                className="c14"
+              >
+                Conversation continues here
+              </span>
             </span>
             <div
-              className="c14"
+              className="c15"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1300,11 +1334,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1392,7 +1426,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c18 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1402,7 +1436,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
-.c17 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1417,6 +1451,12 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1428,7 +1468,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   cursor: copy;
 }
 
-.c14::before {
+.c15::before {
   position: absolute;
   display: block;
   content: '';
@@ -1470,7 +1510,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c18 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1622,10 +1662,14 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
             <span
               className="c13"
             >
-              Conversation continues here
+              <span
+                className="c14"
+              >
+                Conversation continues here
+              </span>
             </span>
             <div
-              className="c14"
+              className="c15"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1664,24 +1708,24 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   height: inherit;
 }
 
-.c19 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c19 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c21 .c4 {
+.c22 .c4 {
   color: #fff;
 }
 
-.c22 .c4 {
+.c23 .c4 {
   color: #6e849a;
 }
 
@@ -1769,7 +1813,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c8 .c23 {
+.c8 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1779,7 +1823,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1798,11 +1842,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   position: relative;
 }
 
-.c18 .c9:not(:first-of-type) {
+.c19 .c9:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c23 {
+.c19 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1822,21 +1866,23 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #132144;
 }
 
-.c20 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
 }
 
-.c20:hover {
+.c21 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c21:hover {
   color: #4d8de6;
 }
 
-.c16 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1848,7 +1894,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1890,7 +1936,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c23 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1900,7 +1946,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.c17 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2079,10 +2125,14 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
             <span
               className="c15"
             >
-              Hey Google, start Headspace
+              <span
+                className="c16"
+              >
+                Hey Google, start Headspace
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -2095,7 +2145,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     className="c1"
   >
     <div
-      className="c17"
+      className="c18"
     >
       <div
         className="c6"
@@ -2142,7 +2192,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
       className="c7"
     >
       <div
-        className="c18"
+        className="c19"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2161,7 +2211,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               className="c13"
             >
               <span
-                className="c4 c19"
+                className="c4 c20"
                 color="#3c6997"
                 size={16}
               >
@@ -2171,16 +2221,20 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               </span>
             </div>
             <span
-              className="c20"
-              onClick={[Function]}
+              className="c15"
             >
-              Help
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Help
+              </span>
             </span>
           </div>
         </div>
       </div>
       <div
-        className="c18"
+        className="c19"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2199,7 +2253,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               className="c13"
             >
               <span
-                className="c4 c19"
+                className="c4 c20"
                 color="#3c6997"
                 size={16}
               >
@@ -2209,10 +2263,14 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
               </span>
             </div>
             <span
-              className="c20"
-              onClick={[Function]}
+              className="c15"
             >
-              Stop
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Stop
+              </span>
             </span>
           </div>
         </div>

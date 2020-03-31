@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,11 +40,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -109,7 +109,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -136,7 +136,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -146,7 +146,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   z-index: 99;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,7 +166,13 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -178,7 +184,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -196,7 +202,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -208,7 +214,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -250,7 +256,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -396,7 +402,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
             <span
               className="c13"
             >
-              Bulk order reminder
+              <span
+                className="c14"
+              >
+                Bulk order reminder
+              </span>
             </span>
           </div>
         </div>
@@ -410,7 +420,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -420,12 +430,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              No Access
+              <span
+                className="c14"
+              >
+                No Access
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -438,7 +452,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -448,12 +462,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <span
+                className="c14"
+              >
+                Success
+              </span>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -467,27 +485,27 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -506,11 +524,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -598,7 +616,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -608,11 +626,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -632,7 +650,13 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -644,7 +668,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -661,7 +685,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -673,7 +697,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -714,7 +738,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -860,7 +884,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             <span
               className="c13"
             >
-              Bulk order reminder
+              <span
+                className="c14"
+              >
+                Bulk order reminder
+              </span>
             </span>
           </div>
         </div>
@@ -874,7 +902,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -884,12 +912,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              No Access
+              <span
+                className="c14"
+              >
+                No Access
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -902,7 +934,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -912,12 +944,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <span
+                className="c14"
+              >
+                Success
+              </span>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -931,27 +967,27 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -970,11 +1006,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1062,7 +1098,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1072,11 +1108,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1096,7 +1132,13 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   color: #8da2b5;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1108,7 +1150,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1126,7 +1168,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1138,7 +1180,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -1180,7 +1222,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1326,7 +1368,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
             <span
               className="c13"
             >
-              Set a reminder
+              <span
+                className="c14"
+              >
+                Set a reminder
+              </span>
             </span>
           </div>
         </div>
@@ -1340,7 +1386,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -1350,12 +1396,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              No Access
+              <span
+                className="c14"
+              >
+                No Access
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1368,7 +1418,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -1378,12 +1428,16 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <span
+                className="c14"
+              >
+                Success
+              </span>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1397,27 +1451,27 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1436,11 +1490,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1528,7 +1582,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1538,11 +1592,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1562,7 +1616,13 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1574,7 +1634,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1592,7 +1652,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1604,7 +1664,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -1646,7 +1706,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1792,7 +1852,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
             <span
               className="c13"
             >
-              This is your reminder to wash your car.
+              <span
+                className="c14"
+              >
+                This is your reminder to wash your car.
+              </span>
             </span>
           </div>
         </div>
@@ -1806,7 +1870,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -1816,12 +1880,16 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              No Access
+              <span
+                className="c14"
+              >
+                No Access
+              </span>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1834,7 +1902,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -1844,12 +1912,16 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <span
+                className="c14"
+              >
+                Success
+              </span>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1876,11 +1948,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -1968,7 +2040,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1978,7 +2050,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1990,6 +2062,12 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .c0 {
@@ -2016,7 +2094,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c17 {
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2162,7 +2240,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
             <span
               className="c13"
             >
-              Bulk order reminder
+              <span
+                className="c14"
+              >
+                Bulk order reminder
+              </span>
             </span>
           </div>
         </div>

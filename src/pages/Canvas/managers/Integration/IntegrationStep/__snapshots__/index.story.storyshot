@@ -1489,11 +1489,11 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -1581,7 +1581,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c23 {
+.c5 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1591,7 +1591,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   z-index: 99;
 }
 
-.c22 .c6:not(:first-of-type) {
+.c24 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1650,7 +1650,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c19 {
+.c21 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1662,7 +1662,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c21::before {
   position: absolute;
   display: block;
   content: '';
@@ -1677,6 +1677,23 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   height: 9px;
   width: 9px;
   background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
+}
+
+.c19 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c20 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .c15 {
@@ -1707,7 +1724,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c23 {
+.c0 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1901,6 +1918,14 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c19"
+            >
+              <path
+                className="c20"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -1928,11 +1953,19 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               </span>
             </span>
             <div
-              className="c19"
+              className="c21"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c19"
+            >
+              <path
+                className="c20"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>

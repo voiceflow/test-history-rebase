@@ -4,6 +4,8 @@ import { css, styled, transition } from '@/hocs';
 import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
 import { Theme } from '@/styles/theme';
 
+import { BLOCK_CONTAINER_PADDING } from '../constants';
+
 const ACTIVE_STATES = [BlockState.ACTIVE, BlockState.SELECTED];
 
 const disabledStyles = {
@@ -53,7 +55,7 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px;
   background-color: #fff;
   background-image: ${({ variant, theme }) => theme.components.block.variants[variant].backgroundImage};
   box-shadow: 0 0 0 1.3px ${({ variant, theme }) => theme.components.block.variants[variant].shadowColor};

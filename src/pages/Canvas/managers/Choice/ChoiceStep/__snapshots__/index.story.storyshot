@@ -487,14 +487,14 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
-.c16 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c16 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -513,11 +513,11 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c21 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c22 .c11 {
   color: #6e849a;
 }
 
@@ -605,7 +605,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -615,7 +615,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c23 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -629,7 +629,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   color: #132144;
 }
 
-.c17 {
+.c19 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -674,7 +674,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c18 {
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -686,7 +686,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -701,6 +701,23 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   height: 9px;
   width: 9px;
   background: linear-gradient(to bottom,#8da2b51f,#8da2b53d 100%);
+}
+
+.c16 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c17 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .c0 {
@@ -727,7 +744,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -884,6 +901,14 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -905,6 +930,14 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -926,6 +959,14 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
         <div
@@ -938,7 +979,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c18"
                 color="#6e849a"
                 size={16}
               >
@@ -948,7 +989,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c17"
+              className="c19"
             >
               <span
                 className="c14"
@@ -957,11 +998,19 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
               </span>
             </span>
             <div
-              className="c18"
+              className="c20"
               color="#8da2b5"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>

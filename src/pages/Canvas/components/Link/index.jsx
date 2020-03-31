@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
+import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import { withEditPermission, withEngine, withLink, withPlatform } from '@/pages/Canvas/contexts';
 import { compose } from '@/utils/functional';
 
@@ -51,12 +52,25 @@ export class Link extends React.PureComponent {
       // eslint-disable-next-line react/no-direct-mutation-state
       this.points = nextPoints;
 
-      this.drawFromPoints(nextPoints);
+      this.drawFromPoints(this.virtualPoints);
     },
   };
 
   get isDraggingNode() {
     return this.props.engine.drag.hasTarget;
+  }
+
+  get virtualPoints() {
+    if (!this.points || !this.props.engine.isFeatureEnabled(FeatureFlag.BLOCK_REDESIGN)) {
+      return this.points;
+    }
+
+    const [[x1, y1], [x2, y2]] = this.points;
+
+    return [
+      [x1 + LINK_WIDTH, y1],
+      [x2, y2],
+    ];
   }
 
   matchesPlatform(platform) {
@@ -116,8 +130,8 @@ export class Link extends React.PureComponent {
       this.points = points;
     }
 
-    const path = buildPath(this.points);
-    const [centerX, centerY] = buildCenter(this.points);
+    const path = buildPath(this.virtualPoints);
+    const [centerX, centerY] = buildCenter(this.virtualPoints);
     const linkProps = isBlockRedesignEnabled ? { isNewStyle: true, ...(isHovering && { strokeColor: '#2c85ff' }) } : {};
     const linkHeadProps = isBlockRedesignEnabled && isHovering ? { color: '#2c85ff' } : {};
     const linkOverlayProps = isBlockRedesignEnabled ? { isNewStyle: true } : {};

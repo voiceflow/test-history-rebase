@@ -447,11 +447,11 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   height: inherit;
 }
 
-.c18 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c19 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -544,7 +544,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -554,7 +554,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   z-index: 99;
 }
 
-.c20 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -603,6 +603,23 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
+.c18 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c19 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -627,7 +644,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -694,7 +711,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
   position: relative;
 }
 
-.c15 .c21 {
+.c15 .c23 {
   display: inline;
   padding: 0;
   border: none;
@@ -857,6 +874,14 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c18"
+            >
+              <path
+                className="c19"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>

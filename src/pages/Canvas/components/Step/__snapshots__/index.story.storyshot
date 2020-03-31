@@ -1049,7 +1049,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c15 {
+.c5 .c17 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1059,7 +1059,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   z-index: 99;
 }
 
-.c14 .c6:not(:first-of-type) {
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1108,6 +1108,23 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
+.c14 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c15 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1132,7 +1149,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c15 {
+.c0 .c17 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1279,6 +1296,14 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c14"
+            >
+              <path
+                className="c15"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -1288,24 +1313,11 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 `;
 
 exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #279745;
+  color: #d94c4c;
 }
 
 .c17 > svg {
@@ -1314,11 +1326,24 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   height: inherit;
 }
 
-.c19 .c14 {
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c21 .c16 {
   color: #fff;
 }
 
-.c20 .c14 {
+.c22 .c16 {
   color: #6e849a;
 }
 
@@ -1406,7 +1431,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1416,7 +1441,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c23 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1465,35 +1490,6 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
-}
-
 .c18 {
   position: relative;
   height: 54px;
@@ -1516,11 +1512,57 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 9px;
   width: 9px;
   background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
+}
+
+.c14 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c15 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .c0 {
@@ -1547,7 +1589,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c22 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1694,6 +1736,14 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c14"
+            >
+              <path
+                className="c15"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
         <div
@@ -1706,7 +1756,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
               className="c10"
             >
               <span
-                className="c14 c15"
+                className="c16 c17"
                 color="#d94c4c"
                 size={16}
               >
@@ -1725,11 +1775,19 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
               </span>
             </span>
             <div
-              className="c16"
+              className="c18"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c14"
+            >
+              <path
+                className="c15"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -1738,7 +1796,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
               className="c10"
             >
               <span
-                className="c14 c17"
+                className="c16 c19"
                 color="#279745"
                 size={16}
               >
@@ -1757,11 +1815,19 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
               </span>
             </span>
             <div
-              className="c18"
+              className="c20"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c14"
+            >
+              <path
+                className="c15"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -3494,11 +3560,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -3586,7 +3652,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3596,7 +3662,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -3645,6 +3711,23 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
+.c16 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c17 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -3669,7 +3752,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   opacity: 0.7;
 }
 
-.c0 .c19 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3826,6 +3909,14 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
         <div
@@ -3851,6 +3942,14 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -3872,6 +3971,14 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
         <div
@@ -3897,6 +4004,14 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>

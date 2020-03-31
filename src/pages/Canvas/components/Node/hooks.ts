@@ -5,6 +5,7 @@ import { ThemeContext } from 'styled-components';
 import { BlockType } from '@/constants';
 import { useEnableDisable, useHover } from '@/hooks';
 import { Node } from '@/models';
+import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EditPermissionContext, EngineContext, useNode } from '@/pages/Canvas/contexts';
 import { NodeAPI, PortAPI, StepAPI } from '@/pages/Canvas/types';
@@ -28,7 +29,10 @@ export const useStepAPI = <T extends HTMLElement>(isForceHighlighted: boolean, w
           }
 
           const { top, left } = stepRef.current!.getBoundingClientRect();
-          const pinPoint = engine.canvas.transformPoint([left, top + (theme.components.blockStep.minHeight / 2) * engine.canvas.getZoom()]);
+          const pinPoint = engine.canvas.transformPoint([
+            left - LINK_WIDTH * engine.canvas.getZoom(),
+            top + (theme.components.blockStep.minHeight / 2) * engine.canvas.getZoom(),
+          ]);
 
           engine.linkCreation.pin(inPortID, pinPoint);
 

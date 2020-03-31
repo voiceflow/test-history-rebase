@@ -2,7 +2,8 @@ import React from 'react';
 
 import { usePort } from '@/pages/Canvas/contexts';
 
-import { Container } from './components';
+import { Container, Link, LinkPath } from './components';
+import { LINK_WIDTH } from './constants';
 import { useLinkTerminal, usePortAPI, usePortSubscription } from './hooks';
 
 export type PortV2Props = {
@@ -15,17 +16,26 @@ const PortV2: React.FC<PortV2Props> = ({ color }) => {
   const { onStart: onStartLink } = useLinkTerminal(portID);
   const [isHighlighted, api] = usePortAPI(portRef);
 
+  const linkProps = { isNewStyle: true, ...(isHighlighted && { strokeColor: '#2c85ff' }) };
+
   usePortSubscription(portID, api);
 
   return (
-    <Container
-      onMouseDown={onStartLink}
-      onClick={onStartLink}
-      color={color}
-      isHighlighted={isHighlighted}
-      isConnected={hasActiveLinks}
-      ref={portRef}
-    />
+    <>
+      <Container
+        onMouseDown={onStartLink}
+        onClick={onStartLink}
+        color={color}
+        isHighlighted={isHighlighted}
+        isConnected={hasActiveLinks}
+        ref={portRef}
+      />
+      {hasActiveLinks && (
+        <Link>
+          <LinkPath d={`M 0 4 L ${LINK_WIDTH} 4`} {...linkProps} />
+        </Link>
+      )}
+    </>
   );
 };
 

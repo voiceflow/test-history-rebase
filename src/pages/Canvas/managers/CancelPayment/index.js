@@ -8,6 +8,7 @@ const CancelPaymentManager = {
   icon: 'trash',
   iconColor: '#d94c4c',
   label: 'Cancel Payment',
+  labelV2: 'Cancel Purchase',
   tip: "Refund a purchase or cancel an user's subscription",
 
   editor: CancelPaymentEditor,

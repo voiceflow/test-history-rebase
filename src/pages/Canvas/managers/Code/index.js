@@ -12,6 +12,7 @@ const CodeManager = {
   step: CodeStep,
 
   label: 'Code',
+  labelV2: 'Custom Code',
   tip: 'Modify Variables directly with Code',
 
   addable: true,

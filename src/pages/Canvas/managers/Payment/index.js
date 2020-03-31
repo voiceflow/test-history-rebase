@@ -9,6 +9,7 @@ const PaymentManager = {
   iconColor: '#558B2F',
 
   label: 'Payment',
+  labelV2: 'Purchase',
   tip: 'Request payment from user',
 
   editor: PaymentEditor,

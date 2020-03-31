@@ -13,6 +13,7 @@ const IfManager = {
 
   step: IfStep,
   label: 'If',
+  labelV2: 'Condition',
   tip: 'Set conditions that activate paths only when true',
 
   mergeTerminator: true,

@@ -12,6 +12,7 @@ const PermissionManager = {
   step: PermissionStep,
 
   label: 'Permission',
+  labelV2: 'Permissions',
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
 
   addable: true,

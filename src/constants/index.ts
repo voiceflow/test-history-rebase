@@ -421,8 +421,6 @@ export const FILTERED_AMAZON_INTENTS = [
   'NavigateHomeIntent',
 ];
 
-export const INVOCATION_NAME_REGEX = /^[\s'.A-Za-z]*$/;
-
 export enum IconVariant {
   STANDARD = 'standard',
   POPOVER = 'popover',

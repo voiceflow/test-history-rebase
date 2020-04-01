@@ -614,6 +614,19 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3c6997;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -627,11 +640,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   height: inherit;
 }
 
-.c18 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c19 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -719,7 +732,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c21 {
+.c5 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -729,8 +742,47 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
-.c20 .c6:not(:first-of-type) {
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c18 .c24 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c20 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
 }
 
 .c13 {
@@ -747,6 +799,16 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.c21 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c21:hover {
+  color: #4d8de6;
 }
 
 .c15 {
@@ -823,7 +885,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   opacity: 1;
 }
 
-.c0 .c21 {
+.c0 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -996,6 +1058,146 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
                 d="M 0 4 L 14 4"
               />
             </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Commands"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Commands
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c18"
+        draggable={false}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
+        onDragStart={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#3c6997"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgFlow"
+                />
+              </span>
+            </div>
+            <span
+              className="c20"
+            >
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Help
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c18"
+        draggable={false}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
+        onDragStart={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#3c6997"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgFlow"
+                />
+              </span>
+            </div>
+            <span
+              className="c20"
+            >
+              <span
+                className="c21"
+                onClick={[Function]}
+              >
+                Stop
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -1372,6 +1574,19 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
+.c17 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3c6997;
+}
+
+.c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -1385,11 +1600,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1477,7 +1692,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1487,8 +1702,47 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
+  position: relative;
+}
+
+.c16 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c16 .c22 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
 }
 
 .c13 {
@@ -1505,6 +1759,16 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.c19 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c19:hover {
+  color: #4d8de6;
 }
 
 .c15 {
@@ -1565,7 +1829,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   opacity: 1;
 }
 
-.c0 .c19 {
+.c0 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1730,6 +1994,146 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Commands"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Commands
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c16"
+        draggable={false}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
+        onDragStart={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c17"
+                color="#3c6997"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgFlow"
+                />
+              </span>
+            </div>
+            <span
+              className="c18"
+            >
+              <span
+                className="c19"
+                onClick={[Function]}
+              >
+                Help
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c16"
+        draggable={false}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDoubleClick={[Function]}
+        onDragStart={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c17"
+                color="#3c6997"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgFlow"
+                />
+              </span>
+            </div>
+            <span
+              className="c18"
+            >
+              <span
+                className="c19"
+                onClick={[Function]}
+              >
+                Stop
+              </span>
+            </span>
           </div>
         </div>
       </div>

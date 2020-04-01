@@ -27,6 +27,7 @@ const OPTION_HANDLERS = {
   [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => {
     engine.node.updateBlockColor(nodeID, blockColor);
   },
+  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 };
 
 const ContextMenu = ({ className, ...props }) => {

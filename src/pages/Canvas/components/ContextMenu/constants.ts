@@ -10,6 +10,7 @@ export enum CanvasAction {
   COPY_BLOCK = 'copy_block',
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
+  RETURN_TO_HOME = 'return_to_home',
 }
 
 export const BLOCK_COLORS = [
@@ -39,6 +40,10 @@ export const CANVAS_OPTIONS = [
   {
     label: 'Paste',
     value: CanvasAction.PASTE,
+  },
+  {
+    label: 'Return to Home',
+    value: CanvasAction.RETURN_TO_HOME,
   },
 ];
 

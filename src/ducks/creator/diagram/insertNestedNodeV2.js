@@ -6,15 +6,17 @@ import { getIncomingLinkIDs, getNestedOutgoingLinkIDs, getOutgoingLinkIDs } from
 import { patchNodeInState, removeAllLinksFromState, removeBlockFromState } from './utils';
 
 const reorderNestedNode = (state, targetNode, index, recipientNode) => {
-  const isLast = index === recipientNode.combinedNodes.length - 1;
-  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
-
   const currentIndex = recipientNode.combinedNodes.indexOf(targetNode.id);
+  const isReorderingHighToLow = currentIndex < index;
+  const isLastOffset = isReorderingHighToLow ? -1 : 0;
+
+  const isLast = index === recipientNode.combinedNodes.length - 1 + isLastOffset;
+  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
 
   return compose(
     removeAllLinksFromState(oldLinks),
     patchNodeInState(recipientNode.id, {
-      combinedNodes: reorder(recipientNode.combinedNodes, currentIndex, currentIndex < index ? index - 1 : index),
+      combinedNodes: reorder(recipientNode.combinedNodes, currentIndex, isReorderingHighToLow ? index - 1 : index),
     }),
     patchNodeInState(targetNode.id, {
       parentNode: recipientNode.id,

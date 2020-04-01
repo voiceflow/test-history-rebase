@@ -37,11 +37,13 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
   const platform = React.useContext(PlatformContext)!;
   const [portID] = node.ports.out;
   const blockState = isHighlighted ? BlockState.ACTIVE : BlockState.REGULAR;
-  const commands = node.combinedNodes.map((commandNodeID) => (
-    <NodeIDProvider value={commandNodeID} key={commandNodeID}>
-      <NodeStep isDraggable={false} isLast />
-    </NodeIDProvider>
-  ));
+  const commands = node.combinedNodes.length
+    ? node.combinedNodes.map((commandNodeID) => (
+        <NodeIDProvider value={commandNodeID} key={commandNodeID}>
+          <NodeStep isDraggable={false} isLast />
+        </NodeIDProvider>
+      ))
+    : null;
 
   if (isRootDiagram) {
     return (

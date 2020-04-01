@@ -24,6 +24,7 @@ export const TimeZoneSelection = styled(Select)`
 
 export const TimeLabel = styled.label`
   margin-bottom: 3px;
+  max-width: 130px;
   margin-right: 5px;
   font-size: 13px !important;
 `;

@@ -12,6 +12,7 @@ const DEFAULT_PLUGINS = [PluginType.VARIABLES];
 function TextEditor({
   value = '',
   onBlur,
+  onFocus,
   onEmpty,
   placeholder,
   onEnterPress,
@@ -164,6 +165,7 @@ function TextEditor({
       <DraftJSEditor
         ref={onEditorRef}
         onBlur={onBlurEditor}
+        onFocus={onFocus}
         plugins={plugins}
         onChange={onEditorChange}
         readOnly={readOnly}

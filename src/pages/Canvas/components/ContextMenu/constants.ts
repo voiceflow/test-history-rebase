@@ -30,6 +30,10 @@ export const BLOCK_COLORS = [
     value: BlockVariant.RED,
     label: 'Red',
   },
+  {
+    value: BlockVariant.STANDARD,
+    label: 'Default',
+  },
 ];
 
 export const CANVAS_OPTIONS = [

@@ -27,7 +27,7 @@ export const useStepAPI = <T extends HTMLElement>(
   const [isHovered, wrapElement, hoverHandlers] = useHover(
     {
       onStart: () => {
-        if (engine.linkCreation.isDrawing && !engine.linkCreation.containsSourcePort(node.parentNode!)) {
+        if (engine.linkCreation.isDrawing && !engine.linkCreation.isSourceNode(nodeID)) {
           if (!inPortID) {
             setLinkWarning();
             return true;

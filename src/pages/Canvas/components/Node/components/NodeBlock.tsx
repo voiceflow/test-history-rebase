@@ -50,8 +50,7 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
       onStart: () => {
         const isPinned = engine.linkCreation.hasPin;
 
-        if (engine.linkCreation.isDrawing && !engine.linkCreation.containsSourcePort(nodeID)) {
-          // added inPortID for the cases if combined block itself has no IN port
+        if (engine.linkCreation.isDrawing && !engine.linkCreation.isSourceNode(nodeID)) {
           if (!hasNestedInPort) {
             setLinkWarning();
 

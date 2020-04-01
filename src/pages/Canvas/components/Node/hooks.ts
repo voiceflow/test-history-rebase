@@ -90,6 +90,10 @@ export const useStepAPI = <T extends HTMLElement>(
           }
         },
         onDragStart: async () => {
+          if (!editPermission.canEdit) {
+            return;
+          }
+
           const handleMouseUp = async (event: MouseEvent) => {
             if (!event.defaultPrevented) {
               await engine.mergeV2.unmerge();

@@ -154,10 +154,9 @@ export class Node extends React.PureComponent {
     this.dragDistance = 0;
     this.holdingShift = false;
 
+    this.teardownMouseListeners();
     await engine.drag.reset();
     engine.merge.cancel();
-
-    this.teardownMouseListeners();
   };
 
   onClick = (event) => {

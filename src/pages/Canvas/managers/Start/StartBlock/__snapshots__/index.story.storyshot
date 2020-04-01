@@ -805,6 +805,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c21:hover {
@@ -1147,12 +1151,12 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
             <span
               className="c20"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Help
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1191,12 +1195,12 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
             <span
               className="c20"
             >
-              <span
+              <div
                 className="c21"
                 onClick={[Function]}
               >
                 Stop
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1765,6 +1769,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 
 .c19:hover {
@@ -2083,12 +2091,12 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
             <span
               className="c18"
             >
-              <span
+              <div
                 className="c19"
                 onClick={[Function]}
               >
                 Help
-              </span>
+              </div>
             </span>
           </div>
         </div>
@@ -2127,12 +2135,12 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
             <span
               className="c18"
             >
-              <span
+              <div
                 className="c19"
                 onClick={[Function]}
               >
                 Stop
-              </span>
+              </div>
             </span>
           </div>
         </div>

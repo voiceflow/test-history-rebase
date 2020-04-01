@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import ShortCuts from '@/components/ShortCuts/ShortCuts';
+import ShortCuts from '@/components/ShortCuts';
 import { DiagramLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import IntentsModal from '@/pages/Canvas/components/IntentsModal';

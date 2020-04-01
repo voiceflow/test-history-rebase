@@ -28,12 +28,17 @@ const CanvasControlsV2: React.FC = () => {
     eventualEngine.get().canvas.zoomOut(ZOOM_DELTA);
   }, [eventualEngine]);
 
+  const onFocusHome = React.useCallback(() => {
+    eventualEngine.get().focusHome();
+  }, [eventualEngine]);
+
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(() => open(), []);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, preventDefault(onOpenCMS));
   useHotKeys(Hotkey.ZOOM_IN, preventDefault(onZoomIn));
   useHotKeys(Hotkey.ZOOM_OUT, preventDefault(onZoomOut));
+  useHotKeys(Hotkey.ROOT_NODE, preventDefault(onFocusHome));
 
   return (
     <Container>

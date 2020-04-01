@@ -38,12 +38,12 @@ export const BLOCK_COLORS = [
 
 export const CANVAS_OPTIONS = [
   {
-    label: 'Add Comment',
-    value: CanvasAction.ADD_COMMENT,
-  },
-  {
     label: 'Paste',
     value: CanvasAction.PASTE,
+  },
+  {
+    label: 'Add Comment',
+    value: CanvasAction.ADD_COMMENT,
   },
   {
     label: 'Return to Home',

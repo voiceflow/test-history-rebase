@@ -3,7 +3,7 @@ import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
 import { getIncomingLinkIDs, getNestedOutgoingLinkIDs, getOutgoingLinkIDs } from './insertNestedNode';
-import { patchNodeInState, removeAllLinksFromState, removeBlockFromState } from './utils';
+import { getJoiningLinkIDs, patchNodeInState, removeAllLinksFromState, removeBlockFromState } from './utils';
 
 const reorderNestedNode = (state, targetNode, index, recipientNode) => {
   const currentIndex = recipientNode.combinedNodes.indexOf(targetNode.id);
@@ -37,7 +37,7 @@ const transplantNestedNode = (state, targetNode, index, recipientNodeID) => {
   const recipientCombinedIDs = insert(recipientNode.combinedNodes, index, targetNode.id);
   const isLast = index === recipientCombinedIDs.length - 1;
 
-  const oldLinks = isLast ? [] : getOutgoingLinkIDs(state, targetNode);
+  const oldLinks = isLast ? getJoiningLinkIDs(state)(targetNode.id, recipientNodeID) : getOutgoingLinkIDs(state, targetNode);
 
   return compose(
     removeAllLinksFromState(oldLinks),

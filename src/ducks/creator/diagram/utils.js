@@ -1,4 +1,4 @@
-import { reorder, withoutValue } from '@/utils/array';
+import { findUnion, reorder, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import {
   addNormalizedByKey,
@@ -16,6 +16,13 @@ export const getLinkIDsByPortID = ({ linksByPortID }) => (portID) => linksByPort
 export const getLinkIDsByNodeID = ({ linksByNodeID }) => (nodeID) => linksByNodeID[nodeID] || [];
 
 export const getLinkedNodeIDsByNodeID = ({ linkedNodesByNodeID }) => (nodeID) => linkedNodesByNodeID[nodeID] || [];
+
+export const getJoiningLinkIDs = (state) => (lhsNodeID, rhsNodeID) => {
+  const linkIDSelector = getLinkIDsByNodeID(state);
+  const { union } = findUnion(linkIDSelector(lhsNodeID), linkIDSelector(rhsNodeID));
+
+  return union;
+};
 
 export const addReferenceByKey = (key, referenceValue) => (lookup) => ({
   ...lookup,

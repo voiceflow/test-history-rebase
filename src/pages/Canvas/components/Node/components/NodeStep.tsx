@@ -8,6 +8,7 @@ import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
+import { useNodeLifecycle } from '../hocs';
 import { useNodeAPI, useNodeSubscription, useStepAPI } from '../hooks';
 import NodePort from './NodePort';
 
@@ -23,10 +24,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
-  const { step: StepComponent = getManager(BlockType.DEPRECATED).step } = getManager(data.type)!;
+  const { step: StepComponent = getManager(BlockType.DEPRECATED).step } = getManager(node?.type)!;
   const nodeAPI = useNodeAPI(nodeID, stepRef);
   const stepAPI = useStepAPI(nodeAPI.isHighlighted, isLast, isDraggable, stepRef);
-  const [inPortID] = node.ports.in;
+  const [inPortID] = node?.ports?.in || [];
 
   const getAnchorPoint = React.useCallback(() => {
     const { x, y } = stepRef.current!.getBoundingClientRect();
@@ -34,7 +35,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
     return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas.getZoom(), y]);
   }, []);
 
+  useNodeLifecycle();
   useNodeSubscription(nodeID, nodeAPI);
+
+  if (!node) return null;
 
   return (
     <>

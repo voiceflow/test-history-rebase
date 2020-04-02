@@ -12,6 +12,8 @@ const SourceReorderIndicator = ({ index, onMouseUp }: ReorderIndicatorProps) => 
   const { mustNotBe, mustBeLast, mustBeFirst } = useMergeInfo(index);
   const { node } = useNode();
 
+  if (!node) return null;
+
   const isActive = !(mustNotBe || node.type === BlockType.INTENT || mustBeLast || (mustBeFirst && engine.hasLinksByNodeID(node.parentNode!)));
 
   return <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} />;

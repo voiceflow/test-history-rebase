@@ -10,6 +10,9 @@ const TerminalReorderIndicator = ({ index, onMouseUp }: ReorderIndicatorProps) =
   const { mustNotBe, mustBeFirst } = useMergeInfo(index);
   const { node } = useNode();
   const getManager = React.useContext(ManagerContext)!;
+
+  if (!node) return null;
+
   const { mergeTerminator } = getManager(node.type);
 
   const isActive = !(mustNotBe || mergeTerminator || mustBeFirst);

@@ -22,7 +22,7 @@ export const useStepAPI = <T extends HTMLElement>(
   const contextMenu = React.useContext(ContextMenuContext)!;
   const engine = React.useContext(EngineContext)!;
   const theme = React.useContext(ThemeContext);
-  const [inPortID] = node.ports.in;
+  const [inPortID] = node?.ports?.in || [];
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const [isHovered, wrapElement, hoverHandlers] = useHover(
     {
@@ -167,6 +167,12 @@ export const useMergeInfo = (index: number) => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const { node } = useNode();
+
+  if (!node) {
+    return {
+      mustNotBe: true,
+    };
+  }
 
   if (engine.drag.hasTarget) {
     const dragTarget = engine.getNodeByID(engine.drag.target!);

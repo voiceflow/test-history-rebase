@@ -5,7 +5,7 @@ import ReminderStep from './ReminderStep';
 
 const ReminderManager = {
   type: BlockType.REMINDER,
-  icon: 'clock',
+  icon: 'reminder',
   iconColor: '#c998a4',
 
   editor: ReminderEditor,

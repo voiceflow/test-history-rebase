@@ -153,7 +153,7 @@ export const PLATFORM_SECTION = {
       SHARED_PLATFORM_STEPS.CODE,
       {
         type: BlockType.REMINDER,
-        icon: 'clock',
+        icon: 'reminder',
         label: 'Reminder',
         iconColor: getManager(BlockType.REMINDER).iconColor,
       },

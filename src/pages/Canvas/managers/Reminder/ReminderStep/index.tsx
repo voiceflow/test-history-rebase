@@ -15,7 +15,7 @@ export type ReminderStepProps = {
 export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, successPortID, failurePortID }) => (
   <Step>
     <Section>
-      <Item icon="clock" iconColor="#c998a4" label={label} labelVariant={StepLabelVariant.SECONDARY} placeholder="Set a reminder" />
+      <Item icon="reminder" iconColor="#c998a4" label={label} labelVariant={StepLabelVariant.SECONDARY} placeholder="Set a reminder" />
     </Section>
     <Section>
       {withPorts && (

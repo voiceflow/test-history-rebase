@@ -6916,7 +6916,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgClock"
+                          data-file-name="SvgReminder"
                         />
                       </span>
                       <div

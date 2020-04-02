@@ -403,7 +403,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
                 size={16}
               >
                 <svg
-                  data-file-name="SvgClock"
+                  data-file-name="SvgReminder"
                 />
               </span>
             </div>
@@ -910,7 +910,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
                 size={16}
               >
                 <svg
-                  data-file-name="SvgClock"
+                  data-file-name="SvgReminder"
                 />
               </span>
             </div>
@@ -1418,7 +1418,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
                 size={16}
               >
                 <svg
-                  data-file-name="SvgClock"
+                  data-file-name="SvgReminder"
                 />
               </span>
             </div>
@@ -1910,7 +1910,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
                 size={16}
               >
                 <svg
-                  data-file-name="SvgClock"
+                  data-file-name="SvgReminder"
                 />
               </span>
             </div>
@@ -2306,7 +2306,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
                 size={16}
               >
                 <svg
-                  data-file-name="SvgClock"
+                  data-file-name="SvgReminder"
                 />
               </span>
             </div>

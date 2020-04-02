@@ -345,12 +345,7 @@ export class Engine {
       const [nodeID] = startNode;
 
       this.node.center(nodeID);
-
-      if (this.isBlockRedesignEnabled()) {
-        this.focus.set(nodeID);
-      } else {
-        this.selection.replace([nodeID]);
-      }
+      this.selection.replace([nodeID]);
     }
   }
 

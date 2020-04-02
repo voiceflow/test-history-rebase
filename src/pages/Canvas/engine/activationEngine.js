@@ -55,10 +55,6 @@ class ActivationEngine extends EngineConsumer {
 
   redrawNode(nodeID) {
     this.engine.node.redraw(nodeID);
-
-    if (this.engine.isBlockRedesignEnabled()) {
-      this.engine.node.redrawLinks(nodeID);
-    }
   }
 
   /**

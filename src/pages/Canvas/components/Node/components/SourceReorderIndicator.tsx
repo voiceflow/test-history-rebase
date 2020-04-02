@@ -2,15 +2,14 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Step from '@/pages/Canvas/components/Step';
-import { EngineContext, useNode } from '@/pages/Canvas/contexts';
+import { EngineContext, NodeInjectedProps, withNode } from '@/pages/Canvas/contexts';
 
 import { useMergeInfo } from '../hooks';
 import { ReorderIndicatorProps } from '../types';
 
-const SourceReorderIndicator = ({ index, onMouseUp }: ReorderIndicatorProps) => {
+const SourceReorderIndicator = ({ index, node, onMouseUp }: ReorderIndicatorProps & NodeInjectedProps) => {
   const engine = React.useContext(EngineContext)!;
   const { mustNotBe, mustBeLast, mustBeFirst } = useMergeInfo(index);
-  const { node } = useNode();
 
   if (!node) return null;
 
@@ -19,4 +18,4 @@ const SourceReorderIndicator = ({ index, onMouseUp }: ReorderIndicatorProps) => 
   return <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} />;
 };
 
-export default SourceReorderIndicator;
+export default withNode(React.memo(SourceReorderIndicator));

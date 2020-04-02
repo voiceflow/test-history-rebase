@@ -5,7 +5,7 @@ import { BlockType } from '@/constants';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
-import { EngineContext, ManagerContext, PlatformContext, useNode, useNodeData } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext, NodeInjectedProps, PlatformContext, useNodeData, withNode } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import { useNodeLifecycle } from '../hocs';
@@ -17,9 +17,8 @@ export type NodeStepProps = {
   isDraggable: boolean;
 };
 
-const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
+const NodeStep: React.FC<NodeStepProps & NodeInjectedProps> = ({ nodeID, node, isLast, isDraggable }) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
-  const { nodeID, node } = useNode();
   const { data } = useNodeData();
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -63,4 +62,4 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
   );
 };
 
-export default NodeStep;
+export default withNode(React.memo(NodeStep));

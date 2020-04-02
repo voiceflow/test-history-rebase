@@ -59,11 +59,8 @@ export const useHover = (
       onHoverEnd.current = onEnd || null;
     }
   }, dependencies);
-  const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={{ isHovered, setOverride, clearOverride }}>{el}</HoverProvider>, [
-    isHovered,
-    setOverride,
-    clearOverride,
-  ]);
+  const value = React.useMemo(() => ({ isHovered, setOverride, clearOverride }), [isHovered, setOverride, clearOverride]);
+  const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={value}>{el}</HoverProvider>, [value]);
 
   const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave }), [onMouseEnter, onMouseLeave]);
 

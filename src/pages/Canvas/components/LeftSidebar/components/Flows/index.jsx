@@ -10,14 +10,25 @@ import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOve
 
 import { Container, Item } from './components';
 
-const FlowList = ({ isOpen, diagrams, activeDiagramID }) => {
+const FlowList = ({ isOpen, diagrams, rootDiagramID, activeDiagramID }) => {
+  const sortedDiagrams = React.useMemo(
+    () =>
+      diagrams
+        .sort(({ id }) => (id === rootDiagramID ? -1 : 0))
+        .map((diagram) => ({
+          ...diagram,
+          name: diagram.id === rootDiagramID ? 'Home' : diagram.name,
+        })),
+    [diagrams, rootDiagramID]
+  );
+
   const getLabel = React.useCallback((item) => (item.name === ROOT_DIAGRAM_NAME ? 'Home' : item.name), []);
 
   const renderItem = React.useCallback((item) => <Item {...item} isActive={activeDiagramID === item.id} />, [activeDiagramID]);
 
   return (
     <Container>
-      <SearchableList items={diagrams} renderItem={renderItem} getLabel={getLabel} placeholder="Search Flows" />
+      <SearchableList items={sortedDiagrams} renderItem={renderItem} getLabel={getLabel} placeholder="Search Flows" />
 
       <LockedResourceOverlay key={activeDiagramID} type={Realtime.ResourceType.FLOWS} disabled={!isOpen} />
     </Container>
@@ -26,6 +37,7 @@ const FlowList = ({ isOpen, diagrams, activeDiagramID }) => {
 
 const mapStateToProps = {
   diagrams: Diagram.allDiagramsSelector,
+  rootDiagramID: Skill.rootDiagramIDSelector,
   activeDiagramID: Skill.activeDiagramIDSelector,
 };
 

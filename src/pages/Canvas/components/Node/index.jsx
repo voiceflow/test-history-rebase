@@ -143,6 +143,7 @@ export class Node extends React.PureComponent {
 
   onMouseUp = async (event) => {
     const { engine, nodeID } = this.props;
+    this.teardownMouseListeners();
 
     // do not click in case double click event
     if (this.dragDistance < MAX_CLICK_TRAVEL && event.detail !== 2) {
@@ -154,7 +155,6 @@ export class Node extends React.PureComponent {
     this.dragDistance = 0;
     this.holdingShift = false;
 
-    this.teardownMouseListeners();
     await engine.drag.reset();
     engine.merge.cancel();
   };

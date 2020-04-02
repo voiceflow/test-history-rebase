@@ -4,7 +4,7 @@ import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
 import { removeCombinedNode } from './removeNode';
-import { patchNodeInState, removeAllBlocksFromState, removeBlockFromState } from './utils';
+import { getLinkIDsByNodeID, patchNodeInState, removeAllBlocksFromState, removeAllLinksFromState, removeBlockFromState } from './utils';
 
 function removeNestedNode(state, node) {
   const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
@@ -15,12 +15,16 @@ function removeNestedNode(state, node) {
   }
 
   const remainingNodeIDs = without(parentNode.combinedNodes, index);
+  const firstNodeLinkIDs = getLinkIDsByNodeID(state)(remainingNodeIDs[0]);
+
+  const oldLinks = firstNodeLinkIDs.filter((linkID) => getNormalizedByKey(state.links, linkID).target.nodeID === parentNode.id);
 
   return compose(
     patchNodeInState(parentNode.id, {
       combinedNodes: remainingNodeIDs,
     }),
-    removeBlockFromState(node)
+    removeBlockFromState(node),
+    removeAllLinksFromState(oldLinks)
   )(state);
 }
 

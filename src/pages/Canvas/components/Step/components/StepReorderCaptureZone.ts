@@ -5,8 +5,8 @@ const StepReorderCaptureZone = styled.div`
   position: absolute;
   left: -16px;
   right: -16px;
-  top: -26px;
-  bottom: -26px;
+  top: -32px;
+  bottom: -32px;
   border: 1px solid transparent;
   z-index: 25;
   pointer-events: none;

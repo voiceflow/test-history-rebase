@@ -109,6 +109,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -116,7 +117,6 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -131,6 +131,10 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c16 {
@@ -538,6 +542,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -545,7 +550,6 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -560,6 +564,10 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c22 .c6:not(:first-of-type) {
@@ -1003,6 +1011,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1010,7 +1019,6 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1025,6 +1033,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c20 .c6:not(:first-of-type) {
@@ -1423,6 +1435,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1430,7 +1443,6 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1445,6 +1457,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c18 .c6:not(:first-of-type) {
@@ -1795,6 +1811,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1802,7 +1819,6 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1817,6 +1833,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c20 .c6:not(:first-of-type) {
@@ -2228,6 +2248,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -2235,7 +2256,6 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -2250,6 +2270,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c20 .c6:not(:first-of-type) {

@@ -118,6 +118,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -125,7 +126,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c8 .c9:not(:first-of-type) {
@@ -142,6 +142,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
+.node--merge-active .c8 {
+  z-index: -1;
+}
+
 .c19 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -151,6 +155,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -158,7 +163,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c19 .c9:not(:first-of-type) {
@@ -173,6 +177,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c19 {
+  z-index: -1;
 }
 
 .c15 {
@@ -718,6 +726,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -725,7 +734,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -742,6 +750,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
 .c18 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -751,6 +763,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -758,7 +771,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c18 .c6:not(:first-of-type) {
@@ -773,6 +785,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c18 {
+  z-index: -1;
 }
 
 .c20 {
@@ -1302,6 +1318,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1309,7 +1326,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1324,6 +1340,10 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c18 .c6:not(:first-of-type) {
@@ -1682,6 +1702,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1689,7 +1710,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1706,6 +1726,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
 .c16 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1715,6 +1739,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1722,7 +1747,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c16 .c6:not(:first-of-type) {
@@ -1737,6 +1761,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c16 {
+  z-index: -1;
 }
 
 .c18 {
@@ -2268,6 +2296,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -2275,7 +2304,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c8 .c9:not(:first-of-type) {
@@ -2292,6 +2320,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
+.node--merge-active .c8 {
+  z-index: -1;
+}
+
 .c19 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2301,6 +2333,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -2308,7 +2341,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c19 .c9:not(:first-of-type) {
@@ -2323,6 +2355,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c19 {
+  z-index: -1;
 }
 
 .c15 {

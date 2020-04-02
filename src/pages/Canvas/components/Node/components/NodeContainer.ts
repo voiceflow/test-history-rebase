@@ -8,22 +8,22 @@ export type NodeContainerProps = {
   position: [number, number];
 };
 
-const NodeContainer = styled.div<NodeContainerProps>`
+const NodeContainer = styled.div.attrs<NodeContainerProps>(({ position: [left, top] }) => ({
+  style: {
+    transform: `translate3d(${left}px, ${top}px, 0)`,
+  },
+}))<NodeContainerProps>`
   position: absolute;
   box-sizing: content-box;
   pointer-events: auto;
   backface-visibility: hidden;
-
-  ${({ position: [left, top] }) => css`
-    transform: translate3d(${left}px, ${top}px, 0);
-  `}
 
   ${({ isActive }) =>
     isActive &&
     css`
       z-index: 10;
     `}
-    
+
   ${({ isDragging }) =>
     isDragging &&
     css`

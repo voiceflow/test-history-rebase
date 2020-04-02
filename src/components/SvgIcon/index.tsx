@@ -14,6 +14,7 @@ export { Icon };
 
 export type IconProps = Partial<SvgIconContainerProps> & {
   icon: Icon | React.ComponentType;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 const SvgIcon: React.FC<IconProps> = ({ icon, size = 16, color = 'currentColor', ...props }, ref: React.Ref<HTMLSpanElement>) => {

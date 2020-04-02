@@ -4,12 +4,11 @@ import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import linkAdapter from '@/client/adapters/creator/link';
 import nodeAdapter from '@/client/adapters/creator/node';
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import { hasIdenticalMembers } from '@/utils/array';
-import { getAllNormalizedByKeys } from '@/utils/normalized';
+import { getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
 import * as Creator from './creator';
 import { lastRealtimeTimestampSelector } from './realtime';
@@ -175,7 +174,7 @@ export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getSta
 export const saveActiveDiagram = () => async (dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
-  const isBlockRedesignEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
+  const isBlockRedesignEnabled = Feature.isBlockRedesignEnabledSelector(state);
   const diagramID = Creator.creatorDiagramIDSelector(state);
 
   if (!diagramID) {
@@ -185,9 +184,31 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
   const viewport = viewportByIDSelector(state)(diagramID);
   const platform = activePlatformSelector(state);
   const { rootNodes: rootNodeIDs, nodes, ports, data, linksByPortID } = Creator.creatorDiagramSelector(state);
-  const links = Creator.allLinksSelector(state);
+  let links = Creator.allLinksSelector(state);
 
   const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
+
+  if (isBlockRedesignEnabled) {
+    links = links.map((link) => {
+      const targetNode = getNormalizedByKey(nodes, link.target.nodeID);
+
+      // only apply this transformation to links that terminate at a virtual node
+      if (targetNode.virtual || targetNode.type === BlockType.COMBINED) {
+        const actualTargetNode = getNormalizedByKey(nodes, targetNode.combinedNodes[0]);
+
+        return {
+          ...link,
+          target: {
+            nodeID: actualTargetNode.id,
+            portID: actualTargetNode.ports.in[0],
+          },
+          virtual: link.target,
+        };
+      }
+
+      return link;
+    });
+  }
 
   const updatedData = {
     id: diagramID,
@@ -196,6 +217,7 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
     zoom: viewport.zoom,
     links: linkAdapter.mapToDB(links),
     nodes: rootNodes.map((node) => nodeAdapter.toDB(node, { nodes, ports, data, linksByPortID, platform })),
+    blockRedesignOffset: isBlockRedesignEnabled,
   };
 
   const dataString = JSON.stringify(isBlockRedesignEnabled ? creatorAdapter.toDB(updatedData) : updatedData);

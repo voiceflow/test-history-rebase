@@ -3,9 +3,9 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Button from '@/components/LegacyButton';
 import SvgIcon from '@/components/SvgIcon';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
+import { useModals } from '@/hooks';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './components';
 
@@ -20,7 +20,7 @@ const SuccessImage = styled(SvgIcon)`
 `;
 
 export const SuccessModal = () => {
-  const { close, toggle, isOpened, data } = useModals(MODALS.SUCCESS);
+  const { close, toggle, isOpened, data } = useModals(ModalType.SUCCESS);
   const { message, title } = data;
 
   return (

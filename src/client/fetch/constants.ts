@@ -1,7 +1,5 @@
-// eslint-disable-next-line compat/compat
 export const GLOBAL_HEADERS = new Map();
 
-// eslint-disable-next-line compat/compat
 export const REQUEST_CACHE = new Map();
 
 export const DEFAULT_FETCH_OPTIONS: RequestInit = {

@@ -1,7 +1,7 @@
 import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import { PLATFORMS, PlatformType } from '@/constants';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
@@ -23,7 +23,6 @@ const getProps = () => {
     platform,
     portID: 'abc',
     items: ITEMS,
-    withPorts: true,
   };
 };
 
@@ -39,14 +38,14 @@ export default {
   component: SpeakStep,
 };
 
-export const empty = withStepDispatcher()(render({ items: [] }));
+export const empty = withStepContext()(render({ items: [] }));
 
-export const singleActive = withStepDispatcher()(render({ items: [ITEMS[0]], isActive: true }));
+export const singleActive = withStepContext({ isActive: true })(render({ items: [ITEMS[0]] }));
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());
 
-export const multiSteps = withStepDispatcher()(render());
+export const multiSteps = withStepContext()(render());
 
-export const random = withStepDispatcher()(render({ random: true }));
+export const random = withStepContext()(render({ random: true }));
 
-export const withoutPort = withStepDispatcher()(render({ withPorts: false }));
+export const withoutPort = withStepContext({ withPorts: false })(render());

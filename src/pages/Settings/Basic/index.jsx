@@ -8,7 +8,6 @@ import Section, { SectionToggleVariant } from '@/components/Section';
 import ClickableText from '@/components/Text/ClickableText';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
-import { INVOCATION_NAME_REGEX } from '@/constants';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
@@ -30,7 +29,6 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
 
   const [state, actions] = useSyncedSmartReducer({
     invName: invNameMeta,
-    invocationNameError: false,
     previousSessionDialogError: false,
     resumePrompt: resumePromptMeta || RESUME_PROMPT_OBJECT,
     repeat: repeatMeta || 0,
@@ -43,18 +41,7 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
 
   const { setResumePrompt, setName, setFollowUpType, setResumePromptType, setRestart, setRepeat, setHasFollowUp } = actions;
 
-  const {
-    resumePrompt,
-    resumePromptType,
-    repeat,
-    followUpType,
-    previousSessionDialogError,
-    hasFollowUp,
-    invocationNameError,
-    invName,
-    restart,
-    name,
-  } = state;
+  const { resumePrompt, resumePromptType, repeat, followUpType, previousSessionDialogError, hasFollowUp, invName, restart, name } = state;
 
   const updateResumePrompt = (val) => {
     setResumePrompt({ ...resumePrompt, content: val });
@@ -100,14 +87,10 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
     setResumePrompt({ ...resumePrompt, voice });
   };
 
-  const updateInvocationName = (val) => {
-    const valid = !INVOCATION_NAME_REGEX.test(val);
-
+  const updateInvocationName = (val) =>
     actions.update({
-      invocationNameError: valid,
       invName: val,
     });
-  };
 
   const saveSettings = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
     await saveSkillSettings(data);
@@ -116,13 +99,13 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
   const updateData = React.useCallback(
     (settingsObject) => {
       try {
-        if (invocationNameError || previousSessionDialogError) throw new Error();
+        if (previousSessionDialogError) throw new Error();
         saveSettings(settingsObject);
       } catch (err) {
         toast.error('Settings Save Error');
       }
     },
-    [invocationNameError, previousSessionDialogError]
+    [previousSessionDialogError]
   );
 
   useTeardown(() => {
@@ -152,10 +135,7 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </FormControl>
         <FormControl label="Invocation Name" tooltip="The phrase you use to invoke your app " tooltipProps={{ portalNode: document.body }}>
-          <Input error={invocationNameError} value={invName} onChange={(e) => updateInvocationName(e.target.value)} />
-          {invocationNameError && (
-            <ErrorMessage>Invocation name may only contain alphabetic characters, apostrophes, periods and spaces.</ErrorMessage>
-          )}
+          <Input value={invName} onChange={(e) => updateInvocationName(e.target.value)} />
         </FormControl>
       </Section>
       <Section

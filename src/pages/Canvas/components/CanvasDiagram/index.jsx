@@ -6,6 +6,7 @@ import Canvas from '@/components/Canvas';
 import { DragItem } from '@/constants';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
+import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import { ContextMenuContext, EditPermissionContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 
@@ -37,13 +38,13 @@ const CanvasDiagram = ({ viewport }) => {
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
-    drop: async ({ blockType }, monitor) => {
+    drop: async ({ blockType, factoryData }, monitor) => {
       const newNodeID = cuid();
       const { x: mouseX, y: mouseY } = monitor.getClientOffset();
 
       const position = engine.canvas.transformPoint([mouseX, mouseY]);
 
-      await engine.node.add(newNodeID, blockType, position);
+      await engine.node.add(newNodeID, blockType, position, factoryData);
     },
   });
 
@@ -61,6 +62,7 @@ const CanvasDiagram = ({ viewport }) => {
     >
       <LinkLayer />
       <NodeLayer />
+      <MergeLayer />
       <GroupSelection />
     </Canvas>
   );

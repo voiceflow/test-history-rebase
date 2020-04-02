@@ -1,6 +1,6 @@
 import { VariableTag } from '@/components/VariableTag';
 import { StepLabelVariant } from '@/constants/canvas';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const ExpressionPreviewContainer = styled.div`
   ${VariableTag} {
@@ -13,6 +13,13 @@ const ExpressionPreviewContainer = styled.div`
     font-size: inherit;
     font-weight: inherit;
   }
+
+  ${({ singleLine }) =>
+    singleLine &&
+    css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
 
   .plus,
   .minus,

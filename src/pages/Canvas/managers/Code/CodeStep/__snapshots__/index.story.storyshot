@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,11 +40,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -109,7 +109,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -122,6 +122,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -129,14 +130,13 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -146,7 +146,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   z-index: 99;
 }
 
-.c15 {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,7 +170,13 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -178,7 +188,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -196,7 +206,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -208,7 +218,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -236,15 +246,25 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -290,12 +310,20 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -325,6 +353,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -381,7 +410,11 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
             <span
               className="c13"
             >
-              Custom code added
+              <div
+                className="c14"
+              >
+                Custom code added
+              </div>
             </span>
           </div>
         </div>
@@ -395,7 +428,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -405,12 +438,16 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -423,7 +460,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -433,12 +470,16 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -452,27 +493,27 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -491,11 +532,11 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -569,6 +610,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -576,14 +618,13 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -593,11 +634,15 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -617,7 +662,13 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -629,7 +680,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -647,7 +698,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -659,7 +710,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -687,15 +738,25 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -741,12 +802,20 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -776,6 +845,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -832,7 +902,11 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
             <span
               className="c13"
             >
-              Custom code added
+              <div
+                className="c14"
+              >
+                Custom code added
+              </div>
             </span>
           </div>
         </div>
@@ -846,7 +920,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -856,12 +930,16 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -874,7 +952,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -884,12 +962,16 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -903,27 +985,27 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -942,11 +1024,11 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -1020,6 +1102,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1027,14 +1110,13 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1044,11 +1126,15 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c24 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1068,7 +1154,13 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   color: #62778c;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1080,7 +1172,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1097,7 +1189,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c18 {
+.c21 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1109,7 +1201,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c21::before {
   position: absolute;
   display: block;
   content: '';
@@ -1126,6 +1218,23 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
 }
 
+.c18 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c19 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1136,15 +1245,25 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1190,12 +1309,20 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1225,6 +1352,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1281,7 +1409,11 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             <span
               className="c13"
             >
-              Custom code added
+              <div
+                className="c14"
+              >
+                Custom code added
+              </div>
             </span>
           </div>
         </div>
@@ -1295,7 +1427,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -1305,16 +1437,28 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c18"
+            >
+              <path
+                className="c19"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -1323,7 +1467,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c20"
                 color="#279745"
                 size={16}
               >
@@ -1333,16 +1477,28 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
             <div
-              className="c18"
+              className="c21"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
+            <svg
+              className="c18"
+            >
+              <path
+                className="c19"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -1352,27 +1508,27 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1391,11 +1547,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -1469,6 +1625,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1476,14 +1633,13 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1493,11 +1649,15 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1517,7 +1677,13 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   color: #8da2b5;
 }
 
-.c16 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1529,7 +1695,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1547,7 +1713,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1559,7 +1725,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -1587,15 +1753,25 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1641,12 +1817,20 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1676,6 +1860,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1732,7 +1917,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
             <span
               className="c13"
             >
-              Enter custom code snippet
+              <div
+                className="c14"
+              >
+                Enter custom code snippet
+              </div>
             </span>
           </div>
         </div>
@@ -1746,7 +1935,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -1756,12 +1945,16 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
             <div
-              className="c16"
+              className="c17"
               color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1774,7 +1967,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -1784,12 +1977,16 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
             <div
-              className="c18"
+              className="c19"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1816,11 +2013,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -1894,6 +2091,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1901,14 +2099,13 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1918,7 +2115,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1932,6 +2133,12 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1942,15 +2149,25 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1996,12 +2213,20 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2031,6 +2256,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2087,7 +2313,11 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
             <span
               className="c13"
             >
-              Enter custom code snippet
+              <div
+                className="c14"
+              >
+                Enter custom code snippet
+              </div>
             </span>
           </div>
         </div>
@@ -2114,11 +2344,11 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -2192,6 +2422,7 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -2199,14 +2430,13 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2216,7 +2446,11 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2230,6 +2464,12 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -2240,15 +2480,25 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2294,12 +2544,20 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2329,6 +2587,7 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2385,7 +2644,11 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
             <span
               className="c13"
             >
-              Custom code added
+              <div
+                className="c14"
+              >
+                Custom code added
+              </div>
             </span>
           </div>
         </div>

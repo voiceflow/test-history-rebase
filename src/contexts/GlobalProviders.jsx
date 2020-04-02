@@ -11,12 +11,12 @@ import theme from '@/styles/theme';
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
 import LifecycleProvider from './LifecycleProvider';
-import { ModalLayerProvider } from './ModalLayerContext';
 import { ModalsContextProvider } from './ModalsContext';
 import { MousePositionProvider } from './MousePositionContext';
 import { OverlayProvider } from './OverlayContext';
 import { RolePermissionsProvider } from './RolePermissionsContext';
 import StoreProvider from './StoreProvider';
+import { TextEditorVariablesPopoverProvider } from './TextEditorVariablesPopoverContext';
 
 const GlobalProviders = ({ history, store, persistor, children }) => {
   const renderApp = () => (
@@ -30,9 +30,9 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
     <StoreProvider store={store} persistor={persistor}>
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider theme={theme}>
-          <MousePositionProvider>
-            <DragProvider>
-              <ModalLayerProvider>
+          <TextEditorVariablesPopoverProvider value={document.body}>
+            <MousePositionProvider>
+              <DragProvider>
                 <OverlayProvider>
                   <EventualEngineProvider>
                     <RolePermissionsProvider>
@@ -40,9 +40,9 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
                     </RolePermissionsProvider>
                   </EventualEngineProvider>
                 </OverlayProvider>
-              </ModalLayerProvider>
-            </DragProvider>
-          </MousePositionProvider>
+              </DragProvider>
+            </MousePositionProvider>
+          </TextEditorVariablesPopoverProvider>
         </ThemeProvider>
       </DndProvider>
     </StoreProvider>

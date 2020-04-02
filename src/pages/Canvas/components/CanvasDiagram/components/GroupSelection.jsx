@@ -1,9 +1,9 @@
-/* eslint-disable compat/compat */
 import _ from 'lodash';
 import React from 'react';
 
 import { CanvasContext } from '@/components/Canvas/contexts';
-import { useMouseMove } from '@/hooks/mouse';
+import { FeatureFlag } from '@/config/features';
+import { useFeature, useMouseMove } from '@/hooks';
 import { GroupSelectionContext } from '@/pages/Canvas/contexts';
 
 import SelectionArea from './SelectionArea';
@@ -17,6 +17,7 @@ const styleSelectionElement = (selectionEl, left, top, width, height) => {
 };
 
 const GroupSelection = () => {
+  const { isEnabled: isBlockRedesignEnabled } = useFeature(FeatureFlag.BLOCK_REDESIGN);
   const groupSelection = React.useContext(GroupSelectionContext);
   const selection = React.useRef([0, 0]);
   const canvas = React.useContext(CanvasContext);
@@ -70,7 +71,7 @@ const GroupSelection = () => {
     [isSelecting]
   );
 
-  return <SelectionArea ref={groupSelection.ref} />;
+  return <SelectionArea isBlockRedesignEnabled={isBlockRedesignEnabled} ref={groupSelection.ref} />;
 };
 
 export default GroupSelection;

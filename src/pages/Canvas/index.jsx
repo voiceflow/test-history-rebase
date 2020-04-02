@@ -1,10 +1,11 @@
 import React from 'react';
 
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import ShortCuts from '@/components/ShortCuts/ShortCuts';
+import ShortCuts from '@/components/ShortCuts';
 import { DiagramLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import IntentsModal from '@/pages/Canvas/components/IntentsModal';
+import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
 import HelpModal from '@/pages/Help';
@@ -23,7 +24,7 @@ import { CanvasProviders, HelpModalConsumer, ShortcutModalConsumer } from './con
 import useEngine from './engine';
 
 const Canvas = ({ isTesting }) => {
-  const { engine } = useEngine();
+  const engine = useEngine();
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1) {
@@ -51,6 +52,7 @@ const Canvas = ({ isTesting }) => {
 
       <SlotEditModal />
       <IntentsModal />
+      <InteractionModelModal />
       <SettingsModalConsumer>
         {({ isEnabled, toggle, type, setType }) => <SettingsModal open={isEnabled} type={type} toggle={toggle} setType={setType} />}
       </SettingsModalConsumer>

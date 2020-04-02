@@ -5,12 +5,11 @@ import ChatWithUsLink from '@/components/ChatLink';
 import ListManager from '@/components/ListManager';
 import { SectionToggleVariant } from '@/components/Section';
 import Utterance from '@/components/Utterance';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useModals } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import ErrorMessage from '@/pages/Canvas/components/ErrorMessage';
@@ -26,7 +25,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
   const utteranceRef = React.useRef();
 
   const [isEmpty, updateIsEmpty] = React.useState(true);
-  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(MODALS.SLOT_EDIT);
+  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
 
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);

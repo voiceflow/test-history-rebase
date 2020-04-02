@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { withHook } from '@/hocs';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { EngineContext, useNode } from '@/pages/Canvas/contexts';
 
-export const useNodeLifecycle = ({ nodeID, node }) => {
+export const useNodeLifecycle = () => {
+  const { nodeID, node } = useNode();
   const engine = React.useContext(EngineContext);
   const nodeCache = React.useRef();
 

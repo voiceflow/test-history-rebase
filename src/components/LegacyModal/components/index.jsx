@@ -2,7 +2,7 @@ import _isBoolean from 'lodash/isBoolean';
 import React from 'react';
 import { Modal as ReactstrapModal } from 'reactstrap';
 
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { stopImmediatePropagation } from '@/utils/dom';
 

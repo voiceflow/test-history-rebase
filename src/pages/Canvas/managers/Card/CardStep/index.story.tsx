@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { CardStep, CardStepProps } from '.';
 
 const CARD_IMAGE = 'https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg';
 
-const getProps = () => {
-  return {
-    title: 'Hi {name}, welcome to Hogwarts',
-    portID: '13tadb',
-    isActive: false,
-  };
-};
+const getProps = () => ({
+  title: 'Hi {name}, welcome to Hogwarts',
+  portID: '13tadb',
+  image: undefined,
+});
 
 export default {
   title: 'Creator/Steps/Card Step',
@@ -26,16 +24,16 @@ const render = (props?: Partial<CardStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render({ title: '' }));
+export const empty = withStepContext()(render({ title: '' }));
 
-export const withLabel = withStepDispatcher()(render());
+export const withLabel = withStepContext()(render());
 
-export const withLongLabel = withStepDispatcher()(render({ title: 'Hi {name}, welcome to Hogwarts; a magical school of whimsy and mystery' }));
+export const withLongLabel = withStepContext()(render({ title: 'Hi {name}, welcome to Hogwarts; a magical school of whimsy and mystery' }));
 
-export const withImage = withStepDispatcher()(render({ image: CARD_IMAGE }));
+export const withImage = withStepContext()(render({ image: CARD_IMAGE }));
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const withoutPort = withStepDispatcher()(render({ portID: '' }));
+export const withoutPort = withStepContext({ withPorts: false })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());

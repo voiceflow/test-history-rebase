@@ -430,20 +430,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   color: #132144;
 }
 
-.c7 {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  overflow: hidden;
-  height: 2px;
-  background-color: #5d9df5;
-  will-change: width,transform;
-  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
-  -webkit-transition: transform 0.15s ease,width 0.15s ease;
-  transition: transform 0.15s ease,width 0.15s ease;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -570,6 +556,20 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: 100%;
 }
 
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
 .c41 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -642,6 +642,25 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 
 .c42 {
   margin-right: 14px;
+}
+
+.c40 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c40:hover {
+  background-color: #becedc;
+}
+
+.c39 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c49 {
@@ -834,25 +853,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   margin-right: 5px;
 }
 
-.c40 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c40:hover {
-  background-color: #becedc;
-}
-
-.c39 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1004,8 +1004,8 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -1089,7 +1089,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
           </div>
           <div
             className="c7"
-            color={null}
           />
         </div>
         <div
@@ -2286,20 +2285,6 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   color: #132144;
 }
 
-.c7 {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  overflow: hidden;
-  height: 2px;
-  background-color: #5d9df5;
-  will-change: width,transform;
-  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
-  -webkit-transition: transform 0.15s ease,width 0.15s ease;
-  transition: transform 0.15s ease,width 0.15s ease;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2426,6 +2411,20 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: 100%;
 }
 
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
 .c41 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2498,6 +2497,25 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 
 .c42 {
   margin-right: 14px;
+}
+
+.c40 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c40:hover {
+  background-color: #becedc;
+}
+
+.c39 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c49 {
@@ -2690,25 +2708,6 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   margin-right: 5px;
 }
 
-.c40 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c40:hover {
-  background-color: #becedc;
-}
-
-.c39 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2860,8 +2859,8 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -2945,7 +2944,6 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
           </div>
           <div
             className="c7"
-            color={null}
           />
         </div>
         <div
@@ -3713,14 +3711,14 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 `;
 
 exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
-.c27 {
+.c28 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c27 > svg {
+.c28 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3739,80 +3737,80 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   height: inherit;
 }
 
-.c38 {
+.c39 {
   box-sizing: content-box;
   width: 12px;
   height: 12px;
   color: currentColor;
 }
 
-.c38 > svg {
+.c39 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c30 {
+.c31 {
   box-sizing: content-box;
   width: 14px;
   height: 14px;
   color: currentColor;
 }
 
-.c30 > svg {
+.c31 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c40 {
+.c41 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6E849A;
 }
 
-.c40 > svg {
+.c41 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c40:hover {
+.c41:hover {
   color: #6E849A;
 }
 
-.c40:active {
+.c41:active {
   color: #6E849A;
 }
 
-.c33 {
+.c34 {
   box-sizing: content-box;
   width: 13px;
   height: 13px;
   color: currentColor;
 }
 
-.c33 > svg {
+.c34 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #8da2b5;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c26 {
+.c27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3845,27 +3843,27 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
-.c26:focus,
-.c26:active {
+.c27:focus,
+.c27:active {
   outline: 0;
 }
 
-.c26:hover {
+.c27:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c26:hover {
+.c27:hover {
   color: rgba(110,132,154,1);
 }
 
-.c26:active {
+.c27:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa !important;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c36 {
+.c37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3899,27 +3897,27 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   background: inherit;
 }
 
-.c36:focus,
-.c36:active {
+.c37:focus,
+.c37:active {
   outline: 0;
 }
 
-.c36:active {
+.c37:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5b9dfa !important;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c41 .c9 {
+.c42 .c9 {
   color: #fff;
 }
 
-.c42 .c9 {
+.c43 .c9 {
   color: #6e849a;
 }
 
-.c18 {
+.c19 {
   min-height: 42px;
   display: block;
   width: 100%;
@@ -3946,53 +3944,53 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   position: relative;
 }
 
-.c18:disabled {
+.c19:disabled {
   color: #949db0;
   pointer-events: none;
 }
 
-.c18:active,
-.c18:focus,
-.c18:focus-within {
+.c19:active,
+.c19:focus,
+.c19:focus-within {
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
   outline: 0;
 }
 
-.c18[disabled] {
+.c19[disabled] {
   color: #949db0;
   pointer-events: none;
 }
 
-.c18[disabled] input {
+.c19[disabled] input {
   color: #949db0;
   pointer-events: none;
 }
 
-.c18 > * {
+.c19 > * {
   margin-right: 12px;
 }
 
-.c18 > *:last-child {
+.c19 > *:last-child {
   margin-right: 0;
 }
 
-.c18 > .c43:last-child {
+.c19 > .c44:last-child {
   margin-right: -6px;
 }
 
-.c21 {
+.c22 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   min-width: 50%;
 }
 
-.c21 > * {
+.c22 > * {
   width: 100%;
 }
 
-.c22 {
+.c23 {
   outline: none !important;
   background-color: inherit;
   border: none;
@@ -4000,25 +3998,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   border-radius: 0;
 }
 
-.c28 {
+.c29 {
   position: relative;
   outline: none;
   cursor: pointer;
   color: #132144;
-}
-
-.c7 {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  overflow: hidden;
-  height: 2px;
-  background-color: #5d9df5;
-  will-change: width,transform;
-  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
-  -webkit-transition: transform 0.15s ease,width 0.15s ease;
-  transition: transform 0.15s ease,width 0.15s ease;
 }
 
 .c6 {
@@ -4147,7 +4131,21 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   height: 100%;
 }
 
-.c23 {
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
+.c24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4165,7 +4163,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
 }
 
-.c29 {
+.c30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4180,7 +4178,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
-.c29:before {
+.c30:before {
   display: block;
   position: absolute;
   width: 1px;
@@ -4198,30 +4196,117 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c29:active:before {
+.c30:active:before {
   opacity: 0;
 }
 
-.c29 .c25:not(:active) {
+.c30 .c26:not(:active) {
   box-shadow: none;
 }
 
-.c29 .c25:not(:last-of-type) {
+.c30 .c26:not(:last-of-type) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c29 .c25:not(:first-of-type) {
+.c30 .c26:not(:first-of-type) {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.c24 {
+.c25 {
   margin-right: 14px;
 }
 
-.c31 {
+.c17 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c17:hover {
+  background-color: #becedc;
+}
+
+.c16 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
+}
+
+.c13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.c20 {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.c20::-webkit-input-placeholder {
+  line-height: 22px;
+}
+
+.c20::-moz-placeholder {
+  line-height: 22px;
+}
+
+.c20:-ms-input-placeholder {
+  line-height: 22px;
+}
+
+.c20::placeholder {
+  line-height: 22px;
+}
+
+.c14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c14 .ReactVirtualized__List {
+  outline: none !important;
+}
+
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  height: 56px;
+  border-top: 1px solid #e2e9ec;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.c15 {
+  position: relative;
+  width: 100%;
+  padding: 13px 0;
+  overflow-x: hidden;
+}
+
+.c32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4243,7 +4328,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   user-select: none;
 }
 
-.c32 {
+.c33 {
   background: #fff;
   color: #8da2b5;
   box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
@@ -4269,15 +4354,15 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   animation: fadein 0.3s ease,movein 0.3s ease;
 }
 
-.c32 > *:first-child {
+.c33 > *:first-child {
   margin-right: 5px;
 }
 
-.c32:hover {
+.c33:hover {
   color: #62778c;
 }
 
-.c34 {
+.c35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4312,7 +4397,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   animation: flowbar 0.3s ease,fadein 0.3s ease;
 }
 
-.c35 {
+.c36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4341,11 +4426,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   color: #62778c;
 }
 
-.c35 > span {
+.c36 > span {
   margin-right: 5px;
 }
 
-.c37 {
+.c38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4374,11 +4459,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   color: #62778c;
 }
 
-.c37 > span {
+.c38 > span {
   margin-right: 5px;
 }
 
-.c39 {
+.c40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4407,27 +4492,8 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   color: #62778c;
 }
 
-.c39 > span {
+.c40 > span {
   margin-right: 5px;
-}
-
-.c16 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c16:hover {
-  background-color: #becedc;
-}
-
-.c15 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
 }
 
 .c12 {
@@ -4443,62 +4509,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   animation: kctwvn 180ms ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-}
-
-.c19 {
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.c19::-webkit-input-placeholder {
-  line-height: 22px;
-}
-
-.c19::-moz-placeholder {
-  line-height: 22px;
-}
-
-.c19:-ms-input-placeholder {
-  line-height: 22px;
-}
-
-.c19::placeholder {
-  line-height: 22px;
-}
-
-.c13 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.c13 .ReactVirtualized__List {
-  outline: none !important;
-}
-
-.c17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0;
-  height: 56px;
-  border-top: 1px solid #e2e9ec;
-  background-color: #fff;
-  z-index: 1;
-}
-
-.c14 {
-  position: relative;
-  width: 100%;
-  padding: 13px 0;
-  overflow-x: hidden;
 }
 
 .c11 {
@@ -4561,8 +4571,8 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -4646,7 +4656,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
           </div>
           <div
             className="c7"
-            color={null}
           />
         </div>
         <div
@@ -4680,112 +4689,116 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
           className="c13"
         >
           <div
-            style={
-              Object {
-                "height": "100%",
-                "overflow": "hidden",
-                "position": "relative",
-                "width": "100%",
-              }
-            }
+            className="c14"
           >
             <div
               style={
                 Object {
-                  "WebkitOverflowScrolling": "touch",
-                  "bottom": 0,
-                  "left": 0,
-                  "marginBottom": 0,
-                  "marginRight": 0,
-                  "overflow": "scroll",
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                }
-              }
-            >
-              <div
-                className="c14"
-              />
-            </div>
-            <div
-              style={
-                Object {
-                  "borderRadius": 3,
-                  "bottom": 2,
-                  "display": "none",
-                  "height": 6,
-                  "left": 2,
-                  "opacity": 0,
-                  "position": "absolute",
-                  "right": 2,
-                  "transition": "opacity 200ms",
+                  "height": "100%",
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "width": "100%",
                 }
               }
             >
               <div
                 style={
                   Object {
-                    "backgroundColor": "rgba(0,0,0,.2)",
-                    "borderRadius": "inherit",
-                    "cursor": "pointer",
-                    "display": "block",
-                    "height": "100%",
-                    "position": "relative",
+                    "WebkitOverflowScrolling": "touch",
+                    "bottom": 0,
+                    "left": 0,
+                    "marginBottom": 0,
+                    "marginRight": 0,
+                    "overflow": "scroll",
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
                   }
                 }
-              />
-            </div>
-            <div
-              className="c15"
-              style={
-                Object {
-                  "display": "none",
-                  "opacity": 0,
-                  "position": "absolute",
-                  "transition": "opacity 200ms",
-                  "width": 6,
+              >
+                <div
+                  className="c15"
+                />
+              </div>
+              <div
+                style={
+                  Object {
+                    "borderRadius": 3,
+                    "bottom": 2,
+                    "display": "none",
+                    "height": 6,
+                    "left": 2,
+                    "opacity": 0,
+                    "position": "absolute",
+                    "right": 2,
+                    "transition": "opacity 200ms",
+                  }
                 }
-              }
-            >
+              >
+                <div
+                  style={
+                    Object {
+                      "backgroundColor": "rgba(0,0,0,.2)",
+                      "borderRadius": "inherit",
+                      "cursor": "pointer",
+                      "display": "block",
+                      "height": "100%",
+                      "position": "relative",
+                    }
+                  }
+                />
+              </div>
               <div
                 className="c16"
                 style={
                   Object {
-                    "display": "block",
-                    "position": "relative",
-                    "width": "100%",
+                    "display": "none",
+                    "opacity": 0,
+                    "position": "absolute",
+                    "transition": "opacity 200ms",
+                    "width": 6,
                   }
                 }
-              />
+              >
+                <div
+                  className="c17"
+                  style={
+                    Object {
+                      "display": "block",
+                      "position": "relative",
+                      "width": "100%",
+                    }
+                  }
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          className="c17"
-        >
           <div
-            className="c18 c19"
-            onClick={[Function]}
+            className="c18"
           >
-            <span
-              className="c9 c20"
-              color="#8da2b5"
-              size={16}
-            >
-              <svg
-                data-file-name="SvgSearch"
-              />
-            </span>
             <div
-              className="c21"
+              className="c19 c20"
+              onClick={[Function]}
             >
-              <input
+              <span
+                className="c9 c21"
+                color="#8da2b5"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgSearch"
+                />
+              </span>
+              <div
                 className="c22"
-                onChange={[Function]}
-                placeholder="Search flows"
-                value=""
-              />
+              >
+                <input
+                  className="c23"
+                  onChange={[Function]}
+                  placeholder="Search Flows"
+                  value=""
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -4793,10 +4806,10 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
     </div>
   </aside>
   <div
-    className="c23"
+    className="c24"
   >
     <div
-      className="c24"
+      className="c25"
     >
       <div
         className=""
@@ -4807,11 +4820,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
         }
       >
         <button
-          className="c25 c26"
+          className="c26 c27"
           onClick={[Function]}
         >
           <span
-            className="c9 c27"
+            className="c9 c28"
             color="currentColor"
             size={16}
           >
@@ -4823,7 +4836,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       </div>
     </div>
     <div
-      className="c24"
+      className="c25"
     >
       <div
         className=""
@@ -4834,16 +4847,16 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
         }
       >
         <div
-          className="c28"
+          className="c29"
           onClick={[Function]}
           onFocus={[Function]}
           tabIndex={0}
         >
           <button
-            className="c25 c26"
+            className="c26 c27"
           >
             <span
-              className="c9 c27"
+              className="c9 c28"
               color="currentColor"
               size={16}
             >
@@ -4856,7 +4869,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       </div>
     </div>
     <div
-      className="c24"
+      className="c25"
     >
       <div
         className=""
@@ -4868,14 +4881,14 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
         title="Ctrl + Scroll to Zoom"
       >
         <div
-          className="c29"
+          className="c30"
         >
           <button
-            className="c25 c26"
+            className="c26 c27"
             onClick={[Function]}
           >
             <span
-              className="c9 c30"
+              className="c9 c31"
               color="currentColor"
               size={14}
             >
@@ -4885,11 +4898,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
             </span>
           </button>
           <button
-            className="c25 c26"
+            className="c26 c27"
             onClick={[Function]}
           >
             <span
-              className="c9 c30"
+              className="c9 c31"
               color="currentColor"
               size={14}
             >
@@ -4903,14 +4916,14 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
     </div>
   </div>
   <div
-    className="c31"
+    className="c32"
   >
     <div
-      className="c32"
+      className="c33"
       onClick={[Function]}
     >
       <span
-        className="c9 c33"
+        className="c9 c34"
         color="currentColor"
         size={13}
       >
@@ -4924,18 +4937,18 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
     </div>
   </div>
   <div
-    className="c34"
+    className="c35"
   >
     <div
-      className="c35"
+      className="c36"
     >
       <button
-        className="c25 c36"
+        className="c26 c37"
         disabled={true}
         onClick={[Function]}
       >
         <span
-          className="c9 c27"
+          className="c9 c28"
           color="currentColor"
           size={16}
         >
@@ -4946,10 +4959,10 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       </button>
     </div>
     <div
-      className="c37"
+      className="c38"
     >
       <span
-        className="c9 c38"
+        className="c9 c39"
         color="currentColor"
         size={12}
       >
@@ -4960,15 +4973,15 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       BEG Flow
     </div>
     <div
-      className="c39"
+      className="c40"
     >
       <button
-        className="c25 c36"
+        className="c26 c37"
         disabled={true}
         onClick={[Function]}
       >
         <span
-          className="c9 c40"
+          className="c9 c41"
           color="currentColor"
           size={16}
         >
@@ -5503,20 +5516,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   color: #132144;
 }
 
-.c7 {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  overflow: hidden;
-  height: 2px;
-  background-color: #5d9df5;
-  will-change: width,transform;
-  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
-  -webkit-transition: transform 0.15s ease,width 0.15s ease;
-  transition: transform 0.15s ease,width 0.15s ease;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5643,6 +5642,20 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: 100%;
 }
 
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
 .c48 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5715,6 +5728,25 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 
 .c49 {
   margin-right: 14px;
+}
+
+.c47 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c47:hover {
+  background-color: #becedc;
+}
+
+.c46 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c56 {
@@ -5907,25 +5939,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   margin-right: 5px;
 }
 
-.c47 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c47:hover {
-  background-color: #becedc;
-}
-
-.c46 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6077,8 +6090,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -6162,7 +6175,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
           </div>
           <div
             className="c7"
-            color={null}
           />
         </div>
         <div
@@ -6904,7 +6916,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgClock"
+                          data-file-name="SvgReminder"
                         />
                       </span>
                       <div
@@ -7725,20 +7737,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   color: #132144;
 }
 
-.c7 {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  overflow: hidden;
-  height: 2px;
-  background-color: #5d9df5;
-  will-change: width,transform;
-  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
-  -webkit-transition: transform 0.15s ease,width 0.15s ease;
-  transition: transform 0.15s ease,width 0.15s ease;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -7865,6 +7863,20 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: 100%;
 }
 
+.c7 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+  height: 2px;
+  background-color: #5d9df5;
+  will-change: width,transform;
+  -webkit-transition: -webkit-transform 0.15s ease,width 0.15s ease;
+  -webkit-transition: transform 0.15s ease,width 0.15s ease;
+  transition: transform 0.15s ease,width 0.15s ease;
+}
+
 .c43 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -7937,6 +7949,25 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 
 .c44 {
   margin-right: 14px;
+}
+
+.c42 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c42:hover {
+  background-color: #becedc;
+}
+
+.c41 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c51 {
@@ -8129,25 +8160,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   margin-right: 5px;
 }
 
-.c42 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c42:hover {
-  background-color: #becedc;
-}
-
-.c41 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -8299,8 +8311,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   padding-right: 16px;
   position: absolute;
   left: 0;
-  top: 60px;
-  bottom: 60px;
+  top: 50px;
+  bottom: 90px;
   -webkit-transform: translateX(-234px) translateZ(0);
   -ms-transform: translateX(-234px) translateZ(0);
   transform: translateX(-234px) translateZ(0);
@@ -8384,7 +8396,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
           </div>
           <div
             className="c7"
-            color={null}
           />
         </div>
         <div

@@ -3,12 +3,14 @@ import { css, styled, units } from '@/hocs';
 const PORT_LEFT_PADDING = 12;
 const PORT_SIZE = 14;
 
-const getPortColor = ({ color = '#6e849a' }) => color;
-
 export type PortContainerProps = {
   color?: string;
   isConnected?: boolean;
+  isHighlighted?: boolean;
 };
+
+const getPortColor = ({ isHighlighted, color = '#6e849a' }: PortContainerProps) => (isHighlighted ? '#5d9df5' : color);
+const getBackgroundColor = ({ isHighlighted, color = '#62778c' }: PortContainerProps) => (isHighlighted ? '#5d9df5' : color);
 
 const PortContainer = styled.div<PortContainerProps>`
   position: relative;
@@ -35,7 +37,7 @@ const PortContainer = styled.div<PortContainerProps>`
         ? css<PortContainerProps>`
             height: 9px;
             width: 9px;
-            background: ${({ color = '#62778c' }) => `linear-gradient(to bottom, ${color}1f, ${color}3d 100%)`};
+            background: linear-gradient(to bottom, ${getBackgroundColor}1f, ${getBackgroundColor}3d 100%);
           `
         : css<PortContainerProps>`
             height: 5px;

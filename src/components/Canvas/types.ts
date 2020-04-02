@@ -20,11 +20,11 @@ export type CanvasAPI = {
 
   applyTransition: (options: unknown) => void;
 
-  transformPoint: (point: [number, number], relative: boolean) => [number, number];
+  transformPoint: (point: [number, number], relative?: boolean) => [number, number];
 
   mapPoint: (point: [number, number]) => [number, number];
 
-  reverseTransformPoint: (point: [number, number], relative: boolean) => [number, number];
+  reverseTransformPoint: (point: [number, number], relative?: boolean) => [number, number];
 
   reverseMapPoint: (point: [number, number]) => [number, number];
 };

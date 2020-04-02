@@ -3,17 +3,17 @@ import React, { useEffect } from 'react';
 import workspaceClient from '@/client/workspace';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import CreditCardSection from './components/CreditCardSection';
 import InvoiceInfoSection from './components/InvoiceInfoSection';
 
 function BillingModal({ workspaceId }) {
-  const { isOpened, toggle } = useModals(MODALS.BILLING);
+  const { isOpened, toggle } = useModals(ModalType.BILLING);
   const [hasPaid, setHasPaid] = React.useState(false);
   const [invoiceData, setInvoiceData] = React.useState({});
   const [loading, setLoading] = React.useState(false);

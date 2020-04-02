@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import { withModalContext } from '@/../.storybook';
-import { MODALS } from '@/constants';
+import { ModalType } from '@/constants';
 
 import { BoardDeleteModal } from '.';
 
@@ -19,6 +19,6 @@ export default {
   includeStories: [],
 };
 
-const withDecorators = withModalContext(MODALS.BOARD_DELETE);
+const withDecorators = withModalContext(ModalType.BOARD_DELETE);
 
 export const normal = withDecorators(() => <BoardDeleteModal workspace={WORKSPACE} deleteWorkspace={action('deleteWorkspace')} />);

@@ -1,10 +1,10 @@
 import React from 'react';
 
 import ClickableText from '@/components/Text/ClickableText';
-import { MODALS, PLANS, UNLIMITED_SEAT_NUMBER } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType, PLANS, UNLIMITED_SEAT_NUMBER } from '@/constants';
 import { planTypeSelector, usedEditorSeats, workspaceNumberOfSeatsSelector } from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
+import { useModals } from '@/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -22,7 +22,7 @@ const Text = styled.div`
 `;
 
 function SeatSummary({ numberOfSeats, plan, usedEditorSeats }) {
-  const { open: openPaymentsModal } = useModals(MODALS.PAYMENT);
+  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   const numberOfUsedEditorSeats = usedEditorSeats;
 

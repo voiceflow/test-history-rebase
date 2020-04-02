@@ -149,7 +149,7 @@ class CombinedBlock extends React.PureComponent {
 
     this.abortMerge();
 
-    engine.drag.clear();
+    await engine.drag.reset();
     engine.merge.cancel();
   };
 

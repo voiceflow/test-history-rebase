@@ -14,12 +14,16 @@ export const useNode = () => {
   return engine.dispatcher.useNode(nodeID);
 };
 
+export type NodeInjectedProps = ReturnType<typeof useNode>;
+
 export const useNodeData = () => {
   const nodeID = React.useContext(NodeIDContext)!;
   const engine = React.useContext(EngineContext)!;
 
   return engine.dispatcher.useNodeData(nodeID);
 };
+
+export type NodeDataInjectedProps = ReturnType<typeof useNodeData>;
 
 export const withNode = withHook(useNode, {
   shouldRender: ({ node }) => !!node,

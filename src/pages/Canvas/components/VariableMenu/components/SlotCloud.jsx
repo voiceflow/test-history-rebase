@@ -4,15 +4,15 @@ import { Label } from 'reactstrap';
 
 import * as Panel from '@/components/Panel';
 import { SlotTag } from '@/components/VariableTag';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { allSlotsSelector, removeSlot, updateSlot } from '@/ducks/slot';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 import VariableBox from './VariableBox';
 
 const SlotCloud = ({ slots, updateSlot, removeSlot }) => {
-  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(MODALS.SLOT_EDIT);
+  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
 
   const editSlot = ({ name, type, inputs, color, id }) => () => {
     toggleSlotEdit({

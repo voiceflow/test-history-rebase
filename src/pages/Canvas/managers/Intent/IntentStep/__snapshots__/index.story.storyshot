@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -83,7 +83,7 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -96,6 +96,7 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -103,14 +104,13 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -118,6 +118,10 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -130,6 +134,42 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   color: #132144;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -140,15 +180,25 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -194,12 +244,20 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -229,6 +287,7 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -285,8 +344,17 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
             <span
               className="c13"
             >
-              Order Pizza
+              <div
+                className="c14"
+              >
+                Order Pizza
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -309,11 +377,11 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -387,6 +455,7 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -394,14 +463,13 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -411,7 +479,11 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -425,6 +497,58 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   color: #132144;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c16 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c17 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -435,15 +559,25 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -489,12 +623,20 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -524,6 +666,7 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -580,8 +723,25 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
             <span
               className="c13"
             >
-              Order Pizza
+              <div
+                className="c14"
+              >
+                Order Pizza
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -604,11 +764,11 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -682,6 +842,7 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -689,14 +850,13 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -706,7 +866,11 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -720,6 +884,42 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -730,15 +930,25 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -784,12 +994,20 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -819,6 +1037,7 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -875,8 +1094,17 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
             <span
               className="c13"
             >
-              Create or select an intent
+              <div
+                className="c14"
+              >
+                Create or select an intent
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -899,11 +1127,11 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -977,6 +1205,7 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -984,14 +1213,13 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1001,7 +1229,11 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1015,6 +1247,42 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   color: #132144;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1025,15 +1293,25 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1079,12 +1357,20 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1114,6 +1400,7 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1170,8 +1457,17 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
             <span
               className="c13"
             >
-              Order Pizza
+              <div
+                className="c14"
+              >
+                Order Pizza
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1194,11 +1490,11 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -1272,6 +1568,7 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1279,14 +1576,13 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1296,7 +1592,11 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1310,6 +1610,12 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   color: #132144;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1320,15 +1626,25 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1374,12 +1690,20 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1409,6 +1733,7 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1465,7 +1790,11 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
             <span
               className="c13"
             >
-              Order Pizza
+              <div
+                className="c14"
+              >
+                Order Pizza
+              </div>
             </span>
           </div>
         </div>

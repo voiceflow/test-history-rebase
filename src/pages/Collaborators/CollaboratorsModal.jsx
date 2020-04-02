@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 
 import BodyContainer from './components/BodyContainer';
 import SeatSummary from './components/SeatSummary';
@@ -23,7 +23,7 @@ const TooltipMessage = (
 );
 
 function CollaboratorsModal() {
-  const { isOpened, toggle } = useModals(MODALS.COLLABORATORS);
+  const { isOpened, toggle } = useModals(ModalType.COLLABORATORS);
 
   return (
     <Modal modalname="collaborators" isOpen={isOpened} toggle={toggle}>

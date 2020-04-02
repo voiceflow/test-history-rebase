@@ -7,7 +7,8 @@ import UserInfoStep from './UserInfoStep';
 
 const UserInfoManager = {
   type: BlockType.USER_INFO,
-  icon: 'user',
+  icon: 'barGraph',
+  iconColor: '#3C6997',
 
   editor: UserInfoEditor,
   step: UserInfoStep,

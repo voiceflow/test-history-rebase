@@ -1,3 +1,5 @@
+import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
+
 import { EngineConsumer } from './utils';
 
 class ActivationEngine extends EngineConsumer {
@@ -38,8 +40,24 @@ class ActivationEngine extends EngineConsumer {
    */
   setMode(mode) {
     if (mode !== this.mode) {
-      this.clear();
+      this.reset();
       this.mode = mode;
+    }
+  }
+
+  addActiveStyle() {
+    this.engine.canvas?.getRef().classList.add(ACTIVE_NODES_CANVAS_CLASSNAME);
+  }
+
+  removeActiveStyle() {
+    this.engine.canvas?.getRef().classList.remove(ACTIVE_NODES_CANVAS_CLASSNAME);
+  }
+
+  redrawNode(nodeID) {
+    this.engine.node.redraw(nodeID);
+
+    if (this.engine.isBlockRedesignEnabled()) {
+      this.engine.node.redrawLinks(nodeID);
     }
   }
 
@@ -53,7 +71,11 @@ class ActivationEngine extends EngineConsumer {
   activate(nodeID, mode = this.mode) {
     this.setMode(mode);
     this.targets.add(nodeID);
-    this.engine.node.redraw(nodeID);
+    this.redrawNode(nodeID);
+
+    if (this.engine.isRootNode(nodeID)) {
+      this.addActiveStyle();
+    }
   }
 
   /**
@@ -64,10 +86,11 @@ class ActivationEngine extends EngineConsumer {
    */
   deactivate(nodeID) {
     this.targets.delete(nodeID);
-    this.engine.node.redraw(nodeID);
+    this.redrawNode(nodeID);
 
     if (!this.hasTargets) {
       this.mode = null;
+      this.removeActiveStyle();
     }
   }
 
@@ -108,6 +131,12 @@ class ActivationEngine extends EngineConsumer {
     });
 
     unused.forEach((nodeID) => this.deactivate(nodeID));
+
+    if (targets.length === 0) {
+      this.removeActiveStyle();
+    } else if (targets.some((nodeID) => this.engine.isRootNode(nodeID))) {
+      this.addActiveStyle();
+    }
   }
 
   /**
@@ -115,12 +144,13 @@ class ActivationEngine extends EngineConsumer {
    *
    * @returns {void}
    */
-  clear() {
+  reset() {
     // if there are any concerns regarding removing from a Set while iterating over it:
     // https://stackoverflow.com/questions/28306756/is-it-safe-to-delete-elements-in-a-set-while-iterating-with-for-of
     if (this.hasTargets) {
       this.targets.forEach((nodeID) => this.deactivate(nodeID));
       this.targets.clear();
+      this.removeActiveStyle();
     }
   }
 }

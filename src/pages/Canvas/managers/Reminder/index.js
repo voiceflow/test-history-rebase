@@ -1,12 +1,12 @@
 import { BlockType, PlatformType } from '@/constants';
-import BellIcon from '@/svgs/solid/bell.svg';
 
 import ReminderEditor from './ReminderEditor';
 import ReminderStep from './ReminderStep';
 
 const ReminderManager = {
   type: BlockType.REMINDER,
-  icon: BellIcon,
+  icon: 'reminder',
+  iconColor: '#c998a4',
 
   editor: ReminderEditor,
   step: ReminderStep,

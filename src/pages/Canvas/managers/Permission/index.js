@@ -1,17 +1,18 @@
 import { BlockType, PlatformType } from '@/constants';
-import LockIcon from '@/svgs/solid/lock.svg';
 
 import PermissionEditor from './PermissionEditor';
 import PermissionStep from './PermissionStep';
 
 const PermissionManager = {
   type: BlockType.PERMISSION,
-  icon: LockIcon,
+  icon: 'openLock',
+  iconColor: '#6e849a',
 
   editor: PermissionEditor,
   step: PermissionStep,
 
   label: 'Permission',
+  labelV2: 'Permissions',
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
 
   addable: true,

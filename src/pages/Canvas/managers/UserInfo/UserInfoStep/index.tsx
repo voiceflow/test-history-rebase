@@ -5,14 +5,15 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 
-export type UserInfoStepProps = ConnectedStepProps['stepProps'] & {
+export type UserInfoStepProps = {
   userPermissions: (string | null)[];
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 };
 
-export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, isActive, onClick, successPortID, failurePortID }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, successPortID, failurePortID }) => (
+  <Step>
     <Section>
       <Item
         icon="barGraph"
@@ -40,7 +41,7 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
   </Step>
 );
 
-const ConnectedUserInfoStep: React.FC<ConnectedStepProps<NodeData.UserInfo>> = ({ node, data, stepProps }) => {
+const ConnectedUserInfoStep: React.FC<ConnectedStepProps<NodeData.UserInfo>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return (
@@ -48,7 +49,7 @@ const ConnectedUserInfoStep: React.FC<ConnectedStepProps<NodeData.UserInfo>> = (
       userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
       successPortID={successPortID}
       failurePortID={failurePortID}
-      {...stepProps}
+      withPorts={withPorts}
     />
   );
 };

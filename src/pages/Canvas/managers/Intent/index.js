@@ -1,9 +1,9 @@
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
-import ArrowFromLeftIcon from '@/svgs/solid/arrow-alt-from-left.svg';
 
 import IntentBlock from './IntentBlock';
 import IntentEditor from './IntentEditor';
+import IntentStep from './IntentStep';
 
 const EDITORS_BY_PATH = {
   slot: IntentSlotForm,
@@ -11,11 +11,14 @@ const EDITORS_BY_PATH = {
 
 const IntentManager = {
   type: BlockType.INTENT,
-  icon: ArrowFromLeftIcon,
+  icon: 'user',
+  iconColor: '#5589eb',
+
   block: IntentBlock,
 
-  editor: IntentEditor,
   editorsByPath: EDITORS_BY_PATH,
+  editor: IntentEditor,
+  step: IntentStep,
 
   label: 'Intent',
   tip: 'All your project to handle an intent from anywhere inside your project',

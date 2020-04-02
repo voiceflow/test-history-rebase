@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { BlockState } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
@@ -13,26 +14,42 @@ import NodeStep from './NodeStep';
 export type NodeStartBlockProps = Omit<BaseStartBlockProps, 'commands'> & {
   invocationName: string;
   isRootDiagram: boolean;
+  isFocused: boolean;
+  isSelected: boolean;
   diagram: { name: string };
 };
 
+const getBlockState = ({ isFocused, isSelected, isHighlighted }: { isFocused: boolean; isSelected: boolean; isHighlighted: boolean }) => {
+  if (isFocused) return BlockState.ACTIVE;
+
+  if (isSelected) return BlockState.SELECTED;
+
+  if (isHighlighted) return BlockState.HOVERED;
+
+  return BlockState.REGULAR;
+};
+
 const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<NodeStartBlockProps>> = (
-  { isRootDiagram, diagram, invocationName, ...props },
+  { isRootDiagram, diagram, invocationName, isFocused, isSelected, ...props },
   ref
 ) => {
-  const { node, lockOwner } = useNode();
+  const { node, lockOwner, isHighlighted } = useNode();
   const platform = React.useContext(PlatformContext)!;
   const [portID] = node.ports.out;
-  const commands = node.combinedNodes.map((commandNodeID) => (
-    <NodeIDProvider value={commandNodeID} key={commandNodeID}>
-      <NodeStep isLast />
-    </NodeIDProvider>
-  ));
+  const blockState = isHighlighted ? BlockState.ACTIVE : BlockState.REGULAR;
+  const commands = node.combinedNodes.length
+    ? node.combinedNodes.map((commandNodeID) => (
+        <NodeIDProvider value={commandNodeID} key={commandNodeID}>
+          <NodeStep isDraggable={false} isLast />
+        </NodeIDProvider>
+      ))
+    : null;
 
   if (isRootDiagram) {
     return (
       <HomeStartBlock
         {...props}
+        state={getBlockState({ isFocused, isSelected, isHighlighted })}
         portID={portID}
         platform={platform}
         invocationName={invocationName}
@@ -43,7 +60,7 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
     );
   }
 
-  return <FlowStartBlock {...props} portID={portID} name={diagram.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
+  return <FlowStartBlock {...props} state={blockState} portID={portID} name={diagram.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
 };
 
 const mapStateToProps = {

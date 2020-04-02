@@ -88,12 +88,14 @@ class Dispatcher extends EngineConsumer {
 
     const sourcePort = this.engine.getPortByID(link.source.portID);
     const targetPort = this.engine.getPortByID(link.target.portID);
+
     const hasPorts = sourcePort && targetPort && this.engine.ports.has(sourcePort.id) && this.engine.ports.has(targetPort.id);
 
     return {
       linkID,
       link,
       points: hasPorts && extractPoints(canvas, getPortRect('source'), getPortRect('target')),
+      isActive: this.engine.isBranchActive(link.source.nodeID) || this.engine.isBranchActive(link.target.nodeID),
     };
   }
 
@@ -127,9 +129,12 @@ class Dispatcher extends EngineConsumer {
     this.forceRedraw(DispatchChannel.LINK, linkID);
   }
 
+  reset() {
+    this.emitter.removeAllListeners();
+  }
+
   teardown() {
     this.unsubscribe();
-    this.emitter.removeAllListeners();
   }
 }
 

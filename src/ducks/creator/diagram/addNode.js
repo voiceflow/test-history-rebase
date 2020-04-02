@@ -9,35 +9,11 @@ import {
   addAllPortsToState,
   addBlockToState,
   addNodeToState,
+  buildNewNode,
   getLinkIDsByPortID,
   patchNodeInState,
   removeAllLinksFromState,
 } from './utils';
-
-export const buildPortForNode = (nodeID) => (port) => ({
-  ...port,
-  nodeID,
-});
-
-const buildNewNode = (node, data) => {
-  const inPorts = node.ports.in.map(buildPortForNode(node.id));
-  const outPorts = node.ports.out.map(buildPortForNode(node.id));
-
-  const newNodeData = {
-    ...data,
-    nodeID: node.id,
-    type: node.type,
-  };
-  const newNode = nodeFactory(node.id, {
-    ...node,
-    ports: {
-      in: inPorts.map((port) => port.id),
-      out: outPorts.map((port) => port.id),
-    },
-  });
-
-  return [newNode, [...inPorts, ...outPorts], newNodeData];
-};
 
 const addNodeReducer = (state, { payload: { node, data } }) => {
   const [newNode, newPorts, newNodeData] = buildNewNode(node, data);
@@ -46,23 +22,6 @@ const addNodeReducer = (state, { payload: { node, data } }) => {
 };
 
 export default addNodeReducer;
-
-export const addWrappedNodeReducer = (state, { payload: { node, data, parentNodeID } }) => {
-  const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
-  const [parentNode, , parentNodeData] = buildNewNode(
-    {
-      id: parentNodeID,
-      type: BlockType.COMBINED,
-      x: node.x,
-      y: node.y,
-      combinedNodes: [node.id],
-      ports: { in: [], out: [] },
-    },
-    { name: 'Block' }
-  );
-
-  return compose(addNodeToState(parentNode, parentNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
-};
 
 export const addNestedNodeReducer = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);

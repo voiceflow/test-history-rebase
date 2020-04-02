@@ -3,14 +3,14 @@ import cuid from 'cuid';
 import { createAdapter } from '../utils';
 
 const linkAdapter = createAdapter(
-  (dbLink) => ({
+  (dbLink, isBlockRedesignEnabled) => ({
     id: dbLink.id,
     points: dbLink.points.map(({ x, y }) => ({ x, y })),
     source: {
       portID: dbLink.sourcePort,
       nodeID: dbLink.source,
     },
-    target: {
+    target: (isBlockRedesignEnabled && dbLink.virtual) || {
       portID: dbLink.targetPort,
       nodeID: dbLink.target,
     },
@@ -22,6 +22,7 @@ const linkAdapter = createAdapter(
     sourcePort: appLink.source.portID,
     target: appLink.target.nodeID,
     targetPort: appLink.target.portID,
+    virtual: appLink.virtual || null,
   })
 );
 

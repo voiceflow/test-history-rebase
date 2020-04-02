@@ -1,8 +1,7 @@
 import React from 'react';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { formatDate, parseDate } from 'react-day-picker/moment';
 
 import { TIMEZONES } from '@/assets/timezones';
+import DayPickerInput from '@/components/DayPickerInput';
 import InfoIcon from '@/components/InfoIcon';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
@@ -21,7 +20,6 @@ import {
 } from './components';
 import { RECURRENCE_OPTIONS, RecurrenceType } from './constants';
 
-const FORMAT = 'MM/DD/YYYY';
 const USER_TIMEZONE = 'User Timezone';
 const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...TIMEZONES];
 
@@ -57,17 +55,6 @@ function ReminderForm({ data, withDate, onChange }) {
     [recurrence, recurrenceBool, onChange]
   );
 
-  const changeDate = React.useCallback(
-    (day, modifiers, dayPickerInput) => {
-      if (day) {
-        updateDate(new Date(day));
-      } else {
-        setTimeout(() => updateDate(dayPickerInput.state.value), 0);
-      }
-    },
-    [updateDate]
-  );
-
   React.useEffect(() => {
     if (recurrenceBool && !recurrence?.freq) {
       updateRecurrenceType(RecurrenceType.DAILY);
@@ -91,20 +78,7 @@ function ReminderForm({ data, withDate, onChange }) {
             <TimeLabel>DATE</TimeLabel>
             <TimeLabel>TIMEZONE</TimeLabel>
             <TimeLabel className="pr-1">
-              <DayPickerInput
-                formatDate={formatDate}
-                format={FORMAT}
-                parseDate={parseDate}
-                placeholder="DD/MM/YYYY"
-                dayPickerProps={{
-                  disabledDays: {
-                    before: new Date(),
-                  },
-                }}
-                inputProps={{ className: 'form-control' }}
-                value={date}
-                onDayChange={changeDate}
-              />
+              <DayPickerInput date={date} onChange={updateDate} />
             </TimeLabel>
             <TimeZoneSelection
               value={timezone || USER_TIMEZONE}

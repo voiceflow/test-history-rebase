@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Remove Dropdown Base 1`] = `
+.c3 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c3 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c1:focus,
+.c1:active {
+  outline: 0;
+}
+
+.c1:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
+
+.c1:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5b9dfa !important;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
+.c4 .c2 {
+  color: #fff;
+}
+
+.c5 .c2 {
+  color: #6e849a;
+}
+
+.c0 {
+  margin-left: 10px;
+}
+
+<div
+  className="c0"
+>
+  <button
+    className="c1"
+    onClick={[Function]}
+  >
+    <span
+      className="c2 c3"
+      color="currentColor"
+      size={16}
+    >
+      <svg
+        data-file-name="SvgElipsis"
+      />
+    </span>
+  </button>
+</div>
+`;

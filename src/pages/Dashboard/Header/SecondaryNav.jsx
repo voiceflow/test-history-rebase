@@ -7,20 +7,20 @@ import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, MODALS, PLANS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { FEATURE_IDS, ModalType, PLANS } from '@/constants';
 import { usePermissions } from '@/contexts/RolePermissionsContext';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 import { AddCollaborators, ButtonSquare, NavChildItem, NewWorkspaceTab, TabsContainer } from './components';
 
 const SafeLink = ({ isActive, ...props }) => <Link {...props} />;
 
 function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspaceID, workspace: selectedWorkspace, fetchBoards, plan }) {
-  const { toggle: togglePayment } = useModals(MODALS.PAYMENT);
-  const { toggle: toggleCollaborators } = useModals(MODALS.COLLABORATORS);
-  const { toggle: toggleWorkspaceSettings } = useModals(MODALS.BOARD_SETTINGS);
+  const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
+  const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
+  const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
   const [canUseWorkspaceSettings] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
   const [canAddCollaborators] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
 

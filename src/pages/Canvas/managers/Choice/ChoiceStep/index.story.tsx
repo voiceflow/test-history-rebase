@@ -1,31 +1,29 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { ChoiceStep, ChoiceStepProps } from '.';
 
-const getProps = () => {
-  return {
-    choices: [
-      {
-        label: 'Order Pizza',
-        portID: 'ghi',
-      },
-      {
-        label: 'Order my favourite',
-        portID: 'jkl',
-      },
-      {
-        label: 'Where is my order?',
-        portID: 'mno',
-      },
-    ],
-    elsePortID: 'def',
-    withPorts: true,
-    isActive: false,
-  };
-};
+const CHOICES = [
+  {
+    label: 'Order Pizza',
+    portID: 'ghi',
+  },
+  {
+    label: 'Order my favourite',
+    portID: 'jkl',
+  },
+  {
+    label: 'Where is my order?',
+    portID: 'mno',
+  },
+];
+
+const getProps = () => ({
+  choices: CHOICES,
+  elsePortID: 'def',
+});
 
 const render = (props?: Partial<ChoiceStepProps>) => () => (
   <NewBlock name="Choice Block">
@@ -38,16 +36,12 @@ export default {
   component: ChoiceStep,
 };
 
-export const empty = withStepDispatcher()(render({ choices: [] }));
+export const empty = withStepContext()(render({ choices: [] }));
 
-export const multiple = withStepDispatcher()(render());
+export const multiple = withStepContext()(render());
 
-export const single = withStepDispatcher()(
-  render({
-    choices: [{ label: 'Order Pizza', portID: 'abc' }],
-  })
-);
+export const single = withStepContext()(render({ choices: [CHOICES[0]] }));
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());

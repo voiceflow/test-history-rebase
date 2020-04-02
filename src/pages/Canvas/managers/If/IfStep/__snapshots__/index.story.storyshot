@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/If Step Active 1`] = `
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c19 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -40,15 +40,15 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -62,11 +62,11 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c17 {
+.c18 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -132,7 +132,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c22 .c6:not(:first-of-type) {
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -145,6 +145,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -152,14 +153,13 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c23 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -167,6 +167,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -179,6 +183,72 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c22 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c22::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -189,15 +259,25 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c23 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -243,12 +323,20 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -256,12 +344,15 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   position: relative;
 }
 
-.c14 .c15 {
+.c15 .c16 {
   display: inline;
   padding: 0;
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -286,6 +377,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -343,109 +435,37 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c13"
             >
               <div
-                className="c14 expressionfy"
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
-                  <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
-                  >
-                    <span
-                      className="c17 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgLess"
-                        />
-                      </span>
-                    </span>
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14 expressionfy"
-              >
-                 
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math value"
-                  >
-                    4
-                  </span>
-                   
-                  <span
-                    className="c17 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgDivide"
-                      />
-                    </span>
-                  </span>
                    
                   <span
                     className="brackets"
                   >
                     <span
-                      className="parenthesis"
+                      className="c16 c17"
                     >
-                      ( 
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      5
+                      {timestamp}
                     </span>
                     <span>
                        
                     </span>
                     <span
-                      className="or"
+                      className="less"
                     >
                       <span
-                        className="c17 plus"
+                        className="c18 plus"
                       >
-                        <span>
-                          OR
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
                         </span>
                       </span>
                     </span>
@@ -453,25 +473,19 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                        
                     </span>
                     <span
-                      className="math brackets"
+                      className="math value"
                     >
-                      
-                      <span
-                        className="c15 c16"
-                      >
-                        {sessions}
-                      </span>
-                      .includes('en')
-                    </span>
-                    <span
-                      className="parenthesis"
-                    >
-                       )
+                      212
                     </span>
                   </span>
-                </span>
+                </div>
               </div>
             </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -483,48 +497,153 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c13"
             >
               <div
-                className="c14 expressionfy"
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
+                   
                   <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
+                    className="math brackets"
                   >
                     <span
-                      className="c17 plus"
+                      className="math value"
+                    >
+                      4
+                    </span>
+                     
+                    <span
+                      className="c18 plus"
                     >
                       <span
-                        className="c11 c18"
+                        className="c11 c19"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgLess"
+                          data-file-name="SvgDivide"
                         />
                       </span>
                     </span>
-                  </span>
-                  <span>
                      
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c16 c17"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
+                    </span>
                   </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
+                </div>
               </div>
             </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                <div
+                  className="c15 expressionfy"
+                >
+                   
+                  <span
+                    className="brackets"
+                  >
+                    <span
+                      className="c16 c17"
+                    >
+                      {timestamp}
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="less"
+                    >
+                      <span
+                        className="c18 plus"
+                      >
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="math value"
+                    >
+                      212
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -537,7 +656,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c19"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -549,8 +668,18 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
             <span
               className="c13"
             >
-              Else
+              <div
+                className="c14"
+              >
+                Else
+              </div>
             </span>
+            <div
+              className="c22"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -560,14 +689,14 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -586,11 +715,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -664,6 +793,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -671,14 +801,13 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -688,7 +817,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -702,7 +835,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   color: #8da2b5;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -710,6 +843,42 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   -ms-flex: 1;
   flex: 1;
   color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
 }
 
 .c0 {
@@ -722,15 +891,25 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -776,12 +955,20 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -811,6 +998,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -867,7 +1055,11 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
             <span
               className="c13"
             >
-              Add IF statement
+              <div
+                className="c14"
+              >
+                Add IF statement
+              </div>
             </span>
           </div>
         </div>
@@ -881,7 +1073,7 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#6e849a"
                 size={16}
               >
@@ -891,10 +1083,20 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Else
+              <div
+                className="c14"
+              >
+                Else
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -904,27 +1106,27 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
-.c18 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c18 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c19 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -943,15 +1145,15 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c17 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -965,11 +1167,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c17.default {
   color: #62778c;
 }
 
-.c17 {
+.c18 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -1044,6 +1246,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1051,14 +1254,13 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c23 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1068,7 +1270,11 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   z-index: 99;
 }
 
-.c22 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1082,6 +1288,72 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c22 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c22::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1092,15 +1364,25 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c23 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1146,12 +1428,20 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1159,12 +1449,15 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   position: relative;
 }
 
-.c14 .c15 {
+.c15 .c16 {
   display: inline;
   padding: 0;
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -1189,6 +1482,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1246,109 +1540,37 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c13"
             >
               <div
-                className="c14 expressionfy"
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
-                  <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
-                  >
-                    <span
-                      className="c17 plus"
-                    >
-                      <span
-                        className="c11 c18"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgLess"
-                        />
-                      </span>
-                    </span>
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
-              </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14 expressionfy"
-              >
-                 
-                <span
-                  className="math brackets"
-                >
-                  <span
-                    className="math value"
-                  >
-                    4
-                  </span>
-                   
-                  <span
-                    className="c17 plus"
-                  >
-                    <span
-                      className="c11 c18"
-                      color="currentColor"
-                      size={16}
-                    >
-                      <svg
-                        data-file-name="SvgDivide"
-                      />
-                    </span>
-                  </span>
                    
                   <span
                     className="brackets"
                   >
                     <span
-                      className="parenthesis"
+                      className="c16 c17"
                     >
-                      ( 
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      5
+                      {timestamp}
                     </span>
                     <span>
                        
                     </span>
                     <span
-                      className="or"
+                      className="less"
                     >
                       <span
-                        className="c17 plus"
+                        className="c18 plus"
                       >
-                        <span>
-                          OR
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
                         </span>
                       </span>
                     </span>
@@ -1356,25 +1578,19 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                        
                     </span>
                     <span
-                      className="math brackets"
+                      className="math value"
                     >
-                      
-                      <span
-                        className="c15 c16"
-                      >
-                        {sessions}
-                      </span>
-                      .includes('en')
-                    </span>
-                    <span
-                      className="parenthesis"
-                    >
-                       )
+                      212
                     </span>
                   </span>
-                </span>
+                </div>
               </div>
             </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -1386,48 +1602,153 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c13"
             >
               <div
-                className="c14 expressionfy"
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
+                   
                   <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
+                    className="math brackets"
                   >
                     <span
-                      className="c17 plus"
+                      className="math value"
+                    >
+                      4
+                    </span>
+                     
+                    <span
+                      className="c18 plus"
                     >
                       <span
-                        className="c11 c18"
+                        className="c11 c19"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgLess"
+                          data-file-name="SvgDivide"
                         />
                       </span>
                     </span>
-                  </span>
-                  <span>
                      
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c16 c17"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
+                    </span>
                   </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
+                </div>
               </div>
             </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            />
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                <div
+                  className="c15 expressionfy"
+                >
+                   
+                  <span
+                    className="brackets"
+                  >
+                    <span
+                      className="c16 c17"
+                    >
+                      {timestamp}
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="less"
+                    >
+                      <span
+                        className="c18 plus"
+                      >
+                        <span
+                          className="c11 c19"
+                          color="currentColor"
+                          size={16}
+                        >
+                          <svg
+                            data-file-name="SvgLess"
+                          />
+                        </span>
+                      </span>
+                    </span>
+                    <span>
+                       
+                    </span>
+                    <span
+                      className="math value"
+                    >
+                      212
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -1440,7 +1761,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
               className="c10"
             >
               <span
-                className="c11 c19"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -1452,8 +1773,18 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
             <span
               className="c13"
             >
-              Else
+              <div
+                className="c14"
+              >
+                Else
+              </div>
             </span>
+            <div
+              className="c22"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1463,27 +1794,27 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/If Step Single 1`] = `
-.c18 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c18 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c19 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1502,15 +1833,15 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c23 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c24 .c11 {
   color: #6e849a;
 }
 
-.c16 {
+.c19 {
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;
@@ -1524,11 +1855,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   text-align: center;
 }
 
-.c16.default {
+.c19.default {
   color: #62778c;
 }
 
-.c17 {
+.c16 {
   display: inline-block;
   vertical-align: middle;
 }
@@ -1603,6 +1934,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1610,14 +1942,13 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c23 {
+.c5 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1627,7 +1958,11 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   z-index: 99;
 }
 
-.c22 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c25 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1641,6 +1976,72 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
+.c22 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c22::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #8da2b5;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #8da2b5;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1651,15 +2052,25 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c23 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1705,12 +2116,20 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1718,12 +2137,15 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   position: relative;
 }
 
-.c14 .c15 {
+.c15 .c18 {
   display: inline;
   padding: 0;
   border: none;
   background: none;
   color: #132144;
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 <div
@@ -1748,6 +2170,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1805,48 +2228,91 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
               className="c13"
             >
               <div
-                className="c14 expressionfy"
+                className="c14"
               >
-                 
-                <span
-                  className="brackets"
+                <div
+                  className="c15 expressionfy"
                 >
+                   
                   <span
-                    className="c15 c16"
-                  >
-                    {timestamp}
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    className="less"
+                    className="math brackets"
                   >
                     <span
-                      className="c17 plus"
+                      className="math value"
+                    >
+                      4
+                    </span>
+                     
+                    <span
+                      className="c16 plus"
                     >
                       <span
-                        className="c11 c18"
+                        className="c11 c17"
                         color="currentColor"
                         size={16}
                       >
                         <svg
-                          data-file-name="SvgLess"
+                          data-file-name="SvgDivide"
                         />
                       </span>
                     </span>
-                  </span>
-                  <span>
                      
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="parenthesis"
+                      >
+                        ( 
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        5
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="or"
+                      >
+                        <span
+                          className="c16 plus"
+                        >
+                          <span>
+                            OR
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math brackets"
+                      >
+                        
+                        <span
+                          className="c18 c19"
+                        >
+                          {sessions}
+                        </span>
+                        .includes('en')
+                      </span>
+                      <span
+                        className="parenthesis"
+                      >
+                         )
+                      </span>
+                    </span>
                   </span>
-                  <span
-                    className="math value"
-                  >
-                    212
-                  </span>
-                </span>
+                </div>
               </div>
             </span>
+            <div
+              className="c20"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
@@ -1859,7 +2325,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
               className="c10"
             >
               <span
-                className="c11 c19"
+                className="c11 c21"
                 color="#6e849a"
                 size={16}
               >
@@ -1871,8 +2337,18 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
             <span
               className="c13"
             >
-              Else
+              <div
+                className="c14"
+              >
+                Else
+              </div>
             </span>
+            <div
+              className="c22"
+              color="#8da2b5"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>

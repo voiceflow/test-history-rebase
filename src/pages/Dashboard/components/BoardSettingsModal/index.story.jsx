@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import { withModalContext } from '@/../.storybook';
-import { MODALS } from '@/constants';
+import { ModalType } from '@/constants';
 
 import { BoardSettingsModal } from '.';
 
@@ -13,7 +13,7 @@ const WORKSPACE = {
   creatorID: 1,
 };
 
-const withDecorators = withModalContext(MODALS.BOARD_SETTINGS);
+const withDecorators = withModalContext(ModalType.BOARD_SETTINGS);
 
 export default {
   title: 'Dashboard/Workspace Settings Modal',

@@ -40,6 +40,9 @@ function SplashEditor({ splashHeader, onChange, backgroundImage, displayID, crea
     },
     [createDisplay, displayID, onChange, skillID, updateDisplay]
   );
+  const onBlur = (value) => {
+    onChange({ splashHeader: value.text });
+  };
 
   useDidUpdateEffect(() => {
     updateSplashDisplay(splashHeader, backgroundImage);
@@ -48,7 +51,7 @@ function SplashEditor({ splashHeader, onChange, backgroundImage, displayID, crea
   return (
     <Section isDividerNested>
       <FormControl label="Text Header or Variable">
-        <VariablesInput value={splashHeader} onBlur={({ text }) => onChange({ splashHeader: text })} placeholder="Enter header here" />
+        <VariablesInput value={splashHeader} onBlur={onBlur} placeholder="Enter header here" />
       </FormControl>
 
       <FormControl label="Background Image" contentBottomUnits={0}>

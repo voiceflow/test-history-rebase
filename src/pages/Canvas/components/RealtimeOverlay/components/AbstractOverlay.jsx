@@ -27,7 +27,6 @@ class AbstractOverlay extends React.PureComponent {
     if (this.state.items.includes(tabID)) {
       const itemEl = this.getElement(tabID);
 
-      // eslint-disable-next-line compat/compat
       window.requestAnimationFrame(() => animate(itemEl));
     } else if (!this.unmounted) {
       this.itemRefs[tabID] = React.createRef();

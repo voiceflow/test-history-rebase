@@ -2,9 +2,9 @@ import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
 import Dropdown from '@/components/Dropdown';
-import { useKeygen } from '@/components/KeyedComponent';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
+import { useKeygen } from '@/hooks';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import { Count, InnerContainer, Label, TriggerContainer, ValueContainer } from './components';

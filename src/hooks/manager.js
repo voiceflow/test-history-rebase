@@ -46,7 +46,6 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
 
   const setDependencies = useLazy(
     () => {
-      // eslint-disable-next-line compat/compat
       keyLookup.current = new Map(
         items.map((item, index) => [generateLookupKey(item, index), process.env.NODE_ENV === 'test' ? index : generateKey(item)])
       );

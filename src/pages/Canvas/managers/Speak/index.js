@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
-import CommentIcon from '@/svgs/comment.svg';
 
 import SpeakEditor from './SpeakEditor';
 import SpeakStep from './SpeakStep';
@@ -9,7 +8,9 @@ import SpeakStep from './SpeakStep';
 const SpeakManager = {
   type: BlockType.SPEAK,
   editor: SpeakEditor,
-  icon: CommentIcon,
+  icon: 'speak',
+  iconColor: '#8f8e94',
+
   step: SpeakStep,
 
   label: 'Speak',

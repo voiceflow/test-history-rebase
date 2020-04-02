@@ -21,44 +21,44 @@ const keyValToDB = ({ index, key, val }) => ({
 
 // Incoming Integrations Data Mapping Functions
 const addCustomAPIData = (dataModel, actionData, selectedAction) => {
-  const url = textEditorContentAdapter.fromDB(actionData.url);
-  const headers = actionData.headers.map(keyValFromDB);
-  const mapping = actionData.mapping.map(({ index, path, var: varVal }) => ({
+  const url = textEditorContentAdapter.fromDB(actionData?.url);
+  const headers = actionData?.headers.map(keyValFromDB);
+  const mapping = actionData?.mapping.map(({ index, path, var: varVal }) => ({
     index,
     path: textEditorContentAdapter.fromDB(path),
     var: varVal,
   }));
-  const parameters = actionData.params.map(keyValFromDB);
-  const body = actionData.body.map(keyValFromDB);
+  const parameters = actionData?.params.map(keyValFromDB);
+  const body = actionData?.body.map(keyValFromDB);
 
-  dataModel.headers = (headers.length > 0 && headers) || CUSTOM_API_DEFAULTS.headers;
+  dataModel.headers = (headers?.length > 0 && headers) || CUSTOM_API_DEFAULTS.headers;
   dataModel.selectedAction = selectedAction || CUSTOM_API_DEFAULTS.selectedAction;
-  dataModel.mapping = (mapping.length > 0 && mapping) || CUSTOM_API_DEFAULTS.mapping;
-  dataModel.url = (url.length > 0 && url) || CUSTOM_API_DEFAULTS.url;
-  dataModel.parameters = (parameters.length > 0 && parameters) || CUSTOM_API_DEFAULTS.parameters;
-  dataModel.bodyInputType = actionData.bodyInputType || CUSTOM_API_DEFAULTS.bodyInputType;
-  dataModel.body = (body.length > 0 && body) || CUSTOM_API_DEFAULTS.body;
-  dataModel.content = actionData.content || CUSTOM_API_DEFAULTS.content;
+  dataModel.mapping = (mapping?.length > 0 && mapping) || CUSTOM_API_DEFAULTS.mapping;
+  dataModel.url = (url?.length > 0 && url) || CUSTOM_API_DEFAULTS.url;
+  dataModel.parameters = (parameters?.length > 0 && parameters) || CUSTOM_API_DEFAULTS.parameters;
+  dataModel.bodyInputType = actionData?.bodyInputType || CUSTOM_API_DEFAULTS.bodyInputType;
+  dataModel.body = (body?.length > 0 && body) || CUSTOM_API_DEFAULTS.body;
+  dataModel.content = actionData?.content || CUSTOM_API_DEFAULTS.content;
 };
 
 const addGoogleSheetsData = (dataModel, actionData, integrationsData, selectedIntegration) => {
-  dataModel.selectedAction = integrationsData[selectedIntegration].selected_action || GOOGLE_SHEET_DEFAULTS.selectedAction;
-  dataModel.mapping = actionData.mapping || GOOGLE_SHEET_DEFAULTS.mapping;
-  dataModel.spreadsheet = actionData.spreadsheet || GOOGLE_SHEET_DEFAULTS.spreadsheet;
-  dataModel.sheet = actionData.sheet || GOOGLE_SHEET_DEFAULTS.sheet;
-  dataModel.header_column = actionData.header_column || GOOGLE_SHEET_DEFAULTS.header_column;
-  dataModel.match_value = textEditorContentAdapter.fromDB(actionData.match_value);
-  dataModel.row_values = actionData.row_values?.map(textEditorContentAdapter.fromDB) || GOOGLE_SHEET_DEFAULTS.row_values;
-  dataModel.row_number = textEditorContentAdapter.fromDB(actionData.row_number);
-  dataModel.start_row = textEditorContentAdapter.fromDB(actionData.start_row);
-  dataModel.end_row = textEditorContentAdapter.fromDB(actionData.end_row);
-  dataModel.user = integrationsData[selectedIntegration].user;
+  dataModel.selectedAction = integrationsData[selectedIntegration]?.selected_action || GOOGLE_SHEET_DEFAULTS.selectedAction;
+  dataModel.mapping = actionData?.mapping || GOOGLE_SHEET_DEFAULTS.mapping;
+  dataModel.spreadsheet = actionData?.spreadsheet || GOOGLE_SHEET_DEFAULTS.spreadsheet;
+  dataModel.sheet = actionData?.sheet || GOOGLE_SHEET_DEFAULTS.sheet;
+  dataModel.header_column = actionData?.header_column || GOOGLE_SHEET_DEFAULTS.header_column;
+  dataModel.match_value = textEditorContentAdapter.fromDB(actionData?.match_value);
+  dataModel.row_values = actionData?.row_values?.map(textEditorContentAdapter.fromDB) || GOOGLE_SHEET_DEFAULTS.row_values;
+  dataModel.row_number = textEditorContentAdapter.fromDB(actionData?.row_number);
+  dataModel.start_row = textEditorContentAdapter.fromDB(actionData?.start_row);
+  dataModel.end_row = textEditorContentAdapter.fromDB(actionData?.end_row);
+  dataModel.user = integrationsData[selectedIntegration]?.user;
 };
 
 const addZapierData = (dataModel, actionData, integrationsData, selectedIntegration) => {
   dataModel.selectedAction = IntegrationActionType.ZAPIER.START_A_ZAP;
-  dataModel.value = textEditorContentAdapter.fromDB(actionData.value);
-  dataModel.user = integrationsData[selectedIntegration].user || ZAPIER_DEFAULTS.user;
+  dataModel.value = textEditorContentAdapter.fromDB(actionData?.value);
+  dataModel.user = integrationsData[selectedIntegration]?.user || ZAPIER_DEFAULTS.user;
 };
 
 export const encodeCustomAPIData = (data) => {
@@ -143,11 +143,16 @@ const setZapierData = (dataModel, data) => {
 };
 
 const integrationBlockAdapter = createBlockAdapter(
-  ({ selected_integration: selectedIntegration, integrations_data: integrationsData }) => {
+  (data, isBlockRedesignEnabled) => {
+    const {
+      selected_integration: selectedIntegration = isBlockRedesignEnabled && IntegrationType.CUSTOM_API,
+      integrations_data: integrationsData,
+    } = data;
+
     if (!selectedIntegration) return {};
 
-    const selectedAction = integrationsData[selectedIntegration].selected_action;
-    const actionData = integrationsData[selectedIntegration].actions_data[selectedAction];
+    const selectedAction = integrationsData[selectedIntegration]?.selected_action;
+    const actionData = integrationsData[selectedIntegration]?.actions_data[selectedAction];
 
     const dataModel = {
       selectedIntegration,

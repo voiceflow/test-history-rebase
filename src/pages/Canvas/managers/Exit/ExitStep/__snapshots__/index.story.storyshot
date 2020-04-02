@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -83,7 +83,7 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -96,6 +96,7 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -103,14 +104,13 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -118,6 +118,10 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -130,6 +134,12 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -140,15 +150,25 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -194,12 +214,20 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -229,6 +257,7 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -285,7 +314,11 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
             <span
               className="c13"
             >
-              Skill ends in current state
+              <div
+                className="c14"
+              >
+                Skill ends in current state
+              </div>
             </span>
           </div>
         </div>
@@ -309,11 +342,11 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -387,6 +420,7 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -394,14 +428,13 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -411,7 +444,11 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -425,6 +462,12 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -435,15 +478,25 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -489,12 +542,20 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -524,6 +585,7 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -580,7 +642,11 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
             <span
               className="c13"
             >
-              Skill ends in current state
+              <div
+                className="c14"
+              >
+                Skill ends in current state
+              </div>
             </span>
           </div>
         </div>
@@ -604,11 +670,11 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -682,6 +748,7 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -689,14 +756,13 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -706,7 +772,11 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -720,6 +790,12 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -730,15 +806,25 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -784,12 +870,20 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -819,6 +913,7 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -875,7 +970,11 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
             <span
               className="c13"
             >
-              Google Action ends in current state
+              <div
+                className="c14"
+              >
+                Google Action ends in current state
+              </div>
             </span>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { BlockType } from '@/constants';
-import SignOutIcon from '@/svgs/solid/sign-out.svg';
 
 import ExitEditor from './ExitEditor';
 import ExitStep from './ExitStep';
@@ -7,7 +6,9 @@ import ExitStep from './ExitStep';
 const ExitManager = {
   type: BlockType.EXIT,
   editor: ExitEditor,
-  icon: SignOutIcon,
+  icon: 'exit',
+  iconColor: '#d94c4c',
+
   step: ExitStep,
   label: 'Exit',
   tip: 'End the skill on the current flow',

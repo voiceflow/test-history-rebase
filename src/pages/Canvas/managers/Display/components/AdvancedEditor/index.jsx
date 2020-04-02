@@ -18,7 +18,6 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
   };
 
   const customOnDropAccept = async (acceptedFiles) => {
-    // eslint-disable-next-line compat/compat
     const fileReader = new FileReader();
 
     const onFinishedReading = async (parsedData, fileName) => {

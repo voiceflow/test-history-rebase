@@ -10,8 +10,9 @@ const LinkOverlay = styled.path`
   pointer-events: auto;
   transition: ease 0.15s all;
 
-  ${({ isHovering }) =>
+  ${({ isHovering, isNewStyle }) =>
     isHovering &&
+    !isNewStyle &&
     css`
       stroke-opacity: 0.1;
       cursor: pointer;

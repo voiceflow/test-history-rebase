@@ -3,15 +3,15 @@ import React from 'react';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { DisplayType, ModalType } from '@/constants';
 import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { AdvancedEditor, Footer, SplashEditor } from './components';
-import { DisplayType, VERSIONS } from './constants';
+import { VERSIONS } from './constants';
 
 const DISPLAY_OPTIONS = [
   {
@@ -26,7 +26,7 @@ const DISPLAY_OPTIONS = [
 
 function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, selected, onChange, duplicateDisplay }) {
   const { migrating, displayType, backgroundImage, splashHeader, displayID, datasource, aplCommands, jsonFileName, version } = data;
-  const { open: openModal } = useModals(MODALS.DISPLAY_PREVIEW);
+  const { open: openModal } = useModals(ModalType.DISPLAY_PREVIEW);
   const cache = React.useRef({ migrating, onChange, version });
   cache.current = { ...cache.current, version, migrating, onChange };
 

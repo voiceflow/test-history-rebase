@@ -1,4 +1,3 @@
-/* eslint-disable compat/compat */
 import { isChrome, isChromeOS, isEdge, isFirefox, isMac, isWindows } from '@/config';
 import { preventDefault } from '@/utils/dom';
 

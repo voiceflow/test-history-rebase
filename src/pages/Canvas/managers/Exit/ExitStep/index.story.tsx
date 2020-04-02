@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import { PlatformType } from '@/constants';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
@@ -8,8 +8,6 @@ import { ExitStep, ExitStepProps } from '.';
 
 const getProps = () => ({
   platform: PlatformType.ALEXA,
-  isActive: false,
-  withPorts: false,
 });
 
 export default {
@@ -23,6 +21,8 @@ const render = (props?: Partial<ExitStepProps>) => () => (
   </NewBlock>
 );
 
-export const alexa = withStepDispatcher()(render());
-export const google = withStepDispatcher()(render({ platform: PlatformType.GOOGLE }));
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const alexa = withStepContext()(render());
+
+export const google = withStepContext()(render({ platform: PlatformType.GOOGLE }));
+
+export const active = withStepContext({ isActive: true })(render());

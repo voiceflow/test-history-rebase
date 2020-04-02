@@ -1,3 +1,4 @@
+import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
 import Flex from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
@@ -23,10 +24,8 @@ const ItemContainer = styled(Flex)`
     isDragging &&
     css`
       box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.1) !important;
-      background-image: url(/empty-state.svg);
-      background-repeat: no-repeat;
-      background-size: cover;
       cursor: grabbing;
+      ${dragPlaceholderStyles}
     `}
 
   ${({ isDraggingPreview }) =>

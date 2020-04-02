@@ -6,6 +6,12 @@ export const replace = <T>(items: T[], index: number, item: T) => [...items.slic
 
 export const insert = <T>(items: T[], index: number, item: T) => [...items.slice(0, index), item, ...items.slice(index)];
 
+export const insertAll = <T>(items: T[], index: number, additionalItems: T[]) => [
+  ...items.slice(0, index),
+  ...additionalItems,
+  ...items.slice(index),
+];
+
 export const append = <T>(items: T[], item: T) => (items.includes(item) ? items : [...items, item]);
 
 export const toggleMembership = <T>(items: T[], item: T) => (items.includes(item) ? withoutValue(items, item) : [...items, item]);
@@ -44,6 +50,27 @@ export const separate = <T>(items: T[], predicate: (item: T, index: number) => b
     },
     [[], []]
   );
+
+export const findUnion = <T>(lhs: T[], rhs: T[]) => {
+  const unique = new Set([...lhs, ...rhs]);
+
+  return Array.from(unique).reduce<{ lhsOnly: T[]; rhsOnly: T[]; union: T[] }>(
+    (acc, item) => {
+      if (lhs.includes(item)) {
+        if (rhs.includes(item)) {
+          acc.union.push(item);
+        } else {
+          acc.lhsOnly.push(item);
+        }
+      } else {
+        acc.rhsOnly.push(item);
+      }
+
+      return acc;
+    },
+    { rhsOnly: [], lhsOnly: [], union: [] }
+  );
+};
 
 export const hasIdenticalMembers = <T>(lhs: T[], rhs: T[]) => {
   if (lhs.length !== rhs.length) {

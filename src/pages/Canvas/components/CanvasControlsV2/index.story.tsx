@@ -1,7 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators } from '@/../.storybook';
+import { composeDecorators, withModalContext } from '@/../.storybook';
+import { ModalType } from '@/constants';
+import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
 import { ShortcutModalProvider } from '@/pages/Canvas/contexts';
 
@@ -14,22 +16,24 @@ export default {
 
 // eslint-disable-next-line react/display-name
 const createStory = () =>
-  composeDecorators((Component: React.FC) => (
-    <EventualEngineProvider>
-      <ShortcutModalProvider>
-        <RegisterEngine
-          engine={{
-            canvas: {
-              zoomIn: action('zoomIn'),
-              zoomOut: action('zoomOut'),
-              applyTransition: action('applyTransition'),
-            },
-          }}
-        />
+  composeDecorators(withModalContext(ModalType.INTERACTION_MODEL), (Component: React.FC) => (
+    <TextEditorVariablesPopoverProvider value={document.body}>
+      <EventualEngineProvider>
+        <ShortcutModalProvider>
+          <RegisterEngine
+            engine={{
+              canvas: {
+                zoomIn: action('zoomIn'),
+                zoomOut: action('zoomOut'),
+                applyTransition: action('applyTransition'),
+              },
+            }}
+          />
 
-        <Component />
-      </ShortcutModalProvider>
-    </EventualEngineProvider>
+          <Component />
+        </ShortcutModalProvider>
+      </EventualEngineProvider>
+    </TextEditorVariablesPopoverProvider>
   ));
 
 export const base = createStory()(() => <CanvasControlsV2 />);

@@ -1,4 +1,7 @@
+import _isString from 'lodash/isString';
+
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import { transformVariablesFromReadable, transformVariablesToReadable } from '@/utils/slot';
 
 import { createBlockAdapter } from './utils';
 
@@ -12,7 +15,7 @@ const reminderBlockAdapter = createBlockAdapter(
       minutes: textEditorContentAdapter.fromDB(time.m),
       seconds: textEditorContentAdapter.fromDB(time.s),
       ...(!isTimer && {
-        date,
+        date: _isString(date) ? transformVariablesFromReadable(date) : date,
         timezone: timezone === 'User Timezone' ? null : timezone,
       }),
       recurrence: recurrence || {},
@@ -28,7 +31,7 @@ const reminderBlockAdapter = createBlockAdapter(
         m: textEditorContentAdapter.toDB(minutes),
         s: textEditorContentAdapter.toDB(seconds),
       },
-      date,
+      date: _isString(date) ? transformVariablesToReadable(date) : date,
       timezone: timezone || 'User Timezone',
       recurrence,
       recurrenceBool,

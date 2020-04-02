@@ -11,9 +11,12 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
+import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
+import { EditPermissionContext, EngineContext } from '@/pages/Canvas/contexts';
+import { identity } from '@/utils/functional';
 import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 
 import { StoryDetails } from './components';
@@ -28,6 +31,7 @@ const globalDecorator = (Component) => (
 export default globalDecorator;
 
 export const composeDecorators = (...decorators) => (story) => decorators.reverse().reduce((acc, decorator) => () => decorator(acc), story);
+export const composeDecorators2 = (...decorators) => (story) => decorators.reverse().reduce((acc, decorator) => decorator(acc), story);
 
 export const withRedux = (state = {}) => (Component) => (
   <ReduxProvider state={state}>
@@ -36,7 +40,8 @@ export const withRedux = (state = {}) => (Component) => (
 );
 
 export const withModalContext = (openedId) => (Component) => (
-  <ModalsContext.Provider value={{ openedId, open: _noop, toggle: _noop, modalData: {} }}>
+  <ModalsContext.Provider value={{ openedId, open: _noop, toggle: _noop, modalData: {}, stackModalIds: [openedId] }}>
+    <ModalBackdrop />
     <Component />
   </ModalsContext.Provider>
 );
@@ -68,35 +73,53 @@ export const withStoryDetails = (Component) => (
   </StoryContext.Consumer>
 );
 
-export const withEngine = (engine) => (story) => () => (
-  <EngineContext.Provider
-    value={{
-      registerPort: () => null,
-      expirePort: () => null,
-      ...engine,
-    }}
-  >
-    {story()}
-  </EngineContext.Provider>
-);
+export const withContext = (Context, value) => (story) => () => <Context.Provider value={value}>{story()}</Context.Provider>;
 
-export const withStepDispatcher = ({ hasActiveLinks = false, lockOwner = false, onClick = action('click port') } = {}) =>
-  withEngine({
-    dispatcher: {
-      usePort: () => ({ hasActiveLinks, onClick }),
-      useNode: () => ({
-        lockOwner: lockOwner
-          ? {
-              name: 'Mike',
-              email: 'mike@test.com',
-              role: 'editor',
-              image: 'E760D4|FCEFFB',
-              creator_id: 4,
-              seats: 1,
-              created: null,
-              color: '36B4D2|ECF8FA',
-            }
-          : null,
-      }),
-    },
+export const withEngine = (engine) =>
+  withContext(EngineContext, {
+    registerPort: () => null,
+    expirePort: () => null,
+    ...engine,
   });
+
+export const withStepContext = ({
+  withPorts = true,
+  isActive = false,
+  isConnected = false,
+  lockOwner = false,
+  onClick = action('click port'),
+} = {}) =>
+  composeDecorators2(
+    withContext(StepAPIContext, {
+      isActive,
+      withPorts,
+      wrapElement: identity,
+    }),
+    withContext(EditPermissionContext, {
+      canEdit: true,
+    }),
+    withEngine({
+      dispatcher: {
+        usePort: () => ({ hasActiveLinks: isConnected, onClick }),
+        useNode: () => ({
+          lockOwner: lockOwner
+            ? {
+                name: 'Mike',
+                email: 'mike@test.com',
+                role: 'editor',
+                image: 'E760D4|FCEFFB',
+                creator_id: 4,
+                seats: 1,
+                created: null,
+                color: '36B4D2|ECF8FA',
+              }
+            : null,
+          node: {
+            ports: {
+              in: ['abc'],
+            },
+          },
+        }),
+      },
+    })
+  );

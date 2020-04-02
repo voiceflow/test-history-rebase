@@ -46,13 +46,13 @@ export const createSimpleAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Ada
 
 export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<APP, DB>, options: Options = {}) => ({
   ...createSimpleAdapter(fromDB, toDB, options),
-  mapFromDB: (dbValues: DB[]) => {
+  mapFromDB: (dbValues: DB[], ...args: any[]) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from DB:', dbValues);
     }
 
-    const result = dbValues.map(fromDB);
+    const result = dbValues.map((dbValue) => fromDB(dbValue, ...args));
 
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
@@ -61,13 +61,13 @@ export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<A
 
     return result;
   },
-  mapToDB: (appValues: APP[]) => {
+  mapToDB: (appValues: APP[], ...args: any[]) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from store:', appValues);
     }
 
-    const result = appValues.map(toDB);
+    const result = appValues.map((appValue) => toDB(appValue, ...args));
 
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console

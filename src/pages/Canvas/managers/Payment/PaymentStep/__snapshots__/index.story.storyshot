@@ -1,40 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #616c60;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -53,11 +53,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -122,7 +122,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c21 .c6:not(:first-of-type) {
+.c24 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -135,6 +135,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -142,14 +143,13 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -159,7 +159,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   z-index: 99;
 }
 
-.c15 {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -179,7 +183,73 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   color: #62778c;
 }
 
-.c17 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c21 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c21::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c18 {
   color: #132144;
 }
 
@@ -193,15 +263,25 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -247,12 +327,20 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -282,6 +370,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -338,7 +427,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c13"
             >
-              New York Times Quiz
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Hogwarts
+              </div>
             </span>
           </div>
         </div>
@@ -352,7 +445,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#616c60"
                 size={16}
               >
@@ -362,9 +455,13 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              If you'd like to access the full collection, visit NYT website
+              <div
+                className="c14"
+              >
+                If you'd like to access the full collection, visit NYT website
+              </div>
             </span>
           </div>
         </div>
@@ -378,7 +475,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c17"
                 color="#d94c4c"
                 size={16}
               >
@@ -390,18 +487,28 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
             <span
               className="c13"
             >
-              <span
-                className="c17"
+              <div
+                className="c14"
               >
-                Declined
-              </span>
-               or 
-              <span
-                className="c17"
-              >
-                Error
-              </span>
+                <span
+                  className="c18"
+                >
+                  Declined
+                </span>
+                 or 
+                <span
+                  className="c18"
+                >
+                  Error
+                </span>
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -410,7 +517,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
               className="c10"
             >
               <span
-                className="c11 c18"
+                className="c11 c20"
                 color="#279745"
                 size={16}
               >
@@ -420,10 +527,20 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Purchased
+              <div
+                className="c14"
+              >
+                Purchased
+              </div>
             </span>
+            <div
+              className="c21"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -433,40 +550,40 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #616c60;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c22 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c22 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -485,11 +602,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   height: inherit;
 }
 
-.c19 .c11 {
+.c24 .c11 {
   color: #fff;
 }
 
-.c20 .c11 {
+.c25 .c11 {
   color: #6e849a;
 }
 
@@ -563,6 +680,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -570,14 +688,13 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c27 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -587,11 +704,15 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   z-index: 99;
 }
 
-.c21 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c26 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -611,7 +732,88 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   color: #62778c;
 }
 
-.c17 {
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
+}
+
+.c23 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c23::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
+}
+
+.c20 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c21 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
+.c18 {
   color: #132144;
 }
 
@@ -625,15 +827,25 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c27 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -679,12 +891,20 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -714,6 +934,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -770,7 +991,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c13"
             >
-              New York Times Quiz
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Hogwarts
+              </div>
             </span>
           </div>
         </div>
@@ -784,7 +1009,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#616c60"
                 size={16}
               >
@@ -794,9 +1019,13 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              If you'd like to access the full collection, visit NYT website
+              <div
+                className="c14"
+              >
+                If you'd like to access the full collection, visit NYT website
+              </div>
             </span>
           </div>
         </div>
@@ -810,7 +1039,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c17"
                 color="#d94c4c"
                 size={16}
               >
@@ -822,18 +1051,36 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
             <span
               className="c13"
             >
-              <span
-                className="c17"
+              <div
+                className="c14"
               >
-                Declined
-              </span>
-               or 
-              <span
-                className="c17"
-              >
-                Error
-              </span>
+                <span
+                  className="c18"
+                >
+                  Declined
+                </span>
+                 or 
+                <span
+                  className="c18"
+                >
+                  Error
+                </span>
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c20"
+            >
+              <path
+                className="c21"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -842,7 +1089,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c18"
+                className="c11 c22"
                 color="#279745"
                 size={16}
               >
@@ -852,10 +1099,28 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Purchased
+              <div
+                className="c14"
+              >
+                Purchased
+              </div>
             </span>
+            <div
+              className="c23"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c20"
+            >
+              <path
+                className="c21"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -878,11 +1143,11 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c15 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c16 .c11 {
   color: #6e849a;
 }
 
@@ -956,6 +1221,7 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -963,14 +1229,13 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -980,7 +1245,11 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c17 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -994,6 +1263,12 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1004,15 +1279,25 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1058,12 +1343,20 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1093,6 +1386,7 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1149,10 +1443,15 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
             <span
               className="c13"
             >
-              Select a product
+              <div
+                className="c14"
+              >
+                Select a product
+              </div>
             </span>
           </div>
         </div>
+        
       </div>
     </section>
   </div>
@@ -1160,40 +1459,40 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #616c60;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 {
+.c17 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1212,11 +1511,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   height: inherit;
 }
 
-.c20 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -1290,6 +1589,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1297,14 +1597,13 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c23 {
+.c5 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1314,473 +1613,101 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   z-index: 99;
 }
 
-.c22 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c24 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
+}
+
+.c16 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .c19 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-}
-
-.c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c17 {
-  color: #132144;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c0 .c23 {
+.c19::before {
   position: absolute;
-  top: 6px;
-  left: 6px;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
-  z-index: 99;
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
 }
 
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  text-overflow: ellipsis;
-}
-
-.c3 {
-  max-width: 100%;
-}
-
-.c3 input {
-  max-width: 100%;
-  box-sizing: content-box !important;
-  -webkit-transition: background 0.15s ease;
-  transition: background 0.15s ease;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 5px;
-  text-align: center;
-  border: none;
-  white-space: nowrap;
-  background: transparent;
-  border-radius: 3px;
-  outline: none;
-  text-overflow: ellipsis;
-  cursor: auto;
-  overflow: hidden;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
+.c21 {
   position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
 }
 
-<div
-  className="c0"
->
-  <div
-    className="c1"
-  >
-    <div
-      className="c2"
-    >
-      <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
-      >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
-          style={
-            Object {
-              "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="Payment Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
-            }
-          }
-        >
-          Payment Block
-        </div>
-      </div>
-    </div>
-    <section
-      className="c4"
-    >
-      <div
-        className="c5"
-        onMouseDown={[Function]}
-      >
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#558B2F"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPurchase"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
-            >
-              New York Times Quiz
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c14"
-                color="#616c60"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgAlexa"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
-            >
-              Add Upsell Message
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
-            >
-              <span
-                className="c17"
-              >
-                Declined
-              </span>
-               or 
-              <span
-                className="c17"
-              >
-                Error
-              </span>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c18"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
-            </div>
-            <span
-              className="c19"
-            >
-              Purchased
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = `
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c14 > svg {
+.c21::before {
+  position: absolute;
   display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c16 {
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
   box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c16 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
 }
 
 .c18 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c18 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #558B2F;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c19 .c11 {
-  color: #fff;
-}
-
-.c20 .c11 {
-  color: #6e849a;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c7 .c8:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
-}
-
-.c5 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 .c22 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c21 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c17 {
   color: #132144;
 }
 
@@ -1794,15 +1721,25 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c22 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1848,12 +1785,20 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1883,6 +1828,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1939,7 +1885,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             <span
               className="c13"
             >
-              New York Times Quiz
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Hogwarts
+              </div>
             </span>
           </div>
         </div>
@@ -1953,7 +1903,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#616c60"
                 size={16}
               >
@@ -1963,9 +1913,13 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              If you'd like to access the full collection, visit NYT website
+              <div
+                className="c14"
+              >
+                If you'd like to access the full collection, visit NYT website
+              </div>
             </span>
           </div>
         </div>
@@ -1979,7 +1933,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c17"
                 color="#d94c4c"
                 size={16}
               >
@@ -1991,18 +1945,28 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
             <span
               className="c13"
             >
-              <span
-                className="c17"
+              <div
+                className="c14"
               >
-                Declined
-              </span>
-               or 
-              <span
-                className="c17"
-              >
-                Error
-              </span>
+                <span
+                  className="c18"
+                >
+                  Declined
+                </span>
+                 or 
+                <span
+                  className="c18"
+                >
+                  Error
+                </span>
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -2011,7 +1975,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
               className="c10"
             >
               <span
-                className="c11 c18"
+                className="c11 c20"
                 color="#279745"
                 size={16}
               >
@@ -2021,10 +1985,20 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product With Upsell 1`] = 
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Purchased
+              <div
+                className="c14"
+              >
+                Purchased
+              </div>
             </span>
+            <div
+              className="c21"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>

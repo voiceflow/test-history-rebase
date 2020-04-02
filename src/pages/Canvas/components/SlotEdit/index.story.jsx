@@ -3,8 +3,8 @@ import { button } from '@storybook/addon-knobs';
 import React from 'react';
 
 import { composeDecorators, withModalContext, withRedux } from '@/../.storybook';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 
 import SlotEditModal from './SlotEditModal';
 
@@ -149,7 +149,7 @@ const withDecorators = composeDecorators(
       },
     },
   }),
-  withModalContext(MODALS.SLOT_EDIT)
+  withModalContext(ModalType.SLOT_EDIT)
 );
 
 export default {
@@ -159,7 +159,7 @@ export default {
 };
 
 export const normal = withDecorators(() => {
-  const { toggle } = useModals(MODALS.SLOT_EDIT);
+  const { toggle } = useModals(ModalType.SLOT_EDIT);
 
   const onCreate = action('onCreate');
 

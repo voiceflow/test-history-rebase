@@ -1,8 +1,22 @@
-import { CardType, DialogType, ExpressionType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import {
+  BlockType,
+  CardType,
+  DialogType,
+  DisplayType,
+  ExpressionType,
+  IntegrationType,
+  PermissionType,
+  PlatformType,
+  RepromptType,
+} from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
+import { UserType } from '@/models/Integration';
 
 export type NodeData<T> = T & {
   nodeID: string;
   name: string;
+  type: BlockType;
+  blockColor: BlockVariant;
 };
 
 export namespace NodeData {
@@ -104,5 +118,83 @@ export namespace NodeData {
       id: string;
       variable?: string;
     }[];
+  };
+
+  export type Stream = {
+    audio: string;
+    iconImage: string | null;
+    backgroundImage: string | null;
+    customPause: boolean;
+    loop: boolean;
+  };
+
+  export type If = {
+    expressions: {
+      depth: number;
+      id: string;
+      type: ExpressionType;
+      value: If[] | string | null;
+    }[];
+  };
+
+  export type Intent = {
+    [PlatformType.ALEXA]: { intent: string; mappings: unknown[] };
+    [PlatformType.GOOGLE]: { intent: string; mappings: unknown[] };
+  };
+
+  export type Payment = {
+    productID: number | null;
+  };
+
+  export type Display = {
+    displayType?: DisplayType;
+    displayID?: string;
+    dataSource?: string;
+    aplCommands?: string;
+    backgroundImage?: string;
+    splashHeader?: string;
+    jsonFileName?: string;
+    updateOnChange?: boolean;
+  };
+
+  export type IntegrationDefaultProps<T extends IntegrationType> = {
+    selectedIntegration: T;
+    selectedAction?: string;
+  };
+
+  export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
+    headers?: { key: [] | string; val: string }[];
+    url?: string;
+    mapping?: { path: string | []; var: string | null }[];
+    bodyInputData?: string;
+    body?: { key: string | []; val: string }[];
+    parameters?: { key: string | []; val: string }[];
+    content?: string;
+  };
+
+  export type GoogleSheets = IntegrationDefaultProps<IntegrationType.GOOGLE_SHEETS> & {
+    user?: {};
+    spreadsheet?: { value: string; label: string } | null;
+    sheet?: { value: string; label: string } | null;
+    header_column?: string | null;
+    match_value?: [];
+    row_value?: [];
+    row_number?: [];
+    mapping?: { path: string | []; var: string }[];
+    start_row?: [];
+    end_row?: [];
+  };
+
+  export type Zapier = IntegrationDefaultProps<IntegrationType.ZAPIER> & {
+    user?: UserType;
+    value?: [] | string;
+  };
+
+  export type Integration = CustomApi | GoogleSheets | Zapier;
+
+  export type TypedIntegration = {
+    [IntegrationType.ZAPIER]: Zapier;
+    [IntegrationType.CUSTOM_API]: CustomApi;
+    [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   };
 }

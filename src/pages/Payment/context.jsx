@@ -5,11 +5,10 @@ import { compose } from 'recompose';
 
 import client from '@/client';
 import { toast } from '@/components/Toast';
-import { MODALS, PERIOD } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType, PERIOD } from '@/constants';
 import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -25,8 +24,8 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
-  const { open: openSuccessModal } = useModals(MODALS.SUCCESS);
-  const { close: closePaymentsModal } = useModals(MODALS.PAYMENT);
+  const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
+  const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
 
   const [state, actions] = useSmartReducer({
     view: VIEWS.checkout,

@@ -14,11 +14,11 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -43,7 +43,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   align-self: start;
 }
 
-.c15 {
+.c17 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -52,7 +52,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c14 {
+.c16 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -98,7 +98,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -111,6 +111,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -118,14 +119,13 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -133,6 +133,10 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -145,6 +149,42 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -155,15 +195,25 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -209,12 +259,20 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -244,6 +302,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -300,15 +359,24 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
             <span
               className="c13"
             >
-              Hi {name}, welcome to Hogwarts
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas.
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
-          className="c14"
+          className="c16"
         >
           <div
-            className="c15"
+            className="c17"
           />
         </div>
       </div>
@@ -317,7 +385,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
+exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -360,21 +428,6 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   align-self: start;
 }
 
-.c15 {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  background: url(https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg) no-repeat center center;
-  background-size: cover;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
-}
-
-.c14 {
-  padding: 0 12px 12px 12px;
-  height: 180px;
-  width: 100%;
-}
-
 .c9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -424,6 +477,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -431,7 +485,6 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -448,6 +501,10 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   z-index: 99;
 }
 
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
 .c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
@@ -462,6 +519,42 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -472,12 +565,22 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
 }
 
 .c0 .c19 {
@@ -526,12 +629,20 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -561,6 +672,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -617,15 +729,427 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
             <span
               className="c13"
             >
-              Hi {name}, welcome to Hogwarts
+              <div
+                className="c14"
+              >
+                Dogs_and_Cats.json
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3c6997;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 .c11 {
+  color: #fff;
+}
+
+.c21 .c11 {
+  color: #6e849a;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c19 {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: url(https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg) no-repeat center center;
+  background-size: cover;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
+}
+
+.c18 {
+  padding: 0 12px 12px 12px;
+  height: 180px;
+  width: 100%;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
+}
+
+.c16 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c17 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Display Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Display Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#3c6997"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgBlocks"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas.
+              </div>
+            </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c16"
+            >
+              <path
+                className="c17"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
         <div
-          className="c14"
+          className="c18"
         >
           <div
-            className="c15"
+            className="c19"
           />
         </div>
       </div>
@@ -648,11 +1172,11 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -726,6 +1250,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -733,14 +1258,13 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -750,7 +1274,11 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -764,6 +1292,42 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -774,15 +1338,25 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -828,12 +1402,20 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -863,6 +1445,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -919,10 +1502,20 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
             <span
               className="c13"
             >
-              Add a multimodal display
+              <div
+                className="c14"
+              >
+                Add a multimodal display
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
+        
       </div>
     </section>
   </div>
@@ -943,11 +1536,11 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -972,7 +1565,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   align-self: start;
 }
 
-.c15 {
+.c17 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -981,7 +1574,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c14 {
+.c16 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -1036,6 +1629,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1043,14 +1637,13 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1060,7 +1653,11 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1074,6 +1671,42 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1084,15 +1717,25 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1138,12 +1781,20 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1173,6 +1824,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1229,15 +1881,24 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
             <span
               className="c13"
             >
-              Hi my name is Rick Sanchez and this is my Morty
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas showroom in Seattle.
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
-          className="c14"
+          className="c16"
         >
           <div
-            className="c15"
+            className="c17"
           />
         </div>
       </div>
@@ -1260,11 +1921,11 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c18 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c19 .c11 {
   color: #6e849a;
 }
 
@@ -1289,7 +1950,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   align-self: start;
 }
 
-.c15 {
+.c17 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -1298,7 +1959,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c14 {
+.c16 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -1353,6 +2014,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1360,14 +2022,13 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1377,7 +2038,11 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c20 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1391,6 +2056,42 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1401,15 +2102,25 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1455,12 +2166,20 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1490,6 +2209,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1546,15 +2266,24 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
             <span
               className="c13"
             >
-              Hi {name}, welcome to Hogwarts
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas.
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
         <div
-          className="c14"
+          className="c16"
         >
           <div
-            className="c15"
+            className="c17"
           />
         </div>
       </div>
@@ -1577,11 +2306,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   height: inherit;
 }
 
-.c14 .c11 {
+.c16 .c11 {
   color: #fff;
 }
 
-.c15 .c11 {
+.c17 .c11 {
   color: #6e849a;
 }
 
@@ -1655,6 +2384,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1662,14 +2392,13 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1679,7 +2408,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   z-index: 99;
 }
 
-.c16 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c18 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1693,6 +2426,42 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c15::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #6e849a;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #6e849a;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1703,15 +2472,25 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c17 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1757,12 +2536,20 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1792,6 +2579,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1848,10 +2636,20 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
             <span
               className="c13"
             >
-              Hi {name}, welcome to Hogwarts
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas.
+              </div>
             </span>
+            <div
+              className="c15"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
+        
       </div>
     </section>
   </div>
@@ -1872,11 +2670,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c17 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c18 .c11 {
   color: #6e849a;
 }
 
@@ -1901,7 +2699,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   align-self: start;
 }
 
-.c15 {
+.c16 {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -1910,7 +2708,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
 }
 
-.c14 {
+.c15 {
   padding: 0 12px 12px 12px;
   height: 180px;
   width: 100%;
@@ -1965,6 +2763,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1972,14 +2771,13 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c20 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1989,7 +2787,11 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c19 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2003,6 +2805,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -2013,15 +2821,25 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c20 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2067,12 +2885,20 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2102,6 +2928,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2158,15 +2985,19 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
             <span
               className="c13"
             >
-              Hi {name}, welcome to Hogwarts
+              <div
+                className="c14"
+              >
+                Hi {name}, welcome to Adidas.
+              </div>
             </span>
           </div>
         </div>
         <div
-          className="c14"
+          className="c15"
         >
           <div
-            className="c15"
+            className="c16"
           />
         </div>
       </div>

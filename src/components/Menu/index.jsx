@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { FlexLabel } from '@/components/Flex';
-import { useKeygen } from '@/components/KeyedComponent';
+import { useKeygen } from '@/hooks';
 import { useCombinedRefs } from '@/hooks/ref';
 import { FadeDownContainer } from '@/styles/animations';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils/dom';

@@ -6,6 +6,9 @@ import { Icon } from '@/components/SvgIcon';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 import Step from '@/pages/Canvas/components/Step';
+import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
+import { StepAPI } from '@/pages/Canvas/types';
+import { identity } from '@/utils/functional';
 
 import NewBlock, { NewBlockProps } from '.';
 
@@ -68,8 +71,12 @@ const getMultiSectionProps = () => ({
 
 const MOCK_STEPS_LOCKED = (
   <>
-    <Step>Order Pizza</Step>
-    <Step lockOwner={getUserProps()}>New Order</Step>
+    <StepAPIProvider value={{ wrapElement: identity } as StepAPI}>
+      <Step>Order Pizza</Step>
+    </StepAPIProvider>
+    <StepAPIProvider value={{ lockOwner: getUserProps(), wrapElement: identity } as StepAPI}>
+      <Step>New Order</Step>
+    </StepAPIProvider>
   </>
 );
 

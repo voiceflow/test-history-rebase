@@ -2,21 +2,23 @@ import React from 'react';
 import { Manager, Reference } from 'react-popper';
 
 import Flex from '@/components/Flex';
+import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
 import Portal from '@/components/Portal';
 
-import { InlineInputValue, Menu, SearchInput, SearchInputIcon, SelectWrapper } from './components';
-import defaultLabelRenderer from './defaultLabelRenderer';
+import { InlineInputValue, SearchInput, SearchInputIcon, SelectWrapper } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 
 const defaultGetter = (option) => option;
 
 export { defaultOptionsFilter, searchableOptionsFilter, defaultLabelRenderer };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function Select({
   open,
   label = '',
   value,
   inline = false,
+  onBlur,
   onOpen,
   onClose,
   grouped,
@@ -224,6 +226,7 @@ export default function Select({
 
   const inputProps = {
     inline,
+    onBlur,
     onFocus: searchable ? onOpenMenu : null,
     onClick: searchable ? onOpenMenu : null,
     disabled: disabled || !labelSearchable,
@@ -289,7 +292,7 @@ export default function Select({
       )}
 
       {opened && (
-        <Menu
+        <AdvancedMenu
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}
@@ -301,9 +304,9 @@ export default function Select({
           placement={placement}
           formatValue={formatValue}
           searchLabel={searchLabel}
-          getOptionKey={getOptionKey}
           onFocusOption={onFocusOption}
           menuSearchable={menuSearchable}
+          getOptionKey={getOptionKey}
           getOptionValue={getOptionValue}
           getOptionLabel={getOptionLabel}
           inputWrapperRef={inputWrapperRef}

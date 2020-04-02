@@ -6,7 +6,7 @@ import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 import { ChoiceStep } from '@/pages/Canvas/managers/Choice/ChoiceStep';
 import { head } from '@/utils/array';
 
-const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<NodeData.Choice>> = ({ node, data, stepProps }) => {
+const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<NodeData.Choice>> = ({ node, data }) => {
   const [elsePortID, outPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choiceByPortID = useSyncedLookup(outPorts, data.choices);
 
@@ -25,7 +25,7 @@ const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<NodeData.Choice>> = ({
     [data.choices]
   );
 
-  return <ChoiceStep {...stepProps} elsePortID={elsePortID} choices={choices} />;
+  return <ChoiceStep elsePortID={elsePortID} choices={choices} />;
 };
 
 export default ConnectedChoiceOldStep;

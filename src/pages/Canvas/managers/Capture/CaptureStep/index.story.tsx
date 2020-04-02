@@ -1,22 +1,15 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { CaptureStep, CaptureStepProps } from '.';
 
-const getProps = () => {
-  const onClickPort = action('click port');
-
-  return {
-    onClickPort,
-    fromVariable: 'FirstName',
-    toVariable: 'Name',
-    portID: 'fsgqe',
-    isActive: false,
-  };
-};
+const getProps = () => ({
+  fromVariable: 'FirstName',
+  toVariable: 'Name',
+  portID: 'fsgqe',
+});
 
 export default {
   title: 'Creator/Steps/Capture Step',
@@ -29,14 +22,14 @@ const render = (props?: Partial<CaptureStepProps>) => () => (
   </NewBlock>
 );
 
-export const empty = withStepDispatcher()(render({ fromVariable: '', toVariable: '' }));
+export const empty = withStepContext()(render({ fromVariable: '', toVariable: '' }));
 
-export const withVariables = withStepDispatcher()(render());
+export const withVariables = withStepContext()(render());
 
-export const withLongVariables = withStepDispatcher()(render({ fromVariable: 'UK_First_name', toVariable: 'Name' }));
+export const withLongVariables = withStepContext()(render({ fromVariable: 'UK_First_name', toVariable: 'Name' }));
 
-export const withoutPort = withStepDispatcher()(render({ portID: '' }));
+export const withoutPort = withStepContext({ withPorts: false })(render());
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());

@@ -1,7 +1,7 @@
 import { styled, units } from '@/hocs';
 
 const NewBlockContent = styled.section`
-  & > *:not(:last-child) {
+  & > *:not(:last-of-type) {
     margin-bottom: ${units()}px;
   }
 `;

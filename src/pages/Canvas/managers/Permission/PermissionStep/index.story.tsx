@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { PermissionStep, PermissionStepProps } from '.';
 
 const getProps = () => ({
   portID: 'abc',
-  withPorts: true,
   permissions: ['Email', 'Full Name', 'User Name'],
 });
 
-const render = (props?: Partial<PermissionStepProps>) => (
+const render = (props?: Partial<PermissionStepProps>) => () => (
   <NewBlock name="Permission Block">
     <PermissionStep {...getProps()} {...props} />
   </NewBlock>
@@ -22,13 +21,12 @@ export default {
   component: PermissionStep,
 };
 
-export const empty = withStepDispatcher()(() => render({ permissions: [] }));
+export const empty = withStepContext()(render({ permissions: [] }));
 
-export const withPermissions = withStepDispatcher()(render);
+export const withPermissions = withStepContext()(render());
 
-export const withoutPort = withStepDispatcher()(() => render({ withPorts: false }));
+export const withoutPort = withStepContext({ withPorts: false })(render());
 
-// eslint-disable-next-line sonarjs/no-identical-functions
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render);
+export const connected = withStepContext({ isConnected: true })(render());
 
-export const active = withStepDispatcher()(() => render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());

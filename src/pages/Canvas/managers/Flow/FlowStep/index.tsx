@@ -9,18 +9,18 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { MergeProps } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
-export type FlowStepProps = ConnectedStepProps['stepProps'] & {
+export type FlowStepProps = {
   label: string;
   portID: string;
   onClickFlow?: () => void;
 };
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, withPorts, isActive, onClick, onClickFlow }) => (
-  <Step isActive={isActive} onClick={onClick}>
+export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, onClickFlow }) => (
+  <Step>
     <Section>
       <Item
         label={label}
-        portID={withPorts ? portID : null}
+        portID={portID}
         onClick={label ? stopPropagation(onClickFlow) : undefined}
         labelVariant={StepLabelVariant.SECONDARY}
         icon="flow"
@@ -36,9 +36,9 @@ export type ConnectedFlowStepProps = ConnectedStepProps<NodeData.Flow> & {
   goToDiagram: () => void;
 };
 
-const ConnectedFlowStep: React.FC<ConnectedFlowStepProps> = ({ diagramName, node, stepProps, goToDiagram }) => {
-  return <FlowStep label={diagramName} portID={node.ports.out[0]} onClickFlow={goToDiagram} {...stepProps} />;
-};
+const ConnectedFlowStep: React.FC<ConnectedFlowStepProps> = ({ diagramName, node, goToDiagram }) => (
+  <FlowStep label={diagramName} portID={node.ports.out[0]} onClickFlow={goToDiagram} />
+);
 
 const mapStateToProps = {
   diagram: Diagram.diagramByIDSelector,

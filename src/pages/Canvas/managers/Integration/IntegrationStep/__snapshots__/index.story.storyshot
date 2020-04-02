@@ -1,14 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
-.c14 {
+exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c18 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -18,7 +31,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #74a4bf;
+  color: #e26d5a;
 }
 
 .c12 > svg {
@@ -27,24 +40,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   height: inherit;
 }
 
-.c16 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c16 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c17 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -109,6 +109,10 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
+.c22 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -118,21 +122,21 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px #5D9DF5;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -142,11 +146,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,6 +170,72 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -176,15 +246,25 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c20 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -230,12 +310,20 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -265,6 +353,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -310,18 +399,22 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
             >
               <span
                 className="c11 c12"
-                color="#74a4bf"
+                color="#e26d5a"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgVar"
+                  data-file-name="SvgZapier"
                 />
               </span>
             </div>
             <span
               className="c13"
             >
-              Custom API
+              <div
+                className="c14"
+              >
+                Trigger a Zap
+              </div>
             </span>
           </div>
         </div>
@@ -335,7 +428,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -345,10 +438,20 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -357,7 +460,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -367,10 +470,20 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -379,7 +492,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 </div>
 `;
 
-exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
+exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 .c15 {
   box-sizing: content-box;
   width: 16px;
@@ -406,24 +519,24 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c19 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -497,6 +610,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -504,14 +618,13 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c21 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -521,7 +634,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   z-index: 99;
 }
 
-.c20 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -542,11 +659,73 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #62778c;
+  color: #8da2b5;
 }
 
 .c14 {
-  color: #132144;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
 }
 
 .c0 {
@@ -559,15 +738,25 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c21 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -613,12 +802,20 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -648,6 +845,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -704,13 +902,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c13"
             >
-              Send 
-              <span
+              <div
                 className="c14"
               >
-                GET
-              </span>
-               request
+                Custom API
+              </div>
             </span>
           </div>
         </div>
@@ -736,8 +932,18 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -746,7 +952,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -758,8 +964,520 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
             <span
               className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #d94c4c;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c19 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c21 .c11 {
+  color: #fff;
+}
+
+.c22 .c11 {
+  color: #6e849a;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 .c24 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c23 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c17 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c20 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c20::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c15 {
+  color: #132144;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c24 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#74a4bf"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgVar"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                Send 
+                <span
+                  className="c15"
+                >
+                  GET
+                </span>
+                 request
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
+            </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Success
+              </div>
+            </span>
+            <div
+              className="c20"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -769,24 +1487,11 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #279745;
+  color: #d94c4c;
 }
 
 .c16 > svg {
@@ -799,7 +1504,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #e26d5a;
+  color: #279745;
 }
 
 .c12 > svg {
@@ -808,11 +1513,11 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c22 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c23 .c11 {
   color: #6e849a;
 }
 
@@ -886,6 +1591,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -893,14 +1599,13 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -910,11 +1615,15 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c24 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c17 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -931,7 +1640,92 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #8da2b5;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
+}
+
+.c21 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c21::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#2797451f,#2797453d 100%);
+}
+
+.c19 {
+  position: absolute;
+  right: -14px;
+  width: 14px;
+  height: 4px;
+}
+
+.c20 {
+  stroke: rgb(141,162,181);
+  stroke-width: 1.5px;
+  fill: transparent;
+  stroke-width: 1.5px;
+  -webkit-transform: translateY(-2px);
+  -ms-transform: translateY(-2px);
+  transform: translateY(-2px);
+}
+
+.c15 {
+  color: #132144;
 }
 
 .c0 {
@@ -944,15 +1738,25 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c20 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -998,12 +1802,20 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1033,6 +1845,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1078,18 +1891,28 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
             >
               <span
                 className="c11 c12"
-                color="#e26d5a"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgZapier"
+                  data-file-name="SvgGoogleSheets"
                 />
               </span>
             </div>
             <span
               className="c13"
             >
-              Trigger a Zap
+              <div
+                className="c14"
+              >
+                Create Data
+                 in 
+                <span
+                  className="c15"
+                >
+                  Voiceflow MRR
+                </span>
+              </div>
             </span>
           </div>
         </div>
@@ -1103,7 +1926,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c16"
                 color="#d94c4c"
                 size={16}
               >
@@ -1113,10 +1936,28 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c17"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c19"
+            >
+              <path
+                className="c20"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
           <div
             className="c8 c9"
@@ -1125,7 +1966,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c12"
                 color="#279745"
                 size={16}
               >
@@ -1135,10 +1976,28 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c17"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c21"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c19"
+            >
+              <path
+                className="c20"
+                d="M 0 4 L 14 4"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -1148,14 +2007,14 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1174,11 +2033,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   height: inherit;
 }
 
-.c16 .c11 {
+.c19 .c11 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c20 .c11 {
   color: #6e849a;
 }
 
@@ -1252,6 +2111,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1259,14 +2119,13 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1276,11 +2135,15 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c21 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1300,6 +2163,72 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1310,15 +2239,25 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c19 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1364,12 +2303,20 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -1399,6 +2346,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1455,7 +2403,11 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
             <span
               className="c13"
             >
-              Connect a Google Sheet
+              <div
+                className="c14"
+              >
+                Connect a Google Sheet
+              </div>
             </span>
           </div>
         </div>
@@ -1469,7 +2421,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -1479,10 +2431,20 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -1501,10 +2463,20 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c18"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -1514,14 +2486,14 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
-.c14 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1532,6 +2504,971 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   width: 16px;
   height: 16px;
   color: #279745;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 .c11 {
+  color: #fff;
+}
+
+.c21 .c11 {
+  color: #6e849a;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c17 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c15 {
+  color: #132144;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgGoogleSheets"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                Create Data
+                 in 
+                <span
+                  className="c15"
+                >
+                  Voiceflow MRR
+                </span>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
+            </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Success
+              </div>
+            </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
+.c16 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #d94c4c;
+}
+
+.c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 .c11 {
+  color: #fff;
+}
+
+.c21 .c11 {
+  color: #6e849a;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c17 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #132144;
+}
+
+.c13 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
+.c15 {
+  color: #132144;
+}
+
+.c0 {
+  width: 360px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 12px 12px 12px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+}
+
+.c0:hover {
+  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.c1 {
+  position: relative;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgGoogleSheets"
+                />
+              </span>
+            </div>
+            <span
+              className="c13"
+            >
+              <div
+                className="c14"
+              >
+                Create Data
+                 in 
+                <span
+                  className="c15"
+                >
+                  Voiceflow Monthly Recurring Revenue
+                </span>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          className="c6 c7"
+        >
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c16"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
+            </span>
+            <div
+              className="c18"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c12"
+                color="#279745"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgCheckmark"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                Success
+              </div>
+            </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
 }
 
 .c12 > svg {
@@ -1618,6 +3555,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -1625,7 +3563,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -1642,18 +3579,12 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   z-index: 99;
 }
 
-.c18 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.node--merge-active .c5 {
+  z-index: -1;
 }
 
-.c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
+.c18 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
 }
 
 .c13 {
@@ -1666,6 +3597,16 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   color: #62778c;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c15 {
+  color: #132144;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -1676,12 +3617,22 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
 }
 
 .c0 .c19 {
@@ -1730,391 +3681,20 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
-}
-
-<div
-  className="c0"
->
-  <div
-    className="c1"
-  >
-    <div
-      className="c2"
-    >
-      <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
-      >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
-          style={
-            Object {
-              "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
-            }
-          }
-        >
-          Block
-        </div>
-      </div>
-    </div>
-    <section
-      className="c4"
-    >
-      <div
-        className="c5"
-        onMouseDown={[Function]}
-      >
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgGoogleSheets"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
-            >
-              Get data in 'Voiceflow MRR'
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c14"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
-            >
-              Failure
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
-            >
-              Success
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c16 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c16 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #e26d5a;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c17 .c11 {
-  color: #fff;
-}
-
-.c18 .c11 {
-  color: #6e849a;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c7 .c8:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
-}
-
-.c5 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 .c20 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #132144;
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #62778c;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c0 .c20 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  text-overflow: ellipsis;
-}
-
-.c3 {
-  max-width: 100%;
-}
-
-.c3 input {
-  max-width: 100%;
-  box-sizing: content-box !important;
-  -webkit-transition: background 0.15s ease;
-  transition: background 0.15s ease;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 5px;
-  text-align: center;
-  border: none;
-  white-space: nowrap;
+.c3 input:active {
   background: transparent;
-  border-radius: 3px;
-  outline: none;
-  text-overflow: ellipsis;
-  cursor: auto;
-  overflow: hidden;
-  color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2144,6 +3724,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2189,364 +3770,34 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
             >
               <span
                 className="c11 c12"
-                color="#e26d5a"
+                color="#74a4bf"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgZapier"
+                  data-file-name="SvgVar"
                 />
               </span>
             </div>
             <span
               className="c13"
             >
-              Trigger 'Send Slack Message blah blah blah'
+              <div
+                className="c14"
+              >
+                Send 
+                <span
+                  className="c15"
+                >
+                  GET
+                </span>
+                 request
+              </div>
             </span>
           </div>
         </div>
         <div
           className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c14"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
-            >
-              Failure
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c16"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
-            >
-              Success
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-`;
-
-exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #e26d5a;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c14 .c11 {
-  color: #fff;
-}
-
-.c15 .c11 {
-  color: #6e849a;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 16px;
-  height: 22px;
-  margin-right: 16px;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 54px;
-  padding: 16px 16px 16px 22px;
-  width: 100%;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-}
-
-.c7 .c8:not(:first-of-type)::before {
-  position: absolute;
-  top: -1px;
-  height: 1px;
-  left: 52px;
-  right: 0;
-  content: '';
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: 54px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
-}
-
-.c5 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c5 .c17 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c16 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
-.c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: #8da2b5;
-}
-
-.c0 {
-  width: 360px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
-  position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
-}
-
-.c0 .c17 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  text-overflow: ellipsis;
-}
-
-.c3 {
-  max-width: 100%;
-}
-
-.c3 input {
-  max-width: 100%;
-  box-sizing: content-box !important;
-  -webkit-transition: background 0.15s ease;
-  transition: background 0.15s ease;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 5px;
-  text-align: center;
-  border: none;
-  white-space: nowrap;
-  background: transparent;
-  border-radius: 3px;
-  outline: none;
-  text-overflow: ellipsis;
-  cursor: auto;
-  overflow: hidden;
-  color: #62778c;
-}
-
-.c4 > *:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-.c1 {
-  position: relative;
-}
-
-<div
-  className="c0"
->
-  <div
-    className="c1"
-  >
-    <div
-      className="c2"
-    >
-      <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
-      >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
-          style={
-            Object {
-              "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="Block"
         />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
-            }
-          }
-        >
-          Block
-        </div>
-      </div>
-    </div>
-    <section
-      className="c4"
-    >
-      <div
-        className="c5"
-        onMouseDown={[Function]}
-      >
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#e26d5a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgZapier"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
-            >
-              Trigger a Zap
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   </div>
@@ -2554,27 +3805,27 @@ exports[`Storyshots Creator/Steps/Integration Step Without Ports 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c16 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -2593,11 +3844,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -2671,6 +3922,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -2678,14 +3930,13 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2695,11 +3946,15 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2719,6 +3974,72 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   color: #8da2b5;
 }
 
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
+}
+
 .c0 {
   width: 360px;
   border-radius: 8px;
@@ -2729,15 +4050,25 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c20 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2783,12 +4114,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -2818,6 +4157,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2874,7 +4214,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
             <span
               className="c13"
             >
-              Trigger a Zap
+              <div
+                className="c14"
+              >
+                Trigger a Zap
+              </div>
             </span>
           </div>
         </div>
@@ -2888,7 +4232,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -2898,10 +4242,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -2910,7 +4264,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -2920,10 +4274,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>
@@ -2933,27 +4297,27 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c16 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -2972,11 +4336,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   height: inherit;
 }
 
-.c17 .c11 {
+.c20 .c11 {
   color: #fff;
 }
 
-.c18 .c11 {
+.c21 .c11 {
   color: #6e849a;
 }
 
@@ -3050,6 +4414,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  position: relative;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -3057,14 +4422,13 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
-  position: relative;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3074,11 +4438,15 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   z-index: 99;
 }
 
-.c19 .c6:not(:first-of-type) {
+.node--merge-active .c5 {
+  z-index: -1;
+}
+
+.c22 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3095,7 +4463,73 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #62778c;
+  color: #8da2b5;
+}
+
+.c14 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c19 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c19::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  box-shadow: 0 0 0 1px #279745;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #279745;
+  border: 4px solid white;
 }
 
 .c0 {
@@ -3108,15 +4542,25 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
   position: relative;
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  transition: box-shadow 0.15s ease,opacity 0.15s ease;
 }
 
 .c0:hover {
   box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
 }
 
-.c0 .c20 {
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3162,12 +4606,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
   border-radius: 3px;
   outline: none;
   text-overflow: ellipsis;
-  cursor: auto;
+  cursor: text;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #62778c;
 }
 
-.c4 > *:not(:last-child) {
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
@@ -3197,6 +4649,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -3253,7 +4706,11 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
             <span
               className="c13"
             >
-              Trigger 'Send Slack Message'
+              <div
+                className="c14"
+              >
+                Trigger a Zap
+              </div>
             </span>
           </div>
         </div>
@@ -3267,7 +4724,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
               className="c10"
             >
               <span
-                className="c11 c14"
+                className="c11 c15"
                 color="#d94c4c"
                 size={16}
               >
@@ -3277,10 +4734,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Failure
+              <div
+                className="c14"
+              >
+                Failure
+              </div>
             </span>
+            <div
+              className="c17"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
           <div
             className="c8 c9"
@@ -3289,7 +4756,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
               className="c10"
             >
               <span
-                className="c11 c16"
+                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -3299,10 +4766,20 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
-              Success
+              <div
+                className="c14"
+              >
+                Success
+              </div>
             </span>
+            <div
+              className="c19"
+              color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
           </div>
         </div>
       </div>

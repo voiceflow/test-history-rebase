@@ -23,7 +23,16 @@ export const {
 
 // action creators
 
-export const { add: addSlot, addMany: addSlots, update: updateSlot, remove: removeSlot, replace: replaceSlots } = createCRUDActionCreators(STATE_KEY);
+export const {
+  add: addSlot,
+  addMany: addSlots,
+  update: updateSlot,
+  remove: removeSlot,
+  replace: replaceSlots,
+  reorder: reorderSlots,
+} = createCRUDActionCreators(STATE_KEY);
+
+export const allSlotIDsSelector = createSelector(allSlotsSelector, (slots) => slots.map(({ id }) => id));
 
 export const intentsUsingSlotSelector = createSelector(allIntentsSelector, (intents) => (slotID) =>
   intents.reduce((acc, intent) => {

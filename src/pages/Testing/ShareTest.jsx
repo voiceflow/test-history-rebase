@@ -3,18 +3,18 @@ import { Tooltip } from 'react-tippy';
 
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { userSelector } from '@/ducks/account';
 import { setConfirm } from '@/ducks/modal';
 import { renderTest, shareTest } from '@/ducks/test';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 import ShareMenu from './components/ShareMenu';
 
 const TestingHeader = (props) => {
   const { shareTest, renderTest, render, user } = props;
-  const { open: openCollaboratorsModal } = useModals(MODALS.COLLABORATORS);
+  const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const [link, setLink] = useState(false);
 
   const makeConfig = async () => {

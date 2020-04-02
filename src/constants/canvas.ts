@@ -10,6 +10,7 @@ export enum BlockState {
   REGULAR = 'regular',
   ACTIVE = 'active',
   SELECTED = 'selected',
+  HOVERED = 'hovered',
   DISABLED = 'disabled',
 }
 

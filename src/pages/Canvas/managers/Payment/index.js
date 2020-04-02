@@ -1,14 +1,19 @@
 import { BlockType, PlatformType } from '@/constants';
 
 import PaymentEditor from './PaymentEditor';
+import PaymentStep from './PaymentStep';
 
 const PaymentManager = {
   type: BlockType.PAYMENT,
-  editor: PaymentEditor,
-  icon: 'dollar',
+  icon: 'purchase',
+  iconColor: '#558B2F',
 
   label: 'Payment',
+  labelV2: 'Purchase',
   tip: 'Request payment from user',
+
+  editor: PaymentEditor,
+  step: PaymentStep,
 
   addable: true,
   platforms: [PlatformType.ALEXA],

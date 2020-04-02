@@ -12,6 +12,7 @@ const DEFAULT_PLUGINS = [PluginType.VARIABLES];
 function TextEditor({
   value = '',
   onBlur,
+  onFocus,
   onEmpty,
   placeholder,
   onEnterPress,
@@ -41,7 +42,6 @@ function TextEditor({
   } = React.useMemo(() => createPlugins(pluginsTypes, pluginsProps, { enableReadOnly, disableReadOnly }, { textValue: value, isEmpty: !value }), []);
 
   const fromStateWithAdapter = React.useMemo(() => fromState(toTextAdapters), [toTextAdapters]);
-
   const [editorState, updateEditorState] = React.useState(() => toState(value, fromTextConvertor(pluginsProps)));
 
   store.merge({ readOnly, editorState, onEmpty, onBlur, onEnterPress, forceUpdate });
@@ -165,6 +165,7 @@ function TextEditor({
       <DraftJSEditor
         ref={onEditorRef}
         onBlur={onBlurEditor}
+        onFocus={onFocus}
         plugins={plugins}
         onChange={onEditorChange}
         readOnly={readOnly}

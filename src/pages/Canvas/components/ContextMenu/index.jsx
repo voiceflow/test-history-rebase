@@ -2,7 +2,7 @@ import cuid from 'cuid';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import Menu from '@/components/Menu';
+import NestedMenu from '@/components/NestedMenu';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { styled } from '@/hocs';
 import { ContextMenuContext, withClipboard, withEngine } from '@/pages/Canvas/contexts';
@@ -24,15 +24,29 @@ const OPTION_HANDLERS = {
 
     engine.node.remove(nodeID);
   },
+  [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => {
+    engine.node.updateBlockColor(nodeID, blockColor);
+  },
+  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 };
 
 const ContextMenu = ({ className, ...props }) => {
   const contextMenu = React.useContext(ContextMenuContext);
   const options =
     contextMenu.type && TARGET_OPTIONS[contextMenu.type]?.filter((option) => !option.shouldRender || option.shouldRender(contextMenu, props));
-  const onSelect = async (option) => {
-    await OPTION_HANDLERS[option](contextMenu, props);
+  const onSelect = async (_, [menuItemIndex, nestedMenuItemIndex]) => {
+    const option = options[menuItemIndex];
+    const blockColor = option?.options?.[nestedMenuItemIndex].value;
+
+    await OPTION_HANDLERS[option.value](contextMenu, { ...props, blockColor });
     contextMenu.onHide();
+  };
+  const getOptionValue = (option) => option?.value;
+  const getOptionLabel = (selectedValue) => {
+    const flattenedOptions = options.flatMap(({ label, value, options = [] }) => [{ value, label }, ...options.flatMap((option) => [option])]);
+
+    const option = flattenedOptions.find((option) => option.value === selectedValue);
+    return option?.label;
   };
 
   React.useEffect(() => {
@@ -49,11 +63,13 @@ const ContextMenu = ({ className, ...props }) => {
 
   return (
     <Popper referenceElement={buildVirtualElement(contextMenu.position)} placement="right-start" positionFixed>
-      {({ ref, style, placement }) => (
-        <div ref={ref} style={style} data-placement={placement} className={className}>
-          <Menu options={options} onSelect={onSelect} />
-        </div>
-      )}
+      {({ ref, style, placement }) => {
+        return (
+          <div ref={ref} style={style} data-placement={placement} className={className}>
+            <NestedMenu options={options} onSelect={onSelect} getOptionValue={getOptionValue} getOptionLabel={getOptionLabel} />
+          </div>
+        );
+      }}
     </Popper>
   );
 };

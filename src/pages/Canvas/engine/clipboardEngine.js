@@ -20,6 +20,11 @@ import { base64, synchronous as synchronousCrypto } from '@/utils/crypto';
 
 import { EngineConsumer } from './utils';
 
+const ClipboardVersion = {
+  V1: 'v1',
+  V2: 'v2',
+};
+
 class ClipboardEngine extends EngineConsumer {
   internal = {
     storeData: async (nodeIDs, keyToStore, keyToEncrypt) => {
@@ -40,6 +45,9 @@ class ClipboardEngine extends EngineConsumer {
 
       const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
+
+      // Block includes all the nodes - parent and nested
+      const copiedBlocks = this.engine.isBlockRedesignEnabled() ? copiedNodes.filter((node) => node.type === BlockType.COMBINED) : copiedNodes;
 
       const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out]));
 
@@ -82,15 +90,26 @@ class ClipboardEngine extends EngineConsumer {
 
       const encryptedData = synchronousCrypto.encrypt(JSON.stringify(copyData), keyToEncrypt);
 
-      await set(CLIPBOARD_DATA_KEY, base64.encodeObject({ data: encryptedData, key: keyToStore }));
+      await set(
+        CLIPBOARD_DATA_KEY,
+        base64.encodeObject({
+          data: encryptedData,
+          key: keyToStore,
+          version: this.engine.isBlockRedesignEnabled() ? ClipboardVersion.V2 : ClipboardVersion.V1,
+        })
+      );
 
-      this.dispatch(setCanvasInfo(`${copiedNodes.length} block(s) copied to clipboard`));
+      this.dispatch(setCanvasInfo(`${copiedBlocks.length} block(s) copied to clipboard`));
     },
 
     extractData: async (copiedKey) => {
       const b64Data = await get(CLIPBOARD_DATA_KEY);
 
-      const { data, key } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
+      const { data, key, version } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
+
+      if (version !== (this.engine.isBlockRedesignEnabled() ? ClipboardVersion.V2 : ClipboardVersion.V1)) {
+        throw new Error('cliboard version mismatch');
+      }
 
       const decryptedData = synchronousCrypto.decryptDataByEncryptedKeys(copiedKey, key, data);
 
@@ -119,7 +138,14 @@ class ClipboardEngine extends EngineConsumer {
     },
   };
 
-  copy(nodeIDs) {
+  copy(unfilteredNodeIDs) {
+    let nodeIDs = unfilteredNodeIDs;
+    if (this.engine.isBlockRedesignEnabled()) {
+      nodeIDs = nodeIDs.filter((nodeID) => this.engine.getNodeByID(nodeID).type === BlockType.COMBINED);
+
+      if (!nodeIDs.length) return;
+    }
+
     const [keyToCopy, keyToStore, keyToEncrypt] = synchronousCrypto.generateEncryptedKeys();
 
     const serializedData = Clipboard.serialize(keyToCopy);

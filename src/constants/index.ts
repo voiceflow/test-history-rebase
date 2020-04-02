@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { constants } from '@voiceflow/common';
 
 export const SLOT_TYPES = constants.slots;
@@ -17,13 +18,13 @@ export const FlowTab = {
   FLOW: 'flow',
 };
 
-export const BlockCategoryType = {
-  BASIC: 'basic',
-  LOGIC: 'logic',
-  ADVANCED: 'advanced',
-  VISUAL: 'visual',
-  USER: 'user',
-};
+export enum BlockCategoryType {
+  BASIC = 'basic',
+  LOGIC = 'logic',
+  ADVANCED = 'advanced',
+  VISUAL = 'visual',
+  USER = 'user',
+}
 
 export const DragItem = {
   BLOCK_MENU: 'blockMenu',
@@ -110,6 +111,8 @@ export enum PermissionType {
   USER_PERSON = 'alexa::person_id:read',
   USER_GEOLOCATION = 'alexa::devices:all:geolocation:read',
   REMINDERS = 'alexa::alerts:reminders:skill:readwrite',
+  LISTS_READ = 'alexa::household:lists:read',
+  LISTS_WRITE = 'alexa::household:lists:write',
   NOTIFICATIONS = 'alexa::devices:all:notifications:write',
   ACCOUNT_LINKING = 'UNOFFICIAL::account_linking',
   PRODUCT = 'UNOFFICIAL::product',
@@ -140,6 +143,14 @@ export const PERMISSIONS = [
   {
     name: 'Reminders',
     value: PermissionType.REMINDERS,
+  },
+  {
+    name: 'Lists Read',
+    value: PermissionType.LISTS_READ,
+  },
+  {
+    name: 'Lists Write',
+    value: PermissionType.LISTS_WRITE,
   },
   {
     name: 'Notifications',
@@ -208,13 +219,13 @@ export const KeyCodes = {
   ENTER: 13,
 };
 
-export const IntegrationType = {
-  CUSTOM_API: 'Custom API',
-  GOOGLE_SHEETS: 'Google Sheets',
-  ZAPIER: 'Zapier',
-};
+export enum IntegrationType {
+  CUSTOM_API = 'Custom API',
+  GOOGLE_SHEETS = 'Google Sheets',
+  ZAPIER = 'Zapier',
+}
 
-export const IntegrationActionType = {
+export const IntegrationActionType: Record<string, { [key: string]: string }> = {
   CUSTOM_API: {
     GET: 'Make a GET Request',
     POST: 'Make a POST Request',
@@ -241,7 +252,7 @@ const EMPTY_KEY_VALUE_ITEM = {
 // Integration default data models
 export const INTEGRATION_DATA_MODELS = {
   CUSTOM_API: {
-    selectedIntegration: 'Custom API',
+    selectedIntegration: IntegrationType.CUSTOM_API,
     headers: [EMPTY_KEY_VALUE_ITEM],
     url: '',
     mapping: [
@@ -257,7 +268,7 @@ export const INTEGRATION_DATA_MODELS = {
     selectedAction: IntegrationActionType.CUSTOM_API.GET,
   },
   GOOGLE_SHEETS: {
-    selectedIntegration: 'Google Sheets',
+    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
     selectedAction: '',
     user: {},
     spreadsheet: null,
@@ -272,7 +283,7 @@ export const INTEGRATION_DATA_MODELS = {
   },
   ZAPIER: {
     user: {},
-    selectedIntegration: 'Zapier',
+    selectedIntegration: IntegrationType.ZAPIER,
     selectedAction: IntegrationActionType.ZAPIER.START_A_ZAP,
     value: [],
   },
@@ -328,21 +339,24 @@ export const AV_FILE_FORMATS = [
 
 export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
 
-export const MODALS = {
-  PAYMENT: 'payment',
-  COLLABORATORS: 'collaborators',
-  BILLING: 'billing',
+export enum ModalType {
+  PAYMENT = 'payment',
+  COLLABORATORS = 'collaborators',
+  BILLING = 'billing',
 
-  BOARD_DELETE: 'board-delete',
-  BOARD_SETTINGS: 'board-settings',
+  BOARD_DELETE = 'board-delete',
+  BOARD_SETTINGS = 'board-settings',
 
-  SUCCESS: 'success',
+  SUCCESS = 'success',
 
-  SLOT_EDIT: 'slot-edit',
-  INTENTS: 'intents',
+  SLOT_EDIT = 'slot-edit',
+  INTENTS = 'intents',
+  INTERACTION_MODEL = 'interaction-model',
 
-  DISPLAY_PREVIEW: 'display-preview',
-};
+  DISPLAY_PREVIEW = 'display-preview',
+
+  ONBOARDING = 'onboarding',
+}
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -407,8 +421,6 @@ export const FILTERED_AMAZON_INTENTS = [
   'NavigateHomeIntent',
 ];
 
-export const INVOCATION_NAME_REGEX = /^[\s'.A-Za-z]*$/;
-
 export enum IconVariant {
   STANDARD = 'standard',
   POPOVER = 'popover',
@@ -420,4 +432,9 @@ export enum IconVariant {
 
 export enum KeyCode {
   ENTER = 13,
+}
+
+export enum DisplayType {
+  SPLASH = 'splash',
+  ADVANCED = 'advanced',
 }

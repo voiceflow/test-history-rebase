@@ -1,20 +1,21 @@
 import { Meta, Preview, Story } from '@/../.storybook';
 
 import * as stories from './index.story';
-import IntegrationStep from '.';
+import { IntegrationStep } from '.';
 
 <Meta title="Creator/Steps/Integration Step" component={IntegrationStep} />
 
 # Integration Step
 
 <Preview>
-  <Story name="Api Empty">{stories.apiEmpty()}</Story>
-  <Story name="Api Filled">{stories.apiFilled()}</Story>
-  <Story name="Google Empty">{stories.googleEmpty()}</Story>
-  <Story name="Google Filled">{stories.googleFilled()}</Story>
-  <Story name="Zapier Empty">{stories.zapierEmpty()}</Story>
-  <Story name="Zapier Filled">{stories.zapierFilled()}</Story>
-  <Story name="Connected">{stories.connected()}</Story>
-  <Story name="Without ports">{stories.withoutPorts()}</Story>
-  <Story name="Long label">{stories.longLabel()}</Story>
+  <Story name="api empty">{stories.apiEmpty()}</Story>
+  <Story name="api filled">{stories.apiFilled()}</Story>
+  <Story name="google empty">{stories.googleEmpty()}</Story>
+  <Story name="google filled">{stories.googleFilled()}</Story>
+  <Story name="zapier empty">{stories.zapierEmpty()}</Story>
+  <Story name="zapier filled">{stories.zapierFilled()}</Story>
+  <Story name="no connector">{stories.noConnector()}</Story>
+  <Story name="active">{stories.active()}</Story>
+  <Story name="connected">{stories.connected()}</Story>
+  <Story name="long label">{stories.longLabel()}</Story>
 </Preview>

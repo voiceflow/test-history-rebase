@@ -2,7 +2,6 @@ import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
 import * as Display from '@/ducks/display';
-import * as Feature from '@/ducks/feature';
 import { NODE_MANAGERS } from '@/pages/Canvas/managers';
 import { asyncForEach } from '@/utils/array';
 
@@ -16,17 +15,32 @@ export class EngineConsumer {
   }
 
   select(selector) {
-    return selector(this.engine.store.getState());
+    return this.engine.select(selector);
   }
 
-  isFeatureEnabled(featureID) {
-    return this.select(Feature.isFeatureEnabledSelector)(featureID);
+  /**
+   * clear any active data before a new diagram is being loaded
+   * @returns {void}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  reset() {
+    // noop
+  }
+
+  /**
+   * remove any subscriptions before the canvas is unmounted
+   * reset() will be called before teardown()
+   * @returns {void}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  teardown() {
+    // noop
   }
 }
 
-export function nodeFactory(type) {
+export function nodeFactory(type, factoryData) {
   const { factory } = NODE_MANAGERS[type];
-  const { node, data } = factory?.() ?? { node: {}, data: {} };
+  const { node, data } = factory?.(factoryData) ?? { node: {}, data: {} };
 
   return {
     node: {

@@ -1,7 +1,7 @@
 import _isBoolean from 'lodash/isBoolean';
 import React from 'react';
 
-export const useToggle = (defaultValue = false): [boolean, (nextValue: boolean) => void] => {
+export const useToggle = (defaultValue = false): [boolean, (nextValue?: unknown) => void] => {
   const [value, setValue] = React.useState(defaultValue);
 
   const toggle = React.useCallback((nextValue) => setValue((currValue) => (_isBoolean(nextValue) ? nextValue : !currValue)), []);
@@ -17,10 +17,10 @@ export const useEnableDisable = (defaultValue = false): [boolean, () => void, ()
   return [value, onEnable, onDisable];
 };
 
-export function useSwitch(defaultValue: unknown = null): [boolean, unknown, (nextValue: unknown) => void, () => void] {
+export const useSwitch = (defaultValue: unknown = null): [boolean, unknown, (nextValue: unknown) => void, () => void] => {
   const [{ isSet, value }, setState] = React.useState({ isSet: !!defaultValue, value: defaultValue });
   const onChange = (nextValue: unknown) => setState({ isSet: true, value: nextValue });
   const onUnset = () => isSet && setState((state) => ({ ...state, isSet: false }));
 
   return [isSet, value, onChange, onUnset];
-}
+};

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal as ReactstrapModal } from 'reactstrap';
 
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { IS_TEST } from '@/config';
+import { ModalsContext } from '@/contexts';
 import { createGlobalStyle } from '@/hocs';
 import { stopImmediatePropagation } from '@/utils/dom';
 
@@ -14,7 +15,9 @@ const StyledBackdropModal = createGlobalStyle`
 const ModalBackdrop = () => {
   const { openedId, close } = React.useContext(ModalsContext) || {};
 
-  return (
+  return IS_TEST ? (
+    <StyledBackdropModal />
+  ) : (
     <ReactstrapModal isOpen={!!openedId} zIndex="1000" onPaste={stopImmediatePropagation()} toggle={() => close(openedId)}>
       <StyledBackdropModal />
     </ReactstrapModal>

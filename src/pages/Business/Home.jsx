@@ -97,10 +97,8 @@ class Home extends Component {
 
   getDAUs(filter_type) {
     const DAUrange = calculateRange(filter_type);
-    /* eslint-disable compat/compat */
     const from = Math.trunc(DAUrange[0].getTime() / 1000);
     const to = Math.trunc(DAUrange[1].getTime() / 1000);
-    /* eslint-enable compat/compat */
     const tz_offset = parseInt(new Date().getTimezoneOffset(), 10) / 60;
 
     // Convert to unix time for comparison on backend, also keep in seconds

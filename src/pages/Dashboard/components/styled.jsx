@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AvatarContainer from '@/components/Avatar/components/AvatarContainer';
+import DragPlaceholder from '@/components/DragPlaceholder';
 import Link from '@/components/LegacyLink';
 import { css, styled } from '@/hocs';
 
@@ -35,13 +36,9 @@ export const ProjectTitleCaption = styled(ProjectTitle)`
   line-height: 1.5384615385;
 `;
 
-export const ProjectListDragZone = styled.div`
+export const ProjectListDragZone = styled(DragPlaceholder)`
   height: 76px;
   background-color: #fff;
-  background-image: url(/empty-state.svg);
-  background-repeat: no-repeat;
-  background-size: 10%;
-  background-size: cover;
   border: 1px solid #eaeff4;
   border-radius: 7px;
 `;

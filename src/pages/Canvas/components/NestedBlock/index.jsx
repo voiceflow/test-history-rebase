@@ -1,7 +1,6 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import { withCanvas } from '@/components/Canvas/contexts';
 import { withOverlay } from '@/contexts';
 import { withNodeLifecycle } from '@/pages/Canvas/components/Node/hocs';
 import { getBlockCategory } from '@/pages/Canvas/constants';
@@ -24,6 +23,8 @@ class NestedBlock extends React.PureComponent {
   mouseMovement = new MouseMovement();
 
   api = {
+    instanceID: cuid(),
+
     getPosition: () => {
       const rect = this.rootRef.current.getBoundingClientRect();
 
@@ -86,7 +87,7 @@ class NestedBlock extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.engine.registerNode(this.props.node, this.api);
+    this.props.engine.registerNode(this.props.nodeID, this.api);
   }
 
   componentWillUnmount() {
@@ -116,4 +117,4 @@ class NestedBlock extends React.PureComponent {
   }
 }
 
-export default compose(withNode, withNodeLifecycle, withEngine, withCanvas, withOverlay, withEditPermission)(NestedBlock);
+export default compose(withNode, withNodeLifecycle, withEngine, withOverlay, withEditPermission)(NestedBlock);

@@ -1,16 +1,12 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { CodeStep, CodeStepProps } from '.';
 
 const getProps = () => {
-  const onClickPort = action('click port');
-
   return {
-    onClickPort,
     codeAdded: true,
     withPorts: true,
     successPortID: 'abc',
@@ -18,7 +14,7 @@ const getProps = () => {
   };
 };
 
-const render = (props?: Partial<CodeStepProps>) => (
+const render = (props?: Partial<CodeStepProps>) => () => (
   <NewBlock name="Code Block">
     <CodeStep {...getProps()} {...props} />
   </NewBlock>
@@ -29,14 +25,14 @@ export default {
   component: CodeStep,
 };
 
-export const empty = withStepDispatcher()(() => render({ codeAdded: false }));
+export const empty = withStepContext()(render({ codeAdded: false }));
 
-export const emptyWithoutPorts = withStepDispatcher()(() => render({ codeAdded: false, withPorts: false }));
+export const emptyWithoutPorts = withStepContext()(render({ codeAdded: false, withPorts: false }));
 
-export const codeAdded = withStepDispatcher()(render);
+export const codeAdded = withStepContext()(render());
 
-export const withoutPorts = withStepDispatcher()(() => render({ withPorts: false }));
+export const withoutPorts = withStepContext()(render({ withPorts: false }));
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render);
+export const connected = withStepContext({ isConnected: true })(render());
 
-export const active = withStepDispatcher()(() => render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());

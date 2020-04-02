@@ -127,7 +127,6 @@ class Canvas extends React.PureComponent {
   applyStyles = (styles) => {
     const renderLayerEl = this.renderLayerRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       Object.keys(styles).forEach((style) => {
         renderLayerEl.style[style] = styles[style];
@@ -148,7 +147,6 @@ class Canvas extends React.PureComponent {
   styleRenderLayer({ zoom = this.zoom, position = this.position } = {}) {
     const renderLayerEl = this.renderLayerRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       renderLayerEl.style.transform = transformStyle(position, zoom);
     });
@@ -253,11 +251,12 @@ class Canvas extends React.PureComponent {
   }
 
   render() {
-    const { onRightClick, innerRef, children, disableClick } = this.props;
+    const { onRightClick, innerRef, children, disableClick, className } = this.props;
 
     return (
       <CanvasProvider value={this.api}>
         <Container
+          className={className}
           onContextMenu={onRightClick}
           onMouseDown={disableClick ? undefined : this.controls.mousedown}
           tabIndex={-1}

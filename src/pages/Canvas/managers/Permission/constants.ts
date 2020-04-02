@@ -1,5 +1,7 @@
 export const PERMISSIONS = [
   { label: 'Reminders', value: 'alexa::alerts:reminders:skill:readwrite' },
+  { label: 'Lists Read', value: 'alexa::household:lists:read' },
+  { label: 'Lists Write', value: 'alexa::household:lists:write' },
   { label: 'Notifications', value: 'alexa::devices:all:notifications:write' },
   { label: 'Address', value: 'alexa::devices:all:address:full:read' },
   { label: 'Full Name', value: 'alexa::profile:name:read' },

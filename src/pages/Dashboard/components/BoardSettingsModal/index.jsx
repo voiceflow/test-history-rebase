@@ -4,10 +4,10 @@ import { Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import Image from '@/components/LegacyUpload/Image';
-import { MODALS, PLANS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType, PLANS } from '@/constants';
 import { updateCurrentWorkspaceItem, updateWorkspaceName } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { swallowEvent } from '@/utils/dom';
 
 import SettingField from './components/SettingField';
@@ -15,17 +15,17 @@ import SettingField from './components/SettingField';
 export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateCurrentWorkspaceItem }) {
   const [name, updateName] = React.useState(workspace.name);
 
-  const { open: openBillingModal } = useModals(MODALS.BILLING);
-  const { toggle, isOpened } = useModals(MODALS.BOARD_SETTINGS);
-  const { open: openDeleteModal } = useModals(MODALS.BOARD_DELETE);
+  const { open: openBillingModal } = useModals(ModalType.BILLING);
+  const { toggle, isOpened } = useModals(ModalType.BOARD_SETTINGS);
+  const { open: openDeleteModal } = useModals(ModalType.BOARD_DELETE);
 
-  const onNameChange = React.useCallback(
-    ({ target }) => {
-      updateName(target.value);
-      updateWorkspaceName(target.value);
-    },
-    [updateName, updateWorkspaceName]
-  );
+  const saveName = React.useCallback(() => {
+    if (name && name !== workspace.name) {
+      updateWorkspaceName(name);
+    } else {
+      updateName(workspace.name);
+    }
+  }, [name, updateWorkspaceName, updateName]);
 
   React.useEffect(() => {
     updateName(workspace.name);
@@ -73,7 +73,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
           )}
 
           <SettingField hr label="Name">
-            <Input name="name" value={name} onChange={onNameChange} placeholder="Board Name" />
+            <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
           </SettingField>
 
           {workspace.plan !== PLANS.enterprise && (

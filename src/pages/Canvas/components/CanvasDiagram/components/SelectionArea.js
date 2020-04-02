@@ -7,6 +7,11 @@ const SelectionArea = styled.div`
   background: #5d9df515;
   pointer-events: none;
   border-radius: 5px;
+
+  ${({ isBlockRedesignEnabled }) =>
+    isBlockRedesignEnabled && {
+      zIndex: 11,
+    }}
 `;
 
 export default SelectionArea;

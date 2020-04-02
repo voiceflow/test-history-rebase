@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStepDispatcher } from '@/../.storybook';
+import { withStepContext } from '@/../.storybook';
 import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
 
 import { ReminderStep, ReminderStepProps } from '.';
@@ -23,12 +23,12 @@ export default {
   component: ReminderStep,
 };
 
-export const empty = withStepDispatcher()(render({ label: undefined }));
+export const empty = withStepContext()(render({ label: undefined }));
 
-export const withLonglabel = withStepDispatcher()(render({ label: 'This is your reminder to wash your car.' }));
+export const withLonglabel = withStepContext()(render({ label: 'This is your reminder to wash your car.' }));
 
-export const withoutPorts = withStepDispatcher()(render({ withPorts: false }));
+export const withoutPorts = withStepContext()(render({ withPorts: false }));
 
-export const connected = withStepDispatcher({ hasActiveLinks: true })(render());
+export const connected = withStepContext({ isConnected: true })(render());
 
-export const active = withStepDispatcher()(render({ isActive: true }));
+export const active = withStepContext({ isActive: true })(render());

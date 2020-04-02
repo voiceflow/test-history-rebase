@@ -1,15 +1,17 @@
 import moize from 'moize';
 import React from 'react';
-import { useStore } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { diagramByIDSelector } from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagram';
+import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
-import { isRootDiagramSelector } from '@/ducks/skill';
-import { setCanvasError } from '@/ducks/user';
+import * as Skill from '@/ducks/skill';
+import * as User from '@/ducks/user';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
+import { useTeardown } from '@/hooks';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
@@ -17,8 +19,10 @@ import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
 import FocusEngine from './focusEngine';
+import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MergeEngine from './mergeEngine';
+import MergeEngineV2 from './mergeEngineV2';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
@@ -33,11 +37,15 @@ export class Engine {
 
   selection = new SelectionEngine(this);
 
+  linkCreation = new LinkCreationEngine(this);
+
   clipboard = new ClipboardEngine(this);
 
   diagram = new DiagramEngine(this);
 
   merge = new MergeEngine(this);
+
+  mergeV2 = new MergeEngineV2(this);
 
   link = new LinkManager(this);
 
@@ -45,17 +53,19 @@ export class Engine {
 
   node = new NodeManager(this);
 
-  /* eslint-disable compat/compat */
   nodes = new Map();
 
   ports = new Map();
 
   links = new Map();
-  /* eslint-enable compat/compat */
 
   canvas = null;
 
   supportedLinks = [];
+
+  get services() {
+    return [this.drag, this.activation, this.focus, this.selection, this.clipboard, this.diagram, this.merge, this.link, this.port, this.node];
+  }
 
   constructor(store, mousePosition, realtimeSubscription) {
     this.store = store;
@@ -69,29 +79,39 @@ export class Engine {
 
   // store accessors
 
-  getNodeByID = (nodeID) => Creator.nodeByIDSelector(this.store.getState())(nodeID);
+  select = (selector) => selector(this.store.getState());
 
-  getDataByNodeID = (nodeID) => Creator.dataByNodeIDSelector(this.store.getState())(nodeID);
+  getNodeByID = (nodeID) => this.select(Creator.nodeByIDSelector)(nodeID);
 
-  isNodeMovementLocked = (nodeID) => Realtime.isNodeMovementLockedSelector(this.store.getState())(nodeID);
+  getDataByNodeID = (nodeID) => this.select(Creator.dataByNodeIDSelector)(nodeID);
 
-  getDeleteLockedNodes = () => Realtime.deletionLockedNodesSelector(this.store.getState());
+  isNodeMovementLocked = (nodeID) => this.select(Realtime.isNodeMovementLockedSelector)(nodeID);
 
-  getLinkByID = (linkID) => Creator.linkByIDSelector(this.store.getState())(linkID);
+  getDeleteLockedNodes = () => this.select(Realtime.deletionLockedNodesSelector);
 
-  getPortByID = (portID) => Creator.portByIDSelector(this.store.getState())(portID);
+  getLinkByID = (linkID) => this.select(Creator.linkByIDSelector)(linkID);
 
-  hasLinksByPortID = (portID) => Creator.hasLinksByPortIDSelector(this.store.getState())(portID);
+  getPortByID = (portID) => this.select(Creator.portByIDSelector)(portID);
 
-  getLinkIDsByPortID = (portID) => Creator.linkIDsByPortIDSelector(this.store.getState())(portID);
+  hasLinksByPortID = (portID) => this.select(Creator.hasLinksByPortIDSelector)(portID);
 
-  getLinkIDsByNodeID = (nodeID) => Creator.linkIDsByNodeIDSelector(this.store.getState())(nodeID);
+  hasLinksByNodeID = (portID) => this.select(Creator.hasLinksByNodeIDSelector)(portID);
 
-  getRootNodeIDs = () => Creator.rootNodeIDsSelector(this.store.getState());
+  getLinkIDsByPortID = (portID) => this.select(Creator.linkIDsByPortIDSelector)(portID);
 
-  getDiagramByID = (diagramID) => diagramByIDSelector(this.store.getState())(diagramID);
+  getLinkIDsByNodeID = (nodeID) => this.select(Creator.linkIDsByNodeIDSelector)(nodeID);
 
-  isRootDiagram = () => isRootDiagramSelector(this.store.getState());
+  getRootNodeIDs = () => this.select(Creator.rootNodeIDsSelector);
+
+  isRootNode = (nodeID) => this.select(Creator.isRootNodeSelector)(nodeID);
+
+  getDiagramByID = (diagramID) => this.select(Diagram.diagramByIDSelector)(diagramID);
+
+  isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
+
+  isBlockRedesignEnabled = () => this.select(Feature.isBlockRedesignEnabledSelector);
+
+  isFeatureEnabled = (featureID) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
   // entity registration methods
 
@@ -99,12 +119,14 @@ export class Engine {
     this.canvas = canvas;
   }
 
-  registerNode({ id, x, y, type }, api) {
+  registerNode(nodeID, api) {
+    const { id, x, y, type } = this.getNodeByID(nodeID);
+
     this.nodes.set(id, { x, y, api, type });
   }
 
-  expireNode(nodeID, api) {
-    if (this.nodes.has(nodeID) && this.nodes.get(nodeID).api === api) {
+  expireNode(nodeID, instanceID) {
+    if (this.nodes.has(nodeID) && this.nodes.get(nodeID).api.instanceID === instanceID) {
       this.nodes.delete(nodeID);
     }
   }
@@ -115,8 +137,8 @@ export class Engine {
     this.addSupportedLinks(portID);
   }
 
-  expirePort(portID, api) {
-    if (this.ports.has(portID) && this.ports.get(portID).api === api) {
+  expirePort(portID, instanceID) {
+    if (this.ports.has(portID) && this.ports.get(portID).api.instanceID === instanceID) {
       this.ports.delete(portID);
     }
   }
@@ -180,28 +202,27 @@ export class Engine {
       await this.node.translateMany(targets, movement);
     } else {
       if (hasMultipleActivationTargets) {
-        this.selection.clear();
+        this.selection.reset();
       }
 
       await this.drag.set(nodeID);
       await this.node.translate(nodeID, movement);
 
-      // eslint-disable-next-line jest/no-disabled-tests
-      const mergeTarget = this.merge.predicates.find(({ test }) => test(this.mousePosition.current));
-      if (mergeTarget) {
-        this.merge.prepare(mergeTarget.id);
+      if (this.isBlockRedesignEnabled()) {
+        this.mergeV2.updateCandidates();
       } else {
-        this.merge.cancel();
+        this.merge.updateTarget();
       }
     }
   }
 
-  dropNode() {
+  async dropNode() {
     this.saveActiveLocations();
 
     this.merge.confirm();
     this.saveHistory();
-    this.drag.clear();
+
+    await this.drag.reset();
   }
 
   async transitionNested(nodeID, [x, y]) {
@@ -220,6 +241,18 @@ export class Engine {
    */
   isActive(nodeID) {
     return this.focus.isTarget(nodeID) || this.selection.isTarget(nodeID);
+  }
+
+  /**
+   * check to see if a node or its parent parent is active
+   *
+   * @param {string} nodeID
+   * @returns {boolean}
+   */
+  isBranchActive(nodeID) {
+    const node = this.getNodeByID(nodeID);
+
+    return this.isActive(node?.parentNode ? node.parentNode : nodeID);
   }
 
   /**
@@ -273,7 +306,7 @@ export class Engine {
    * @returns {void}
    */
   copyActive(nodeID) {
-    if (nodeID) {
+    if (nodeID && this.getNodeByID(nodeID).type === BlockType.COMBINED) {
       this.clipboard.copy([nodeID]);
     } else if (this.activation.hasTargets) {
       this.clipboard.copy(this.activation.getTargets());
@@ -301,8 +334,8 @@ export class Engine {
   clearActivation() {
     this.saveActiveLocations();
 
-    this.focus.clear();
-    this.selection.clear();
+    this.focus.reset();
+    this.selection.reset();
   }
 
   focusHome() {
@@ -312,28 +345,34 @@ export class Engine {
       const [nodeID] = startNode;
 
       this.node.center(nodeID);
-      this.selection.replace([nodeID]);
+
+      if (this.isBlockRedesignEnabled()) {
+        this.focus.set(nodeID);
+      } else {
+        this.selection.replace([nodeID]);
+      }
     }
   }
 
   showMergeWarning() {
-    this.store.dispatch(setCanvasError('Cannot combine blocks'));
+    this.store.dispatch(User.setCanvasError('Cannot combine blocks'));
   }
 
   saveHistory() {
     this.store.dispatch(Creator.saveHistory());
   }
 
+  getCanvasMousePosition() {
+    return this.canvas.transformPoint(this.mousePosition.current);
+  }
+
+  async reset() {
+    await Promise.all(this.services.map((service) => service.reset()));
+  }
+
   async teardown() {
-    this.focus.clear();
-    this.selection.clear();
-    await this.drag.clear();
-    this.merge.clear();
-    this.dispatcher.teardown();
-    this.realtime.teardown();
-    this.links.clear();
-    this.ports.clear();
-    this.nodes.clear();
+    await this.reset();
+    await Promise.all(this.services.map((service) => service.teardown()));
   }
 }
 
@@ -341,15 +380,16 @@ const createEngine = moize.simple((store, mousePosition, realtimeSubscription) =
 
 function useEngine() {
   const store = useStore();
+  const currentDiagramID = useSelector(Creator.creatorDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription));
+  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription), []);
 
-  React.useEffect(() => () => engine.teardown(), [engine]);
+  React.useEffect(() => () => engine.reset(), [currentDiagramID]);
 
-  return {
-    engine,
-  };
+  useTeardown(() => engine.teardown());
+
+  return engine;
 }
 
 export default useEngine;

@@ -38,6 +38,24 @@ class LinkManager extends EngineConsumer {
     this.engine.saveHistory();
   }
 
+  setHighlight(linkID) {
+    if (this.engine.isBlockRedesignEnabled()) {
+      const link = this.engine.getLinkByID(linkID);
+
+      this.engine.port.api(link.source.portID)?.setHighlight();
+      this.engine.node.api(link.target.nodeID)?.setHighlight();
+    }
+  }
+
+  clearHighlight(linkID) {
+    if (this.engine.isBlockRedesignEnabled()) {
+      const link = this.engine.getLinkByID(linkID);
+
+      this.engine.port.api(link.source.portID)?.clearHighlight();
+      this.engine.node.api(link.target.nodeID)?.clearHighlight();
+    }
+  }
+
   translatePoint(linkID, movement, isSource) {
     this.api(linkID).translatePoint(movement, isSource);
   }

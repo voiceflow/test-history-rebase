@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
+.c7 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #becedc;
+}
+
+.c7 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c14 .c6 {
+  color: #fff;
+}
+
+.c15 .c6 {
+  color: #6e849a;
+}
+
+.c3 {
+  min-width: 60px;
+  text-align: center;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.c4 {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+
+.c8 {
+  text-transform: uppercase;
+  color: #6e849a;
+  font-size: 11px;
+  font-weight: bold;
+  font-stretch: normal;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 30px;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+}
+
+.c9 {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  text-align: center;
+}
+
+.c11 {
+  width: 24px;
+  display: inline-block;
+  margin: 0 1px;
+  height: 1px;
+  background: #dfe3ed;
+  background: #2c85ff;
+}
+
+.c12 {
+  width: 24px;
+  display: inline-block;
+  margin: 0 1px;
+  height: 1px;
+  background: #dfe3ed;
+}
+
+.c10 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #8c94a6;
+  text-transform: uppercase;
+}
+
+.c0 {
+  padding: 10px;
+  height: 100vh;
+  width: 100vw;
+}
+
+.c1 {
+  border-radius: 5px;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.08),0 0 1px 1px rgba(17,49,96,0.08);
+  background: white;
+  height: 100%;
+  width: 100%;
+}
+
+<div>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c4"
+            onClick={[Function]}
+          >
+            <div
+              className="c5"
+            >
+              <span
+                className="c6 c7"
+                color="#becedc"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgBack"
+                />
+              </span>
+            </div>
+            <div
+              className="c8"
+            >
+              back
+            </div>
+          </div>
+        </div>
+        <div
+          className="c9"
+        >
+          <div
+            className="c10"
+          >
+            Add Collaborators
+          </div>
+          <div
+            className="c11"
+          />
+          <div
+            className="c11"
+          />
+          <div
+            className="c12"
+          />
+        </div>
+        <div
+          className="c3"
+        />
+      </div>
+      <div
+        className="c13"
+      >
+        <div>
+          Add collaborators...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

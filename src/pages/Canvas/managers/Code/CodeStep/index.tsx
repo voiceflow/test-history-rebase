@@ -4,14 +4,15 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
-export type CodeStepProps = ConnectedStepProps['stepProps'] & {
+export type CodeStepProps = {
   codeAdded: boolean;
+  withPorts: boolean;
   successPortID: string;
   failurePortID: string;
 };
 
-export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, successPortID, failurePortID, isActive, lockOwner, onClick }) => (
-  <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, successPortID, failurePortID }) => (
+  <Step>
     <Section>
       <Item
         icon="power"
@@ -32,10 +33,10 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, succes
   </Step>
 );
 
-const ConnectedCodeStep: React.FC<ConnectedStepProps<NodeData.Code>> = ({ node, data, stepProps }) => {
+const ConnectedCodeStep: React.FC<ConnectedStepProps<NodeData.Code>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <CodeStep codeAdded={!!data.code} successPortID={successPortID} failurePortID={failurePortID} {...stepProps} />;
+  return <CodeStep codeAdded={!!data.code} withPorts={withPorts} successPortID={successPortID} failurePortID={failurePortID} />;
 };
 
 export default ConnectedCodeStep;

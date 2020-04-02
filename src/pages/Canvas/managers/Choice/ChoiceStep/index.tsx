@@ -8,21 +8,21 @@ import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canva
 import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 
-export type ChoiceStepProps = ConnectedStepProps['stepProps'] & {
+export type ChoiceStepProps = {
   choices: { label: string | null; portID: string }[];
   elsePortID: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID, withPorts, isActive, lockOwner, onClick }) => {
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID }) => {
   return (
-    <Step isActive={isActive} onClick={onClick} lockOwner={lockOwner}>
+    <Step>
       {!!choices.length && (
         <Section>
           {choices.map(({ label, portID }, index) => (
             <Item
               icon={index === 0 ? 'choice' : null}
               iconColor="#3a5999"
-              portID={withPorts ? portID : null}
+              portID={portID}
               label={label}
               placeholder={`Path ${index + 1}`}
               key={portID}
@@ -39,7 +39,7 @@ type ConnectedChoiceStepProps = ConnectedStepProps<NodeData.Interaction> & {
   intentsMap: Record<string, { name: string }>;
 };
 
-const ConnectedChoiceStep: React.FC<ConnectedChoiceStepProps> = ({ node, data, stepProps, platform, intentsMap }) => {
+const ConnectedChoiceStep: React.FC<ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
 
@@ -60,7 +60,7 @@ const ConnectedChoiceStep: React.FC<ConnectedChoiceStepProps> = ({ node, data, s
     [platform, choicesByPortID, nodeOutPorts, intentsMap]
   );
 
-  return <ChoiceStep {...stepProps} choices={choices} elsePortID={elsePortID} />;
+  return <ChoiceStep choices={choices} elsePortID={elsePortID} />;
 };
 
 const mapStateToProps = {

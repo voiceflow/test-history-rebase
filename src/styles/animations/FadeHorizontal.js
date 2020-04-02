@@ -24,6 +24,7 @@ export const FadeRight = css`
 export const FadeLeftContainer = styled.div`
   ${FadeLeft}
 `;
+
 export const FadeRightContainer = styled.div`
   ${FadeRight}
 `;

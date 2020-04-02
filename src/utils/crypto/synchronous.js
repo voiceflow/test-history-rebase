@@ -4,7 +4,6 @@ import cuid from 'cuid';
 
 import { COPY_PASTE_KEY } from '@/config';
 
-// eslint-disable-next-line compat/compat
 const privateKeySymbol = Symbol('private-key');
 
 class Synchronous {

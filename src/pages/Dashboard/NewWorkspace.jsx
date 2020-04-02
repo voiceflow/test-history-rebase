@@ -4,16 +4,16 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import Image from '@/components/LegacyUpload/Image';
-import { MODALS } from '@/constants';
-import { useModals } from '@/contexts/ModalsContext';
+import { ModalType } from '@/constants';
 import { createWorkspace } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 
 function NewWorkspace({ history, createWorkspace }) {
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState('');
-  const { open: openSuccessModal } = useModals(MODALS.SUCCESS);
+  const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
 
   const onChangeName = React.useCallback(
     ({ target }) => {

@@ -37,7 +37,7 @@ function ShareMenu({ link, user, toggle, handleInviteClick }) {
               <div className="d-flex">
                 <div className="flex-fill d-flex flex-column">
                   <label className="text-muted">Invite collaborators</label>
-                  <small className="text-dull mr-2">Collaborators can edit this projects contents</small>
+                  <small className="text-dull mr-2">Collaborators can edit this project's contents</small>
                 </div>
                 <div className="d-flex align-items-end">
                   <Button onClick={() => handleInviteClick(toggle)} isBtn isSecondary>

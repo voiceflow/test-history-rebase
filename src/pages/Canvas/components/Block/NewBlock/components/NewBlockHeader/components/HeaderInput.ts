@@ -30,8 +30,10 @@ const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ can
     border-radius: 3px;
     outline: none;
     text-overflow: ellipsis;
-    cursor: auto;
+    cursor: text;
     overflow: hidden;
+    user-select: ${({ readOnly }) => readOnly && 'none'};
+
     color: ${({ variant, state, theme }) => {
       const isActivated = ACTIVATED_STATES.includes(state);
       const variantStyles = theme.components.block.variants[variant];
@@ -41,8 +43,13 @@ const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ can
     :hover {
       background: ${({ theme, variant, canEdit }) => canEdit && theme.components.block.variants[variant].editTitleColor};
     }
+
     :focus {
-      background: ${({ theme, variant, canEdit }) => canEdit && theme.components.block.variants[variant].editTitleColor};
+      background: ${({ theme, variant, canEdit, readOnly }) => !readOnly && canEdit && theme.components.block.variants[variant].editTitleColor};
+    }
+
+    :active {
+      background: transparent;
     }
   }
 `;

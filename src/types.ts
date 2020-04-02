@@ -1,6 +1,38 @@
 import { Overwrite } from 'utility-types';
+import React from 'react';
 
 import { AnyAction, AnyThunk, Thunk, ThunkResult } from './store/types';
+
+export type MenuOption = {
+  label: React.ReactNode;
+  value?: any;
+  onClick?: React.MouseEventHandler;
+};
+
+export type MapManagedItemManager<I> = {
+  key: string;
+  index: number;
+  onUpdate: (value: Partial<I>) => void;
+  onRemove: () => void;
+  toggleOpen: () => void;
+};
+
+export type MapManagedRenderer<I> = (item: I, itemManager: MapManagedItemManager<I>) => React.ReactNode;
+
+export type MapManaged<I> = (renderer: MapManagedRenderer<I>) => React.ReactNode;
+
+export type MapManagedManager<I> = {
+  keys: string[];
+  items: I[];
+  onAdd: (...args: any[]) => void;
+  onUpdate: (key: string, value: Partial<I>) => void;
+  onRemove: (key: string) => void;
+  onReorder: (from: number, to: number) => void;
+  toggleOpen: (key: string) => void;
+  mapManaged: MapManaged<I>;
+  onAddToStart: (...args: any[]) => void;
+  latestCreatedKey?: string;
+};
 
 export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
 

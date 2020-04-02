@@ -19,7 +19,7 @@ module.exports = merge(commonConfig, {
     ? []
     : [
         circularDependencyPlugin({
-          exclude: /node_modules|src\/components\/Select\/components\/Menu(Options)?\/index\.jsx/,
+          exclude: /node_modules|src\/components\/NestedMenu\/Menu(Options)?\/index\.jsx/,
         }),
         new UnusedFilesWebpackPlugin({
           failOnUnused: IS_PRODUCTION,
@@ -44,6 +44,9 @@ module.exports = merge(commonConfig, {
               'pages/Canvas/managers/Integration/zapier.png',
               '**/types.ts',
               'models/**/*',
+
+              // TODO: remove when onboarding redesign
+              'pages/OnboardingV2/**/*',
 
               // TODO: remove when releasing step redesign
               'pages/Canvas/managers/*/*Step/**/*',

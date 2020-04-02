@@ -1,3 +1,5 @@
+import cn from 'classnames';
+import cuid from 'cuid';
 import React from 'react';
 
 import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
@@ -5,7 +7,7 @@ import { BlockType, INTERNAL_BLOCKS } from '@/constants';
 import Block from '@/pages/Canvas/components/Block';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { MergeStatusProvider } from '@/pages/Canvas/components/MergeOverlay/contexts';
-import { ContextMenuTarget } from '@/pages/Canvas/constants';
+import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 import { withEditPermission, withEngine, withNode, withStaticContextMenu } from '@/pages/Canvas/contexts';
 import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
@@ -28,6 +30,9 @@ export class Node extends React.PureComponent {
 
   state = {
     isDragging: false,
+    isMergeTarget: false,
+    isMergeCandidate: false,
+    isBlockHighlighted: false,
     position: [null, null],
     positionChanged: false,
   };
@@ -47,6 +52,8 @@ export class Node extends React.PureComponent {
   mouseMovement = new MouseMovement();
 
   api = {
+    instanceID: cuid(),
+
     translate: ([movementX, movementY]) => {
       const [posX, posY] = this.position;
       const nextPosition = [posX + movementX, posY + movementY];
@@ -72,7 +79,21 @@ export class Node extends React.PureComponent {
 
     getPosition: () => this.position,
 
+    setHighlight: () => this.setState({ isBlockHighlighted: true }),
+
+    clearHighlight: () => this.setState({ isBlockHighlighted: false }),
+
+    setMergeTarget: () => this.setState({ isMergeTarget: true }),
+
+    clearMergeTarget: () => this.setState({ isMergeTarget: false }),
+
+    setMergeCandidate: () => this.setState({ isMergeCandidate: true }),
+
+    clearMergeCandidate: () => this.setState({ isMergeCandidate: false }),
+
     rename: () => this.blockRef.current.api.rename?.(),
+
+    updateBlockColor: (blockColor) => this.blockRef.current.api.updateBlockColor?.(blockColor),
   };
 
   get isFocused() {
@@ -86,7 +107,6 @@ export class Node extends React.PureComponent {
   updateTransform(position, callback) {
     const nodeEl = this.nodeRef.current;
 
-    // eslint-disable-next-line compat/compat
     window.requestAnimationFrame(() => {
       nodeEl.style.transform = `translate3d(${position[0]}px, ${position[1]}px, 0)`;
 
@@ -113,6 +133,7 @@ export class Node extends React.PureComponent {
     // don't capture right-click events
     if (event.button !== 2) {
       event.stopPropagation();
+
       if (this.props.editPermission.canEdit) {
         this.holdingShift = event.shiftKey;
         this.addMouseListeners();
@@ -120,25 +141,31 @@ export class Node extends React.PureComponent {
     }
   };
 
-  onMouseUp = ({ detail }) => {
+  onMouseUp = async (event) => {
     const { engine, nodeID } = this.props;
 
     // do not click in case double click event
-    if (this.dragDistance < MAX_CLICK_TRAVEL && detail !== 2) {
-      this.onClick();
+    if (this.dragDistance < MAX_CLICK_TRAVEL && event.detail !== 2) {
+      this.onClick(event);
     } else if (engine.drag.isTarget(nodeID)) {
-      this.onDrop();
+      await this.onDrop();
     }
 
     this.dragDistance = 0;
     this.holdingShift = false;
-    engine.drag.clear();
-    engine.merge.cancel();
 
     this.teardownMouseListeners();
+    await engine.drag.reset();
+    engine.merge.cancel();
   };
 
-  onClick = () => this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
+  onClick = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    this.props.engine.setActivation(this.props.nodeID, this.holdingShift);
+  };
 
   onDrag = async (event) => {
     const { engine, nodeID } = this.props;
@@ -170,12 +197,10 @@ export class Node extends React.PureComponent {
     }
   });
 
-  onDoubleClick = () => {
-    this.props.engine.node.center(this.props.nodeID);
-  };
+  onDoubleClick = () => this.props.engine.node.center(this.props.nodeID);
 
   componentDidMount() {
-    this.props.engine.registerNode(this.props.node, this.api);
+    this.props.engine.registerNode(this.props.nodeID, this.api);
 
     if (this.isFocused) {
       this.nodeRef.current.focus();
@@ -183,7 +208,7 @@ export class Node extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.engine.expireNode(this.props.nodeID, this.api);
+    this.props.engine.expireNode(this.props.nodeID, this.api.instanceID);
     this.teardownMouseListeners();
   }
 
@@ -197,8 +222,8 @@ export class Node extends React.PureComponent {
   }
 
   render() {
-    const { node, isHighlighted, isBlockRedesignEnabled } = this.props;
-    const { isDragging, position, positionChanged } = this.state;
+    const { node, engine, isHighlighted, isBlockRedesignEnabled } = this.props;
+    const { isDragging, isBlockHighlighted, isMergeCandidate, isMergeTarget, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
@@ -213,10 +238,15 @@ export class Node extends React.PureComponent {
 
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
-    } else if (isBlockRedesignEnabled && node.type === BlockType.COMBINED) {
-      nodeEl = <NodeBlock ref={this.blockRef} />;
-    } else if (isBlockRedesignEnabled && node.type === BlockType.START) {
-      nodeEl = <NodeStartBlock ref={this.blockRef} />;
+    } else if (isBlockRedesignEnabled) {
+      const isFocused = engine.focus.isTarget(node.id);
+      const isSelected = engine.selection.isTarget(node.id);
+
+      if (node.type === BlockType.COMBINED) {
+        nodeEl = <NodeBlock isFocused={isFocused} isSelected={isSelected} isHighlighted={isBlockHighlighted} ref={this.blockRef} />;
+      } else if (node.type === BlockType.START) {
+        nodeEl = <NodeStartBlock isFocused={isFocused} isSelected={isSelected} ref={this.blockRef} />;
+      }
     } else if (INTERNAL_BLOCKS.includes(node.type)) {
       nodeEl = <GroupNodeRenderer ref={this.blockRef} />;
     } else {
@@ -225,6 +255,7 @@ export class Node extends React.PureComponent {
 
     return (
       <Container
+        className={cn({ [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeCandidate || isMergeTarget })}
         isActive={isHighlighted}
         isDragging={isDragging}
         position={position}

@@ -1,14 +1,17 @@
 import { flexCenterStyles } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
+import { HEADER_HEIGHT } from '../../../constants';
+
 type HeaderContainerProps = {
   hasIcon: boolean;
 };
 
 const HeaderContainer = styled.div<HeaderContainerProps>`
   ${flexCenterStyles};
-  height: 54px;
+  height: ${HEADER_HEIGHT}px;
   text-overflow: ellipsis;
+
   ${({ hasIcon }) =>
     hasIcon &&
     css`

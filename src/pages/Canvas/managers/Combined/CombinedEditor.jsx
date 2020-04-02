@@ -5,7 +5,6 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
-import { getBlockCategory } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 
 function CombinedEditor({ nestedBlocks }) {
@@ -17,7 +16,7 @@ function CombinedEditor({ nestedBlocks }) {
       {nestedBlocks.map(({ type, nodeID, name }, index) => (
         <Section
           key={nodeID}
-          prefix={<SvgIcon icon={getManager(type)?.icon} color={getBlockCategory(type)?.color} />}
+          prefix={<SvgIcon icon={getManager(type)?.icon} color={getManager(type)?.iconColor} />}
           header={name}
           isLink
           onClick={() => engine.focus.set(nodeID)}

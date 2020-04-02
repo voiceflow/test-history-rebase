@@ -1,3 +1,4 @@
+import moize from 'moize';
 import React from 'react';
 
 import { BlockState, BlockVariant } from '@/constants/canvas';
@@ -95,16 +96,20 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
   const updateName = React.useCallback((name) => engine.node.updateData(nodeID, { name }), [engine, nodeID]);
   const updateBlockColor = React.useCallback((blockColor) => engine.node.updateData(nodeID, { blockColor }), [engine, nodeID]);
 
-  const onInsert = (index: number) => async (event: React.MouseEvent) => {
-    if (engine.drag.hasTarget) {
-      const target = engine.drag.target!;
+  const onInsert = React.useMemo(
+    () =>
+      moize((index: number) => async (event: React.MouseEvent) => {
+        if (engine.drag.hasTarget) {
+          const target = engine.drag.target!;
 
-      event.preventDefault();
-      await engine.drag.reset();
+          event.preventDefault();
+          await engine.drag.reset();
 
-      await engine.node.insertNested(nodeID, index, target);
-    }
-  };
+          await engine.node.insertNested(nodeID, index, target);
+        }
+      }),
+    [nodeID]
+  );
 
   React.useEffect(() => {
     let redrawTimer: number | null = null;
@@ -113,7 +118,14 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
     const onTransitionStart = (event: TransitionEvent) => {
       if (isTarget(event)) {
         isTransitioning.current = true;
-        redrawTimer = setInterval(() => engine.node.redrawNestedLinks(nodeID), 1);
+        clearInterval(redrawTimer!);
+        redrawTimer = setInterval(() => {
+          if (!isTransitioning.current) {
+            clearInterval(redrawTimer!);
+          }
+
+          engine.node.redrawNestedLinks(nodeID);
+        }, 1);
       }
     };
     const onTransitionEnd = (event: TransitionEvent) => {

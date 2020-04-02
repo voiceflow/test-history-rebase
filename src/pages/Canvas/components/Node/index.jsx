@@ -271,4 +271,4 @@ export class Node extends React.PureComponent {
   }
 }
 
-export default compose(withStaticContextMenu, withNode, withNodeLifecycle, withEngine, withEditPermission)(Node);
+export default compose(withStaticContextMenu, withNode, withNodeLifecycle, withEngine, withEditPermission, React.memo)(Node);

@@ -35,6 +35,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, isDraggable }) => {
     return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas.getZoom(), y]);
   }, []);
 
+  React.useEffect(() => {
+    engine.node.redrawNestedLinks(node.parentNode!);
+  }, [data]);
+
   useNodeLifecycle();
   useNodeSubscription(nodeID, nodeAPI);
 

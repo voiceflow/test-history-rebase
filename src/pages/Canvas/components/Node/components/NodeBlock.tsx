@@ -35,6 +35,7 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
   const isTransitioning = React.useRef(false);
   const { nodeID, node, lockOwner } = useNode();
   const { data } = useNodeData();
+
   const engine = React.useContext(EngineContext)!;
   const [inPortID] = node.ports.in;
   const getAnchorPoint = React.useCallback(() => {

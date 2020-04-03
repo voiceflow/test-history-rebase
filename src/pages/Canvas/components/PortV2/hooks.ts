@@ -40,6 +40,7 @@ export const usePortAPI = <T extends HTMLElement>(ref: React.RefObject<T>) => {
   return React.useMemo<Required<PortAPI>>(
     () => ({
       instanceID,
+      isReady: () => !!ref.current,
       getRect: () => ref.current!.getBoundingClientRect(),
       isHighlighted,
       setHighlight,

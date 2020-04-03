@@ -4,6 +4,7 @@ import { LockOwnerType } from '@/models';
 
 export type PortAPI = {
   instanceID: string;
+  isReady: () => boolean;
   getRect: () => DOMRect;
   isHighlighted?: boolean;
   setHighlight?: () => void;

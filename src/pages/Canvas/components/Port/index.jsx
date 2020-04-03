@@ -15,6 +15,8 @@ class Port extends React.PureComponent {
   api = {
     instanceID: cuid(),
 
+    isReady: () => !!this.portRef.current,
+
     getRect: () => this.portRef.current.getBoundingClientRect(),
   };
 

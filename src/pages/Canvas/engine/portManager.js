@@ -29,7 +29,7 @@ class PortManager extends EngineConsumer {
   };
 
   api(portID) {
-    return this.engine.ports.get(portID).api;
+    return this.engine.ports.get(portID)?.api;
   }
 
   hasActiveLinks(portID) {

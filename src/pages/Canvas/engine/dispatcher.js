@@ -89,7 +89,7 @@ class Dispatcher extends EngineConsumer {
     const sourcePort = this.engine.getPortByID(link.source.portID);
     const targetPort = this.engine.getPortByID(link.target.portID);
 
-    const hasPorts = sourcePort && targetPort && this.engine.ports.has(sourcePort.id) && this.engine.ports.has(targetPort.id);
+    const hasPorts = sourcePort && targetPort && this.engine.port.api(sourcePort.id)?.isReady() && this.engine.port.api(targetPort.id)?.isReady();
 
     return {
       linkID,

@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import _constant from 'lodash/constant';
 import React from 'react';
 import { ThemeContext } from 'styled-components';
 
@@ -146,6 +147,7 @@ export const usePortAPI = (getAnchorPoint: () => DOMRect) => {
   return React.useMemo<PortAPI>(
     () => ({
       instanceID,
+      isReady: _constant(true),
       getRect: () => {
         const { top, left } = getAnchorPoint();
         return buildVirtualDOMRect([left, top]);

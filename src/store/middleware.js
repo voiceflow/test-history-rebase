@@ -80,7 +80,7 @@ const creatorHistoryMiddleware = (store) => (next) => (action) => {
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
   // eslint-disable-next-line no-console
-  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch(() => console.warn('failed to save diagram'));
+  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch((e) => console.warn('failed to save diagram', e));
 
   if (action.type === Creator.SAVE_HISTORY && !action?.meta?.preventUpdate) {
     saveDiagram();

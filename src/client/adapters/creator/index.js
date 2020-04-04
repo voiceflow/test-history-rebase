@@ -1,4 +1,5 @@
 import { BlockType } from '@/constants';
+import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createSimpleAdapter } from '../utils';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
@@ -37,15 +38,22 @@ const creatorAdapter = createSimpleAdapter(
   (diagram, platform, isBlockRedesignEnabled) => {
     const rootNodes = [];
     const nodes = [];
+    const nodeIDs = [];
     const ports = [];
+    const portIDs = [];
     const data = {};
-    const links = linkAdapter.mapFromDB(diagram.links, isBlockRedesignEnabled);
 
     const registerNode = (node, parentNode) => {
       const nodeData = nodeDataAdapter.fromDB(node.extras, node, isBlockRedesignEnabled);
-      nodes.push(nodeAdapter.fromDB(node, nodeData, parentNode));
 
-      node.ports.forEach((port) => ports.push(portAdapter.fromDB(port, nodeData.type, platform)));
+      nodeIDs.push(node.id);
+      nodes.push(nodeAdapter.fromDB(node, nodeData, parentNode));
+      node.ports
+        .map((port) => portAdapter.fromDB(port, nodeData.type, platform))
+        .forEach((port) => {
+          ports.push(port);
+          portIDs.push(port.id);
+        });
       data[node.id] = nodeData;
     };
 
@@ -61,30 +69,36 @@ const creatorAdapter = createSimpleAdapter(
     diagramNodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
-
-      if (isBlockRedesignEnabled && !ROOT_NODES.includes(nodeType)) {
-        // deterministic ID generation to support realtime
-        const virtualNodeID = `${VIRTUAL_NODE_ID_PREFIX}--${node.id}`;
+      if (isBlockRedesignEnabled) {
+        const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
         const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}--${node.id}`;
-        const { virtualExtras, ...extras } = node.extras || {};
 
-        _node = {
-          x: node.x,
-          y: node.y,
-          id: virtualNodeID,
-          name: virtualExtras?.name || node.name || 'Block',
-          extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED], ...virtualExtras },
-          ports: [{ id: virtualPortID, parentNode: virtualNodeID, in: true, virtual: true }],
-          parentNode: null,
-          combines: [
-            {
-              ...node,
-              extras,
-              parentNode: virtualNodeID,
-            },
-          ],
-        };
+        if (nodeType === BlockType.COMBINED) {
+          _node = {
+            ..._node,
+            ports: [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
+          };
+        } else if (!ROOT_NODES.includes(nodeType)) {
+          const { virtualExtras, ...extras } = node.extras || {};
+          const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}--${node.id}`;
+
+          _node = {
+            x: node.x,
+            y: node.y,
+            id: virtualNodeID,
+            name: virtualExtras?.name || node.name || 'Block',
+            extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED], ...virtualExtras },
+            ports: [{ id: virtualExtras?.inPortID || virtualPortID, parentNode: virtualNodeID, in: true, virtual: true }],
+            parentNode: null,
+            combines: [
+              {
+                ...node,
+                extras,
+                parentNode: virtualNodeID,
+              },
+            ],
+          };
+        }
       }
 
       rootNodes.push(_node.id);
@@ -96,6 +110,15 @@ const creatorAdapter = createSimpleAdapter(
       }
     });
 
+    const links = linkAdapter.mapFromDB(diagram.links, isBlockRedesignEnabled);
+    const validLinks = links.filter(
+      (link) =>
+        nodeIDs.includes(link.source.nodeID) &&
+        nodeIDs.includes(link.target.nodeID) &&
+        portIDs.includes(link.source.portID) &&
+        portIDs.includes(link.target.portID)
+    );
+
     return {
       diagramID: diagram.id,
       viewport: {
@@ -105,36 +128,23 @@ const creatorAdapter = createSimpleAdapter(
       },
       rootNodes,
       nodes,
-      links,
+      links: validLinks,
       ports,
       data,
     };
   },
-  (diagram) => {
-    const nodes = diagram.nodes.map((node) => {
-      if (node.type !== BlockType.COMBINED || node.combines?.length !== 1) {
-        return node;
-      }
+  ({ id, viewport, platform, rootNodeIDs, nodes, ports, links, data }, { linksByPortID, isBlockRedesignEnabled }) => {
+    const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
 
-      const childNode = node.combines[0];
-
-      return {
-        ...childNode,
-        name: childNode.name,
-        parentNode: null,
-        x: node.x,
-        y: node.y,
-        extras: {
-          ...childNode.extras,
-          virtualExtras: {
-            ...node.extras,
-            name: node.name,
-          },
-        },
-      };
-    });
-
-    return { ...diagram, nodes };
+    return {
+      id,
+      offsetX: viewport.x,
+      offsetY: viewport.y,
+      zoom: viewport.zoom,
+      links: linkAdapter.mapToDB(links, { nodes, isBlockRedesignEnabled }),
+      nodes: nodeAdapter.mapToDB(rootNodes, { nodes, ports, data, linksByPortID, platform, isBlockRedesignEnabled }),
+      blockRedesignOffset: isBlockRedesignEnabled,
+    };
   }
 );
 

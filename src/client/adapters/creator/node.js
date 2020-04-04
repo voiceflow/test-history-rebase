@@ -1,7 +1,7 @@
 import { BlockType } from '@/constants';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
-import { createSimpleAdapter } from '../utils';
+import { createAdapter } from '../utils';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
@@ -45,7 +45,7 @@ function convertNodeForDB(appNode, ports, data, linksByPortID, platform, nextID)
   return node;
 }
 
-const nodeAdapter = createSimpleAdapter(
+const nodeAdapter = createAdapter(
   (dbNode, data, parentNode) => ({
     id: dbNode.id,
     type: data.type,
@@ -62,16 +62,48 @@ const nodeAdapter = createSimpleAdapter(
       { in: [], out: [] }
     ),
   }),
-  (appNode, { nodes, ports, data, linksByPortID, platform }) => ({
-    ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
-    ...(appNode.combinedNodes.length && {
-      combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((node, index, combinedNodes) => ({
-        ...convertNodeForDB(node, ports, data, linksByPortID, platform, index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id),
-        parentNode: appNode.id,
-        combines: null,
-      })),
-    }),
-  })
+  (appNode, { nodes, ports, data, linksByPortID, platform, isBlockRedesignEnabled }) => {
+    const node = {
+      ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
+      ...(appNode.combinedNodes.length && {
+        combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
+          ...convertNodeForDB(
+            childNode,
+            ports,
+            data,
+            linksByPortID,
+            platform,
+            index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id
+          ),
+          parentNode: appNode.id,
+          combines: null,
+        })),
+      }),
+    };
+
+    if (!isBlockRedesignEnabled || node.type !== BlockType.COMBINED || node.combines?.length !== 1) {
+      return node;
+    }
+
+    const childNode = node.combines[0];
+
+    return {
+      ...childNode,
+      name: childNode.name,
+      parentNode: null,
+      x: node.x,
+      y: node.y,
+      extras: {
+        ...childNode.extras,
+        virtualExtras: {
+          ...node.extras,
+          id: node.id,
+          name: node.name,
+          inPortID: node.ports?.[0].id,
+        },
+      },
+    };
+  }
 );
 
 export default nodeAdapter;

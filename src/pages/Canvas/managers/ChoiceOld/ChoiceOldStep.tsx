@@ -22,7 +22,7 @@ const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<NodeData.Choice>> = ({
             portID,
           };
         }),
-    [data.choices]
+    [outPorts, choiceByPortID]
   );
 
   return <ChoiceStep elsePortID={elsePortID} choices={choices} />;

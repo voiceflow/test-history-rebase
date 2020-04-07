@@ -1,0 +1,13 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import story, * as stories from './index.story';
+
+import Reset from '.';
+
+<Meta title={story.title} component={story.component} />
+
+# Reset
+
+<Preview>
+  <Story name="base">{stories.base()}</Story>
+</Preview>

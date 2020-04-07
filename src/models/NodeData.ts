@@ -143,7 +143,7 @@ export namespace NodeData {
   };
 
   export type Payment = {
-    productID: number | null;
+    productID: string | null;
   };
 
   export type Display = {

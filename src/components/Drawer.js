@@ -4,6 +4,7 @@ import { SlideOut } from '@/styles/transitions';
 const Drawer = styled(SlideOut)`
   height: 100%;
   top: 0;
+  bottom: 0;
   border-style: solid;
   border-width: 0;
   border-color: #dfe3ed;

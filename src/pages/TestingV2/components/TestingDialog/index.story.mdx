@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import story, * as stories from './index.story';
+
+import Dialog from '.';
+
+<Meta title={story.title} component={story.component} />
+
+# Dialog
+
+A component compositing various testing messages together
+
+## Variants
+
+<Preview>
+  <Story name="standard">{stories.dialog()}</Story>
+</Preview>

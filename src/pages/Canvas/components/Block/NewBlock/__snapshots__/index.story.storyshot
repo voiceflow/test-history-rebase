@@ -8,14 +8,31 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 12px 32px 0 rgba(17,49,96,0.2);
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .c0 .c6 {
@@ -70,7 +87,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  color: #132144;
+  color: #62778c;
 }
 
 .c3 input:active {
@@ -78,7 +95,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -124,7 +141,6 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -260,17 +276,31 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -435,7 +465,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
 }
 
 .c6 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c3 {
@@ -499,7 +529,6 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -589,7 +618,6 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -664,7 +692,6 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -719,17 +746,31 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(197,231,246,0.8),#c5e7f6);
-  box-shadow: 0 0 0 1.3px #2a94d450;
+  background-image: linear-gradient(to bottom,#D1ECF8,#c5e7f6);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px #2a94d450,0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #BDD9EE;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #A2C1DC;
 }
 
 .canvas--nodes-active .c0 {
@@ -800,7 +841,7 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -846,7 +887,6 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -915,14 +955,27 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
   opacity: 0.7;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
 }
 
 .canvas--nodes-active .c0 {
@@ -993,7 +1046,7 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -1039,7 +1092,6 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1108,17 +1160,31 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(229,238,229,0.8),#e5eee5);
-  box-shadow: 0 0 0 1.3px #68906850;
+  background-image: linear-gradient(to bottom,#EAF1EA,#e5eee5);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px #68906850 ,0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #CBD8CC;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #BECDC3;
 }
 
 .canvas--nodes-active .c0 {
@@ -1189,7 +1255,7 @@ exports[`Storyshots Creator/New Block Green 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -1235,7 +1301,6 @@ exports[`Storyshots Creator/New Block Green 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1304,17 +1369,31 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -1385,7 +1464,7 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -1431,7 +1510,6 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1500,17 +1578,31 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(232,222,238,0.8),#e8deee);
-  box-shadow: 0 0 0 1.3px #9888a250;
+  background-image: linear-gradient(to bottom,#EDE5F1,#e8deee);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px #9888a250,0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #DBD5DD;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #CDCAD5;
 }
 
 .canvas--nodes-active .c0 {
@@ -1581,7 +1673,7 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -1627,7 +1719,6 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1696,17 +1787,31 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(255,216,226,0.8),#ffd8e2);
-  box-shadow: 0 0 0 1.3px #b88b9750;
+  background-image: linear-gradient(to bottom,#FFE0E7,#ffd8e2);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px #b88b9750,0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #E5D6DA;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #D8CBD1;
 }
 
 .canvas--nodes-active .c0 {
@@ -1777,7 +1882,7 @@ exports[`Storyshots Creator/New Block Red 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -1823,7 +1928,6 @@ exports[`Storyshots Creator/New Block Red 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -1892,17 +1996,31 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -1973,7 +2091,7 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -2019,7 +2137,6 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2088,15 +2205,31 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
   border-color: #5d9df5;
-  box-shadow: none;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0::before {
+  display: none;
 }
 
 .c0 .c6 {
@@ -2151,7 +2284,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  color: #132144;
+  color: #62778c;
 }
 
 .c3 input:active {
@@ -2159,7 +2292,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -2205,7 +2338,6 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2274,17 +2406,31 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -2355,7 +2501,7 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -2401,7 +2547,6 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2470,17 +2615,31 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -2551,7 +2710,7 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -2597,7 +2756,6 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -2742,7 +2900,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  border: 1px solid #D3D9E4;
 }
 
 .c10 .c22:not(:first-of-type) {
@@ -2770,17 +2928,31 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -2945,7 +3117,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -2998,7 +3170,6 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -3088,7 +3259,6 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -3150,7 +3320,6 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onClick={[Function]}
-            onFocus={[Function]}
             onKeyPress={[Function]}
             readOnly={true}
             style={
@@ -3239,17 +3408,31 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -3344,7 +3527,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -3390,7 +3573,6 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -3480,7 +3662,6 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -3555,7 +3736,6 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

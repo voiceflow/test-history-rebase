@@ -1,8 +1,8 @@
-import { styled, units } from '@/hocs';
+import { styled } from '@/hocs';
 
 const NewBlockContent = styled.section`
   & > *:not(:last-of-type) {
-    margin-bottom: ${units()}px;
+    margin-bottom: 6px;
   }
 `;
 

@@ -7,7 +7,7 @@ const CanvasRenderLayer = styled.div`
   transform-origin: 0 0;
   pointer-events: none;
   backface-visibility: hidden;
-  perspective: 1000;
+  will-change: transform;
 `;
 
 export default CanvasRenderLayer;

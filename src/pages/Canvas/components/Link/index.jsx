@@ -118,6 +118,7 @@ export class Link extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    clearTimeout(this.clearWillChangeTimeout);
     this.props.engine.expireLink(this.props.linkID);
   }
 

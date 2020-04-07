@@ -1,20 +1,22 @@
+import React from 'react';
 import AutosizeInput, { AutosizeInputProps } from 'react-input-autosize';
 import { mapProps } from 'recompose';
 
-import { BlockState, BlockVariant } from '@/constants/canvas';
+import { BlockVariant } from '@/constants/canvas';
 import { styled, transition } from '@/hocs';
-
-const ACTIVATED_STATES = [BlockState.ACTIVE, BlockState.SELECTED];
 
 type HeaderInputProps = AutosizeInputProps & {
   canEdit?: boolean;
   variant: BlockVariant;
-  state: BlockState;
 };
 
-const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, state, ...props }) => props)(AutosizeInput))<
-  HeaderInputProps
->`
+const HeaderInput = styled(
+  mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, ...props }) => ({
+    ...props,
+    // for some reason I NEED to place box sizing inline for the title to not get cropped on first render in chrome}
+    style: { boxSizing: 'content-box' },
+  }))(AutosizeInput)
+)<HeaderInputProps>`
   max-width: 100%;
   input {
     max-width: 100%;
@@ -33,12 +35,7 @@ const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ can
     cursor: text;
     overflow: hidden;
     user-select: ${({ readOnly }) => readOnly && 'none'};
-
-    color: ${({ variant, state, theme }) => {
-      const isActivated = ACTIVATED_STATES.includes(state);
-      const variantStyles = theme.components.block.variants[variant];
-      return variantStyles[isActivated ? 'activeColor' : 'color'];
-    }};
+    color: ${({ theme, variant }) => theme.components.block.variants[variant].color};
 
     :hover {
       background: ${({ theme, variant, canEdit }) => canEdit && theme.components.block.variants[variant].editTitleColor};
@@ -54,4 +51,4 @@ const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ can
   }
 `;
 
-export default HeaderInput;
+export default React.memo(HeaderInput);

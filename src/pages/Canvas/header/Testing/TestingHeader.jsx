@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '@/components/Button';
 import { goToCurrentCanvas } from '@/ducks/router';
-import { TEST_STATUS, testStatusSelector } from '@/ducks/test';
+import { TEST_STATUS, testStatusSelector } from '@/ducks/testing';
 import { connect } from '@/hocs';
 import ShareTest from '@/pages/Testing/ShareTest';
 

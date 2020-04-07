@@ -28,6 +28,7 @@ export const DEFAULT_PATH = [];
  *(e.g. Select component implementation)
  */
 function BaseNestedMenu({
+  withSearchIcon,
   onHide,
   isRoot = true,
   grouped,
@@ -252,6 +253,7 @@ function BaseNestedMenu({
               searchable={
                 (creatable || menuSearchable) && (
                   <MenuHeader
+                    withSearchIcon={withSearchIcon}
                     onFocus={() => !cachedRef.current.blockOptionHover && onFocusItem(0)}
                     onCreate={onCreate}
                     searchLabel={searchLabel}

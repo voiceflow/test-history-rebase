@@ -11,11 +11,13 @@ import {
 
 import { nodeFactory } from './factories';
 
-export const getLinkIDsByPortID = ({ linksByPortID }) => (portID) => linksByPortID[portID] || [];
+const EMPTY_ARRAY = [];
 
-export const getLinkIDsByNodeID = ({ linksByNodeID }) => (nodeID) => linksByNodeID[nodeID] || [];
+export const getLinkIDsByPortID = ({ linksByPortID }) => (portID) => linksByPortID[portID] || EMPTY_ARRAY;
 
-export const getLinkedNodeIDsByNodeID = ({ linkedNodesByNodeID }) => (nodeID) => linkedNodesByNodeID[nodeID] || [];
+export const getLinkIDsByNodeID = ({ linksByNodeID }) => (nodeID) => linksByNodeID[nodeID] || EMPTY_ARRAY;
+
+export const getLinkedNodeIDsByNodeID = ({ linkedNodesByNodeID }) => (nodeID) => linkedNodesByNodeID[nodeID] || EMPTY_ARRAY;
 
 export const getJoiningLinkIDs = (state) => (lhsNodeID, rhsNodeID) => {
   const linkIDSelector = getLinkIDsByNodeID(state);

@@ -1,5 +1,5 @@
-import { Overwrite } from 'utility-types';
 import React from 'react';
+import { Overwrite } from 'utility-types';
 
 import { AnyAction, AnyThunk, Thunk, ThunkResult } from './store/types';
 

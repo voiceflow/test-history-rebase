@@ -27,6 +27,7 @@ export default function Select({
   disabled,
   onSelect,
   withIcon = false,
+  withSearchIcon,
   onCreate,
   placement = 'bottom-start',
   autoWidth = true,
@@ -293,6 +294,7 @@ export default function Select({
 
       {opened && (
         <AdvancedMenu
+          withSearchIcon={withSearchIcon}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}

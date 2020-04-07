@@ -12,6 +12,7 @@ suite('Client - Root', ({ expect }) => {
       'list',
       'project',
       'testing',
+      'testingV2',
       'clipboard',
       'skill',
       'display',

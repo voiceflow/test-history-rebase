@@ -10,9 +10,8 @@ const EditorFooter = ({ children, className }) => <div className={className}>{ch
 export default styled(EditorFooter)`
   ${flexStyles}
   ${sectionStyles}
-
-  min-height: ${FOOTER_HEIGHT}px;
-  height: ${FOOTER_HEIGHT}px;
-  background-color: #fff;
   z-index: 0;
+  height: ${FOOTER_HEIGHT}px;
+  min-height: ${FOOTER_HEIGHT}px;
+  background-color: #fff;
 `;

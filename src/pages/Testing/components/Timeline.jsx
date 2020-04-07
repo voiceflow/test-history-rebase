@@ -8,7 +8,7 @@ import { allDiagramsSelector } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { recentTestingSelector } from '@/ducks/recent';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
-import { TEST_STATUS, endTest, fetchState, resetTest, startTest, testSelector, userTestSelector } from '@/ducks/test';
+import { TEST_STATUS, endTest, fetchState, resetTest, startTest, testSelector, userTestSelector } from '@/ducks/testing';
 import { connect } from '@/hocs';
 import { TestAction } from '@/pages/Testing/constants';
 import { getUserTestOutputs } from '@/pages/Testing/utils';

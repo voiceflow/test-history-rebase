@@ -120,7 +120,6 @@ class Canvas extends React.PureComponent {
 
     this.applyTransitionTimeout = null;
 
-    renderLayerEl.style.willChange = '';
     renderLayerEl.style.transition = '';
   };
 
@@ -140,7 +139,6 @@ class Canvas extends React.PureComponent {
     clearTimeout(this.applyTransitionTimeout);
     this.applyTransitionTimeout = setTimeout(this.onTransitionEnd, (duration + delay) * 1000 + 100);
 
-    renderLayerEl.style.willChange = 'transform';
     renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s`;
   };
 

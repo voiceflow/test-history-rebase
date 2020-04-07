@@ -29,8 +29,8 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
 
   const addChoice = React.useCallback(
     async (scrollToBottom) => {
-      onAdd();
       await engine.port.add(focusedNode.id, { label: data.choices.length + 1 });
+      onAdd();
       scrollToBottom();
     },
     [focusedNode.id, data.choices.length, onAdd]

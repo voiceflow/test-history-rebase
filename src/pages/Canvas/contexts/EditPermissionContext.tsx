@@ -19,9 +19,18 @@ export type EditPermissionProviderProps = {
 
 export const EditPermissionProvider: React.FC<EditPermissionProviderProps> = ({ isTesting, children }) => {
   const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
-  const canEdit = canEditCanvas && !isTesting;
 
-  return <EditPermissionContext.Provider value={{ isViewer: !canEditCanvas, isTesting, canEdit }}>{children}</EditPermissionContext.Provider>;
+  const value = React.useMemo(() => {
+    const canEdit = canEditCanvas && !isTesting;
+
+    return {
+      canEdit,
+      isViewer: !canEditCanvas,
+      isTesting,
+    };
+  }, [canEditCanvas, isTesting]);
+
+  return <EditPermissionContext.Provider value={value}>{children}</EditPermissionContext.Provider>;
 };
 
 export const withEditPermission = withContext(EditPermissionContext, 'editPermission');

@@ -220,6 +220,11 @@ VF_APP_FF_BLOCK_REDESIGN='true'
 yarn start --ff_blockRedesign
 ```
 
+#### Available Flags and Environment Variables
+
+- `ff_blockRedesign` / `FF_BLOCK_REDESIGN`: enable the redesigned blocks on the canvas
+- `ff_testToolV2` / `FF_TEST_TOOL_V2`: enable the version of the test tool that is compatible with the refactored server
+
 ## Previewing in an ephmeral environment
 
 1. Ask Frank (@Fran) <<frank@voiceflow.com>> for an ephemeral environment

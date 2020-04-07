@@ -5,7 +5,7 @@ import { Tooltip } from 'react-tippy';
 import Toggle from '@/components/Toggle';
 import { GlobalVariable } from '@/constants';
 import { recentTestingSelector, updateRecentTesting } from '@/ducks/recent';
-import { testGlobalsSelector, updateGlobal } from '@/ducks/test';
+import { testGlobalsSelector, updateGlobal } from '@/ducks/testing';
 import { connect } from '@/hocs';
 
 const TestSettings = ({ open, settings, updateSettings, globals, updateGlobal }) => (

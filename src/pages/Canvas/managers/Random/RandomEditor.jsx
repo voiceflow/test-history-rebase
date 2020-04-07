@@ -13,8 +13,8 @@ function RandomEditor({ data, onChange, focusedNode }) {
   const addPath = React.useCallback(async () => {
     const index = data.paths + 1;
 
-    onChange({ paths: index }, false);
     await engine.port.add(focusedNode.id, { label: index });
+    onChange({ paths: index }, false);
   }, [data.paths, focusedNode.id, onChange]);
 
   const removePath = React.useCallback(async () => {

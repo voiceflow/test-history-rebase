@@ -2,11 +2,14 @@ import React from 'react';
 
 import Portal from '@/components/Portal';
 import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
+import { connect } from '@/hocs';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeInjectedProps, PlatformContext, useNodeData, withNode } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
+import { compose } from '@/utils/functional';
 
 import { useNodeLifecycle } from '../hocs';
 import { useNodeAPI, useNodeSubscription, useStepAPI } from '../hooks';
@@ -17,7 +20,9 @@ export type NodeStepProps = {
   isDraggable: boolean;
 };
 
-const NodeStep: React.FC<NodeStepProps & NodeInjectedProps> = ({ nodeID, node, isLast, isDraggable }) => {
+export type ConnectedNodeStepProps = NodeStepProps & NodeInjectedProps & { linkIDs: string[] };
+
+const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, linkIDs, isDraggable }) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
   const { data } = useNodeData();
   const platform = React.useContext(PlatformContext)!;
@@ -37,6 +42,12 @@ const NodeStep: React.FC<NodeStepProps & NodeInjectedProps> = ({ nodeID, node, i
   React.useEffect(() => {
     engine.node.redrawNestedLinks(node.parentNode!);
   }, [data]);
+
+  React.useEffect(() => {
+    if (stepAPI.isHovered && (!engine.linkCreation.activeTargetPortID || engine.linkCreation.isCompleting)) {
+      stepAPI.setHovering(false);
+    }
+  }, [linkIDs]);
 
   useNodeLifecycle();
   useNodeSubscription(nodeID, nodeAPI);
@@ -62,4 +73,13 @@ const NodeStep: React.FC<NodeStepProps & NodeInjectedProps> = ({ nodeID, node, i
   );
 };
 
-export default withNode(React.memo(NodeStep));
+const mapStateToProps = (state: any, { node }: NodeInjectedProps) => ({
+  linkIDs: Creator.linkIDsByPortIDSelector(state)(node.ports.in[0]),
+});
+
+export default compose<ConnectedNodeStepProps, NodeStepProps>(
+  withNode,
+  connect(mapStateToProps, null, null, { forwardRef: true }),
+  React.memo,
+  React.forwardRef
+)(NodeStep);

@@ -39,6 +39,7 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
   isDraggable: boolean;
   hasLinkWarning: boolean;
   withPorts: boolean;
+  setHovering: (hovering: boolean) => void;
   lockOwner: LockOwnerType;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
@@ -47,7 +48,7 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
     onMouseUp: (event: React.MouseEvent) => void;
     onContextMenu: (event: React.MouseEvent) => void;
     onMouseEnter: (event: React.MouseEvent) => void;
-    onMouseLeave: (event: React.MouseEvent) => void;
+    onMouseLeave: (event?: React.MouseEvent) => void;
     onDragStart: (event: React.DragEvent) => void;
   };
 };

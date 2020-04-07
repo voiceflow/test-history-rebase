@@ -101,7 +101,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: "Build docker image"
+          name: 'Build docker image'
           command: |
             mkdir -p /tmp/vf-build/vars
             echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
@@ -141,7 +141,7 @@ jobs:
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
             echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/app_build_num
       - run:
-          name: "Push docker images"
+          name: 'Push docker images'
           command: |
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
             docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
@@ -173,7 +173,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: "Build storybook docker image"
+          name: 'Build storybook docker image'
           command: |
             mkdir -p /tmp/vf-build/vars
             $(aws ecr get-login --no-include-email --region us-east-1)
@@ -184,7 +184,7 @@ jobs:
               -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
             echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/storybook_build_num
       - run:
-          name: "Push storybook docker images"
+          name: 'Push storybook docker images'
           command: |
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
             docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
@@ -216,7 +216,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: "Build and deploy admin panel docker image"
+          name: 'Build and deploy admin panel docker image'
           command: |
             DEPLOY_SUFFIX=development
             if [ "$CIRCLE_BRANCH" == "admin" ]; then
@@ -250,9 +250,9 @@ jobs:
           docker_layer_caching: true
       - add_ssh_keys: # To enable write access to repository for removing ephemeral branches
           fingerprints:
-            - "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+            - '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
       - run:
-          name: "Build and deploy ephemeral image"
+          name: 'Build and deploy ephemeral image'
           command: |
             echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1

@@ -14,7 +14,7 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     const [offsetX, offsetY] = offsetRef.current;
 
     window.requestAnimationFrame(() => {
-      previewEl.style.transform = `translate3d(${x - offsetX}px, ${y - offsetY}px, 0) rotate(-5deg)`;
+      previewEl.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px) rotate(-5deg)`;
     });
   }, []);
   const handleMouseMove = React.useCallback(() => {

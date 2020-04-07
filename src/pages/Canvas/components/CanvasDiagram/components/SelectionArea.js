@@ -7,6 +7,7 @@ const SelectionArea = styled.div`
   background: #5d9df515;
   pointer-events: none;
   border-radius: 5px;
+  will-change: left, top, width, height;
 
   ${({ isBlockRedesignEnabled }) =>
     isBlockRedesignEnabled && {

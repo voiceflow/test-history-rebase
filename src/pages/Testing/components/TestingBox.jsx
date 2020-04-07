@@ -251,5 +251,4 @@ class TestBox extends React.PureComponent {
     );
   }
 }
-
 export default withSpeechRecognition({ autoStart: false })(TestBox);

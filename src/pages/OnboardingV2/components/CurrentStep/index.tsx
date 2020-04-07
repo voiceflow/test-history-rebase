@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import { STEP_META } from '@/pages/OnboardingV2/constants';
-import { OnboardingContextProps, withOnboarding } from '@/pages/OnboardingV2/context';
+import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
-const CurrentStep: React.FC<OnboardingContextProps> = ({
-  onboarding: {
-    state: { currentStepID },
-  },
-}) => {
+const CurrentStep: React.FC = () => {
+  const { state } = useContext(OnboardingContext);
+  const { currentStepID } = state;
+
   const CurrentStepComponent = STEP_META[currentStepID].component!;
 
   return (
@@ -18,4 +17,4 @@ const CurrentStep: React.FC<OnboardingContextProps> = ({
   );
 };
 
-export default withOnboarding(CurrentStep);
+export default CurrentStep;

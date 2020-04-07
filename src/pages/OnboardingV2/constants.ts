@@ -2,7 +2,7 @@ import React from 'react';
 
 import AddCollaborators from './Steps/AddCollaborators';
 import CreateWorkspace from './Steps/CreateWorkspace';
-import { OnboardingContextProps } from './context';
+import PersonalizeWorkspace from './Steps/PersonalizeWorkspace';
 
 export enum STEP_IDS {
   CREATE_WORKSPACE = 'create_workspace',
@@ -19,22 +19,23 @@ export const STEP_META: Record<
     canBack: boolean;
     canSkip: boolean;
     skipTo: STEP_IDS | null;
-    component: React.ForwardRefExoticComponent<React.RefAttributes<OnboardingContextProps>> | null;
+    component: React.FC | null;
   }
 > = {
   [STEP_IDS.CREATE_WORKSPACE]: {
     title: 'Create Workspace',
     canBack: true,
     canSkip: true,
-    skipTo: STEP_IDS.ADD_COLLABORATORS,
+    skipTo: STEP_IDS.PERSONALIZE_WORKSPACE,
+
     component: CreateWorkspace,
   },
   [STEP_IDS.PERSONALIZE_WORKSPACE]: {
     title: 'Personalize Workspace',
     canBack: true,
     canSkip: false,
-    skipTo: null,
-    component: null,
+    skipTo: STEP_IDS.ADD_COLLABORATORS,
+    component: PersonalizeWorkspace,
   },
   [STEP_IDS.ADD_COLLABORATORS]: {
     title: 'Add Collaborators',

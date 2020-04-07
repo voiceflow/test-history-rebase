@@ -37,13 +37,13 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
   );
 
   const togglePause = React.useCallback(async () => {
-    onChange({ customPause: !hadPause }, false);
-
     if (hadPause) {
       await engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
     } else {
       await engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: PlatformType.ALEXA });
     }
+
+    onChange({ customPause: !hadPause }, false);
   }, [onChange, hadPause, engine.port, focusedNode.ports.out, focusedNode.id]);
 
   return (

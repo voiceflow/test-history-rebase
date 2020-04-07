@@ -41,8 +41,8 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
 
   const addChoice = React.useCallback(
     async (scrollToBottom) => {
-      onAdd();
       await engine.port.add(focusedNode.id, { label: choices.length + 1 });
+      onAdd();
       scrollToBottom();
     },
     [onAdd, engine.port, focusedNode.id, choices.length]

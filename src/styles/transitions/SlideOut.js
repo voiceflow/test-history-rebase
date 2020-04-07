@@ -13,13 +13,13 @@ export const SlideOut = styled.div`
       transition: transform 150ms ease;
     `}
 
-  ${({ open, width, direction = 'right' }) => {
+  ${({ open, width, offset = 0, direction = 'right' }) => {
     if (direction === 'right') {
       return css`
         left: 0;
         ${open
           ? css`
-              transform: translate3d(0, 0, 0);
+              transform: translate3d(${offset}px, 0, 0);
             `
           : css`
               transform: translate3d(-${width}px, 0, 0);
@@ -30,7 +30,7 @@ export const SlideOut = styled.div`
     return open
       ? css`
           right: 0;
-          transform: translate3d(0, 0, 0);
+          transform: translate3d(-${offset}px, 0, 0);
         `
       : css`
           right: 0;

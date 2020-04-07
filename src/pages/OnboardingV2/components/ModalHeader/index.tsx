@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { STEP_META } from '@/pages/OnboardingV2/constants';
-import { OnboardingContextProps, withOnboarding } from '@/pages/OnboardingV2/context';
+import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
 import ActionButton from './components/ActionButton';
 import Container from './components/Container';
 import StepStatus from './components/StepStatus';
 
-const OnboardingModalHeader: React.FC<OnboardingContextProps> = ({
-  onboarding: {
-    state: { currentStepID, stepStack },
-    actions: { stepBack, stepForward },
-  },
-}) => {
+const OnboardingModalHeader: React.FC = () => {
+  const { state, actions } = useContext(OnboardingContext);
+  const { currentStepID, stepStack } = state;
+  const { stepBack, stepForward } = actions;
+
   const currentStepMeta = STEP_META[currentStepID];
   const hasBackButton = currentStepMeta.canBack && stepStack.length > 1;
   const hasSkipButton = currentStepMeta.canSkip && !!currentStepMeta.skipTo;
@@ -32,4 +31,4 @@ const OnboardingModalHeader: React.FC<OnboardingContextProps> = ({
   );
 };
 
-export default withOnboarding(OnboardingModalHeader);
+export default OnboardingModalHeader;

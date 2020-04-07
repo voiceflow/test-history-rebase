@@ -12,6 +12,7 @@ import session from './session';
 import skill from './skill';
 import template from './template';
 import testing from './testing';
+import testingV2 from './testingV2';
 import user from './user';
 import workspace from './workspace';
 
@@ -26,15 +27,16 @@ const client = {
   list,
   project,
   testing,
+  testingV2,
   clipboard,
   skill,
   display,
-  socket: null,
   product,
   file,
   template,
   onboarding,
   feature,
+  socket: null,
 };
 
 export default client;

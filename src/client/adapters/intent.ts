@@ -1,45 +1,15 @@
+import { PlatformType } from '@/constants';
+import { Intent, IntentInput, IntentSlot } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
 import { createAdapter } from './utils';
-
-export enum Platform {
-  ALEXA = 'alexa',
-  GOOGLE = 'gooogle',
-}
-
-export interface IntentText {
-  text: string;
-  slots: string[];
-}
-
-export interface IntentSlot {
-  id: string;
-  dialog: {
-    prompt: IntentText[];
-    utterances: IntentText[];
-    confirm: IntentText[];
-    confirmEnabled: boolean;
-  };
-  required: boolean;
-}
 
 export interface RawIntent {
   key: string;
   name: string;
   slots?: IntentSlot[];
-  inputs: IntentText[];
-  _platform: Platform;
-}
-
-export interface Intent {
-  id: string;
-  name: string;
-  slots: {
-    allKeys: string[];
-    byKey: Record<string, IntentSlot>;
-  };
-  inputs: IntentText[];
-  platform: Platform;
+  inputs: IntentInput[];
+  _platform: PlatformType;
 }
 
 const intentAdapter = createAdapter<RawIntent, Intent>(

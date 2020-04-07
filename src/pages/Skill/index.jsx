@@ -21,6 +21,7 @@ import Business from '@/pages/Business';
 import Canvas from '@/pages/Canvas';
 import CanvasMenu from '@/pages/Canvas/components/CanvasMenu';
 import LeftSidebar from '@/pages/Canvas/components/LeftSidebar';
+import TestingSidebar from '@/pages/Canvas/components/TestingSidebar';
 import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
@@ -50,6 +51,7 @@ const TIMEOUT_COUNT = 5 * 60 * 1000;
 
 function RenderCanvas({ diagramID, isTesting }) {
   const blockRedesign = useFeature(FeatureFlag.BLOCK_REDESIGN);
+  const testToolV2 = useFeature(FeatureFlag.TEST_TOOL_V2);
 
   return (
     <>
@@ -61,7 +63,7 @@ function RenderCanvas({ diagramID, isTesting }) {
               <CanvasHeader />
               {blockRedesign.isEnabled ? <LeftSidebar /> : <CanvasMenu />}
               <Canvas isTesting={isTesting} />
-              <Testing render />
+              {testToolV2.isEnabled ? <TestingSidebar /> : <Testing render />}
             </SettingsModalProvider>
           </ShortcutModalProvider>
         </EditPermissionProvider>

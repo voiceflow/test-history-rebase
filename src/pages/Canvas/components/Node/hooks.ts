@@ -25,7 +25,7 @@ export const useStepAPI = <T extends HTMLElement>(
   const theme = React.useContext(ThemeContext);
   const [inPortID] = node?.ports?.in || [];
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
-  const [isHovered, wrapElement, hoverHandlers] = useHover(
+  const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
       onStart: () => {
         if (engine.linkCreation.isDrawing && !engine.linkCreation.isSourceNode(nodeID)) {
@@ -67,6 +67,7 @@ export const useStepAPI = <T extends HTMLElement>(
       lockOwner,
       withPorts,
       hasLinkWarning,
+      setHovering,
       isActive,
       isDraggable,
       isHovered,

@@ -1,37 +1,42 @@
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
-import { BlockState, BlockVariant } from '@/constants/canvas';
+import { BlockVariant } from '@/constants/canvas';
+import { withTheme } from '@/hocs';
+import { Theme } from '@/styles/theme';
 import { Icon } from '@/svgs/types';
 import { unhighlightAllText, withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 
 export type NewBlockHeaderProps = {
-  state: BlockState;
   variant: BlockVariant;
   name: string;
   icon?: Icon;
   isEditing?: boolean;
+  disabled?: boolean;
   canEditTitle?: boolean;
+  isActivated?: boolean;
   updateName?: (value: string) => void;
   setIsEditing?: (value: boolean) => void;
   titleRef?: React.MutableRefObject<HTMLInputElement | null>;
 };
 
-const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
+const NewBlockHeader: React.FC<NewBlockHeaderProps & { theme: Theme }> = ({
   name,
   canEditTitle,
   isEditing,
   setIsEditing,
   icon,
+  theme,
   updateName,
   variant,
-  state,
+  disabled,
   titleRef,
+  isActivated,
 }) => {
   const [blockLabel, setBlockLabel] = React.useState(name);
-  const readOnly = !isEditing || state === BlockState.DISABLED || !canEditTitle;
+  const readOnly = !isEditing || disabled || !canEditTitle;
 
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
@@ -64,16 +69,25 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
   }, [name]);
 
   React.useEffect(() => {
-    if (state === BlockState.DISABLED) {
+    if (disabled) {
       saveLabel();
     }
-  }, [state]);
+  }, [disabled]);
 
   React.useEffect(() => {
     if (readOnly) {
       unhighlightAllText();
     }
   }, [readOnly]);
+
+  React.useEffect(() => {
+    const variantStyles = theme.components.block.variants[variant];
+    const color = variantStyles[isActivated ? 'activeColor' : 'color'];
+
+    if (titleRef?.current) {
+      titleRef.current.style.color = color;
+    }
+  }, [theme, variant, isActivated]);
 
   return (
     <Container hasIcon={!!icon}>
@@ -83,23 +97,13 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
         </IconContainer>
       )}
       <Input
-        // for some reason I NEED to place box sizing inline for the title to not get cropped on first render in chrome
-        style={{ boxSizing: 'content-box' }}
         canEdit={canEditTitle}
-        onFocus={(e) => {
-          if (!readOnly) {
-            e.currentTarget.select();
-          }
-        }}
-        onClick={(e) => {
-          startEditMode(e);
-        }}
+        onClick={startEditMode}
         onBlur={saveLabel}
         readOnly={readOnly}
         onChange={updateLabel}
         value={blockLabel}
         variant={variant}
-        state={state}
         onKeyPress={withEnterPress(handleEnterPress)}
         inputRef={(ref: HTMLInputElement | null) => {
           if (titleRef) {
@@ -111,4 +115,4 @@ const NewBlockHeader: React.FC<NewBlockHeaderProps> = ({
   );
 };
 
-export default NewBlockHeader;
+export default withTheme(NewBlockHeader);

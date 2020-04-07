@@ -9,14 +9,15 @@ const Container = styled.aside`
   top: 50px;
   bottom: 90px;
 
-  transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth}px) translateZ(0);
+  transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth}px);
   transition: transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1);
   z-index: 10;
+  will-change: transform;
 
   ${({ isOpen }) =>
     isOpen &&
     css`
-      transform: translateX(0) translateZ(0);
+      transform: translateX(0);
     `}
 
   &:after {

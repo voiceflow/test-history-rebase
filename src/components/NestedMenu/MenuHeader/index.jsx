@@ -5,6 +5,7 @@ import Button from '@/components/LegacyButton';
 import { MenuHeaderWrapper, MenuHr, MenuInput, MenuSearchIcon } from './components';
 
 function MenuHeader({
+  withSearchIcon = true,
   onFocus,
   onCreate,
   searchLabel,
@@ -26,7 +27,7 @@ function MenuHeader({
         searchable={menuSearchable}
         onMouseEnter={onFocus}
       >
-        <MenuSearchIcon icon="search" color="#6E849A" />
+        {withSearchIcon && <MenuSearchIcon icon="search" color="#6E849A" />}
 
         <MenuInput
           ref={createInputRef}

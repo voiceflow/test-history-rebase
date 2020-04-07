@@ -9,7 +9,7 @@ import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
-import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/test';
+import { TEST_STATUS, renderTest, resetTest, testStatusSelector, userTestSelector } from '@/ducks/testing';
 import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
@@ -55,7 +55,6 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
             <div className={cn('sidebar_container variables_container', { open: settingsOpen })}>
               <div className="condition-label pointer" onClick={toggleSettingsOpen}>
                 <label className="mb-0">Settings</label>
-
                 <SvgIcon
                   icon="arrowLeft"
                   width={24}

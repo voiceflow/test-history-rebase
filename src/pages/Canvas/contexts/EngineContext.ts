@@ -21,7 +21,9 @@ export type Engine = {
   expireNode: (nodeID: string, instanceID: string) => void;
 
   isNodeMovementLocked: (nodeID: string) => boolean;
+
   setActivation: (nodeID: string) => void;
+  clearActivation: () => void;
 
   updateViewport: (x: number, y: number, zoom: number) => void;
   getCanvasMousePosition: () => [number, number];
@@ -45,6 +47,7 @@ export type Engine = {
 
   selection: {
     isTarget: (nodeID: string) => boolean;
+    replace: (nodeIDs: string[]) => void;
   };
 
   drag: {

@@ -6,11 +6,10 @@ import IconButton from '@/components/IconButton';
 import { ModalType } from '@/constants';
 import { userSelector } from '@/ducks/account';
 import { setConfirm } from '@/ducks/modal';
-import { renderTest, shareTest } from '@/ducks/test';
+import { renderTest, shareTest } from '@/ducks/testing';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
-
-import ShareMenu from './components/ShareMenu';
+import ShareMenu from '@/pages/TestingV2/components/TestingShare/components/ShareMenu';
 
 const TestingHeader = (props) => {
   const { shareTest, renderTest, render, user } = props;

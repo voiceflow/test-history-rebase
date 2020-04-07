@@ -125,7 +125,13 @@ const SectionContainer = styled.div`
     isContextMenuOpen &&
     css`
       background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%);
-    `}    
+    `}
+
+  ${({ borderBottom }) =>
+    borderBottom &&
+    css`
+      border-bottom: 1px solid #eaeff4;
+    `}
 `;
 
 export default SectionContainer;

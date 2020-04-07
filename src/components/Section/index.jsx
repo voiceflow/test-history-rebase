@@ -96,9 +96,7 @@ export const UncontrolledSection = React.forwardRef(
                 {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
                 {Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
                 {suffix && <PrefixContainer>{_.isString(suffix) ? <SvgIcon color="#becedc" icon={suffix} /> : suffix}</PrefixContainer>}
-                {collapseVariant && (
-                  <CollapseTrigger onToggle={clickHandler ? undefined : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />
-                )}
+                {collapseVariant && <CollapseTrigger onToggle={clickHandler ? _.noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />}
               </StatusContent>
             )}
           </Header>

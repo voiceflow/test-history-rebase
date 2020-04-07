@@ -10,3 +10,5 @@ export * from './Skill';
 export * from './Template';
 export * from './User';
 export * from './Integration';
+export * from './Intent';
+export * from './Slot';

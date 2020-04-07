@@ -1,7 +1,3 @@
-/**
- * syntax for keys can be found here:
- * https://craig.is/killing/mice
- */
 export enum Hotkey {
   COPY = 'COPY',
   UNDO = 'UNDO',
@@ -12,6 +8,7 @@ export enum Hotkey {
   ZOOM_OUT = 'ZOOM_OUT',
   SPOTLIGHT = 'SPOTLIGHT',
   ROOT_NODE = 'ROOT_NODE',
+  USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   OPEN_FLOW_MENU = 'OPEN_FLOW_MENU',
   OPEN_BLOCK_MENU = 'OPEN_BLOCK_MENU',
@@ -22,6 +19,10 @@ export enum Hotkey {
   OPEN_LEFT_SIDEBAR_FLOWS_TAB = 'OPEN_LEFT_SIDEBAR_FLOWS_TAB',
 }
 
+/**
+ * syntax for keys can be found here:
+ * https://craig.is/killing/mice
+ */
 const HOTKEY_MAPPING = {
   [Hotkey.COPY]: ['control+c', 'command+c'],
   [Hotkey.UNDO]: ['control+z', 'command+z'],
@@ -32,6 +33,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.ZOOM_OUT]: ['control+-', 'command+-'],
   [Hotkey.ROOT_NODE]: ['control+h', 'command+h'],
   [Hotkey.SPOTLIGHT]: 'space',
+  [Hotkey.USER_SPEECH]: 'space',
   [Hotkey.OPEN_CMS_MODAL]: ['control+m', 'command+m'],
   [Hotkey.OPEN_FLOW_MENU]: 'shift+2',
   [Hotkey.OPEN_BLOCK_MENU]: 'shift+1',

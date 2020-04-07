@@ -34,7 +34,6 @@ function SpeechBar(props) {
       text = 'Say Something...';
     }
   }
-
   return ReactDOM.createPortal(
     <div
       id="SpeechBar"
@@ -52,5 +51,4 @@ function SpeechBar(props) {
     document.body
   );
 }
-
 export default SpeechBar;

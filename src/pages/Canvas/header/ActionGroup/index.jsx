@@ -8,7 +8,7 @@ import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
 import { SettingsModalConsumer } from '@/pages/Settings/contexts';
-import ShareTest from '@/pages/Testing/ShareTest';
+import TestingShare from '@/pages/TestingV2/components/TestingShare';
 
 import Alexa from './Alexa';
 import Google from './Google';
@@ -44,7 +44,7 @@ function ActionGroup(props) {
         </SettingsModalConsumer>
       </SubTitleGroup>
       <SubTitleGroup>
-        <ShareTest render />
+        <TestingShare render />
       </SubTitleGroup>
 
       {renderPlatform()}

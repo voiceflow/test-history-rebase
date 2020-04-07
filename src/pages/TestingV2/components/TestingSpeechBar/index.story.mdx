@@ -1,0 +1,14 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import story, * as stories from './index.story';
+
+import SpeechBar from '.';
+
+<Meta title={story.title} component={story.component} />
+
+# Speech Bar
+
+<Preview>
+  <Story name="base">{stories.base()}</Story>
+  <Story name="public">{stories.publicBar()}</Story>
+</Preview>

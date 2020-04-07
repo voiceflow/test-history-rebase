@@ -71,7 +71,7 @@ const mapStateToProps = {
 };
 
 const mergeProps: MergeProps<typeof mapStateToProps, {}, ConnectedStepProps<NodeData.Payment>> = ({ product: productByIDSelector }, _, { data }) => ({
-  product: productByIDSelector(data?.productID),
+  product: productByIDSelector(data?.productID!),
 });
 
 export default connect(mapStateToProps, null, mergeProps)(ConnectedPaymentStep);

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Testing/Reset Base 1`] = `
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c2 {
+  padding: 20px 32px;
+}
+
+.c5 .c1 {
+  padding-bottom: 16px;
+}
+
+.c0 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c0:not(:first-child)::before {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+}
+
+.c0 .c6 {
+  font-weight: 600;
+}
+
+.c4 {
+  color: #5d9df5;
+  font-size: 15px;
+  line-height: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.c4:hover {
+  color: #5d7af1;
+}
+
+.c4:active {
+  color: #2541b4;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1 c2"
+  >
+    <div
+      className="collapse show"
+      style={Object {}}
+    >
+      <div
+        className="c3"
+      >
+        <span
+          className="c4"
+          onClick={[Function]}
+        >
+          Reset Test
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

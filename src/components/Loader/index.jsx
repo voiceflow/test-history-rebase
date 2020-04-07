@@ -2,10 +2,10 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 const spinnerStyles = css`
+  display: inline-block;
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  display: inline-flex;
   font-size: ${(props) => (props.isMd ? '2rem' : '4rem')};
 `;
 const LoadContainer = styled.div`

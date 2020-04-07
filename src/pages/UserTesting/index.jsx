@@ -13,7 +13,7 @@ import { MenuContainer } from '@/components/Menu';
 import { replaceIntents } from '@/ducks/intent';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
-import { initializeTest, updateTest } from '@/ducks/test';
+import { initializeTest, updateTest } from '@/ducks/testing';
 import { connect, styled } from '@/hocs';
 import { EditPermissionProvider } from '@/pages/Canvas/contexts';
 import Testing from '@/pages/Testing';

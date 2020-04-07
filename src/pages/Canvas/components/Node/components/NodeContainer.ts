@@ -10,13 +10,13 @@ export type NodeContainerProps = {
 
 const NodeContainer = styled.div.attrs<NodeContainerProps>(({ position: [left, top] }) => ({
   style: {
-    transform: `translate3d(${left}px, ${top}px, 0)`,
+    transform: `translate(${left}px, ${top}px)`,
   },
 }))<NodeContainerProps>`
   position: absolute;
   box-sizing: content-box;
   pointer-events: auto;
-  backface-visibility: hidden;
+  will-change: transform;
 
   ${({ isActive }) =>
     isActive &&

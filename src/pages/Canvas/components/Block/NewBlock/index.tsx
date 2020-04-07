@@ -6,7 +6,7 @@ import { BlockState, BlockVariant } from '@/constants/canvas';
 import { LockOwnerType } from '@/models';
 
 import { Container, Section } from './components';
-import { NewBlockHeaderProps } from './components/NewBlockHeader';
+import { NewBlockSectionProps } from './components/NewBlockSection';
 
 export * from './types';
 export * from './constants';
@@ -16,7 +16,7 @@ export * from './constants';
 // and gives error that user prop does not exist on the component
 const LockOwner: any = User;
 
-export type NewBlockProps = WithOptional<NewBlockHeaderProps, 'state' | 'variant'> & {
+export type NewBlockProps = WithOptional<NewBlockSectionProps, 'state' | 'variant'> & {
   sections?: {
     name: string;
     icon?: Icon;

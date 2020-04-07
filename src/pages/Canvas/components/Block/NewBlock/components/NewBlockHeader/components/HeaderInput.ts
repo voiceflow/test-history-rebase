@@ -12,9 +12,12 @@ type HeaderInputProps = AutosizeInputProps & {
   state: BlockState;
 };
 
-const HeaderInput = styled(mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, state, ...props }) => props)(AutosizeInput))<
-  HeaderInputProps
->`
+const HeaderInput = styled(
+  mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, state, ...props }) => ({
+    ...props,
+    style: { boxSizing: 'content-box' },
+  }))(AutosizeInput)
+)<HeaderInputProps>`
   max-width: 100%;
   input {
     max-width: 100%;

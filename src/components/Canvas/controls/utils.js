@@ -1,7 +1,7 @@
 import { MAX_ZOOM, MIN_ZOOM, PINCH_SCROLL_FACTOR, SCROLL_FACTOR, ZOOM_FACTOR } from '../constants';
 
-export function transformStyle([posX, posY], zoom) {
-  return `translate3d(${posX}px, ${posY}px, 0px) scale(${zoom / ZOOM_FACTOR})`;
+export function transformStyle(pos, zoom) {
+  return `translate(${pos[0]}px, ${pos[1]}px) scale(${zoom / ZOOM_FACTOR})`;
 }
 
 export function getScrollDelta(event) {

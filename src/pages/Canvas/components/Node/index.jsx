@@ -108,7 +108,7 @@ export class Node extends React.PureComponent {
     const nodeEl = this.nodeRef.current;
 
     window.requestAnimationFrame(() => {
-      nodeEl.style.transform = `translate3d(${position[0]}px, ${position[1]}px, 0)`;
+      nodeEl.style.transform = `translate(${position[0]}px, ${position[1]}px)`;
 
       callback?.();
     });

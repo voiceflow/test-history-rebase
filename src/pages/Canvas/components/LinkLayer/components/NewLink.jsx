@@ -129,10 +129,10 @@ class NewLink extends React.PureComponent {
     const linkProps = isBlockRedesignEnabled ? { strokeColor: '#2c85ff' } : {};
 
     return (
-      <>
+      <g style={{ transform: 'translate3d(0,0,0)' }}>
         <LinkHeadMarker id="newLink" {...linkHeadProps} />
         <LinkPath d={path} markerEnd="url(#head-newLink)" ref={this.linkRef} {...linkProps} />
-      </>
+      </g>
     );
   }
 }

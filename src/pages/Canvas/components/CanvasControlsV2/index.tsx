@@ -67,4 +67,4 @@ const CanvasControlsV2: React.FC = () => {
   );
 };
 
-export default CanvasControlsV2;
+export default React.memo(CanvasControlsV2);

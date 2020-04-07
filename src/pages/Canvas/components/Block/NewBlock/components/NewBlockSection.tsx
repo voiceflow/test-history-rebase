@@ -4,7 +4,7 @@ import Content from './NewBlockContent';
 import Header, { NewBlockHeaderProps } from './NewBlockHeader';
 import Container from './NewBlockSectionContainer';
 
-type NewBlockSectionProps = NewBlockHeaderProps;
+export type NewBlockSectionProps = NewBlockHeaderProps;
 
 const NewBlockSection: React.FC<NewBlockSectionProps> = ({ children, ...props }) => (
   <Container>

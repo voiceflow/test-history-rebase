@@ -404,7 +404,8 @@ class NodeManager extends EngineConsumer {
 
     if (!node) return;
 
-    [...node.ports.in, ...node.ports.out].forEach((portID) => this.engine.port.redrawLinks(portID));
+    node.ports.in.forEach((portID) => this.engine.port.redrawLinks(portID));
+    node.ports.out.forEach((portID) => this.engine.port.redrawLinks(portID));
 
     if (node.combinedNodes.length) {
       this.redrawNestedLinks(nodeID);

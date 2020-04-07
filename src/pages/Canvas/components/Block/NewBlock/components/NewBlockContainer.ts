@@ -24,19 +24,28 @@ const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme
 
   switch (state) {
     case BlockState.ACTIVE:
-      return {
-        boxShadow: `0 0 0 1.3px ${blockVariant.shadowColor}, 0 12px 32px 0 rgba(17, 49, 96, 0.2)`,
-      };
+      return css`
+        &::before {
+          box-shadow: 0 12px 32px 0 rgba(17, 49, 96, 0.2);
+          border-color: ${blockVariant.activeBorderColor};
+        }
+      `;
     case BlockState.SELECTED:
-      return {
-        borderColor: '#5d9df5',
-        boxShadow: 'none',
-      };
+      return css`
+        border-color: #5d9df5;
+
+        &::before {
+          display: none;
+        }
+      `;
     case BlockState.HOVERED:
       return css`
         border-color: #5d9df5;
-        box-shadow: none;
         cursor: copy;
+
+        &::before {
+          display: none;
+        }
       `;
     case BlockState.DISABLED:
       return disabledStyles;
@@ -44,7 +53,10 @@ const stateStyles = ({ state, variant, theme }: NewBlockContainerProps & { theme
     default:
       return css`
         :hover {
-          box-shadow: 0 0 0 1.3px ${blockVariant.shadowColor}, 0 4px 8px 0 rgba(17, 49, 96, 0.2);
+          &::before {
+            box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
+            border-color: ${blockVariant.activeBorderColor};
+          }
         }
       `;
   }
@@ -58,11 +70,28 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
   padding: 0 ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px;
   background-color: #fff;
   background-image: ${({ variant, theme }) => theme.components.block.variants[variant].backgroundImage};
-  box-shadow: 0 0 0 1.3px ${({ variant, theme }) => theme.components.block.variants[variant].shadowColor};
   position: relative;
   opacity: 1;
   border-color: none;
-  ${transition('box-shadow', 'opacity')}
+
+  &:before {
+    display: block;
+    border-radius: 8px;
+
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+
+    border: 1px solid ${({ variant, theme }) => theme.components.block.variants[variant].borderColor};
+
+    content: '';
+
+    ${transition('box-shadow')}
+  }
+
+  ${transition('opacity')}
 
   ${stateStyles}
 
@@ -77,7 +106,7 @@ const NewBlockContainer = styled.div<NewBlockContainerProps>`
         }
       `}
   }
-  
+
   ${MemberIcon} {
     position: absolute;
     top: 6px;

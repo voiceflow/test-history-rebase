@@ -112,7 +112,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  border: 1px solid #D3D9E4;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -230,17 +230,31 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -311,7 +325,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -340,7 +354,6 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={
@@ -591,7 +604,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06), 0 0 0 1px rgba(17,49,96,0.08);
+  border: 1px solid #D3D9E4;
 }
 
 .c5 .c6:not(:first-of-type) {
@@ -709,17 +722,31 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border: solid 2px #fff;
   padding: 0 12px 12px 12px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,rgba(231,234,241,0.8),#e7eaf1);
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
-  -webkit-transition: box-shadow 0.15s ease,opacity 0.15s ease;
-  transition: box-shadow 0.15s ease,opacity 0.15s ease;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.c0:hover {
-  box-shadow: 0 0 0 1.3px rgba(17,49,96,0.16),0 4px 8px 0 rgba(17,49,96,0.2);
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
 }
 
 .canvas--nodes-active .c0 {
@@ -790,7 +817,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
 }
 
 .c4 > *:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .c1 {
@@ -819,7 +846,6 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
-          onFocus={[Function]}
           onKeyPress={[Function]}
           readOnly={true}
           style={

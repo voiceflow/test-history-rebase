@@ -1,7 +1,9 @@
 import fetch from './fetch';
-import testingClient, { TESTING_PATH } from './testing';
+import testingClient from './testing';
 
 // TODO: collapse into @/client/testing when server refactor is rolled out
+const TESTING_PATH = 'prototype'; // separate testing path for V2
+
 const testingClientV2 = {
   ...testingClient,
 

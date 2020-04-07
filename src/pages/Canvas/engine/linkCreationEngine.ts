@@ -21,6 +21,8 @@ class LinkCreationEngine extends EngineConsumer {
 
   isCompleting = false;
 
+  unpinTimeout = 0;
+
   get isDrawing() {
     return !!this.sourcePortID;
   }
@@ -75,13 +77,19 @@ class LinkCreationEngine extends EngineConsumer {
   }
 
   pin(targetPortID: string, position: [number, number]) {
+    clearTimeout(this.unpinTimeout);
+
     this.activeTargetPortID = targetPortID;
     this.newLink?.pin(position);
   }
 
   unpin() {
-    this.activeTargetPortID = null;
-    this.newLink?.unpin();
+    clearTimeout(this.unpinTimeout);
+
+    this.unpinTimeout = setTimeout(() => {
+      this.activeTargetPortID = null;
+      this.newLink?.unpin();
+    }, 24);
   }
 
   getLinkPoints() {
@@ -94,6 +102,8 @@ class LinkCreationEngine extends EngineConsumer {
   }
 
   reset() {
+    clearTimeout(this.unpinTimeout);
+
     this.sourcePortID = null;
     this.activeTargetPortID = null;
     this.mouseOrigin = null;

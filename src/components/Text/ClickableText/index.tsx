@@ -14,12 +14,13 @@ const RegularText = styled.span`
   }
 `;
 
-export interface ClickableTextProps {
+type ClickableTextProps = {
   path?: string;
   link?: string;
   onClick?: () => void;
-  className?: string;
-}
+  children: any;
+  className?: any;
+};
 
 const ClickableText: React.FC<ClickableTextProps> = ({ path, link, onClick, children, className }) => {
   if (path) {

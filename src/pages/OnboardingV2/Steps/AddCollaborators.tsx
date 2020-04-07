@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { OnboardingContextProps, withOnboarding } from '../context';
-
-const AddCollaborators: React.FC<OnboardingContextProps> = () => {
+const AddCollaborators: React.FC = () => {
   return <div>Add collaborators...</div>;
 };
 
-export default withOnboarding(AddCollaborators);
+export default AddCollaborators;

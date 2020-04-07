@@ -7,10 +7,11 @@ import SvgIcon from '@/components/SvgIcon';
 import { useKeygen } from '@/hooks';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { Count, InnerContainer, Label, TriggerContainer, ValueContainer } from './components';
+import { Count, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
 
 function DropdownMultiselect({
   options = [],
+  multiSectionOptions = null,
   component: Component,
   onSelect,
   menu,
@@ -28,24 +29,40 @@ function DropdownMultiselect({
 }) {
   const genKey = useKeygen();
 
+  const dropdownOptions = !multiSectionOptions
+    ? [
+        {
+          sectionLabel: null,
+          options,
+        },
+      ]
+    : multiSectionOptions;
+
   return (
     <Dropdown
       menu={
         menu || (
           <Menu disabled={buttonDisabled} multiSelectProps={{ multiselect: true, buttonClick, buttonLabel }}>
-            {options.map(({ value, label, onClick }) => (
-              <MenuItem
-                key={genKey(value || label)}
-                onClick={stopImmediatePropagation(() => {
-                  onClick?.();
-                  onSelect?.(value);
-                })}
-              >
-                <Checkbox readOnly checked={selectedItems.includes(value)}>
-                  <Label>{label || value.toString()}</Label>
-                </Checkbox>
-              </MenuItem>
-            ))}
+            {dropdownOptions.map(({ sectionLabel, options }, index) => {
+              return (
+                <span key={index}>
+                  {sectionLabel && <SectionLabel>{sectionLabel}</SectionLabel>}
+                  {options.map(({ value, label, onClick }) => (
+                    <MenuItem
+                      key={genKey(value || label)}
+                      onClick={stopImmediatePropagation(() => {
+                        onClick?.();
+                        onSelect?.(value);
+                      })}
+                    >
+                      <Checkbox readOnly checked={selectedItems.includes(value)}>
+                        <Label>{label || value.toString()}</Label>
+                      </Checkbox>
+                    </MenuItem>
+                  ))}
+                </span>
+              );
+            })}
           </Menu>
         )
       }

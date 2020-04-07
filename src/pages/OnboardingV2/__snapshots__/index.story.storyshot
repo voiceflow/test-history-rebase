@@ -1,14 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
-.c7 {
+.c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #becedc;
 }
 
-.c7 > svg {
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c20 {
+  box-sizing: content-box;
+  width: 30px;
+  height: 30px;
+  color: #BECEDC;
+}
+
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -29,12 +42,213 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   justify-content: center;
 }
 
-.c14 .c6 {
+.c22 {
+  color: #5d9df5;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c22:hover {
+  color: #4886da;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  color: #fff;
+  box-shadow: 0 0 1px 0 rgba(17,49,96,0.1),0 4px 8px 0 rgba(17,49,96,0.16);
+  font-weight: 600;
+  background: linear-gradient(-180deg,#5d9df5 0%,#176ce0 68%);
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 52px;
+  background: linear-gradient(180deg,#5d9df56b 0%,#176ce075 100%);
+  box-shadow: none;
+}
+
+.c24:focus,
+.c24:active {
+  outline: 0;
+}
+
+.c24 .c29 {
+  opacity: 0.46;
+}
+
+.c24:active {
+  box-shadow: 0 0 6px 0 rgba(17,49,96,0.1),0 6px 12px 0 rgba(17,49,96,0.2);
+}
+
+.c25 {
+  padding: 0 22px;
+}
+
+.c26 .c23 {
+  margin-right: 2px;
+}
+
+.c26 .c23:not(:first-of-type) {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  margin-right: 0;
+}
+
+.c26 .c23:not(:last-of-type) {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.c26 .c23:last-of-type {
+  margin-right: 0;
+}
+
+.c27 .c10 {
   color: #fff;
 }
 
-.c15 .c6 {
+.c28 .c10 {
   color: #6e849a;
+}
+
+.c15 {
+  min-height: 42px;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans,Arial,sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 10px 16px;
+  line-height: 20px;
+  cursor: text;
+  -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+}
+
+.c15:disabled {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c15:active,
+.c15:focus,
+.c15:focus-within {
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  outline: 0;
+}
+
+.c18 {
+  display: none;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: background-color,border 0.15s ease;
+  transition: background-color,border 0.15s ease;
+  border-radius: 50%;
+  border: 1px solid #d4d9e6;
+  cursor: pointer;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  background-color: rgba(212,217,230,0.24);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c19:hover {
+  background-color: rgba(212,217,230,0.44);
+}
+
+.c19:before {
+  background: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.c17:focus {
+  outline: none;
+}
+
+.c14 {
+  width: 480px;
+  padding-top: 65px;
+  text-align: center;
+}
+
+.c16 {
+  border: none;
+  text-align: center;
+  border-bottom: 1px solid #dfe3ed;
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.c16:placeholder {
+  color: #8da2b5;
+}
+
+.c16:focus {
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid #5d9df5;
+}
+
+.c21 {
+  text-align: center;
+  color: #8da2b5;
+  line-height: 22px;
+  font-size: 15px;
+  margin-top: 12px;
+  margin-bottom: 40px;
 }
 
 .c3 {
@@ -42,7 +256,7 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   text-align: center;
 }
 
-.c5 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -58,13 +272,13 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   margin-bottom: 5px;
 }
 
-.c4 {
+.c8 {
   height: 100%;
   width: 100%;
   cursor: pointer;
 }
 
-.c8 {
+.c12 {
   text-transform: uppercase;
   color: #6e849a;
   font-size: 11px;
@@ -82,20 +296,21 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 30px;
+  padding-bottom: 0;
   -webkit-align-items: initial;
   -webkit-box-align: initial;
   -ms-flex-align: initial;
   align-items: initial;
 }
 
-.c9 {
+.c4 {
   -webkit-flex: 3;
   -ms-flex: 3;
   flex: 3;
   text-align: center;
 }
 
-.c11 {
+.c6 {
   width: 24px;
   display: inline-block;
   margin: 0 1px;
@@ -104,7 +319,7 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   background: #2c85ff;
 }
 
-.c12 {
+.c7 {
   width: 24px;
   display: inline-block;
   margin: 0 1px;
@@ -112,7 +327,7 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   background: #dfe3ed;
 }
 
-.c10 {
+.c5 {
   font-size: 15px;
   font-weight: 600;
   color: #8c94a6;
@@ -145,58 +360,146 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
       >
         <div
           className="c3"
-        >
-          <div
-            className="c4"
-            onClick={[Function]}
-          >
-            <div
-              className="c5"
-            >
-              <span
-                className="c6 c7"
-                color="#becedc"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBack"
-                />
-              </span>
-            </div>
-            <div
-              className="c8"
-            >
-              back
-            </div>
-          </div>
-        </div>
+        />
         <div
-          className="c9"
+          className="c4"
         >
           <div
-            className="c10"
+            className="c5"
           >
-            Add Collaborators
+            Create Workspace
           </div>
           <div
-            className="c11"
+            className="c6"
           />
           <div
-            className="c11"
+            className="c7"
           />
           <div
-            className="c12"
+            className="c7"
           />
         </div>
         <div
           className="c3"
-        />
+        >
+          <div
+            className="c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              <span
+                className="c10 c11"
+                color="#becedc"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgNext"
+                />
+              </span>
+            </div>
+            <div
+              className="c12"
+            >
+              skip
+            </div>
+          </div>
+        </div>
       </div>
       <div
         className="c13"
       >
-        <div>
-          Add collaborators...
+        <div
+          className="c14"
+        >
+          <input
+            className="c15 c16"
+            onChange={[Function]}
+            placeholder="Enter your workspace name"
+            value=""
+          />
+          <div
+            className="c13"
+          >
+            <div
+              className="c17"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragEnter={[Function]}
+              onDragLeave={[Function]}
+              onDragOver={[Function]}
+              onDrop={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              tabIndex={0}
+            >
+              <input
+                accept={
+                  Array [
+                    "image/jpeg",
+                    "image/png",
+                  ]
+                }
+                autoComplete="off"
+                className="c18"
+                multiple={true}
+                onChange={[Function]}
+                onClick={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
+                tabIndex={-1}
+                type="file"
+              />
+              <div
+                className="c19"
+                onClick={[Function]}
+                size={120}
+              >
+                <span
+                  className="c10 c20"
+                  color="#BECEDC"
+                  size={30}
+                >
+                  <svg
+                    data-file-name="SvgImage"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c21"
+          >
+            Drop workspace icon here 
+            <br />
+            or 
+            <span
+              className="c22"
+              onClick={[Function]}
+            >
+              Browse
+            </span>
+             (optional)
+          </div>
+          <div
+            className="c13"
+          >
+            <button
+              className="c23 c24"
+              disabled={true}
+              onClick={[Function]}
+            >
+              <span
+                className="c25"
+              >
+                Continue
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

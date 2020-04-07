@@ -1,18 +1,17 @@
 import { times } from 'lodash';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { STEP_META } from '@/pages/OnboardingV2/constants';
-import { OnboardingContextProps, withOnboarding } from '@/pages/OnboardingV2/context';
+import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
 import Container from './components/Container';
 import ProgressLine from './components/ProgressLine';
 import Title from './components/Title';
 
-const StepStatus: React.FC<OnboardingContextProps> = ({
-  onboarding: {
-    state: { numberOfSteps, currentStepID, stepStack },
-  },
-}) => {
+const StepStatus: React.FC = () => {
+  const { state } = useContext(OnboardingContext);
+  const { numberOfSteps, currentStepID, stepStack } = state;
+
   return (
     <Container>
       <Title>{STEP_META[currentStepID].title}</Title>
@@ -28,4 +27,4 @@ const StepStatus: React.FC<OnboardingContextProps> = ({
   );
 };
 
-export default withOnboarding(StepStatus);
+export default StepStatus;

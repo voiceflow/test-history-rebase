@@ -2,11 +2,14 @@ import moize from 'moize';
 import React from 'react';
 
 import { BlockState, BlockVariant } from '@/constants/canvas';
+import * as Creator from '@/ducks/creator';
+import { connect } from '@/hocs';
 import { useEnableDisable, useHover } from '@/hooks';
 import Block, { HEADER_HEIGHT, NewBlockAPI } from '@/pages/Canvas/components/Block/NewBlock';
 import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
-import { EngineContext, NodeIDProvider, useNode, useNodeData } from '@/pages/Canvas/contexts';
+import { EngineContext, NodeIDProvider, NodeInjectedProps, useNodeData, withNode } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
+import { compose } from '@/utils/functional';
 
 import NodePort from './NodePort';
 import NodeStep from './NodeStep';
@@ -20,6 +23,8 @@ export type NodeBlockProps = {
   isHighlighted: boolean;
 };
 
+export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[] };
+
 const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { isHovered: boolean; hasLinkWarning: boolean }) => {
   if (isHovered && hasLinkWarning) return BlockState.DISABLED;
 
@@ -32,9 +37,8 @@ const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { i
   return BlockState.REGULAR;
 };
 
-const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: NewBlockAPI }>) => {
+const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: NewBlockAPI }>) => {
   const isTransitioning = React.useRef(false);
-  const { nodeID, node, lockOwner } = useNode();
   const { data } = useNodeData();
 
   const engine = React.useContext(EngineContext)!;
@@ -47,7 +51,7 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
   }, []);
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const hasNestedInPort = engine.getNodeByID(node.combinedNodes[0]).ports.in.length !== 0;
-  const [isHovered, wrapElement, hoverHandlers] = useHover(
+  const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
       onStart: () => {
         const isPinned = engine.linkCreation.hasPin;
@@ -152,6 +156,12 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
     };
   }, []);
 
+  React.useEffect(() => {
+    if (isHovered && (!engine.linkCreation.activeTargetPortID || engine.linkCreation.isCompleting)) {
+      setHovering(false);
+    }
+  }, [linkIDs]);
+
   return (
     <>
       {inPortID && !hasLinkWarning && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
@@ -185,4 +195,13 @@ const NodeBlock: React.FC<NodeBlockProps> = (props, ref: React.RefObject<{ api: 
   );
 };
 
-export default React.forwardRef(NodeBlock);
+const mapStateToProps = (state: any, { node }: NodeInjectedProps) => ({
+  linkIDs: Creator.linkIDsByPortIDSelector(state)(node.ports.in[0]),
+});
+
+export default compose<ConnectedNodeProps, NodeBlockProps>(
+  withNode,
+  connect(mapStateToProps, null, null, { forwardRef: true }),
+  React.memo,
+  React.forwardRef
+)(NodeBlock);

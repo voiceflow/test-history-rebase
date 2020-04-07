@@ -66,12 +66,12 @@ class LinkCreationEngine extends EngineConsumer {
 
     await this.engine.link.add(this.sourcePortID, targetPortID);
 
-    this.isCompleting = false;
     this.abort();
   }
 
   abort() {
     this.engine.port.api(this.sourcePortID)?.clearHighlight?.();
+    this.newLink?.unpin();
     this.newLink?.hide();
     this.reset();
   }

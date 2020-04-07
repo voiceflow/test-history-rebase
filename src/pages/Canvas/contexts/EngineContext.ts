@@ -81,7 +81,9 @@ export type Engine = {
   linkCreation: {
     isDrawing: boolean;
     hasPin: boolean;
+    isCompleting: boolean;
     sourcePortID: string | null;
+    activeTargetPortID: string | null;
 
     pin: (targetPortID: string, position: [number, number]) => void;
     unpin: () => void;

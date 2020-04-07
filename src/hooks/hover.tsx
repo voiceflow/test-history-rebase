@@ -18,7 +18,7 @@ export const useHover = (
     cleanupOnOverride?: boolean;
   },
   dependencies: any[] = []
-): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, () => void>] => {
+): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, () => void>, (hovering: boolean) => void] => {
   const onHoverEnd = React.useRef<(() => void) | null>(null);
   const [isHovered, setHovering] = React.useState(false);
   const [isOverridden, enableOverride, disableOverride] = useEnableDisable();
@@ -64,5 +64,5 @@ export const useHover = (
 
   const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave }), [onMouseEnter, onMouseLeave]);
 
-  return [!isOverridden && isHovered, wrapElement, hoverHandlers];
+  return [!isOverridden && isHovered, wrapElement, hoverHandlers, setHovering];
 };

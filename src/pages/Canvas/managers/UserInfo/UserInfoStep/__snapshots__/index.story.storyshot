@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
-.c16 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c19 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -176,7 +176,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -188,7 +188,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -206,7 +206,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   border: 4px solid white;
 }
 
-.c20 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -218,7 +218,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   cursor: copy;
 }
 
-.c20::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -451,38 +451,6 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
                 color="#279745"
                 size={16}
               >
@@ -501,8 +469,40 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
               </div>
             </span>
             <div
-              className="c20"
+              className="c18"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c20"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -515,27 +515,27 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
-.c16 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c21 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c21 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -690,7 +690,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
+.c22 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -702,7 +702,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c22::before {
   position: absolute;
   display: block;
   content: '';
@@ -719,7 +719,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
 }
 
-.c22 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -731,7 +731,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   cursor: copy;
 }
 
-.c22::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -980,11 +980,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgError"
+                  data-file-name="SvgCheckmark"
                 />
               </span>
             </div>
@@ -994,12 +994,12 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
               <div
                 className="c14"
               >
-                No Access
+                Success
               </div>
             </span>
             <div
               className="c18"
-              color="#d94c4c"
+              color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1020,11 +1020,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             >
               <span
                 className="c11 c21"
-                color="#279745"
+                color="#d94c4c"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgCheckmark"
+                  data-file-name="SvgError"
                 />
               </span>
             </div>
@@ -1034,12 +1034,12 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
               <div
                 className="c14"
               >
-                Success
+                No Access
               </div>
             </span>
             <div
               className="c22"
-              color="#279745"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1060,27 +1060,27 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
-.c15 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1235,7 +1235,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
-.c17 {
+.c19 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1247,7 +1247,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   cursor: copy;
 }
 
-.c17::before {
+.c19::before {
   position: absolute;
   display: block;
   content: '';
@@ -1265,7 +1265,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c19 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1277,7 +1277,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   cursor: copy;
 }
 
-.c19::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -1501,38 +1501,6 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
             >
               <span
                 className="c11 c15"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c16"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c17"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -1551,8 +1519,40 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
               </div>
             </span>
             <div
-              className="c19"
+              className="c17"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c18"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c16"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c19"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1565,27 +1565,27 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
-.c16 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c19 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1740,7 +1740,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
+.c20 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1752,7 +1752,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c20::before {
   position: absolute;
   display: block;
   content: '';
@@ -1770,7 +1770,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   border: 4px solid white;
 }
 
-.c20 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1782,7 +1782,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   cursor: copy;
 }
 
-.c20::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -2015,38 +2015,6 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
                 color="#279745"
                 size={16}
               >
@@ -2065,8 +2033,40 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
               </div>
             </span>
             <div
-              className="c20"
+              className="c18"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c20"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />

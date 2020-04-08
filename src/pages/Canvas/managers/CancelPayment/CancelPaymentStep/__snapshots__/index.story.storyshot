@@ -14,14 +14,14 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -137,7 +137,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -163,7 +163,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
-.c16 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -175,7 +175,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -193,7 +193,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -205,7 +205,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -428,27 +428,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c12"
-                color="#d94c4c"
+                className="c11 c15"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgError"
+                  data-file-name="SvgCheckmark"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Declined
+                Successfully Cancelled
               </div>
             </span>
             <div
-              className="c16"
-              color="#d94c4c"
+              className="c17"
+              color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -460,27 +460,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
-                color="#279745"
+                className="c11 c12"
+                color="#d94c4c"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgCheckmark"
+                  data-file-name="SvgError"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Successfully Cancelled
+                Declined
               </div>
             </span>
             <div
               className="c18"
-              color="#279745"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -506,14 +506,14 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -629,7 +629,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -655,7 +655,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   text-overflow: ellipsis;
 }
 
-.c16 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -667,7 +667,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   cursor: copy;
 }
 
-.c16::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -685,7 +685,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border: 4px solid white;
 }
 
-.c18 {
+.c17 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -697,7 +697,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   cursor: copy;
 }
 
-.c18::before {
+.c17::before {
   position: absolute;
   display: block;
   content: '';
@@ -920,27 +920,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c12"
-                color="#d94c4c"
+                className="c11 c15"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgError"
+                  data-file-name="SvgCheckmark"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Declined
+                Successfully Cancelled
               </div>
             </span>
             <div
-              className="c16"
-              color="#d94c4c"
+              className="c17"
+              color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -952,27 +952,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
-                color="#279745"
+                className="c11 c12"
+                color="#d94c4c"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgCheckmark"
+                  data-file-name="SvgError"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Successfully Cancelled
+                Declined
               </div>
             </span>
             <div
               className="c18"
-              color="#279745"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />

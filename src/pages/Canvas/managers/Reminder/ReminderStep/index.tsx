@@ -20,8 +20,8 @@ export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, su
     <Section>
       {withPorts && (
         <>
-          <FailureItem label="No Access" portID={failurePortID} />
           <SuccessItem label="Success" portID={successPortID} />
+          <FailureItem label="No Access" portID={failurePortID} />
         </>
       )}
     </Section>

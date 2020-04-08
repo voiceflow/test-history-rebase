@@ -23,8 +23,8 @@ export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, suc
       <Section>
         {withPorts && (
           <>
-            <FailureItem label="Declined" portID={failurePortID} />
             <SuccessItem label="Successfully Cancelled" portID={successPortID} />
+            <FailureItem label="Declined" portID={failurePortID} />
           </>
         )}
       </Section>

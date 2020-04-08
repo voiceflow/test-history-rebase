@@ -39,6 +39,7 @@ const StreamManager = {
       backgroundImage: null,
       customPause: false,
       loop: false,
+      audio: '',
     },
   }),
 };

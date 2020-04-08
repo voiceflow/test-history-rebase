@@ -13,16 +13,20 @@ function CombinedEditor({ nestedBlocks }) {
 
   return (
     <Content>
-      {nestedBlocks.map(({ type, nodeID, name }, index) => (
-        <Section
-          key={nodeID}
-          prefix={<SvgIcon icon={getManager(type)?.icon} color={getManager(type)?.iconColor} />}
-          header={name}
-          isLink
-          onClick={() => engine.focus.set(nodeID)}
-          isDividerNested={index !== 0}
-        />
-      ))}
+      {nestedBlocks.map(({ nodeID, ...data }, index) => {
+        const { getIcon, getIconColor, icon, iconColor } = getManager(data.type);
+
+        return (
+          <Section
+            key={nodeID}
+            prefix={<SvgIcon icon={getIcon?.(data) || icon} color={getIconColor?.(data) || iconColor} />}
+            header={data.name}
+            isLink
+            onClick={() => engine.focus.set(nodeID)}
+            isDividerNested={index !== 0}
+          />
+        );
+      })}
     </Content>
   );
 }

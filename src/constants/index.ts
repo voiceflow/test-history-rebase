@@ -252,6 +252,7 @@ const EMPTY_KEY_VALUE_ITEM = {
 // Integration default data models
 export const INTEGRATION_DATA_MODELS = {
   CUSTOM_API: {
+    name: IntegrationType.CUSTOM_API,
     selectedIntegration: IntegrationType.CUSTOM_API,
     headers: [EMPTY_KEY_VALUE_ITEM],
     url: '',
@@ -268,6 +269,7 @@ export const INTEGRATION_DATA_MODELS = {
     selectedAction: IntegrationActionType.CUSTOM_API.GET,
   },
   GOOGLE_SHEETS: {
+    name: IntegrationType.GOOGLE_SHEETS,
     selectedIntegration: IntegrationType.GOOGLE_SHEETS,
     selectedAction: '',
     user: {},
@@ -282,6 +284,7 @@ export const INTEGRATION_DATA_MODELS = {
     end_row: [],
   },
   ZAPIER: {
+    name: IntegrationType.ZAPIER,
     user: {},
     selectedIntegration: IntegrationType.ZAPIER,
     selectedAction: IntegrationActionType.ZAPIER.START_A_ZAP,

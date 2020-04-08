@@ -3,6 +3,7 @@ import GlobeIcon from '@/svgs/solid/globe.svg';
 
 import IntegrationEditor from './IntegrationEditor';
 import IntegrationStep from './IntegrationStep';
+import { ICON, ICON_COLOR } from './constants';
 
 const getDefaultData = ({ selectedIntegration }) => {
   switch (selectedIntegration) {
@@ -19,10 +20,16 @@ const getDefaultData = ({ selectedIntegration }) => {
 
 const IntegrationManager = {
   type: BlockType.INTEGRATION,
-  icon: GlobeIcon,
-  iconColor: '',
   label: 'Integrations',
   tip: 'Integrate external services into your skill',
+
+  // for older version
+  icon: GlobeIcon,
+  iconColor: '#fa7891',
+
+  // for block redesign
+  getIcon: (data) => ICON[data.selectedIntegration],
+  getIconColor: (data) => ICON_COLOR[data.selectedIntegration],
 
   editor: IntegrationEditor,
   step: IntegrationStep,

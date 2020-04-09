@@ -43,6 +43,12 @@ const CanvasControlsV2: React.FC = () => {
   return (
     <Container>
       <ControlContainer>
+        <Tooltip distance={6} title="Home" position="top" systemHotkey="H">
+          <IconButton icon="home" onClick={onFocusHome} />
+        </Tooltip>
+      </ControlContainer>
+
+      <ControlContainer>
         <Tooltip distance={6} title="Model" position="top" systemHotkey="M">
           <IconButton icon="code" onClick={onOpenCMS} />
         </Tooltip>

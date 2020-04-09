@@ -1690,6 +1690,33 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c42"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c43 c44"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c45"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -3546,6 +3573,33 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c42"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c43 c44"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c45"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -4811,6 +4865,33 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   <div
     className="c24"
   >
+    <div
+      className="c25"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c26 c27"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c28"
+            color="currentColor"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
     <div
       className="c25"
     >
@@ -7119,6 +7200,33 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c49"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c50 c51"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c52"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -9103,6 +9211,33 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   <div
     className="c43"
   >
+    <div
+      className="c44"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c45 c46"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c47"
+            color="currentColor"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
     <div
       className="c44"
     >

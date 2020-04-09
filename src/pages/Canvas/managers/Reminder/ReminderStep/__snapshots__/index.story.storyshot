@@ -237,11 +237,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 8px 8px 8px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -301,7 +301,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -741,8 +741,8 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
 
 .c18 {
   position: absolute;
-  right: -16px;
-  width: 15px;
+  right: -12px;
+  width: 11px;
   height: 4px;
 }
 
@@ -757,11 +757,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 8px 8px 8px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -821,7 +821,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -990,7 +990,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             >
               <path
                 className="c19"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 11 4"
               />
             </svg>
           </div>
@@ -1030,7 +1030,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
             >
               <path
                 className="c19"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 11 4"
               />
             </svg>
           </div>
@@ -1278,11 +1278,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 8px 8px 8px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1342,7 +1342,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -1783,11 +1783,11 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 8px 8px 8px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1847,7 +1847,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -2192,11 +2192,11 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 8px 8px 8px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2256,7 +2256,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 

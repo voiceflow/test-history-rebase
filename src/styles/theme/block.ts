@@ -43,7 +43,7 @@ const BLOCK_THEME = {
       editTitleColor: ' rgba(118, 94, 132, 0.15)',
     },
   },
-  width: 360,
+  width: 330,
 } as const;
 
 export default BLOCK_THEME;

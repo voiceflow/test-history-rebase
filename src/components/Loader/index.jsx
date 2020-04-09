@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 const spinnerStyles = css`
-  display: inline-block;
+  display: inline-flex;
   width: 1em;
   height: 1em;
   border-radius: 50%;

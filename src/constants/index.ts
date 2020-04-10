@@ -13,6 +13,8 @@ export const DEFAULT_PRODUCT_PHRASE = 'Alexa, ';
 
 export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 
+export const HOVER_THROTTLE_TIMEOUT = 24;
+
 export const FlowTab = {
   STRUCTURE: 'structure',
   FLOW: 'flow',

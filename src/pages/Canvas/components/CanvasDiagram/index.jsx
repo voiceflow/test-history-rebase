@@ -1,9 +1,10 @@
 import cuid from 'cuid';
+import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
-import { DragItem } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -38,14 +39,44 @@ const CanvasDiagram = ({ viewport }) => {
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
-    drop: async ({ blockType, factoryData }, monitor) => {
+    drop: async ({ clientOffset, blockType, factoryData }, monitor) => {
       const newNodeID = cuid();
-      const { x: mouseX, y: mouseY } = monitor.getClientOffset();
+      const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
 
       const position = engine.canvas.transformPoint([mouseX, mouseY]);
 
-      await engine.node.add(newNodeID, blockType, position, factoryData);
+      const { newSourceNodeIndex, newTargetNodeID } = engine.mergeV2;
+
+      if (!newTargetNodeID || newSourceNodeIndex === null) {
+        await engine.node.add(newNodeID, blockType, position, factoryData);
+      } else {
+        await engine.node.addNestedV2({
+          type: blockType,
+          index: newSourceNodeIndex,
+          nodeID: newNodeID,
+          position,
+          factoryData,
+          parentNodeID: newTargetNodeID,
+        });
+      }
+
+      engine.mergeV2.clearNewSourceTypeAndTargetID();
     },
+    hover: _throttle(
+      (item, monitor) => {
+        item.clientOffset = monitor.getClientOffset();
+
+        if (!monitor.isOver({ shallow: true })) {
+          return;
+        }
+
+        if (engine.mergeV2.newTargetNodeID) {
+          engine.mergeV2.clearNewSourceTypeAndTargetID();
+        }
+      },
+      HOVER_THROTTLE_TIMEOUT,
+      { trailing: false }
+    ),
   });
 
   return (

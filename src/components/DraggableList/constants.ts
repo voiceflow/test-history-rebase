@@ -1,1 +1,0 @@
-export const HOVER_THROTTLE_TIMEOUT = 24;

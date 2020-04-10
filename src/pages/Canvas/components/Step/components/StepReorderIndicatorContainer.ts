@@ -6,6 +6,7 @@ import { stepBoxShadowStyles } from '../styles';
 
 export type StepReorderIndicatorContainerProps = {
   isActive: boolean;
+  isHovered?: boolean;
 };
 
 const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerProps>`
@@ -21,7 +22,7 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
     margin: 0;
   }
 
-  ${({ isActive }) =>
+  ${({ isActive, isHovered }) =>
     isActive &&
     css`
       .${MERGE_ACTIVE_NODE_CLASSNAME} &&& {
@@ -39,6 +40,13 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
         :hover {
           opacity: 1;
         }
+
+        ${isHovered &&
+          css`
+             {
+              opacity: 1;
+            }
+          `}
       }
     `}
 `;

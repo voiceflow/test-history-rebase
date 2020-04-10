@@ -1,9 +1,11 @@
 import cuid from 'cuid';
 import _constant from 'lodash/constant';
+import _throttle from 'lodash/throttle';
 import React from 'react';
+import { useDrop } from 'react-dnd';
 import { ThemeContext } from 'styled-components';
 
-import { BlockType } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useEnableDisable, useHover, useTeardown } from '@/hooks';
 import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -202,8 +204,37 @@ export const useMergeInfo = (index: number) => {
     };
   }
 
+  if (engine.mergeV2.newSourceNodeType) {
+    return {
+      mustBeLast: getManager(engine.mergeV2.newSourceNodeType)?.mergeTerminator,
+      mustBeFirst: engine.mergeV2.newSourceNodeType === BlockType.INTENT,
+    };
+  }
+
   return {
     mustBeFirst: false,
     mustBeLast: false,
   };
+};
+
+export const useDnDHoverReorderIndicator = (index: number) => {
+  const engine = React.useContext(EngineContext)!;
+
+  const [, connectBlockDrop] = useDrop({
+    accept: DragItem.BLOCK_MENU,
+
+    hover: _throttle(
+      () => {
+        if (engine.mergeV2.newSourceNodeIndex === index) {
+          return;
+        }
+
+        engine.mergeV2.setNewSourceNodeIndex(index);
+      },
+      HOVER_THROTTLE_TIMEOUT,
+      { trailing: false }
+    ),
+  });
+
+  return [connectBlockDrop, engine.mergeV2.newSourceNodeIndex === index] as const;
 };

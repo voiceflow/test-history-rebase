@@ -1,6 +1,7 @@
-// eslint-disable-next-line import/prefer-default-export
-export enum VariableType {
-  LOCAL = 'local',
-  GLOBAL = 'global',
-  BUILT_IN = 'built-in',
-}
+import { VariableType } from './constants';
+
+export type Variable = {
+  id: string;
+  type: VariableType;
+  name: string;
+};

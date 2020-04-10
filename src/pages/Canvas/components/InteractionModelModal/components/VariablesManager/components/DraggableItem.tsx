@@ -1,39 +1,43 @@
 import React from 'react';
 
 import { SearchableListItemContainer } from '@/components/SearchableList';
+import { VariableTag } from '@/components/VariableTag';
 
 import ItemCount from '../../ItemCount';
+import { VariableType } from '../constants';
+import { Variable } from '../types';
 
 export type DraggableItemProps = {
-  item: string;
-  isLocal?: boolean;
-  isBuiltIn?: boolean;
+  item: Variable;
   isDragging?: boolean;
   withoutHover?: boolean;
   onContextMenu?: React.MouseEventHandler;
-  onSelectVariable: (id: string) => void;
-  selectedVariable: string;
+  onSelectVariableID: (id: string) => void;
+  selectedVariableID?: string;
   isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
 };
 
 const DraggableItem: React.FC<DraggableItemProps> = (
-  { item, isLocal, isBuiltIn, isDragging, withoutHover, onContextMenu, onSelectVariable, selectedVariable, isContextMenuOpen, isDraggingPreview },
+  { item, isDragging, withoutHover, onContextMenu, onSelectVariableID, selectedVariableID, isContextMenuOpen, isDraggingPreview },
   ref: React.Ref<HTMLDivElement>
 ) => {
+  const isLocal = item.type === VariableType.LOCAL;
+  const isBuiltIn = item.type === VariableType.BUILT_IN;
+
   return (
     <SearchableListItemContainer
       ref={ref}
-      onClick={() => onSelectVariable(item)}
-      isActive={selectedVariable === item}
+      onClick={() => onSelectVariableID(item.id)}
+      isActive={selectedVariableID === item.id}
       isDragging={isDragging}
       withoutHover={withoutHover}
       onContextMenu={onContextMenu}
       isDraggingPreview={isDraggingPreview}
       isContextMenuOpen={isContextMenuOpen}
     >
-      <span>{item}</span>
-      {(isLocal || isBuiltIn) && <ItemCount>{isBuiltIn ? 'Built In' : 'Local'}</ItemCount>}
+      <VariableTag>{`{${item.name}}`}</VariableTag>
+      {(isLocal || isBuiltIn) && <ItemCount>{isBuiltIn ? 'Built In' : 'Flow'}</ItemCount>}
     </SearchableListItemContainer>
   );
 };

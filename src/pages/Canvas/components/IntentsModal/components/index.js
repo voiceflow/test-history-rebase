@@ -1,6 +1,6 @@
-import AddMinusButton from '@/components/AddMinusButton';
 import Flex from '@/components/Flex';
 import Input from '@/components/Input';
+import { Add } from '@/components/InteractiveIcon';
 import { styled } from '@/hocs';
 
 export { default as DraggableItem } from './DraggableItem';
@@ -35,7 +35,7 @@ export const SearchContainer = styled.div`
   flex: 1;
 `;
 
-export const AddIntentButton = styled(AddMinusButton)`
+export const AddIntentButton = styled(Add)`
   margin-right: 30px;
 `;
 

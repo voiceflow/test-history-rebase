@@ -50,7 +50,7 @@ export const ProductType = {
 
 export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE];
 
-export const GlobalVariable = {
+export const BuiltInVariable = {
   SESSIONS: 'sessions',
   USER_ID: 'user_id',
   TIMESTAMP: 'timestamp',
@@ -58,12 +58,12 @@ export const GlobalVariable = {
   LOCALE: 'locale',
 };
 
-export const GLOBAL_VARIABLES = [
-  GlobalVariable.SESSIONS,
-  GlobalVariable.USER_ID,
-  GlobalVariable.TIMESTAMP,
-  GlobalVariable.PLATFORM,
-  GlobalVariable.LOCALE,
+export const BUILT_IN_VARIABLES = [
+  BuiltInVariable.SESSIONS,
+  BuiltInVariable.USER_ID,
+  BuiltInVariable.TIMESTAMP,
+  BuiltInVariable.PLATFORM,
+  BuiltInVariable.LOCALE,
 ];
 
 export enum BlockType {

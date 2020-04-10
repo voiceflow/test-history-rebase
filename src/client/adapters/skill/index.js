@@ -1,4 +1,4 @@
-import { GLOBAL_VARIABLES, PlatformType } from '@/constants';
+import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
 
 import intentAdapter from '../intent';
 import slotAdapter from '../slot';
@@ -43,7 +43,7 @@ const skillAdapter = createAdapter(
       },
     },
     locales,
-    globalVariables: global.filter((variable) => !GLOBAL_VARIABLES.includes(variable)),
+    globalVariables: global.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
     meta: skillMetaAdapter.fromDB(meta),
   }),
   ({ meta }) => ({

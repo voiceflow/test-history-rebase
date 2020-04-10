@@ -37,7 +37,7 @@ export const NestedInput = React.forwardRef(
 
 // eslint-disable-next-line react/display-name
 const Input = React.forwardRef((props, ref) => {
-  if (props.icon || props.children || props.leftAction || props.rightAction) {
+  if (props.icon || props.children || props.leftAction || props.rightAction || props.nested) {
     return <NestedInput {...props} ref={ref} />;
   }
 

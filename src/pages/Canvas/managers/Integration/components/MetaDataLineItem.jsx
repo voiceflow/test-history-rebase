@@ -1,7 +1,7 @@
 import React from 'react';
 
-import AddMinusButton from '@/components/AddMinusButton';
 import Flex from '@/components/Flex';
+import { Minus } from '@/components/InteractiveIcon';
 import VariablesInput from '@/components/VariablesInput';
 import { styled } from '@/hocs';
 
@@ -52,7 +52,7 @@ function MetaDataLineItem({ value, keyPlaceholder, onUpdate, onRemove, children,
       </LeftSection>
 
       <RightSection>
-        <AddMinusButton type="minus" disabled={onlyItem} onClick={() => !onlyItem && onRemove()} />
+        <Minus disabled={onlyItem} onClick={() => !onlyItem && onRemove()} />
       </RightSection>
     </Container>
   );

@@ -1,10 +1,18 @@
 import { css, styled, units } from '@/hocs';
 
-const Badge = styled.span`
+type Badge = { onClick?: any; slide?: boolean };
+
+const Badge = styled.span<Badge>`
   ${({ onClick }) =>
-    onClick &&
+    !!onClick &&
     css`
       cursor: pointer;
+    `}
+
+  ${({ slide }) =>
+    slide &&
+    css`
+      animation: fadein 0.15s ease, moveinleft 0.15s ease;
     `}
 
   min-width: 22px;

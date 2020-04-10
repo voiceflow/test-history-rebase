@@ -6,7 +6,8 @@ import IntentForm from '@/components/IntentForm';
 import { StandaloneIntentSlotForm } from '@/components/IntentSlotForm';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import * as IntentDuck from '@/ducks/intent';
+import ClickableText from '@/components/Text/ClickableText';
+import * as Intents from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 import { formatIntentName } from '@/utils/intent';
@@ -15,17 +16,23 @@ import { Intent } from '../types';
 
 export type ManagerProps = {
   id: string;
-  intentsMap: Record<string, Intent>;
+  intent: Intent;
   removeIntent: (id: string) => void;
   updateIntent: (id: string, data: Partial<Intent>, patch?: boolean) => void;
 };
 
-const Manager: React.FC<ManagerProps> = ({ id, intentsMap, removeIntent, updateIntent }) => {
-  const intent = intentsMap[id];
-
+const Manager: React.FC<ManagerProps> = React.forwardRef(({ id, intent, removeIntent, updateIntent }, ref) => {
   const [name, setName] = React.useState(intent?.name ?? '');
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
-  const resetPath = () => setPath({ type: null });
+  const resetPath = React.useCallback(() => setPath({ type: null }), []);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      resetPath,
+    }),
+    []
+  );
 
   React.useEffect(() => {
     resetPath();
@@ -35,7 +42,7 @@ const Manager: React.FC<ManagerProps> = ({ id, intentsMap, removeIntent, updateI
   const slotEdit = path.type === 'slot';
 
   return !intent ? null : (
-    <FadeLeftContainer>
+    <>
       <Section>
         <FlexApart onClick={resetPath}>
           <Input
@@ -49,17 +56,28 @@ const Manager: React.FC<ManagerProps> = ({ id, intentsMap, removeIntent, updateI
         </FlexApart>
       </Section>
 
-      {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
-    </FadeLeftContainer>
+      <FadeLeftContainer key={(!slotEdit).toString()}>
+        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
+      </FadeLeftContainer>
+      {slotEdit && (
+        <Section>
+          <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
+        </Section>
+      )}
+    </>
   );
-};
+});
 
 const mapStateToProps = {
-  intentsMap: IntentDuck.mapIntentsSelector,
+  intent: Intents.intentByIDSelector,
 };
 
 const mapDispatchToProps = {
-  updateIntent: IntentDuck.updateIntent,
+  updateIntent: Intents.updateIntent,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Manager);
+const mergeProps = ({ intent: intentByIDSelector }: any, _: any, { id }: ManagerProps) => ({
+  intent: intentByIDSelector(id),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps, { forwardRef: true })(Manager);

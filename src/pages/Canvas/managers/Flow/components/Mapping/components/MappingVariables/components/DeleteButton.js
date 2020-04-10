@@ -1,7 +1,7 @@
-import AddMinusButton from '@/components/AddMinusButton';
+import { Minus } from '@/components/InteractiveIcon';
 import { styled } from '@/hocs';
 
-const DeleteButton = styled(AddMinusButton)`
+const DeleteButton = styled(Minus)`
   position: absolute;
   top: 12px;
   cursor: pointer;

@@ -3,7 +3,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import Toggle from '@/components/Toggle';
-import { GlobalVariable } from '@/constants';
+import { BuiltInVariable } from '@/constants';
 import { recentTestingSelector, updateRecentTesting } from '@/ducks/recent';
 import { testGlobalsSelector, updateGlobal } from '@/ducks/testing';
 import { connect } from '@/hocs';
@@ -18,7 +18,7 @@ const TestSettings = ({ open, settings, updateSettings, globals, updateGlobal })
       {Object.keys(globals).map((name) => {
         const value = globals[name];
         if (typeof value === 'object') return null;
-        const isDefault = name in GlobalVariable;
+        const isDefault = name in BuiltInVariable;
         return (
           <div key={name} className="test-variable editor">
             <div className={cn('variable_tag', { default: isDefault })}>{name}</div>

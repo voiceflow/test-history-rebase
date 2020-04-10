@@ -4358,7 +4358,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 .c15 {
   position: relative;
   width: 100%;
-  padding: 13px 0;
   overflow-x: hidden;
 }
 

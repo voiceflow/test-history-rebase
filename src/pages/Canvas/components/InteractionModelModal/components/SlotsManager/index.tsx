@@ -1,12 +1,14 @@
+import cuid from 'cuid';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import SvgIcon from '@/components/SvgIcon';
+import { ModalType } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useModals } from '@/hooks';
 import { reorder as reorderArray } from '@/utils/array';
 
 import EmptyContainer from '../EmptyContainer';
@@ -23,7 +25,7 @@ export type SlotsManagerProps = {
   reorderSlots: (ids: string[]) => void;
 };
 
-const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, slotsIDs, removeSlot, reorderSlots }) => {
+const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, addSlot, slotsIDs, removeSlot, reorderSlots }) => {
   const [selectedID, setSelectedID] = React.useState(slots[0]?.id);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
 
@@ -63,12 +65,22 @@ const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, slotsIDs, removeSlot
 
   const onReorder = React.useCallback((from: number, to: number) => reorderSlots(reorderArray(slotsIDs, from, to)), [slotsIDs, reorderSlots]);
 
-  return !slots.length ? (
-    <EmptyContainer>
-      <SvgIcon icon="noSlots" size={64} />
-      <p>Your project doesn’t contain any Slots</p>
-    </EmptyContainer>
-  ) : (
+  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
+
+  const addNewSlot = React.useCallback(() => {
+    toggleSlotEdit({
+      isCreate: true,
+      onSave: async ({ type, name, color, inputs = [] }: { type: string; name: string; color: string; inputs: string[] }) => {
+        const id = cuid.slug();
+        await addSlot(id, { id, type, name, color, inputs });
+
+        closeSlotEdit();
+        setSelectedID(id);
+      },
+    });
+  }, []);
+
+  return (
     <>
       <LeftColumn>
         <DraggableList
@@ -90,6 +102,8 @@ const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, slotsIDs, removeSlot
             <SearchableList
               ref={scrollbarsRef}
               items={slots}
+              onAdd={addNewSlot}
+              addMessage="New Slot"
               onChange={onFilter}
               getLabel={getItemLabel}
               renderItem={(item: Slot, index) => renderItem({ item, index, itemKey: item.id, key: item.id })}
@@ -99,8 +113,15 @@ const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, slotsIDs, removeSlot
         </DraggableList>
       </LeftColumn>
 
-      <RightColumn withTopPadding>
-        <Manager id={selectedID} removeSlot={onDeleteFromManager} />
+      <RightColumn>
+        {!slots.length ? (
+          <EmptyContainer>
+            <SvgIcon icon="noSlots" size={64} />
+            <p>Your project doesn’t contain any Slots</p>
+          </EmptyContainer>
+        ) : (
+          <Manager id={selectedID} removeSlot={onDeleteFromManager} />
+        )}
       </RightColumn>
     </>
   );

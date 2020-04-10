@@ -1,9 +1,9 @@
 import _upperFirst from 'lodash/upperFirst';
 import React from 'react';
 
-import AddMinusButton, { ButtonContainer } from '@/components/AddMinusButton';
 import Flex from '@/components/Flex';
 import Input from '@/components/Input';
+import { Add, ButtonContainer, Minus } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
 import { styled, units } from '@/hocs';
 
@@ -18,7 +18,7 @@ const FieldContainer = styled(Flex)`
 `;
 
 const MultiFields = ({ type, tooltipContent, onAdd, onRemove, handleChange, fields }) => {
-  const AddMappingButton = <AddMinusButton type="add" onClick={() => onAdd(type)} />;
+  const AddMappingButton = <Add onClick={() => onAdd(type)} />;
   const disabledRemove = fields.length === 1;
 
   const onChange = React.useCallback((index, e) => handleChange(index, e, type), [type, handleChange]);
@@ -28,7 +28,7 @@ const MultiFields = ({ type, tooltipContent, onAdd, onRemove, handleChange, fiel
       {fields.map((field, index) => (
         <FieldContainer key={index}>
           <Input placeholder={`Add ${type}`} value={field} onChange={(e) => onChange(index, e)} />
-          <AddMinusButton disabled={disabledRemove} type="minus" onClick={() => !disabledRemove && onRemove(index, type)} />
+          <Minus disabled={disabledRemove} onClick={() => !disabledRemove && onRemove(index, type)} />
         </FieldContainer>
       ))}
     </Section>

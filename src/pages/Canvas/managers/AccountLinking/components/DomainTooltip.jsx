@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClickableText from '@/components/Text/ClickableText';
+import Anchor from '@/components/Text/Anchor';
 import { Paragraph, Title } from '@/components/Tooltip';
 
 function DomainTooltip() {
@@ -12,9 +12,9 @@ function DomainTooltip() {
 
       <Paragraph>
         Learn more about Domains{' '}
-        <ClickableText link="https://developer.amazon.com/en-US/docs/alexa/account-linking/requirements-account-linking.html#authorization-uri-requirements">
+        <Anchor link="https://developer.amazon.com/en-US/docs/alexa/account-linking/requirements-account-linking.html#authorization-uri-requirements">
           here.
-        </ClickableText>
+        </Anchor>
       </Paragraph>
     </>
   );

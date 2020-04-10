@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AddMinusButton from '@/components/AddMinusButton';
+import { Add } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
 import { useManager } from '@/hooks';
 
@@ -11,7 +11,7 @@ export const variableMappingFactory = () => ({ from: null, to: null });
 function MappingSection({ data, header, items, onChange, reverse, tooltip, isDividerNested }) {
   const { mapManaged, onAdd } = useManager(items, onChange, { factory: variableMappingFactory });
 
-  const AddMappingButton = <AddMinusButton type="add" onClick={onAdd} />;
+  const AddMappingButton = <Add onClick={onAdd} />;
   return (
     <Section
       header={header}

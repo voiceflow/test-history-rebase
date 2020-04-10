@@ -3,7 +3,7 @@ import React from 'react';
 import AceEditor from '@/components/AceEditor';
 import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
-import { GLOBAL_VARIABLES } from '@/constants';
+import { BUILT_IN_VARIABLES } from '@/constants';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { allVariablesSelector } from '@/store/selectors';
@@ -19,7 +19,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
     if (editorRef.current) {
       editorRef.current.editor.completers.push({
         getCompletions: (editor, session, pos, prefix, callback) => {
-          const wordList = [...GLOBAL_VARIABLES, ...variables, 'voiceflow', '_system'];
+          const wordList = [...BUILT_IN_VARIABLES, ...variables, 'voiceflow', '_system'];
 
           callback(
             null,

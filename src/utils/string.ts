@@ -1,14 +1,11 @@
 import { convertToWord } from './number';
 
-export const createNextName = (prefix: string, items: any[]) => {
-  let name = `${prefix}_${convertToWord(items.length + 1)}`;
-
-  const nameExists = (target: string) => items.find((item) => item.name === target);
-  while (nameExists(name)) {
-    name = `new_${name}`;
+export const createNextName = (prefix: string, items: string[]) => {
+  let counter = 1;
+  while (items.includes(`${prefix}_${convertToWord(counter)}`)) {
+    counter++;
   }
-
-  return name;
+  return `${prefix}_${convertToWord(counter)}`;
 };
 
 const replacer = (match: string, inner: string, variables: Record<string, any>, modifier?: Function) => {

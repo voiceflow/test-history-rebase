@@ -51,7 +51,7 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
               {reverse ? globalVariableSelect : flowVariableSelect}
             </MappingContainer>
             <ButtonContainer>
-              <DeleteButton disabled={disabledRemove} type="minus" onClick={() => !disabledRemove && onRemove()} />
+              <DeleteButton disabled={disabledRemove} onClick={() => !disabledRemove && onRemove()} />
             </ButtonContainer>
           </VariableMappingContainer>
         );

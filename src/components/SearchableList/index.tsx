@@ -5,13 +5,15 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
 import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
 
-import { Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
+import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
 
 export { ItemContainer as SearchableListItemContainer } from './components';
 
 export type SearchableListProps = {
   items: any[];
   getLabel: (item: any) => string;
+  onAdd?: () => void;
+  addMessage?: string;
   onChange?: (value: string, items: any[]) => void;
   rowHeight?: number;
   renderItem: (item: any, index: number) => React.ReactNode;
@@ -20,7 +22,7 @@ export type SearchableListProps = {
 };
 
 const SearchableList: React.FC<SearchableListProps> = (
-  { items, getLabel, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value },
+  { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value },
   ref: React.Ref<Scrollbars>
 ) => {
   const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
@@ -103,6 +105,7 @@ const SearchableList: React.FC<SearchableListProps> = (
 
       <SearchContainer>
         <SearchInput icon="search" value={searchValue} onChange={onChangeValue} iconProps={{ color: '#8da2b5' }} placeholder={placeholder} />
+        {!!onAdd && <AddButton onClick={onAdd} message={addMessage} />}
       </SearchContainer>
     </Container>
   );

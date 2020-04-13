@@ -95,15 +95,15 @@ export const BLOCK_REDESIGN_SHORTCUTS = [
   },
   {
     title: 'Design',
-    message: <kbd>D</kbd>,
+    message: <kbd>1</kbd>,
   },
   {
     title: 'Prototype',
-    message: <kbd>P</kbd>,
+    message: <kbd>2</kbd>,
   },
   {
     title: 'Build',
-    message: <kbd>B</kbd>,
+    message: <kbd>3</kbd>,
   },
 ];
 

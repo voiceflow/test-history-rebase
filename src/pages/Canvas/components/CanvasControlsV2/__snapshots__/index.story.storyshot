@@ -154,12 +154,12 @@ exports[`Storyshots Creator/Canvas Controls Base 1`] = `
   box-shadow: none;
 }
 
-.c7 .c2:not(:last-of-type) {
+.c7 > div:not(:last-of-type) .c2 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c7 .c2:not(:first-of-type) {
+.c7 > div:not(:first-of-type) .c2 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -263,16 +263,15 @@ exports[`Storyshots Creator/Canvas Controls Base 1`] = `
     className="c1"
   >
     <div
-      className=""
-      style={
-        Object {
-          "display": "inline",
-        }
-      }
-      title="Ctrl + Scroll to Zoom"
+      className="c7"
     >
       <div
-        className="c7"
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
       >
         <button
           className="c2 c3"
@@ -288,6 +287,15 @@ exports[`Storyshots Creator/Canvas Controls Base 1`] = `
             />
           </span>
         </button>
+      </div>
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
         <button
           className="c2 c3"
           onClick={[Function]}

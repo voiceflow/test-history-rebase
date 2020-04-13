@@ -1949,6 +1949,7 @@ body.modal-open {
 
 kbd {
   display: inline-block;
+  min-width: 24px;
   height: 22px;
   padding: 6px;
   color: #62778c;
@@ -1956,6 +1957,7 @@ kbd {
   font-size: 13px;
   font-family: 'Open Sans';
   line-height: 8px;
+  text-align: center;
   vertical-align: middle;
   background: linear-gradient(180deg, #eff5f6a3 0%, #eef4f6 100%), #fff;
   border: 1px solid #d4d9e6;

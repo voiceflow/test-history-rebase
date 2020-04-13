@@ -5,6 +5,8 @@ import Tabs from '@/components/Tabs';
 import { goToCurrentCanvas, goToPublish, goToTestDiagram } from '@/ducks/router';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 import CanvasViewers from './CanvasViewers';
 
@@ -40,6 +42,10 @@ const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDi
     },
     [goToCurrentCanvas, goToTestDiagram, goToPublish]
   );
+
+  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToTestDiagram());
+  useHotKeys(Hotkey.DESIGN_PAGE, () => goToCurrentCanvas());
+  useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
 
   return (
     <>

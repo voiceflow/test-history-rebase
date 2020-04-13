@@ -2,12 +2,10 @@ import React from 'react';
 
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
-import { isMac } from '@/config';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { preventDefault } from '@/utils/dom';
 
 import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
 
@@ -35,39 +33,41 @@ const CanvasControlsV2: React.FC = () => {
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(() => open(), []);
 
-  useHotKeys(Hotkey.OPEN_CMS_MODAL, preventDefault(onOpenCMS));
-  useHotKeys(Hotkey.ZOOM_IN, preventDefault(onZoomIn));
-  useHotKeys(Hotkey.ZOOM_OUT, preventDefault(onZoomOut));
-  useHotKeys(Hotkey.ROOT_NODE, preventDefault(onFocusHome));
+  useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
+  useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
+  useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
+  useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
 
   return (
     <Container>
       <ControlContainer>
-        <Tooltip distance={6} title="Home" position="top" systemHotkey="H">
+        <Tooltip distance={6} title="Home" position="top" hotkey="H">
           <IconButton icon="home" onClick={onFocusHome} />
         </Tooltip>
       </ControlContainer>
 
       <ControlContainer>
-        <Tooltip distance={6} title="Model" position="top" systemHotkey="M">
+        <Tooltip distance={6} title="Model" position="top" hotkey="M">
           <IconButton icon="code" onClick={onOpenCMS} />
         </Tooltip>
       </ControlContainer>
 
       <ControlContainer>
-        <Tooltip distance={6} title="Resources" position="top" systemHotkey="I">
+        <Tooltip distance={6} title="Resources" position="top" hotkey="I">
           <ResourcesDropdown />
         </Tooltip>
       </ControlContainer>
 
       <ControlContainer>
-        <Tooltip distance={6} title={`${isMac ? '⌘' : 'Ctrl'} + Scroll to Zoom`} position="top">
-          <ZoomContainer>
+        <ZoomContainer>
+          <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">
             <IconButton icon="zoomOut" size={14} onClick={onZoomOut} />
+          </Tooltip>
 
+          <Tooltip distance={6} title="Zoom In" position="top" hotkey="+">
             <IconButton icon="zoomIn" size={14} onClick={onZoomIn} />
-          </ZoomContainer>
-        </Tooltip>
+          </Tooltip>
+        </ZoomContainer>
       </ControlContainer>
     </Container>
   );

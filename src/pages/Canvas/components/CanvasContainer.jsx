@@ -11,7 +11,6 @@ import { connect, styled } from '@/hocs';
 import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EditPermissionContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { preventDefault } from '@/utils/dom';
 
 import { PanelType } from './CanvasMenu/constants';
 
@@ -23,9 +22,9 @@ const Wrapper = styled.div`
 
 // TODO: Remove when new BLOCK_REDESIGN feature flag removed
 const LegacyCanvasWrapper = ({ openMenu, children }) => {
-  useHotKeys(Hotkey.OPEN_BLOCK_MENU, () => openMenu(PanelType.BLOCK_PANEL), []);
-  useHotKeys(Hotkey.OPEN_FLOW_MENU, () => openMenu(PanelType.FLOW_PANEL), []);
-  useHotKeys(Hotkey.OPEN_VARIABLE_MENU, () => openMenu(PanelType.VARIABLE_PANEL), []);
+  useHotKeys(Hotkey.OPEN_BLOCK_MENU, () => openMenu(PanelType.BLOCK_PANEL));
+  useHotKeys(Hotkey.OPEN_FLOW_MENU, () => openMenu(PanelType.FLOW_PANEL));
+  useHotKeys(Hotkey.OPEN_VARIABLE_MENU, () => openMenu(PanelType.VARIABLE_PANEL));
 
   return children;
 };
@@ -46,16 +45,12 @@ function CanvasContainer({ openMenu, undoHistory, redoHistory, children }) {
     await engine.node.add(cuid(), BlockType.COMMENT, position);
   }, []);
 
-  useHotKeys(
-    Hotkey.COPY,
-    preventDefault(() => clipboard.copy()),
-    []
-  );
-  useHotKeys(Hotkey.DELETE, preventDefault(deleteActive), [deleteActive]);
-  useHotKeys(Hotkey.UNDO, preventDefault(undoHistory), []);
-  useHotKeys(Hotkey.REDO, preventDefault(redoHistory), []);
-  useHotKeys(Hotkey.COMMENT, addComment, []);
-  useHotKeys(Hotkey.SPOTLIGHT, preventDefault(showSpotlight), [showSpotlight]);
+  useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
+  useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
+  useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
+  useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
+  useHotKeys(Hotkey.COMMENT, addComment, { preventDefault: true });
+  useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
 
   return <Wrapper>{blockRedesign.isEnabled ? children : <LegacyCanvasWrapper openMenu={openMenu}>{children}</LegacyCanvasWrapper>}</Wrapper>;
 }

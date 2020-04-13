@@ -31,12 +31,12 @@ const ZoomContainer = styled(Flex)`
     box-shadow: none;
   }
 
-  & ${Container}:not(:last-of-type) {
+  & > div:not(:last-of-type) ${Container} {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  & ${Container}:not(:first-of-type) {
+  & > div:not(:first-of-type) ${Container} {
     margin-left: 1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

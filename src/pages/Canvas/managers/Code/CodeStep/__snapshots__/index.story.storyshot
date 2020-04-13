@@ -241,7 +241,7 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -746,7 +746,7 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1246,8 +1246,8 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
 
 .c18 {
   position: absolute;
-  right: -12px;
-  width: 11px;
+  right: -14px;
+  width: 13px;
   height: 4px;
 }
 
@@ -1266,7 +1266,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1495,7 +1495,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             >
               <path
                 className="c19"
-                d="M 0 4 L 11 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1535,7 +1535,7 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
             >
               <path
                 className="c19"
-                d="M 0 4 L 11 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1787,7 +1787,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2196,7 +2196,7 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2540,7 +2540,7 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;

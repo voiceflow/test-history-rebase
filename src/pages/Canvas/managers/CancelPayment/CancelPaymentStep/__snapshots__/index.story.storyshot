@@ -228,7 +228,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -720,7 +720,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;

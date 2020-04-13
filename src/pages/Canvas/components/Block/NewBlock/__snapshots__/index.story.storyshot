@@ -6,7 +6,7 @@ exports[`Storyshots Creator/New Block Active State 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -274,7 +274,7 @@ exports[`Storyshots Creator/New Block Block User Lock 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -744,7 +744,7 @@ exports[`Storyshots Creator/New Block Blue 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#D1ECF8,#c5e7f6);
   position: relative;
@@ -953,7 +953,7 @@ exports[`Storyshots Creator/New Block Disabled State 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1158,7 +1158,7 @@ exports[`Storyshots Creator/New Block Green 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EAF1EA,#e5eee5);
   position: relative;
@@ -1367,7 +1367,7 @@ exports[`Storyshots Creator/New Block Long Name 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1576,7 +1576,7 @@ exports[`Storyshots Creator/New Block Purple 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EDE5F1,#e8deee);
   position: relative;
@@ -1785,7 +1785,7 @@ exports[`Storyshots Creator/New Block Red 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#FFE0E7,#ffd8e2);
   position: relative;
@@ -1994,7 +1994,7 @@ exports[`Storyshots Creator/New Block Regular State 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2203,7 +2203,7 @@ exports[`Storyshots Creator/New Block Selected State 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2404,7 +2404,7 @@ exports[`Storyshots Creator/New Block Standard 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2613,7 +2613,7 @@ exports[`Storyshots Creator/New Block State Transitions 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2926,7 +2926,7 @@ exports[`Storyshots Creator/New Block Step User Lock 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -3406,7 +3406,7 @@ exports[`Storyshots Creator/New Block Sub Sections 1`] = `
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 8px 8px 8px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;

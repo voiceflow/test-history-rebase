@@ -248,6 +248,7 @@ export class Node extends React.PureComponent {
       if (node.type === BlockType.COMBINED) {
         nodeEl = (
           <NodeBlock
+            showReOrderIndicators={isMergeCandidate}
             ref={this.blockRef}
             isFocused={isFocused}
             isSelected={isSelected}

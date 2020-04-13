@@ -25,8 +25,8 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, succes
     <Section>
       {withPorts && (
         <>
-          <FailureItem label="Failure" portID={failurePortID} />
           <SuccessItem label="Success" portID={successPortID} />
+          <FailureItem label="Failure" portID={failurePortID} />
         </>
       )}
     </Section>

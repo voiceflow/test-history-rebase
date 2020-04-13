@@ -637,12 +637,12 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   box-shadow: none;
 }
 
-.c48 .c10:not(:last-of-type) {
+.c48 > div:not(:last-of-type) .c10 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c48 .c10:not(:first-of-type) {
+.c48 > div:not(:first-of-type) .c10 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;

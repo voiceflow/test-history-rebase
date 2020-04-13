@@ -56,6 +56,8 @@ function SlotEdit({
   const [customLines, setCustomLines] = React.useState(inputs);
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
 
+  const nameRef = React.useRef(null);
+
   const onCustomLineChange = React.useCallback((index, data) => setCustomLines(replace(customLines, index, { ...customLines[index], ...data })), [
     customLines,
   ]);
@@ -114,6 +116,12 @@ function SlotEdit({
     setSlotName(name);
   }, [name]);
 
+  React.useEffect(() => {
+    if (!name) {
+      nameRef.current?.focus();
+    }
+  }, []);
+
   useDidUpdateEffect(() => {
     if (isInteraction) {
       updateSlot();
@@ -138,6 +146,7 @@ function SlotEdit({
             onBlur={isInteraction && updateSlot}
             onChange={(e) => setSlotName(formatIntentName(e.target.value))}
             placeholder="Enter Slot Name"
+            ref={nameRef}
           />
 
           {isInteraction && <RemoveDropdown onRemove={() => onRemove(id)} />}

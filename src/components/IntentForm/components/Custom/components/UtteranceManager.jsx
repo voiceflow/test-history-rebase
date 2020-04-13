@@ -1,6 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
+import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
 import ListManager from '@/components/ListManager';
 import { SectionToggleVariant } from '@/components/Section';
@@ -14,7 +15,6 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import ErrorMessage from '@/pages/Canvas/components/ErrorMessage';
 
-import AddUtteranceRightAction from '../../AddUtteranceRightAction';
 import ListManagerWrapper from '../../ListManagerWrapper';
 import { validateUtterance } from '../utils';
 import UtterancesTooltip from './UtterancesTooltip';
@@ -109,7 +109,9 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
                     iconProps={{ variant: 'blue' }}
                     rightAction={
                       !isEmpty && (
-                        <AddUtteranceRightAction onClick={() => onAdd(utteranceRef.current.getCurrentUtterance())}>Enter</AddUtteranceRightAction>
+                        <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentUtterance())}>
+                          Enter
+                        </Badge>
                       )
                     }
                     placeholder={placeholder}

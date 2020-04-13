@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
-.c16 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c19 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -176,36 +176,6 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c20 {
   position: relative;
   height: 54px;
@@ -228,6 +198,36 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 5px;
@@ -241,11 +241,11 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -305,7 +305,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -451,38 +451,6 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
                 color="#279745"
                 size={16}
               >
@@ -501,8 +469,40 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
               </div>
             </span>
             <div
-              className="c20"
+              className="c18"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c20"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -515,27 +515,27 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
-.c16 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c21 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c21 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -690,35 +690,6 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 9px;
-  width: 9px;
-  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
-}
-
 .c22 {
   position: relative;
   height: 54px;
@@ -741,6 +712,35 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  background: linear-gradient(to bottom,#d94c4c1f,#d94c4c3d 100%);
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 9px;
@@ -750,8 +750,8 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 
 .c19 {
   position: absolute;
-  right: -16px;
-  width: 15px;
+  right: -14px;
+  width: 13px;
   height: 4px;
 }
 
@@ -770,11 +770,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -834,7 +834,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -980,46 +980,6 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c19"
-            >
-              <path
-                className="c20"
-                d="M 0 4 L 15 4"
-              />
-            </svg>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c21"
                 color="#279745"
                 size={16}
               >
@@ -1038,7 +998,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
               </div>
             </span>
             <div
-              className="c22"
+              className="c18"
               color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
@@ -1048,7 +1008,47 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
             >
               <path
                 className="c20"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
+              />
+            </svg>
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c21"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c22"
+              color="#d94c4c"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+            <svg
+              className="c19"
+            >
+              <path
+                className="c20"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1060,27 +1060,27 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
-.c15 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c15 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c18 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c18 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1235,36 +1235,6 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
-.c17 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c17::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c19 {
   position: relative;
   height: 54px;
@@ -1287,6 +1257,36 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 5px;
@@ -1296,11 +1296,11 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1360,7 +1360,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -1501,38 +1501,6 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
             >
               <span
                 className="c11 c15"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c16"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c17"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c18"
                 color="#279745"
                 size={16}
               >
@@ -1551,8 +1519,40 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
               </div>
             </span>
             <div
-              className="c19"
+              className="c17"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c18"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c16"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c19"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -1565,27 +1565,27 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
-.c16 {
+.c19 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c16 > svg {
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c16 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c19 > svg {
+.c16 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1740,36 +1740,6 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   text-overflow: ellipsis;
 }
 
-.c18 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c18::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c20 {
   position: relative;
   height: 54px;
@@ -1792,6 +1762,36 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c18 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c18::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 5px;
@@ -1805,11 +1805,11 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1869,7 +1869,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -2015,38 +2015,6 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
             >
               <span
                 className="c11 c16"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
-            >
-              <div
-                className="c14"
-              >
-                No Access
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
                 color="#279745"
                 size={16}
               >
@@ -2065,8 +2033,40 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
               </div>
             </span>
             <div
-              className="c20"
+              className="c18"
               color="#279745"
+              onClick={[Function]}
+              onMouseDown={[Function]}
+            />
+          </div>
+          <div
+            className="c8 c9"
+          >
+            <div
+              className="c10"
+            >
+              <span
+                className="c11 c19"
+                color="#d94c4c"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgError"
+                />
+              </span>
+            </div>
+            <span
+              className="c17"
+            >
+              <div
+                className="c14"
+              >
+                No Access
+              </div>
+            </span>
+            <div
+              className="c20"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -2223,11 +2223,11 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2287,7 +2287,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 

@@ -71,43 +71,39 @@ export const BLOCK_REDESIGN_SHORTCUTS = [
   },
   {
     title: 'Open Blocks Menu',
-    message: (
-      <>
-        <kbd>{hotKey}</kbd> + <kbd>&#60;</kbd>
-      </>
-    ),
+    message: <kbd>{'<'}</kbd>,
   },
   {
     title: 'Open Flows Menu',
-    message: (
-      <>
-        <kbd>{hotKey}</kbd> + <kbd>&#62;</kbd>
-      </>
-    ),
+    message: <kbd>{'>'}</kbd>,
+  },
+  {
+    title: 'Toggle Left Menu',
+    message: <kbd>?</kbd>,
   },
   {
     title: 'Go to Home',
-    message: (
-      <>
-        <kbd>{hotKey}</kbd> + <kbd>H</kbd>
-      </>
-    ),
+    message: <kbd>H</kbd>,
   },
   {
     title: 'Zoom In',
-    message: (
-      <>
-        <kbd>{hotKey}</kbd> + <kbd>+</kbd>
-      </>
-    ),
+    message: <kbd>+</kbd>,
   },
   {
     title: 'Zoom Out',
-    message: (
-      <>
-        <kbd>{hotKey}</kbd> + <kbd>-</kbd>
-      </>
-    ),
+    message: <kbd>-</kbd>,
+  },
+  {
+    title: 'Design',
+    message: <kbd>D</kbd>,
+  },
+  {
+    title: 'Prototype',
+    message: <kbd>P</kbd>,
+  },
+  {
+    title: 'Build',
+    message: <kbd>B</kbd>,
   },
 ];
 

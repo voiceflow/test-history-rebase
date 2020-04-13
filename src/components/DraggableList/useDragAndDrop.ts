@@ -3,7 +3,8 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { HOVER_THROTTLE_TIMEOUT } from './constants';
+import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
+
 import { Handlers, InternalItem } from './types';
 
 const useDragAndDrop = <I extends { id: string }>(

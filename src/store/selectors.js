@@ -1,7 +1,7 @@
 import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
-import { GLOBAL_VARIABLES } from '@/constants';
+import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -32,7 +32,7 @@ export const allVariablesSelector = createSelector(
   Skill.globalVariablesSelector,
   activeDiagramVariablesSelector,
   Slot.slotNamesSelector,
-  (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...GLOBAL_VARIABLES, ...globalVariables, ...activeDiagramVariables])
+  (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
 export const activeSlotTypes = createSelector(Skill.activeSkillSelector, ({ locales, platform, publishInfo }) =>

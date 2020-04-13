@@ -3,7 +3,7 @@ import React from 'react';
 import AceEditor from '@/components/AceEditor';
 import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import ClickableText from '@/components/Text/ClickableText';
+import Anchor from '@/components/Text/Anchor';
 import { toast } from '@/components/Toast';
 import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';
@@ -69,7 +69,7 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
         customContentStyling={{ paddingBottom: '20px' }}
       >
         <JsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
-        <ClickableText link={APL_TOOL_LINK}>Authoring Tool</ClickableText>
+        <Anchor link={APL_TOOL_LINK}>Authoring Tool</Anchor>
       </EditorSection>
       {jsonFileName && (
         <>

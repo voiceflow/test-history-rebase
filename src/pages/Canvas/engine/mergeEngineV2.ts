@@ -25,6 +25,12 @@ class MergeEngineV2 extends EngineConsumer {
 
   targetNodeID: string | null = null;
 
+  newTargetNodeID: string | null = null;
+
+  newSourceNodeType: string | null = null;
+
+  newSourceNodeIndex: number | null = null;
+
   // eslint-disable-next-line lodash/prefer-constant
   isWithinTarget: ((point: [number, number]) => boolean) | null = null;
 
@@ -150,12 +156,39 @@ class MergeEngineV2 extends EngineConsumer {
     }
   }
 
+  setNewSourceTypeAndTargetID(targetNodeID: string, sourceNodeType: string) {
+    this.newTargetNodeID = targetNodeID;
+    this.newSourceNodeType = sourceNodeType;
+    this.engine.node.api(targetNodeID)?.setMergeTarget();
+  }
+
+  clearNewSourceTypeAndTargetID() {
+    const newTargetNodeID = this.newTargetNodeID;
+
+    if (newTargetNodeID) {
+      this.newTargetNodeID = null;
+      this.newSourceNodeType = null;
+      this.newSourceNodeIndex = null;
+      this.engine.node.api(newTargetNodeID)?.clearMergeTarget();
+      this.engine.node.api(newTargetNodeID)?.setNewSourceNodeIndex(null);
+    }
+  }
+
+  setNewSourceNodeIndex(index: number | null) {
+    this.newSourceNodeIndex = index;
+    this.engine.node.api(this.newTargetNodeID)?.setNewSourceNodeIndex(index);
+  }
+
   reset() {
     this.mergeLayer?.reset();
     this.clearActiveCandidates();
     this.clearActiveTarget();
+    this.clearNewSourceTypeAndTargetID();
 
     this.sourceNodeID = null;
+    this.newTargetNodeID = null;
+    this.newSourceNodeType = null;
+    this.newSourceNodeIndex = null;
     this.candidates = [];
   }
 }

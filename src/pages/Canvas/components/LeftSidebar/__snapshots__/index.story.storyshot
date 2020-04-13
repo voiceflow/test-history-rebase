@@ -629,12 +629,12 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   box-shadow: none;
 }
 
-.c47 .c43:not(:last-of-type) {
+.c47 > div:not(:last-of-type) .c43 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c47 .c43:not(:first-of-type) {
+.c47 > div:not(:first-of-type) .c43 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -1690,6 +1690,33 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c42"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c43 c44"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c45"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -1733,16 +1760,15 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
       className="c42"
     >
       <div
-        className=""
-        style={
-          Object {
-            "display": "inline",
-          }
-        }
-        title="Ctrl + Scroll to Zoom"
+        className="c47"
       >
         <div
-          className="c47"
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
         >
           <button
             className="c43 c44"
@@ -1758,6 +1784,15 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
               />
             </span>
           </button>
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
           <button
             className="c43 c44"
             onClick={[Function]}
@@ -2485,12 +2520,12 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   box-shadow: none;
 }
 
-.c47 .c43:not(:last-of-type) {
+.c47 > div:not(:last-of-type) .c43 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c47 .c43:not(:first-of-type) {
+.c47 > div:not(:first-of-type) .c43 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -3546,6 +3581,33 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c42"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c43 c44"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c45"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -3589,16 +3651,15 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
       className="c42"
     >
       <div
-        className=""
-        style={
-          Object {
-            "display": "inline",
-          }
-        }
-        title="Ctrl + Scroll to Zoom"
+        className="c47"
       >
         <div
-          className="c47"
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
         >
           <button
             className="c43 c44"
@@ -3614,6 +3675,15 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
               />
             </span>
           </button>
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
           <button
             className="c43 c44"
             onClick={[Function]}
@@ -4206,12 +4276,12 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   box-shadow: none;
 }
 
-.c30 .c26:not(:last-of-type) {
+.c30 > div:not(:last-of-type) .c26 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c30 .c26:not(:first-of-type) {
+.c30 > div:not(:first-of-type) .c26 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -4304,7 +4374,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 .c15 {
   position: relative;
   width: 100%;
-  padding: 13px 0;
   overflow-x: hidden;
 }
 
@@ -4832,6 +4901,33 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c25"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c26 c27"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c28"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -4875,16 +4971,15 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
       className="c25"
     >
       <div
-        className=""
-        style={
-          Object {
-            "display": "inline",
-          }
-        }
-        title="Ctrl + Scroll to Zoom"
+        className="c30"
       >
         <div
-          className="c30"
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
         >
           <button
             className="c26 c27"
@@ -4900,6 +4995,15 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
               />
             </span>
           </button>
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
           <button
             className="c26 c27"
             onClick={[Function]}
@@ -5718,12 +5822,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   box-shadow: none;
 }
 
-.c54 .c50:not(:last-of-type) {
+.c54 > div:not(:last-of-type) .c50 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c54 .c50:not(:first-of-type) {
+.c54 > div:not(:first-of-type) .c50 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -7119,6 +7223,33 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c49"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c50 c51"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c52"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -7162,16 +7293,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
       className="c49"
     >
       <div
-        className=""
-        style={
-          Object {
-            "display": "inline",
-          }
-        }
-        title="Ctrl + Scroll to Zoom"
+        className="c54"
       >
         <div
-          className="c54"
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
         >
           <button
             className="c50 c51"
@@ -7187,6 +7317,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
               />
             </span>
           </button>
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
           <button
             className="c50 c51"
             onClick={[Function]}
@@ -7940,12 +8079,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   box-shadow: none;
 }
 
-.c49 .c45:not(:last-of-type) {
+.c49 > div:not(:last-of-type) .c45 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c49 .c45:not(:first-of-type) {
+.c49 > div:not(:first-of-type) .c45 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -9124,6 +9263,33 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             size={16}
           >
             <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c44"
+    >
+      <div
+        className=""
+        style={
+          Object {
+            "display": "inline",
+          }
+        }
+      >
+        <button
+          className="c45 c46"
+          onClick={[Function]}
+        >
+          <span
+            className="c9 c47"
+            color="currentColor"
+            size={16}
+          >
+            <svg
               data-file-name="SvgCode"
             />
           </span>
@@ -9167,16 +9333,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
       className="c44"
     >
       <div
-        className=""
-        style={
-          Object {
-            "display": "inline",
-          }
-        }
-        title="Ctrl + Scroll to Zoom"
+        className="c49"
       >
         <div
-          className="c49"
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
         >
           <button
             className="c45 c46"
@@ -9192,6 +9357,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
               />
             </span>
           </button>
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
           <button
             className="c45 c46"
             onClick={[Function]}

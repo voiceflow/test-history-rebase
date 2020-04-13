@@ -14,14 +14,14 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -137,7 +137,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -163,36 +163,6 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c18 {
   position: relative;
   height: 54px;
@@ -215,6 +185,36 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 5px;
@@ -224,11 +224,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -288,7 +288,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -428,27 +428,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c12"
-                color="#d94c4c"
+                className="c11 c15"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgError"
+                  data-file-name="SvgCheckmark"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Declined
+                Successfully Cancelled
               </div>
             </span>
             <div
-              className="c16"
-              color="#d94c4c"
+              className="c17"
+              color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -460,27 +460,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
-                color="#279745"
+                className="c11 c12"
+                color="#d94c4c"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgCheckmark"
+                  data-file-name="SvgError"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Successfully Cancelled
+                Declined
               </div>
             </span>
             <div
               className="c18"
-              color="#279745"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -506,14 +506,14 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   height: inherit;
 }
 
-.c17 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c17 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -629,7 +629,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c15 {
+.c16 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -655,36 +655,6 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   text-overflow: ellipsis;
 }
 
-.c16 {
-  position: relative;
-  height: 54px;
-  width: 42px;
-  margin: -16px -16px -16px 0;
-  padding-left: 12px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  cursor: copy;
-}
-
-.c16::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 50%;
-  left: 19px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  box-sizing: content-box;
-  box-shadow: 0 0 0 1px #d94c4c;
-  border-radius: 50%;
-  height: 5px;
-  width: 5px;
-  background-color: #d94c4c;
-  border: 4px solid white;
-}
-
 .c18 {
   position: relative;
   height: 54px;
@@ -707,6 +677,36 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   box-sizing: content-box;
+  box-shadow: 0 0 0 1px #d94c4c;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  background-color: #d94c4c;
+  border: 4px solid white;
+}
+
+.c17 {
+  position: relative;
+  height: 54px;
+  width: 42px;
+  margin: -16px -16px -16px 0;
+  padding-left: 12px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  cursor: copy;
+}
+
+.c17::before {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 50%;
+  left: 19px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
   box-shadow: 0 0 0 1px #279745;
   border-radius: 50%;
   height: 5px;
@@ -716,11 +716,11 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -780,7 +780,7 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -920,27 +920,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c12"
-                color="#d94c4c"
+                className="c11 c15"
+                color="#279745"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgError"
+                  data-file-name="SvgCheckmark"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Declined
+                Successfully Cancelled
               </div>
             </span>
             <div
-              className="c16"
-              color="#d94c4c"
+              className="c17"
+              color="#279745"
               onClick={[Function]}
               onMouseDown={[Function]}
             />
@@ -952,27 +952,27 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
               className="c10"
             >
               <span
-                className="c11 c17"
-                color="#279745"
+                className="c11 c12"
+                color="#d94c4c"
                 size={16}
               >
                 <svg
-                  data-file-name="SvgCheckmark"
+                  data-file-name="SvgError"
                 />
               </span>
             </div>
             <span
-              className="c15"
+              className="c16"
             >
               <div
                 className="c14"
               >
-                Successfully Cancelled
+                Declined
               </div>
             </span>
             <div
               className="c18"
-              color="#279745"
+              color="#d94c4c"
               onClick={[Function]}
               onMouseDown={[Function]}
             />

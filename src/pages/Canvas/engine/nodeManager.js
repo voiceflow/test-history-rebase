@@ -1,5 +1,6 @@
 import cuid from 'cuid';
 import { partition as _partition } from 'lodash';
+import { batch } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -267,6 +268,27 @@ class NodeManager extends EngineConsumer {
     this.internal.addNested(parentNodeID, nodeID, node, data, mergedNodeID);
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
+  }
+
+  async addNestedV2({ parentNodeID, index, nodeID, type, factoryData, position }) {
+    const { node, data } = nodeFactory(type, factoryData);
+    const [x, y] = position;
+    const augmentedNode = { ...node, x, y };
+
+    const childID = cuid();
+    const combinedPortID = cuid();
+
+    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, childID, nodeID, combinedPortID));
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
+
+    batch(() => {
+      this.internal.add(augmentedNode, data, childID, nodeID, combinedPortID);
+      this.internal.insertNested(parentNodeID, index, nodeID);
+    });
+
+    this.engine.saveHistory();
+
+    this.engine.focus.set(childID);
   }
 
   async insertNested(parentNodeID, index, nodeID) {

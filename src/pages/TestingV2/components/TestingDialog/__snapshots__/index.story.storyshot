@@ -938,7 +938,10 @@ exports[`Storyshots Testing/Dialog Loading 1`] = `
 }
 
 .c14 {
-  display: inline-block;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   width: 1em;
   height: 1em;
   border-radius: 50%;

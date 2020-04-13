@@ -14,7 +14,7 @@ const streamBlockAdapter = createBlockAdapter(
     loop,
   }),
   ({ audio, title, description, iconImage, backgroundImage, customPause, loop }) => ({
-    audio: transformVariablesToReadable(audio),
+    audio: audio ? transformVariablesToReadable(audio) : '',
     title: textEditorContentAdapter.toDB(title),
     description: textEditorContentAdapter.toDB(description),
     icon_img: iconImage,

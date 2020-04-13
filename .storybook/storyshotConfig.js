@@ -4,4 +4,4 @@ import { configureStorybook } from './utils';
 
 configureStorybook();
 
-configure(require.context('../src', true, /\.story\.[tj]sx$/), module);
+configure(require.context('../src', true, /\.story\.[jt]sx$/), module);

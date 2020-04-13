@@ -1,3 +1,5 @@
+import cuid from 'cuid';
+
 import { BlockType } from '@/constants';
 import { activeSkillIDSelector } from '@/ducks/skill';
 
@@ -12,6 +14,31 @@ class DiagramEngine extends EngineConsumer {
 
     return {
       nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data.name} copy` } : data }],
+      ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
+      links: [],
+    };
+  }
+
+  getParentEntities(nodeID, rename = true, nodeOverrides = {}) {
+    const node = this.engine.getNodeByID(nodeID);
+    const data = this.engine.getDataByNodeID(nodeID);
+    const newNodeID = cuid();
+
+    return {
+      nodesWithData: [
+        {
+          node: {
+            ...node,
+            ...nodeOverrides,
+            id: newNodeID,
+          },
+          data: {
+            ...data,
+            name: rename ? `${data.name} copy` : data.name,
+            nodeID: newNodeID,
+          },
+        },
+      ],
       ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
       links: [],
     };
@@ -42,19 +69,38 @@ class DiagramEngine extends EngineConsumer {
 
   async duplicateNode(nodeID) {
     const rootNode = this.engine.getNodeByID(nodeID);
+    let entities = null;
+    let childEntities = null;
+    let newPosition = [];
 
-    let nodeOverrides = null;
     if (rootNode.parentNode) {
-      const parentNode = this.engine.getNodeByID(nodeID);
+      // to handle the case of duplicating Step in block redesign
+      if (this.engine.isBlockRedesignEnabled()) {
+        const parentNode = this.engine.getNodeByID(rootNode.parentNode);
+        const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [nodeID] };
 
-      nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y };
+        entities = this.getParentEntities(rootNode.parentNode, true, nodeOverrides);
+        childEntities = this.getEntities(nodeID, false);
+
+        newPosition = [parentNode.x + DUPLICATE_OFFSET, parentNode.y + DUPLICATE_OFFSET];
+      } else {
+        // to handle the case of duplicating nested block in older version
+        const parentNode = this.engine.getNodeByID(nodeID);
+        const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y };
+
+        entities = this.getEntities(nodeID, true, nodeOverrides);
+        childEntities = this.getChildEntities(nodeID);
+        newPosition = [rootNode.x + DUPLICATE_OFFSET, rootNode.y + DUPLICATE_OFFSET];
+      }
+    } else {
+      // to handle all the other cases
+      entities = this.getEntities(nodeID, true, null);
+      childEntities = this.getChildEntities(nodeID);
+      newPosition = [rootNode.x + DUPLICATE_OFFSET, rootNode.y + DUPLICATE_OFFSET];
     }
 
-    const entities = this.getEntities(nodeID, true, nodeOverrides);
-    const childEntities = this.getChildEntities(nodeID);
-
     const mergedEntities = mergeEntityMaps(entities, childEntities);
-    const clonedEntities = await this.cloneEntities(mergedEntities, [rootNode.x + DUPLICATE_OFFSET, rootNode.y + DUPLICATE_OFFSET]);
+    const clonedEntities = await this.cloneEntities(mergedEntities, newPosition);
 
     return clonedEntities.nodesWithData[0]?.node?.id;
   }

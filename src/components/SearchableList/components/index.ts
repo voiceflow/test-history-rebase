@@ -1,4 +1,5 @@
 export { default as Container } from './Container';
+export { default as AddButton } from './AddButton';
 export { default as SearchInput } from './SearchInput';
 export { default as ItemContainer } from './ItemContainer';
 export { default as ScrollContainer } from './ScrollContainer';

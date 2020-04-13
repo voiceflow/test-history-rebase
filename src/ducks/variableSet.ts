@@ -111,7 +111,11 @@ export const saveVariableSet = (diagramID: string): VariableSetThunk => async (_
   }
 };
 
-export const addVariableToDiagramAndSave = (diagramID: string, name: string): VariableSetThunk => (dispatch) => {
+export const addVariableToDiagramAndSave = (diagramID: string, name: string): VariableSetThunk => (dispatch, getState) => {
+  const currentVariables = variablesByDiagramIDSelector(getState())(diagramID);
+  if (currentVariables.includes(name)) {
+    throw new Error('flow variable already exists');
+  }
   dispatch(addVariableToDiagram(diagramID, name));
   // eslint-disable-next-line no-use-before-define
   dispatch(saveVariableSet(diagramID));

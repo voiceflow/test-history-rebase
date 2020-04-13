@@ -150,11 +150,11 @@ exports[`Storyshots Creator/Step Active 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -214,7 +214,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -491,11 +491,11 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -555,7 +555,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -832,11 +832,11 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -896,7 +896,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -1177,8 +1177,8 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 
 .c14 {
   position: absolute;
-  right: -16px;
-  width: 15px;
+  right: -14px;
+  width: 13px;
   height: 4px;
 }
 
@@ -1193,11 +1193,11 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1257,7 +1257,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -1385,7 +1385,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
             >
               <path
                 className="c15"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1638,8 +1638,8 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 
 .c14 {
   position: absolute;
-  right: -16px;
-  width: 15px;
+  right: -14px;
+  width: 13px;
   height: 4px;
 }
 
@@ -1654,11 +1654,11 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -1718,7 +1718,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -1846,7 +1846,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             >
               <path
                 className="c15"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1890,7 +1890,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             >
               <path
                 className="c15"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -1930,7 +1930,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
             >
               <path
                 className="c15"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -2135,11 +2135,11 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2199,7 +2199,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -2537,11 +2537,11 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2601,7 +2601,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -2907,11 +2907,11 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -2971,7 +2971,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -3255,11 +3255,11 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -3319,7 +3319,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -3566,11 +3566,11 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -3630,7 +3630,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -3927,8 +3927,8 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 
 .c16 {
   position: absolute;
-  right: -16px;
-  width: 15px;
+  right: -14px;
+  width: 13px;
   height: 4px;
 }
 
@@ -3943,11 +3943,11 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -4007,7 +4007,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -4145,7 +4145,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             >
               <path
                 className="c17"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -4178,7 +4178,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             >
               <path
                 className="c17"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -4207,7 +4207,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             >
               <path
                 className="c17"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -4240,7 +4240,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
             >
               <path
                 className="c17"
-                d="M 0 4 L 15 4"
+                d="M 0 4 L 13 4"
               />
             </svg>
           </div>
@@ -4397,11 +4397,11 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -4461,7 +4461,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -4836,11 +4836,11 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -4900,7 +4900,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -5249,11 +5249,11 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -5313,7 +5313,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -5560,11 +5560,11 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -5624,7 +5624,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 

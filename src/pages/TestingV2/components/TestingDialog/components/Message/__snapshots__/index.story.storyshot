@@ -216,7 +216,10 @@ exports[`Storyshots Testing/Message Loading 1`] = `
 }
 
 .c5 {
-  display: inline-block;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   width: 1em;
   height: 1em;
   border-radius: 50%;

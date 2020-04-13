@@ -33,8 +33,8 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
     <Section>
       {withPorts && (
         <>
-          <FailureItem label="No Access" portID={failurePortID} />
           <SuccessItem label="Success" portID={successPortID} />
+          <FailureItem label="No Access" portID={failurePortID} />
         </>
       )}
     </Section>

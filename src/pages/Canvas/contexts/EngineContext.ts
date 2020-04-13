@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CanvasAPI } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
+import { BlockType } from '@/constants';
 import { withContext } from '@/hocs';
 import { LockOwnerType, Node, NodeData } from '@/models';
 import { MergeLayerAPI, NodeAPI, PortAPI } from '@/pages/Canvas/types';
@@ -59,6 +60,13 @@ export type Engine = {
 
   mergeV2: {
     mergeLayer: MergeLayerAPI | null;
+    newTargetNodeID: string | null;
+    newSourceNodeType: BlockType | null;
+    newSourceNodeIndex: number | null;
+
+    setNewSourceNodeIndex: (index: number | null) => void;
+    setNewSourceTypeAndTargetID: (nodeID: string, type: BlockType) => void;
+    clearNewSourceTypeAndTargetID: () => void;
 
     registerMergeLayer: (api: MergeLayerAPI | null) => void;
     updateCandidates: () => void;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import AddMinusButton from '@/components/AddMinusButton';
+import { Add } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 function LineItemsSection({ header, dividers = false, onAdd, children }) {
-  const AddLineItemButton = <AddMinusButton onClick={onAdd} />;
+  const AddLineItemButton = <Add onClick={onAdd} />;
 
   return (
     <Section dividers={dividers} variant="subsection" header={header} status={AddLineItemButton}>

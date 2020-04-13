@@ -3,5 +3,6 @@ export type Slot = {
   id: string;
   name: string;
   type: string;
+  color: string;
   inputs?: string[];
 };

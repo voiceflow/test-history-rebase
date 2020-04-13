@@ -13,17 +13,17 @@ export type ManagerProps = {
   variable: string;
   isBuiltIn?: boolean;
   description?: string;
-  removeVariable: (id: string) => void;
+  removeVariable: () => void;
 };
 
 const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => {
   return (
-    <FadeLeftContainer>
+    <FadeLeftContainer style={{ marginTop: 10 }}>
       <Section status={<VariableTag>{`{${variable}}`}</VariableTag>} dividers={false} variant="tertiary" header="Variable Name">
         <FlexApart>
           <Input value={variable} disabled />
 
-          {!isBuiltIn && <RemoveDropdown onRemove={() => removeVariable(variable)} />}
+          {!isBuiltIn && <RemoveDropdown onRemove={removeVariable} />}
         </FlexApart>
       </Section>
 

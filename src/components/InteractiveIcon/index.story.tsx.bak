@@ -1,0 +1,17 @@
+import { boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
+import InteractiveIcon, { Add, Minus } from '.';
+
+const getProps = () => ({
+  disabled: boolean('Disabled', false),
+});
+
+export default {
+  title: 'Interactive Icon',
+  component: InteractiveIcon,
+};
+
+export const plus = () => <Add {...getProps()} />;
+
+export const minus = () => <Minus {...getProps()} />;

@@ -141,11 +141,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -205,7 +205,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Active 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 
@@ -482,11 +482,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
 }
 
 .c0 {
-  width: 360px;
+  width: 330px;
   border-radius: 8px;
   cursor: pointer;
   border: solid 2px #fff;
-  padding: 0 12px 12px 12px;
+  padding: 0 10px 10px 10px;
   background-color: #fff;
   background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
@@ -546,7 +546,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 54px;
+  height: 50px;
   text-overflow: ellipsis;
 }
 

@@ -6,6 +6,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 
+import { ICON, ICON_COLOR } from '../constants';
+
 const getAction = (action: string | undefined) => {
   switch (action) {
     case IntegrationActionType.CUSTOM_API.POST:
@@ -34,8 +36,8 @@ type IntegrationsStepMetaType = {
 
 const IntegrationsStepMeta: IntegrationsStepMetaType = {
   [IntegrationType.CUSTOM_API]: {
-    icon: 'variable',
-    iconColor: '#74a4bf',
+    icon: ICON[IntegrationType.CUSTOM_API],
+    iconColor: ICON_COLOR[IntegrationType.CUSTOM_API],
     placeholder: 'Custom API',
     getLabel: ({ selectedAction, url }) => {
       const label = (
@@ -47,8 +49,8 @@ const IntegrationsStepMeta: IntegrationsStepMetaType = {
     },
   },
   [IntegrationType.GOOGLE_SHEETS]: {
-    icon: 'googleSheets',
-    iconColor: '#279745',
+    icon: ICON[IntegrationType.GOOGLE_SHEETS],
+    iconColor: ICON_COLOR[IntegrationType.GOOGLE_SHEETS],
     placeholder: 'Connect a Google Sheet',
     getLabel: ({ selectedAction, sheet }) => {
       const label = (
@@ -60,8 +62,8 @@ const IntegrationsStepMeta: IntegrationsStepMetaType = {
     },
   },
   [IntegrationType.ZAPIER]: {
-    icon: 'zapier',
-    iconColor: '#e26d5a',
+    icon: ICON[IntegrationType.ZAPIER],
+    iconColor: ICON_COLOR[IntegrationType.ZAPIER],
     placeholder: 'Trigger a Zap',
     getLabel: ({ user }) => {
       const label = (
@@ -99,8 +101,8 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
       <Section>
         {withPorts && (
           <>
-            <FailureItem label="Failure" portID={failurePortID} />
             <SuccessItem label="Success" portID={successPortID} />
+            <FailureItem label="Failure" portID={failurePortID} />
           </>
         )}
       </Section>

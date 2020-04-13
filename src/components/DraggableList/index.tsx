@@ -2,10 +2,10 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
+import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { MapManaged, MenuOption } from '@/types';
 
 import { DeleteComponent, DnDItem, DragPreview, DropDelete, ListContainer } from './components';
-import { HOVER_THROTTLE_TIMEOUT } from './constants';
 import { Handlers, InternalItem } from './types';
 
 export { DeleteComponent };

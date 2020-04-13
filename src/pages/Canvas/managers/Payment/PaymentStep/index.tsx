@@ -29,6 +29,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
           <Section>
             {withPorts && (
               <>
+                <SuccessItem label="Purchased" portID={successPortID} />
                 <FailureItem
                   label={
                     <>
@@ -38,7 +39,6 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
                   labelVariant={StepLabelVariant.SECONDARY}
                   portID={failurePortID}
                 />
-                <SuccessItem label="Purchased" portID={successPortID} />
               </>
             )}
           </Section>

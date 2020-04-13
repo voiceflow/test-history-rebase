@@ -1,6 +1,9 @@
+import _throttle from 'lodash/throttle';
 import moize from 'moize';
 import React from 'react';
+import { useDrop } from 'react-dnd';
 
+import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
@@ -162,6 +165,30 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
     }
   }, [linkIDs]);
 
+  const [, connectBlockDrop] = useDrop({
+    accept: DragItem.BLOCK_MENU,
+    hover: _throttle(
+      (item, monitor) => {
+        if (!monitor.isOver({ shallow: true })) {
+          return;
+        }
+
+        if (engine.mergeV2.newSourceNodeIndex !== null) {
+          engine.mergeV2.setNewSourceNodeIndex(null);
+        }
+
+        if (engine.mergeV2.newTargetNodeID === nodeID) {
+          return;
+        }
+
+        engine.mergeV2.clearNewSourceTypeAndTargetID();
+        engine.mergeV2.setNewSourceTypeAndTargetID(nodeID, item.blockType);
+      },
+      HOVER_THROTTLE_TIMEOUT,
+      { trailing: false }
+    ),
+  });
+
   return (
     <>
       {inPortID && !hasLinkWarning && <NodePort portID={inPortID} getAnchorPoint={getAnchorPoint} />}
@@ -173,19 +200,25 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
           updateName={updateName}
           updateBlockColor={updateBlockColor}
           lockOwner={lockOwner}
-          ref={ref}
+          ref={(api) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            ref.current = api;
+
+            connectBlockDrop(ref.current?.api.ref.current!);
+          }}
           canEditTitle
           hasLinkWarning={hasLinkWarning}
           {...hoverHandlers}
         >
           {node.combinedNodes.map((stepNodeID, index) => (
             <NodeIDProvider value={stepNodeID} key={stepNodeID}>
-              {index === 0 && <SourceReorderIndicator index={0} onMouseUp={onInsert(0)} />}
+              {index === 0 && <SourceReorderIndicator index={0} onMouseUp={onInsert(0)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />}
               <NodeStep isDraggable={node.combinedNodes.length > 1} isLast={index === node.combinedNodes.length - 1} />
               {index === node.combinedNodes.length - 1 ? (
-                <TerminalReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} />
+                <TerminalReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />
               ) : (
-                <ReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} />
+                <ReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />
               )}
             </NodeIDProvider>
           ))}

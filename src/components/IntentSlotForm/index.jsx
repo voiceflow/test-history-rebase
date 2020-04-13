@@ -1,8 +1,8 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
+import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
-import AddUtteranceRightAction from '@/components/IntentForm/components/AddUtteranceRightAction';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
@@ -19,7 +19,7 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 
-function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, isCommand, updateIntentSlot, updateIntentSlotDialog }) {
+function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = platform === PlatformType.ALEXA;
   const utteranceRef = React.useRef();
   const {
@@ -57,13 +57,14 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, isComman
 
   const addValidation = React.useCallback(({ text }) => ({ valid: !!text }), []);
 
-  const Wrapper = isCommand ? React.Fragment : Content;
+  const Wrapper = standalone ? React.Fragment : Content;
 
   return (
     <NamespaceProvider value={['slot', slot.id]}>
       <Wrapper>
         <UncontrolledSection
           isCollapsed={!required}
+          isDividerNested={standalone}
           prefix={<SlotTag color={slot.color}>{slot.name}</SlotTag>}
           header={<SlotRequiredMessage required={required} />}
           onClick={() => updateIntentSlot(intent.id, slot.id, { required: !required })}
@@ -132,7 +133,9 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, isComman
                           iconProps={{ variant: 'blue' }}
                           rightAction={
                             !isResponseUtteranceEmpty && (
-                              <AddUtteranceRightAction onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>Enter</AddUtteranceRightAction>
+                              <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>
+                                Enter
+                              </Badge>
                             )
                           }
                           placeholder="What might the user say to the above question?"
@@ -209,4 +212,4 @@ const ConnectedIntentSlotForm = connect(mapStateToProps, mapDispatchToProps, mer
 
 export default ConnectedIntentSlotForm;
 
-export const StandaloneIntentSlotForm = withProps({ isCommand: true })(ConnectedIntentSlotForm);
+export const StandaloneIntentSlotForm = withProps({ standalone: true })(ConnectedIntentSlotForm);

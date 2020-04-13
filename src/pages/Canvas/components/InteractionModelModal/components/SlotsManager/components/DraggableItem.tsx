@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SearchableListItemContainer } from '@/components/SearchableList';
+import { SlotTag } from '@/components/VariableTag';
 
 import ItemCount from '../../ItemCount';
 import { Slot } from '../types';
@@ -31,8 +32,8 @@ const DraggableItem: React.FC<DraggableItemProps> = (
       isDraggingPreview={isDraggingPreview}
       isContextMenuOpen={isContextMenuOpen}
     >
-      <span>{item.name}</span>
-      <ItemCount>{item.type === 'Custom' ? item.inputs?.length ?? '' : 'Values Defined'}</ItemCount>
+      <SlotTag color={item.color}>{item.name}</SlotTag>
+      <ItemCount>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>
     </SearchableListItemContainer>
   );
 };

@@ -1,3 +1,4 @@
+import cuid from 'cuid';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
@@ -9,6 +10,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { reorder as reorderArray } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
+import { createNextName } from '@/utils/string';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -24,21 +26,29 @@ export type IntentsManagerProps = {
   reorderIntents: (ids: string[]) => void;
 };
 
-const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, removeIntent, reorderIntents }) => {
+const NEW_INTENT_NAME = 'intent';
+
+const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, addIntent, intentsIDs, removeIntent, reorderIntents }) => {
   const [selectedID, setSelectedID] = React.useState(intents[0]?.id);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
+  const managerRef = React.useRef<{ resetPath: () => void }>(null);
 
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
   const getItemLabel = React.useCallback((item: Intent) => item.name, []);
 
+  const updateSelected = React.useCallback((id: string) => {
+    setSelectedID(id);
+    managerRef.current?.resetPath();
+  }, []);
+
   const onDelete = React.useCallback(
     (index: string | number, { item }: { item: Intent }) => {
       removeIntent(item.id);
 
       if (selectedID === item.id) {
-        setSelectedID(intentsIDs[index === 0 ? 1 : 0]);
+        updateSelected(intentsIDs[index === 0 ? 1 : 0]);
       }
     },
     [removeIntent, intentsIDs, selectedID]
@@ -56,7 +66,7 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, re
   const onFilter = React.useCallback(
     (_, items: Intent[]) => {
       if (!items.some(({ id }) => id === selectedID)) {
-        setSelectedID(items[0]?.id);
+        updateSelected(items[0]?.id);
       }
     },
     [selectedID]
@@ -64,12 +74,14 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, re
 
   const onReorder = React.useCallback((from: number, to: number) => reorderIntents(reorderArray(intentsIDs, from, to)), [intentsIDs, reorderIntents]);
 
-  return !intents.length ? (
-    <EmptyContainer>
-      <SvgIcon icon="noIntents" size={64} />
-      <p>Your project doesn’t contain any Intents</p>
-    </EmptyContainer>
-  ) : (
+  const addNewIntent = React.useCallback(async () => {
+    const id = cuid.slug();
+    const intentNames = intents.map(({ name }) => name);
+    await addIntent(id, { id, name: createNextName(NEW_INTENT_NAME, intentNames) });
+    updateSelected(id);
+  }, [intents]);
+
+  return (
     <>
       <LeftColumn>
         <DraggableList
@@ -77,7 +89,7 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, re
           onDrop={stopDragging}
           onDelete={onDelete}
           onReorder={onReorder}
-          itemProps={{ withoutHover: isDragging, selectedID, onSelectIntent: setSelectedID }}
+          itemProps={{ withoutHover: isDragging, selectedID, onSelectIntent: updateSelected }}
           onEndDrag={stopDragging}
           getItemKey={getItemKey}
           onStartDrag={startDragging}
@@ -91,6 +103,8 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, re
             <SearchableList
               ref={scrollbarsRef}
               items={intents}
+              onAdd={addNewIntent}
+              addMessage="New Intent"
               onChange={onFilter}
               getLabel={getItemLabel}
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
@@ -102,7 +116,14 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, intentsIDs, re
       </LeftColumn>
 
       <RightColumn>
-        <Manager id={selectedID} removeIntent={onDeleteFromManager} />
+        {!intents.length ? (
+          <EmptyContainer>
+            <SvgIcon icon="noIntents" size={64} />
+            <p>Your project doesn’t contain any Intents</p>
+          </EmptyContainer>
+        ) : (
+          <Manager id={selectedID} removeIntent={onDeleteFromManager} ref={managerRef} />
+        )}
       </RightColumn>
     </>
   );

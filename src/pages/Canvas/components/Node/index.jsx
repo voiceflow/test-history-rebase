@@ -35,6 +35,7 @@ export class Node extends React.PureComponent {
     isBlockHighlighted: false,
     position: [null, null],
     positionChanged: false,
+    newSourceNodeIndex: null,
   };
 
   nodeRef = React.createRef();
@@ -90,6 +91,8 @@ export class Node extends React.PureComponent {
     setMergeCandidate: () => this.setState({ isMergeCandidate: true }),
 
     clearMergeCandidate: () => this.setState({ isMergeCandidate: false }),
+
+    setNewSourceNodeIndex: (index) => this.setState({ newSourceNodeIndex: index }),
 
     rename: () => this.blockRef.current.api.rename?.(),
 
@@ -223,7 +226,7 @@ export class Node extends React.PureComponent {
 
   render() {
     const { node, engine, isHighlighted, isBlockRedesignEnabled } = this.props;
-    const { isDragging, isBlockHighlighted, isMergeCandidate, isMergeTarget, position, positionChanged } = this.state;
+    const { newSourceNodeIndex, isDragging, isBlockHighlighted, isMergeCandidate, isMergeTarget, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
@@ -243,7 +246,15 @@ export class Node extends React.PureComponent {
       const isSelected = engine.selection.isTarget(node.id);
 
       if (node.type === BlockType.COMBINED) {
-        nodeEl = <NodeBlock isFocused={isFocused} isSelected={isSelected} isHighlighted={isBlockHighlighted} ref={this.blockRef} />;
+        nodeEl = (
+          <NodeBlock
+            ref={this.blockRef}
+            isFocused={isFocused}
+            isSelected={isSelected}
+            isHighlighted={isBlockHighlighted}
+            newSourceNodeIndex={newSourceNodeIndex}
+          />
+        );
       } else if (node.type === BlockType.START) {
         nodeEl = <NodeStartBlock isFocused={isFocused} isSelected={isSelected} ref={this.blockRef} />;
       }

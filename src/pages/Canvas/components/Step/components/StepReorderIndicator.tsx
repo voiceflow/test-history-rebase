@@ -6,12 +6,14 @@ import IndicatorContainer from './StepReorderIndicatorContainer';
 
 export type StepReorderIndicatorProps = {
   isActive: boolean;
+  isHovered?: boolean;
   onMouseUp?: (event: React.MouseEvent) => void;
+  captureZoneRef?: React.Ref<HTMLDivElement>;
 };
 
-const StepReorderIndicator: React.FC<StepReorderIndicatorProps> = ({ isActive, onMouseUp }) => (
-  <IndicatorContainer className={REORDER_INDICATOR_CLASSNAME} isActive={isActive}>
-    {isActive && <CaptureZone onMouseUp={onMouseUp} />}
+const StepReorderIndicator: React.FC<StepReorderIndicatorProps> = ({ isActive, isHovered, onMouseUp, captureZoneRef }) => (
+  <IndicatorContainer className={REORDER_INDICATOR_CLASSNAME} isActive={isActive} isHovered={isHovered}>
+    {isActive && <CaptureZone ref={captureZoneRef} onMouseUp={onMouseUp} />}
   </IndicatorContainer>
 );
 

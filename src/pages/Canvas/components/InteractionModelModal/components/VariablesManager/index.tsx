@@ -1,10 +1,9 @@
-// import cuid from 'cuid';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { GLOBAL_VARIABLES } from '@/constants';
+import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
@@ -14,9 +13,10 @@ import { reorder as reorderArray } from '@/utils/array';
 
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
-import { DraggableItem, Manager } from './components';
-import { VARIABLE_DESCRIPTION } from './constants';
-import { VariableType } from './types';
+import { DraggableItem, Manager, VariableInput, VariableListContainer } from './components';
+import { VARIABLE_DESCRIPTION, VariableType } from './constants';
+import { Variable } from './types';
+import { addPrefix } from './utils';
 
 export type VariablesManagerProps = {
   localVariables: string[];
@@ -27,6 +27,9 @@ export type VariablesManagerProps = {
   replaceGlobalVariables: (variables: string[]) => void;
 };
 
+const createVariablesList = (type: VariableType, variables: string[]) =>
+  variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
+
 const VariablesManager: React.FC<VariablesManagerProps> = ({
   localVariables,
   globalVariables,
@@ -35,65 +38,66 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({
   replaceLocalVariables,
   replaceGlobalVariables,
 }) => {
-  const mergedVariables = React.useMemo(() => [...localVariables, ...globalVariables, ...GLOBAL_VARIABLES], [localVariables, globalVariables]);
+  const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
+    const list = [
+      ...createVariablesList(VariableType.LOCAL, localVariables),
+      ...createVariablesList(VariableType.GLOBAL, globalVariables),
+      ...createVariablesList(VariableType.BUILT_IN, BUILT_IN_VARIABLES),
+    ];
 
-  const [selectedVariable, setSelectedVariable] = React.useState(mergedVariables[0]);
+    const map = list.reduce<Record<string, Variable>>((acc, item) => Object.assign(acc, { [item.id]: item }), {});
+
+    return [list, map];
+  }, [localVariables, globalVariables]);
+
+  const [selectedVariableID, setSelectedVariableID] = React.useState<string | undefined>(mergedVariables[0].id);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
 
-  const selectedVariableType = React.useMemo(() => {
-    if (localVariables.includes(selectedVariable)) {
-      return VariableType.LOCAL;
-    }
-
-    if (globalVariables.includes(selectedVariable)) {
-      return VariableType.GLOBAL;
-    }
-
-    return VariableType.BUILT_IN;
-  }, [selectedVariable]);
+  const selectedVariable = selectedVariableID ? mergedVariablesMap[selectedVariableID] : null;
 
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
-  const getItemKey = React.useCallback((item: string) => item, []);
-  const getItemLabel = React.useCallback((item: string) => item, []);
+  const getItemKey = React.useCallback((item: Variable) => item.id, []);
+  const getItemLabel = React.useCallback((item: Variable) => item.name, []);
 
   const onDeleteGlobal = React.useCallback(
-    (index: string | number, { item }: { item: string }) => {
-      removeGlobalVariable(item);
+    (_, { item }: { item: Variable }) => {
+      removeGlobalVariable(item.name);
 
-      if (selectedVariable === item) {
-        setSelectedVariable(mergedVariables[index === 0 ? 1 : 0]);
+      if (selectedVariableID === item.id) {
+        const index = mergedVariables.findIndex(({ id }) => id === item.id);
+
+        setSelectedVariableID(mergedVariables[index === 0 ? 1 : 0].id);
       }
     },
-    [removeGlobalVariable, mergedVariables, selectedVariable]
+    [removeGlobalVariable, mergedVariables, selectedVariableID]
   );
 
   const onDeleteLocal = React.useCallback(
-    (index: string | number, { item }: { item: string }) => {
-      removeLocalVariable(item);
+    (_, { item }: { item: Variable }) => {
+      removeLocalVariable(item.name);
 
-      if (selectedVariable === item) {
-        setSelectedVariable(mergedVariables[index === 0 ? 1 : 0]);
+      if (selectedVariableID === item.id) {
+        const index = mergedVariables.findIndex(({ id }) => id === item.id);
+
+        setSelectedVariableID(mergedVariables[index === 0 ? 1 : 0].id);
       }
     },
-    [removeLocalVariable, mergedVariables, selectedVariable]
+    [removeLocalVariable, mergedVariables, selectedVariableID]
   );
 
-  const onDeleteFromManager = React.useCallback(
-    (variable: string) => {
-      if (selectedVariableType === VariableType.LOCAL) {
-        onDeleteLocal(localVariables.indexOf(variable), { item: variable });
-      } else if (selectedVariableType === VariableType.GLOBAL) {
-        onDeleteGlobal(globalVariables.indexOf(variable), { item: variable });
-      }
-    },
-    [onDeleteLocal, onDeleteGlobal, localVariables, globalVariables, selectedVariableType]
-  );
+  const deleteSelectedVariable = React.useCallback(() => {
+    if (selectedVariable?.type === VariableType.LOCAL) {
+      onDeleteLocal(0, { item: selectedVariable });
+    } else if (selectedVariable?.type === VariableType.GLOBAL) {
+      onDeleteGlobal(0, { item: selectedVariable });
+    }
+  }, [onDeleteLocal, onDeleteGlobal, localVariables, globalVariables, selectedVariable]);
 
   const onFilter = React.useCallback(
-    (_, items: string[]) => {
-      if (!items.some((variable) => variable === selectedVariable)) {
-        setSelectedVariable(items[0]);
+    (_, items: Variable[]) => {
+      if (!items.some((variable) => variable.id === selectedVariable?.id)) {
+        setSelectedVariableID(items[0]?.id);
       }
     },
     [selectedVariable]
@@ -112,67 +116,71 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({
   return (
     <>
       <LeftColumn>
-        <DraggableList
-          type="global-variables"
-          onDrop={stopDragging}
-          onDelete={onDeleteGlobal}
-          onReorder={onReorderGlobalVariables}
-          itemProps={{ addToIndex: localVariables.length, withoutHover: isDragging, selectedVariable, onSelectVariable: setSelectedVariable }}
-          onEndDrag={stopDragging}
-          getItemKey={getItemKey}
-          onStartDrag={startDragging}
-          itemComponent={DraggableItem}
-          deleteComponent={DeleteComponent}
-          previewComponent={DraggableItem}
-          unmountableDuringDrag
-          withContextMenuDelete
-        >
-          {({ renderItem: renderGlobalItem }) => (
-            <DraggableList
-              type="local-variables"
-              onDrop={stopDragging}
-              onDelete={onDeleteLocal}
-              onReorder={onReorderLocalVariables}
-              itemProps={{ withoutHover: isDragging, selectedVariable, onSelectVariable: setSelectedVariable, isLocal: true }}
-              onEndDrag={stopDragging}
-              getItemKey={getItemKey}
-              onStartDrag={startDragging}
-              itemComponent={DraggableItem}
-              deleteComponent={DeleteComponent}
-              previewComponent={DraggableItem}
-              unmountableDuringDrag
-              withContextMenuDelete
-            >
-              {({ renderItem: renderLocalVariable }) => (
-                <SearchableList
-                  ref={scrollbarsRef}
-                  items={mergedVariables}
-                  onChange={onFilter}
-                  getLabel={getItemLabel}
-                  renderItem={(item, index) =>
-                    // eslint-disable-next-line no-nested-ternary
-                    index < localVariables.length ? (
-                      renderLocalVariable({ key: item, itemKey: item, item, index })
-                    ) : index < mergedVariables.length - GLOBAL_VARIABLES.length ? (
-                      renderGlobalItem({ key: item, itemKey: item, item, index: index - localVariables.length })
-                    ) : (
-                      <DraggableItem key={item} item={item} isBuiltIn selectedVariable={selectedVariable} onSelectVariable={setSelectedVariable} />
-                    )
-                  }
-                  placeholder="Search Variables"
-                />
-              )}
-            </DraggableList>
-          )}
-        </DraggableList>
+        <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedVariableID(addPrefix(type, variable))} />
+
+        <VariableListContainer>
+          <DraggableList
+            type="global-variables"
+            onDrop={stopDragging}
+            onDelete={onDeleteGlobal}
+            onReorder={onReorderGlobalVariables}
+            itemProps={{ addToIndex: localVariables.length, withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedVariableID }}
+            onEndDrag={stopDragging}
+            getItemKey={getItemKey}
+            onStartDrag={startDragging}
+            itemComponent={DraggableItem}
+            deleteComponent={DeleteComponent}
+            previewComponent={DraggableItem}
+            unmountableDuringDrag
+            withContextMenuDelete
+          >
+            {({ renderItem: renderGlobalItem }) => (
+              <DraggableList
+                type="local-variables"
+                onDrop={stopDragging}
+                onDelete={onDeleteLocal}
+                onReorder={onReorderLocalVariables}
+                itemProps={{ withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedVariableID }}
+                onEndDrag={stopDragging}
+                getItemKey={getItemKey}
+                onStartDrag={startDragging}
+                itemComponent={DraggableItem}
+                deleteComponent={DeleteComponent}
+                previewComponent={DraggableItem}
+                unmountableDuringDrag
+                withContextMenuDelete
+              >
+                {({ renderItem: renderLocalVariable }) => (
+                  <SearchableList
+                    ref={scrollbarsRef}
+                    items={mergedVariables}
+                    onChange={onFilter}
+                    getLabel={getItemLabel}
+                    renderItem={(item: Variable, index) =>
+                      // eslint-disable-next-line no-nested-ternary
+                      index < localVariables.length ? (
+                        renderLocalVariable({ key: item.id, itemKey: item.id, item, index })
+                      ) : index < mergedVariables.length - BUILT_IN_VARIABLES.length ? (
+                        renderGlobalItem({ key: item.id, itemKey: item.id, item, index: index - localVariables.length })
+                      ) : (
+                        <DraggableItem key={item.id} item={item} selectedVariableID={selectedVariableID} onSelectVariableID={setSelectedVariableID} />
+                      )
+                    }
+                    placeholder="Search Variables"
+                  />
+                )}
+              </DraggableList>
+            )}
+          </DraggableList>
+        </VariableListContainer>
       </LeftColumn>
 
       <RightColumn withTopPadding>
         <Manager
-          variable={selectedVariable}
-          description={VARIABLE_DESCRIPTION[selectedVariable]}
-          isBuiltIn={selectedVariableType === VariableType.BUILT_IN}
-          removeVariable={onDeleteFromManager}
+          variable={selectedVariable?.name ?? ''}
+          description={selectedVariable ? VARIABLE_DESCRIPTION[selectedVariable.name] : ''}
+          isBuiltIn={selectedVariable?.type === VariableType.BUILT_IN}
+          removeVariable={deleteSelectedVariable}
         />
       </RightColumn>
     </>
@@ -192,16 +200,7 @@ const mapDispatchToProps = {
   replaceVariableSetDiagram: VariableSet.replaceVariableSetDiagram,
 };
 
-const mergeProps = (
-  { diagramID }: { diagramID: string },
-  {
-    removeVariableFromDiagram,
-    replaceVariableSetDiagram,
-  }: {
-    removeVariableFromDiagram: typeof VariableSet.removeVariableFromDiagram;
-    replaceVariableSetDiagram: typeof VariableSet.replaceVariableSetDiagram;
-  }
-) => ({
+const mergeProps = ({ diagramID }: { diagramID: string }, { removeVariableFromDiagram, replaceVariableSetDiagram }: typeof mapDispatchToProps) => ({
   removeLocalVariable: (variable: string) => removeVariableFromDiagram(diagramID, variable),
   replaceLocalVariables: (variables: string[]) => replaceVariableSetDiagram(diagramID, variables),
 });

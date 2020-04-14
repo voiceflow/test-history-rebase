@@ -112,9 +112,8 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
           const target = engine.drag.target!;
 
           event.preventDefault();
-          await engine.drag.reset();
 
-          await engine.node.insertNested(nodeID, index, target);
+          await Promise.all([engine.node.insertNested(nodeID, index, target), engine.drag.reset()]);
         }
       }),
     [nodeID]

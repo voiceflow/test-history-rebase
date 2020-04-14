@@ -60,7 +60,7 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
     );
   }
 
-  return <FlowStartBlock {...props} state={blockState} portID={portID} name={diagram.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
+  return <FlowStartBlock {...props} state={blockState} portID={portID} name={diagram?.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
 };
 
 const mapStateToProps = {

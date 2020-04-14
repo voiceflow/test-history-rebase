@@ -6,7 +6,7 @@ import { ManagerContext, NodeInjectedProps, withNode } from '@/pages/Canvas/cont
 import { useDnDHoverReorderIndicator, useMergeInfo } from '../hooks';
 import { ReorderIndicatorProps } from '../types';
 
-const TerminalReorderIndicator = ({ node, index, onMouseUp }: ReorderIndicatorProps & NodeInjectedProps) => {
+const TerminalReorderIndicator = ({ node, index, onMouseUp, variant }: ReorderIndicatorProps & NodeInjectedProps) => {
   const { mustNotBe, mustBeFirst } = useMergeInfo(index);
   const [connectBlockDrop, isHovered] = useDnDHoverReorderIndicator(index);
   const getManager = React.useContext(ManagerContext)!;
@@ -17,7 +17,9 @@ const TerminalReorderIndicator = ({ node, index, onMouseUp }: ReorderIndicatorPr
 
   const isActive = !(mustNotBe || mergeTerminator || mustBeFirst);
 
-  return <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} isHovered={isHovered} captureZoneRef={connectBlockDrop} />;
+  return (
+    <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} isHovered={isHovered} captureZoneRef={connectBlockDrop} variant={variant} />
+  );
 };
 
 export default withNode(React.memo(TerminalReorderIndicator));

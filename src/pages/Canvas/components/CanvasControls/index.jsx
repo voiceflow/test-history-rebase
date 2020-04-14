@@ -3,7 +3,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/components/IconButton';
-import { EventualEngineContext } from '@/contexts/EventualEngineContext';
+import { EventualEngineContext } from '@/contexts';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';

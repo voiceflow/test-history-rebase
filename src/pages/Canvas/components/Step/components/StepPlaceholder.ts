@@ -1,11 +1,16 @@
-import DragPlaceholder from '@/components/DragPlaceholder';
+import { BlockVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-const StepPlaceholder = styled(DragPlaceholder)`
-  height: ${({ theme }) => theme.components.blockStep.minHeight}px;
+export type StepPlaceholderProps = {
+  height: number;
+  variant: BlockVariant;
+};
+
+const StepPlaceholder = styled.div<StepPlaceholderProps>`
+  height: ${({ height }) => height + 2}px;
   border-radius: 5px;
-  box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
-  background-color: #fff;
+  background-color: ${({ theme, variant }) => theme.components.block.variants[variant].color};
+  opacity: 0.18;
 `;
 
 export default StepPlaceholder;

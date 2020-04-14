@@ -39,7 +39,7 @@ const NodeContainer = styled.div.attrs<NodeContainerProps>(({ position: [left, t
     z-index: 20;
   }
 
-  &.${MERGE_ACTIVE_NODE_CLASSNAME}:hover {
+  &.${MERGE_ACTIVE_NODE_CLASSNAME} {
     z-index: 10;
   }
 

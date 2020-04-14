@@ -3,15 +3,11 @@ import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createSimpleAdapter } from '../utils';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
+import { NODE_HEIGHT_DIFFERENCE, NODE_WIDTH_DIFFERENCE, VIRTUAL_NODE_ID_PREFIX, VIRTUAL_PORT_ID_PREFIX } from './constants';
 import linkAdapter from './link';
 import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
-
-const VIRTUAL_NODE_ID_PREFIX = 'virtualNode';
-const VIRTUAL_PORT_ID_PREFIX = 'virtualPort';
-const NODE_HEIGHT_DIFFERENCE = 1.6;
-const NODE_WIDTH_DIFFERENCE = 2;
 
 const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 
@@ -71,7 +67,7 @@ const creatorAdapter = createSimpleAdapter(
 
       if (isBlockRedesignEnabled) {
         const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
-        const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}--${node.id}`;
+        const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}${node.id}`;
 
         if (nodeType === BlockType.COMBINED) {
           _node = {
@@ -80,7 +76,7 @@ const creatorAdapter = createSimpleAdapter(
           };
         } else if (!ROOT_NODES.includes(nodeType)) {
           const { virtualExtras, ...extras } = node.extras || {};
-          const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}--${node.id}`;
+          const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}${node.id}`;
 
           _node = {
             x: node.x,

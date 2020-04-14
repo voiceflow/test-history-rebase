@@ -40,27 +40,14 @@ const CanvasDiagram = ({ viewport }) => {
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
     drop: async ({ clientOffset, blockType, factoryData }, monitor) => {
+      if (monitor.didDrop() && monitor.getDropResult().captured) return;
+
       const newNodeID = cuid();
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
 
       const position = engine.canvas.transformPoint([mouseX, mouseY]);
 
-      const { newSourceNodeIndex, newTargetNodeID } = engine.mergeV2;
-
-      if (!newTargetNodeID || newSourceNodeIndex === null) {
-        await engine.node.add(newNodeID, blockType, position, factoryData);
-      } else {
-        await engine.node.addNestedV2({
-          type: blockType,
-          index: newSourceNodeIndex,
-          nodeID: newNodeID,
-          position,
-          factoryData,
-          parentNodeID: newTargetNodeID,
-        });
-      }
-
-      engine.mergeV2.clearNewSourceTypeAndTargetID();
+      await engine.node.add(newNodeID, blockType, position, factoryData);
     },
     hover: _throttle(
       (item, monitor) => {
@@ -70,9 +57,7 @@ const CanvasDiagram = ({ viewport }) => {
           return;
         }
 
-        if (engine.mergeV2.newTargetNodeID) {
-          engine.mergeV2.clearNewSourceTypeAndTargetID();
-        }
+        engine.mergeV2.clearTarget();
       },
       HOVER_THROTTLE_TIMEOUT,
       { trailing: false }

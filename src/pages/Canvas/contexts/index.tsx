@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BlockType, PlatformType } from '@/constants';
-import { RegisterEngine } from '@/contexts/EventualEngineContext';
+import { RegisterEngine } from '@/contexts';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FEATURE_IDS } from '@/constants';
-import { usePermissions } from '@/contexts/RolePermissionsContext';
+import { usePermissions } from '@/contexts';
 import { withContext } from '@/hocs';
 
 type EditPermissionValue = {

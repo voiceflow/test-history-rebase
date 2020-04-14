@@ -41,9 +41,11 @@ const transplantNestedNode = (state, targetNode, index, recipientNodeID) => {
 
   return compose(
     removeAllLinksFromState(oldLinks),
-    patchNodeInState(surrogateNode.id, {
-      combinedNodes: surrogateCombinedIDs,
-    }),
+    surrogateCombinedIDs.length
+      ? patchNodeInState(surrogateNode.id, {
+          combinedNodes: surrogateCombinedIDs,
+        })
+      : removeBlockFromState(surrogateNode),
     patchNodeInState(recipientNode.id, {
       combinedNodes: recipientCombinedIDs,
     }),

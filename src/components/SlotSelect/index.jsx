@@ -24,15 +24,18 @@ const slotOptionRenderer = (option) => {
   );
 };
 
-const SlotSelect = ({ value, onChange, className, slotTypes, ...props }) => {
+const SlotSelect = ({ value, onChange, className, slotTypes, filter, ...props }) => {
   const selected = slotTypes.find((slotType) => slotType.value === value) || null;
+  const options = React.useMemo(() => {
+    return filter ? slotTypes.filter(filter) : slotTypes;
+  }, [slotTypes, filter]);
 
   return (
     <Select
       placeholder="Select Slot Type"
       value={selected ? selected.label : null}
       onSelect={onChange}
-      options={slotTypes}
+      options={options}
       getOptionValue={(option) => option.value}
       renderOptionLabel={slotOptionRenderer}
       searchable

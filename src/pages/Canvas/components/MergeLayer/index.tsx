@@ -9,7 +9,7 @@ const MergeLayer: React.FC = () => {
 
   useMergeLayerSubscription(api);
 
-  return <MergePreview isVisible={api.isVisible} ref={api.ref} />;
+  return <MergePreview isVisible={api.isVisible} isTransparent={api.isTransparent} ref={api.ref} />;
 };
 
 export default MergeLayer;

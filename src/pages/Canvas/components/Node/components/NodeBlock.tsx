@@ -24,9 +24,10 @@ export type NodeBlockProps = {
   isFocused: boolean;
   isSelected: boolean;
   isHighlighted: boolean;
+  canModify: boolean;
 };
 
-export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[]; showReOrderIndicators: boolean };
+export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[] };
 
 const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { isHovered: boolean; hasLinkWarning: boolean }) => {
   if (isHovered && hasLinkWarning) return BlockState.DISABLED;
@@ -40,10 +41,7 @@ const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { i
   return BlockState.REGULAR;
 };
 
-const NodeBlock = (
-  { nodeID, showReOrderIndicators, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps,
-  ref: React.RefObject<{ api: NewBlockAPI }>
-) => {
+const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: NewBlockAPI }>) => {
   const isTransitioning = React.useRef(false);
   const { data } = useNodeData();
 
@@ -56,7 +54,7 @@ const NodeBlock = (
     return buildVirtualDOMRect([x, y + 4 * engine.canvas.getZoom()]);
   }, []);
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
-  const hasNestedInPort = engine.getNodeByID(node.combinedNodes[0]).ports.in.length !== 0;
+  const hasNestedInPort = engine.getNodeByID(node.combinedNodes[0])?.ports.in.length !== 0;
   const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
       onStart: () => {
@@ -105,6 +103,7 @@ const NodeBlock = (
 
   const updateName = React.useCallback((name) => engine.node.updateData(nodeID, { name }), [engine, nodeID]);
   const updateBlockColor = React.useCallback((blockColor) => engine.node.updateData(nodeID, { blockColor }), [engine, nodeID]);
+  const variant = data.blockColor || BlockVariant.STANDARD;
 
   const onInsert = React.useMemo(
     () =>
@@ -113,9 +112,8 @@ const NodeBlock = (
           const target = engine.drag.target!;
 
           event.preventDefault();
-          await engine.drag.reset();
 
-          await engine.node.insertNested(nodeID, index, target);
+          await Promise.all([engine.node.insertNested(nodeID, index, target), engine.drag.reset()]);
         }
       }),
     [nodeID]
@@ -171,21 +169,13 @@ const NodeBlock = (
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
     hover: _throttle(
-      (item, monitor) => {
+      (_, monitor) => {
         if (!monitor.isOver({ shallow: true })) {
           return;
         }
 
-        if (engine.mergeV2.newSourceNodeIndex !== null) {
-          engine.mergeV2.setNewSourceNodeIndex(null);
-        }
-
-        if (engine.mergeV2.newTargetNodeID === nodeID) {
-          return;
-        }
-
-        engine.mergeV2.clearNewSourceTypeAndTargetID();
-        engine.mergeV2.setNewSourceTypeAndTargetID(nodeID, item.blockType);
+        engine.mergeV2.clearTargetStep();
+        engine.mergeV2.setTarget(nodeID);
       },
       HOVER_THROTTLE_TIMEOUT,
       { trailing: false }
@@ -199,7 +189,7 @@ const NodeBlock = (
         <Block
           name={data.name}
           state={getBlockState(props, { isHovered, hasLinkWarning })}
-          variant={data.blockColor || BlockVariant.STANDARD}
+          variant={variant}
           updateName={updateName}
           updateBlockColor={updateBlockColor}
           lockOwner={lockOwner}
@@ -216,29 +206,12 @@ const NodeBlock = (
         >
           {node.combinedNodes.map((stepNodeID, index) => (
             <NodeIDProvider value={stepNodeID} key={stepNodeID}>
-              {index === 0 && (
-                <SourceReorderIndicator
-                  recalculate={showReOrderIndicators}
-                  index={0}
-                  onMouseUp={onInsert(0)}
-                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
-                />
-              )}
-              <NodeStep isDraggable={node.combinedNodes.length > 1} isLast={index === node.combinedNodes.length - 1} />
+              {index === 0 && <SourceReorderIndicator isEnabled={props.canModify} index={0} onMouseUp={onInsert(0)} variant={variant} />}
+              <NodeStep isDraggable isLast={index === node.combinedNodes.length - 1} variant={variant} />
               {index === node.combinedNodes.length - 1 ? (
-                <TerminalReorderIndicator
-                  recalculate={showReOrderIndicators}
-                  index={index + 1}
-                  onMouseUp={onInsert(index + 1)}
-                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
-                />
+                <TerminalReorderIndicator isEnabled={props.canModify} index={index + 1} onMouseUp={onInsert(index + 1)} variant={variant} />
               ) : (
-                <ReorderIndicator
-                  recalculate={showReOrderIndicators}
-                  index={index + 1}
-                  onMouseUp={onInsert(index + 1)}
-                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
-                />
+                <ReorderIndicator isEnabled={props.canModify} index={index + 1} onMouseUp={onInsert(index + 1)} variant={variant} />
               )}
             </NodeIDProvider>
           ))}

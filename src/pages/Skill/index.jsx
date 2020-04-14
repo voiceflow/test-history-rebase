@@ -9,7 +9,7 @@ import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { FeatureFlag } from '@/config/features';
 import { FEATURE_IDS } from '@/constants';
-import { usePermissions } from '@/contexts/RolePermissionsContext';
+import { usePermissions } from '@/contexts';
 import { updateProjectName } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';

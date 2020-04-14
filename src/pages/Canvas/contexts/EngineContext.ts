@@ -38,7 +38,16 @@ export type Engine = {
     center: (nodeID: string) => void;
     updateData: (nodeID: string, data: Partial<NodeData<unknown>>) => void;
     insertNested: (parentNodeID: string, index: number, nodeID: string) => Promise<void>;
+    redrawLinks: (nodeID: string) => void;
     redrawNestedLinks: (parentNodeID: string) => void;
+    addNestedV2: (descriptor: {
+      type: BlockType;
+      index: number;
+      nodeID: string;
+      parentNodeID: string;
+      position: [number, number];
+      factoryData: Partial<NodeData<unknown>>;
+    }) => void;
   };
 
   focus: {
@@ -59,14 +68,17 @@ export type Engine = {
   };
 
   mergeV2: {
-    mergeLayer: MergeLayerAPI | null;
-    newTargetNodeID: string | null;
-    newSourceNodeType: BlockType | null;
-    newSourceNodeIndex: number | null;
+    sourceNodeID: string | null;
+    targetNodeID: string | null;
+    virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null;
+    readonly hasSource: boolean;
 
-    setNewSourceNodeIndex: (index: number | null) => void;
-    setNewSourceTypeAndTargetID: (nodeID: string, type: BlockType) => void;
-    clearNewSourceTypeAndTargetID: () => void;
+    mergeLayer: MergeLayerAPI | null;
+
+    setTarget: (nodeID: string) => void;
+    setTargetStep: (index: number, reset: () => void) => void;
+    clearTarget: () => void;
+    clearTargetStep: () => void;
 
     registerMergeLayer: (api: MergeLayerAPI | null) => void;
     updateCandidates: () => void;

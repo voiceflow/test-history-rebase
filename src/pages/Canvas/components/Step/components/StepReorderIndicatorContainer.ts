@@ -1,11 +1,10 @@
-import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
+import { BlockVariant } from '@/constants/canvas';
 import { css, styled, transition, units } from '@/hocs';
 import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 
-import { stepBoxShadowStyles } from '../styles';
-
 export type StepReorderIndicatorContainerProps = {
   isActive: boolean;
+  variant: BlockVariant;
   isHovered?: boolean;
 };
 
@@ -15,8 +14,9 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
   height: 0;
   width: 100%;
   border-radius: 5px;
+  background-color: ${({ theme, variant }) => theme.components.block.variants[variant].color};
   ${transition('height', 'margin')}
-  ${dragPlaceholderStyles};
+  opacity: 0.18;
 
   &&& {
     margin: 0;
@@ -26,9 +26,9 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
     isActive &&
     css`
       .${MERGE_ACTIVE_NODE_CLASSNAME} &&& {
-        height: 20px;
-        opacity: 0.5;
-        ${stepBoxShadowStyles} :last-of-type {
+        height: 5px;
+
+        :last-of-type {
           margin-top: ${units()}px;
         }
 
@@ -38,13 +38,13 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
         }
 
         :hover {
-          opacity: 1;
+          height: ${({ theme }) => theme.components.blockStep.minHeight}px;
         }
 
         ${isHovered &&
           css`
              {
-              opacity: 1;
+              height: ${({ theme }) => theme.components.blockStep.minHeight}px;
             }
           `}
       }

@@ -2,7 +2,7 @@ import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { EventualEngineContext } from '@/contexts/EventualEngineContext';
+import { EventualEngineContext } from '@/contexts';
 import { setError } from '@/ducks/modal';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
 import { Context, TestStatus, fetchContext, testingNLCSelector, testingVariablesSelector } from '@/ducks/testingV2';

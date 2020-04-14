@@ -3,7 +3,7 @@ import React from 'react';
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { ModalType } from '@/constants';
-import { EventualEngineContext } from '@/contexts/EventualEngineContext';
+import { EventualEngineContext } from '@/contexts';
 import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 

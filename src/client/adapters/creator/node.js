@@ -1,7 +1,9 @@
 import { BlockType } from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createAdapter } from '../utils';
+import { VIRTUAL_NODE_ID_PREFIX, VIRTUAL_PORT_ID_PREFIX } from './constants';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
@@ -26,9 +28,12 @@ function convertNodeForDB(appNode, ports, data, linksByPortID, platform, nextID)
     id,
     name,
     type,
-    x,
-    y,
-    parentNode,
+    ...(parentNode
+      ? {
+          parentNode,
+          combines: undefined,
+        }
+      : { x, y }),
     extras: nodeDataAdapter.toDB(appData),
     ports: [
       ...outPorts.map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
@@ -49,8 +54,8 @@ const nodeAdapter = createAdapter(
   (dbNode, data, parentNode) => ({
     id: dbNode.id,
     type: data.type,
-    x: dbNode.x,
-    y: dbNode.y,
+    x: dbNode.x ?? 0,
+    y: dbNode.y ?? 0,
     parentNode: parentNode || null,
     combinedNodes: !parentNode && dbNode.combines ? dbNode.combines.map(({ id }) => id) : [],
     ports: dbNode.ports.reduce(
@@ -85,22 +90,29 @@ const nodeAdapter = createAdapter(
       return node;
     }
 
+    // TODO: extra convolution can hopefully be removed once database size constraints are removed / altered
+    const { color } = node.extras;
     const childNode = node.combines[0];
+    const inPortID = node.ports?.[0].id;
+    const virtualExtras = {
+      // ignore the default value
+      color: color === BlockVariant.REGULAR ? undefined : color,
+      // ignore redundant value
+      name: node.name === childNode.name ? undefined : node.name,
+      // ignore reproducable values
+      id: node.id === `${VIRTUAL_NODE_ID_PREFIX}${childNode.id}` ? undefined : node.id,
+      inPortID: inPortID === `${VIRTUAL_PORT_ID_PREFIX}${childNode.id}` ? undefined : inPortID,
+    };
 
     return {
       ...childNode,
       name: childNode.name,
-      parentNode: null,
+      parentNode: undefined,
       x: node.x,
       y: node.y,
       extras: {
         ...childNode.extras,
-        virtualExtras: {
-          ...node.extras,
-          id: node.id,
-          name: node.name,
-          inPortID: node.ports?.[0].id,
-        },
+        virtualExtras: Object.keys(virtualExtras).some((key) => virtualExtras[key]) ? virtualExtras : undefined,
       },
     };
   }

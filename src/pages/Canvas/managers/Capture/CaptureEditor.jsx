@@ -12,6 +12,7 @@ import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoRe
 import HelpTooltip from './components/HelpTooltip';
 
 const DOCUMENTATION_LINK = 'https://docs.voiceflow.com/voiceflow-documentation/untitled/capture-block';
+const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
 function CaptureEdtitor({ data, onChange, pushToPath }) {
   const updateSlot = React.useCallback((slot) => onChange({ slot }), [onChange]);
@@ -19,6 +20,8 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
 
   const hasReprompt = !!data.reprompt;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
+
+  const optionsFilter = React.useCallback((slotType) => slotType?.value !== SEARCH_QUERY_SLOT, []);
 
   return (
     <Content
@@ -53,7 +56,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
     >
       <Section>
         <FormControl label="Input Type">
-          <SlotSelect value={data.slot} onChange={updateSlot} />
+          <SlotSelect value={data.slot} onChange={updateSlot} filter={optionsFilter} />
         </FormControl>
         {data.slot === CUSTOM_SLOT_TYPE && (
           <FormControl>

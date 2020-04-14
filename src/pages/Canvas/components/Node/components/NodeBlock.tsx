@@ -26,7 +26,7 @@ export type NodeBlockProps = {
   isHighlighted: boolean;
 };
 
-export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[] };
+export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[]; showReOrderIndicators: boolean };
 
 const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { isHovered: boolean; hasLinkWarning: boolean }) => {
   if (isHovered && hasLinkWarning) return BlockState.DISABLED;
@@ -40,7 +40,10 @@ const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { i
   return BlockState.REGULAR;
 };
 
-const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: NewBlockAPI }>) => {
+const NodeBlock = (
+  { nodeID, showReOrderIndicators, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps,
+  ref: React.RefObject<{ api: NewBlockAPI }>
+) => {
   const isTransitioning = React.useRef(false);
   const { data } = useNodeData();
 
@@ -213,12 +216,29 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
         >
           {node.combinedNodes.map((stepNodeID, index) => (
             <NodeIDProvider value={stepNodeID} key={stepNodeID}>
-              {index === 0 && <SourceReorderIndicator index={0} onMouseUp={onInsert(0)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />}
+              {index === 0 && (
+                <SourceReorderIndicator
+                  recalculate={showReOrderIndicators}
+                  index={0}
+                  onMouseUp={onInsert(0)}
+                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
+                />
+              )}
               <NodeStep isDraggable={node.combinedNodes.length > 1} isLast={index === node.combinedNodes.length - 1} />
               {index === node.combinedNodes.length - 1 ? (
-                <TerminalReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />
+                <TerminalReorderIndicator
+                  recalculate={showReOrderIndicators}
+                  index={index + 1}
+                  onMouseUp={onInsert(index + 1)}
+                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
+                />
               ) : (
-                <ReorderIndicator index={index + 1} onMouseUp={onInsert(index + 1)} hoveredIndex={engine.mergeV2.newSourceNodeIndex} />
+                <ReorderIndicator
+                  recalculate={showReOrderIndicators}
+                  index={index + 1}
+                  onMouseUp={onInsert(index + 1)}
+                  hoveredIndex={engine.mergeV2.newSourceNodeIndex}
+                />
               )}
             </NodeIDProvider>
           ))}

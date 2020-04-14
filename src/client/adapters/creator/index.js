@@ -10,8 +10,8 @@ import portAdapter from './port';
 
 const VIRTUAL_NODE_ID_PREFIX = 'virtualNode';
 const VIRTUAL_PORT_ID_PREFIX = 'virtualPort';
-const NODE_HEIGHT_DIFFERENCE = 1.2;
-const NODE_WIDTH_DIFFERENCE = 2.4;
+const NODE_HEIGHT_DIFFERENCE = 1.6;
+const NODE_WIDTH_DIFFERENCE = 2;
 
 const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 

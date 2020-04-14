@@ -32,15 +32,6 @@ const DEFAULT_DIAGRAM = {
       x: 360,
       y: 120,
       extras: {
-        audio: '',
-        audioText: '',
-        audioVoice: '',
-        preview: '',
-        previewText: '',
-        previewVoice: '',
-        prompt: '',
-        promptText: '',
-        promptVoice: '',
         type: 'story',
       },
       ports: [

@@ -8,7 +8,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
 import { FEATURE_IDS, ModalType, PLANS } from '@/constants';
-import { usePermissions } from '@/contexts/RolePermissionsContext';
+import { usePermissions } from '@/contexts';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';

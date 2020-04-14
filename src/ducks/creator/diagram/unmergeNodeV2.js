@@ -26,6 +26,13 @@ const unmergeNodeV2Reducer = (
   const index = parentNode.combinedNodes.indexOf(node.id);
   const remainingNodeIDs = without(parentNode.combinedNodes, index);
 
+  if (remainingNodeIDs.length === 0) {
+    return patchNodeInState(parentNode.id, {
+      x,
+      y,
+    })(state);
+  }
+
   const [newParentNode, newRootPorts, newParentNodeData] = buildNewNode(
     {
       id: parentNodeID,

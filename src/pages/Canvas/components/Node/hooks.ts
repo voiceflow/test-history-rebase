@@ -173,68 +173,89 @@ export const useMergeInfo = (index: number) => {
   const engine = React.useContext(EngineContext)!;
   const { node } = useNode();
 
-  if (!node) {
+  if (!node || !engine.mergeV2.hasSource) {
     return {
       mustNotBe: true,
     };
   }
 
-  if (engine.drag.hasTarget) {
-    const dragTarget = engine.getNodeByID(engine.drag.target!);
-
-    if (dragTarget.parentNode) {
-      const parentNode = engine.getNodeByID(dragTarget.parentNode);
-      const sourceIndex = parentNode.combinedNodes.indexOf(dragTarget.id);
-
-      return {
-        mustNotBe: node.parentNode === dragTarget.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
-        mustBeFirst: dragTarget.type === BlockType.INTENT,
-        mustBeLast: getManager(dragTarget.type)?.mergeTerminator,
-      };
-    }
-
-    const [firstChildNodeID] = dragTarget.combinedNodes;
-    const firstChildNode = engine.getNodeByID(firstChildNodeID);
-    const lastChildNodeID = dragTarget.combinedNodes[dragTarget.combinedNodes.length - 1];
-    const lastChildNode = engine.getNodeByID(lastChildNodeID);
+  if (engine.mergeV2.virtualSource) {
+    const { type } = engine.mergeV2.virtualSource;
 
     return {
-      mustBeFirst: firstChildNode?.type === BlockType.INTENT,
-      mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
+      mustBeFirst: type === BlockType.INTENT,
+      mustBeLast: getManager(type)?.mergeTerminator,
     };
   }
 
-  if (engine.mergeV2.newSourceNodeType) {
+  const mergeSource = engine.getNodeByID(engine.mergeV2.sourceNodeID!);
+
+  if (mergeSource.parentNode) {
+    const parentNode = engine.getNodeByID(mergeSource.parentNode);
+    const sourceIndex = parentNode.combinedNodes.indexOf(mergeSource.id);
+
     return {
-      mustBeLast: getManager(engine.mergeV2.newSourceNodeType)?.mergeTerminator,
-      mustBeFirst: engine.mergeV2.newSourceNodeType === BlockType.INTENT,
+      mustNotBe: node.parentNode === mergeSource.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
+      mustBeFirst: mergeSource.type === BlockType.INTENT,
+      mustBeLast: getManager(mergeSource.type)?.mergeTerminator,
     };
   }
+
+  const [firstChildNodeID] = mergeSource.combinedNodes;
+  const firstChildNode = engine.getNodeByID(firstChildNodeID);
+  const lastChildNodeID = mergeSource.combinedNodes[mergeSource.combinedNodes.length - 1];
+  const lastChildNode = engine.getNodeByID(lastChildNodeID);
 
   return {
-    mustBeFirst: false,
-    mustBeLast: false,
+    mustBeFirst: firstChildNode?.type === BlockType.INTENT,
+    mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
   };
 };
 
 export const useDnDHoverReorderIndicator = (index: number) => {
   const engine = React.useContext(EngineContext)!;
+  const isHoveredLocal = React.useRef(false);
+  const [isHovered, setHovered] = React.useState(false);
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
 
     hover: _throttle(
       () => {
-        if (engine.mergeV2.newSourceNodeIndex === index) {
-          return;
+        if (!isHoveredLocal.current) {
+          engine.mergeV2.setTargetStep(index, () => {
+            isHoveredLocal.current = false;
+            setHovered(false);
+          });
         }
 
-        engine.mergeV2.setNewSourceNodeIndex(index);
+        isHoveredLocal.current = true;
+        setHovered(true);
       },
       HOVER_THROTTLE_TIMEOUT,
       { trailing: false }
     ),
+
+    drop: (_, monitor) => {
+      const newNodeID = cuid();
+      const { type, factoryData } = engine.mergeV2.virtualSource!;
+
+      const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;
+
+      const position = engine.canvas.transformPoint([mouseX, mouseY]);
+
+      engine.node.addNestedV2({
+        type,
+        index,
+        nodeID: newNodeID,
+        position,
+        factoryData,
+        parentNodeID: engine.mergeV2.targetNodeID!,
+      });
+
+      return { captured: true };
+    },
   });
 
-  return [connectBlockDrop, engine.mergeV2.newSourceNodeIndex === index] as const;
+  return [connectBlockDrop, isHovered] as const;
 };

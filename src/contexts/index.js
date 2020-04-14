@@ -6,6 +6,8 @@ export * from './NamespaceContext';
 export * from './OverlayContext';
 export * from './ModalsContext';
 export * from './HoverContext';
+export * from './EventualEngineContext';
+export * from './RolePermissionsContext';
 export * from './TextEditorVariablesPopoverContext';
 
 export const ScrollContext = React.createContext('scroll-context');

@@ -13,10 +13,10 @@ type HeaderInputProps = AutosizeInputProps & {
 const HeaderInput = styled(
   mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, ...props }) => ({
     ...props,
-    // for some reason I NEED to place box sizing inline for the title to not get cropped on first render in chrome}
-    style: { boxSizing: 'content-box' },
   }))(AutosizeInput)
-)<HeaderInputProps>`
+)
+  // for some reason I NEED to place box sizing inline for the title to not get cropped on first render in chrome}
+  .attrs({ style: { boxSizing: 'content-box' } })<HeaderInputProps>`
   max-width: 100%;
   input {
     max-width: 100%;

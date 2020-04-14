@@ -4,9 +4,7 @@ import React from 'react';
 import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
-import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
-import { OverlayProvider } from '@/contexts/OverlayContext';
-import { RolePermissionsProvider } from '@/contexts/RolePermissionsContext';
+import { EventualEngineProvider, OverlayProvider, RegisterEngine, RolePermissionsProvider } from '@/contexts';
 import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 
 import LeftSidebar from '.';

@@ -29,7 +29,8 @@ class DragEngine extends EngineConsumer {
     if (target !== this.target) {
       await this.reset();
 
-      if (this.engine.isBlockRedesignEnabled()) {
+      const isBlockRedesignEnabled = this.engine.isBlockRedesignEnabled();
+      if (isBlockRedesignEnabled) {
         this.engine.mergeV2.initialize(target);
       } else {
         this.engine.merge.generatePredicates(target);

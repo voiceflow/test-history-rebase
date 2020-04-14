@@ -31,7 +31,6 @@ export class Node extends React.PureComponent {
   state = {
     isDragging: false,
     isMergeTarget: false,
-    isMergeCandidate: false,
     isBlockHighlighted: false,
     position: [null, null],
     positionChanged: false,
@@ -87,10 +86,6 @@ export class Node extends React.PureComponent {
     setMergeTarget: () => this.setState({ isMergeTarget: true }),
 
     clearMergeTarget: () => this.setState({ isMergeTarget: false }),
-
-    setMergeCandidate: () => this.setState({ isMergeCandidate: true }),
-
-    clearMergeCandidate: () => this.setState({ isMergeCandidate: false }),
 
     setNewSourceNodeIndex: (index) => this.setState({ newSourceNodeIndex: index }),
 
@@ -226,7 +221,7 @@ export class Node extends React.PureComponent {
 
   render() {
     const { node, engine, isHighlighted, isBlockRedesignEnabled } = this.props;
-    const { newSourceNodeIndex, isDragging, isBlockHighlighted, isMergeCandidate, isMergeTarget, position, positionChanged } = this.state;
+    const { newSourceNodeIndex, isDragging, isBlockHighlighted, isMergeTarget, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
     if (!shouldRender) {
@@ -248,7 +243,7 @@ export class Node extends React.PureComponent {
       if (node.type === BlockType.COMBINED) {
         nodeEl = (
           <NodeBlock
-            showReOrderIndicators={isMergeCandidate}
+            canModify={isMergeTarget}
             ref={this.blockRef}
             isFocused={isFocused}
             isSelected={isSelected}
@@ -267,7 +262,7 @@ export class Node extends React.PureComponent {
 
     return (
       <Container
-        className={cn({ [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeCandidate || isMergeTarget })}
+        className={cn({ [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeTarget })}
         isActive={isHighlighted}
         isDragging={isDragging}
         position={position}

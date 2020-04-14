@@ -3,7 +3,7 @@ import moment from 'moment';
 import React, { Component } from 'react';
 
 import Button from '@/components/Button';
-import { withEventualEngine } from '@/contexts/EventualEngineContext';
+import { withEventualEngine } from '@/contexts';
 import { allDiagramsSelector } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { recentTestingSelector } from '@/ducks/recent';

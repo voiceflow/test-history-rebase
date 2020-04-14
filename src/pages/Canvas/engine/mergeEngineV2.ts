@@ -1,6 +1,7 @@
 import { BlockType } from '@/constants';
+import { NodeData } from '@/models';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
-import { findUnion, withoutValue } from '@/utils/array';
+import { withoutValue } from '@/utils/array';
 import { isInRange } from '@/utils/number';
 
 import { EngineConsumer } from './utils';
@@ -8,40 +9,46 @@ import { EngineConsumer } from './utils';
 type MergeCandidate = {
   nodeID: string;
   containsPoint: (point: [number, number]) => boolean;
-  boundaryContainsPoint: (point: [number, number]) => boolean;
   isWithin: (rect: [[number, number], [number, number]]) => boolean;
 };
 
-const ACTTIVATION_BOUNDARY_WIDTH = 100;
-const DEACTTIVATION_BOUNDARY_WIDTH = 20;
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
 
 class MergeEngineV2 extends EngineConsumer {
   candidates: MergeCandidate[] = [];
 
-  activated: string[] = [];
+  virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null = null;
+
+  targetStep: { index: number; reset: () => void } | null = null;
 
   sourceNodeID: string | null = null;
 
   targetNodeID: string | null = null;
-
-  newTargetNodeID: string | null = null;
-
-  newSourceNodeType: string | null = null;
-
-  newSourceNodeIndex: number | null = null;
 
   // eslint-disable-next-line lodash/prefer-constant
   isWithinTarget: ((point: [number, number]) => boolean) | null = null;
 
   mergeLayer: MergeLayerAPI | null = null;
 
+  get hasSource() {
+    return !!this.sourceNodeID || !!this.virtualSource;
+  }
+
+  get hasTargetStep() {
+    return !!this.targetStep;
+  }
+
   registerMergeLayer(mergeLayer: MergeLayerAPI | null) {
     this.mergeLayer = mergeLayer;
   }
 
+  createBoundaryTest(nodeID: string) {
+    const { left, right, top, bottom } = this.engine.node.getBlockRect(nodeID);
+
+    return ([x, y]: [number, number]) => isInRange(x, left, right) && isInRange(y, top, bottom);
+  }
+
   initialize(sourceNodeID: string) {
-    const boundaryWidth = ACTTIVATION_BOUNDARY_WIDTH * this.engine.canvas.getZoom();
     const sourceNode = this.engine.getNodeByID(sourceNodeID);
 
     if (UNMERGEABLE_NODES.includes(sourceNode.type)) {
@@ -81,23 +88,18 @@ class MergeEngineV2 extends EngineConsumer {
       .map(({ nodeID, left, right, top, bottom }) => ({
         nodeID,
         containsPoint: ([x, y]) => isInRange(x, left, right) && isInRange(y, top, bottom),
-        boundaryContainsPoint: ([x, y]) =>
-          isInRange(x, left - boundaryWidth, right + boundaryWidth) && isInRange(y, top - boundaryWidth, bottom + boundaryWidth),
         isWithin: ([[x1, y1], [x2, y2]]) =>
           (isInRange(left, x1, x2) || isInRange(right, x1, x2)) && (isInRange(top, y1, y2) || isInRange(bottom, y1, y2)),
       }));
   }
 
   updateTargetDetection() {
-    const { left, right, top, bottom } = this.engine.node.getBlockRect(this.targetNodeID);
-    const boundaryWidth = DEACTTIVATION_BOUNDARY_WIDTH * this.engine.canvas.getZoom();
-
-    this.isWithinTarget = ([x, y]) =>
-      isInRange(x, left - boundaryWidth, right + boundaryWidth) && isInRange(y, top - boundaryWidth, bottom + boundaryWidth);
+    this.isWithinTarget = this.createBoundaryTest(this.targetNodeID!);
   }
 
   updateCandidates() {
     const mousePosition = this.engine.mousePosition.current;
+
     const mergeTarget = this.candidates.find(({ containsPoint }) => containsPoint(mousePosition));
 
     if (this.isWithinTarget?.(mousePosition)) {
@@ -105,31 +107,8 @@ class MergeEngineV2 extends EngineConsumer {
       return;
     }
 
-    if (this.targetNodeID && this.targetNodeID !== mergeTarget?.nodeID) {
-      this.clearActiveTarget();
-    }
-
     if (mergeTarget) {
-      this.clearActiveCandidates();
-
-      this.targetNodeID = mergeTarget.nodeID;
-      this.isWithinTarget = mergeTarget.containsPoint;
-      this.engine.node.api(this.targetNodeID)?.setMergeTarget();
-
-      return;
-    }
-
-    const activeCandidates = this.candidates.filter(({ boundaryContainsPoint }) => boundaryContainsPoint(mousePosition)).map(({ nodeID }) => nodeID);
-
-    if (activeCandidates.length) {
-      const { lhsOnly: newTargets, rhsOnly: oldTargets } = findUnion(activeCandidates, this.activated);
-
-      newTargets.forEach((nodeID) => this.engine.node.api(nodeID)?.setMergeCandidate());
-      oldTargets.forEach((nodeID) => this.engine.node.api(nodeID)?.clearMergeCandidate());
-
-      this.activated = activeCandidates;
-    } else {
-      this.clearActiveCandidates();
+      this.setTarget(mergeTarget.nodeID, mergeTarget.containsPoint);
     }
   }
 
@@ -143,52 +122,54 @@ class MergeEngineV2 extends EngineConsumer {
     }
   }
 
-  clearActiveCandidates() {
-    this.activated.forEach((nodeID) => this.engine.node.api(nodeID)?.clearMergeCandidate());
-    this.activated = [];
+  setVirtualSource(type: BlockType, factoryData: Partial<NodeData<unknown>>) {
+    this.virtualSource = { type, factoryData };
   }
 
-  clearActiveTarget() {
+  setTargetStep(index: number, reset: () => void) {
+    if (this.targetStep?.index === index) return;
+
+    this.clearTargetStep();
+
+    this.targetStep = { index, reset };
+  }
+
+  setTarget(nodeID: string, isWithinTarget = this.createBoundaryTest(nodeID)) {
+    if (nodeID === this.targetNodeID) return;
+
+    this.clearTarget();
+
+    this.targetNodeID = nodeID;
+    this.isWithinTarget = isWithinTarget;
+
+    this.engine.node.api(nodeID)?.setMergeTarget();
+    this.mergeLayer?.setTransparent();
+  }
+
+  clearTargetStep() {
+    if (this.targetStep) {
+      this.targetStep.reset();
+      this.targetStep = null;
+    }
+  }
+
+  clearTarget() {
+    this.clearTargetStep();
+
     if (this.targetNodeID) {
       this.engine.node.api(this.targetNodeID)?.clearMergeTarget();
+      this.mergeLayer?.clearTransparent();
       this.targetNodeID = null;
       this.isWithinTarget = null;
     }
   }
 
-  setNewSourceTypeAndTargetID(targetNodeID: string, sourceNodeType: string) {
-    this.newTargetNodeID = targetNodeID;
-    this.newSourceNodeType = sourceNodeType;
-    this.engine.node.api(targetNodeID)?.setMergeTarget();
-  }
-
-  clearNewSourceTypeAndTargetID() {
-    const newTargetNodeID = this.newTargetNodeID;
-
-    if (newTargetNodeID) {
-      this.newTargetNodeID = null;
-      this.newSourceNodeType = null;
-      this.newSourceNodeIndex = null;
-      this.engine.node.api(newTargetNodeID)?.clearMergeTarget();
-      this.engine.node.api(newTargetNodeID)?.setNewSourceNodeIndex(null);
-    }
-  }
-
-  setNewSourceNodeIndex(index: number | null) {
-    this.newSourceNodeIndex = index;
-    this.engine.node.api(this.newTargetNodeID)?.setNewSourceNodeIndex(index);
-  }
-
   reset() {
     this.mergeLayer?.reset();
-    this.clearActiveCandidates();
-    this.clearActiveTarget();
-    this.clearNewSourceTypeAndTargetID();
+    this.clearTarget();
 
     this.sourceNodeID = null;
-    this.newTargetNodeID = null;
-    this.newSourceNodeType = null;
-    this.newSourceNodeIndex = null;
+    this.virtualSource = null;
     this.candidates = [];
   }
 }

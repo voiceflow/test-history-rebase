@@ -26,8 +26,6 @@ export type BlockNodeAPI = NodeAPI & {
   instanceID: string;
   getPosition: () => [number, number];
   rename: () => void;
-  setMergeCandidate: () => void;
-  clearMergeCandidate: () => void;
   setMergeTarget: () => void;
   clearMergeTarget: () => void;
 };
@@ -56,6 +54,9 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
 export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
   isVisible: boolean;
+  isTransparent: boolean;
   initialize: (point: [number, number], offset: [number, number]) => void;
   reset: () => void;
+  setTransparent: () => void;
+  clearTransparent: () => void;
 };

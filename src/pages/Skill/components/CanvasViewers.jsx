@@ -3,7 +3,7 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
 import { FEATURE_IDS, ModalType } from '@/constants';
-import { usePermissions } from '@/contexts/RolePermissionsContext';
+import { usePermissions } from '@/contexts';
 import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useModals } from '@/hooks';

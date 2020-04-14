@@ -7,6 +7,7 @@ import { MergeLayerAPI } from '@/pages/Canvas/types';
 export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObject<T>) => {
   const offsetRef = React.useRef<[number, number]>([0, 0]);
   const [isVisible, show, hide] = useEnableDisable();
+  const [isTransparent, setTransparent, clearTransparent] = useEnableDisable();
   const engine = React.useContext(EngineContext)!;
 
   const resposition = React.useCallback(([x, y]: [number, number]) => {
@@ -14,7 +15,9 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     const [offsetX, offsetY] = offsetRef.current;
 
     window.requestAnimationFrame(() => {
-      previewEl.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px) rotate(-5deg)`;
+      previewEl.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`;
+
+      engine.node.redrawLinks(engine.mergeV2.sourceNodeID!);
     });
   }, []);
   const handleMouseMove = React.useCallback(() => {
@@ -22,7 +25,7 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
 
     engine.mergeV2.updateCandidates();
 
-    return resposition(transformedPoint);
+    resposition(transformedPoint);
   }, []);
   const initialize = React.useCallback((point: [number, number], offset: [number, number]) => {
     offsetRef.current = offset;
@@ -42,11 +45,14 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     () => ({
       ref: previewRef,
       isVisible,
+      isTransparent,
       initialize,
       resposition,
       reset,
+      setTransparent,
+      clearTransparent,
     }),
-    [isVisible]
+    [isVisible, isTransparent]
   );
 };
 

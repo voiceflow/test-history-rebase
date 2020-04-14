@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BlockState } from '@/constants/canvas';
+import { BlockState, BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
@@ -40,7 +40,7 @@ const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.P
   const commands = node.combinedNodes.length
     ? node.combinedNodes.map((commandNodeID) => (
         <NodeIDProvider value={commandNodeID} key={commandNodeID}>
-          <NodeStep isDraggable={false} isLast />
+          <NodeStep isDraggable={false} variant={BlockVariant.STANDARD} isLast />
         </NodeIDProvider>
       ))
     : null;

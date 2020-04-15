@@ -19,7 +19,6 @@ import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, useFeature } from '@/hooks';
 import Business from '@/pages/Business';
 import Canvas from '@/pages/Canvas';
-import CanvasMenu from '@/pages/Canvas/components/CanvasMenu';
 import LeftSidebar from '@/pages/Canvas/components/LeftSidebar';
 import TestingSidebar from '@/pages/Canvas/components/TestingSidebar';
 import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
@@ -50,7 +49,6 @@ const PAGES_MATCHES = {
 const TIMEOUT_COUNT = 5 * 60 * 1000;
 
 function RenderCanvas({ diagramID, isTesting }) {
-  const blockRedesign = useFeature(FeatureFlag.BLOCK_REDESIGN);
   const testToolV2 = useFeature(FeatureFlag.TEST_TOOL_V2);
 
   return (
@@ -61,7 +59,7 @@ function RenderCanvas({ diagramID, isTesting }) {
           <ShortcutModalProvider>
             <SettingsModalProvider>
               <CanvasHeader />
-              {blockRedesign.isEnabled ? <LeftSidebar /> : <CanvasMenu />}
+              <LeftSidebar />
               <Canvas isTesting={isTesting} />
               {testToolV2.isEnabled ? <TestingSidebar /> : <Testing render />}
             </SettingsModalProvider>

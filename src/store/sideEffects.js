@@ -4,7 +4,6 @@ import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
-import * as Feature from '@/ducks/feature';
 import { fetchIntegrationUsers } from '@/ducks/integration';
 import { replaceIntents } from '@/ducks/intent';
 import { addProjectToList } from '@/ducks/lists';
@@ -54,13 +53,12 @@ export const importProject = (workspaceID, importToken) => async (dispatch, getS
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const isBlockRedesignEnabled = Feature.isBlockRedesignEnabledSelector(state);
 
   const {
     data: { viewport, ...creator },
     timestamp,
     variables,
-  } = await client.diagram.getData(diagramID, platform, isBlockRedesignEnabled);
+  } = await client.diagram.getData(diagramID, platform);
 
   dispatch(replaceVariableSetDiagram(diagramID, variables));
   dispatch(rehydrateViewport(diagramID, viewport));

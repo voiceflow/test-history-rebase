@@ -26,6 +26,18 @@ export const getJoiningLinkIDs = (state) => (lhsNodeID, rhsNodeID) => {
   return union;
 };
 
+export const getOutgoingLinkIDs = (state, node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getIncomingLinkIDs = (state, node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getNestedOutgoingLinkIDs = (state, node) => {
+  const combinedNodes = node.combinedNodes;
+  const lastNodeID = combinedNodes[combinedNodes.length - 1];
+  const lastNode = getNormalizedByKey(state.nodes, lastNodeID);
+
+  return getOutgoingLinkIDs(state, lastNode);
+};
+
 export const addReferenceByKey = (key, referenceValue) => (lookup) => ({
   ...lookup,
   [key]: safeAdd(lookup[key] || [], referenceValue),

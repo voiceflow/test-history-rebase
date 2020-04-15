@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { ReminderStep, ReminderStepProps } from '.';
 
@@ -13,9 +13,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<ReminderStepProps>) => () => (
-  <NewBlock name="Reminder Block">
+  <Block name="Reminder Block">
     <ReminderStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

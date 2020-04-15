@@ -17,13 +17,13 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     window.requestAnimationFrame(() => {
       previewEl.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`;
 
-      engine.node.redrawLinks(engine.mergeV2.sourceNodeID!);
+      engine.node.redrawLinks(engine.merge.sourceNodeID!);
     });
   }, []);
   const handleMouseMove = React.useCallback(() => {
     const transformedPoint = engine.getCanvasMousePosition();
 
-    engine.mergeV2.updateCandidates();
+    engine.merge.updateCandidates();
 
     resposition(transformedPoint);
   }, []);
@@ -59,7 +59,7 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
 export const useMergeLayerSubscription = (api: MergeLayerAPI) => {
   const engine = React.useContext(EngineContext)!;
 
-  React.useEffect(() => engine.mergeV2.registerMergeLayer(api), [api]);
+  React.useEffect(() => engine.merge.registerMergeLayer(api), [api]);
 
-  useTeardown(() => engine.mergeV2.registerMergeLayer(null));
+  useTeardown(() => engine.merge.registerMergeLayer(null));
 };

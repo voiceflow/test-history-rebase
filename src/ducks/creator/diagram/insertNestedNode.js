@@ -1,37 +1,97 @@
-import { insert } from '@/utils/array';
+import { insert, insertAll, reorder, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
-import { getLinkIDsByPortID, patchNodeInState, removeAllLinksFromState } from './utils';
+import {
+  getIncomingLinkIDs,
+  getJoiningLinkIDs,
+  getNestedOutgoingLinkIDs,
+  getOutgoingLinkIDs,
+  patchNodeInState,
+  removeAllLinksFromState,
+  removeBlockFromState,
+} from './utils';
 
-export const getOutgoingLinkIDs = (state, node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+export const reorderNestedNode = (state, targetNode, index, recipientNode) => {
+  const currentIndex = recipientNode.combinedNodes.indexOf(targetNode.id);
+  const isReorderingHighToLow = currentIndex < index;
+  const isLastOffset = isReorderingHighToLow ? -1 : 0;
 
-export const getIncomingLinkIDs = (state, node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+  const isLast = index === recipientNode.combinedNodes.length - 1 + isLastOffset;
+  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
 
-export const getNestedOutgoingLinkIDs = (state, node) => {
-  const combinedNodes = node.combinedNodes;
-  const lastNodeID = combinedNodes[combinedNodes.length - 1];
-  const lastNode = getNormalizedByKey(state.nodes, lastNodeID);
+  return compose(
+    removeAllLinksFromState(oldLinks),
+    patchNodeInState(recipientNode.id, {
+      combinedNodes: reorder(recipientNode.combinedNodes, currentIndex, isReorderingHighToLow ? index - 1 : index),
+    }),
+    patchNodeInState(targetNode.id, {
+      parentNode: recipientNode.id,
+    })
+  )(state);
+};
 
-  return getOutgoingLinkIDs(state, lastNode);
+export const transplantNestedNode = (state, targetNode, index, recipientNodeID) => {
+  const recipientNode = getNormalizedByKey(state.nodes, recipientNodeID);
+
+  if (recipientNodeID === targetNode.parentNode) {
+    return reorderNestedNode(state, targetNode, index, recipientNode);
+  }
+
+  const surrogateNode = getNormalizedByKey(state.nodes, targetNode.parentNode);
+
+  const surrogateCombinedIDs = withoutValue(surrogateNode.combinedNodes, targetNode.id);
+  const recipientCombinedIDs = insert(recipientNode.combinedNodes, index, targetNode.id);
+  const isLast = index === recipientCombinedIDs.length - 1;
+
+  const oldLinks = isLast ? getJoiningLinkIDs(state)(targetNode.id, recipientNodeID) : getOutgoingLinkIDs(state, targetNode);
+
+  return compose(
+    removeAllLinksFromState(oldLinks),
+    surrogateCombinedIDs.length
+      ? patchNodeInState(surrogateNode.id, {
+          combinedNodes: surrogateCombinedIDs,
+        })
+      : removeBlockFromState(surrogateNode),
+    patchNodeInState(recipientNode.id, {
+      combinedNodes: recipientCombinedIDs,
+    }),
+    patchNodeInState(targetNode.id, {
+      parentNode: recipientNode.id,
+    })
+  )(state);
 };
 
 const insertNestedNodeReducer = (state, { payload: { parentNodeID, nodeID, index } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
   const targetNode = getNormalizedByKey(state.nodes, nodeID);
-  const nextCombinedIDs = insert(parentNode.combinedNodes, index, nodeID);
+
+  if (targetNode.parentNode) {
+    return transplantNestedNode(state, targetNode, index, parentNodeID);
+  }
+
+  const nextCombinedIDs = insertAll(parentNode.combinedNodes, index, targetNode.combinedNodes);
+  const isFirst = index === 0;
   const isLast = index === nextCombinedIDs.length - 1;
 
-  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, parentNode) : getOutgoingLinkIDs(state, targetNode);
+  const oldLinks = [];
+  if (isFirst) {
+    oldLinks.push(...getIncomingLinkIDs(state, targetNode));
+  }
+
+  if (isLast) {
+    oldLinks.push(...getNestedOutgoingLinkIDs(state, parentNode));
+  } else {
+    oldLinks.push(...getNestedOutgoingLinkIDs(state, targetNode));
+  }
 
   return compose(
+    removeBlockFromState(targetNode),
     removeAllLinksFromState(oldLinks),
     patchNodeInState(parentNode.id, {
       combinedNodes: nextCombinedIDs,
     }),
-    patchNodeInState(nodeID, {
-      parentNode: parentNode.id,
-    })
+    ...targetNode.combinedNodes.map((childNodeID) => patchNodeInState(childNodeID, { parentNode: parentNode.id }))
   )(state);
 };
 

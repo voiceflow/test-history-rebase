@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
 import { PlatformType } from '@/constants';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { StreamStep, StreamStepProps } from '.';
 
@@ -17,9 +17,9 @@ const getProps = () => {
 };
 
 const render = (props?: Partial<StreamStepProps>) => () => (
-  <NewBlock name="Payment Block">
+  <Block name="Payment Block">
     <StreamStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

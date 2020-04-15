@@ -4,7 +4,7 @@ import { BlockState, BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
-import { NewBlockAPI } from '@/pages/Canvas/components/Block/NewBlock';
+import { BlockAPI } from '@/pages/Canvas/components/Block';
 import { NodeIDProvider, PlatformContext, useNode } from '@/pages/Canvas/contexts';
 import { BaseStartBlockProps, FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { MergeProps } from '@/types';
@@ -29,7 +29,7 @@ const getBlockState = ({ isFocused, isSelected, isHighlighted }: { isFocused: bo
   return BlockState.REGULAR;
 };
 
-const NodeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<NodeStartBlockProps>> = (
+const NodeStartBlock: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChildren<NodeStartBlockProps>> = (
   { isRootDiagram, diagram, invocationName, isFocused, isSelected, ...props },
   ref
 ) => {

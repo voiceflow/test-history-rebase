@@ -1,0 +1,3782 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Block Active State 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Block User Lock 1`] = `
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 .c10 {
+  color: #fff;
+}
+
+.c13 .c10 {
+  color: #6e849a;
+}
+
+.c2 {
+  -webkit-transition: color 0.15s ease,border 0.15s ease;
+  transition: color 0.15s ease,border 0.15s ease;
+  width: 26px;
+  height: 26px;
+  line-height: 22px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  position: relative;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  cursor: default;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c2:before {
+  -webkit-transition: border 0.15s ease;
+  transition: border 0.15s ease;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(17,49,96,0.08);
+  border-radius: 100%;
+  content: '';
+}
+
+.c2:hover .c1:before {
+  border-color: rgba(17,49,96,0.13);
+}
+
+.c2 > * {
+  display: inline-block;
+}
+
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c14 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c15 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c16 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c17 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c20 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
+}
+
+.c5 {
+  max-width: 100%;
+}
+
+.c5 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c5 input:active {
+  background: transparent;
+}
+
+.c9 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c6 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c3 {
+  position: relative;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  style={
+    Object {
+      "padding": "50px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1 c2"
+      style={
+        Object {
+          "backgroundColor": "#ECF8FA",
+          "color": "#36B4D2",
+        }
+      }
+    >
+      M
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      >
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+        <div
+          className="c7"
+        >
+          Step 3
+        </div>
+        <div
+          className="c7"
+        >
+          Step 4
+        </div>
+        <div
+          className="c7"
+        >
+          Step 5
+        </div>
+      </section>
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c8"
+      >
+        <div
+          className="c9"
+        >
+          <span
+            className="c10 c11"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c8"
+      >
+        <div
+          className="c9"
+        >
+          <span
+            className="c10 c11"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c5"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section2 Blah blah blah blah blah"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section2 Blah blah blah blah blah
+          </div>
+        </div>
+      </div>
+      <section
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          Step 1
+        </div>
+        <div
+          className="c7"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Blue 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#D1ECF8,#c5e7f6);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #BDD9EE;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #A2C1DC;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #0f7ec0;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Disabled State 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+  opacity: 0.7;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Green 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EAF1EA,#e5eee5);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #CBD8CC;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #BECDC3;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #6b7a6b;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Long Name 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Purple 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EDE5F1,#e8deee);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #DBD5DD;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #CDCAD5;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #765e84;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Red 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#FFE0E7,#ffd8e2);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #E5D6DA;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #D8CBD1;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #a84862;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Regular State 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Selected State 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+  border-color: #5d9df5;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0::before {
+  display: none;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Standard 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block State Transitions 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c6 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Step User Lock 1`] = `
+.c9 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c9 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 .c8 {
+  color: #fff;
+}
+
+.c14 .c8 {
+  color: #6e849a;
+}
+
+.c12 {
+  -webkit-transition: color 0.15s ease,border 0.15s ease;
+  transition: color 0.15s ease,border 0.15s ease;
+  width: 26px;
+  height: 26px;
+  line-height: 22px;
+  font-size: 13px;
+  text-align: center;
+  color: #becedc;
+  position: relative;
+  background-color: #fff;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  cursor: default;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c12:before {
+  -webkit-transition: border 0.15s ease;
+  transition: border 0.15s ease;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(17,49,96,0.08);
+  border-radius: 100%;
+  content: '';
+}
+
+.c12:hover .c11:before {
+  border-color: rgba(17,49,96,0.13);
+}
+
+.c12 > * {
+  display: inline-block;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #D3D9E4;
+}
+
+.c10 .c22:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c10 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.node--merge-active .c10 {
+  z-index: -1;
+}
+
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c15 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c16 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c17 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c18 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c19 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c20 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c21 .c11 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c7 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  style={
+    Object {
+      "padding": "50px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c5"
+        >
+          Step 1
+        </div>
+        <div
+          className="c5"
+        >
+          Step 2
+        </div>
+        <div
+          className="c5"
+        >
+          Step 3
+        </div>
+        <div
+          className="c5"
+        >
+          Step 4
+        </div>
+        <div
+          className="c5"
+        >
+          Step 5
+        </div>
+      </section>
+    </div>
+    <div
+      className="c1"
+    >
+      <div
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          <span
+            className="c8 c9"
+            color="#6e849a"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgHome"
+            />
+          </span>
+        </div>
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Section 1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Section 1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c5"
+        >
+          Step 1
+        </div>
+        <div
+          className="c5"
+        >
+          Step 2
+        </div>
+      </section>
+    </div>
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            value="Block 1"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            Block 1
+          </div>
+        </div>
+      </div>
+      <section
+        className="c4"
+      >
+        <div
+          className="c10"
+          onMouseDown={[Function]}
+        >
+          Order Pizza
+        </div>
+        <div
+          className="c10"
+          onMouseDown={[Function]}
+        >
+          <div
+            className="c11 c12"
+            style={
+              Object {
+                "backgroundColor": "#ECF8FA",
+                "color": "#36B4D2",
+              }
+            }
+          >
+            M
+          </div>
+          New Order
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Sub Sections 1`] = `
+.c9 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6e849a;
+}
+
+.c9 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c10 .c8 {
+  color: #fff;
+}
+
+.c11 .c8 {
+  color: #6e849a;
+}
+
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0:before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.canvas--nodes-active .c0 {
+  opacity: 0.7;
+}
+
+.canvas--nodes-active .c0:not(.node--merge-active):hover {
+  opacity: 1;
+}
+
+.c0 .c12 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+  padding: 0 42px;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c7 {
+  position: absolute;
+  left: 0;
+  padding: 0 5px;
+}
+
+.c4 > *:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="New Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          New Block
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+      <div
+        className="c5"
+      >
+        Step 3
+      </div>
+      <div
+        className="c5"
+      >
+        Step 4
+      </div>
+      <div
+        className="c5"
+      >
+        Step 5
+      </div>
+    </section>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c6"
+    >
+      <div
+        className="c7"
+      >
+        <span
+          className="c8 c9"
+          color="#6e849a"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgHome"
+          />
+        </span>
+      </div>
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Section1"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Section1
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+    </section>
+  </div>
+  <div
+    className="c1"
+  >
+    <div
+      className="c6"
+    >
+      <div
+        className="c7"
+      >
+        <span
+          className="c8 c9"
+          color="#6e849a"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgHome"
+          />
+        </span>
+      </div>
+      <div
+        className="c3"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          value="Section2 Blah blah blah blah blah"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Section2 Blah blah blah blah blah
+        </div>
+      </div>
+    </div>
+    <section
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        Step 1
+      </div>
+      <div
+        className="c5"
+      >
+        Step 2
+      </div>
+    </section>
+  </div>
+</div>
+`;

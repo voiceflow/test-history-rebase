@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { FlowStep, FlowStepProps } from '.';
 
@@ -11,9 +11,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<FlowStepProps>) => () => (
-  <NewBlock name="Flow Block">
+  <Block name="Flow Block">
     <FlowStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

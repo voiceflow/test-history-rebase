@@ -2,7 +2,7 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import { StepLabelVariant } from '@/constants/canvas';
-import PortV2 from '@/pages/Canvas/components/PortV2';
+import Port from '@/pages/Canvas/components/Port';
 import { PortIDProvider } from '@/pages/Canvas/contexts';
 
 import { StepAPIContext } from '../contexts';
@@ -36,7 +36,7 @@ const Item: React.FC<ItemProps> = ({
       </StepLabelTextContainer>
       {stepAPI?.withPorts && portID && (
         <PortIDProvider value={portID}>
-          <PortV2 color={portColor} />
+          <Port color={portColor} />
         </PortIDProvider>
       )}
     </Container>

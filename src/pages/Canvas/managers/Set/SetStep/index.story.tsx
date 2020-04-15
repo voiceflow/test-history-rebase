@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/components';
 
 import { SetStep, SetStepProps } from '.';
@@ -87,9 +87,9 @@ export default {
 };
 
 const render = (props?: Partial<SetStepProps>) => () => (
-  <NewBlock name="Set Block">
+  <Block name="Set Block">
     <SetStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const empty = withStepContext()(render({ expressions: [null] }));

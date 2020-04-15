@@ -31,7 +31,7 @@ const spreadOutNodes = (nodes, [centerX, centerY]) =>
   }));
 
 const creatorAdapter = createSimpleAdapter(
-  (diagram, platform, isBlockRedesignEnabled) => {
+  (diagram, platform) => {
     const rootNodes = [];
     const nodes = [];
     const nodeIDs = [];
@@ -40,7 +40,7 @@ const creatorAdapter = createSimpleAdapter(
     const data = {};
 
     const registerNode = (node, parentNode) => {
-      const nodeData = nodeDataAdapter.fromDB(node.extras, node, isBlockRedesignEnabled);
+      const nodeData = nodeDataAdapter.fromDB(node.extras, node);
 
       nodeIDs.push(node.id);
       nodes.push(nodeAdapter.fromDB(node, nodeData, parentNode));
@@ -56,7 +56,7 @@ const creatorAdapter = createSimpleAdapter(
     let diagramNodes = diagram.nodes;
 
     // apply an offset to space out blocks from the old layout
-    if (isBlockRedesignEnabled && !diagram.blockRedesignOffset) {
+    if (!diagram.blockRedesignOffset) {
       const center = findDiagramCenter(diagram.nodes);
 
       diagramNodes = spreadOutNodes(diagram.nodes, center);
@@ -65,36 +65,34 @@ const creatorAdapter = createSimpleAdapter(
     diagramNodes.forEach((node) => {
       let _node = node; // eslint-disable-line no-underscore-dangle
 
-      if (isBlockRedesignEnabled) {
-        const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
-        const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}${node.id}`;
+      const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
+      const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}${node.id}`;
 
-        if (nodeType === BlockType.COMBINED) {
-          _node = {
-            ..._node,
-            ports: [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
-          };
-        } else if (!ROOT_NODES.includes(nodeType)) {
-          const { virtualExtras, ...extras } = node.extras || {};
-          const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}${node.id}`;
+      if (nodeType === BlockType.COMBINED) {
+        _node = {
+          ..._node,
+          ports: [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
+        };
+      } else if (!ROOT_NODES.includes(nodeType)) {
+        const { virtualExtras, ...extras } = node.extras || {};
+        const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}${node.id}`;
 
-          _node = {
-            x: node.x,
-            y: node.y,
-            id: virtualNodeID,
-            name: virtualExtras?.name || node.name || 'Block',
-            extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED], ...virtualExtras },
-            ports: [{ id: virtualExtras?.inPortID || virtualPortID, parentNode: virtualNodeID, in: true, virtual: true }],
-            parentNode: null,
-            combines: [
-              {
-                ...node,
-                extras,
-                parentNode: virtualNodeID,
-              },
-            ],
-          };
-        }
+        _node = {
+          x: node.x,
+          y: node.y,
+          id: virtualNodeID,
+          name: virtualExtras?.name || node.name || 'Block',
+          extras: { type: DB_BLOCK_TYPE_FROM_APP[BlockType.COMBINED], ...virtualExtras },
+          ports: [{ id: virtualExtras?.inPortID || virtualPortID, parentNode: virtualNodeID, in: true, virtual: true }],
+          parentNode: null,
+          combines: [
+            {
+              ...node,
+              extras,
+              parentNode: virtualNodeID,
+            },
+          ],
+        };
       }
 
       rootNodes.push(_node.id);
@@ -106,7 +104,7 @@ const creatorAdapter = createSimpleAdapter(
       }
     });
 
-    const links = linkAdapter.mapFromDB(diagram.links, isBlockRedesignEnabled);
+    const links = linkAdapter.mapFromDB(diagram.links);
     const validLinks = links.filter(
       (link) =>
         nodeIDs.includes(link.source.nodeID) &&
@@ -129,7 +127,7 @@ const creatorAdapter = createSimpleAdapter(
       data,
     };
   },
-  ({ id, viewport, platform, rootNodeIDs, nodes, ports, links, data }, { linksByPortID, isBlockRedesignEnabled }) => {
+  ({ id, viewport, platform, rootNodeIDs, nodes, ports, links, data }, { linksByPortID }) => {
     const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
 
     return {
@@ -137,9 +135,9 @@ const creatorAdapter = createSimpleAdapter(
       offsetX: viewport.x,
       offsetY: viewport.y,
       zoom: viewport.zoom,
-      links: linkAdapter.mapToDB(links, { nodes, isBlockRedesignEnabled }),
-      nodes: nodeAdapter.mapToDB(rootNodes, { nodes, ports, data, linksByPortID, platform, isBlockRedesignEnabled }),
-      blockRedesignOffset: isBlockRedesignEnabled,
+      links: linkAdapter.mapToDB(links, { nodes }),
+      nodes: nodeAdapter.mapToDB(rootNodes, { nodes, ports, data, linksByPortID, platform }),
+      blockRedesignOffset: true,
     };
   }
 );

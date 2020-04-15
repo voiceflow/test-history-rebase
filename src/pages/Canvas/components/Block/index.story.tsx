@@ -1,0 +1,149 @@
+import { select } from '@storybook/addon-knobs';
+import React from 'react';
+
+import { FlexCenter } from '@/components/Flex';
+import { Icon } from '@/components/SvgIcon';
+import { BlockState, BlockVariant } from '@/constants/canvas';
+import { styled } from '@/hocs';
+import Step from '@/pages/Canvas/components/Step';
+import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
+import { StepAPI } from '@/pages/Canvas/types';
+import { identity } from '@/utils/functional';
+
+import Block, { BlockProps } from '.';
+
+const MockStep = styled(FlexCenter)`
+  height: 54px;
+  background-color: #fff;
+`;
+
+const getUserProps = () => ({
+  name: 'Mike',
+  email: 'mike@test.com',
+  role: 'editor',
+  image: 'E760D4|FCEFFB',
+  creator_id: 4,
+  seats: 1,
+  created: null,
+  color: '36B4D2|ECF8FA',
+});
+
+const MOCK_STEPS = (
+  <>
+    <MockStep>Step 1</MockStep>
+    <MockStep>Step 2</MockStep>
+    <MockStep>Step 3</MockStep>
+    <MockStep>Step 4</MockStep>
+    <MockStep>Step 5</MockStep>
+  </>
+);
+
+const MOCK_STEPS_SHORT = (
+  <>
+    <MockStep>Step 1</MockStep>
+    <MockStep>Step 2</MockStep>
+  </>
+);
+
+const getProps = (blockName = 'New Block') => {
+  const [name, setName] = React.useState(blockName);
+  return {
+    updateName: setName,
+    name,
+    children: MOCK_STEPS,
+  };
+};
+
+const getMultiSectionProps = () => ({
+  sections: [
+    {
+      name: 'Section1',
+      icon: 'home' as Icon,
+      children: MOCK_STEPS_SHORT,
+    },
+    {
+      icon: 'home' as Icon,
+      name: 'Section2 Blah blah blah blah blah',
+      children: MOCK_STEPS_SHORT,
+    },
+  ],
+});
+
+const MOCK_STEPS_LOCKED = (
+  <>
+    <StepAPIProvider value={{ wrapElement: identity } as StepAPI}>
+      <Step>Order Pizza</Step>
+    </StepAPIProvider>
+    <StepAPIProvider value={{ lockOwner: getUserProps(), wrapElement: identity } as StepAPI}>
+      <Step>New Order</Step>
+    </StepAPIProvider>
+  </>
+);
+
+const getMultiStepProps = (): Partial<BlockProps> => ({
+  sections: [
+    {
+      name: 'Section 1',
+      icon: 'home',
+      children: MOCK_STEPS_SHORT,
+    },
+    {
+      name: 'Block 1',
+      children: MOCK_STEPS_LOCKED,
+    },
+  ],
+});
+
+export default {
+  title: 'Creator/Block',
+  component: Block,
+};
+
+export const standard = () => <Block {...getProps()} />;
+
+export const blue = () => <Block variant={BlockVariant.BLUE} {...getProps()} />;
+
+export const red = () => <Block variant={BlockVariant.RED} {...getProps()} />;
+
+export const green = () => <Block variant={BlockVariant.GREEN} {...getProps()} />;
+
+export const purple = () => <Block variant={BlockVariant.PURPLE} {...getProps()} />;
+
+export const longName = () => <Block {...getProps()} />;
+
+export const regularState = () => <Block {...getProps()} />;
+
+export const activeState = () => <Block state={BlockState.ACTIVE} {...getProps()} />;
+
+export const selectedState = () => <Block state={BlockState.SELECTED} {...getProps()} />;
+
+export const disabledState = () => <Block state={BlockState.DISABLED} {...getProps()} />;
+
+export const subSections = () => <Block {...getProps()} {...getMultiSectionProps()} />;
+
+export const stateTransitions = () => {
+  const activeState = select(
+    'Active State',
+    {
+      Regular: BlockState.REGULAR,
+      Active: BlockState.ACTIVE,
+      Selected: BlockState.SELECTED,
+      Disabled: BlockState.DISABLED,
+    },
+    BlockState.REGULAR
+  );
+
+  return <Block name="Block 1" state={activeState} {...getProps()} />;
+};
+
+export const blockUserLock = () => (
+  <div style={{ padding: '50px' }}>
+    <Block {...getMultiSectionProps()} lockOwner={getUserProps()} {...getProps()} />
+  </div>
+);
+
+export const stepUserLock = () => (
+  <div style={{ padding: '50px' }}>
+    <Block {...getMultiStepProps()} {...getProps()} />
+  </div>
+);

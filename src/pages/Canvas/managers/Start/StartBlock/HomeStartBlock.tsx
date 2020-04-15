@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { NewBlockAPI } from '@/pages/Canvas/components/Block/NewBlock';
+import { BlockAPI } from '@/pages/Canvas/components/Block';
 
 import BlockWithCommands, { BlockWithCommandsProps } from './components/BlockWithCommands';
 import HomeStartStep, { HomeStartStepProps } from './components/HomeStartStep';
 
 export type HomeStartBlockProps = Omit<BlockWithCommandsProps, 'name' | 'icon'> & HomeStartStepProps;
 
-const HomeStartBlock: React.RefForwardingComponent<{ api: NewBlockAPI }, HomeStartBlockProps> = (
+const HomeStartBlock: React.RefForwardingComponent<{ api: BlockAPI }, HomeStartBlockProps> = (
   { portID, platform, invocationName, children, ...props },
   ref
 ) => (

@@ -3,7 +3,7 @@ import React from 'react';
 import { withStepContext } from '@/../.storybook';
 import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { IntegrationStep, IntegrationStepProps } from '.';
 
@@ -14,9 +14,9 @@ const getProps = (): Omit<IntegrationStepProps, 'data'> => ({
 });
 
 const render = (props: Pick<IntegrationStepProps, 'data'> & Partial<Omit<IntegrationStepProps, 'data'>>) => () => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <IntegrationStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

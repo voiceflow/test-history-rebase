@@ -3,7 +3,7 @@ import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
 import { PLATFORMS, PlatformType } from '@/constants';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { SpeakStep, SpeakStepItem, SpeakStepProps } from '.';
 
@@ -28,9 +28,9 @@ const getProps = () => {
 
 // eslint-disable-next-line sonarjs/no-identical-functions
 const render = (props?: Partial<SpeakStepProps>) => () => (
-  <NewBlock name="Speak Block">
+  <Block name="Speak Block">
     <SpeakStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

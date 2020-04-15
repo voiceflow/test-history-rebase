@@ -7,7 +7,7 @@ import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './
 const isSupportedBlockType = (type) => Object.values(BlockType).includes(type);
 
 const nodeDataAdapter = createSimpleAdapter(
-  (dbData, node, isBlockRedesignEnabled) => {
+  (dbData, node) => {
     let type = APP_BLOCK_TYPE_FROM_DB[dbData.type] || dbData.type;
 
     if (!isSupportedBlockType(type)) {
@@ -36,7 +36,7 @@ const nodeDataAdapter = createSimpleAdapter(
 
     let data = {};
     try {
-      data = blockAdapter[type].fromDB(dbData, isBlockRedesignEnabled);
+      data = blockAdapter[type].fromDB(dbData);
     } catch (err) {
       console.error('Block Adapter Error', err);
       data = dbData;

@@ -1,6 +1,5 @@
 import { BlockType } from '@/constants';
 
-import FlowBlock from './FlowBlock';
 import FlowEditor from './FlowEditor';
 import FlowStep from './FlowStep';
 
@@ -10,7 +9,6 @@ const FlowManager = {
   iconColor: '#3c6997',
 
   editor: FlowEditor,
-  block: FlowBlock,
   step: FlowStep,
 
   label: 'Flow',

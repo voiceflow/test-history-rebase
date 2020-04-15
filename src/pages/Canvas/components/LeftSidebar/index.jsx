@@ -6,8 +6,8 @@ import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useEnableDisable, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasGoHome, CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
-import CanvasControlsV2 from '@/pages/Canvas/components/CanvasControlsV2';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
 
@@ -53,7 +53,7 @@ function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden,
         </Content>
       </Container>
 
-      <CanvasControlsV2 />
+      <CanvasControls />
 
       {!canEdit && <CanvasReadOnly />}
 
@@ -77,7 +77,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   toggleIsHidden: UI.toggleCreatorMenuHidden,
-  selectActiveTab: UI.setOnlyActiveCreatorMenu,
+  selectActiveTab: UI.setActiveCreatorMenu,
 };
 
 const mergeProps = ({ flow: getFlowStructure, activeDiagramID }) => ({

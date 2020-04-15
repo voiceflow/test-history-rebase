@@ -4,36 +4,33 @@ import { getNormalizedByKey } from '@/utils/normalized';
 import { createAdapter } from '../utils';
 
 const linkAdapter = createAdapter(
-  (dbLink, isBlockRedesignEnabled) => ({
+  (dbLink) => ({
     id: dbLink.id,
     source: {
       portID: dbLink.sourcePort,
       nodeID: dbLink.source,
     },
-    target: (isBlockRedesignEnabled && dbLink.virtual) || {
+    target: dbLink.virtual || {
       portID: dbLink.targetPort,
       nodeID: dbLink.target,
     },
   }),
-  (rawAppLink, { nodes, isBlockRedesignEnabled }) => {
+  (rawAppLink, { nodes }) => {
+    const targetNode = getNormalizedByKey(nodes, rawAppLink.target.nodeID);
     let appLink = rawAppLink;
 
-    if (isBlockRedesignEnabled) {
-      const targetNode = getNormalizedByKey(nodes, rawAppLink.target.nodeID);
+    // only apply this transformation to links that terminate at a virtual node
+    if (targetNode.virtual || targetNode.type === BlockType.COMBINED) {
+      const actualTargetNode = getNormalizedByKey(nodes, targetNode.combinedNodes[0]);
 
-      // only apply this transformation to links that terminate at a virtual node
-      if (targetNode.virtual || targetNode.type === BlockType.COMBINED) {
-        const actualTargetNode = getNormalizedByKey(nodes, targetNode.combinedNodes[0]);
-
-        appLink = {
-          ...rawAppLink,
-          target: {
-            nodeID: actualTargetNode.id,
-            portID: actualTargetNode.ports.in[0],
-          },
-          virtual: rawAppLink.target,
-        };
-      }
+      appLink = {
+        ...rawAppLink,
+        target: {
+          nodeID: actualTargetNode.id,
+          portID: actualTargetNode.ports.in[0],
+        },
+        virtual: rawAppLink.target,
+      };
     }
 
     return {

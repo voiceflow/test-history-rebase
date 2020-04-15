@@ -79,14 +79,13 @@ export const BLOCK_OPTIONS: BlockMenuOption[] = [
 
       if (!node) return false;
 
-      return engine.isBlockRedesignEnabled() ? node.type === BlockType.COMBINED : node.type !== BlockType.COMMAND;
+      return node.type === BlockType.COMBINED;
     },
   },
   {
     label: 'Block Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
-    shouldRender: (_, { engine }) => engine.isBlockRedesignEnabled(),
   },
   {
     label: 'Delete Block',

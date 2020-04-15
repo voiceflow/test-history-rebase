@@ -1,5 +1,5 @@
 import { css, styled } from '@/hocs';
-import NewBlockContainer from '@/pages/Canvas/components/Block/NewBlock/components/NewBlockContainer';
+import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type NodeContainerProps = {
@@ -43,7 +43,7 @@ const NodeContainer = styled.div.attrs<NodeContainerProps>(({ position: [left, t
     z-index: 10;
   }
 
-  ${NewBlockContainer} {
+  ${BlockContainer} {
     position: absolute;
     transform: translateX(-50%);
   }

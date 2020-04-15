@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
 import { PlatformType } from '@/constants';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { ExitStep, ExitStepProps } from '.';
 
@@ -16,9 +16,9 @@ export default {
 };
 
 const render = (props?: Partial<ExitStepProps>) => () => (
-  <NewBlock name="Exit Block">
+  <Block name="Exit Block">
     <ExitStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const alexa = withStepContext()(render());

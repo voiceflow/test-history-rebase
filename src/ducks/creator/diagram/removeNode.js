@@ -5,38 +5,28 @@ import { getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
 import { patchNodeInState, removeAllBlocksFromState, removeBlockFromState } from './utils';
 
-export function removeNestedNode(state, node) {
-  const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
-  const index = parentNode.combinedNodes.indexOf(node.id);
-
-  if (parentNode.combinedNodes.length > 2 || parentNode.type === BlockType.START) {
-    const remainingNodeIDs = without(parentNode.combinedNodes, index);
-
-    return compose(
-      patchNodeInState(parentNode.id, {
-        combinedNodes: remainingNodeIDs,
-      }),
-      removeBlockFromState(node)
-    )(state);
-  }
-
-  const remainingNodeID = parentNode.combinedNodes[index === 0 ? 1 : 0];
-
-  return compose(
-    removeBlockFromState(parentNode),
-    removeBlockFromState(node),
-    patchNodeInState(remainingNodeID, {
-      parentNode: null,
-      x: parentNode.x,
-      y: parentNode.y,
-    })
-  )(state);
-}
-
 export function removeCombinedNode(state, node) {
   const combinedNodes = getAllNormalizedByKeys(state.nodes, node.combinedNodes);
 
   return removeAllBlocksFromState([...combinedNodes, node])(state);
+}
+
+export function removeNestedNode(state, node) {
+  const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
+  const index = parentNode.combinedNodes.indexOf(node.id);
+
+  if (parentNode.combinedNodes.length === 1 && parentNode.type !== BlockType.START) {
+    return removeAllBlocksFromState([parentNode, node])(state);
+  }
+
+  const remainingNodeIDs = without(parentNode.combinedNodes, index);
+
+  return compose(
+    patchNodeInState(parentNode.id, {
+      combinedNodes: remainingNodeIDs,
+    }),
+    removeBlockFromState(node)
+  )(state);
 }
 
 export function removeSingleNode(nodeID) {

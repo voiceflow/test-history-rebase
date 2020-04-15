@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { ChoiceStep, ChoiceStepProps } from '.';
 
@@ -26,9 +26,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<ChoiceStepProps>) => () => (
-  <NewBlock name="Choice Block">
+  <Block name="Choice Block">
     <ChoiceStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

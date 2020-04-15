@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { PermissionStep, PermissionStepProps } from '.';
 
@@ -11,9 +11,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<PermissionStepProps>) => () => (
-  <NewBlock name="Permission Block">
+  <Block name="Permission Block">
     <PermissionStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

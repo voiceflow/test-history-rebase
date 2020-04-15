@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { CardStep, CardStepProps } from '.';
 
@@ -19,9 +19,9 @@ export default {
 };
 
 const render = (props?: Partial<CardStepProps>) => () => (
-  <NewBlock name="Card Block">
+  <Block name="Card Block">
     <CardStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const empty = withStepContext()(render({ title: '' }));

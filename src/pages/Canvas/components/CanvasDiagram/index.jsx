@@ -57,7 +57,7 @@ const CanvasDiagram = ({ viewport }) => {
           return;
         }
 
-        engine.mergeV2.clearTarget();
+        engine.merge.clearTarget();
       },
       HOVER_THROTTLE_TIMEOUT,
       { trailing: false }

@@ -1,19 +1,16 @@
-import { BlockCategoryType, FlowTab } from '@/constants';
+import { BlockCategoryType } from '@/constants';
 import * as UI from '@/ducks/ui';
-import { PanelType } from '@/pages/Canvas/components/CanvasMenu/constants';
+import { Tab } from '@/pages/Canvas/components/LeftSidebar/constants';
 
 import suite from './_suite';
 
 const MOCK_STATE = {
   creatorMenu: {
-    activeMenu: PanelType.VARIABLE_PANEL,
+    activeMenu: Tab.FLOWS,
     isHidden: true,
   },
   blockMenu: {
     openSections: [BlockCategoryType.ADVANCED],
-  },
-  flowMenu: {
-    activeTab: FlowTab.FLOW,
   },
   local: {},
 };
@@ -40,31 +37,10 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
 
     describe('setActiveCreatorMenu()', () => {
       it('should open the creator menu and set active panel', () => {
-        expectAction(UI.setActiveCreatorMenu(PanelType.BLOCK_PANEL)).toModify({
+        expectAction(UI.setActiveCreatorMenu(Tab.STEPS)).toModify({
           creatorMenu: {
-            activeMenu: PanelType.BLOCK_PANEL,
-            isHidden: false,
-          },
-        });
-      });
-    });
-
-    describe('setOnlyActiveCreatorMenu()', () => {
-      it('should set the active creator menu panel', () => {
-        expectAction(UI.setOnlyActiveCreatorMenu(PanelType.BLOCK_PANEL)).toModify({
-          creatorMenu: {
-            activeMenu: PanelType.BLOCK_PANEL,
+            activeMenu: Tab.STEPS,
             isHidden: true,
-          },
-        });
-      });
-    });
-
-    describe('setActiveFlowMenuTab()', () => {
-      it('should set the active flow menu tab', () => {
-        expectAction(UI.setActiveFlowMenuTab(FlowTab.STRUCTURE)).toModify({
-          flowMenu: {
-            activeTab: FlowTab.STRUCTURE,
           },
         });
       });
@@ -74,7 +50,7 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
       it('should show the creator menu', () => {
         expectAction(UI.toggleCreatorMenuHidden()).toModify({
           creatorMenu: {
-            activeMenu: PanelType.VARIABLE_PANEL,
+            activeMenu: Tab.FLOWS,
             isHidden: false,
           },
         });
@@ -87,7 +63,7 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
           .withState(menuVisibleState)
           .toModify({
             creatorMenu: {
-              activeMenu: PanelType.VARIABLE_PANEL,
+              activeMenu: Tab.FLOWS,
               isHidden: true,
             },
           });
@@ -104,19 +80,13 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
 
     describe('activeCreatorMenuSelector()', () => {
       it('should select the active creator menu', () => {
-        expect(select(UI.activeCreatorMenuSelector)).to.eq(PanelType.VARIABLE_PANEL);
+        expect(select(UI.activeCreatorMenuSelector)).to.eq(Tab.FLOWS);
       });
     });
 
     describe('isCreatorMenuHiddenSelector()', () => {
       it('should select whether the creator menu is hidden', () => {
         expect(select(UI.isCreatorMenuHiddenSelector)).to.be.true;
-      });
-    });
-
-    describe('activeFlowMenuTabSelector()', () => {
-      it('should select the flow menu tab', () => {
-        expect(select(UI.activeFlowMenuTabSelector)).to.eq(FlowTab.FLOW);
       });
     });
   });

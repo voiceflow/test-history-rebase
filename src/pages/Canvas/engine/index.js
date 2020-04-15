@@ -22,7 +22,6 @@ import FocusEngine from './focusEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MergeEngine from './mergeEngine';
-import MergeEngineV2 from './mergeEngineV2';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
@@ -44,8 +43,6 @@ export class Engine {
   diagram = new DiagramEngine(this);
 
   merge = new MergeEngine(this);
-
-  mergeV2 = new MergeEngineV2(this);
 
   link = new LinkManager(this);
 
@@ -108,8 +105,6 @@ export class Engine {
   getDiagramByID = (diagramID) => this.select(Diagram.diagramByIDSelector)(diagramID);
 
   isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
-
-  isBlockRedesignEnabled = () => this.select(Feature.isBlockRedesignEnabledSelector);
 
   isFeatureEnabled = (featureID) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
@@ -208,18 +203,12 @@ export class Engine {
       await this.drag.set(nodeID);
       await this.node.translate(nodeID, movement);
 
-      if (this.isBlockRedesignEnabled()) {
-        this.mergeV2.updateCandidates();
-      } else {
-        this.merge.updateTarget();
-      }
+      this.merge.updateCandidates();
     }
   }
 
   async dropNode() {
     this.saveActiveLocations();
-
-    this.merge.confirm();
     this.saveHistory();
 
     await this.drag.reset();

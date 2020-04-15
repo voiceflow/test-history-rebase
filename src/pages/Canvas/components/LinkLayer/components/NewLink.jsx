@@ -5,7 +5,7 @@ import { connect } from '@/hocs';
 import LinkHeadMarker from '@/pages/Canvas/components/Link/components/LinkHeadMarker';
 import LinkPath from '@/pages/Canvas/components/Link/components/LinkPath';
 import { buildPath } from '@/pages/Canvas/components/Link/utils';
-import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
+import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { withEngine } from '@/pages/Canvas/contexts';
 import { compose } from '@/utils/functional';
 
@@ -21,7 +21,7 @@ class NewLink extends React.PureComponent {
   };
 
   get virtualPoints() {
-    if (!this.points || !this.props.engine.isBlockRedesignEnabled()) {
+    if (!this.points) {
       return this.points;
     }
 
@@ -92,7 +92,7 @@ class NewLink extends React.PureComponent {
   onMouseUp = (event) => {
     const { engine } = this.props;
 
-    if (engine.isBlockRedesignEnabled() && engine.linkCreation.activeTargetPortID) {
+    if (engine.linkCreation.activeTargetPortID) {
       engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
       event.preventDefault();
     } else if (!engine.linkCreation.isCompleting) {
@@ -115,9 +115,7 @@ class NewLink extends React.PureComponent {
   }
 
   render() {
-    const { engine } = this.props;
     const { isVisible } = this.state;
-    const isBlockRedesignEnabled = engine.isBlockRedesignEnabled();
 
     if (!this.points || !isVisible) {
       return null;
@@ -125,13 +123,10 @@ class NewLink extends React.PureComponent {
 
     const path = buildPath(this.virtualPoints);
 
-    const linkHeadProps = isBlockRedesignEnabled ? { color: '#2c85ff' } : {};
-    const linkProps = isBlockRedesignEnabled ? { strokeColor: '#2c85ff' } : {};
-
     return (
       <g style={{ transform: 'translate3d(0,0,0)' }}>
-        <LinkHeadMarker id="newLink" {...linkHeadProps} />
-        <LinkPath d={path} markerEnd="url(#head-newLink)" ref={this.linkRef} {...linkProps} />
+        <LinkHeadMarker id="newLink" color="#2c85ff" />
+        <LinkPath d={path} markerEnd="url(#head-newLink)" ref={this.linkRef} strokeColor="#2c85ff" />
       </g>
     );
   }

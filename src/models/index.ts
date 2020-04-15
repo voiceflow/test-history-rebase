@@ -3,6 +3,7 @@ export * from './Diagram';
 export * from './Display';
 export * from './Node';
 export * from './NodeData';
+export * from './Port';
 export * from './Product';
 export * from './Project';
 export * from './ProjectList';

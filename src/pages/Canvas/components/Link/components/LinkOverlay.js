@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
 import { STROKE_COLOR } from '../constants';
 
@@ -9,14 +9,6 @@ const LinkOverlay = styled.path`
   fill: transparent;
   pointer-events: auto;
   transition: ease 0.15s all;
-
-  ${({ isHovering, isNewStyle }) =>
-    isHovering &&
-    !isNewStyle &&
-    css`
-      stroke-opacity: 0.1;
-      cursor: pointer;
-    `}
 
   @keyframes dash {
     to {

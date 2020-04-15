@@ -1,8 +1,9 @@
+import { BlockType } from '@/constants';
 import { without } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
-import { patchNodeInState, removeBlockFromState } from './utils';
+import { addBlockToState, buildNewNode, patchNodeInState } from './utils';
 
 const unmergeNodeReducer = (
   state,
@@ -10,46 +11,47 @@ const unmergeNodeReducer = (
     payload: {
       nodeID,
       position: [x, y],
+      parentNodeID,
+      parentPortID,
     },
   }
 ) => {
   const node = getNormalizedByKey(state.nodes, nodeID);
   const parentNode = getNormalizedByKey(state.nodes, node.parentNode);
 
-  if (!parentNode) {
+  if (parentNode?.type !== BlockType.COMBINED) {
     return state;
   }
 
   const index = parentNode.combinedNodes.indexOf(node.id);
+  const remainingNodeIDs = without(parentNode.combinedNodes, index);
 
-  if (parentNode.combinedNodes.length > 2) {
-    const remainingNodeIDs = without(parentNode.combinedNodes, index);
-
-    return compose(
-      patchNodeInState(parentNode.id, {
-        combinedNodes: remainingNodeIDs,
-      }),
-      patchNodeInState(node.id, {
-        parentNode: null,
-        x,
-        y,
-      })
-    )(state);
-  }
-
-  const remainingNodeID = parentNode.combinedNodes[index === 0 ? 1 : 0];
-
-  return compose(
-    removeBlockFromState(parentNode),
-    patchNodeInState(node.id, {
-      parentNode: null,
+  if (remainingNodeIDs.length === 0) {
+    return patchNodeInState(parentNode.id, {
       x,
       y,
+    })(state);
+  }
+
+  const [newParentNode, newRootPorts, newParentNodeData] = buildNewNode(
+    {
+      id: parentNodeID,
+      type: BlockType.COMBINED,
+      x,
+      y,
+      combinedNodes: [node.id],
+      ports: { in: [{ id: parentPortID }], out: [] },
+    },
+    { name: 'Block' }
+  );
+
+  return compose(
+    addBlockToState(newParentNode, newRootPorts, newParentNodeData),
+    patchNodeInState(parentNode.id, {
+      combinedNodes: remainingNodeIDs,
     }),
-    patchNodeInState(remainingNodeID, {
-      parentNode: null,
-      x: parentNode.x,
-      y: parentNode.y,
+    patchNodeInState(node.id, {
+      parentNode: parentNodeID,
     })
   )(state);
 };

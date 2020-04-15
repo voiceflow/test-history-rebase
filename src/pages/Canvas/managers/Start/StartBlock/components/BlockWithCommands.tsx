@@ -1,14 +1,14 @@
 import React from 'react';
 
-import NewBlock, { NewBlockAPI, NewBlockProps } from '@/pages/Canvas/components/Block/NewBlock';
+import Block, { BlockAPI, BlockProps } from '@/pages/Canvas/components/Block';
 import { useStepAPI } from '@/pages/Canvas/components/Node/hooks';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 
 import { BaseStartBlockProps } from '../types';
 
-export type BlockWithCommandsProps = BaseStartBlockProps & Pick<NewBlockProps, 'name' | 'state' | 'icon' | 'lockOwner'>;
+export type BlockWithCommandsProps = BaseStartBlockProps & Pick<BlockProps, 'name' | 'state' | 'icon' | 'lockOwner'>;
 
-const BlockWithCommands: React.RefForwardingComponent<{ api: NewBlockAPI }, React.PropsWithChildren<BlockWithCommandsProps>> = (
+const BlockWithCommands: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChildren<BlockWithCommandsProps>> = (
   { commands, children, ...props },
   ref
 ) => {
@@ -18,9 +18,9 @@ const BlockWithCommands: React.RefForwardingComponent<{ api: NewBlockAPI }, Reac
 
   return (
     <StepAPIProvider value={stepAPI}>
-      <NewBlock {...props} sections={sections} ref={ref}>
+      <Block {...props} sections={sections} ref={ref}>
         {children}
-      </NewBlock>
+      </Block>
     </StepAPIProvider>
   );
 };

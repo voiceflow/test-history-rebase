@@ -143,11 +143,8 @@ const setZapierData = (dataModel, data) => {
 };
 
 const integrationBlockAdapter = createBlockAdapter(
-  (data, isBlockRedesignEnabled) => {
-    const {
-      selected_integration: selectedIntegration = isBlockRedesignEnabled && IntegrationType.CUSTOM_API,
-      integrations_data: integrationsData,
-    } = data;
+  (data) => {
+    const { selected_integration: selectedIntegration = IntegrationType.CUSTOM_API, integrations_data: integrationsData } = data;
 
     if (!selectedIntegration) return {};
 

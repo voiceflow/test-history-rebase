@@ -3,17 +3,14 @@ import cuid from 'cuid';
 import React from 'react';
 
 import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
-import { BlockType, INTERNAL_BLOCKS } from '@/constants';
-import Block from '@/pages/Canvas/components/Block';
+import { BlockType } from '@/constants';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
-import { MergeStatusProvider } from '@/pages/Canvas/components/MergeOverlay/contexts';
 import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 import { withEditPermission, withEngine, withNode, withStaticContextMenu } from '@/pages/Canvas/contexts';
 import { stopPropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
-import GroupNodeRenderer from './components/GroupNodeRenderer';
 import NodeBlock from './components/NodeBlock';
 import Container from './components/NodeContainer';
 import NodeStartBlock from './components/NodeStartBlock';
@@ -154,7 +151,6 @@ export class Node extends React.PureComponent {
     this.holdingShift = false;
 
     await engine.drag.reset();
-    engine.merge.cancel();
   };
 
   onClick = (event) => {
@@ -220,7 +216,7 @@ export class Node extends React.PureComponent {
   }
 
   render() {
-    const { node, engine, isHighlighted, isBlockRedesignEnabled } = this.props;
+    const { node, engine, isHighlighted } = this.props;
     const { newSourceNodeIndex, isDragging, isBlockHighlighted, isMergeTarget, position, positionChanged } = this.state;
     const shouldRender = node.type !== BlockType.COMMAND;
 
@@ -236,7 +232,7 @@ export class Node extends React.PureComponent {
 
     if (node.type === BlockType.COMMENT) {
       nodeEl = <CommentBlock ref={this.blockRef} />;
-    } else if (isBlockRedesignEnabled) {
+    } else {
       const isFocused = engine.focus.isTarget(node.id);
       const isSelected = engine.selection.isTarget(node.id);
 
@@ -254,10 +250,6 @@ export class Node extends React.PureComponent {
       } else if (node.type === BlockType.START) {
         nodeEl = <NodeStartBlock isFocused={isFocused} isSelected={isSelected} ref={this.blockRef} />;
       }
-    } else if (INTERNAL_BLOCKS.includes(node.type)) {
-      nodeEl = <GroupNodeRenderer ref={this.blockRef} />;
-    } else {
-      nodeEl = <Block ref={this.blockRef} />;
     }
 
     return (
@@ -272,7 +264,7 @@ export class Node extends React.PureComponent {
         ref={this.nodeRef}
         tabIndex={-1}
       >
-        <MergeStatusProvider ref={this.mergeContextRef}>{nodeEl}</MergeStatusProvider>
+        {nodeEl}
       </Container>
     );
   }

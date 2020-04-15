@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 
+import { PERIOD, PLANS } from '@/constants';
 import { useSmartReducer } from '@/hooks';
 
 import { STEP_IDS } from './constants';
@@ -10,6 +11,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     closeOnboarding: _.constant(null),
     setCreateWorkspaceMeta: _.constant(null),
     setPersonalizeWorkspaceMeta: _.constant(null),
+    setPaymentMeta: _.constant(null),
     stepBack: _.constant(null),
     stepForward: _.constant(null),
   },
@@ -18,6 +20,9 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     currentStepID: STEP_IDS?.CREATE_WORKSPACE,
     numberOfSteps: 0,
     personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
+    paymentMeta: {
+      period: PERIOD.monthly,
+    },
     stepStack: [],
   },
 });
@@ -38,6 +43,11 @@ export type OnboardingContextProps = {
       channels: string[];
       teamSize: string;
     };
+    paymentMeta: {
+      plan?: string;
+      couponCode?: string;
+      period: string;
+    };
   };
   actions: {
     stepBack: () => null;
@@ -45,19 +55,31 @@ export type OnboardingContextProps = {
     closeOnboarding: () => void;
     setCreateWorkspaceMeta: (data: {}) => void;
     setPersonalizeWorkspaceMeta: (data: {}) => void;
+    setPaymentMeta: (data: {}) => void;
   };
 };
 
 type OnboardingProviderProps = {
+  query?: any;
   numberOfSteps?: number;
   children: React.ReactNode;
 };
 
-export const OnboardingProvider = ({ numberOfSteps = 3, children }: OnboardingProviderProps) => {
+export const OnboardingProvider = ({ query, children }: OnboardingProviderProps) => {
+  const { plan, couponCode, period } = query;
+
+  let numberOfSteps = 3;
+  if (query) numberOfSteps = 4;
+
   const [state, actions] = useSmartReducer({
     stepStack: [STEP_IDS.CREATE_WORKSPACE],
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
+    paymentMeta: {
+      plan: plan || PLANS.pro,
+      couponCode,
+      period: period || PERIOD.monthly,
+    },
     numberOfSteps,
   });
 

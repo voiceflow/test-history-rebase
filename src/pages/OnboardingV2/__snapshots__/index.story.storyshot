@@ -378,6 +378,9 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
           <div
             className="c7"
           />
+          <div
+            className="c7"
+          />
         </div>
         <div
           className="c3"

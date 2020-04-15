@@ -150,3 +150,4 @@ export { default as youtube } from './youtube.svg';
 export { default as noIntents } from './no-intents.svg';
 export { default as noSlots } from './no-slots.svg';
 export { default as reminder } from './reminder.svg';
+export { default as teamGroup } from './team-group.svg';

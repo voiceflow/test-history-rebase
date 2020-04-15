@@ -176,7 +176,7 @@ export const ALEXA_DEFAULT_TAGS = {
   lang: {
     color: '#132144',
     attributes: {
-      level: {
+      'xml:lang': {
         type: 'text',
         validate: () => ({ valid: _constant(true) }),
         required: true,

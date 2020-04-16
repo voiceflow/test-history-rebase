@@ -120,6 +120,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     css`
       cursor: not-allowed;
     `}
+
 `;
 
 export default BlockContainer;

@@ -166,6 +166,10 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
     }
   }, [linkIDs]);
 
+  React.useEffect(() => {
+    engine.node.redrawNestedLinks(nodeID);
+  }, [props.canModify]);
+
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
     hover: _throttle(

@@ -34,6 +34,10 @@ class MergeEngineV2 extends EngineConsumer {
     return !!this.sourceNodeID || !!this.virtualSource;
   }
 
+  get hasVirtualSource() {
+    return !!this.virtualSource;
+  }
+
   get hasTargetStep() {
     return !!this.targetStep;
   }
@@ -109,6 +113,8 @@ class MergeEngineV2 extends EngineConsumer {
 
     if (mergeTarget) {
       this.setTarget(mergeTarget.nodeID, mergeTarget.containsPoint);
+    } else {
+      this.clearTarget();
     }
   }
 

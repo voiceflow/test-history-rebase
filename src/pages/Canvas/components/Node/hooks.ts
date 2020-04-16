@@ -190,6 +190,12 @@ export const useMergeInfo = (index: number) => {
 
   const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID!);
 
+  if (!mergeSource) {
+    return {
+      mustNotBe: true,
+    };
+  }
+
   if (mergeSource.parentNode) {
     const parentNode = engine.getNodeByID(mergeSource.parentNode);
     const sourceIndex = parentNode.combinedNodes.indexOf(mergeSource.id);

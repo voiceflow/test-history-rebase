@@ -68,7 +68,7 @@ const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, link
       <StepAPIProvider value={stepAPI}>
         {nodeAPI.isDragging ? (
           <>
-            <Step.Placeholder variant={variant} />
+            <Step.Placeholder variant={variant} isLast={isLast} />
             <Portal portalNode={engine.merge.mergeLayer!.ref.current!}>
               <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
             </Portal>

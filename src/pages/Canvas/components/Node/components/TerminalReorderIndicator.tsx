@@ -18,7 +18,14 @@ const TerminalReorderIndicator = ({ node, index, onMouseUp, variant }: ReorderIn
   const isActive = !(mustNotBe || mergeTerminator || mustBeFirst);
 
   return (
-    <Step.ReorderIndicator isActive={isActive} onMouseUp={onMouseUp} isHovered={isHovered} captureZoneRef={connectBlockDrop} variant={variant} />
+    <Step.ReorderIndicator
+      isActive={isActive}
+      onMouseUp={onMouseUp}
+      isHovered={isHovered}
+      captureZoneRef={connectBlockDrop}
+      variant={variant}
+      isLast={true}
+    />
   );
 };
 

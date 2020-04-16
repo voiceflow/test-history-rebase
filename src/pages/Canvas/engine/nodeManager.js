@@ -262,13 +262,13 @@ class NodeManager extends EngineConsumer {
     const childID = cuid();
     const combinedPortID = cuid();
 
-    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, childID, nodeID, combinedPortID));
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
-
     batch(() => {
       this.internal.add(augmentedNode, data, childID, nodeID, combinedPortID);
       this.internal.insertNested(parentNodeID, index, nodeID);
     });
+
+    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, childID, nodeID, combinedPortID));
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
 
@@ -276,8 +276,8 @@ class NodeManager extends EngineConsumer {
   }
 
   async insertNested(parentNodeID, index, nodeID) {
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
     this.internal.insertNested(parentNodeID, index, nodeID);
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
   }

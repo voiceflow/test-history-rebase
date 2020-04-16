@@ -72,6 +72,7 @@ export type Engine = {
     targetNodeID: string | null;
     virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null;
     readonly hasSource: boolean;
+    readonly hasVirtualSource: boolean;
 
     mergeLayer: MergeLayerAPI | null;
 

@@ -43,11 +43,11 @@ class DragEngine extends EngineConsumer {
       const target = this.target;
       this.target = null;
 
+      this.engine.node.drop(target);
       this.engine.merge.reset();
 
       await this.engine.node.translate(target, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
-      this.engine.node.drop(target);
     }
 
     if (this.group) {

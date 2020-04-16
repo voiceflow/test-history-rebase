@@ -8,11 +8,7 @@ const SelectionArea = styled.div`
   pointer-events: none;
   border-radius: 5px;
   will-change: left, top, width, height;
-
-  ${({ isBlockRedesignEnabled }) =>
-    isBlockRedesignEnabled && {
-      zIndex: 11,
-    }}
+  z-index: 11;
 `;
 
 export default SelectionArea;

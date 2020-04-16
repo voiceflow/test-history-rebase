@@ -1,10 +1,9 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
-import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
+import { LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 
 import { createAction, createRootSelector } from './utils';
-import * as Workspace from './workspace';
 
 export const STATE_KEY = 'feature';
 export const INITIAL_STATE = {
@@ -56,13 +55,6 @@ export const featureSelector = createSelector(rootSelector, ({ features }) => (f
 export const isFeatureEnabledSelector = createSelector(featureSelector, (getFeature) => (featureID) =>
   LOCAL_FEATURE_OVERRIDES[featureID] || (getFeature(featureID).isEnabled ?? null)
 );
-
-export const isBlockRedesignEnabledSelector = (state) => {
-  const isFeatureEnabled = isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN);
-  const isBetaEnabled = isFeatureEnabledSelector(state)(FeatureFlag.BLOCK_REDESIGN_BETA);
-
-  return isFeatureEnabled || (isBetaEnabled && Workspace.activeWorkspaceSelector(state)?.betaFlag === 1);
-};
 
 export const isLoadedSelector = createSelector(rootSelector, ({ isLoaded }) => isLoaded);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
+import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { withEditPermission, withEngine, withLink, withPlatform } from '@/pages/Canvas/contexts';
 import { compose } from '@/utils/functional';
 
@@ -60,7 +60,7 @@ export class Link extends React.PureComponent {
   }
 
   get virtualPoints() {
-    if (!this.points || !this.props.engine.isBlockRedesignEnabled()) {
+    if (!this.points) {
       return this.points;
     }
 
@@ -123,9 +123,8 @@ export class Link extends React.PureComponent {
   }
 
   render() {
-    const { linkID, points, editPermission, platform, engine, isActive } = this.props;
+    const { linkID, points, editPermission, platform, isActive } = this.props;
     const { isHovering, pointsChanged } = this.state;
-    const isBlockRedesignEnabled = engine.isBlockRedesignEnabled();
 
     if (pointsChanged) {
       this.points = points;
@@ -133,22 +132,14 @@ export class Link extends React.PureComponent {
 
     const path = buildPath(this.virtualPoints);
     const [centerX, centerY] = buildCenter(this.virtualPoints);
-    const linkProps = isBlockRedesignEnabled ? { isNewStyle: true, ...(isHovering && { strokeColor: '#2c85ff' }) } : {};
-    const linkHeadProps = isBlockRedesignEnabled && isHovering ? { color: '#2c85ff' } : {};
-    const linkOverlayProps = isBlockRedesignEnabled ? { isNewStyle: true } : {};
+    const linkProps = isHovering ? { strokeColor: '#2c85ff' } : {};
+    const linkHeadProps = isHovering ? { color: '#2c85ff' } : {};
 
     return (
       <Group isActive={isActive} style={{ visibility: this.matchesPlatform(platform) ? 'visible' : 'hidden' }} ref={this.containerRef}>
         <HeadMarker id={linkID} {...linkHeadProps} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        <Overlay
-          d={path}
-          isHovering={isHovering}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-          {...linkOverlayProps}
-          ref={this.hiddenPathRef}
-        />
+        <Overlay d={path} isHovering={isHovering} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref={this.hiddenPathRef} />
         <Path d={path} markerEnd={`url(#head-${linkID})`} isHovering={isHovering} {...linkProps} ref={this.pathRef} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         {editPermission.canEdit && (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { DisplayStep, DisplayStepProps } from '.';
 
@@ -22,9 +22,9 @@ export default {
 };
 
 const render = (props?: Partial<DisplayStepProps>) => () => (
-  <NewBlock name="Display Block">
+  <Block name="Display Block">
     <DisplayStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const empty = withStepContext()(render({ label: '', image: '' }));

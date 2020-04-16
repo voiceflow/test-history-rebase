@@ -4,6 +4,7 @@ import Button from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
 import Select from '@/components/Select';
+import { StepID } from '@/pages/OnboardingV2/constants';
 import { toggleMembership } from '@/utils/array';
 
 import { OnboardingContext } from '../../context';
@@ -76,6 +77,7 @@ const PersonalizeWorkspace: React.FC = () => {
       channels,
       teamSize,
     });
+    actions.stepForward(StepID.ADD_COLLABORATORS);
   };
 
   return (

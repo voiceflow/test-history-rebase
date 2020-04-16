@@ -22,11 +22,11 @@ export type UpdateDiagramPayload = Omit<CreateDiagramPayload, 'id'> & {
 };
 
 const diagramClient = {
-  getData: (diagramID: string, platform: PlatformType, isBlockRedesignEnabled: boolean) =>
+  getData: (diagramID: string, platform: PlatformType) =>
     fetch
       .get<{ diagram: { data: string; variables?: string[] }; timestamp: number }>(`${DIAGRAM_PATH}/${diagramID}`)
       .then(({ diagram, timestamp }) => ({
-        data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform, isBlockRedesignEnabled),
+        data: creatorAdapter.fromDB(JSON.parse(diagram.data), platform),
         variables: diagram.variables || [],
         timestamp,
       })),

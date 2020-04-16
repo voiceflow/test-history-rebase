@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { RandomStep, RandomStepProps } from '.';
 
@@ -11,9 +11,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<RandomStepProps>) => () => (
-  <NewBlock name="Random Block">
+  <Block name="Random Block">
     <RandomStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

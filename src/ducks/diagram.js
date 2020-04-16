@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import { BlockType } from '@/constants';
-import * as Feature from '@/ducks/feature';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import { hasIdenticalMembers } from '@/utils/array';
 
@@ -32,15 +31,6 @@ const DEFAULT_DIAGRAM = {
       x: 360,
       y: 120,
       extras: {
-        audio: '',
-        audioText: '',
-        audioVoice: '',
-        preview: '',
-        previewText: '',
-        previewVoice: '',
-        prompt: '',
-        promptText: '',
-        promptVoice: '',
         type: 'story',
       },
       ports: [
@@ -171,7 +161,6 @@ export const saveDiagram = (skillID, diagramID, data) => async (dispatch, getSta
 export const saveActiveDiagram = () => async (dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
-  const isBlockRedesignEnabled = Feature.isBlockRedesignEnabledSelector(state);
   const diagramID = Creator.creatorDiagramIDSelector(state);
 
   if (!diagramID) {
@@ -197,7 +186,6 @@ export const saveActiveDiagram = () => async (dispatch, getState) => {
       },
       {
         linksByPortID,
-        isBlockRedesignEnabled,
       }
     )
   );

@@ -48,12 +48,6 @@ module.exports = merge(commonConfig, {
               // TODO: remove when onboarding redesign
               'pages/OnboardingV2/**/*',
 
-              // TODO: remove when releasing step redesign
-              'pages/Canvas/managers/*/*Step/**/*',
-              'pages/Canvas/managers/Start/StartBlock/**/*',
-              'pages/Canvas/managers/Command/CommandStep.tsx',
-              'components/CustomScrollbars/**/*',
-
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'components/CaptionedIconButton/**/*',

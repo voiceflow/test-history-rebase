@@ -33,7 +33,7 @@ const getIcon = (error, complete) => {
   }
 };
 
-export default function StripeCardElement({ onChangeComplete, disabled = false }) {
+export default function StripeCardElement({ onChangeComplete, disabled = false, stripeOnChange }) {
   const cardElementRef = React.useRef();
   const errorMessageRef = React.useRef('message');
   const [error, updateError] = React.useState('');
@@ -59,7 +59,17 @@ export default function StripeCardElement({ onChangeComplete, disabled = false }
           <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />
 
           <StripeCardElementWrapper>
-            <CardElement ref={cardElementRef} style={stripeInputStyle} hideIcon onBlur={disableFocus} onFocus={enableFocus} onChange={onChange} />
+            <CardElement
+              ref={cardElementRef}
+              style={stripeInputStyle}
+              hideIcon
+              onBlur={disableFocus}
+              onFocus={enableFocus}
+              onChange={(meta) => {
+                onChange(meta);
+                stripeOnChange?.(meta);
+              }}
+            />
           </StripeCardElementWrapper>
         </Flex>
       </Wrapper>

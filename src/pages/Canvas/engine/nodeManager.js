@@ -12,10 +12,10 @@ import { EngineConsumer, nodeFactory } from './utils';
 class NodeManager extends EngineConsumer {
   internal = {
     add: (node, data, nodeID, parentNodeID, parentPortID) => {
-      if (this.engine.isBlockRedesignEnabled() && node.type !== BlockType.COMMENT) {
-        this.dispatch(Creator.addNodeV2(node, data, nodeID, parentNodeID, parentPortID));
-      } else {
+      if (node.type === BlockType.COMMENT) {
         this.dispatch(Creator.addNode(node, data, nodeID));
+      } else {
+        this.dispatch(Creator.addWrappedNode(node, data, nodeID, parentNodeID, parentPortID));
       }
     },
 
@@ -27,11 +27,7 @@ class NodeManager extends EngineConsumer {
     },
 
     insertNested: (parentNodeID, index, nodeID) => {
-      if (this.engine.isBlockRedesignEnabled()) {
-        this.dispatch(Creator.insertNestedNodeV2(parentNodeID, index, nodeID));
-      } else {
-        this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
-      }
+      this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
 
       this.redrawNestedLinks(parentNodeID);
     },
@@ -41,11 +37,7 @@ class NodeManager extends EngineConsumer {
 
       this.saveLocation(parentNode);
 
-      if (this.engine.isBlockRedesignEnabled()) {
-        this.dispatch(Creator.unmergeNodeV2(nodeID, position, parentNodeID, parentPortID));
-      } else {
-        this.dispatch(Creator.unmergeNode(nodeID, position));
-      }
+      this.dispatch(Creator.unmergeNode(nodeID, position, parentNodeID, parentPortID));
 
       this.redrawNestedLinks(parentNode);
     },
@@ -70,11 +62,7 @@ class NodeManager extends EngineConsumer {
         this.saveLocation(parentNode);
       }
 
-      if (this.engine.isBlockRedesignEnabled()) {
-        this.dispatch(Creator.removeNodeV2(nodeID));
-      } else {
-        this.dispatch(Creator.removeNode(nodeID));
-      }
+      this.dispatch(Creator.removeNode(nodeID));
     },
 
     removeMany: (nodeIDs) => {
@@ -99,11 +87,7 @@ class NodeManager extends EngineConsumer {
         }
       });
 
-      if (this.engine.isBlockRedesignEnabled()) {
-        this.dispatch(Creator.removeNodesV2(removedIDs));
-      } else {
-        this.dispatch(Creator.removeNodes(removedIDs));
-      }
+      this.dispatch(Creator.removeNodes(removedIDs));
     },
 
     translate: (nodeID, movement) => {
@@ -278,13 +262,13 @@ class NodeManager extends EngineConsumer {
     const childID = cuid();
     const combinedPortID = cuid();
 
-    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, childID, nodeID, combinedPortID));
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
-
     batch(() => {
       this.internal.add(augmentedNode, data, childID, nodeID, combinedPortID);
       this.internal.insertNested(parentNodeID, index, nodeID);
     });
+
+    await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, childID, nodeID, combinedPortID));
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
 
@@ -292,8 +276,8 @@ class NodeManager extends EngineConsumer {
   }
 
   async insertNested(parentNodeID, index, nodeID) {
-    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
     this.internal.insertNested(parentNodeID, index, nodeID);
+    await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
   }
@@ -363,10 +347,9 @@ class NodeManager extends EngineConsumer {
 
   translateAllLinks(nodeID, movement) {
     const node = this.engine.getNodeByID(nodeID);
-    if (this.engine.isBlockRedesignEnabled() && node.type === BlockType.COMBINED) {
+
+    if (node.type === BlockType.COMBINED) {
       [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
-    } else if (node.type === BlockType.COMBINED) {
-      node.combinedNodes.forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
     } else {
       this.translateLinks(nodeID, movement);
     }

@@ -74,26 +74,14 @@ class DiagramEngine extends EngineConsumer {
     let newPosition = [];
 
     if (rootNode.parentNode) {
-      // to handle the case of duplicating Step in block redesign
-      if (this.engine.isBlockRedesignEnabled()) {
-        const parentNode = this.engine.getNodeByID(rootNode.parentNode);
-        const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [nodeID] };
+      const parentNode = this.engine.getNodeByID(rootNode.parentNode);
+      const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [nodeID] };
 
-        entities = this.getParentEntities(rootNode.parentNode, true, nodeOverrides);
-        childEntities = this.getEntities(nodeID, false);
+      entities = this.getParentEntities(rootNode.parentNode, true, nodeOverrides);
+      childEntities = this.getEntities(nodeID, false);
 
-        newPosition = [parentNode.x + DUPLICATE_OFFSET, parentNode.y + DUPLICATE_OFFSET];
-      } else {
-        // to handle the case of duplicating nested block in older version
-        const parentNode = this.engine.getNodeByID(nodeID);
-        const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y };
-
-        entities = this.getEntities(nodeID, true, nodeOverrides);
-        childEntities = this.getChildEntities(nodeID);
-        newPosition = [rootNode.x + DUPLICATE_OFFSET, rootNode.y + DUPLICATE_OFFSET];
-      }
+      newPosition = [parentNode.x + DUPLICATE_OFFSET, parentNode.y + DUPLICATE_OFFSET];
     } else {
-      // to handle all the other cases
       entities = this.getEntities(nodeID, true, null);
       childEntities = this.getChildEntities(nodeID);
       newPosition = [rootNode.x + DUPLICATE_OFFSET, rootNode.y + DUPLICATE_OFFSET];

@@ -7,7 +7,7 @@ import { ThemeContext } from 'styled-components';
 
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useEnableDisable, useHover, useTeardown } from '@/hooks';
-import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
+import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EditPermissionContext, EngineContext, ManagerContext, useNode } from '@/pages/Canvas/contexts';
 import { NodeAPI, PortAPI, StepAPI } from '@/pages/Canvas/types';
@@ -100,7 +100,7 @@ export const useStepAPI = <T extends HTMLElement>(
 
           const handleMouseUp = async (event: MouseEvent) => {
             if (!event.defaultPrevented) {
-              await engine.mergeV2.unmerge();
+              await engine.merge.unmerge();
             }
 
             await engine.drag.reset();
@@ -173,14 +173,14 @@ export const useMergeInfo = (index: number) => {
   const engine = React.useContext(EngineContext)!;
   const { node } = useNode();
 
-  if (!node || !engine.mergeV2.hasSource) {
+  if (!node || !engine.merge.hasSource) {
     return {
       mustNotBe: true,
     };
   }
 
-  if (engine.mergeV2.virtualSource) {
-    const { type } = engine.mergeV2.virtualSource;
+  if (engine.merge.virtualSource) {
+    const { type } = engine.merge.virtualSource;
 
     return {
       mustBeFirst: type === BlockType.INTENT,
@@ -188,7 +188,13 @@ export const useMergeInfo = (index: number) => {
     };
   }
 
-  const mergeSource = engine.getNodeByID(engine.mergeV2.sourceNodeID!);
+  const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID!);
+
+  if (!mergeSource) {
+    return {
+      mustNotBe: true,
+    };
+  }
 
   if (mergeSource.parentNode) {
     const parentNode = engine.getNodeByID(mergeSource.parentNode);
@@ -223,7 +229,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     hover: _throttle(
       () => {
         if (!isHoveredLocal.current) {
-          engine.mergeV2.setTargetStep(index, () => {
+          engine.merge.setTargetStep(index, () => {
             isHoveredLocal.current = false;
             setHovered(false);
           });
@@ -238,7 +244,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
 
     drop: (_, monitor) => {
       const newNodeID = cuid();
-      const { type, factoryData } = engine.mergeV2.virtualSource!;
+      const { type, factoryData } = engine.merge.virtualSource!;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;
 
@@ -250,7 +256,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
         nodeID: newNodeID,
         position,
         factoryData,
-        parentNodeID: engine.mergeV2.targetNodeID!,
+        parentNodeID: engine.merge.targetNodeID!,
       });
 
       return { captured: true };

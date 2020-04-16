@@ -34,7 +34,6 @@ export const itemStyles = css`
      css`
        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
      `}
-   
   }
   
    ${({ active }) =>

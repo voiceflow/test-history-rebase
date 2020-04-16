@@ -47,7 +47,7 @@ class ClipboardEngine extends EngineConsumer {
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
 
       // Block includes all the nodes - parent and nested
-      const copiedBlocks = this.engine.isBlockRedesignEnabled() ? copiedNodes.filter((node) => node.type === BlockType.COMBINED) : copiedNodes;
+      const copiedBlocks = copiedNodes.filter((node) => node.type === BlockType.COMBINED);
 
       const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out]));
 
@@ -95,7 +95,7 @@ class ClipboardEngine extends EngineConsumer {
         base64.encodeObject({
           data: encryptedData,
           key: keyToStore,
-          version: this.engine.isBlockRedesignEnabled() ? ClipboardVersion.V2 : ClipboardVersion.V1,
+          version: ClipboardVersion.V2,
         })
       );
 
@@ -107,7 +107,7 @@ class ClipboardEngine extends EngineConsumer {
 
       const { data, key, version } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
 
-      if (version !== (this.engine.isBlockRedesignEnabled() ? ClipboardVersion.V2 : ClipboardVersion.V1)) {
+      if (version !== ClipboardVersion.V2) {
         throw new Error('cliboard version mismatch');
       }
 
@@ -139,12 +139,9 @@ class ClipboardEngine extends EngineConsumer {
   };
 
   copy(unfilteredNodeIDs) {
-    let nodeIDs = unfilteredNodeIDs;
-    if (this.engine.isBlockRedesignEnabled()) {
-      nodeIDs = nodeIDs.filter((nodeID) => this.engine.getNodeByID(nodeID).type === BlockType.COMBINED);
+    const nodeIDs = unfilteredNodeIDs.filter((nodeID) => this.engine.getNodeByID(nodeID).type === BlockType.COMBINED);
 
-      if (!nodeIDs.length) return;
-    }
+    if (!nodeIDs.length) return;
 
     const [keyToCopy, keyToStore, keyToEncrypt] = synchronousCrypto.generateEncryptedKeys();
 

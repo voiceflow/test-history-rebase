@@ -29,13 +29,7 @@ class DragEngine extends EngineConsumer {
     if (target !== this.target) {
       await this.reset();
 
-      const isBlockRedesignEnabled = this.engine.isBlockRedesignEnabled();
-      if (isBlockRedesignEnabled) {
-        this.engine.mergeV2.initialize(target);
-      } else {
-        this.engine.merge.generatePredicates(target);
-      }
-
+      this.engine.merge.initialize(target);
       this.engine.node.drag(target);
 
       this.target = target;
@@ -49,13 +43,11 @@ class DragEngine extends EngineConsumer {
       const target = this.target;
       this.target = null;
 
-      if (this.engine.isBlockRedesignEnabled()) {
-        this.engine.mergeV2.reset();
-      }
+      this.engine.node.drop(target);
+      this.engine.merge.reset();
 
       await this.engine.node.translate(target, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
-      this.engine.node.drop(target);
     }
 
     if (this.group) {

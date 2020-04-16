@@ -17,10 +17,10 @@ const Item = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) 
     item: { type: DragItem.BLOCK_MENU, icon, label, iconColor, blockType: type, factoryData },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     begin: () => {
-      eventualEngine.get()?.mergeV2.setVirtualSource(type, factoryData);
+      eventualEngine.get()?.merge.setVirtualSource(type, factoryData);
     },
     end: () => {
-      eventualEngine.get()?.mergeV2.reset();
+      eventualEngine.get()?.merge.reset();
     },
   });
 

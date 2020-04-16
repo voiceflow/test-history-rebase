@@ -4,7 +4,7 @@ import { CanvasAPI } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { withContext } from '@/hocs';
-import { LockOwnerType, Node, NodeData } from '@/models';
+import { LockOwnerType, Node, NodeData, Port } from '@/models';
 import { MergeLayerAPI, NodeAPI, PortAPI } from '@/pages/Canvas/types';
 import { AnyAction } from '@/store/types';
 
@@ -12,8 +12,8 @@ export type Engine = {
   getLinkIDsByPortID: (portID: string) => string[];
   hasLinksByNodeID: (nodeID: string) => boolean;
   getNodeByID: (nodeID: string) => Node;
+  getPortByID: (nodeID: string) => Port;
   isFeatureEnabled: (featureID: FeatureFlag) => boolean;
-  isBlockRedesignEnabled: () => boolean;
 
   registerPort: (portID: string, api: PortAPI) => void;
   expirePort: (portID: string, instanceID: string) => void;
@@ -67,11 +67,12 @@ export type Engine = {
     reset: () => Promise<void>;
   };
 
-  mergeV2: {
+  merge: {
     sourceNodeID: string | null;
     targetNodeID: string | null;
     virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null;
     readonly hasSource: boolean;
+    readonly hasVirtualSource: boolean;
 
     mergeLayer: MergeLayerAPI | null;
 

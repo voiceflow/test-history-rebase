@@ -5,7 +5,7 @@ import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { LINK_WIDTH } from '@/pages/Canvas/components/PortV2/constants';
+import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeInjectedProps, PlatformContext, useNodeData, withNode } from '@/pages/Canvas/contexts';
@@ -68,8 +68,8 @@ const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, link
       <StepAPIProvider value={stepAPI}>
         {nodeAPI.isDragging ? (
           <>
-            <Step.Placeholder height={stepAPI.ref.current!.clientHeight} variant={variant} />
-            <Portal portalNode={engine.mergeV2.mergeLayer!.ref.current!}>
+            <Step.Placeholder variant={variant} isLast={isLast} />
+            <Portal portalNode={engine.merge.mergeLayer!.ref.current!}>
               <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
             </Portal>
           </>

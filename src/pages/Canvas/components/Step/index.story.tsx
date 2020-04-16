@@ -3,7 +3,7 @@ import React from 'react';
 import { withStepContext } from '@/../.storybook';
 import { StepLabelVariant } from '@/constants/canvas';
 
-import NewBlock from '../Block/NewBlock';
+import Block from '../Block';
 import Step, { BaseStepProps, ElseItem, FailureItem, Item, ItemProps, Section, SuccessItem } from '.';
 
 const getProps = () => ({
@@ -17,13 +17,13 @@ export default {
 };
 
 const render = (props?: Partial<ItemProps> & Partial<BaseStepProps>) => () => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <Step image={props?.image}>
       <Section>
         <Item {...getProps()} {...props} />
       </Section>
     </Step>
-  </NewBlock>
+  </Block>
 );
 
 export const primary = withStepContext()(render({ label: 'Primary Step' }));
@@ -43,7 +43,7 @@ export const withImage = withStepContext()(render({ image: 'https://picsum.photo
 export const withUserLock = withStepContext({ lockOwner: true })(render());
 
 export const withMultipleSections = withStepContext({ isConnected: true })(() => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <Step>
       <Section>
         <Item icon="code" iconColor="red" {...getProps()} />
@@ -56,22 +56,22 @@ export const withMultipleSections = withStepContext({ isConnected: true })(() =>
         <Item {...getProps()} />
       </Section>
     </Step>
-  </NewBlock>
+  </Block>
 ));
 
 export const withElse = withStepContext()(() => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <Step>
       <Section>
         <Item icon="code" iconColor="red" {...getProps()} />
       </Section>
       <ElseItem />
     </Step>
-  </NewBlock>
+  </Block>
 ));
 
 export const withSuccessFail = withStepContext()(() => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <Step>
       <Section>
         <Item {...getProps()} />
@@ -81,11 +81,11 @@ export const withSuccessFail = withStepContext()(() => (
         <SuccessItem {...getProps()} />
       </Section>
     </Step>
-  </NewBlock>
+  </Block>
 ));
 
 export const withCustomSuccessFail = withStepContext({ isConnected: true })(() => (
-  <NewBlock name="Block">
+  <Block name="Block">
     <Step>
       <Section>
         <Item {...getProps()} />
@@ -95,5 +95,5 @@ export const withCustomSuccessFail = withStepContext({ isConnected: true })(() =
         <SuccessItem label="Successfully Cancelled" {...getProps()} />
       </Section>
     </Step>
-  </NewBlock>
+  </Block>
 ));

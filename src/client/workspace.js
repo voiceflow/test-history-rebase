@@ -53,6 +53,8 @@ const workspaceClient = {
   updateInvite: (workspaceID, email, role) => fetch.patch(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   sendInvite: (workspaceID, email, role) => fetch.post(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
+
+  checkCoupon: (coupon) => fetch.get(`${WORKSPACES_PATH}/coupon/${coupon}`),
 };
 
 export default workspaceClient;

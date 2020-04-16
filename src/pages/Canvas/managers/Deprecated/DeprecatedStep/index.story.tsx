@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import DeprecatedStep, { DeprecatedStepProps } from '.';
 
@@ -15,9 +15,9 @@ const getProps = () => {
 };
 
 const render = (props?: Partial<DeprecatedStepProps>) => (
-  <NewBlock name="Deprecated">
+  <Block name="Deprecated">
     <DeprecatedStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

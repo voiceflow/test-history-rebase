@@ -8,7 +8,7 @@ import { BlockState, BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useEnableDisable, useHover } from '@/hooks';
-import Block, { HEADER_HEIGHT, NewBlockAPI } from '@/pages/Canvas/components/Block/NewBlock';
+import Block, { BlockAPI, HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
 import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
 import { EngineContext, NodeIDProvider, NodeInjectedProps, useNodeData, withNode } from '@/pages/Canvas/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
@@ -41,7 +41,7 @@ const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { i
   return BlockState.REGULAR;
 };
 
-const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: NewBlockAPI }>) => {
+const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: BlockAPI }>) => {
   const isTransitioning = React.useRef(false);
   const { data } = useNodeData();
 
@@ -166,6 +166,10 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
     }
   }, [linkIDs]);
 
+  React.useEffect(() => {
+    engine.node.redrawNestedLinks(nodeID);
+  }, [props.canModify]);
+
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,
     hover: _throttle(
@@ -174,8 +178,8 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
           return;
         }
 
-        engine.mergeV2.clearTargetStep();
-        engine.mergeV2.setTarget(nodeID);
+        engine.merge.clearTargetStep();
+        engine.merge.setTarget(nodeID);
       },
       HOVER_THROTTLE_TIMEOUT,
       { trailing: false }

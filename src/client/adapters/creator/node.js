@@ -67,7 +67,7 @@ const nodeAdapter = createAdapter(
       { in: [], out: [] }
     ),
   }),
-  (appNode, { nodes, ports, data, linksByPortID, platform, isBlockRedesignEnabled }) => {
+  (appNode, { nodes, ports, data, linksByPortID, platform }) => {
     const node = {
       ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
       ...(appNode.combinedNodes.length && {
@@ -86,7 +86,7 @@ const nodeAdapter = createAdapter(
       }),
     };
 
-    if (!isBlockRedesignEnabled || node.type !== BlockType.COMBINED || node.combines?.length !== 1) {
+    if (node.type !== BlockType.COMBINED || node.combines?.length !== 1) {
       return node;
     }
 

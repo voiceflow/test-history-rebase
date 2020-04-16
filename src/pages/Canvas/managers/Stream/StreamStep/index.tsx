@@ -3,8 +3,8 @@ import React from 'react';
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
-import { usePortFilter } from '@/pages/Canvas/components/PortSet/hooks';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { usePortFilter } from '@/pages/Canvas/hooks';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 export type StreamStepProps = {

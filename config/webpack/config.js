@@ -14,7 +14,6 @@ const {
   debugHttp,
   debugRealtime,
   debugSocket,
-  ff_blockRedesign,
   ff_testToolV2,
 } = require('webpack-nano/argv');
 
@@ -47,7 +46,6 @@ module.exports = {
     TRACKING_ENABLED: tracking && 'true',
 
     // feature flags
-    FF_BLOCK_REDESIGN: ff_blockRedesign && 'true',
     FF_TEST_TOOL_V2: ff_testToolV2 && 'true',
 
     API_HOST: 'localhost',

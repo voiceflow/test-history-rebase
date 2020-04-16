@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { UserInfoStep, UserInfoStepProps } from '.';
 
@@ -13,9 +13,9 @@ const getProps = () => ({
 });
 
 const render = (props?: Partial<UserInfoStepProps>) => () => (
-  <NewBlock name="User Info Block">
+  <Block name="User Info Block">
     <UserInfoStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export default {

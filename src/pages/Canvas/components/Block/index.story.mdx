@@ -1,0 +1,48 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Block from '.';
+
+<Meta title="Creator/Block" component={Block} />
+
+# New Block
+
+A component to represent a block of steps in a conversational flow.
+
+## Variants
+
+<Preview>
+  <Story name="standard">{stories.standard()}</Story>
+  <Story name="blue">{stories.blue()}</Story>
+  <Story name="red">{stories.red()}</Story>
+  <Story name="green">{stories.green()}</Story>
+  <Story name="purple">{stories.purple()}</Story>
+  <Story name="long name">{stories.longName()}</Story>
+  <Story name="multiple sub sections">{stories.subSections()}</Story>
+</Preview>
+
+## States
+
+<Preview>
+  <Story name="regular state">{stories.regularState()}</Story>
+  <Story name="active state">{stories.activeState()}</Story>
+  <Story name="selected state">{stories.selectedState()}</Story>
+  <Story name="disabled state">{stories.disabledState()}</Story>
+</Preview>
+
+## State Transitions
+
+<Preview>
+  <Story name="state transitions">{stories.stateTransitions()}</Story>
+</Preview>
+
+## Real-time locks
+
+<Preview>
+  <Story name="block user lock">{stories.blockUserLock()}</Story>
+</Preview>
+
+<Preview>
+  <Story name="step user lock">{stories.stepUserLock()}</Story>
+</Preview>

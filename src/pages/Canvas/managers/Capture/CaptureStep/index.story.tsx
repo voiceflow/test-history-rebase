@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { CaptureStep, CaptureStepProps } from '.';
 
@@ -17,9 +17,9 @@ export default {
 };
 
 const render = (props?: Partial<CaptureStepProps>) => () => (
-  <NewBlock name="Capture Block">
+  <Block name="Capture Block">
     <CaptureStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const empty = withStepContext()(render({ fromVariable: '', toVariable: '' }));

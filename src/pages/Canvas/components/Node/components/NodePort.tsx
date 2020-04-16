@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePortSubscription } from '@/pages/Canvas/components/PortV2/hooks';
+import { usePortSubscription } from '@/pages/Canvas/components/Port/hooks';
 
 import { usePortAPI } from '../hooks';
 

@@ -2,7 +2,7 @@
 
 import { BlockType } from '@/constants';
 
-import { createSimpleAdapter, identityAdapter } from '../../utils';
+import { createSimpleAdapter } from '../../utils';
 import accountLinkingBlockAdapter from './accountLinking';
 import cancelPaymentBlockAdapter from './cancelPayment';
 import captureBlockAdapter from './capture';
@@ -45,7 +45,10 @@ export const DB_BLOCK_TYPE_FROM_APP = BLOCK_TYPE_MAPPING.reduce((acc, [key, valu
 
 const blockAdapter = {
   // internal
-  [BlockType.START]: identityAdapter,
+  [BlockType.START]: createSimpleAdapter(
+    () => ({}),
+    () => ({})
+  ),
   [BlockType.COMMAND]: commandBlockAdapter,
   [BlockType.COMBINED]: createSimpleAdapter(
     () => ({}),

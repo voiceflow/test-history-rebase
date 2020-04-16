@@ -644,25 +644,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   margin-right: 14px;
 }
 
-.c40 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c40:hover {
-  background-color: #becedc;
-}
-
-.c39 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c49 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -717,6 +698,25 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 
 .c50:hover {
   color: #62778c;
+}
+
+.c40 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c40:hover {
+  background-color: #becedc;
+}
+
+.c39 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c52 {
@@ -2535,25 +2535,6 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   margin-right: 14px;
 }
 
-.c40 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c40:hover {
-  background-color: #becedc;
-}
-
-.c39 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c49 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2608,6 +2589,25 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 
 .c50:hover {
   color: #62778c;
+}
+
+.c40 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c40:hover {
+  background-color: #becedc;
+}
+
+.c39 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c52 {
@@ -4291,6 +4291,62 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   margin-right: 14px;
 }
 
+.c32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  -webkit-transition: left 150ms ease;
+  transition: left 150ms ease;
+  z-index: 20;
+  padding: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c33 {
+  background: #fff;
+  color: #8da2b5;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 13px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
+  animation: fadein 0.3s ease,movein 0.3s ease;
+}
+
+.c33 > *:first-child {
+  margin-right: 5px;
+}
+
+.c33:hover {
+  color: #62778c;
+}
+
 .c17 {
   border-radius: 1.5px;
   background-color: #dfe3ed;
@@ -4375,62 +4431,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   position: relative;
   width: 100%;
   overflow-x: hidden;
-}
-
-.c32 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: absolute;
-  left: 20px;
-  top: 2px;
-  -webkit-transition: left 150ms ease;
-  transition: left 150ms ease;
-  z-index: 20;
-  padding: 16px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c33 {
-  background: #fff;
-  color: #8da2b5;
-  box-shadow: 0 0 1px 1px rgba(17,49,96,0.06),0 2px 4px 0 rgba(17,49,96,0.08);
-  -webkit-transition: all 0.1s ease;
-  transition: all 0.1s ease;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 13px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px 8px 4px 6px;
-  border-radius: 5px;
-  cursor: pointer;
-  -webkit-animation: fadein 0.3s ease,movein 0.3s ease;
-  animation: fadein 0.3s ease,movein 0.3s ease;
-}
-
-.c33 > *:first-child {
-  margin-right: 5px;
-}
-
-.c33:hover {
-  color: #62778c;
 }
 
 .c35 {
@@ -5837,25 +5837,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   margin-right: 14px;
 }
 
-.c47 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c47:hover {
-  background-color: #becedc;
-}
-
-.c46 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c56 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5910,6 +5891,25 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 
 .c57:hover {
   color: #62778c;
+}
+
+.c47 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c47:hover {
+  background-color: #becedc;
+}
+
+.c46 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c59 {
@@ -8094,25 +8094,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   margin-right: 14px;
 }
 
-.c42 {
-  border-radius: 1.5px;
-  background-color: #dfe3ed;
-  cursor: pointer;
-  -webkit-transition: background-color 0.15s ease;
-  transition: background-color 0.15s ease;
-}
-
-.c42:hover {
-  background-color: #becedc;
-}
-
-.c41 {
-  width: 3px !important;
-  top: 0;
-  right: 6px;
-  bottom: 0;
-}
-
 .c51 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -8167,6 +8148,25 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 
 .c52:hover {
   color: #62778c;
+}
+
+.c42 {
+  border-radius: 1.5px;
+  background-color: #dfe3ed;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+
+.c42:hover {
+  background-color: #becedc;
+}
+
+.c41 {
+  width: 3px !important;
+  top: 0;
+  right: 6px;
+  bottom: 0;
 }
 
 .c54 {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStepContext } from '@/../.storybook';
-import NewBlock from '@/pages/Canvas/components/Block/NewBlock';
+import Block from '@/pages/Canvas/components/Block';
 
 import { CancelPaymentStep, CancelPaymentStepProps } from '.';
 
@@ -18,9 +18,9 @@ export default {
 };
 
 const render = (props?: Partial<CancelPaymentStepProps>) => () => (
-  <NewBlock name="Cancel Payment Block">
+  <Block name="Cancel Payment Block">
     <CancelPaymentStep {...getProps()} {...props} />
-  </NewBlock>
+  </Block>
 );
 
 export const empty = withStepContext()(render());

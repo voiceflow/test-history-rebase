@@ -1,9 +1,7 @@
 import { BlockType } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
 import { getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createAdapter } from '../utils';
-import { VIRTUAL_NODE_ID_PREFIX, VIRTUAL_PORT_ID_PREFIX } from './constants';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
@@ -67,55 +65,23 @@ const nodeAdapter = createAdapter(
       { in: [], out: [] }
     ),
   }),
-  (appNode, { nodes, ports, data, linksByPortID, platform }) => {
-    const node = {
-      ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
-      ...(appNode.combinedNodes.length && {
-        combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
-          ...convertNodeForDB(
-            childNode,
-            ports,
-            data,
-            linksByPortID,
-            platform,
-            index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id
-          ),
-          parentNode: appNode.id,
-          combines: null,
-        })),
-      }),
-    };
-
-    if (node.type !== BlockType.COMBINED || node.combines?.length !== 1) {
-      return node;
-    }
-
-    // TODO: extra convolution can hopefully be removed once database size constraints are removed / altered
-    const { color } = node.extras;
-    const childNode = node.combines[0];
-    const inPortID = node.ports?.[0].id;
-    const virtualExtras = {
-      // ignore the default value
-      color: color === BlockVariant.REGULAR ? undefined : color,
-      // ignore redundant value
-      name: node.name === childNode.name ? undefined : node.name,
-      // ignore reproducable values
-      id: node.id === `${VIRTUAL_NODE_ID_PREFIX}${childNode.id}` ? undefined : node.id,
-      inPortID: inPortID === `${VIRTUAL_PORT_ID_PREFIX}${childNode.id}` ? undefined : inPortID,
-    };
-
-    return {
-      ...childNode,
-      name: childNode.name,
-      parentNode: undefined,
-      x: node.x,
-      y: node.y,
-      extras: {
-        ...childNode.extras,
-        virtualExtras: Object.keys(virtualExtras).some((key) => virtualExtras[key]) ? virtualExtras : undefined,
-      },
-    };
-  }
+  (appNode, { nodes, ports, data, linksByPortID, platform }) => ({
+    ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
+    ...(appNode.combinedNodes.length && {
+      combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
+        ...convertNodeForDB(
+          childNode,
+          ports,
+          data,
+          linksByPortID,
+          platform,
+          index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id
+        ),
+        parentNode: appNode.id,
+        combines: null,
+      })),
+    }),
+  })
 );
 
 export default nodeAdapter;

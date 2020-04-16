@@ -83,8 +83,9 @@ export const addManyNodesReducer = (
     },
   }
 ) => {
-  const nodeXs = nodesWithData.map(({ node: { x } }) => x);
-  const nodeYs = nodesWithData.map(({ node: { y } }) => y);
+  const combinedNodes = nodesWithData.filter(({ node }) => node.type === BlockType.COMBINED);
+  const nodeXs = combinedNodes.map(({ node: { x } }) => x);
+  const nodeYs = combinedNodes.map(({ node: { y } }) => y);
   const minX = Math.min(...nodeXs);
   const maxX = Math.max(...nodeXs);
   const minY = Math.min(...nodeYs);

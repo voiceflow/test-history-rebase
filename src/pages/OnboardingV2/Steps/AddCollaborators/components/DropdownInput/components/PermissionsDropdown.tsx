@@ -1,0 +1,70 @@
+import _ from 'lodash';
+import React from 'react';
+
+import BaseDropdown from '@/components/Dropdown';
+import BaseMenu, { MenuItem as BaseMenuItem } from '@/components/Menu';
+import { SectionToggleVariant } from '@/components/Section';
+import Icon from '@/components/SvgIcon';
+import { UserRole } from '@/constants';
+import { styled } from '@/hocs';
+
+import DropdownButton from './DropdownButton';
+
+// types
+const Menu: any = BaseMenu;
+const MenuItem: any = BaseMenuItem;
+
+type PermissionDropdownProps = {
+  options?: { value: UserRole; label: string }[];
+  onSelect?: (value: UserRole) => void;
+  onRemove?: () => void;
+  selectedValue: UserRole;
+  orientation: string;
+  hasError?: boolean;
+  isDisabled?: boolean;
+};
+
+// styled components
+const Dropdown: any = styled(BaseDropdown)`
+  border-left: 0;
+`;
+
+const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
+  options = [],
+  onSelect,
+  onRemove,
+  selectedValue,
+  orientation,
+  hasError,
+  isDisabled,
+}) => {
+  const dropdownValue =
+    selectedValue === UserRole.ADMIN ? { value: UserRole.EDITOR, label: 'OWNER' } : options.filter((option) => option.value === selectedValue)?.[0];
+
+  return (
+    <Dropdown
+      orientation={orientation}
+      noScroll={true}
+      menu={
+        <Menu>
+          {options.map(({ label, value }, index) => (
+            <MenuItem key={index} onClick={() => onSelect?.(value)}>
+              {label}
+            </MenuItem>
+          ))}
+          <MenuItem divider />
+          <MenuItem onClick={onRemove}>Remove</MenuItem>
+        </Menu>
+      }
+    >
+      {(ref: any, onToggle: () => void) => (
+        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _.constant(null) : onToggle} error={hasError}>
+          {dropdownValue?.label}
+          {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={7} />}
+        </DropdownButton>
+      )}
+    </Dropdown>
+  );
+};
+
+export default PermissionsDropdown;

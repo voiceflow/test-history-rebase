@@ -6,28 +6,22 @@ import { SectionToggleVariant } from '@/components/Section';
 import Icon from '@/components/SvgIcon';
 import { css, styled } from '@/hocs';
 
-import DropdownButton from './components/DropdownButton';
-import InputGroupAddon from './components/InputGroupAddon';
-import TextInput from './components/TextInput';
-import TextInputContainer from './components/TextInputContainer';
+import { DropdownButton, InputGroupAddon, TextInput, TextInputContainer } from './components';
 import { OrientationType } from './constants';
 
 export * from './constants';
 
-const Container = styled(InputGroup)`
+export const Container = styled(InputGroup)`
   position: relative;
   flex-wrap: nowrap;
   flex: 1;
-
   & ${DropdownButton}, ${TextInput} {
     transition: border-color 0.15s ease;
   }
-
   :focus-within {
     & ${DropdownButton}, ${TextInput} {
       border-color: #5d9df5 !important;
     }
-
     & ${TextInput} {
       ${({ orientation }) =>
         orientation === OrientationType.RIGHT

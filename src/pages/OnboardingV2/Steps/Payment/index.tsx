@@ -14,6 +14,7 @@ import { PERIOD, PERIOD_NAME } from '@/constants';
 import { withStripe } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
+import { OnboardingProps } from '@/pages/OnboardingV2/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 
 import {
@@ -35,13 +36,12 @@ import {
 const DropdownComponent: any = Dropdown;
 const PeriodDropdown: any = BillingDropdown;
 
-const Payment: React.FC<{ stripe: any; checkChargeable: any }> = ({ stripe, checkChargeable }) => {
+const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }> = ({ stripe, checkChargeable }) => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
+  const { collaborators } = state.addCollaboratorMeta;
 
-  // TODO: get the number of invited members, this is just a placeholder
-  // const numberOfSeats = state.addCollaboratorsMeta?.members?.length || 2;
-  const numberOfSeats = 2;
+  const numberOfSeats = collaborators.length || [];
 
   const [usingCoupon, toggleCoupon] = useToggle(false);
   const [coupon, setCoupon] = React.useState(couponCode || '');

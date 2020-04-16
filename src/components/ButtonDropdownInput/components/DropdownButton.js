@@ -6,18 +6,15 @@ import { OrientationType } from '../constants';
 
 const DropdownButton = styled.button`
   ${inputStyle}
-
   color: #62778c;
   font-weight: 600;
   font-size: 13px;
   height: auto;
   box-shadow: none;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: ease all 0.15s;
-
   ${({ orientation }) =>
     orientation === OrientationType.RIGHT
       ? css`
@@ -34,18 +31,15 @@ const DropdownButton = styled.button`
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}
-
   ${SvgIcon.Container} {
     margin-left: 5px;
     margin-top: 2px;
   }
-
   ${({ active }) =>
     active &&
     css`
       color: #5d9df5;
     `}
-
   :active,
   :focus,
   :focus-within {
@@ -53,7 +47,6 @@ const DropdownButton = styled.button`
     box-shadow: none !important;
     border-color: #d2dae2 !important;
   }
-
   :hover {
     color: #5d9df5 !important;
   }

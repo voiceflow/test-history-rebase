@@ -5,7 +5,6 @@ import { OrientationType } from '../constants';
 
 const TextInput = styled(Input)`
   box-shadow: none !important;
-
   ${({ orientation }) =>
     orientation === OrientationType.RIGHT
       ? `

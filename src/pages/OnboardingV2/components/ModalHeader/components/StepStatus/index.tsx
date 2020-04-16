@@ -1,7 +1,7 @@
 import { times } from 'lodash';
 import React, { useContext } from 'react';
 
-import { STEP_IDS, STEP_META } from '@/pages/OnboardingV2/constants';
+import { STEP_META, StepID } from '@/pages/OnboardingV2/constants';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
 import Container from './components/Container';
@@ -11,7 +11,7 @@ import Title from './components/Title';
 const StepStatus: React.FC = () => {
   const { state } = useContext(OnboardingContext);
   const { numberOfSteps, currentStepID, stepStack, paymentMeta } = state;
-  const titleMeta = currentStepID === STEP_IDS.PAYMENT ? paymentMeta.plan : undefined;
+  const titleMeta = currentStepID === StepID.PAYMENT ? paymentMeta.plan : undefined;
 
   return (
     <Container>

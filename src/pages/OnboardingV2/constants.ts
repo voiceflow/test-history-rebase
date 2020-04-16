@@ -1,11 +1,10 @@
-import React from 'react';
+/* eslint-disable lodash/prefer-constant */
+/* eslint-disable import/prefer-default-export */
 
-import AddCollaborators from './Steps/AddCollaborators';
-import CreateWorkspace from './Steps/CreateWorkspace';
-import Payment from './Steps/Payment';
-import PersonalizeWorkspace from './Steps/PersonalizeWorkspace';
+import { AddCollaborators, CreateWorkspace, Payment, PersonalizeWorkspace } from './Steps';
+import { OnboardingProps } from './types';
 
-export enum STEP_IDS {
+export enum StepID {
   CREATE_WORKSPACE = 'create_workspace',
   PERSONALIZE_WORKSPACE = 'personalize_workspace',
   ADD_COLLABORATORS = 'add_collaborators',
@@ -13,50 +12,46 @@ export enum STEP_IDS {
   JOIN_WORKSPACE = 'join_workspace',
 }
 
-export const STEP_META: Record<
-  STEP_IDS,
-  {
-    title: (val?: string) => string;
-    canBack: boolean;
-    canSkip: boolean;
-    skipTo: STEP_IDS | null;
-    component: React.FC<any> | React.ForwardRefExoticComponent<React.RefAttributes<any>> | null;
-  }
-> = {
-  [STEP_IDS.CREATE_WORKSPACE]: {
-    // eslint-disable-next-line lodash/prefer-constant
+export type StepMetaPropsType = {
+  title: (val?: string) => string;
+  canBack: boolean;
+  canSkip: boolean;
+  skipTo: StepID | null;
+  component: React.FC<OnboardingProps> | React.ForwardRefExoticComponent<React.RefAttributes<OnboardingProps>> | null;
+};
+
+export type StepMetaProps = Record<StepID, StepMetaPropsType>;
+
+export const STEP_META: StepMetaProps = {
+  [StepID.CREATE_WORKSPACE]: {
     title: () => 'Create Workspace',
     canBack: true,
     canSkip: true,
-    skipTo: STEP_IDS.PERSONALIZE_WORKSPACE,
-
+    skipTo: StepID.PERSONALIZE_WORKSPACE,
     component: CreateWorkspace,
   },
-  [STEP_IDS.PERSONALIZE_WORKSPACE]: {
-    // eslint-disable-next-line lodash/prefer-constant
+  [StepID.PERSONALIZE_WORKSPACE]: {
     title: () => 'Personalize Workspace',
     canBack: true,
     canSkip: true,
-    skipTo: STEP_IDS.PAYMENT,
+    skipTo: StepID.ADD_COLLABORATORS,
     component: PersonalizeWorkspace,
   },
-  [STEP_IDS.ADD_COLLABORATORS]: {
-    // eslint-disable-next-line lodash/prefer-constant
+  [StepID.ADD_COLLABORATORS]: {
     title: () => 'Add Collaborators',
     canBack: true,
     canSkip: true,
-    skipTo: null,
+    skipTo: StepID.PAYMENT,
     component: AddCollaborators,
   },
-  [STEP_IDS.PAYMENT]: {
+  [StepID.PAYMENT]: {
     title: (plan) => `Sign up for ${plan}`,
     canBack: true,
     canSkip: false,
     skipTo: null,
     component: Payment,
   },
-  [STEP_IDS.JOIN_WORKSPACE]: {
-    // eslint-disable-next-line lodash/prefer-constant
+  [StepID.JOIN_WORKSPACE]: {
     title: () => 'Join Workspace',
     canBack: true,
     canSkip: true,

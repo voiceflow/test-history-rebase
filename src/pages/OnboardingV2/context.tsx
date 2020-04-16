@@ -4,35 +4,13 @@ import React from 'react';
 import { PERIOD, PLANS } from '@/constants';
 import { useSmartReducer } from '@/hooks';
 
-import { STEP_IDS } from './constants';
-
-export const OnboardingContext = React.createContext<OnboardingContextProps>({
-  actions: {
-    closeOnboarding: _.constant(null),
-    setCreateWorkspaceMeta: _.constant(null),
-    setPersonalizeWorkspaceMeta: _.constant(null),
-    setPaymentMeta: _.constant(null),
-    stepBack: _.constant(null),
-    stepForward: _.constant(null),
-  },
-  state: {
-    createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    currentStepID: STEP_IDS?.CREATE_WORKSPACE,
-    numberOfSteps: 0,
-    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
-    paymentMeta: {
-      period: PERIOD.monthly,
-    },
-    stepStack: [],
-  },
-});
-
-export const { Consumer: OnboardingConsumer } = OnboardingContext;
+import { StepID } from './constants';
+import { CollaboratorType } from './types';
 
 export type OnboardingContextProps = {
   state: {
-    stepStack: STEP_IDS[];
-    currentStepID: STEP_IDS;
+    stepStack: StepID[];
+    currentStepID: StepID;
     numberOfSteps: number;
     createWorkspaceMeta: {
       workspaceName: string;
@@ -48,16 +26,46 @@ export type OnboardingContextProps = {
       couponCode?: string;
       period: string;
     };
+    addCollaboratorMeta: {
+      isDemoBooked: boolean;
+      collaborators: CollaboratorType[];
+    };
   };
   actions: {
     stepBack: () => null;
-    stepForward: (stepID: STEP_IDS | null) => void;
+    stepForward: (stepID: StepID | null) => void;
     closeOnboarding: () => void;
     setCreateWorkspaceMeta: (data: {}) => void;
     setPersonalizeWorkspaceMeta: (data: {}) => void;
     setPaymentMeta: (data: {}) => void;
+    setAddCollaboratorMeta: (data: {}) => void;
   };
 };
+
+export const OnboardingContext = React.createContext<OnboardingContextProps>({
+  actions: {
+    closeOnboarding: _.constant(null),
+    setCreateWorkspaceMeta: _.constant(null),
+    setPersonalizeWorkspaceMeta: _.constant(null),
+    setPaymentMeta: _.constant(null),
+    stepBack: _.constant(null),
+    stepForward: _.constant(null),
+    setAddCollaboratorMeta: _.constant(null),
+  },
+  state: {
+    createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
+    currentStepID: StepID?.CREATE_WORKSPACE,
+    numberOfSteps: 0,
+    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
+    stepStack: [],
+    addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
+    paymentMeta: {
+      period: PERIOD.monthly,
+    },
+  },
+});
+
+export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
 type OnboardingProviderProps = {
   query?: any;
@@ -72,7 +80,7 @@ export const OnboardingProvider = ({ query, children }: OnboardingProviderProps)
   if (query) numberOfSteps = 4;
 
   const [state, actions] = useSmartReducer({
-    stepStack: [STEP_IDS.CREATE_WORKSPACE],
+    stepStack: [StepID.CREATE_WORKSPACE],
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
     paymentMeta: {
@@ -80,13 +88,14 @@ export const OnboardingProvider = ({ query, children }: OnboardingProviderProps)
       couponCode,
       period: period || PERIOD.monthly,
     },
+    addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
     numberOfSteps,
   });
 
   const { stepStack } = state;
   const { setStepStack } = actions;
 
-  const stepForward = (stepID: STEP_IDS | null) => {
+  const stepForward = (stepID: StepID | null) => {
     if (!stepStack.includes(stepID)) {
       setStepStack([stepID, ...stepStack]);
     }

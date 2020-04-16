@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import ClickableText from '@/components/Text/ClickableText';
 import { JustIconUpload } from '@/components/Upload/ImageUpload/IconUpload';
-import { STEP_IDS } from '@/pages/OnboardingV2/constants';
+import { StepID } from '@/pages/OnboardingV2/constants';
 
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
@@ -25,7 +25,7 @@ const CreateWorkspace: React.FC = () => {
       workspaceName,
       workspaceImage,
     });
-    stepForward(STEP_IDS.PERSONALIZE_WORKSPACE);
+    stepForward(StepID.PERSONALIZE_WORKSPACE);
   };
 
   return (

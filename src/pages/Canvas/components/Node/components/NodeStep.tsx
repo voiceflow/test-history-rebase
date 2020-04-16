@@ -60,7 +60,7 @@ const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, link
     }
   }, [nodeAPI.isDragging]);
 
-  if (!node) return null;
+  if (!node || !data) return null;
 
   return (
     <>

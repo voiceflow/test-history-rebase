@@ -263,7 +263,7 @@ export const startTest = (diagramID, line = null) => (dispatch, getState) => {
   dispatch(
     updateTest({
       status: TEST_STATUS.ACTIVE,
-      startTime: Date.now() / 1000,
+      startTime: Date.now(),
       state: newTestState,
     })
   );

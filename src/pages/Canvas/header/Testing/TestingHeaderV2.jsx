@@ -7,7 +7,7 @@ import { connect } from '@/hocs';
 import TestingShare from '@/pages/TestingV2/components/TestingShare';
 
 import { SubTitleGroup } from '../ActionGroup/styled';
-import TestTimer from './TestingTimer';
+import TestTimer from './TestingTimerV2';
 import { SeparatorDot } from './styled';
 
 function TestingHeader({ goToCurrentCanvas, status }) {

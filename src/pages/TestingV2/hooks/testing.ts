@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { EventualEngineContext } from '@/contexts';
 import { setError } from '@/ducks/modal';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
-import { Context, TestStatus, fetchContext, testingNLCSelector, testingVariablesSelector } from '@/ducks/testingV2';
+import { Context, TestStatus, fetchContext, testingNLCSelector, testingVariablesSelector, updateTestingStatus } from '@/ducks/testingV2';
 
 import TestTool from '../TestTool';
 import { Interaction, Message, TMStatus } from '../types';
@@ -53,10 +53,16 @@ const useTesting = (
       setStatus(null);
       updateMessages([]);
       testing.stop();
-    } else {
+    } else if (testToolStatus === TestStatus.ACTIVE) {
       testing.start();
     }
   }, [testToolStatus]);
+
+  React.useEffect(() => {
+    if (status === TMStatus.ENDED) {
+      dispatch(updateTestingStatus(TestStatus.ENDED));
+    }
+  }, [status]);
 
   React.useEffect(() => () => testing.stop(), []);
 

@@ -1,26 +1,37 @@
-import hotkeys, { KeyHandler } from 'hotkeys-js';
-import { useCallback, useEffect } from 'react';
+import Mousetrap from 'mousetrap';
+import { useEffect, useMemo } from 'react';
 
 import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
 
-type Options = {
-  scope?: string;
-  element?: HTMLElement | null;
-  keyup?: boolean | null;
-  keydown?: boolean | null;
-  splitKey?: string;
+export type Options = null | {
+  action?: 'keypress' | 'keydown' | 'keyup';
+  preventDefault?: boolean;
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export function useHotKeys(key: Hotkey, callback: KeyHandler, deps: any[] = [], options?: Options) {
-  const memoisedCallback = useCallback(callback, deps);
+export function useHotKeys(key: Hotkey, callback: (e: KeyboardEvent) => void | boolean, options: Options = {}, deps: any[] = []) {
+  const memoisedCallback = useMemo(
+    () => (e: KeyboardEvent) => {
+      if (!options?.preventDefault) {
+        return callback(e);
+      }
+
+      e.preventDefault();
+      callback(e);
+
+      return false;
+    },
+    deps
+  );
 
   useEffect(() => {
+    const action = options?.action || 'keydown';
     const keys = HOTKEY_MAPPING[key];
-    const keysStr = Array.isArray(keys) ? keys.join(',') : keys;
 
-    options ? hotkeys(keysStr, options, memoisedCallback) : hotkeys(keysStr, memoisedCallback);
+    Mousetrap.bind(keys, memoisedCallback, action);
 
-    return () => hotkeys.unbind(keysStr, memoisedCallback);
+    return () => {
+      Mousetrap.unbind(keys, action);
+    };
   }, [memoisedCallback]);
 }

@@ -7,7 +7,6 @@ import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { preventDefault } from '@/utils/dom';
 
 import CanvasViewers from './CanvasViewers';
 
@@ -44,18 +43,9 @@ const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDi
     [goToCurrentCanvas, goToTestDiagram, goToPublish]
   );
 
-  useHotKeys(
-    Hotkey.PROTOTYPE_PAGE,
-    preventDefault(() => goToTestDiagram())
-  );
-  useHotKeys(
-    Hotkey.DESIGN_PAGE,
-    preventDefault(() => goToCurrentCanvas())
-  );
-  useHotKeys(
-    Hotkey.BUILD_PAGE,
-    preventDefault(() => goToPublish())
-  );
+  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToTestDiagram());
+  useHotKeys(Hotkey.DESIGN_PAGE, () => goToCurrentCanvas());
+  useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
 
   return (
     <>

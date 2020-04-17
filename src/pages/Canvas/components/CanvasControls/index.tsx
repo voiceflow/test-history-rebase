@@ -4,7 +4,7 @@ import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
-import { useHotKeys, useModals } from '@/hooks';
+import { useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
@@ -12,6 +12,7 @@ import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from '.
 const ZOOM_DELTA = 15;
 
 const CanvasControls: React.FC = () => {
+  const [, trackingEventsWrapper] = useTrackingEvents();
   const { open } = useModals(ModalType.INTERACTION_MODEL);
 
   const eventualEngine = React.useContext(EventualEngineContext)!;
@@ -31,7 +32,7 @@ const CanvasControls: React.FC = () => {
   }, [eventualEngine]);
 
   // this callback is needed to do not store event object in the modals context
-  const onOpenCMS = React.useCallback(() => open(), []);
+  const onOpenCMS = React.useCallback(() => trackingEventsWrapper(open, 'trackCanvasControlInteractionModel')(), []);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });

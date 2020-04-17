@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withModalContext } from '@/../.storybook';
+import { composeDecorators, withModalContext, withRedux } from '@/../.storybook';
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
@@ -16,7 +16,7 @@ export default {
 
 // eslint-disable-next-line react/display-name
 const createStory = () =>
-  composeDecorators(withModalContext(ModalType.INTERACTION_MODEL), (Component: React.FC) => (
+  composeDecorators(withRedux(), withModalContext(ModalType.INTERACTION_MODEL), (Component: React.FC) => (
     <TextEditorVariablesPopoverProvider value={document.body}>
       <EventualEngineProvider>
         <ShortcutModalProvider>

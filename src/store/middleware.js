@@ -23,7 +23,6 @@ import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
-import createTrackingMiddleware from './tracking';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const CREATOR_HISTORY_ACTIONS = [Creator.UNDO_HISTORY, Creator.REDO_HISTORY];
@@ -190,7 +189,6 @@ const createMiddleware = (history) => {
       }),
       [Skill.SET_ACTIVE_SKILL, VariableSet.REPLACE_VARIABLE_SET_DIAGRAM, Creator.INITIALIZE_CREATOR, Creator.RESET_CREATOR]
     ),
-    ...createTrackingMiddleware(),
   ];
 
   if (LOGROCKET_ENABLED) {

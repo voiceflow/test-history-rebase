@@ -3,6 +3,7 @@ import React from 'react';
 
 import { BlockType, IntegrationType, NO_EDITOR_BLOCKS } from '@/constants';
 import { MousePositionContext } from '@/contexts';
+import { useDidUpdateEffect, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import MANAGERS from '@/pages/Canvas/managers';
 
@@ -37,6 +38,7 @@ const Spotlight = () => {
   const { isVisible, hide } = React.useContext(SpotlightContext) || {};
   const mousePosition = React.useContext(MousePositionContext);
   const engine = React.useContext(EngineContext);
+  const [trackingEvents] = useTrackingEvents();
 
   const addBlock = async (blockType, factoryData) => {
     const position = engine.canvas.transformPoint(mousePosition.current);
@@ -45,6 +47,12 @@ const Spotlight = () => {
     await engine.node.add(newNodeID, blockType, position, factoryData);
     hide();
   };
+
+  useDidUpdateEffect(() => {
+    if (isVisible) {
+      trackingEvents.trackCanvasSpotlightOpened();
+    }
+  }, [isVisible]);
 
   if (!isVisible) {
     return null;

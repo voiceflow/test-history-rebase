@@ -4,6 +4,7 @@ import { recentTestingSelector } from '@/ducks/recent';
 import { activeLocalesSelector } from '@/ducks/skill';
 import { TestStatus, resetTesting, startTesting, testingStatusSelector } from '@/ducks/testingV2';
 import { connect } from '@/hocs';
+import { useTrackingEvents } from '@/hooks';
 
 import { Container, Dialog, Input, Reset, Start } from './components';
 import { useTesting } from './hooks';
@@ -19,6 +20,7 @@ export type TestingProps = {
 };
 
 const Testing: React.FC<TestingProps> = ({ locale, status, isPublic, startTesting, resetTesting, debug }) => {
+  const [, trackEventsWrapper] = useTrackingEvents();
   const [testMachineStatus, messages, interactions, onInteraction, onPlay] = useTesting(status, debug);
 
   const checkTMStatus = React.useCallback((...args: TMStatus[]) => args.includes(testMachineStatus as TMStatus), [testMachineStatus]);
@@ -26,7 +28,7 @@ const Testing: React.FC<TestingProps> = ({ locale, status, isPublic, startTestin
   if (status === TestStatus.IDLE) {
     return (
       <Container isPublic={isPublic}>
-        <Start start={() => startTesting()} />
+        <Start start={() => (isPublic ? startTesting() : trackEventsWrapper(startTesting, 'trackActiveProjectPrototypeTestStart')())} />
       </Container>
     );
   }

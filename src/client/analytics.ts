@@ -3,29 +3,21 @@ import fetch from './fetch';
 const ANALYTICS_PATH = 'analytics';
 
 const analyticsClient = {
-  trackCanvasTime: (workspaceID: string, projectID: string, skillID: string, duration: number) =>
-    fetch.post(`${ANALYTICS_PATH}/track_canvas_time`, {
-      duration,
-      workspace_id: workspaceID,
-      project_id: projectID,
-      skill_id: skillID,
-    }),
+  track: <P extends {}, K extends keyof P>(
+    event: string,
+    { hashed, teamhashed, properties = {} as P }: { hashed?: K[]; teamhashed?: K[]; properties?: P } = {}
+  ) => {
+    fetch.post(`${ANALYTICS_PATH}/track`, {
+      event,
+      hashed,
+      teamhashed,
+      properties,
+    });
+  },
 
-  trackInvitationSent: (workspaceID: string, email: string) =>
-    fetch.post(`${ANALYTICS_PATH}/track_invitation_sent`, { email, workspace_id: workspaceID }),
-
-  trackInvitationCancelled: (workspaceID: string, email: string) =>
-    fetch.post(`${ANALYTICS_PATH}/track_invitation_cancelled`, { email, workspace_id: workspaceID }),
-
-  trackInvitationAccepted: (workspaceID: string, email: string) =>
-    fetch.post(`${ANALYTICS_PATH}/track_invitation_accepted`, { email, workspace_id: workspaceID }),
-
-  trackProjectOpened: (workspaceID: string, projectID: string, skillID: string) =>
-    fetch.post(`${ANALYTICS_PATH}/track_project_opened`, {
-      workspace_id: workspaceID,
-      project_id: projectID,
-      skill_id: skillID,
-    }),
+  identify: (traits: {}) => {
+    fetch.post(`${ANALYTICS_PATH}/identify`, { traits });
+  },
 };
 
 export default analyticsClient;

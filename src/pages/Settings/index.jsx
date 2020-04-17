@@ -5,12 +5,21 @@ import Modal, { ModalHeader } from '@/components/LegacyModal';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useDidUpdateEffect, useTrackingEvents } from '@/hooks';
 import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 
 import { ButtonGroupRouterContainer } from './components';
 import { SETTINGS_ROUTES, SettingsRoute } from './constants';
 
 const SettingsModal = ({ open, toggle, type = SettingsRoute.BASIC, setType }) => {
+  const [trackingEvents] = useTrackingEvents();
+
+  useDidUpdateEffect(() => {
+    if (open) {
+      trackingEvents.trackActiveProjectSettingsOpened();
+    }
+  }, [open]);
+
   return (
     <Modal isOpen={open} toggle={toggle}>
       <LockedResourceOverlay type={Realtime.ResourceType.SETTINGS} disabled={!open}>

@@ -18,7 +18,7 @@ import { EditPermissionContext } from '@/pages/Canvas/contexts';
 import TestSettings from './components/TestingSettings';
 import Timeline from './components/Timeline';
 
-const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, render }) => {
+const Testing = ({ status, isPublic, renderTest, resetTest, userTest, saveActiveDiagram, render }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [rendering, enableRendering, disableRendering] = useEnableDisable(!!render);
   const { isTesting: isOpen } = React.useContext(EditPermissionContext);
@@ -85,7 +85,7 @@ const Testing = ({ status, renderTest, resetTest, userTest, saveActiveDiagram, r
                 <Spinner name="Test" />
               </FlexCenter>
             ) : (
-              <Timeline toggleConditions={toggleSettingsOpen} />
+              <Timeline isPublic={isPublic} toggleConditions={toggleSettingsOpen} />
             ))}
         </div>
       </div>

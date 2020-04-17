@@ -103,7 +103,7 @@ class UserTesting extends React.Component {
         {!this.state.loading && (
           <div id="PublicUserTesting">
             <EditPermissionProvider isTesting={true}>
-              <Testing />
+              <Testing isPublic />
             </EditPermissionProvider>
           </div>
         )}

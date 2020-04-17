@@ -3,7 +3,8 @@ import React from 'react';
 import IconButton from '@/components/IconButton';
 import Select from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
-import { useEnableDisable, useHotKeys } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ShortcutModalContext } from '@/pages/Canvas/contexts';
 
@@ -16,21 +17,35 @@ type Resource = Omit<StaticResource, 'link'> & {
 };
 
 const ResourcesDropdown: React.FC = () => {
+  const [trackEvents] = useTrackingEvents();
   const [isOpen, onOpen, onClose] = useEnableDisable(false);
   const shortcutModal = React.useContext(ShortcutModalContext)!;
 
   const resources: Resource[] = React.useMemo(
-    () => [...STATIC_RESOURCES, { label: 'Shortcuts', icon: 'shortcuts', onClick: shortcutModal.toggle } as Resource],
+    () => [
+      ...STATIC_RESOURCES,
+      {
+        icon: 'shortcuts',
+        label: 'Shortcuts',
+        onClick: shortcutModal.toggle,
+        resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,
+      } as Resource,
+    ],
     [shortcutModal.toggle]
   );
 
-  const onSelect = React.useCallback((option: Resource) => {
-    if (option.link) {
-      window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
-    } else {
-      option.onClick?.();
-    }
-  }, []);
+  const onSelect = React.useCallback(
+    (option: Resource) => {
+      trackEvents.trackCanvasControlHelpMenuResource({ resource: option.resourceName });
+
+      if (option.link) {
+        window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
+      } else {
+        option.onClick?.();
+      }
+    },
+    [trackEvents]
+  );
 
   useHotKeys(Hotkey.OPEN_RESOURCES_DROPDOWN, onOpen, { preventDefault: true });
 

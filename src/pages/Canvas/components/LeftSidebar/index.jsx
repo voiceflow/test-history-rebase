@@ -2,9 +2,10 @@ import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
+import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useEnableDisable, useHotKeys } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasGoHome, CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
@@ -17,6 +18,7 @@ import { TABS, Tab } from './constants';
 function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden, selectActiveTab }) {
   const { canEdit, isTesting } = React.useContext(EditPermissionContext);
   const selectedTab = React.useMemo(() => (Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS), [activeTab]);
+  const [events] = useTrackingEvents();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
   const showFlowControls = !isTesting && !isRootDiagram && flow;
 
@@ -39,6 +41,10 @@ function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden,
   );
 
   useHotKeys(Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK, toggleIsHidden, { preventDefault: true });
+
+  useDidUpdateEffect(() => {
+    events.trackCanvasMenuLock({ state: isHidden ? Tracking.CanvasMenuLockState.UNLOCKED : Tracking.CanvasMenuLockState.LOCKED });
+  }, [isHidden]);
 
   const isOpen = (!isHidden || isOpenByHover) && canEdit;
 

@@ -7,6 +7,7 @@ import * as Tracking from '@/ducks/tracking';
 import { useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ShortcutModalContext } from '@/pages/Canvas/contexts';
+import { preventDefault } from '@/utils/dom';
 
 import { STATIC_RESOURCES, StaticResource } from '../../constants';
 import { OptionLabel } from './components';
@@ -47,7 +48,7 @@ const ResourcesDropdown: React.FC = () => {
     [trackEvents]
   );
 
-  useHotKeys(Hotkey.OPEN_RESOURCES_DROPDOWN, onOpen, { preventDefault: true });
+  useHotKeys(Hotkey.OPEN_RESOURCES_DROPDOWN, preventDefault(onOpen));
 
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

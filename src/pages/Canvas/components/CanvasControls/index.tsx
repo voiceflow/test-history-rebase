@@ -6,6 +6,7 @@ import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { preventDefault } from '@/utils/dom';
 
 import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
 
@@ -34,10 +35,10 @@ const CanvasControls: React.FC = () => {
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(() => trackingEventsWrapper(open, 'trackCanvasControlInteractionModel')(), []);
 
-  useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
-  useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
-  useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
-  useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
+  useHotKeys(Hotkey.OPEN_CMS_MODAL, preventDefault(onOpenCMS));
+  useHotKeys(Hotkey.ZOOM_IN, preventDefault(onZoomIn));
+  useHotKeys(Hotkey.ZOOM_OUT, preventDefault(onZoomOut));
+  useHotKeys(Hotkey.ROOT_NODE, preventDefault(onFocusHome));
 
   return (
     <Container>

@@ -9,6 +9,7 @@ import { setError } from '@/ducks/modal';
 import { recentTestingSelector } from '@/ducks/recent';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
 import { TEST_STATUS, endTest, fetchState, resetTest, startTest, testSelector, userTestSelector } from '@/ducks/testing';
+import { trackActiveProjectPrototypeTestStart } from '@/ducks/tracking';
 import { connect } from '@/hocs';
 import { TestAction } from '@/pages/Testing/constants';
 import { getUserTestOutputs } from '@/pages/Testing/utils';
@@ -246,7 +247,7 @@ class Timeline extends Component {
   };
 
   render() {
-    const { settings, test, resetTest, startTest, locales = [] } = this.props;
+    const { isPublic, settings, test, resetTest, startTest, locales = [], trackActiveProjectPrototypeTestStart } = this.props;
     const { outputs, loading, options } = this.state;
 
     if (test.status === TEST_STATUS.IDLE) {
@@ -255,7 +256,17 @@ class Timeline extends Component {
           <div>
             <img src="/Testing.svg" alt="user" width="80" />
             <div className="text-muted mb-4 mt-3">Start test to see the dialog transcription</div>
-            <Button icon="forward" onClick={() => startTest()} className="d-inline-flex">
+            <Button
+              icon="forward"
+              onClick={() => {
+                if (!isPublic) {
+                  trackActiveProjectPrototypeTestStart();
+                }
+
+                startTest();
+              }}
+              className="d-inline-flex"
+            >
               Start Test
             </Button>
           </div>
@@ -296,6 +307,7 @@ const mapDispatchToProps = {
   setError,
   startTest,
   enterFlow: updateDiagramID,
+  trackActiveProjectPrototypeTestStart,
 };
 
 export default compose(withEventualEngine, connect(mapStateToProps, mapDispatchToProps))(Timeline);

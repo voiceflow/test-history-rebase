@@ -8,7 +8,6 @@
     }
   },
   "dependencies": {
-    "@redux-beacon/segment": "^1.1.0",
     "@seznam/compose-react-refs": "^1.0.2",
     "@types/chai": "^4.2.11",
     "@types/classnames": "^2.2.10",
@@ -48,6 +47,7 @@
     "draft-js-plugins-editor": "3.0.0",
     "eventemitter3": "^4.0.0",
     "history": "^4.9.0",
+    "hotkeys-js": "^3.7.6",
     "html-parse-stringify": "^1.0.3",
     "idb-keyval": "^3.2.0",
     "immutability-helper": "^2.9.0",
@@ -62,7 +62,6 @@
     "moize": "^5.4.4",
     "moment": "^2.22.2",
     "mouse-event-offset": "^3.0.2",
-    "mousetrap": "^1.6.5",
     "number-to-words": "^1.2.4",
     "object-hash": "^2.0.3",
     "pathfinding": "^0.4.18",
@@ -109,7 +108,6 @@
     "reactstrap": "^6.5.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
-    "redux-beacon": "^2.1.0",
     "redux-form": "^8.2.6",
     "redux-persist": "^5.10.0",
     "redux-persist-cookie-storage": "^1.0.0",

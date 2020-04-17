@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useToggle } from '@/hooks';
 
-export type ShortcutModalContextType = { isEnabled: boolean; toggle: Function };
+export type ShortcutModalContextType = { isEnabled: boolean; toggle: () => void };
 
 export const ShortcutModalContext = React.createContext<ShortcutModalContextType | null>(null);
 export const { Consumer: ShortcutModalConsumer } = ShortcutModalContext;

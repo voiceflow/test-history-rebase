@@ -94,11 +94,18 @@ const TestingSpeechBar: React.FC<ReactSpeechRecognitionProps & TestingSpeechBarP
     }
   }, []);
 
-  useHotKeys(Hotkey.USER_SPEECH, onStop, { action: 'keyup' });
-
-  useHotKeys(Hotkey.USER_SPEECH, () => {
-    onListen();
-  });
+  useHotKeys(
+    Hotkey.USER_SPEECH,
+    (event) => {
+      if (event.type === 'keydown') {
+        onListen();
+      } else {
+        onStop();
+      }
+    },
+    [],
+    { keyup: true }
+  );
 
   React.useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return

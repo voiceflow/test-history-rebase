@@ -9,6 +9,7 @@ import { connect, styled } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EditPermissionContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { preventDefault } from '@/utils/dom';
 
 const Wrapper = styled.div`
   width: ${isSafari ? '100vw' : '100%'};
@@ -31,12 +32,15 @@ function CanvasContainer({ undoHistory, redoHistory, children }) {
     await engine.node.add(cuid(), BlockType.COMMENT, position);
   }, []);
 
-  useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
-  useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
-  useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
-  useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
-  useHotKeys(Hotkey.COMMENT, addComment, { preventDefault: true });
-  useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
+  useHotKeys(
+    Hotkey.COPY,
+    preventDefault(() => clipboard.copy())
+  );
+  useHotKeys(Hotkey.DELETE, preventDefault(deleteActive), [deleteActive]);
+  useHotKeys(Hotkey.UNDO, preventDefault(undoHistory));
+  useHotKeys(Hotkey.REDO, preventDefault(redoHistory));
+  useHotKeys(Hotkey.COMMENT, preventDefault(addComment));
+  useHotKeys(Hotkey.SPOTLIGHT, preventDefault(showSpotlight), [showSpotlight]);
 
   return <Wrapper>{children}</Wrapper>;
 }

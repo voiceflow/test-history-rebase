@@ -55,6 +55,11 @@ class Onboarding extends React.Component {
     build: false,
     loading: false,
     check: true,
+    choices: {},
+  };
+
+  trackOnboardingChoice = (key, value) => {
+    this.setState(({ choices }) => ({ choices: { ...choices, [key]: value } }));
   };
 
   handleChange = (event) =>
@@ -119,7 +124,7 @@ class Onboarding extends React.Component {
 
     await this.createSkill();
 
-    trackOnboardingComplete();
+    trackOnboardingComplete(this.state.choices);
   };
 
   componentDidMount() {
@@ -188,7 +193,7 @@ class Onboarding extends React.Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.BEGINNER);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.BEGINNER);
                   this.setState({ experience: 'beginner' });
                 }}
               >
@@ -201,7 +206,7 @@ class Onboarding extends React.Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.INTERMEDIATE);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.INTERMEDIATE);
                   this.setState({ experience: 'intermediate' });
                 }}
               >
@@ -214,7 +219,7 @@ class Onboarding extends React.Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.EXPERT);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.EXPERIENCE, Tracking.OnboardingExperience.EXPERT);
                   this.setState({ experience: 'expert' });
                 }}
               >
@@ -235,7 +240,7 @@ class Onboarding extends React.Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.DESIGN_AND_PROTOTYPE);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.DESIGN_AND_PROTOTYPE);
                   this.setState((prev_state) => ({ design: !prev_state.design }));
                 }}
               >
@@ -244,7 +249,7 @@ class Onboarding extends React.Component {
               </ButtonCard>
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.BUILD_AND_PUBLISH);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.USAGE, Tracking.OnboardingUsage.BUILD_AND_PUBLISH);
                   this.setState((prev_state) => ({ build: !prev_state.build }));
                 }}
               >
@@ -256,7 +261,7 @@ class Onboarding extends React.Component {
               isPrimary
               disabled={!(design || build)}
               onClick={() => {
-                this.props.trackOnboardingStage(Tracking.OnboardingStage.USAGE);
+                this.props.trackOnboardingStage(Tracking.OnboardingStage.USAGE, this.state.choices);
                 this.setState({ stage: 'code_stage' });
               }}
             >
@@ -332,7 +337,7 @@ class Onboarding extends React.Component {
             <div className="row justify-content-center mb-4">
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PERSONAL);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PERSONAL);
                   this.setState({ type: 'PERSONAL' });
                 }}
               >
@@ -348,7 +353,7 @@ class Onboarding extends React.Component {
 
               <ButtonCard
                 onClick={() => {
-                  this.props.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PROFESSIONAL);
+                  this.trackOnboardingChoice(Tracking.OnboardingChoice.TEAM, Tracking.OnboardingTeam.PROFESSIONAL);
                   this.setState({ type: 'WORK' });
                 }}
               >
@@ -366,7 +371,7 @@ class Onboarding extends React.Component {
               isPrimary
               disabled={!['WORK', 'PERSONAL'].includes(type)}
               onClick={() => {
-                this.props.trackOnboardingStage(Tracking.OnboardingStage.TEAM);
+                this.props.trackOnboardingStage(Tracking.OnboardingStage.TEAM, this.state.choices);
 
                 if (type === 'WORK') {
                   this.setState({ stage: 'work_name' });
@@ -398,7 +403,7 @@ class Onboarding extends React.Component {
                 <Button
                   isPrimary
                   onClick={() => {
-                    this.props.trackOnboardingBegin();
+                    this.props.trackOnboardingBegin(this.state.choices);
                     this.setState({ stage: 'work_type' });
                   }}
                 >
@@ -437,7 +442,6 @@ const mapDispatchToProps = {
   trackOnboardingBegin: Tracking.trackOnboardingBegin,
   trackOnboardingComplete: Tracking.trackOnboardingComplete,
   trackOnboardingStage: Tracking.trackOnboardingStage,
-  trackOnboardingChoice: Tracking.trackOnboardingChoice,
   loadTemplates: Template.loadTemplates,
   createProject: Workspace.createProject,
   submitSurvey: OnboardingDuck.submitSurvey,

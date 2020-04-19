@@ -42,7 +42,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
     []
   );
 
-  const generateKey = React.useCallback((value) => (getKey ? getKey(value) : cuid.slug()), [getKey]);
+  const generateKey = React.useCallback((value) => getKey?.(value) || cuid.slug(), [getKey]);
 
   const setDependencies = useLazy(
     () => {

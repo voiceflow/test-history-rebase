@@ -27,11 +27,11 @@ export enum Hotkey {
  * https://craig.is/killing/mice
  */
 const HOTKEY_MAPPING = {
-  [Hotkey.COPY]: ['ctrl+c', 'command+c'],
-  [Hotkey.UNDO]: ['ctrl+z', 'command+z'],
-  [Hotkey.REDO]: ['ctrl+shift+z', 'command+shift+z'],
+  [Hotkey.COPY]: ['ctrl+c', 'meta+c'],
+  [Hotkey.UNDO]: ['ctrl+z', 'meta+z'],
+  [Hotkey.REDO]: ['ctrl+shift+z', 'meta+shift+z'],
   [Hotkey.DELETE]: ['del', 'backspace'],
-  [Hotkey.COMMENT]: ['ctrl+/', 'command+/'],
+  [Hotkey.COMMENT]: ['ctrl+/', 'meta+/'],
   [Hotkey.ZOOM_IN]: ['=', 'shift+='],
   [Hotkey.ZOOM_OUT]: ['-', 'shift+-'],
   [Hotkey.ROOT_NODE]: 'h',

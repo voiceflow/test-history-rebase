@@ -11,7 +11,6 @@ import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasGoHome, CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
-import { preventDefault } from '@/utils/dom';
 
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
@@ -25,21 +24,23 @@ function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden,
 
   useHotKeys(
     Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB,
-    preventDefault(() => {
+    () => {
       selectActiveTab(Tab.FLOWS);
       openByHover();
-    })
+    },
+    { preventDefault: true }
   );
 
   useHotKeys(
     Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB,
-    preventDefault(() => {
+    () => {
       selectActiveTab(Tab.STEPS);
       openByHover();
-    })
+    },
+    { preventDefault: true }
   );
 
-  useHotKeys(Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK, preventDefault(toggleIsHidden));
+  useHotKeys(Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK, toggleIsHidden, { preventDefault: true });
 
   useDidUpdateEffect(() => {
     events.trackCanvasMenuLock({ state: isHidden ? Tracking.CanvasMenuLockState.UNLOCKED : Tracking.CanvasMenuLockState.LOCKED });

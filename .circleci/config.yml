@@ -293,17 +293,20 @@ workflows:
               ignore:
                 - /ephemeral.*/
                 - production
+                - staging
       - test-build-storybook:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
                 - production
+                - staging
       - test:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
+                - staging
       - build-deploy-ephemeral:
           filters:
             branches:

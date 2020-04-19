@@ -24,6 +24,7 @@ function SetEditor({ data, onChange }) {
   const onRemoveSets = React.useCallback((_, index) => onChange(data.sets.splice(index, 1)), [data.sets, onChange]);
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
     factory: setFactory,
+    getKey: (item) => item.id,
     handleRemove: onRemoveSets,
   });
 

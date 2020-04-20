@@ -12,5 +12,5 @@ export const getAudioTitle = (url) => {
       .pop();
   }
 
-  return (isUploadedFile ? fileName : url) || 'Audio';
+  return isUploadedFile ? fileName : url;
 };

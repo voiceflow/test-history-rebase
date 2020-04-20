@@ -50,7 +50,7 @@ function AudioPlayer({ link, onClose, autoplay = false, showDuration = false }) 
         <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'play'} />
 
         <FileNameContainer>
-          <Tooltip title={link}>{getAudioTitle(link)}</Tooltip>
+          <Tooltip title={link}>{getAudioTitle(link) || 'Audio'}</Tooltip>
         </FileNameContainer>
       </Flex>
 

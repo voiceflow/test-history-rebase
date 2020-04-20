@@ -11,7 +11,7 @@ type AudioProps = Omit<MessageProps, 'iconProps'> & {
 
 const Audio: React.FC<AudioProps> = ({ name, ...props }) => (
   <Message iconProps={{ icon: 'volume', color: '#f65b6d' }} {...props}>
-    {getAudioTitle(name)}
+    {getAudioTitle(name) || 'Audio'}
   </Message>
 );
 

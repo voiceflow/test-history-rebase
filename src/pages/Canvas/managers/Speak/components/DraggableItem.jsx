@@ -48,7 +48,7 @@ const DraggableItem = (
       ref={ref}
       namespace={['speakItem', item.id]}
       initialOpen={isNew || isOnlyItem}
-      header={isVoice ? 'System Says' : getAudioTitle(url)}
+      header={isVoice ? 'System Says' : getAudioTitle(url) || 'Audio'}
       prefix={<SvgIcon icon={isVoice ? 'alexa' : AudioIcon} />}
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}

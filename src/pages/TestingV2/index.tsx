@@ -4,7 +4,9 @@ import { recentTestingSelector } from '@/ducks/recent';
 import { activeLocalesSelector } from '@/ducks/skill';
 import { TestStatus, resetTesting, startTesting, testingStatusSelector } from '@/ducks/testingV2';
 import { connect } from '@/hocs';
+import removeIntercom from '@/hocs/removeIntercom';
 import { useTrackingEvents } from '@/hooks';
+import { compose } from '@/utils/functional';
 
 import { Container, Dialog, Input, Reset, Start } from './components';
 import { useTesting } from './hooks';
@@ -72,4 +74,4 @@ const mapDispatchProps = {
 
 const mergeProps = ({ locales }: { locales: string[] }) => ({ locale: locales[0] });
 
-export default connect(mapStateToProps, mapDispatchProps, mergeProps)(Testing);
+export default compose<TestingProps, {}>(removeIntercom, connect(mapStateToProps, mapDispatchProps, mergeProps))(Testing);

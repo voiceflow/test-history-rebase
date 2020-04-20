@@ -2,8 +2,7 @@ import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import Section from '@/components/Section';
-
-import { Link } from './components';
+import Text from '@/components/Text/ClickableText';
 
 export type TestingResetProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
@@ -12,9 +11,7 @@ export type TestingResetProps = {
 const TestingReset: React.FC<TestingResetProps> = ({ onClick }) => (
   <Section>
     <FlexCenter>
-      <Link as="span" onClick={onClick}>
-        Reset Test
-      </Link>
+      <Text onClick={onClick}>Reset Test</Text>
     </FlexCenter>
   </Section>
 );

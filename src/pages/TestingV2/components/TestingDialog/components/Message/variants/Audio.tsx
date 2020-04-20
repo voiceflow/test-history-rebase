@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getAudioTitle } from '@/utils/audio';
+
 import { Message } from '../components';
 import { MessageProps } from '../components/Message';
 
@@ -9,7 +11,7 @@ type AudioProps = Omit<MessageProps, 'iconProps'> & {
 
 const Audio: React.FC<AudioProps> = ({ name, ...props }) => (
   <Message iconProps={{ icon: 'volume', color: '#f65b6d' }} {...props}>
-    {name}
+    {getAudioTitle(name)}
   </Message>
 );
 

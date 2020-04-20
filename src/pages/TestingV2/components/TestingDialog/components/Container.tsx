@@ -2,16 +2,17 @@ import React from 'react';
 
 import { styled } from '@/hocs';
 
-const Outter = styled.div`
+export const Outter = styled.div`
   position: relative;
   display: flex;
   flex: 1;
   max-width: 500px;
   height: 100%;
   overflow-x: hidden;
+  background-color: #fdfdfd;
 `;
 
-const Middle = styled.div`
+export const Middle = styled.div`
   position: absolute;
   display: flex;
   flex: 1;
@@ -22,7 +23,7 @@ const Middle = styled.div`
   overflow-x: hidden;
 `;
 
-const Inner = styled.div`
+export const Inner = styled.div`
   width: 100%;
 `;
 

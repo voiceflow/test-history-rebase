@@ -41,8 +41,8 @@ exports[`Storyshots Testing/Dialog Basic 1`] = `
 }
 
 .c15 {
-  color: #5d9df5;
   display: inline-block;
+  color: #5d9df5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -189,6 +189,7 @@ exports[`Storyshots Testing/Dialog Basic 1`] = `
   max-width: 500px;
   height: 100%;
   overflow-x: hidden;
+  background-color: #fdfdfd;
 }
 
 .c1 {
@@ -470,8 +471,8 @@ exports[`Storyshots Testing/Dialog Debug 1`] = `
 }
 
 .c16 {
-  color: #5d9df5;
   display: inline-block;
+  color: #5d9df5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -618,6 +619,7 @@ exports[`Storyshots Testing/Dialog Debug 1`] = `
   max-width: 500px;
   height: 100%;
   overflow-x: hidden;
+  background-color: #fdfdfd;
 }
 
 .c1 {
@@ -957,8 +959,8 @@ exports[`Storyshots Testing/Dialog Loading 1`] = `
 }
 
 .c16 {
-  color: #5d9df5;
   display: inline-block;
+  color: #5d9df5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1105,6 +1107,7 @@ exports[`Storyshots Testing/Dialog Loading 1`] = `
   max-width: 500px;
   height: 100%;
   overflow-x: hidden;
+  background-color: #fdfdfd;
 }
 
 .c1 {

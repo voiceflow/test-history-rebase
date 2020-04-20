@@ -43,8 +43,8 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
 }
 
 .c22 {
-  color: #5d9df5;
   display: inline-block;
+  color: #5d9df5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

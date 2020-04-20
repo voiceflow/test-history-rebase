@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Anchor from '@/components/Text/Anchor';
+import Link from '@/components/Text/Link';
 import { Paragraph, Title } from '@/components/Tooltip';
 
 function HelpTooltip() {
@@ -15,7 +15,7 @@ function HelpTooltip() {
       <Title>Learn More</Title>
       <Paragraph>
         To learn more about flows, and how they can be used check our documentation{' '}
-        <Anchor link="https://docs.voiceflow.com/voiceflow-documentation/untitled/flow-block">here.</Anchor>
+        <Link href="https://docs.voiceflow.com/voiceflow-documentation/untitled/flow-block">here.</Link>
       </Paragraph>
     </>
   );

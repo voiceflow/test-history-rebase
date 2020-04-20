@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Anchor from '@/components/Text/Anchor';
+import Link from '@/components/Text/Link';
 import { Paragraph, Title } from '@/components/Tooltip';
 
 function ScopeTooltip() {
@@ -14,7 +14,7 @@ function ScopeTooltip() {
       <Title>Having Trouble?</Title>
 
       <Paragraph>
-        Learn more about OAuth Scopes <Anchor link="https://oauth.net/2/scope/">here.</Anchor>
+        Learn more about OAuth Scopes <Link href="https://oauth.net/2/scope/">here.</Link>
       </Paragraph>
     </>
   );

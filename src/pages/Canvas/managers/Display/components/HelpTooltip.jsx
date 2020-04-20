@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Anchor from '@/components/Text/Anchor';
+import Link from '@/components/Text/Link';
 import { Paragraph, Title } from '@/components/Tooltip';
 
 function HelpTooltip() {
@@ -14,7 +14,7 @@ function HelpTooltip() {
 
       <Paragraph>
         Learn more about APL and multi-modal displays on Alexa{' '}
-        <Anchor link="https://learn.voiceflow.com/en/articles/2632588-display-block-apl">here.</Anchor>
+        <Link href="https://learn.voiceflow.com/en/articles/2632588-display-block-apl">here.</Link>
       </Paragraph>
     </>
   );

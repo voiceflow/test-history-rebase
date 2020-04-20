@@ -1,10 +1,8 @@
-import React from 'react';
-
 import { styled } from '@/hocs';
 
-const RegularText = styled.span`
-  color: #5d9df5;
+const ClickableText = styled.span`
   display: inline-block;
+  color: #5d9df5;
   cursor: pointer;
   user-select: none;
 
@@ -13,19 +11,4 @@ const RegularText = styled.span`
   }
 `;
 
-type ClickableTextProps = {
-  onClick?: () => void;
-  children: any;
-  className?: any;
-};
-
-// eslint-disable-next-line react/display-name
-const ClickableText: React.FC<ClickableTextProps> = ({ onClick, children, className }, ref) => {
-  return (
-    <RegularText onClick={onClick} className={className} ref={ref}>
-      {children}
-    </RegularText>
-  );
-};
-
-export default React.forwardRef(ClickableText);
+export default ClickableText;

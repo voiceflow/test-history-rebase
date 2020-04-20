@@ -7,7 +7,7 @@ const CanvasReadOnlyContainer = styled(Flex)`
   position: absolute;
   float: left;
   top: 15px;
-  left: 30px;
+  left: 22px;
   z-index: 30;
   color: #62778c;
   font-size: 13px;

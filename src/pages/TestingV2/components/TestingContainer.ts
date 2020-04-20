@@ -20,7 +20,6 @@ const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
       max-height: 600px;
       max-width: 500px;
       margin: auto;
-      background-color: #fff;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
     `}
 `;

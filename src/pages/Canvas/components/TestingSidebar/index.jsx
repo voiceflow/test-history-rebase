@@ -1,8 +1,10 @@
 import React from 'react';
+import { Tooltip } from 'react-tippy';
 
 import Drawer from '@/components/Drawer';
+import { FlexCenter } from '@/components/Flex';
+import { LoadCircle } from '@/components/Loader';
 import { SectionToggleVariant, UncontrolledSection as Section } from '@/components/Section';
-import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
@@ -47,11 +49,24 @@ const TestingSidebar = ({ settings, renderTesting, resetTesting, saveActiveDiagr
     <>
       {isOpen && <TestSettings open={settingsOpen} />}
       <Drawer as="section" open={isOpen} width={TESTING_SIDEBAR_WIDTH} direction="left">
-        <Container>
-          <Section header="Settings" collapseVariant={SectionToggleVariant.ARROW} onClick={toggleSettingsOpen} isCollapsed={!settingsOpen} />
-          <Section header="Dialog" suffix={<SvgIcon icon="restart" clickable onClick={resetTesting} />} />
-          <TestingContainer>{isOpen && (loading ? <Spinner name="Test" /> : <Testing debug={settings.debug} />)}</TestingContainer>
-        </Container>
+        {loading ? (
+          <FlexCenter style={{ height: '100%' }}>
+            <LoadCircle />
+          </FlexCenter>
+        ) : (
+          <Container>
+            <Section header="Settings" collapseVariant={SectionToggleVariant.ARROW} onClick={toggleSettingsOpen} isCollapsed={!settingsOpen} />
+            <Section
+              header="Dialog"
+              suffix={
+                <Tooltip title="Reset Test">
+                  <SvgIcon icon="restart" clickable onClick={resetTesting} />
+                </Tooltip>
+              }
+            />
+            <TestingContainer>{isOpen && <Testing debug={settings.debug} />}</TestingContainer>
+          </Container>
+        )}
       </Drawer>
     </>
   );

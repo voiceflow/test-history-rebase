@@ -48,7 +48,7 @@ type StreamState = {
 };
 
 const ENTER_FLOW_TIME = 800;
-const MIN_FOCUSED_NODE_TIME = 300;
+const MIN_FOCUSED_NODE_TIME = 500;
 
 class TraceController {
   private trace: Trace[] = [];

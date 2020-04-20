@@ -2,6 +2,8 @@ import { BlockVariant } from '@/constants/canvas';
 import { css, styled, transition } from '@/hocs';
 import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 
+import CaptureZone from './StepReorderCaptureZone';
+
 export type StepReorderIndicatorContainerProps = {
   isActive: boolean;
   variant: BlockVariant;
@@ -12,6 +14,10 @@ export type StepReorderIndicatorContainerProps = {
 const hoverStyle = css<StepReorderIndicatorContainerProps>`
   height: ${({ theme }) => theme.components.blockStep.minHeight + 2}px;
   margin: ${({ isLast }) => (isLast ? '6px 0 0 0' : '0 0 6px 0')};
+
+  > ${CaptureZone} {
+    top: -38px;
+  }
 
   ::before {
     display: none;

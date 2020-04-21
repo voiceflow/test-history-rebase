@@ -17,146 +17,137 @@ executors:
       - image: voiceflow/ci-image:v3
 
 commands:
-  run_tests:
-    description: Run tests against codebase
-    parameters:
-      tests:
-        type: steps
-        default: []
-      saveCache:
-        type: boolean
-        default: false
+  install_dependencies:
+    description: Restore/update node_modules in cache
     steps:
-      - checkout # special step to check out source code to working directory
       - restore_cache: # special step to restore the dependency cache
           key: creator-app-{{ checksum "yarn.lock" }}
       - run:
-          name: yarn install packages
+          name: Install packages
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             yarn install --frozen-lockfile
-      - when:
-          condition: << parameters.saveCache >>
-          steps:
-            - save_cache: # special step to save the dependency cache
-                key: creator-app-{{ checksum "yarn.lock" }}
-                paths:
-                  - ./node_modules
-      - steps: << parameters.tests >>
+      - save_cache: # Update dependency cache
+          key: creator-app-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
 jobs:
   release:
     docker:
-      - image: circleci/node:11
+      - image: circleci/node:12
     steps:
       - checkout
       - run: git tag --merged production
       - run: npx semantic-release@15
-  test-build-app:
+  build-app:
     executor: node-executor
     steps:
-      - run_tests:
-          saveCache: false
-          tests:
-            - run:
-                name: (Build App)
-                command: yarn build
-  test-build-storybook:
+      - checkout
+      - install_dependencies
+      - run:
+          name: Build app
+          command: |
+            if [ "$CIRCLE_BRANCH" == "production" ]; then
+              export VF_APP_API_HOST=api.voiceflow.com
+              export VF_APP_BUILD_ENV=production
+              export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json
+            else
+              export VF_APP_BUILD_ENV=staging
+              export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
+              export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
+            fi
+            yarn build
+      - persist_to_workspace:
+          root: ~/voiceflow
+          paths:
+            - build
+            - app.dockerfile
+            - config
+  build-storybook:
     executor: node-executor
     steps:
-      - run_tests:
-          saveCache: false
-          tests:
-            - run:
-                name: (Build App)
-                command: yarn storybook:build
-  test: # runs not using Workflows must have a `build` job as entry point
+      - checkout
+      - install_dependencies
+      - run:
+          name: (Build App)
+          command: yarn storybook:build
+      - persist_to_workspace:
+          root: ~/voiceflow
+          paths:
+            - storybook_build
+            - storybook.dockerfile
+  build-admin:
+    executor: node-executor
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: Build admin static artifacts
+          command: |
+            if [ "$CIRCLE_BRANCH" == "admin" ]; then
+              export VF_APP_API_HOST=api-master.development.voiceflow.com
+              export VF_APP_BUILD_ENV=staging
+            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
+              export VF_APP_API_HOST=api.voiceflow.com
+              export VF_APP_BUILD_ENV=production
+            fi
+            yarn build:admin
+      - persist_to_workspace:
+          root: ~/voiceflow
+          paths:
+            - admin_build
+            - admin.dockerfile
+            - config
+  test-integration: # Run integration tests in parallel
     executor: node-executor
     steps: # a collection of executable commands
-      - run_tests:
-          saveCache: true
-          tests:
-            - run:
-                name: (Unit Tests)
-                command: yarn test:unit
-            - codecov/upload:
-                file: nyc_coverage/lcov.info
-                flags: unit
-            - run:
-                name: (Integration Tests)
-                command: yarn test:integration --coverage --detectOpenHandles
-            - codecov/upload:
-                file: jest_coverage/lcov.info
-                flags: integration
-            - run:
-                name: (Code Style)
-                command: yarn lint:quiet
-            - run:
-                name: (Dependency Tests)
-                command: yarn test:dependencies # Run dependency test here
-  build-push-image:
-    executor: image_builder
-    steps:
-      - checkout # special step to check out source code to working directory
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - checkout
+      - install_dependencies
       - run:
-          name: 'Build docker image'
-          command: |
-            mkdir -p /tmp/vf-build/vars
-            echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-            # Fix semantic versioning and api host
-            if [ "$CIRCLE_BRANCH" == "production" ]; then
-              npm config set unsafe-perm true # needed for npx to work
-              set +e # Do not terminate on first error (for semantic-release)
-              npx semantic-release@15 --prepare --dry-run | tee sem_release.output  # print semver to screen
-              SEM_VER=$(cat sem_release.output | grep 'Published release ' | awk '{print $NF}')  # Get release semver
-              set -e
-              if [ -z "$SEM_VER" ]; then
-                echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-                SEM_VER=$(npm view @voiceflow/creator-app version)
-              fi
-              VF_APP_API_HOST=api.voiceflow.com
-              VF_APP_BUILD_ENV=production
-              VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json
-            else
-              SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
-              VF_APP_BUILD_ENV=staging
-              VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
-              VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
-            fi
-            echo -e "Building with SEM_VER=$SEM_VER"
-            echo -e "API host is $VF_APP_API_HOST"
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker build \
-              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
-              --build-arg BUILD_NUM=$CIRCLE_BUILD_NUM \
-              --build-arg BUILD_URL=$CIRCLE_BUILD_URL	\
-              --build-arg GIT_SHA=$CIRCLE_SHA1 \
-              --build-arg SEM_VER=$SEM_VER \
-              --build-arg VF_APP_VERSION=$SEM_VER \
-              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
-              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
-              --build-arg VF_APP_MAINTENANCE_STATUS_SOURCE=$VF_APP_MAINTENANCE_STATUS_SOURCE \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
-            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/app_build_num
+          name: (Integration Tests)
+          command: yarn test:integration --coverage --detectOpenHandles
+      - codecov/upload:
+          file: jest_coverage/lcov.info
+          flags: integration
+  test: # Main unit, style, and dependency tests
+    executor: node-executor
+    steps: # a collection of executable commands
+      - checkout
+      - install_dependencies
       - run:
-          name: 'Push docker images'
-          command: |
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
-      - persist_to_workspace:
-          root: vars
-          paths:
-            - app_build_num
-  deploy-image:
+          name: (Unit Tests)
+          command: yarn test:unit
+      - codecov/upload:
+          file: nyc_coverage/lcov.info
+          flags: unit
+      - run:
+          name: (Code Style)
+          command: yarn lint:quiet
+      - run:
+          name: (Dependency Tests)
+          command: yarn test:dependencies # Run dependency test here
+  build-deploy-app-image:
     executor: image_builder
     steps:
       - attach_workspace:
-          at: /tmp/vf-build/vars
+          at: /tmp/vf-build
+      - setup_remote_docker
       - run:
-          name: Update image
+          name: "Build docker image"
+          command: |
+            docker build \
+              -f app.dockerfile \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_SHA1 .
+      - run:
+          name: "Push docker images"
+          command: |
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_SHA1 
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_SHA1 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:latest-$CIRCLE_BRANCH
+      - run:
+          name: Deploy image
           command: |
             if [ "$CIRCLE_BRANCH" == "master" ] || [ "$CIRCLE_BRANCH" == "staging" ]; then
               aws eks --region us-east-1 update-kubeconfig --name development
@@ -164,40 +155,26 @@ jobs:
             if [ "$CIRCLE_BRANCH" == "production" ]; then
               aws eks --region us-east-1 update-kubeconfig --name production
             fi
-            BUILD_NUM=$(cat /tmp/vf-build/vars/app_build_num)
-            kubectl set image --namespace voiceflow-v1 statefulset/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$BUILD_NUM
-  build-push-storybook:
+            kubectl set image --namespace voiceflow-v1 statefulset/creator-app-$CIRCLE_BRANCH app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:k8s-$CIRCLE_BRANCH-$CIRCLE_SHA1
+  build-deploy-storybook-image:
     executor: image_builder
     steps:
-      - checkout # special step to check out source code to working directory
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - attach_workspace:
+          at: /tmp/vf-build
+      - setup_remote_docker
       - run:
-          name: 'Build storybook docker image'
+          name: "Build storybook docker image"
           command: |
-            mkdir -p /tmp/vf-build/vars
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            mv storybook.dockerignore .dockerignore
             docker build \
               -f storybook.dockerfile \
-              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
-            echo $CIRCLE_BUILD_NUM > /tmp/vf-build/vars/storybook_build_num
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1 .
       - run:
-          name: 'Push storybook docker images'
+          name: "Push storybook docker images"
           command: |
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
             docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$CIRCLE_BRANCH
-      - persist_to_workspace:
-          root: vars
-          paths:
-            - storybook_build_num
-  deploy-storybook:
-    executor: image_builder
-    steps:
-      - attach_workspace:
-          at: /tmp/vf-build/vars
       - run:
           name: Update image
           command: |
@@ -207,155 +184,184 @@ jobs:
             if [ "$CIRCLE_BRANCH" == "production" ]; then
               aws eks --region us-east-1 update-kubeconfig --name production
             fi
-            BUILD_NUM=$(cat /tmp/vf-build/vars/storybook_build_num)
-            kubectl set image --namespace voiceflow-v1 deployment/storybook-$CIRCLE_BRANCH storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_BRANCH-$BUILD_NUM
-  build-deploy-admin:
+            kubectl set image --namespace voiceflow-v1 deployment/storybook-$CIRCLE_BRANCH storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1
+  build-deploy-admin-image:
     executor: image_builder
     steps:
-      - checkout # special step to check out source code to working directory
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - attach_workspace:
+          at: /tmp/vf-build
+      - setup_remote_docker
       - run:
-          name: 'Build and deploy admin panel docker image'
+          name: "Build admin docker image"
           command: |
-            DEPLOY_SUFFIX=development
+            if [ "$CIRCLE_BRANCH" == "admin" ]; then
+              export DEPLOY_SUFFIX=development
+            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
+              export DEPLOY_SUFFIX=production
+            fi
+            echo $DEPLOY_SUFFIX > /tmp/deploy_suffix
+            docker build \
+              -f admin.dockerfile \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1 .
+      - run:
+          name: "Push admin docker images"
+          command: |
+            DEPLOY_SUFFIX=$(cat /tmp/deploy_suffix)
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1
+            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1 168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:latest-$DEPLOY_SUFFIX
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:latest-$DEPLOY_SUFFIX
+      - run:
+          name: "Deploy admin docker image"
+          command: |
+            DEPLOY_SUFFIX=$(cat /tmp/deploy_suffix)
             if [ "$CIRCLE_BRANCH" == "admin" ]; then
               aws eks --region us-east-1 update-kubeconfig --name development
-              VF_APP_API_HOST=api-master.development.voiceflow.com
-              VF_APP_BUILD_ENV=staging
-            fi
-            if [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
+            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
               aws eks --region us-east-1 update-kubeconfig --name production
-              DEPLOY_SUFFIX=production
-              VF_APP_API_HOST=api.voiceflow.com
-              VF_APP_BUILD_ENV=production
             fi
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker build \
-              -f admin.dockerfile \
-              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
-              --build-arg VF_APP_VERSION="($CIRCLE_BRANCH-$CIRCLE_SHA1)" \
-              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
-              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM .
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM
-            docker tag 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:latest-$DEPLOY_SUFFIX
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:latest-$DEPLOY_SUFFIX
-            kubectl set image --namespace voiceflow-v1 deployment/admin-ui-$DEPLOY_SUFFIX app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_BUILD_NUM
-  build-deploy-ephemeral:
+            kubectl set image --namespace voiceflow-v1 deployment/admin-ui-$DEPLOY_SUFFIX app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1
+  build-app-dev-environment:
+    executor: node-executor
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: Build app
+          command: |
+            ENV_NAME=${CIRCLE_BRANCH##*-}
+            export VF_APP_BUILD_ENV=staging
+            export VF_APP_API_HOST=api-$ENV_NAME.development.voiceflow.com
+            export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
+            yarn build
+      - persist_to_workspace:
+          root: ~/voiceflow
+          paths:
+            - build
+            - app.dockerfile
+            - config
+
+  deploy-app-dev-environment:
     executor: image_builder
     steps:
       - checkout # special step to check out source code to working directory
-      - setup_remote_docker:
-          docker_layer_caching: true
       - add_ssh_keys: # To enable write access to repository for removing ephemeral branches
           fingerprints:
-            - '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
+            - "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+      - attach_workspace:
+          at: /tmp/vf-build
+      - setup_remote_docker
       - run:
-          name: 'Build and deploy ephemeral image'
+          name: "Build and deploy ephemeral image"
           command: |
-            echo -e "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-            SEM_VER=$CIRCLE_BRANCH-$CIRCLE_SHA1
-            VF_APP_BUILD_ENV=staging
             ENV_NAME=${CIRCLE_BRANCH##*-}
-            VF_APP_API_HOST=api-$ENV_NAME.development.voiceflow.com
+            docker build \
+              -f app.dockerfile \
+              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_SHA1 .
             $(aws ecr get-login --no-include-email --region us-east-1)
-            docker build \
-              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
-              --build-arg BUILD_NUM=$CIRCLE_BUILD_NUM \
-              --build-arg BUILD_URL=$CIRCLE_BUILD_URL	\
-              --build-arg GIT_SHA=$CIRCLE_SHA1 \
-              --build-arg SEM_VER=$SEM_VER \
-              --build-arg VF_APP_VERSION="($SEM_VER)" \
-              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
-              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
-            # Admin build
-            docker build \
-              -f admin.dockerfile \
-              --build-arg NPM_TOKEN=//registry.npmjs.org/:_authToken=${NPM_TOKEN} \
-              --build-arg VF_APP_VERSION="($SEM_VER)" \
-              --build-arg VF_APP_BUILD_ENV=$VF_APP_BUILD_ENV \
-              --build-arg VF_APP_API_HOST=$VF_APP_API_HOST \
-              -t 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM .
+            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_SHA1
             git push origin --delete $CIRCLE_BRANCH --no-verify
-            docker push 168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
             aws eks --region us-east-1 update-kubeconfig --name development
-            kubectl set image --namespace ephemeral-$ENV_NAME statefulset/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
-            kubectl set image --namespace ephemeral-$ENV_NAME deployment/admin-ui-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin:ephemeral-$ENV_NAME-$CIRCLE_BUILD_NUM
+            kubectl set image --namespace ephemeral-$ENV_NAME statefulset/creator-app-$ENV_NAME app=168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app:ephemeral-$ENV_NAME-$CIRCLE_SHA1
+
 workflows:
-  build-deploy:
+  dev-environment:
     jobs:
-      - test-build-app:
+      - build-app-dev-environment:
+          filters:
+            branches:
+              only:
+                - /ephemeral.*/
+      - deploy-app-dev-environment:
+          requires:
+            - build-app-dev-environment
+          filters:
+            branches:
+              only:
+                - /ephemeral.*/
+
+  admin:
+    jobs:
+      - build-admin:
+          filters:
+            branches:
+              only:
+                - admin
+                - admin-prod
+      - build-deploy-admin-image:
+          requires:
+            - build-admin
+          filters:
+            branches:
+              only:
+                - admin
+                - admin-prod
+
+  storybook:
+    jobs:
+      - build-storybook:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
                 - production
+      - build-deploy-storybook-image:
+          requires:
+            - build-storybook
+          filters:
+            branches:
+              only:
+                - master
                 - staging
-      - test-build-storybook:
+
+  app:
+    jobs:
+      - test-integration:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
-                - production
-                - staging
       - test:
           filters:
             branches:
               ignore:
                 - /ephemeral.*/
                 - staging
-      - build-deploy-ephemeral:
+      - build-app:
           filters:
             branches:
-              only:
+              ignore:
                 - /ephemeral.*/
-      - build-push-image:
-          filters:
-            branches:
-              only:
-                - master
-                - staging
-                - production
-      - deploy-image:
+      - build-deploy-app-image:
           requires:
             - test
-            - build-push-image
+            - test-integration
+            - build-app
           filters:
             branches:
               only:
                 - master
-                - staging
                 - production
-      - build-push-storybook:
-          filters:
-            branches:
-              only:
-                - master
-                - staging
-      - deploy-storybook:
-          requires:
-            - test-build-storybook
-            - build-push-storybook
-          filters:
-            branches:
-              only:
-                - master
-                - staging
-      - build-deploy-admin:
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - admin
-                - admin-prod
       - release:
           requires:
             - test
-            - deploy-image
+            - test-integration
+            - build-app
           filters:
             branches:
               only: production
+
+  app-staging:
+    jobs:
+      - build-app:
+          filters:
+            branches:
+              only:
+                - staging
+      - build-deploy-app-image:
+          requires:
+            - build-app
+          filters:
+            branches:
+              only:
+                - staging

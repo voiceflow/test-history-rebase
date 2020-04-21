@@ -30,13 +30,6 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
   const cachedOnChange = React.useRef();
   const latestCreatedKey = React.useRef();
 
-  cachedOnChange.current = onChange;
-
-  const debouncedOnChange = React.useMemo(
-    () => (debounced ? debounce((...args) => cachedOnChange.current(...args), DEBOUNCE_TIMEOUT) : cachedOnChange.current),
-    [debounced]
-  );
-
   const generateLookupKey = React.useMemo(
     () => moize((value, index) => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
     []
@@ -55,6 +48,16 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
     ([nextItems], [prevItems]) => hasIdenticalMembers(nextItems, prevItems)
   );
 
+  cachedOnChange.current = (value, ...args) => {
+    setDependencies([value]);
+    onChange(value, ...args);
+  };
+
+  const debouncedOnChange = React.useMemo(
+    () => (debounced ? debounce((...args) => cachedOnChange.current(...args), DEBOUNCE_TIMEOUT) : cachedOnChange.current),
+    [debounced]
+  );
+
   const getItem = React.useCallback((key) => normalized.current.byKey[key], []);
 
   const getIndex = React.useCallback((key) => normalized.current.allKeys.indexOf(key), []);
@@ -67,11 +70,10 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
       }
 
       normalized.current = value;
-      setDependencies([denormalized]);
       forceUpdate();
       update ? debouncedOnChange(denormalized) : cachedOnChange.current(denormalized, save);
     },
-    [debouncedOnChange, setDependencies, forceUpdate]
+    [debouncedOnChange, forceUpdate]
   );
 
   const onAdd = React.useCallback(

@@ -50,6 +50,9 @@ module.exports = merge(commonConfig, {
               // TODO: remove when onboarding redesign
               'pages/OnboardingV2/**/*',
 
+              // TODO: remove when markup is deployed
+              'components/Slider/**/*',
+
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'components/CaptionedIconButton/**/*',

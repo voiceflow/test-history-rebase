@@ -6,6 +6,7 @@ import { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionToggleVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
+import { EventualEngineContext } from '@/contexts';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import { setError } from '@/ducks/modal';
 import { recentTestingSelector } from '@/ducks/recent';
@@ -25,9 +26,11 @@ const TestingSidebar = ({ settings, renderTesting, resetTesting, saveActiveDiagr
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const { isTesting: isOpen } = React.useContext(EditPermissionContext);
+  const eventualEngine = React.useContext(EventualEngineContext);
 
   React.useEffect(() => {
     if (isOpen) {
+      eventualEngine.get()?.focus.reset();
       enableLoading();
 
       // eslint-disable-next-line promise/catch-or-return

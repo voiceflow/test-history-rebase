@@ -80,7 +80,7 @@ export const useStepAPI = <T extends HTMLElement>(
             engine.setActivation(nodeID);
           }
         },
-        onDoubleClick: () => engine.node.center(nodeID),
+        onDoubleClick: stopPropagation(() => engine.node.center(nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
           if (node.type !== BlockType.START && editPermission.canEdit) {
             contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeID);

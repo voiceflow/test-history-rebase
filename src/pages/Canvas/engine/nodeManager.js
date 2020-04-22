@@ -387,7 +387,7 @@ class NodeManager extends EngineConsumer {
     const [posX, posY] = this.api(nodeID).getPosition();
 
     const xOffset = window.innerWidth / 2;
-    const yOffset = window.innerHeight / 3;
+    const yOffset = window.innerHeight / 2;
 
     const canvasAPI = this.engine.canvas;
 

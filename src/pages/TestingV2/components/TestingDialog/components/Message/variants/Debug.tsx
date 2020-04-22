@@ -17,7 +17,7 @@ type DebugProps = Omit<MessageProps, 'iconProps'> & {
 };
 
 const Debug: React.FC<DebugProps> = ({ message, ...props }) => (
-  <DebugMessage iconProps={{ icon: 'card', color: '#6b95e9' }} {...props}>
+  <DebugMessage iconProps={{ icon: 'variable', color: '#6b95e9' }} {...props}>
     <Markdown>{message}</Markdown>
   </DebugMessage>
 );

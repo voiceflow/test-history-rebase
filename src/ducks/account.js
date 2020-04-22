@@ -83,7 +83,7 @@ export const getVendors = () => async (dispatch, getState) => {
 
 export const createAmazonSession = (code) => async (dispatch) => {
   try {
-    const amazon = client.session.amazon.linkAccount(code) || null;
+    const amazon = (await client.session.amazon.linkAccount(code)) || null;
     dispatch(updateAccount({ amazon }));
   } catch (err) {
     console.error(err);

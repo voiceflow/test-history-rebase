@@ -40,7 +40,7 @@ function ExpressionDefault({
       return (
         <span className="math brackets">
           {withParenthesis && <span className="parenthesis">( </span>}
-          {first} {<ExpressionOperator type={type} />} {second}
+          {first} <ExpressionOperator type={type} /> {second}
           {withParenthesis && <span className="parenthesis"> )</span>}
         </span>
       );

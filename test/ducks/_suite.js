@@ -43,7 +43,7 @@ export default (Duck, state) =>
       describeCRUDReducer: (tests) =>
         describe('CRUD reducer', () => {
           it('should have initial state', () => {
-            utils.expect(Duck.default(undefined, { type: '@@INIT' })).to.eq(CRUD.DEFAULT_STATE);
+            utils.expect(Duck.default(undefined, { type: '@@INIT' })).to.eq(CRUD.INITIAL_STATE);
           });
 
           reducerTests(tests);

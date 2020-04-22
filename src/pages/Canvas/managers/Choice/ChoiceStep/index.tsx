@@ -5,6 +5,7 @@ import { connect } from '@/hocs';
 import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedProps } from '@/types';
 import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 
@@ -35,11 +36,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID }) =
   );
 };
 
-type ConnectedChoiceStepProps = ConnectedStepProps<NodeData.Interaction> & {
-  intentsMap: Record<string, { name: string }>;
-};
-
-const ConnectedChoiceStep: React.FC<ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
+const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
 
@@ -53,7 +50,7 @@ const ConnectedChoiceStep: React.FC<ConnectedChoiceStepProps> = ({ node, data, p
           } = choicesByPortID[portID];
 
           return {
-            label: intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null,
+            label: intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null,
             portID,
           };
         }),
@@ -67,4 +64,6 @@ const mapStateToProps = {
   intentsMap: Intent.mapPlatformIntentsSelector,
 };
 
-export default connect(mapStateToProps)(ConnectedChoiceStep);
+type ConnectedChoiceStepProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)<ConnectedStepProps<NodeData.Interaction>>(ConnectedChoiceStep);

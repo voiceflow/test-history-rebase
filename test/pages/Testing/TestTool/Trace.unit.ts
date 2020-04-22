@@ -8,7 +8,7 @@ import { SinonSpy, SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
 import { SpeakTraceAudioType, StreamTraceAction, Trace, TraceMap, TraceType } from '@/ducks/testingV2';
-import { Engine } from '@/pages/Canvas/contexts';
+import type { Engine } from '@/pages/Canvas/engine';
 import AudioController from '@/pages/TestingV2/TestTool/Audio';
 import MessageController from '@/pages/TestingV2/TestTool/Message';
 import TimeoutController from '@/pages/TestingV2/TestTool/Timeout';

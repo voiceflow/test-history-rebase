@@ -15,11 +15,7 @@ export function makeEndTag(data) {
 export function makeETag(data) {
   const { VF_path, VF_custom } = data;
   const end = VF_path[VF_custom ? 0 : VF_path.length - 1];
-  return end
-    .toUpperCase()
-    .replace(/MONTH/g, 'M')
-    .replace(/DAY/g, 'D')
-    .replace(/YEAR/g, 'Y');
+  return end.toUpperCase().replace(/MONTH/g, 'M').replace(/DAY/g, 'D').replace(/YEAR/g, 'Y');
 }
 
 export function makeDescription(data) {

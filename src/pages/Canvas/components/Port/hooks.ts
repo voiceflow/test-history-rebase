@@ -17,7 +17,7 @@ export const useLinkTerminal = (portID: string): Record<'onStart' | 'onEnd', (ev
       const canCreateLink = editPermission?.canEdit && !engine.isNodeMovementLocked(nodeID);
 
       if (canCreateLink) {
-        engine.linkCreation.start(portID, mouseEventOffset(event, engine.canvas.getRef()));
+        engine.linkCreation.start(portID, mouseEventOffset(event, engine.canvas!.getRef()));
       }
     }),
     [editPermission?.canEdit]

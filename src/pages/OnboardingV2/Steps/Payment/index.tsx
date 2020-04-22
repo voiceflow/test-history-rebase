@@ -10,7 +10,7 @@ import { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/ClickableText';
-import { PERIOD, PERIOD_NAME } from '@/constants';
+import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import { withStripe } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
@@ -41,7 +41,7 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
   const { plan, couponCode, period } = state.paymentMeta;
   const { collaborators } = state.addCollaboratorMeta;
 
-  const numberOfSeats = collaborators.length || [];
+  const numberOfSeats = collaborators.length;
 
   const [usingCoupon, toggleCoupon] = useToggle(false);
   const [coupon, setCoupon] = React.useState(couponCode || '');
@@ -84,7 +84,7 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
 
   const getPrice = async () => {
     const { price, errors }: any = await client.workspace.calculatePrice(null, {
-      plan,
+      plan: plan!,
       seats: numberOfSeats,
       period: paymentPeriod,
       coupon: coupon || undefined,
@@ -110,11 +110,11 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
               options={[
                 {
                   label: 'Monthly',
-                  onClick: () => setPaymentPeriod(PERIOD.monthly),
+                  onClick: () => setPaymentPeriod(BillingPeriod.MONTHLY),
                 },
                 {
                   label: 'Annual',
-                  onClick: () => setPaymentPeriod(PERIOD.annually),
+                  onClick: () => setPaymentPeriod(BillingPeriod.ANNUALLY),
                 },
               ]}
               placement="bottom-start"

@@ -1,11 +1,12 @@
 import client from '@/client';
 import { setError } from '@/ducks/modal';
 import { activeDiagramIDSelector, activeSkillIDSelector } from '@/ducks/skill';
+import { Thunk } from '@/store/types';
 
 import { testingSelector } from '../selectors';
-import { TestStatus, TestingThunk } from '../types';
+import { TestStatus } from '../types';
 
-const shareTesting = (): TestingThunk<unknown | null> => async (dispatch, getState) => {
+const shareTesting = (): Thunk<unknown | null> => async (dispatch, getState) => {
   try {
     const state = getState();
     const projectID = activeDiagramIDSelector(state);

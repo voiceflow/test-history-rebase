@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { SearchableListItemContainer } from '@/components/SearchableList';
+import { Intent } from '@/models';
 
 import ItemCount from '../../ItemCount';
-import { Intent } from '../types';
 
 export type DraggableItemProps = {
   item: Intent;

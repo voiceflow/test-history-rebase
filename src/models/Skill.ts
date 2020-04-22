@@ -1,6 +1,14 @@
 import { PlatformType } from '@/constants';
 
-export type Skill = {};
+export type Skill = {
+  name: string;
+  id: string;
+  creatorID: number;
+  projectID: string;
+  rootDiagramID: string;
+  diagramID: string;
+  platform: PlatformType;
+};
 
 export type DBSkill = {
   name: string;

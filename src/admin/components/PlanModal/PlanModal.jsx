@@ -90,30 +90,12 @@ class PlanModal extends React.Component {
                       modifiersStyles={modifiersStyles}
                     />
                     <div className="ctg__trial_details">
-                      <div>
-                        Plan will expire{' '}
-                        {moment(this.state.selectedDay)
-                          .add(1, 'd')
-                          .fromNow()}
-                      </div>
-                      <div>
-                        Plan Expiry:{' '}
-                        {moment(this.state.selectedDay)
-                          .add(1, 'd')
-                          .format('MMM Do YYYY')}{' '}
-                        (expires at midnight)
-                      </div>
+                      <div>Plan will expire {moment(this.state.selectedDay).add(1, 'd').fromNow()}</div>
+                      <div>Plan Expiry: {moment(this.state.selectedDay).add(1, 'd').format('MMM Do YYYY')} (expires at midnight)</div>
                     </div>
                   </div>
                   <FlexApart>
-                    <Button
-                      variant="secondary"
-                      onClick={this.updateExpiry(
-                        moment(this.state.selectedDay)
-                          .add(1, 'd')
-                          .format()
-                      )}
-                    >
+                    <Button variant="secondary" onClick={this.updateExpiry(moment(this.state.selectedDay).add(1, 'd').format())}>
                       Update Expiry
                     </Button>
                     <Button variant="secondary" onClick={this.updateExpiry(null)}>

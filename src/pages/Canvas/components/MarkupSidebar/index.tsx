@@ -46,4 +46,4 @@ const MarkupSidebar: React.FC<MarkupSidebarProps> = ({ theme }) => {
 // TODO: add markup focused node selectors
 const mapStateToProps = {};
 
-export default compose<MarkupSidebarProps, {}>(connect(mapStateToProps, null), React.memo, withTheme)(MarkupSidebar);
+export default compose(connect(mapStateToProps, null), React.memo, withTheme)(MarkupSidebar);

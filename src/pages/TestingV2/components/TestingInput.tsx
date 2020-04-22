@@ -46,28 +46,24 @@ const TestingInput: React.FC<TestingInputProps> = ({ locale, disabled, forceFocu
 
   return (
     <>
-      {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        <UncontrolledSection
-          header={isListening ? 'Listening...' : 'User Says'}
-          onClick={isListening ? null : onCollapse}
-          isCollapsed={collapsed}
-          collapseVariant={SectionToggleVariant.ARROW}
-        >
-          <TextArea
-            value={value}
-            minRows={2}
-            onChange={(e) => setValue(e.target.value)}
-            disabled={disabled}
-            inputRef={textAreaRef}
-            autoFocus={forceFocus} // eslint-disable-line jsx-a11y/no-autofocus
-            onKeyPress={withEnterPress(onEnterPress)}
-            placeholder="Enter Response"
-          />
-          <p>'Press Enter to send'</p>
-        </UncontrolledSection>
-      }
+      <UncontrolledSection
+        header={isListening ? 'Listening...' : 'User Says'}
+        onClick={isListening ? null : onCollapse}
+        isCollapsed={collapsed}
+        collapseVariant={SectionToggleVariant.ARROW}
+      >
+        <TextArea
+          value={value}
+          minRows={2}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={disabled}
+          inputRef={textAreaRef}
+          autoFocus={forceFocus} // eslint-disable-line jsx-a11y/no-autofocus
+          onKeyPress={withEnterPress(onEnterPress)}
+          placeholder="Enter Response"
+        />
+        <p>'Press Enter to send'</p>
+      </UncontrolledSection>
 
       <SpeechBar locale={locale} isPublic={isPublic} onTranscript={onUserInput} onToggleListening={onToggleListening} />
     </>

@@ -25,10 +25,10 @@ export default createSuite((utils) => ({
         });
       },
 
-      toYield: async (expectedResult) => {
+      toYield: async (expectedResult, finalResult = expectedResult) => {
         const result = await method(...args);
 
-        utils.expect(result).to.eql(expectedResult);
+        utils.expect(result).to.eql(finalResult);
 
         runTest(expectedResult);
       },

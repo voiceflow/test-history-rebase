@@ -9,6 +9,7 @@ import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import * as Selectors from '@/store/selectors';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 
 import LeftColumn from '../LeftColumn';
@@ -18,19 +19,10 @@ import { VARIABLE_DESCRIPTION, VariableType } from './constants';
 import { Variable } from './types';
 import { addPrefix } from './utils';
 
-export type VariablesManagerProps = {
-  localVariables: string[];
-  globalVariables: string[];
-  removeLocalVariable: (variable: string) => void;
-  removeGlobalVariable: (variable: string) => void;
-  replaceLocalVariables: (variables: string[]) => void;
-  replaceGlobalVariables: (variables: string[]) => void;
-};
-
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
-const VariablesManager: React.FC<VariablesManagerProps> = ({
+const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
   localVariables,
   globalVariables,
   removeLocalVariable,
@@ -200,9 +192,13 @@ const mapDispatchToProps = {
   replaceVariableSetDiagram: VariableSet.replaceVariableSetDiagram,
 };
 
-const mergeProps = ({ diagramID }: { diagramID: string }, { removeVariableFromDiagram, replaceVariableSetDiagram }: typeof mapDispatchToProps) => ({
+const mergeProps = (
+  ...[{ diagramID }, { removeVariableFromDiagram, replaceVariableSetDiagram }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
+) => ({
   removeLocalVariable: (variable: string) => removeVariableFromDiagram(diagramID, variable),
   replaceLocalVariables: (variables: string[]) => replaceVariableSetDiagram(diagramID, variables),
 });
+
+type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariablesManager);

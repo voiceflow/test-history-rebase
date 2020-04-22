@@ -10,63 +10,62 @@ import ClickableText from '@/components/Text/ClickableText';
 import * as Intents from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { formatIntentName } from '@/utils/intent';
-
-import { Intent } from '../types';
 
 export type ManagerProps = {
   id: string;
-  intent: Intent;
   removeIntent: (id: string) => void;
-  updateIntent: (id: string, data: Partial<Intent>, patch?: boolean) => void;
 };
 
-const Manager: React.FC<ManagerProps> = React.forwardRef(({ id, intent, removeIntent, updateIntent }, ref) => {
-  const [name, setName] = React.useState(intent?.name ?? '');
-  const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
-  const resetPath = React.useCallback(() => setPath({ type: null }), []);
+const Manager = React.forwardRef<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps>(
+  ({ id, intent, removeIntent, updateIntent }, ref) => {
+    const [name, setName] = React.useState(intent?.name ?? '');
+    const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
+    const resetPath = React.useCallback(() => setPath({ type: null }), []);
 
-  React.useImperativeHandle(
-    ref,
-    () => ({
-      resetPath,
-    }),
-    []
-  );
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        resetPath,
+      }),
+      []
+    );
 
-  React.useEffect(() => {
-    resetPath();
-    setName(intent?.name || '');
-  }, [id]);
+    React.useEffect(() => {
+      resetPath();
+      setName(intent?.name || '');
+    }, [id]);
 
-  const slotEdit = path.type === 'slot';
+    const slotEdit = path.type === 'slot';
 
-  return !intent ? null : (
-    <>
-      <Section>
-        <FlexApart onClick={resetPath}>
-          <Input
-            value={name}
-            onBlur={() => updateIntent(id, { id, name }, true)}
-            onChange={({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => setName(formatIntentName(currentTarget.value))}
-            placeholder="Intent Name"
-          />
-
-          <RemoveDropdown onRemove={() => removeIntent(id)} />
-        </FlexApart>
-      </Section>
-
-      <FadeLeftContainer key={(!slotEdit).toString()}>
-        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
-      </FadeLeftContainer>
-      {slotEdit && (
+    return !intent ? null : (
+      <>
         <Section>
-          <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
+          <FlexApart onClick={resetPath}>
+            <Input
+              value={name}
+              onBlur={() => updateIntent(id, { id, name }, true)}
+              onChange={({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => setName(formatIntentName(currentTarget.value))}
+              placeholder="Intent Name"
+            />
+
+            <RemoveDropdown onRemove={() => removeIntent(id)} />
+          </FlexApart>
         </Section>
-      )}
-    </>
-  );
-});
+
+        <FadeLeftContainer key={(!slotEdit).toString()}>
+          {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
+        </FadeLeftContainer>
+        {slotEdit && (
+          <Section>
+            <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
+          </Section>
+        )}
+      </>
+    );
+  }
+);
 
 const mapStateToProps = {
   intent: Intents.intentByIDSelector,
@@ -76,8 +75,12 @@ const mapDispatchToProps = {
   updateIntent: Intents.updateIntent,
 };
 
-const mergeProps = ({ intent: intentByIDSelector }: any, _: any, { id }: ManagerProps) => ({
+const mergeProps = (
+  ...[{ intent: intentByIDSelector }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
+) => ({
   intent: intentByIDSelector(id),
 });
+
+type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps, { forwardRef: true })(Manager);

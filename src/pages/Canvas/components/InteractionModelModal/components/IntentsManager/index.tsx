@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
@@ -8,27 +7,17 @@ import SvgIcon from '@/components/SvgIcon';
 import * as IntentDuck from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
+import { Intent } from '@/models';
+import { ConnectedProps } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
-import { createNextName } from '@/utils/string';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
-import { Intent } from './types';
 
-export type IntentsManagerProps = {
-  intents: Intent[];
-  addIntent: (id: string, intent: Intent) => void;
-  intentsIDs: string[];
-  removeIntent: (id: string) => void;
-  reorderIntents: (ids: string[]) => void;
-};
-
-const NEW_INTENT_NAME = 'intent';
-
-const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, addIntent, intentsIDs, removeIntent, reorderIntents }) => {
+const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIntent, intentsIDs, removeIntent, reorderIntents }) => {
   const [selectedID, setSelectedID] = React.useState(intents[0]?.id);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
@@ -74,12 +63,9 @@ const IntentsManager: React.FC<IntentsManagerProps> = ({ intents, addIntent, int
 
   const onReorder = React.useCallback((from: number, to: number) => reorderIntents(reorderArray(intentsIDs, from, to)), [intentsIDs, reorderIntents]);
 
-  const addNewIntent = React.useCallback(async () => {
-    const id = cuid.slug();
-    const intentNames = intents.map(({ name }) => name);
-    await addIntent(id, { id, name: createNextName(NEW_INTENT_NAME, intentNames) });
-    updateSelected(id);
-  }, [intents]);
+  const addNewIntent = React.useCallback(() => {
+    updateSelected(newIntent());
+  }, [newIntent]);
 
   return (
     <>
@@ -136,9 +122,11 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addIntent: IntentDuck.addIntent,
+  newIntent: IntentDuck.newIntent,
   removeIntent: IntentDuck.removeIntent,
   reorderIntents: IntentDuck.reorderIntents,
 };
+
+type ConnectedIntentsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntentsManager);

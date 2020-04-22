@@ -63,42 +63,40 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
             )}
 
             <>
-              {
-                <NavChildItem>
-                  <Dropdown
-                    menu={
-                      <Menu>
-                        {canUseWorkspaceSettings ? (
-                          <>
-                            <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
-                            <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
-                            {selectedWorkspace.plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Payment</MenuItem>}
-                            <MenuItem divider />
-                            {plan ? (
-                              <MenuItem disabled capitalize>
-                                {plan} Plan
-                              </MenuItem>
-                            ) : (
-                              <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>
-                                Upgrade Workspace
-                              </MenuItem>
-                            )}
-                          </>
-                        ) : (
-                          <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
-                        )}
-                      </Menu>
-                    }
-                    placement="bottom-end"
-                  >
-                    {(ref, onToggle) => (
-                      <ButtonSquare onClick={onToggle} ref={ref}>
-                        <SvgIcon icon="cog" />
-                      </ButtonSquare>
-                    )}
-                  </Dropdown>
-                </NavChildItem>
-              }
+              <NavChildItem>
+                <Dropdown
+                  menu={
+                    <Menu>
+                      {canUseWorkspaceSettings ? (
+                        <>
+                          <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
+                          <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
+                          {selectedWorkspace.plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Payment</MenuItem>}
+                          <MenuItem divider />
+                          {plan ? (
+                            <MenuItem disabled capitalize>
+                              {plan} Plan
+                            </MenuItem>
+                          ) : (
+                            <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>
+                              Upgrade Workspace
+                            </MenuItem>
+                          )}
+                        </>
+                      ) : (
+                        <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+                      )}
+                    </Menu>
+                  }
+                  placement="bottom-end"
+                >
+                  {(ref, onToggle) => (
+                    <ButtonSquare onClick={onToggle} ref={ref}>
+                      <SvgIcon icon="cog" />
+                    </ButtonSquare>
+                  )}
+                </Dropdown>
+              </NavChildItem>
             </>
           </>
         )}

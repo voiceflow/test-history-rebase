@@ -1,7 +1,7 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import { AnyFunction, ArgumentsType } from '@/types';
+import { AnyFunction } from '@/types';
 import { identity } from '@/utils/functional';
 
 export type WithHookOptions<T, P extends object> = {
@@ -12,7 +12,7 @@ export type WithHookOptions<T, P extends object> = {
 export const withHook = <C extends AnyFunction, P extends object = ReturnType<C>>(
   useHook: C,
   { getProps = identity, shouldRender }: WithHookOptions<ReturnType<C>, P> = {},
-  ...args: ArgumentsType<typeof useHook>
+  ...args: Parameters<typeof useHook>
 ) => <T extends object>(Component: React.FC<T & P>) =>
   setDisplayName(wrapDisplayName(Component, 'withHook'))(
     // eslint-disable-next-line react/display-name

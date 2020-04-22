@@ -16,7 +16,9 @@ export type NodeData<T> = T & {
   nodeID: string;
   name: string;
   type: BlockType;
+  path: unknown[];
   blockColor: BlockVariant;
+  deprecatedType?: string;
 };
 
 export namespace NodeData {
@@ -34,11 +36,14 @@ export namespace NodeData {
   };
 
   export type Interaction = {
-    choices: {
-      id: string;
-      [PlatformType.ALEXA]: { intent: string };
-      [PlatformType.GOOGLE]: { intent: string };
-    }[];
+    choices: Record<
+      PlatformType,
+      {
+        id: string;
+        intent: string | null;
+        mappings: { variable: string | null; slot: string | null }[];
+      }
+    >[];
   };
 
   export type Choice = {
@@ -51,7 +56,7 @@ export namespace NodeData {
     {
       // only added some properties here
       intent: string | null;
-      diagramID: string | undefined;
+      diagramID: string | null;
     }
   >;
 
@@ -63,8 +68,8 @@ export namespace NodeData {
   };
 
   export type Capture = {
-    variable?: string;
-    slot?: string;
+    variable: string | null;
+    slot: string | null;
   };
 
   export type Speak = {
@@ -84,12 +89,12 @@ export namespace NodeData {
     title: string;
     content: string;
     hasSmallImage: boolean;
-    largeImage?: string;
-    smallImage?: string;
+    largeImage: string | null;
+    smallImage: string | null;
   };
 
   export type Flow = {
-    diagramID: string;
+    diagramID: string | null;
   };
 
   export type Reminder = {
@@ -109,14 +114,14 @@ export namespace NodeData {
     depth: number;
     id: string;
     type: ExpressionType;
-    value?: Expression[] | string;
+    value: Expression[] | string | null;
   };
 
   export type Set = {
     sets: {
       expression: Expression;
       id: string;
-      variable?: string;
+      variable?: string | null;
     }[];
   };
 
@@ -133,14 +138,11 @@ export namespace NodeData {
       depth: number;
       id: string;
       type: ExpressionType;
-      value: If[] | string | null;
+      value: Expression[] | string | null;
     }[];
   };
 
-  export type Intent = {
-    [PlatformType.ALEXA]: { intent: string; mappings: unknown[] };
-    [PlatformType.GOOGLE]: { intent: string; mappings: unknown[] };
-  };
+  export type Intent = Record<PlatformType, { intent: string | null; mappings: unknown[] }>;
 
   export type Payment = {
     productID: string | null;
@@ -148,13 +150,18 @@ export namespace NodeData {
 
   export type Display = {
     displayType?: DisplayType;
-    displayID?: string;
+    displayID?: string | null;
     dataSource?: string;
     aplCommands?: string;
-    backgroundImage?: string;
+    backgroundImage?: string | null;
     splashHeader?: string;
-    jsonFileName?: string;
+    jsonFileName?: string | null;
     updateOnChange?: boolean;
+
+    /**
+     * TODO: seems to be only referenced in @/store/middleware, can maybe be removed?
+     */
+    version?: '1';
   };
 
   export type IntegrationDefaultProps<T extends IntegrationType> = {

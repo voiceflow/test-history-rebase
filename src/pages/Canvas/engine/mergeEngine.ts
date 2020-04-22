@@ -14,7 +14,7 @@ type MergeCandidate = {
 
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
 
-class MergeEngineV2 extends EngineConsumer {
+class MergeEngine extends EngineConsumer {
   candidates: MergeCandidate[] = [];
 
   virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null = null;
@@ -61,8 +61,8 @@ class MergeEngineV2 extends EngineConsumer {
 
     if (sourceNode.parentNode) {
       const mousePosition = this.engine.getCanvasMousePosition();
-      const { x, y } = this.engine.node.api(sourceNodeID)?.ref.current.getBoundingClientRect();
-      const [nodeX, nodeY] = this.engine.canvas.transformPoint([x, y]);
+      const { x, y } = this.engine.node.api(sourceNodeID)!.ref!.current!.getBoundingClientRect();
+      const [nodeX, nodeY] = this.engine.canvas!.transformPoint([x, y]);
 
       const offset: [number, number] = [mousePosition[0] - nodeX, mousePosition[1] - nodeY];
 
@@ -102,7 +102,7 @@ class MergeEngineV2 extends EngineConsumer {
   }
 
   updateCandidates() {
-    const mousePosition = this.engine.mousePosition.current;
+    const mousePosition = this.engine.mousePosition.current!;
 
     const mergeTarget = this.candidates.find(({ containsPoint }) => containsPoint(mousePosition));
 
@@ -121,8 +121,8 @@ class MergeEngineV2 extends EngineConsumer {
   async unmerge() {
     const mousePosition = this.engine.getCanvasMousePosition();
 
-    if (!this.candidates.some(({ containsPoint }) => containsPoint(this.engine.mousePosition.current))) {
-      await this.engine.node.unmerge(this.sourceNodeID, mousePosition);
+    if (!this.candidates.some(({ containsPoint }) => containsPoint(this.engine.mousePosition.current!))) {
+      await this.engine.node.unmerge(this.sourceNodeID!, mousePosition);
 
       this.reset();
     }
@@ -148,7 +148,7 @@ class MergeEngineV2 extends EngineConsumer {
     this.targetNodeID = nodeID;
     this.isWithinTarget = isWithinTarget;
 
-    this.engine.node.api(nodeID)?.setMergeTarget();
+    this.engine.node.api(nodeID)?.setMergeTarget?.();
     this.mergeLayer?.setTransparent();
   }
 
@@ -163,7 +163,7 @@ class MergeEngineV2 extends EngineConsumer {
     this.clearTargetStep();
 
     if (this.targetNodeID) {
-      this.engine.node.api(this.targetNodeID)?.clearMergeTarget();
+      this.engine.node.api(this.targetNodeID!)?.clearMergeTarget?.();
       this.mergeLayer?.clearTransparent();
       this.targetNodeID = null;
       this.isWithinTarget = null;
@@ -180,4 +180,4 @@ class MergeEngineV2 extends EngineConsumer {
   }
 }
 
-export default MergeEngineV2;
+export default MergeEngine;

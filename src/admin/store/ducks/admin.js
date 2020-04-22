@@ -246,9 +246,7 @@ export const editTrial = (workspaceID, date) => async () => {
     if (date) {
       // Date should be a timestamp (something like 1429482798)
       // Add one extra day to account for reset at midnight
-      const formatDate = moment(date)
-        .add(1, 'd')
-        .unix();
+      const formatDate = moment(date).add(1, 'd').unix();
       axios.post(`/admin-api/trial/${workspaceID}/${formatDate}`);
     } else {
       // We want to set the trial expiry to null here

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { creatorDiagramIDSelector } from '@/ducks/creator';
-import { Action, Reducer, RootReducer, RootState, Thunk } from '@/store/types';
+import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import { hasIdenticalMembers, withoutValue } from '@/utils/array';
 
 import { createAction, createLookupReducer, createRootSelector } from './utils';
@@ -70,18 +70,18 @@ export default variableSetReducer;
 
 // selectors
 
-const rootSelector = createRootSelector<VariableSetState>(STATE_KEY);
+const rootSelector = createRootSelector(STATE_KEY);
 
 export { rootSelector as variableSetSelector };
 
-export const variablesByDiagramIDSelector = createSelector(rootSelector, (state) => (diagramID: string) => state[diagramID] || []);
+export const variablesByDiagramIDSelector = createSelector([rootSelector], (state) => (diagramID: string) => state[diagramID] || []);
 
-export const hasVariablesByDiagramIDSelector = createSelector(variablesByDiagramIDSelector, (variables) => (diagramID: string) =>
+export const hasVariablesByDiagramIDSelector = createSelector([variablesByDiagramIDSelector], (variables) => (diagramID: string) =>
   !!variables(diagramID).length
 );
 
-export const activeDiagramVariables = createSelector(creatorDiagramIDSelector, variablesByDiagramIDSelector, (diagramID, variablesByDiagramID) =>
-  variablesByDiagramID(diagramID)
+export const activeDiagramVariables = createSelector([creatorDiagramIDSelector, variablesByDiagramIDSelector], (diagramID, variablesByDiagramID) =>
+  variablesByDiagramID(diagramID!)
 );
 
 // action creators
@@ -98,9 +98,7 @@ export const removeVariableFromDiagram = (diagramID: string, name: string): Remo
 
 // side effects
 
-type VariableSetThunk<R = void> = Thunk<RootState<typeof STATE_KEY, VariableSetState>, R>;
-
-export const saveVariableSet = (diagramID: string): VariableSetThunk => async (_, getState) => {
+export const saveVariableSet = (diagramID: string): Thunk => async (_, getState) => {
   const state = getState();
   const variables = variablesByDiagramIDSelector(state)(diagramID);
 
@@ -111,27 +109,29 @@ export const saveVariableSet = (diagramID: string): VariableSetThunk => async (_
   }
 };
 
-export const addVariableToDiagramAndSave = (diagramID: string, name: string): VariableSetThunk => (dispatch, getState) => {
+export const addVariableToDiagramAndSave = (diagramID: string, name: string): Thunk => async (dispatch, getState) => {
   const currentVariables = variablesByDiagramIDSelector(getState())(diagramID);
+
   if (currentVariables.includes(name)) {
     throw new Error('flow variable already exists');
   }
+
   dispatch(addVariableToDiagram(diagramID, name));
-  // eslint-disable-next-line no-use-before-define
-  dispatch(saveVariableSet(diagramID));
+  await dispatch(saveVariableSet(diagramID));
 };
 
-export const loadVariableSetForDiagram = (diagramID: string): VariableSetThunk<VariableSet> => async (dispatch) => {
+export const loadVariableSetForDiagram = (diagramID: string): Thunk<VariableSet> => async (dispatch) => {
   const variables = await client.diagram.findVariables(diagramID);
+
   dispatch(replaceVariableSetDiagram(diagramID, variables));
 
   return variables;
 };
 
-export const saveActiveDiagramVariables = (): VariableSetThunk => async (dispatch, getState) => {
+export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {
   const diagramID = creatorDiagramIDSelector(getState());
 
   if (!diagramID) return;
 
-  dispatch(saveVariableSet(diagramID));
+  await dispatch(saveVariableSet(diagramID));
 };

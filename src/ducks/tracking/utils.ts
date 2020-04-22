@@ -1,17 +1,18 @@
 import * as Skill from '@/ducks/skill';
 // to avoid cycle dependencies
 import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
-import { Thunk } from '@/store/types';
+import * as Models from '@/models';
+import { SyncThunk, Thunk } from '@/store/types';
 
 import { ProjectEventInfo } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const createProjectEventTracker = <T extends {} | undefined = undefined>(
   callback: (options: T & ProjectEventInfo, ...args: Parameters<Thunk>) => void
-) => (...args: T extends undefined ? [] : [T]): Thunk => (dispatch, getState) => {
+) => (...args: T extends undefined ? [] : [T]): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const activeSkill = Skill.activeSkillSelector(state);
-  const activeWorkspaceID = activeWorkspaceIDSelector(state);
+  const activeSkill = Skill.activeSkillSelector(state) as Models.Skill;
+  const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
   const baseEventInfo: ProjectEventInfo = {
     skillID: activeSkill.id,

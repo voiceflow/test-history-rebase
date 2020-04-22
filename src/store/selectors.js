@@ -94,26 +94,6 @@ export const activeDiagramViewersSelector = createSelector(diagramViewersSelecto
   getViewers(diagramID)
 );
 
-export const diagramViewersLookupSelector = createSelector(
-  Realtime.realtimeLocksSelector,
-  Workspace.workspaceMemberSelector,
-  (locks, getWorkspaceMember) => {
-    if (!locks || !getWorkspaceMember) {
-      return {};
-    }
-
-    const acc = [];
-    Object.values(locks.users).forEach((usersInDiagram) =>
-      // eslint-disable-next-line array-callback-return
-      Object.entries(usersInDiagram).map(([tabID, creatorID]) => {
-        acc[tabID] = { ...getWorkspaceMember(creatorID), color: getAlternativeColor(tabID) };
-      })
-    );
-
-    return acc;
-  }
-);
-
 // Flow
 export const rootFlowStructureSelector = createSelector(
   Diagram.flowStructureSelector,

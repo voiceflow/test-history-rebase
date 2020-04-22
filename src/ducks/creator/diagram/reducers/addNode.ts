@@ -1,0 +1,135 @@
+import { BlockType } from '@/constants';
+import { Reducer } from '@/store/types';
+import { compose } from '@/utils/functional';
+import { getNormalizedByKey } from '@/utils/normalized';
+
+import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
+import { nodeDataFactory, nodeFactory } from '../factories';
+import { DiagramState } from '../types';
+import {
+  addAllLinksToState,
+  addAllNodesToState,
+  addAllPortsToState,
+  addBlockToState,
+  addNodeToState,
+  buildNewNode,
+  getLinkIDsByPortID,
+  patchNodeInState,
+  removeAllLinksFromState,
+} from '../utils';
+
+const addNodeReducer: Reducer<DiagramState, AddNode> = (state, { payload: { node, data } }) => {
+  const [newNode, newPorts, newNodeData] = buildNewNode(node, data);
+
+  return addBlockToState(newNode, newPorts, newNodeData)(state);
+};
+
+export default addNodeReducer;
+
+export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
+  const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
+
+  const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
+
+  const isCombinedBlock = parentNode.combinedNodes.length;
+  // adding to existing combined block or start block
+  if (isCombinedBlock || parentNode.type === BlockType.START) {
+    const additionalActions = [];
+    if (isCombinedBlock) {
+      const terminalBlock = getNormalizedByKey(state.nodes, parentNode.combinedNodes[parentNode.combinedNodes.length - 1]);
+      const outLinkIDs = terminalBlock.ports.out.flatMap(getLinkIDsByPortID(state));
+
+      additionalActions.push(removeAllLinksFromState(outLinkIDs));
+    }
+
+    return compose(
+      addBlockToState(newNode, newPorts, newNodeData),
+      patchNodeInState(parentNodeID, {
+        combinedNodes: [...parentNode.combinedNodes, node.id],
+      }),
+      ...additionalActions
+    )(state);
+  }
+
+  // constructing a new combined block
+  const parentNodeOutPortIDs = parentNode.ports.out;
+  const parentNodeOutLinkIDs = parentNodeOutPortIDs.flatMap(getLinkIDsByPortID(state));
+
+  const mergedNode = nodeFactory(mergedNodeID, {
+    type: BlockType.COMBINED,
+    x: parentNode.x,
+    y: parentNode.y,
+    combinedNodes: [parentNode.id, node.id],
+  });
+  const mergedData = nodeDataFactory(mergedNodeID, {
+    type: BlockType.COMBINED,
+  });
+
+  newNode.parentNode = mergedNodeID;
+
+  return compose(
+    addNodeToState(mergedNode, mergedData),
+    removeAllLinksFromState(parentNodeOutLinkIDs),
+    patchNodeInState(parentNode.id, { parentNode: mergedNodeID }),
+    addBlockToState(newNode, newPorts, newNodeData)
+  )(state);
+};
+
+export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
+  state,
+  {
+    payload: {
+      entities: { nodesWithData, ports, links },
+      position: [positionX, positionY],
+    },
+  }
+) => {
+  const combinedNodes = nodesWithData.filter(({ node }) => node.type === BlockType.COMBINED);
+  const nodeXs = combinedNodes.map(({ node: { x } }) => x);
+  const nodeYs = combinedNodes.map(({ node: { y } }) => y);
+  const minX = Math.min(...nodeXs);
+  const maxX = Math.max(...nodeXs);
+  const minY = Math.min(...nodeYs);
+  const maxY = Math.max(...nodeYs);
+
+  const [centerX, centerY] = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+
+  return compose(
+    addAllPortsToState(ports),
+    addAllNodesToState(
+      nodesWithData.map(({ node, data }) => ({
+        node: { ...node, x: positionX + (node.x - centerX), y: positionY + (node.y - centerY) },
+        data,
+      }))
+    ),
+    addAllLinksToState(links)
+  )(state);
+};
+
+export const addWrappedNodeReducer: Reducer<DiagramState, AddWrappedNode> = (
+  state,
+  {
+    payload: {
+      node,
+      data,
+      parentNode: { ports: parentPorts, ...parentNode },
+    },
+  }
+) => {
+  const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNode.id }, data);
+  const [rootNode, rootPorts, rootNodeData] = buildNewNode(
+    {
+      ...nodeFactory(parentNode.id, {
+        ...parentNode,
+        type: BlockType.COMBINED,
+        x: node.x,
+        y: node.y,
+        combinedNodes: [node.id],
+      }),
+      ports: parentPorts,
+    },
+    { name: 'Block' }
+  );
+
+  return compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
+};

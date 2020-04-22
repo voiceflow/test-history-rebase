@@ -12,13 +12,13 @@ export type CanvasAPI = {
   zoomOut: (delta: number, options: unknown) => void;
   reorient: () => void;
 
-  setZoom: (zoom: number, options: unknown) => void;
+  setZoom: (zoom: number, options?: unknown) => void;
 
-  setPosition: (position: [number, number], options: unknown) => void;
+  setPosition: (position: [number, number], options?: unknown) => void;
 
   applyStyles: (styles: unknown) => void;
 
-  applyTransition: (options: unknown) => void;
+  applyTransition: (options?: unknown) => void;
 
   transformPoint: (point: [number, number], relative?: boolean) => [number, number];
 

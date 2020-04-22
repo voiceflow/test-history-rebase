@@ -1,0 +1,93 @@
+import React from 'react';
+import { Popper } from 'react-popper';
+
+import NestedMenu from '@/components/NestedMenu';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
+import { BlockVariant } from '@/constants/canvas';
+import { styled } from '@/hocs';
+import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
+import type { Engine } from '@/pages/Canvas/engine';
+import { buildVirtualElement } from '@/utils/dom';
+
+import { CanvasAction, TARGET_OPTIONS } from './constants';
+
+const NestedContextMenu: React.FC<any> = NestedMenu;
+
+type OptionHandler = (contextMenu: ContextMenuValue, props: { engine: Engine; clipboard: ClipboardContextValue; blockColor?: BlockVariant }) => void;
+
+const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
+  [CanvasAction.PASTE]: ({ position }, { engine }) => {
+    const clipboardDataKey = localStorage.getItem(CLIPBOARD_DATA_KEY);
+
+    if (clipboardDataKey) {
+      engine.paste(clipboardDataKey, engine.canvas!.transformPoint(position!));
+    }
+  },
+  [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID!),
+  [CanvasAction.ADD_COMMENT]: ({ position }, { engine }) => engine.node.add(BlockType.COMMENT, engine.canvas!.transformPoint(position!)),
+  [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
+
+  [CanvasAction.DELETE_BLOCK]: ({ target: nodeID }, { engine }) => {
+    if (engine.isActive(nodeID!) || engine.isNestedNodeActive(nodeID!)) {
+      engine.clearActivation();
+    }
+
+    engine.node.remove(nodeID!);
+  },
+  [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => blockColor && engine.node.updateBlockColor(nodeID!, blockColor),
+  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
+};
+
+export type ContextMenuProps = { className: string };
+
+const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
+  const contextMenu = React.useContext(ContextMenuContext)!;
+  const engine = React.useContext(EngineContext)!;
+  const clipboard = React.useContext(ClipboardContext)!;
+  const optionProps = { engine, clipboard };
+  const options =
+    contextMenu.type && TARGET_OPTIONS[contextMenu.type]?.filter((option) => !option.shouldRender || option.shouldRender(contextMenu, optionProps));
+
+  const onSelect = async (_: any, [menuItemIndex, nestedMenuItemIndex]: [number, number]) => {
+    const option = options![menuItemIndex];
+    const blockColor = option?.options?.[nestedMenuItemIndex].value;
+
+    await OPTION_HANDLERS[option.value](contextMenu, { ...optionProps, blockColor });
+    contextMenu.onHide();
+  };
+
+  const getOptionValue = (option: { value?: any }) => option?.value;
+
+  const getOptionLabel = (selectedValue: any) => {
+    const flattenedOptions = options!.flatMap(({ label, value, options = [] }) => [{ value, label }, ...options.flatMap((option) => [option])]);
+
+    const option = flattenedOptions.find((option) => option.value === selectedValue);
+    return option?.label;
+  };
+
+  React.useEffect(() => {
+    const onHide = contextMenu.onHide;
+
+    document.addEventListener('mousedown', onHide);
+
+    return () => document.removeEventListener('mousedown', onHide);
+  }, [contextMenu.onHide]);
+
+  if (!contextMenu.isOpen || !options) {
+    return null;
+  }
+
+  return (
+    <Popper referenceElement={buildVirtualElement(contextMenu.position)} placement="right-start" positionFixed>
+      {({ ref, style, placement }) => (
+        <div ref={ref} style={style} data-placement={placement} className={className}>
+          <NestedContextMenu options={options} onSelect={onSelect} getOptionValue={getOptionValue} getOptionLabel={getOptionLabel} />
+        </div>
+      )}
+    </Popper>
+  );
+};
+
+export default styled(ContextMenu)`
+  z-index: 10;
+`;

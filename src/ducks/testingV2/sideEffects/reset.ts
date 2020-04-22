@@ -1,10 +1,11 @@
 import { activePlatformSelector, activeProjectIDSelector, globalVariablesSelector } from '@/ducks/skill';
 import { slotNamesSelector } from '@/ducks/slot';
+import { SyncThunk } from '@/store/types';
 
 import { updateTestingContext, updateTestingStatus } from '../actions';
-import { Store, TestStatus, TestingThunk } from '../types';
+import { Store, TestStatus } from '../types';
 
-const resetState = (): TestingThunk => (dispatch, getState) => {
+const resetState = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const globalVariables = globalVariablesSelector(state);
   const slotNames = slotNamesSelector(state);

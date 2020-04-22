@@ -71,9 +71,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           },
         };
 
-        expectAction(Realtime.initializeRealtime(diagramID, locks))
-          .result.property('locks')
-          .to.eql(locks);
+        expectAction(Realtime.initializeRealtime(diagramID, locks)).result.property('locks').to.eql(locks);
       });
     });
 
@@ -289,9 +287,9 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
     });
 
-    describe('reourceLockOwnerTabIDSelector()', () => {
+    describe('resourceLockOwnerTabIDSelector()', () => {
       it('should return whether node is edit locked', () => {
-        expect(select(Realtime.reourceLockOwnerTabIDSelector)('settings')).to.eq('mno');
+        expect(select(Realtime.resourceLockOwnerTabIDSelector)('settings')).to.eq('mno');
       });
     });
 
@@ -377,7 +375,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeUpdate(action));
 
-        expect(sendUpdate).to.be.calledWithExactly(action, MOCK_STATE.lastTimestamp, undefined, serverAction);
+        expect(sendUpdate).to.be.calledWithExactly(action, MOCK_STATE.lastTimestamp, null, serverAction);
         expect(createServerAction).to.be.calledWithExactly(action);
       });
 
@@ -429,7 +427,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction));
 
-        expect(sendProjectUpdate).to.be.calledWithExactly(projectAction, MOCK_STATE.lastTimestamp, undefined);
+        expect(sendProjectUpdate).to.be.calledWithExactly(projectAction, MOCK_STATE.lastTimestamp, null);
       });
 
       it('should send realtime project action with locks', async () => {

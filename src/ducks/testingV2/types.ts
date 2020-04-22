@@ -1,7 +1,5 @@
 import NLC from '@voiceflow/natural-language-commander';
 
-import { RootState, Thunk } from '@/store/types';
-
 export const STATE_KEY = 'testingV2';
 
 // trace types
@@ -98,5 +96,3 @@ export interface TestingState {
   startTime: number;
   context: Context;
 }
-
-export type TestingThunk<R = void> = Thunk<RootState<typeof STATE_KEY, TestingState>, R>;

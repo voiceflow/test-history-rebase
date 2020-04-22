@@ -300,14 +300,14 @@ export enum RepromptType {
   AUDIO = 'audio',
 }
 
-export const PERIOD = {
-  monthly: 'MO',
-  annually: 'YR',
-};
+export enum BillingPeriod {
+  MONTHLY = 'MO',
+  ANNUALLY = 'YR',
+}
 
 export const PERIOD_NAME = {
-  [PERIOD.monthly]: 'Monthly',
-  [PERIOD.annually]: 'Yearly',
+  [BillingPeriod.MONTHLY]: 'Monthly',
+  [BillingPeriod.ANNUALLY]: 'Yearly',
 };
 
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;

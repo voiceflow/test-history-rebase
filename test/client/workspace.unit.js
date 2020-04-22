@@ -11,9 +11,7 @@ suite('Client - Workspace', ({ expect, stub, stubFetch, expectCall }) => {
       const mockWorkspaces = generate.array(3, generate.object);
       const fetch = stubFetch().yields(mockWorkspaces);
 
-      await expectCall(client.find)
-        .withAdapter(stub(workspaceAdapter, 'mapFromDB'))
-        .toYield(mockWorkspaces);
+      await expectCall(client.find).withAdapter(stub(workspaceAdapter, 'mapFromDB')).toYield(mockWorkspaces);
 
       expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH);
     });
@@ -25,9 +23,7 @@ suite('Client - Workspace', ({ expect, stub, stubFetch, expectCall }) => {
       const mockWorkspace = generate.object();
       const fetch = stubFetch().yields(mockWorkspace);
 
-      await expectCall(client.fetchWorkspace, workspaceID)
-        .withAdapter(stub(workspaceAdapter, 'mapFromDB'))
-        .toYield([mockWorkspace]);
+      await expectCall(client.fetchWorkspace, workspaceID).withAdapter(stub(workspaceAdapter, 'fromDB')).toYield(mockWorkspace, [mockWorkspace]);
 
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${workspaceID}`);
     });
@@ -38,9 +34,7 @@ suite('Client - Workspace', ({ expect, stub, stubFetch, expectCall }) => {
       const data = generate.object();
       const fetch = stubFetch('post').yields(data);
 
-      await expectCall(client.createWorkspace, data)
-        .withAdapter(stub(workspaceAdapter, 'fromDB'))
-        .toYield(data);
+      await expectCall(client.createWorkspace, data).withAdapter(stub(workspaceAdapter, 'fromDB')).toYield(data);
 
       expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH, data);
     });
@@ -52,9 +46,7 @@ suite('Client - Workspace', ({ expect, stub, stubFetch, expectCall }) => {
       const mockMembers = generate.array(3, generate.object);
       const fetch = stubFetch().yields(mockMembers);
 
-      await expectCall(client.findMembers, workspaceID)
-        .withAdapter(stub(memberAdapter, 'mapFromDB'))
-        .toYield(mockMembers);
+      await expectCall(client.findMembers, workspaceID).withAdapter(stub(memberAdapter, 'mapFromDB')).toYield(mockMembers);
 
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${workspaceID}/members`);
     });

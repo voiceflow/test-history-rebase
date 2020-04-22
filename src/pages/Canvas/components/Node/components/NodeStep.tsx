@@ -9,6 +9,7 @@ import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeInjectedProps, PlatformContext, useNodeData, withNode } from '@/pages/Canvas/contexts';
+import { MergeArguments } from '@/types';
 import { buildVirtualDOMRect } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
@@ -38,7 +39,7 @@ const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, link
   const getAnchorPoint = React.useCallback(() => {
     const { x, y } = stepRef.current!.getBoundingClientRect();
 
-    return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas.getZoom(), y]);
+    return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas!.getZoom(), y]);
   }, []);
 
   React.useEffect(() => {
@@ -81,12 +82,12 @@ const NodeStep: React.FC<ConnectedNodeStepProps> = ({ nodeID, node, isLast, link
   );
 };
 
-const mapStateToProps = (state: any, { node }: NodeInjectedProps) => ({
-  linkIDs: Creator.linkIDsByPortIDSelector(state)(node.ports.in[0]),
+const mapStateToProps = {
+  linkIDs: Creator.linkIDsByPortIDSelector,
+};
+
+const mergeProps = (...[{ linkIDs: getLinkIDs }, , { node }]: MergeArguments<typeof mapStateToProps, {}, NodeInjectedProps>) => ({
+  linkIDs: getLinkIDs(node.ports.in[0]),
 });
 
-export default compose<ConnectedNodeStepProps, NodeStepProps>(
-  withNode,
-  connect(mapStateToProps, null, null, { forwardRef: true }),
-  React.memo
-)(NodeStep);
+export default compose(withNode, connect(mapStateToProps, null, mergeProps, { forwardRef: true }), React.memo)(NodeStep) as React.FC<NodeStepProps>;

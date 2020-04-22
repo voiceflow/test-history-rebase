@@ -14,7 +14,7 @@ export * from './types';
 const LockOwner: any = User;
 
 export type BaseStepProps = {
-  image?: string;
+  image?: string | null;
   disableHighlightStyle?: boolean;
 };
 

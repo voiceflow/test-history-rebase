@@ -3,9 +3,9 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Product from '@/ducks/product';
 import { connect } from '@/hocs';
-import { NodeData, Product as ProductType } from '@/models';
+import * as Models from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
-import { MergeProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 
 export type CancelPaymentStepProps = {
   label?: string;
@@ -32,11 +32,11 @@ export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, suc
   </Step>
 );
 
-type ConnectedCancelPaymentStepProps = ConnectedStepProps<NodeData.Payment> & {
-  product?: ProductType;
-};
-
-const ConnectedCancelPaymentStep: React.FC<ConnectedCancelPaymentStepProps> = ({ node, withPorts, product }) => {
+const ConnectedCancelPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment> & ConnectedCancelPaymentStepProps> = ({
+  node,
+  withPorts,
+  product,
+}) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return <CancelPaymentStep label={product?.name} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
@@ -46,8 +46,12 @@ const mapStateToProps = {
   product: Product.productByIDSelector,
 };
 
-const mergeProps: MergeProps<typeof mapStateToProps, {}, ConnectedStepProps<NodeData.Payment>> = ({ product: productByIDSelector }, _, { data }) => ({
+const mergeProps = (
+  ...[{ product: productByIDSelector }, , { data }]: MergeArguments<typeof mapStateToProps, {}, ConnectedStepProps<Models.NodeData.Payment>>
+) => ({
   product: productByIDSelector(data?.productID as any),
 });
 
-export default connect(mapStateToProps, null, mergeProps)(ConnectedCancelPaymentStep);
+type ConnectedCancelPaymentStepProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
+
+export default connect(mapStateToProps, null, mergeProps)<ConnectedStepProps<Models.NodeData.Payment>>(ConnectedCancelPaymentStep as React.FC);

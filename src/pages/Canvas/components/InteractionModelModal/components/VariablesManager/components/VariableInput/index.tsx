@@ -10,16 +10,12 @@ import { toast } from '@/components/Toast';
 import * as Skill from '@/ducks/skill';
 import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
+import { Thunk } from '@/store/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { withKeyPress } from '@/utils/dom';
 
 import { VariableType } from '../../constants';
 import { Container, Info, Label, Select } from './components';
-
-type VariableInputProps = {
-  setSelected: (type: VariableType, variable: string) => void;
-  addVariable: (variable: string) => void;
-  addFlowVariable: (variable: string) => void;
-};
 
 const VARIABLE_LABELS: Record<VariableType, string> = {
   [VariableType.LOCAL]: 'Flow',
@@ -27,7 +23,13 @@ const VARIABLE_LABELS: Record<VariableType, string> = {
   [VariableType.BUILT_IN]: 'Built In',
 };
 
-const VariableInput: React.FC<VariableInputProps> = ({ addVariable, addFlowVariable, setSelected, ...props }) => {
+const DropdownComponent = Dropdown as React.FC<any>;
+
+export type VariableInputProps = {
+  setSelected: (type: VariableType, variable: string) => void;
+};
+
+const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> = ({ addVariable, addFlowVariable, setSelected, ...props }) => {
   const [value, setValue] = React.useState('');
   const [variableType, setVariableType] = React.useState<VariableType>(VariableType.GLOBAL);
 
@@ -47,11 +49,11 @@ const VariableInput: React.FC<VariableInputProps> = ({ addVariable, addFlowVaria
     []
   );
 
-  const onAdd = React.useCallback(() => {
+  const onAdd = React.useCallback(async () => {
     if (!value.trim()) return;
     try {
       if (isFlow) {
-        addFlowVariable(value);
+        await addFlowVariable(value);
       } else {
         addVariable(value);
       }
@@ -72,17 +74,13 @@ const VariableInput: React.FC<VariableInputProps> = ({ addVariable, addFlowVaria
           <Label>Add Variable</Label>
           <InfoIcon>{Info}</InfoIcon>
         </Flex>
-        {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore
-          <Dropdown options={MenuOptions}>
-            {(ref: any, onToggle: any, isOpen: boolean) => (
-              <Select ref={ref} onClick={onToggle} active={isOpen}>
-                {VARIABLE_LABELS[variableType]} <SvgIcon icon="caretDown" size={8} />
-              </Select>
-            )}
-          </Dropdown>
-        }
+        <DropdownComponent options={MenuOptions}>
+          {(ref: any, onToggle: any, isOpen: boolean) => (
+            <Select ref={ref} onClick={onToggle} active={isOpen}>
+              {VARIABLE_LABELS[variableType]} <SvgIcon icon="caretDown" size={8} />
+            </Select>
+          )}
+        </DropdownComponent>
       </FlexApart>
       <Input
         placeholder={`Add ${VARIABLE_LABELS[variableType]} Variable`}
@@ -109,12 +107,14 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addVariable: Skill.addGlobalVariable,
+  addVariable: Skill.addGlobalVariable as (variable: string) => Thunk,
   addFlowVariable: VariableSet.addVariableToDiagramAndSave,
 };
 
-const mergeProps = ({ diagramID }: { diagramID: string }, { addFlowVariable }: typeof mapDispatchToProps) => ({
+const mergeProps = (...[{ diagramID }, { addFlowVariable }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
   addFlowVariable: (variable: string) => addFlowVariable(diagramID, variable),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariableInput);
+type ConnectedVariableInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariableInput) as React.FC<VariableInputProps>;

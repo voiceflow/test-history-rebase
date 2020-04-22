@@ -6,7 +6,7 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { transformVariablesToReadable } from '@/utils/slot';
 
 export type CardStepProps = {
-  image: string | undefined;
+  image: string | null;
   portID: string;
   title: string;
 };

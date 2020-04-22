@@ -138,13 +138,7 @@ class AudioDrop extends Component {
           <Button isBtn withDangerIndicator onClick={this.onClear}>
             &times;
           </Button>
-          <div>
-            {this.props.audio
-              .split('/')
-              .pop()
-              .split('-')
-              .pop()}
-          </div>
+          <div>{this.props.audio.split('/').pop().split('-').pop()}</div>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <audio key={this.props.audio.split('/').pop()} controls>
             <source src={this.props.audio} type="audio/mpeg" />

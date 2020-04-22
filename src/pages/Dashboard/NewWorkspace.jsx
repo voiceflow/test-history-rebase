@@ -5,7 +5,7 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import Image from '@/components/LegacyUpload/Image';
 import { ModalType } from '@/constants';
-import { createWorkspace } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 
@@ -102,7 +102,7 @@ function NewWorkspace({ history, createWorkspace }) {
 }
 
 const mapDispatchToProps = {
-  createWorkspace,
+  createWorkspace: Workspace.createWorkspace,
 };
 
 export default connect(null, mapDispatchToProps)(NewWorkspace);

@@ -3,9 +3,9 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Product from '@/ducks/product';
 import { connect } from '@/hocs';
-import { NodeData, Product as ProductType } from '@/models';
+import * as Models from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
-import { MergeProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 
 export type PaymentStepProps = {
   label?: string;
@@ -48,11 +48,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
   );
 };
 
-type ConnectedPaymentStepProps = ConnectedStepProps<NodeData.Payment> & {
-  product?: ProductType;
-};
-
-const ConnectedPaymentStep: React.FC<ConnectedPaymentStepProps> = ({ node, withPorts, product }) => {
+const ConnectedPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment> & ConnectedPaymentStepProps> = ({ node, withPorts, product }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
   return (
@@ -70,8 +66,12 @@ const mapStateToProps = {
   product: Product.productByIDSelector,
 };
 
-const mergeProps: MergeProps<typeof mapStateToProps, {}, ConnectedStepProps<NodeData.Payment>> = ({ product: productByIDSelector }, _, { data }) => ({
-  product: productByIDSelector(data?.productID!),
+const mergeProps = (
+  ...[{ product: productByIDSelector }, , { data }]: MergeArguments<typeof mapStateToProps, {}, ConnectedStepProps<Models.NodeData.Payment>>
+) => ({
+  product: data?.productID ? productByIDSelector(data.productID) : null,
 });
 
-export default connect(mapStateToProps, null, mergeProps)(ConnectedPaymentStep);
+type ConnectedPaymentStepProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
+
+export default connect(mapStateToProps, null, mergeProps)<ConnectedStepProps<Models.NodeData.Payment>>(ConnectedPaymentStep as React.FC);

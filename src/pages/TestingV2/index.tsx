@@ -6,6 +6,7 @@ import { TestStatus, resetTesting, startTesting, testingStatusSelector } from '@
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTrackingEvents } from '@/hooks';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 
 import { Container, Dialog, Input, Reset, Start } from './components';
@@ -13,15 +14,11 @@ import { useTesting } from './hooks';
 import { TMStatus } from './types';
 
 export type TestingProps = {
-  status: TestStatus;
-  locale: string;
   debug: boolean;
   isPublic?: boolean;
-  startTesting: typeof startTesting;
-  resetTesting: typeof resetTesting;
 };
 
-const Testing: React.FC<TestingProps> = ({ locale, status, isPublic, startTesting, resetTesting, debug }) => {
+const Testing: React.FC<TestingProps & ConnectedTestingProps> = ({ locale, status, isPublic, startTesting, resetTesting, debug }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
   const [testMachineStatus, messages, interactions, onInteraction, onPlay] = useTesting(status, debug);
 
@@ -72,6 +69,8 @@ const mapDispatchProps = {
   resetTesting,
 };
 
-const mergeProps = ({ locales }: { locales: string[] }) => ({ locale: locales[0] });
+const mergeProps = (...[{ locales }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchProps>) => ({ locale: locales[0] });
 
-export default compose<TestingProps, {}>(removeIntercom, connect(mapStateToProps, mapDispatchProps, mergeProps))(Testing);
+type ConnectedTestingProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps, typeof mergeProps>;
+
+export default compose(removeIntercom, connect(mapStateToProps, mapDispatchProps, mergeProps))(Testing);

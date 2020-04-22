@@ -27,8 +27,8 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
           />
         );
 
-        const onCreateFlowVariable = (item) => {
-          addVariableToFlow(item);
+        const onCreateFlowVariable = async (item) => {
+          await addVariableToFlow(item);
           updateTo(item);
         };
 

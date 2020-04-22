@@ -48,10 +48,7 @@ export default function Controls({
   );
 
   const onShowFakeSelection = React.useCallback(() => {
-    const selectionIsCollapsed = store
-      .getEditorState()
-      .getSelection()
-      .isCollapsed();
+    const selectionIsCollapsed = store.getEditorState().getSelection().isCollapsed();
 
     if (selectionIsCollapsed || store.get('fakeSelectionKey')) {
       return;

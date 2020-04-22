@@ -4,6 +4,7 @@ import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { ConnectedProps } from '@/types';
 import { prettifyIntentName } from '@/utils/intent';
 
 export type IntentStepProps = {
@@ -19,20 +20,18 @@ export const IntentStep: React.FC<IntentStepProps> = ({ portID, label }) => (
   </Step>
 );
 
-type ConnectedIntentStepProps = ConnectedStepProps<NodeData.Intent> & {
-  intentsMap: Record<string, { name: string }>;
-};
-
-const ConnectedIntentStep: React.FC<ConnectedIntentStepProps> = ({ node, data, platform, intentsMap }) => {
+const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent> & ConnectedIntentStepProps> = ({ node, data, platform, intentsMap }) => {
   const {
     [platform]: { intent },
   } = data;
 
-  return <IntentStep portID={node.ports.out[0]} label={intentsMap[intent] ? prettifyIntentName(intentsMap[intent].name) : null} />;
+  return <IntentStep portID={node.ports.out[0]} label={intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null} />;
 };
 
 const mapStateToProps = {
   intentsMap: Intent.mapPlatformIntentsSelector,
 };
 
-export default connect(mapStateToProps)(ConnectedIntentStep);
+type ConnectedIntentStepProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)<ConnectedStepProps<NodeData.Intent>>(ConnectedIntentStep);

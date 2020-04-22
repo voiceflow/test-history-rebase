@@ -1,9 +1,7 @@
 import _shuffle from 'lodash/shuffle';
 
 const matchOption = (label, getOptionLabel, getOptionValue) => (option) =>
-  getOptionLabel(getOptionValue(option))
-    ?.toLowerCase()
-    ?.includes(label?.toLowerCase());
+  getOptionLabel(getOptionValue(option))?.toLowerCase()?.includes(label?.toLowerCase());
 
 const multilevelSearch = (matched, notMatched, searchLabel, option, params) => {
   if (matchOption(searchLabel, params.getOptionLabel, params.getOptionValue)(option)) {

@@ -10,12 +10,12 @@ import LineBar from '@/components/LineBar/LineBar';
 import { Spinner } from '@/components/Spinner';
 import TimeInterval from '@/components/TimeInterval/TimeInterval';
 
-const addDays = function(date, days) {
+const addDays = function (date, days) {
   date.setDate(date.getDate() + days);
   return date;
 };
 
-const addHours = function(date, hours) {
+const addHours = function (date, hours) {
   date.setHours(date.getHours() + hours);
   return date;
 };

@@ -10,6 +10,7 @@ import product from './product';
 import project from './project';
 import session from './session';
 import skill from './skill';
+import createSocketClient from './socket';
 import template from './template';
 import testing from './testing';
 import testingV2 from './testingV2';
@@ -36,7 +37,7 @@ const client = {
   template,
   onboarding,
   feature,
-  socket: null,
+  socket: null as ReturnType<typeof createSocketClient> | null,
 };
 
 export default client;

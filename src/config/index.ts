@@ -39,7 +39,13 @@ function getHost() {
   return process.env.API_HOST!;
 }
 
-export const API_HOST = getHost();
+declare global {
+  interface Window {
+    VF_OVERRIDE_API_HOST?: string;
+  }
+}
+
+export const API_HOST = window.VF_OVERRIDE_API_HOST || getHost();
 export const API_ENDPOINT = `https://${API_HOST}${IS_DEVELOPMENT ? ':8080' : ''}`;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_PRODUCTION ? 'voiceflow.com' : window.location.hostname);

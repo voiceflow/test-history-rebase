@@ -8,7 +8,7 @@ import { connect } from '@/hocs';
 import { Header, InnerContainer, OuterContainer } from './components';
 import CurrentStep from './components/CurrentStep';
 import { OnboardingProvider } from './context';
-import { CollaboratorType, OnboardingProps } from './types';
+import { OnboardingDataProps, OnboardingProps } from './types';
 
 export const Onboarding: React.FC<OnboardingProps> = ({ data, location }) => {
   const query = queryString.parse(location?.search);
@@ -34,7 +34,9 @@ const mapStateToProps = {
 type ConnectedOnboardingProps = { user: Record<string, string> };
 
 const ConnectedOnboarding: React.FC<ConnectedOnboardingProps> = ({ user, ...props }) => {
-  const data: CollaboratorType = { email: user.email, permission: UserRole.ADMIN };
+  const data: OnboardingDataProps = {
+    collaborators: [{ email: user.email, permission: UserRole.ADMIN }],
+  };
 
   return <Onboarding data={data} {...props} />;
 };

@@ -10,7 +10,7 @@ export default {
 };
 
 const getProps = () => ({
-  data: { email: 'abc@test.com', permission: UserRole.ADMIN },
+  data: { collaborators: [{ email: 'abc@test.com', permission: UserRole.ADMIN }] },
 });
 
 export const normal = () => {

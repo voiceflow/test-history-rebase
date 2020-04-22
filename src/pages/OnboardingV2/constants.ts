@@ -26,15 +26,15 @@ export const STEP_META: StepMetaProps = {
   [StepID.CREATE_WORKSPACE]: {
     title: () => 'Create Workspace',
     canBack: true,
-    canSkip: true,
-    skipTo: StepID.PERSONALIZE_WORKSPACE,
+    canSkip: false,
+    skipTo: null,
     component: CreateWorkspace,
   },
   [StepID.PERSONALIZE_WORKSPACE]: {
     title: () => 'Personalize Workspace',
     canBack: true,
-    canSkip: true,
-    skipTo: StepID.ADD_COLLABORATORS,
+    canSkip: false,
+    skipTo: null,
     component: PersonalizeWorkspace,
   },
   [StepID.ADD_COLLABORATORS]: {

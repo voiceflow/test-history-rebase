@@ -8,7 +8,7 @@ export { default as InlineInputValue } from './InlineInputValue';
 
 export const SearchInputIcon = styled(SvgIcon)`
   position: absolute;
-  right: 0;
+  right: 1px;
   padding: ${units(2)}px;
   cursor: pointer;
 `;

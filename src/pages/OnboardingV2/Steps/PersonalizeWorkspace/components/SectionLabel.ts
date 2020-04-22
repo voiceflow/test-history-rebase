@@ -5,7 +5,7 @@ const SectionLabel = styled.div`
   font-size: 15px;
   font-weight: 600;
 
-  margin-bottom: 14px;
+  margin-bottom: 11px;
   margin-top: 24px;
   :first-child {
     margin-top: 0;

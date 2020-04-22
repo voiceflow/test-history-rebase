@@ -12,7 +12,7 @@ const nativeScrollbarsStyle = css`
 const MenuContainer = styled.ul`
   ${cardStyles}
 
-  max-height: ${({ theme }) => theme.components.menuItem.height * MAX_VISIBLE_ITEMS}px;
+  max-height: ${({ theme, maxVisibleItems }) => theme.components.menuItem.height * (maxVisibleItems || MAX_VISIBLE_ITEMS)}px;
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   margin-top: 5px;

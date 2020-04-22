@@ -5,6 +5,7 @@ const Input = styled(BaseInput as any)<{ showdropdown: boolean; error: boolean }
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   border-right: 1px solid #d2dae2 !important;
+  height: ${({ theme }) => theme.components.input.height}px;
 
   ${({ error }) =>
     error &&

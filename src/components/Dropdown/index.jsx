@@ -7,7 +7,7 @@ import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 
 const DEFAULT_PORTAL_NODE = document.body;
-const PopoverContainer = styled.div`
+export const PopoverContainer = styled.div`
   z-index: 1051;
   z-index: 1100;
   /* to override default width css from react-popper */
@@ -29,10 +29,12 @@ function Dropdown({
   options,
   noScroll,
   onSelect,
+  maxHeight,
   onClose,
   placement = 'bottom-start',
   children,
   menu,
+  maxVisibleItems,
   autoWidth = false,
   selfDismiss = false,
   portal = DEFAULT_PORTAL_NODE,
@@ -79,6 +81,8 @@ function Dropdown({
                 {(typeof menu === 'function' ? menu(onToggle) : menu) ||
                   (options && (
                     <Menu
+                      maxHeight={maxHeight}
+                      maxVisibleItems={maxVisibleItems}
                       options={options}
                       onSelect={(value) => {
                         onSelect && onSelect(value);

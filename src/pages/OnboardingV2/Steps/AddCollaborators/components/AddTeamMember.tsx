@@ -7,32 +7,32 @@ import { isValidEmail, isValueDuplicate } from '../utils';
 import { CollaboratorListContainer, DropdownInput, InvalidEmailError } from '.';
 
 const OPTIONS: { value: UserRole; label: string }[] = [
-  { value: UserRole.VIEWER, label: 'CAN VIEW' },
-  { value: UserRole.EDITOR, label: 'CAN EDIT' },
+  { value: UserRole.VIEWER, label: 'Can View' },
+  { value: UserRole.EDITOR, label: 'Can Edit' },
 ];
 
 export type AddTeamMembersProps = {
   onUpdate: (value: CollaboratorType[]) => void;
   collaborators: CollaboratorType[];
-  enableContinue: () => void;
-  disableContinue: () => void;
+  enableWithoutErrors: () => void;
+  disableWithErrors: () => void;
 };
 
-const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, onUpdate, enableContinue, disableContinue }) => {
+const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, onUpdate, enableWithoutErrors, disableWithErrors }) => {
   const [errorIndexes, updateErrorIndexes] = React.useState<number[]>([]);
 
   const onAdd = (value: string) => onUpdate([...collaborators, { email: value }]);
   const onFocus = (index: number) => () => {
     updateErrorIndexes(errorIndexes.filter((idx) => idx !== index));
-    enableContinue();
+    enableWithoutErrors();
   };
   const onBlur = (index: number, hasError: boolean) => () => {
     if (hasError) {
       updateErrorIndexes([...errorIndexes, index]);
-      disableContinue();
+      disableWithErrors();
     } else {
       updateErrorIndexes(errorIndexes.filter((idx) => idx !== index));
-      enableContinue();
+      enableWithoutErrors();
     }
   };
   const onRemoveCollaborator = (index: number) => () => onUpdate(collaborators.filter((collaborator, idx) => idx !== index && collaborator));

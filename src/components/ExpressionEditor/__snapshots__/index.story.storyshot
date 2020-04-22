@@ -157,6 +157,7 @@ Array [
 
 .c12 {
   padding-right: 36px;
+  height: 42px;
 }
 
 .c12 input {
@@ -179,7 +180,7 @@ Array [
 
 .c18 {
   position: absolute;
-  right: 0;
+  right: 1px;
   padding: 16px;
   cursor: pointer;
 }

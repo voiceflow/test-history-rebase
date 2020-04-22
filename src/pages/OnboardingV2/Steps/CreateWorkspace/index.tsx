@@ -17,8 +17,13 @@ const CreateWorkspace: React.FC = () => {
   const { stepForward, setCreateWorkspaceMeta } = actions;
   const [workspaceName, setWorkspaceName] = React.useState<string>(createWorkspaceMeta.workspaceName || '');
   const [workspaceImage, setWorkspaceImage] = React.useState<string>(createWorkspaceMeta.workspaceImage || '');
-  const canContinue = !!workspaceName;
+  const canContinue = !!workspaceName.trim();
   const iconUploadRef: React.Ref<any> = React.createRef();
+  const inputRef = React.createRef<HTMLElement>();
+
+  React.useEffect(() => {
+    inputRef?.current?.focus();
+  });
 
   const onContinue = () => {
     setCreateWorkspaceMeta({
@@ -34,6 +39,7 @@ const CreateWorkspace: React.FC = () => {
         value={workspaceName}
         onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
         placeholder="Enter your workspace name"
+        ref={inputRef}
       />
       <FlexCenter>
         <IconUpload image={workspaceImage} update={setWorkspaceImage} size="large" ref={iconUploadRef} />

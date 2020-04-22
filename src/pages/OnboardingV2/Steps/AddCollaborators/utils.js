@@ -2,8 +2,8 @@
 
 const FORMAT = /^\w+([-.]?\w+)*@\w+([-.]?\w+)*(\.\w{2,3})+$/;
 
-export const isValidEmail = (mail) => {
-  return mail.match(FORMAT);
+export const isValidEmail = (email) => {
+  return email.match(FORMAT);
 };
 
 export const isValueDuplicate = (value, list, attr) => {

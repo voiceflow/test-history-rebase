@@ -3,6 +3,11 @@ import { css, styled } from '@/hocs';
 
 const BookDemoContainer = styled.div<{ disabled?: boolean }>`
   ${flexCenterStyles}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0.6;
+    `};
 
   font-size: 15px;
   color: #62778c;

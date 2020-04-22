@@ -3,6 +3,7 @@ import { css, styled, units } from '@/hocs';
 
 const SearchInput = styled(Input)`
   padding-right: ${units(4.5)}px;
+  height: ${({ theme }) => theme.components.input.height}px;
 
   ${({ searchable, isDropdown }) =>
     !searchable &&
@@ -30,10 +31,10 @@ const SearchInput = styled(Input)`
       display: inline-block;
     `}
   
-  ${({ isDropDownOpened }) =>
-    isDropDownOpened &&
+  ${({ isDropDownOpened, opened }) =>
+    (isDropDownOpened || opened) &&
     css`
-      color: #5d9df5 !important;
+      border-color: #5d9df5 !important;
     `}
 
   input {

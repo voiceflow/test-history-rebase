@@ -44,7 +44,6 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
   return (
     <Dropdown
       orientation={orientation}
-      noScroll={true}
       menu={
         <Menu>
           {options.map(({ label, value }, index) => (
@@ -57,10 +56,10 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
         </Menu>
       }
     >
-      {(ref: any, onToggle: () => void) => (
-        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _.constant(null) : onToggle} error={hasError}>
-          {dropdownValue?.label}
-          {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={7} />}
+      {(ref: any, onToggle: () => void, isOpen: boolean) => (
+        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _.constant(null) : onToggle} error={hasError} active={isOpen}>
+          {dropdownValue?.label?.toUpperCase()}
+          {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}
         </DropdownButton>
       )}
     </Dropdown>

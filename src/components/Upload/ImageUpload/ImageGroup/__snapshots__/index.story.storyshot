@@ -3,8 +3,8 @@
 exports[`Storyshots Upload/Image Group Normal 1`] = `
 .c12 {
   box-sizing: content-box;
-  width: 20px;
-  height: 20px;
+  width: 16.842105263157894px;
+  height: 16.842105263157894px;
   color: #BECEDC;
 }
 
@@ -270,7 +270,7 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
         <span
           className="c3 c12"
           color="#BECEDC"
-          size={20}
+          size={16.842105263157894}
         >
           <svg
             data-file-name="SvgImage"

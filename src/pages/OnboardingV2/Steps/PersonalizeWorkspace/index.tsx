@@ -46,6 +46,13 @@ const CHANNEL_OPTIONS = [
   { label: 'Twitter', value: 'Twitter' },
 ];
 
+const customOptionLabelStyling = {
+  fontSize: '15px',
+  fontWeight: 'normal',
+  textTransform: 'none',
+  color: '#132144',
+};
+
 const VoiceChannelOptions = CHANNEL_OPTIONS.slice(0, 5);
 const ChatChannelOptions = CHANNEL_OPTIONS.slice(6, CHANNEL_OPTIONS.length);
 
@@ -93,18 +100,23 @@ const PersonalizeWorkspace: React.FC = () => {
         onCreate={(role: string) => {
           setUserRole(role);
         }}
+        dropdownActive
         withSearchIcon={false}
       />
       <Label>What channels are you creating for?</Label>
       <ChannelSelect
+        maxHeight={320}
+        maxVisibleItems={9.5}
         multiSectionOptions={CHANNEL_TYPE_OPTIONS}
         buttonLabel="Unselect All"
         selectedValue={displayName}
         withCaret
+        dropdownActive
         buttonClick={() => setChannels([])}
         selectedItems={channels}
         onSelect={(channel: string) => setChannels(toggleMembership(channels, channel))}
         placeholder="Choose all that apply"
+        customOptionLabelStyling={customOptionLabelStyling}
       />
       <Label>How many people are on your team?</Label>
       <TeamSizeContainer>

@@ -26,6 +26,7 @@ function Menu(
     scrollbarsRef,
     multiSelectProps: { multiselect, buttonClick, buttonLabel } = {},
     disableAnimation = false,
+    maxVisibleItems,
   },
   ref
 ) {
@@ -51,7 +52,13 @@ function Menu(
   }, [options]);
 
   return (
-    <Container ref={menuRef} fullWidth={fullWidth} disableAnimation={disableAnimation} nativeScrollbar={scrollBarWidth === 0}>
+    <Container
+      ref={menuRef}
+      fullWidth={fullWidth}
+      maxVisibleItems={maxVisibleItems}
+      disableAnimation={disableAnimation}
+      nativeScrollbar={scrollBarWidth === 0}
+    >
       <FadeDownContainer length={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable}
@@ -71,7 +78,7 @@ function Menu(
         </Scrollbars>
       </FadeDownContainer>
       {multiselect && (
-        <ButtonContainer disabled={disabled} onClick={disabled ? stopImmediatePropagation() : buttonClick}>
+        <ButtonContainer disabled={disabled} onClick={disabled ? stopImmediatePropagation() : stopImmediatePropagation(buttonClick)}>
           {buttonLabel}
         </ButtonContainer>
       )}

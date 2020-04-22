@@ -2,7 +2,14 @@ import { css, styled, units } from '@/hocs';
 
 import { dividersStyles, draggingPreviewStyles, draggingStyles } from './SectionContainer';
 
-const SimpleSection = styled.div`
+type SimpleSectionProps = {
+  isNested?: boolean;
+  dividers?: boolean;
+  isDragging?: boolean;
+  isDraggingPreview?: boolean;
+};
+
+const SimpleSection = styled.div<SimpleSectionProps>`
   position: relative;
   background-color: #fff;
   padding: ${units(2.5)}px ${units(4)}px;

@@ -2,36 +2,23 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
-import { styled, transition } from '@/hocs';
+import { IconVariant } from '@/constants';
 
 import { SectionToggleVariant } from '../../constants';
+import { ToggleArrowContainer, ToggleSwitchContainer } from './components';
 
-const ToggleArrowContainer = styled.div`
-  ${transition('transform')}
-  color: #becedc;
-  transform: ${({ isCollapsed }) => (isCollapsed ? 'rotate(90deg)' : 'rotate(-90deg)')};
-  cursor: pointer;
+type CollapseTriggerProps = {
+  variant: SectionToggleVariant;
+  onToggle?: React.MouseEventHandler;
+  isCollapsed?: boolean;
+};
 
-  :hover {
-    color: #8da2b5;
-  }
-`;
-
-const ToggleSwitchContainer = styled.div`
-  position: relative;
-  height: 20px;
-  margin-top: -2px;
-  margin-right: -4px;
-  margin-left: -4px;
-  transform: scale(0.8);
-`;
-
-function CollapseTrigger({ onToggle, isCollapsed, variant }) {
+const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ onToggle, isCollapsed, variant }) => {
   return (
     <div>
       {variant === SectionToggleVariant.ARROW && (
         <ToggleArrowContainer onClick={onToggle} isCollapsed={isCollapsed}>
-          <SvgIcon variant="tertiary" icon="arrowLeft" size={12} />
+          <SvgIcon variant={IconVariant.TERTIARY} icon="arrowLeft" size={12} />
         </ToggleArrowContainer>
       )}
 
@@ -42,6 +29,6 @@ function CollapseTrigger({ onToggle, isCollapsed, variant }) {
       )}
     </div>
   );
-}
+};
 
 export default CollapseTrigger;

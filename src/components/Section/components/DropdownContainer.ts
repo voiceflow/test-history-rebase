@@ -1,6 +1,10 @@
 import { styled } from '@/hocs';
 
-const DropdownContainer = styled.div`
+type DropdownContainerProps = {
+  isCollapsed?: boolean;
+};
+
+const DropdownContainer = styled.div<DropdownContainerProps>`
   min-width: 200px;
   margin-right: 5px;
   font-weight: ${({ isCollapsed }) => (isCollapsed ? 'normal' : '600')};

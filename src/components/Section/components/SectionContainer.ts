@@ -6,6 +6,21 @@ import HeaderLabel from './HeaderLabel';
 import Header from './SectionHeader';
 import StatusContainer from './StatusContainer';
 
+export type SectionContainerProps = {
+  isLink?: boolean;
+  variant?: SectionVariant;
+  dividers?: boolean;
+  isNested?: boolean;
+  isDragging?: boolean;
+  isCollapsed?: boolean;
+  borderBottom?: boolean;
+  forceDividers?: boolean;
+  isDividerBottom?: boolean;
+  isDividerNested?: boolean;
+  isContextMenuOpen?: boolean;
+  isDraggingPreview?: boolean;
+};
+
 export const draggingStyles = css`
   & > * {
     opacity: 0;
@@ -23,29 +38,37 @@ export const draggingPreviewStyles = css`
   }
 `;
 
-export const dividersStyles = css`
+export const dividersStyles = css<SectionContainerProps>`
   &::before {
     position: absolute;
-    top: 0;
     left: ${({ isDividerNested, theme }) => (isDividerNested ? theme.unit * 4 : 0)}px;
     right: 0;
     display: block;
     height: 1px;
     background-color: #eaeff4;
     content: '';
+
+    ${({ isDividerBottom }) =>
+      isDividerBottom
+        ? css`
+            bottom: 0;
+          `
+        : css`
+            top: 0;
+          `}
   }
 `;
 
-const SectionContainer = styled.div`
+const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;
-  
-  ${({ dividers, forceDividers, isDividerNested, isNested }) =>
+
+  ${({ dividers, forceDividers, isDividerNested, isNested, isDividerBottom }) =>
     dividers &&
     (isNested || isDividerNested || forceDividers
       ? dividersStyles
       : css`
-          :not(:first-child) {
+          :not(${isDividerBottom ? ':last-child' : ':first-child'}) {
             ${dividersStyles}
           }
         `)}
@@ -59,33 +82,33 @@ const SectionContainer = styled.div`
     `}
 
   ${({ isDraggingPreview }) => isDraggingPreview && draggingPreviewStyles}
-  
+
   ${HeaderLabel} {
-    ${({ variant }) => {
+    ${({ variant, isCollapsed }) => {
       switch (variant) {
-        case SectionVariant.tertiary:
-        case SectionVariant.subsection:
+        case SectionVariant.TERTIARY:
+        case SectionVariant.SUBSECTION:
           return css`
             color: #62778c;
             font-weight: 600;
             font-size: 15px;
           `;
-        case SectionVariant.secondary:
+        case SectionVariant.SECONDARY:
           return css`
-            font-weight: ${({ isCollapsed }) => (isCollapsed ? 'normal' : '600')};
+            font-weight: ${isCollapsed ? 'normal' : '600'};
             color: #62778c;
           `;
-        case SectionVariant.primary:
+        case SectionVariant.PRIMARY:
         default:
           return css`
-            font-weight: ${({ isCollapsed }) => (isCollapsed ? 'normal' : '600')};
+            font-weight: ${isCollapsed ? 'normal' : '600'};
           `;
       }
     }}
   }
 
   ${({ variant }) => {
-    if (variant === SectionVariant.tertiary) {
+    if (variant === SectionVariant.TERTIARY) {
       return css`
         ${Header} {
           height: ${units(5)}px;
@@ -97,15 +120,17 @@ const SectionContainer = styled.div`
       `;
     }
 
-    if (variant === SectionVariant.subsection) {
+    if (variant === SectionVariant.SUBSECTION) {
       return css`
         ${Header} {
           padding-bottom: 11px;
         }
       `;
     }
+
+    return '';
   }}
-  
+
   ${({ isLink }) =>
     isLink &&
     css`
@@ -120,7 +145,7 @@ const SectionContainer = styled.div`
         }
       }
     `}
-  
+
   ${({ isContextMenuOpen }) =>
     isContextMenuOpen &&
     css`

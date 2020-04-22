@@ -46,7 +46,7 @@ function StartEditor({ nodeID, data, commands }) {
           />
         ))
       ) : (
-        <EditorSection header="No commands exist in this flow" variant={SectionVariant.secondary} isCollapsed />
+        <EditorSection header="No commands exist in this flow" variant={SectionVariant.SECONDARY} isCollapsed />
       )}
     </Content>
   );

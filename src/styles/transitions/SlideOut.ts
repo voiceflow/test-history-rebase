@@ -1,7 +1,19 @@
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
-// eslint-disable-next-line import/prefer-default-export
-export const SlideOut = styled.div`
+export enum SlideOutDirection {
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+export type SlideOutProps = {
+  open?: boolean;
+  width: number;
+  offset?: number;
+  direction?: SlideOutDirection;
+  disableAnimation?: boolean;
+};
+
+export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;
   width: ${({ width }) => width}px;
   background-color: inherit;
@@ -10,11 +22,11 @@ export const SlideOut = styled.div`
   ${({ disableAnimation }) =>
     !disableAnimation &&
     css`
-      transition: transform 150ms ease;
+      ${transition('transform')}
     `}
 
-  ${({ open, width, offset = 0, direction = 'right' }) => {
-    if (direction === 'right') {
+  ${({ open, width, offset = 0, direction = SlideOutDirection.RIGHT }) => {
+    if (direction === SlideOutDirection.RIGHT) {
       return css`
         left: 0;
         ${open

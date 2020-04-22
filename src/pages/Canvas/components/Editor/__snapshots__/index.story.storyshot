@@ -311,13 +311,13 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c16:not(:first-child)::before {
   position: absolute;
-  top: 0;
   left: 0px;
   right: 0;
   display: block;
   height: 1px;
   background-color: #eaeff4;
   content: '';
+  top: 0;
 }
 
 .c16 .c22 {
@@ -331,13 +331,13 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c32:not(:first-child)::before {
   position: absolute;
-  top: 0;
   left: 0px;
   right: 0;
   display: block;
   height: 1px;
   background-color: #eaeff4;
   content: '';
+  top: 0;
 }
 
 .c32 .c22 {
@@ -361,13 +361,13 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c36:not(:first-child)::before {
   position: absolute;
-  top: 0;
   left: 0px;
   right: 0;
   display: block;
   height: 1px;
   background-color: #eaeff4;
   content: '';
+  top: 0;
 }
 
 .c36 .c22 {
@@ -653,9 +653,9 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   width: 450px;
   background-color: inherit;
   z-index: 20;
-  -webkit-transition: -webkit-transform 150ms ease;
-  -webkit-transition: transform 150ms ease;
-  transition: transform 150ms ease;
+  -webkit-transition: -webkit-transform 0.15s ease;
+  -webkit-transition: transform 0.15s ease;
+  transition: transform 0.15s ease;
   right: 0;
   -webkit-transform: translate3d(-0px,0,0);
   -ms-transform: translate3d(-0px,0,0);

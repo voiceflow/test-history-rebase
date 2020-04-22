@@ -1,7 +1,11 @@
 import { overflowTextStyles } from '@/components/Text/OverflowText';
 import { styled, units } from '@/hocs';
 
-const HeaderLabel = styled.div`
+type HeaderLabelProps = {
+  disabled?: boolean;
+};
+
+const HeaderLabel = styled.div<HeaderLabelProps>`
   ${overflowTextStyles}
 
   /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */

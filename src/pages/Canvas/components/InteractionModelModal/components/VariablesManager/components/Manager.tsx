@@ -3,7 +3,7 @@ import React from 'react';
 import { FlexApart } from '@/components/Flex';
 import Input from '@/components/Input';
 import RemoveDropdown from '@/components/RemoveDropdown';
-import Section from '@/components/Section';
+import Section, { SectionVariant } from '@/components/Section';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import Description from './Description';
@@ -19,7 +19,7 @@ export type ManagerProps = {
 const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => {
   return (
     <FadeLeftContainer style={{ marginTop: 10 }}>
-      <Section status={<VariableTag>{`{${variable}}`}</VariableTag>} dividers={false} variant="tertiary" header="Variable Name">
+      <Section status={<VariableTag>{`{${variable}}`}</VariableTag>} dividers={false} variant={SectionVariant.TERTIARY} header="Variable Name">
         <FlexApart>
           <Input value={variable} disabled />
 

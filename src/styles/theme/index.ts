@@ -69,6 +69,9 @@ const THEME = {
         return this.width - this.hiddenWidth;
       },
     },
+    markupSidebar: {
+      width: 360,
+    },
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

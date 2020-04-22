@@ -1,7 +1,13 @@
 import { css, styled } from '@/hocs';
-import { SlideOut } from '@/styles/transitions';
+import { SlideOut, SlideOutDirection } from '@/styles/transitions';
 
-const Drawer = styled(SlideOut)`
+export type DrawerDirection = SlideOutDirection;
+
+export type DrawerProps = {
+  scrollable?: boolean;
+};
+
+const Drawer = styled(SlideOut)<DrawerProps>`
   height: 100%;
   top: 0;
   bottom: 0;
@@ -10,8 +16,8 @@ const Drawer = styled(SlideOut)`
   border-color: #dfe3ed;
   background-color: ${({ theme }) => theme.color.gradient[0]};
 
-  ${({ direction = 'right' }) =>
-    direction === 'right'
+  ${({ direction = SlideOutDirection.RIGHT }) =>
+    direction === SlideOutDirection.RIGHT
       ? css`
           border-right-width: 1px;
         `

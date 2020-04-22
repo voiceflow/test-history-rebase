@@ -1,7 +1,12 @@
 import { FlexApart } from '@/components/Flex';
 import { css, styled, units } from '@/hocs';
 
-const SectionHeader = styled(FlexApart)`
+type SectionHeaderProps = {
+  isDragging?: boolean;
+  containerToggle?: boolean;
+};
+
+const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
   height: auto;
   padding: ${units(2.5)}px ${units(4)}px;
   overflow: visible;

@@ -9,3 +9,4 @@ export { default as DropdownContainer } from './DropdownContainer';
 export { default as ContentContainer } from './ContentContainer';
 export { default as HeaderContent } from './HeaderContent';
 export { default as StatusContent } from './StatusContent';
+export { default as UncontrolledSection } from './UncontrolledSection';

@@ -57,6 +57,7 @@ module.exports = merge(commonConfig, {
               'components/DropdownButton/**/*',
               'components/Link/**/*',
               'components/Title/**/*',
+              'components/ColorPicker/**/*',
             ],
           },
         }),

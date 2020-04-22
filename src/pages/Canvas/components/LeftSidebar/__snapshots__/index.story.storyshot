@@ -3981,14 +3981,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c42 .c9 {
-  color: #fff;
-}
-
-.c43 .c9 {
-  color: #6e849a;
-}
-
 .c19 {
   min-height: 42px;
   display: block;
@@ -4068,6 +4060,14 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   border: none;
   padding: 0;
   border-radius: 0;
+}
+
+.c42 .c9 {
+  color: #fff;
+}
+
+.c43 .c9 {
+  color: #6e849a;
 }
 
 .c29 {

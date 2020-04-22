@@ -74,6 +74,7 @@
     "react-ace": "^6.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-chartjs-2": "^2.7.4",
+    "react-color": "^2.18.0",
     "react-countdown-now": "^2.1.2",
     "react-custom-scrollbars": "^4.2.1",
     "react-day-picker": "^7.2.4",

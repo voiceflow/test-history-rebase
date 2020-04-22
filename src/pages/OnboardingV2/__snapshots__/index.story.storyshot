@@ -106,33 +106,6 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   padding: 0 22px;
 }
 
-.c26 .c23 {
-  margin-right: 2px;
-}
-
-.c26 .c23:not(:first-of-type) {
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
-  margin-right: 0;
-}
-
-.c26 .c23:not(:last-of-type) {
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
-}
-
-.c26 .c23:last-of-type {
-  margin-right: 0;
-}
-
-.c27 .c10 {
-  color: #fff;
-}
-
-.c28 .c10 {
-  color: #6e849a;
-}
-
 .c15 {
   min-height: 42px;
   display: block;
@@ -162,6 +135,33 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
   outline: 0;
+}
+
+.c26 .c23 {
+  margin-right: 2px;
+}
+
+.c26 .c23:not(:first-of-type) {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  margin-right: 0;
+}
+
+.c26 .c23:not(:last-of-type) {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.c26 .c23:last-of-type {
+  margin-right: 0;
+}
+
+.c27 .c10 {
+  color: #fff;
+}
+
+.c28 .c10 {
+  color: #6e849a;
 }
 
 .c18 {

@@ -1,0 +1,650 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Color Picker Base 1`] = `
+.c6 {
+  min-height: 42px;
+  display: block;
+  width: 100%;
+  color: #132042;
+  font: normal 15px Open Sans,Arial,sans-serif;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #d2dae2;
+  border-radius: 6px;
+  padding: 10px 16px;
+  line-height: 20px;
+  cursor: text;
+  -webkit-transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  transition: background-color 0.12s linear,color 0.12s linear,border-color 0.12s linear,box-shadow 0.12s linear,max-height 0.12s linear;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.c6:disabled {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c6:active,
+.c6:focus,
+.c6:focus-within {
+  border: 1px solid #5d9df5;
+  box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
+  outline: 0;
+}
+
+.c6[disabled] {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c6[disabled] input {
+  color: #949db0;
+  pointer-events: none;
+}
+
+.c6 > * {
+  margin-right: 12px;
+}
+
+.c6 > *:last-child {
+  margin-right: 0;
+}
+
+.c6 > .c13:last-child {
+  margin-right: -6px;
+}
+
+.c8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 50%;
+}
+
+.c8 > * {
+  width: 100%;
+}
+
+.c9 {
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.c12 {
+  width: 16px;
+  height: 16px;
+  margin: 0 7px 7px;
+  box-shadow: 0 1px 1px 0 rgba(17,49,96,0.12),0 2px 4px 0 rgba(17,49,96,0.12);
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 0 -7px -7px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.c10 {
+  border-top: 1px solid #eaeff4;
+  padding: 17px 24px 16px;
+  background-color: #fff;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 215px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: #f6f6f6;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.06),0 8px 16px 0 rgba(17,49,96,0.16);
+}
+
+.c7 {
+  pointer-events: none;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1.5384615385;
+  font-weight: 600;
+  color: #62778c;
+}
+
+.c2 {
+  position: relative;
+  height: 8px;
+  margin: 4px 24px 20px;
+  border-radius: 3px;
+  background-color: rgb(255,0,0);
+}
+
+.c2 > div > div {
+  border-radius: 3px;
+}
+
+.c3 {
+  width: 16px;
+  height: 16px;
+  box-shadow: rgba(17,49,96,0.08) 0px 0px 0px 1px,rgba(17,49,96,0.16) 0px 2px 3px 0px,rgb(255,255,255) 0px 0px 0px 6px inset, rgba(17,49,96,0.08) 0px 0px 0px 7px inset,rgba(17,49,96,0.16) 0px 2px 3px 3px inset;
+  -webkit-transform: translate(-8px,-4px);
+  -ms-transform: translate(-8px,-4px);
+  transform: translate(-8px,-4px);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.c5 {
+  padding: 16px 24px;
+}
+
+.c4 {
+  position: relative;
+  height: 8px;
+  margin: 4px 24px 20px;
+}
+
+.c4 > div > div {
+  border-radius: 3px;
+}
+
+.c1 {
+  position: relative;
+  height: 121px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+<div
+  style={
+    Object {
+      "margin": "20px",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "backgroundColor": "#9a3",
+        "borderRadius": "50px",
+        "height": "50px",
+        "opacity": 0.7,
+        "width": "50px",
+      }
+    }
+  />
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        onMouseDown={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "MozBorderRadius": undefined,
+            "OBorderRadius": undefined,
+            "WebkitBorderRadius": undefined,
+            "background": "hsl(68.57142857142857,100%, 50%)",
+            "borderRadius": undefined,
+            "bottom": "0px",
+            "left": "0px",
+            "msBorderRadius": undefined,
+            "position": "absolute",
+            "right": "0px",
+            "top": "0px",
+          }
+        }
+      >
+        <style>
+          
+          .saturation-white {
+            background: -webkit-linear-gradient(to right, #fff, rgba(255,255,255,0));
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0));
+          }
+          .saturation-black {
+            background: -webkit-linear-gradient(to top, #000, rgba(0,0,0,0));
+            background: linear-gradient(to top, #000, rgba(0,0,0,0));
+          }
+        
+        </style>
+        <div
+          className="saturation-white"
+          style={
+            Object {
+              "MozBorderRadius": undefined,
+              "OBorderRadius": undefined,
+              "WebkitBorderRadius": undefined,
+              "borderRadius": undefined,
+              "bottom": "0px",
+              "left": "0px",
+              "msBorderRadius": undefined,
+              "position": "absolute",
+              "right": "0px",
+              "top": "0px",
+            }
+          }
+        >
+          <div
+            className="saturation-black"
+            style={
+              Object {
+                "MozBorderRadius": undefined,
+                "MozBoxShadow": undefined,
+                "OBorderRadius": undefined,
+                "OBoxShadow": undefined,
+                "WebkitBorderRadius": undefined,
+                "WebkitBoxShadow": undefined,
+                "borderRadius": undefined,
+                "bottom": "0px",
+                "boxShadow": undefined,
+                "left": "0px",
+                "msBorderRadius": undefined,
+                "msBoxShadow": undefined,
+                "position": "absolute",
+                "right": "0px",
+                "top": "0px",
+              }
+            }
+          />
+          <div
+            style={
+              Object {
+                "cursor": "default",
+                "left": "70%",
+                "position": "absolute",
+                "top": "33.33333333333334%",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "MozBorderRadius": "50%",
+                  "MozBoxShadow": "0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3),
+            0 0 1px 2px rgba(0,0,0,.4)",
+                  "MozTransform": "translate(-2px, -2px)",
+                  "OBorderRadius": "50%",
+                  "OBoxShadow": "0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3),
+            0 0 1px 2px rgba(0,0,0,.4)",
+                  "OTransform": "translate(-2px, -2px)",
+                  "WebkitBorderRadius": "50%",
+                  "WebkitBoxShadow": "0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3),
+            0 0 1px 2px rgba(0,0,0,.4)",
+                  "WebkitTransform": "translate(-2px, -2px)",
+                  "borderRadius": "50%",
+                  "boxShadow": "0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3),
+            0 0 1px 2px rgba(0,0,0,.4)",
+                  "cursor": "hand",
+                  "height": "4px",
+                  "msBorderRadius": "50%",
+                  "msBoxShadow": "0 0 0 1.5px #fff, inset 0 0 1px 1px rgba(0,0,0,.3),
+            0 0 1px 2px rgba(0,0,0,.4)",
+                  "msTransform": "translate(-2px, -2px)",
+                  "transform": "translate(-2px, -2px)",
+                  "width": "4px",
+                }
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c2"
+    >
+      <div
+        style={
+          Object {
+            "MozBorderRadius": undefined,
+            "MozBoxShadow": undefined,
+            "OBorderRadius": undefined,
+            "OBoxShadow": undefined,
+            "WebkitBorderRadius": undefined,
+            "WebkitBoxShadow": undefined,
+            "borderRadius": undefined,
+            "bottom": "0px",
+            "boxShadow": undefined,
+            "left": "0px",
+            "msBorderRadius": undefined,
+            "msBoxShadow": undefined,
+            "position": "absolute",
+            "right": "0px",
+            "top": "0px",
+          }
+        }
+      >
+        <div
+          className="hue-horizontal"
+          onMouseDown={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          style={
+            Object {
+              "MozBorderRadius": undefined,
+              "OBorderRadius": undefined,
+              "WebkitBorderRadius": undefined,
+              "borderRadius": undefined,
+              "height": "100%",
+              "msBorderRadius": undefined,
+              "padding": "0 2px",
+              "position": "relative",
+            }
+          }
+        >
+          <style>
+            
+            .hue-horizontal {
+              background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0
+                33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to right, #f00 0%, #ff0
+                17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+
+            .hue-vertical {
+              background: linear-gradient(to top, #f00 0%, #ff0 17%, #0f0 33%,
+                #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to top, #f00 0%, #ff0 17%,
+                #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+          
+          </style>
+          <div
+            style={
+              Object {
+                "left": "19.047619047619047%",
+                "position": "absolute",
+              }
+            }
+          >
+            <div
+              className="c3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c4"
+    >
+      <div
+        style={
+          Object {
+            "MozBorderRadius": undefined,
+            "OBorderRadius": undefined,
+            "WebkitBorderRadius": undefined,
+            "borderRadius": undefined,
+            "bottom": "0px",
+            "left": "0px",
+            "msBorderRadius": undefined,
+            "position": "absolute",
+            "right": "0px",
+            "top": "0px",
+          }
+        }
+      >
+        <div
+          style={
+            Object {
+              "MozBorderRadius": undefined,
+              "OBorderRadius": undefined,
+              "WebkitBorderRadius": undefined,
+              "borderRadius": undefined,
+              "bottom": "0px",
+              "left": "0px",
+              "msBorderRadius": undefined,
+              "overflow": "hidden",
+              "position": "absolute",
+              "right": "0px",
+              "top": "0px",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "MozBorderRadius": undefined,
+                "MozBoxShadow": undefined,
+                "OBorderRadius": undefined,
+                "OBoxShadow": undefined,
+                "WebkitBorderRadius": undefined,
+                "WebkitBoxShadow": undefined,
+                "background": "url(null) center left",
+                "borderRadius": undefined,
+                "bottom": "0px",
+                "boxShadow": undefined,
+                "left": "0px",
+                "msBorderRadius": undefined,
+                "msBoxShadow": undefined,
+                "position": "absolute",
+                "right": "0px",
+                "top": "0px",
+              }
+            }
+          />
+        </div>
+        <div
+          style={
+            Object {
+              "MozBorderRadius": undefined,
+              "MozBoxShadow": undefined,
+              "OBorderRadius": undefined,
+              "OBoxShadow": undefined,
+              "WebkitBorderRadius": undefined,
+              "WebkitBoxShadow": undefined,
+              "background": "linear-gradient(to right, rgba(153,170,51, 0) 0%,
+           rgba(153,170,51, 1) 100%)",
+              "borderRadius": undefined,
+              "bottom": "0px",
+              "boxShadow": undefined,
+              "left": "0px",
+              "msBorderRadius": undefined,
+              "msBoxShadow": undefined,
+              "position": "absolute",
+              "right": "0px",
+              "top": "0px",
+            }
+          }
+        />
+        <div
+          onMouseDown={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          style={
+            Object {
+              "height": "100%",
+              "margin": "0 3px",
+              "position": "relative",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "left": "70%",
+                "position": "absolute",
+              }
+            }
+          >
+            <div
+              className="c3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c5"
+    >
+      <div
+        className="c6"
+        onClick={[Function]}
+      >
+        <span
+          className="c7"
+        >
+          HEX
+        </span>
+        <div
+          className="c8"
+        >
+          <input
+            className="c9"
+            maxLength={6}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onKeyPress={[Function]}
+            value="99aa33"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="c10"
+    >
+      <ul
+        className="c11"
+      >
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#fff",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#132042",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#4F9ED1",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#4FA9B3",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#A086C4",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#E26D5A",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#BF395B",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#5C6BC0",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#3A5999",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#457A53",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#3A7685",
+            }
+          }
+        />
+        <li
+          className="c12"
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#BF9677",
+            }
+          }
+        />
+      </ul>
+    </div>
+  </div>
+</div>
+`;

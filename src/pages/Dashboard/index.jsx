@@ -82,6 +82,7 @@ export const DashBoard = (props) => {
   const [loading_modal, toggleLoadingModal] = React.useState(false);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
+  const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
 
   const closeImport = () => {
     toggleImport(false);
@@ -98,14 +99,20 @@ export const DashBoard = (props) => {
       })
       .catch((e) => {
         toggleLoadingModal(false);
-        props.setError(e);
+
+        if (e.message === 'Forbidden') {
+          openProjectLimitModal({ message: 'Project limitations is reached' });
+        } else {
+          props.setError(e);
+        }
       });
   };
 
   const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {
       if (props.projects.length >= props.workspace.projects) {
-        //  TODO: implement flimsy project limit
+        openProjectLimitModal({ projects: props.workspace.projects });
+        return;
       }
       toggleLoadingModal(true);
 
@@ -130,7 +137,7 @@ export const DashBoard = (props) => {
   const onCreateProject = React.useCallback(
     (id) => {
       if (props.projects.length >= props.workspace.projects) {
-        //  TODO: implement flimsy project limit
+        openProjectLimitModal({ projects: props.workspace.projects });
       } else {
         props.history.push(id !== 'initial' ? `/workspace/template/${id}` : '/workspace/template');
       }

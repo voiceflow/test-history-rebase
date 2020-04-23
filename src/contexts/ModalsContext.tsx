@@ -2,14 +2,14 @@ import React from 'react';
 
 import { ModalType } from '@/constants';
 
-export type ModalContextType = null | {
+export type ModalContextType<T extends object = object> = null | {
   fade: boolean;
   open: (id: ModalType, data: object) => void;
   close: (id: ModalType) => void;
   toggle: (id: ModalType, data: object) => void;
   update: (id: ModalType, data: object) => void;
   openedId?: ModalType;
-  modalData: object;
+  modalData: T;
   stackModalIds: ModalType[];
 };
 

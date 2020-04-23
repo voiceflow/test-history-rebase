@@ -92,12 +92,11 @@ class Onboarding extends React.Component {
 
   loadDefaultTemplates = async () => {
     try {
-      const templates = await this.props.loadTemplates();
-
-      this.images = templates.map((template) => Object.assign(new Image(), { src: template.icon }));
-    } catch (err) {
+      await this.props.loadTemplates();
+    } catch (error) {
       // eslint-disable-next-line no-alert
       alert('Unable to Retrieve Templates');
+      console.error(error);
     }
   };
 

@@ -4,8 +4,10 @@ import { ModalType } from '@/constants';
 import { ModalContextType, ModalsContext } from '@/contexts';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useModals = (modalId: ModalType) => {
-  const { fade, open, close, update, toggle, openedId, modalData, stackModalIds } = React.useContext(ModalsContext) as NonNullable<ModalContextType>;
+export const useModals = <T extends object = {}>(modalId: ModalType) => {
+  const { fade, open, close, update, toggle, openedId, modalData, stackModalIds } = React.useContext(ModalsContext) as NonNullable<
+    ModalContextType<T>
+  >;
 
   const isOpened = openedId === modalId;
   const isInStack = React.useMemo(() => stackModalIds.includes(modalId), [modalId, stackModalIds]);
@@ -15,14 +17,14 @@ export const useModals = (modalId: ModalType) => {
   const updateModal = React.useCallback((data = {}) => update(modalId, data), [update, modalId]);
 
   const openModal = React.useCallback(
-    (data: object = {}, onClose?: () => void) => {
+    (data: T = {} as T, onClose?: () => void) => {
       cacheState.current.onClose = onClose;
       open(modalId, data);
     },
     [open, modalId]
   );
   const toggleModal = React.useCallback(
-    (data: object = {}, onClose?: () => void) => {
+    (data: T = {} as T, onClose?: () => void) => {
       cacheState.current.onClose = onClose;
 
       toggle(modalId, data);

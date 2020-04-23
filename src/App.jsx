@@ -20,6 +20,7 @@ import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadin
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
+import ProjectLimitModal from '@/pages/Dashboard/FreeProjectLimitModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
@@ -44,6 +45,7 @@ const App = () => {
       <Routes />
       <IntercomChat />
       <CollaboratorsModal />
+      <ProjectLimitModal />
       <BillingModal />
       <PaymentModal />
     </>

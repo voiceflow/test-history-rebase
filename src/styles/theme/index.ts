@@ -55,6 +55,9 @@ const THEME = {
       collaborators: {
         width: 545,
       },
+      freeProjectLimit: {
+        width: 392,
+      },
     },
     block: BLOCK_THEME,
     blockStep: BLOCK_STEP_THEME,

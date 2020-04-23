@@ -356,6 +356,8 @@ export enum ModalType {
   DISPLAY_PREVIEW = 'display-preview',
 
   ONBOARDING = 'onboarding',
+
+  FREE_PROJECT_LIMIT = 'free-project-limit',
 }
 
 export enum UserRole {

@@ -1,4 +1,4 @@
-import { FlexCenter } from '@/components/Flex';
+import Flex from '@/components/Flex';
 import { styled } from '@/hocs';
 
 export { default as Container } from './Container';
@@ -14,8 +14,10 @@ export const PeriodDropdownContainer = styled.div`
   color: #62778c;
   font-size: 13px;
 `;
-export const BubbleTextContainer = styled(FlexCenter)`
+export const BubbleTextContainer = styled(Flex)`
   width: 130px;
+  margin-left: 15px;
+  align-items: start;
 `;
 
 export const PriceContainer = styled.div`

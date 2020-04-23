@@ -241,6 +241,7 @@ export default function Select({
     borderLess,
     placeholder,
     isDropDownOpened,
+    opened,
     rightAction,
   };
 
@@ -271,7 +272,6 @@ export default function Select({
             ) : (
               <Flex>
                 <SearchInput {...inputProps} value={label || searchLabel} ref={inputRef} type="search" autoComplete="off" clearable={clearable} />
-
                 {!withIcon && (
                   <SearchInputIcon
                     icon={clearable ? 'close' : 'caretDown'}

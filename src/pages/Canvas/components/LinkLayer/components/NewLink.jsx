@@ -105,7 +105,7 @@ class NewLink extends React.PureComponent {
     document.removeEventListener('mousemove', this.onMouseMove);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.engine.linkCreation.registerNewLink(this.api);
   }
 

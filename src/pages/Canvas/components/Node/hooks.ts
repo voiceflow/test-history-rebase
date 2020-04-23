@@ -37,10 +37,8 @@ export const useStepAPI = <T extends HTMLElement>(
           }
 
           const { top, left } = stepRef.current!.getBoundingClientRect();
-          const pinPoint = engine.canvas.transformPoint([
-            left - LINK_WIDTH * engine.canvas.getZoom(),
-            top + (theme.components.blockStep.minHeight / 2) * engine.canvas.getZoom(),
-          ]);
+          const zoom = engine.canvas!.getZoom();
+          const pinPoint = engine.canvas!.transformPoint([left - LINK_WIDTH * zoom, top + (theme.components.blockStep.minHeight / 2) * zoom]);
 
           engine.linkCreation.pin(inPortID, pinPoint);
 
@@ -80,7 +78,7 @@ export const useStepAPI = <T extends HTMLElement>(
             engine.setActivation(nodeID);
           }
         },
-        onDoubleClick: () => engine.node.center(nodeID),
+        onDoubleClick: stopPropagation(() => engine.node.center(nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
           if (node.type !== BlockType.START && editPermission.canEdit) {
             contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeID);
@@ -132,7 +130,7 @@ export const useNodeAPI = <T extends HTMLElement>(nodeID: string, ref: React.Ref
       getPosition: () => {
         const rect = ref.current!.getBoundingClientRect();
 
-        return engine.canvas.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
+        return engine.canvas!.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
       },
       rename: () => engine.focus.set(nodeID, { renameActiveRevision: cuid() }),
       setHighlight,
@@ -248,7 +246,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;
 
-      const position = engine.canvas.transformPoint([mouseX, mouseY]);
+      const position = engine.canvas!.transformPoint([mouseX, mouseY]);
 
       engine.node.addNestedV2({
         type,

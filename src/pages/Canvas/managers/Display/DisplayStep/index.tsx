@@ -7,7 +7,7 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { transformVariablesToReadable } from '@/utils/slot';
 
 export type DisplayStepProps = {
-  image?: string;
+  image?: string | null;
   label?: string;
   portID?: string;
 };
@@ -27,11 +27,7 @@ export const DisplayStep: React.FC<DisplayStepProps> = ({ label, portID, image }
   </Step>
 );
 
-export type ConnectedDisplayStepProps = ConnectedStepProps<NodeData.Display> & {
-  variables: string[];
-};
-
-const ConnectedDisplayStep: React.FC<ConnectedDisplayStepProps> = ({ node, data }) => {
+const ConnectedDisplayStep: React.FC<ConnectedStepProps<NodeData.Display>> = ({ node, data }) => {
   const label = data.displayType === DisplayType.SPLASH ? transformVariablesToReadable(data.splashHeader) : data.jsonFileName;
 
   return <DisplayStep portID={node.ports.out[0]} label={label} image={data.backgroundImage} />;

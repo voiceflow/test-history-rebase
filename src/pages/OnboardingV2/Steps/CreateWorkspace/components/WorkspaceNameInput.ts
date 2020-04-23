@@ -9,9 +9,14 @@ const WorkspaceNameInput = styled(Input)`
   border-radius: 0;
   font-size: 18px;
   margin-bottom: 40px;
-  :placeholder {
-    color: #8da2b5;
+  line-height: normal;
+
+  ::placeholder {
+    color: #8da2b5 !important;
+    font-size: 18px !important;
+    line-height: normal;
   }
+
   :focus {
     box-shadow: none;
     border: none;

@@ -4,8 +4,6 @@
 /public
 /src/assets
 
-# TODO: remove to re-enable linting
-/src/components/SRD
 /scripts/*
 setupTests.js
 jest.config.js

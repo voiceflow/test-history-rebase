@@ -10,7 +10,7 @@ const CARD_IMAGE = 'https://www.sundaypost.com/wp-content/uploads/sites/13/2017/
 const getProps = () => ({
   title: 'Hi {name}, welcome to Hogwarts',
   portID: '13tadb',
-  image: undefined,
+  image: null,
 });
 
 export default {

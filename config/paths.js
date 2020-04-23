@@ -15,7 +15,7 @@ const PATHS = {
 
 const ADMIN_PATHS = {
   entrypoint: `${sourceDir}admin/index.jsx`,
-  buildDir: 'adminbuild/',
+  buildDir: 'admin_build/',
 };
 
 function resolvePaths(paths) {

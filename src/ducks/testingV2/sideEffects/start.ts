@@ -1,10 +1,11 @@
 import { activeDiagramIDSelector, activeProjectIDSelector } from '@/ducks/skill';
+import { SyncThunk } from '@/store/types';
 
 import { updateTesting } from '../actions';
 import { testingVariablesSelector } from '../selectors';
-import { Context, TestStatus, TestingThunk } from '../types';
+import { Context, TestStatus } from '../types';
 
-const startTest = (diagramID?: string, blockID?: string | null): TestingThunk => (dispatch, getState) => {
+const startTest = (diagramID?: string, blockID?: string | null): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
   const projectID = activeProjectIDSelector(state);

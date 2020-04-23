@@ -1,0 +1,265 @@
+import { BlockVariant } from '@/constants/canvas';
+import { Link, Node, NodeData, PartialModel, Port } from '@/models';
+import { findUnion, reorder, withoutValue } from '@/utils/array';
+import { compose } from '@/utils/functional';
+import {
+  Normalized,
+  addNormalizedByKey,
+  getNormalizedByKey,
+  patchNormalizedByKey,
+  removeNormalizedByKey,
+  safeAdd,
+  updateNormalizedByKey,
+} from '@/utils/normalized';
+
+import { nodeFactory, portFactory } from './factories';
+import { DataDescriptor, DiagramState, NodeDescriptor } from './types';
+
+const EMPTY_ARRAY: any[] = [];
+
+export const getLinkIDsByPortID = ({ linksByPortID }: DiagramState) => (portID: string) => linksByPortID[portID] || EMPTY_ARRAY;
+
+export const getLinkIDsByNodeID = ({ linksByNodeID }: DiagramState) => (nodeID: string) => linksByNodeID[nodeID] || EMPTY_ARRAY;
+
+export const getLinkedNodeIDsByNodeID = ({ linkedNodesByNodeID }: DiagramState) => (nodeID: string) => linkedNodesByNodeID[nodeID] || EMPTY_ARRAY;
+
+export const getJoiningLinkIDs = (state: DiagramState) => (lhsNodeID: string, rhsNodeID: string) => {
+  const linkIDSelector = getLinkIDsByNodeID(state);
+  const { union } = findUnion(linkIDSelector(lhsNodeID), linkIDSelector(rhsNodeID));
+
+  return union;
+};
+
+export const getOutgoingLinkIDs = (state: DiagramState, node: Node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getIncomingLinkIDs = (state: DiagramState, node: Node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
+
+export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Node) => {
+  const combinedNodes = node.combinedNodes;
+  const lastNodeID = combinedNodes[combinedNodes.length - 1];
+  const lastNode = getNormalizedByKey(state.nodes, lastNodeID);
+
+  return getOutgoingLinkIDs(state, lastNode);
+};
+
+export const addReferenceByKey = <T>(key: string, referenceValue: T) => (lookup: Record<string, T[]>) => ({
+  ...lookup,
+  [key]: safeAdd(lookup[key] || [], referenceValue),
+});
+
+export const removeReferenceByKey = <T>(key: string, referenceValue: T) => (lookup: Record<string, T[]>) =>
+  key in lookup
+    ? {
+        ...lookup,
+        [key]: withoutValue(lookup[key], referenceValue),
+      }
+    : lookup;
+
+export const removePortFromNode = (node: Node, portID: string) => ({
+  ports: {
+    ...node.ports,
+    in: withoutValue(node.ports.in, portID),
+    out: withoutValue(node.ports.out, portID),
+  },
+});
+
+export const reorderNodePorts = (nodeID: string, from: number, to: number) => (state: DiagramState) => {
+  const node = getNormalizedByKey(state.nodes, nodeID);
+
+  return {
+    ...state,
+    nodes: patchNormalizedByKey(state.nodes, node.id, { ports: { ...node.ports, out: reorder(node.ports.out, from, to) } }),
+  };
+};
+
+export const removePortFromNodes = (port: Port) => (nodes: Normalized<Node>) => {
+  const node = getNormalizedByKey(nodes, port.nodeID);
+
+  return patchNormalizedByKey(nodes, node.id, removePortFromNode(node, port.id));
+};
+
+export const addLinkToState = (link: Link) => (state: DiagramState) => {
+  const sourceNodeID = link.source.nodeID;
+  const targetNodeID = link.target.nodeID;
+
+  return {
+    ...state,
+    links: addNormalizedByKey(state.links, link.id, link),
+    linksByPortID: compose(addReferenceByKey(link.source.portID, link.id), addReferenceByKey(link.target.portID, link.id))(state.linksByPortID),
+    linksByNodeID: compose(addReferenceByKey(sourceNodeID, link.id), addReferenceByKey(targetNodeID, link.id))(state.linksByNodeID),
+    linkedNodesByNodeID: compose(
+      addReferenceByKey(sourceNodeID, targetNodeID),
+      addReferenceByKey(targetNodeID, sourceNodeID)
+    )(state.linkedNodesByNodeID),
+  };
+};
+
+export const addAllLinksToState = (links: Link[]) => compose(...links.map(addLinkToState));
+
+export const removeLinkFromState = (linkID: string) => (state: DiagramState) => {
+  const link = getNormalizedByKey(state.links, linkID);
+  const sourceNodeID = link.source.nodeID;
+  const targetNodeID = link.target.nodeID;
+
+  return {
+    ...state,
+    links: removeNormalizedByKey(state.links, linkID),
+    linksByPortID: compose(removeReferenceByKey(link.source.portID, link.id), removeReferenceByKey(link.target.portID, link.id))(state.linksByPortID),
+    linksByNodeID: compose(removeReferenceByKey(sourceNodeID, link.id), removeReferenceByKey(targetNodeID, link.id))(state.linksByNodeID),
+    linkedNodesByNodeID: compose(
+      removeReferenceByKey(sourceNodeID, targetNodeID),
+      removeReferenceByKey(targetNodeID, sourceNodeID)
+    )(state.linkedNodesByNodeID),
+  };
+};
+
+export const removeAllLinksFromState = (linkIDs: string[]) => compose(...linkIDs.map(removeLinkFromState));
+
+export const removePortFromState = (portID: string) => (state: DiagramState) => ({
+  ...state,
+  ports: removeNormalizedByKey(state.ports, portID),
+});
+
+export const removeAllPortsFromState = (portIDs: string[]) => compose(...portIDs.map(removePortFromState));
+
+export const removePortFromBlockInState = (portID: string) =>
+  compose(removePortFromState(portID), (state: DiagramState) => {
+    const port = getNormalizedByKey(state.ports, portID);
+    const node = getNormalizedByKey(state.nodes, port.nodeID);
+
+    return {
+      ...state,
+      nodes: patchNormalizedByKey(state.nodes, node.id, removePortFromNode(node, portID)),
+    };
+  });
+
+export const removeAllPortsFromBlocksInState = (portIDs: string[]) => compose(...portIDs.map(removePortFromBlockInState));
+
+export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>) => (state: DiagramState) => ({
+  ...state,
+  ...('parentNode' in nodePatch && {
+    rootNodeIDs: nodePatch.parentNode ? withoutValue(state.rootNodeIDs, nodeID) : safeAdd(state.rootNodeIDs, nodeID),
+  }),
+});
+
+export const updateNodeInState = (node: Node) =>
+  compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
+    ...state,
+    nodes: updateNormalizedByKey(state.nodes, node.id, node),
+  }));
+
+export const patchNodeInState = (nodeID: string, nodePatch: Partial<Node>) =>
+  compose(updateRootNodesInState(nodeID, nodePatch), (state: DiagramState) => ({
+    ...state,
+    nodes: patchNormalizedByKey(state.nodes, nodeID, nodePatch),
+  }));
+
+export const addNodeToState = (node: Node, data: NodeData<unknown>) =>
+  compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
+    ...state,
+    nodes: addNormalizedByKey(state.nodes, node.id, node),
+    data: {
+      ...state.data,
+      [node.id]: data,
+    },
+  }));
+
+export const addAllNodesToState = (nodesWithData: { node: Node; data: NodeData<unknown> }[]) =>
+  compose(...nodesWithData.map(({ node, data }) => addNodeToState(node, data)));
+
+export const removeNodeFromState = (node: Node) => (state: DiagramState) => {
+  const { [node.id]: data, ...dataWithoutNode } = state.data;
+
+  return {
+    ...state,
+    nodes: removeNormalizedByKey(state.nodes, node.id),
+    rootNodeIDs: withoutValue(state.rootNodeIDs, node.id),
+    data: dataWithoutNode,
+  };
+};
+
+export const removeBlockFromState = (node: Node) => (state: DiagramState) =>
+  compose(
+    removeAllLinksFromState(getLinkIDsByNodeID(state)(node.id)),
+    removeAllPortsFromState([...node.ports.in, ...node.ports.out]),
+    removeNodeFromState(node)
+  )(state);
+
+export const removeAllBlocksFromState = (nodes: Node[]) => compose(...nodes.map(removeBlockFromState));
+
+export const addPortToState = (port: Port) => (state: DiagramState) => ({
+  ...state,
+  ports: addNormalizedByKey(state.ports, port.id, port),
+});
+
+export const addAllPortsToState = (ports: Port[]) => compose(...ports.map(addPortToState));
+
+export const addBlockToState = (node: Node, ports: Port[], data: NodeData<unknown>) => compose(addNodeToState(node, data), addAllPortsToState(ports));
+
+export const addPortToBlockInState = (port: Port) => (state: DiagramState) => {
+  const node = getNormalizedByKey(state.nodes, port.nodeID);
+
+  return compose(patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }), addPortToState(port))(state);
+};
+
+export const updateLinkPort = (link: Link, relationship: 'source' | 'target', nodeID: string, portID: string) => ({
+  ...link,
+  [relationship]: {
+    nodeID,
+    portID,
+  },
+});
+
+export const buildLinksByPortID = (links: Link[]) =>
+  links.reduce<DiagramState['linksByPortID']>((acc, link) => {
+    const sourcePortID = link.source.portID;
+    const targetPortID = link.target.portID;
+    acc[sourcePortID] = [...(acc[sourcePortID] || []), link.id];
+    acc[targetPortID] = [...(acc[targetPortID] || []), link.id];
+
+    return acc;
+  }, {});
+
+export const buildLinkedNodesByNodeID = (links: Link[]) =>
+  links.reduce<DiagramState['linkedNodesByNodeID']>((acc, link) => {
+    const sourceNodeID = link.source.nodeID;
+    const targetNodeID = link.target.nodeID;
+    acc[sourceNodeID] = [...(acc[sourceNodeID] || []), targetNodeID];
+    acc[targetNodeID] = [...(acc[targetNodeID] || []), sourceNodeID];
+
+    return acc;
+  }, {});
+
+export const buildLinksByNodeID = (links: Link[]) =>
+  links.reduce<DiagramState['linksByNodeID']>((acc, link) => {
+    const sourceNodeID = link.source.nodeID;
+    const targetNodeID = link.target.nodeID;
+    acc[sourceNodeID] = [...(acc[sourceNodeID] || []), link.id];
+    acc[targetNodeID] = [...(acc[targetNodeID] || []), link.id];
+
+    return acc;
+  }, {});
+
+export const buildPortForNode = (nodeID: string) => (port: PartialModel<Port>) => portFactory(nodeID, port.id, port);
+
+export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Node, Port[], NodeData<unknown>] => {
+  const inPorts = node.ports.in.map(buildPortForNode(node.id));
+  const outPorts = node.ports.out.map(buildPortForNode(node.id));
+
+  const newNodeData = {
+    ...data,
+    nodeID: node.id,
+    type: node.type,
+    blockColor: BlockVariant.STANDARD,
+    path: [],
+  };
+  const newNode = nodeFactory(node.id, {
+    ...node,
+    ports: {
+      in: inPorts.map((port) => port.id),
+      out: outPorts.map((port) => port.id),
+    },
+  });
+
+  return [newNode, [...inPorts, ...outPorts], newNodeData];
+};

@@ -1,7 +1,8 @@
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
-import { ContextMenuValue, Engine } from '@/pages/Canvas/contexts';
+
+import { ContextMenuOption } from './types';
 
 export enum CanvasAction {
   PASTE = 'paste',
@@ -13,7 +14,7 @@ export enum CanvasAction {
   RETURN_TO_HOME = 'return_to_home',
 }
 
-export const BLOCK_COLORS = [
+export const BLOCK_COLORS: ContextMenuOption<BlockVariant>[] = [
   {
     value: BlockVariant.BLUE,
     label: 'Blue',
@@ -36,7 +37,7 @@ export const BLOCK_COLORS = [
   },
 ];
 
-export const CANVAS_OPTIONS = [
+export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Paste',
     value: CanvasAction.PASTE,
@@ -53,15 +54,7 @@ export const CANVAS_OPTIONS = [
 
 const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.COMMENT];
 
-export type BlockMenuOption = {
-  label: string;
-  value: CanvasAction;
-  shouldRender?: (contextMenu: ContextMenuValue, props: { engine: Engine }) => boolean;
-
-  [key: string]: any;
-};
-
-export const BLOCK_OPTIONS: BlockMenuOption[] = [
+export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Rename',
     value: CanvasAction.RENAME_BLOCK,

@@ -30,7 +30,7 @@ const Icon = React.forwardRef(
     });
 
     const iconSize = SIZE_VARIANT[size];
-    const placeholderIconSize = SIZE_VARIANT[size] / 4;
+    const placeholderIconSize = SIZE_VARIANT[size] / 4.75;
     const iconUploadInput = React.useRef();
 
     const clickIconInput = () => {

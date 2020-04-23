@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import Select from '@/components/Select';
@@ -13,7 +12,7 @@ const labelRenderer = (option, searchLabel, getOptionLabel, getOptionValue, opti
   <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} options={options} />
 );
 
-function IntentSelect({ intent, intents, onChange, addIntent }) {
+function IntentSelect({ intent, intents, onChange, newIntent }) {
   const intentID = intent?.id;
 
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
@@ -35,11 +34,9 @@ function IntentSelect({ intent, intents, onChange, addIntent }) {
 
   const onCreate = React.useCallback(
     (name) => {
-      const id = cuid.slug();
-      onSelectIntent(id);
-      addIntent(id, { id, name: prettifyIntentName(name) });
+      onSelectIntent(newIntent({ name: prettifyIntentName(name) }));
     },
-    [addIntent, onSelectIntent]
+    [newIntent, onSelectIntent]
   );
 
   return (
@@ -70,7 +67,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addIntent: Intent.addIntent,
+  newIntent: Intent.newIntent,
 };
 
 const mergeProps = ({ intents }, _, { intents: intentOverrides }) => ({

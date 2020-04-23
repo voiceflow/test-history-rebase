@@ -5,11 +5,11 @@ import { allIntentsSelector } from '@/ducks/intent';
 import { setError } from '@/ducks/modal';
 import { activeDiagramIDSelector, activePlatformSelector } from '@/ducks/skill';
 import { allSlotsSelector } from '@/ducks/slot';
+import { Thunk } from '@/store/types';
 
-import { TestingThunk } from '../types';
 import initializeTest from './initialize';
 
-const renderTesting = (): TestingThunk => async (dispatch, getState) => {
+const renderTesting = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const intents = intentAdapter.mapToDB(allIntentsSelector(state));
   const slots = slotAdapter.mapToDB(allSlotsSelector(state));

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { userSelector } from '@/ducks/account';
-import { setConfirm } from '@/ducks/modal';
-import { activeWorkspaceSelector, sendInvite, updateMembers } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
+import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 
 import MemberSection from './components/MembersSection';
@@ -32,14 +32,14 @@ function Collaborators({ workspace, user, updateMembers, setConfirm, sendInvite 
 }
 
 const mapStateToProps = {
-  user: userSelector,
-  workspace: activeWorkspaceSelector,
+  user: Account.userSelector,
+  workspace: Workspace.activeWorkspaceSelector,
 };
 
 const mapDispatchToProps = {
-  setConfirm,
-  sendInvite,
-  updateMembers,
+  setConfirm: Modal.setConfirm,
+  sendInvite: Workspace.sendInvite,
+  updateMembers: Workspace.updateMembers,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Collaborators);

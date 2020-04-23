@@ -6,8 +6,8 @@ import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/
 
 export type CaptureStepProps = {
   portID: string;
-  fromVariable?: string;
-  toVariable?: string;
+  fromVariable: string | null;
+  toVariable: string | null;
 };
 
 export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, portID }) => (

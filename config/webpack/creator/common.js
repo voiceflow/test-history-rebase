@@ -42,11 +42,16 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
+              'pages/Canvas/components/MarkupEditor/**/*',
+              'pages/Canvas/components/MarkupSidebar/**/*',
               '**/types.ts',
               'models/**/*',
 
               // TODO: remove when onboarding redesign
               'pages/OnboardingV2/**/*',
+
+              // TODO: remove when markup is deployed
+              'components/Slider/**/*',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
@@ -55,6 +60,7 @@ module.exports = merge(commonConfig, {
               'components/DropdownButton/**/*',
               'components/Link/**/*',
               'components/Title/**/*',
+              'components/ColorPicker/**/*',
             ],
           },
         }),

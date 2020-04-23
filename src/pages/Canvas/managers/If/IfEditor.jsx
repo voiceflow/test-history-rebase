@@ -41,7 +41,6 @@ function IfEditor({ data, onChange, focusedNode }) {
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
     factory: expressionFactory,
-    getKey: (item) => item.id,
     autosave: false,
     handleRemove: onRemoveExpression,
   });

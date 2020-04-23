@@ -2,9 +2,9 @@ import React from 'react';
 
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { SlotTag } from '@/components/VariableTag';
+import { Slot } from '@/models';
 
 import ItemCount from '../../ItemCount';
-import { Slot } from '../types';
 
 export type DraggableItemProps = {
   item: Slot;

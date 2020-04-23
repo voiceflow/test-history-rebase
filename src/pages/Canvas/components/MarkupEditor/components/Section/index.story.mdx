@@ -1,0 +1,16 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import TutorialTooltip from '.';
+
+<Meta title="Creator/Markup Editor/Removable Section" component={TutorialTooltip} />
+
+# Removable Section
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="add">{stories.add()}</Story>
+  <Story name="remove">{stories.remove()}</Story>
+  <Story name="last">{stories.last()}</Story>
+</Preview>

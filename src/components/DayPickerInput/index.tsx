@@ -11,6 +11,8 @@ import { DayPickerContainer } from './components';
 
 const FORMAT = 'MM/DD/YYYY';
 
+const VariablesInputComponent = VariablesInput as React.FC<any>;
+
 export type DayPickerInputProps = {
   date?: string | Date;
   onChange: (date: string | Date) => void;
@@ -79,8 +81,8 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
       <Reference>
         {({ ref }) => (
           <div ref={ref as any} onClick={onShow}>
-            <VariablesInput
-              ref={(editor) => {
+            <VariablesInputComponent
+              ref={(editor: any) => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                 // @ts-ignore
                 variablesInputRef.current = editor;

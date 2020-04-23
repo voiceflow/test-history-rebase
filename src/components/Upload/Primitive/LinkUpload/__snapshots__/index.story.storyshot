@@ -35,14 +35,6 @@ exports[`Storyshots Upload/Primitive/Link With Back Button 1`] = `
   text-align: center;
 }
 
-.c10 .c2 {
-  color: #fff;
-}
-
-.c11 .c2 {
-  color: #6e849a;
-}
-
 .c1 {
   min-height: 42px;
   display: block;
@@ -123,6 +115,14 @@ exports[`Storyshots Upload/Primitive/Link With Back Button 1`] = `
   border: none;
   padding: 0;
   border-radius: 0;
+}
+
+.c10 .c2 {
+  color: #fff;
+}
+
+.c11 .c2 {
+  color: #6e849a;
 }
 
 .c9 {

@@ -15,7 +15,7 @@ import {
   Trace,
   TraceType,
 } from '@/ducks/testingV2';
-import { Engine } from '@/pages/Canvas/contexts';
+import type { Engine } from '@/pages/Canvas/engine';
 
 import { Interaction, NLCIntent, TMAmazonIntent, TMStatus } from '../types';
 import AudioController from './Audio';

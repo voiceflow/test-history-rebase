@@ -43,15 +43,7 @@ const SSML = (
   const additionalXMLControlsRenderer = React.useCallback(
     ({ store }) => (
       <>
-        <Speaker
-          voice={voice}
-          getSSMLToPlay={() =>
-            store
-              .getEditorState()
-              .getCurrentContent()
-              .getPlainText()
-          }
-        />
+        <Speaker voice={voice} getSSMLToPlay={() => store.getEditorState().getCurrentContent().getPlainText()} />
         {isAlexa && (
           <VoiceSelect
             value={voice}

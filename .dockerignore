@@ -1,16 +1,6 @@
-.elasticbeanstalk/*
-.git
-.gitignore
+*
 
-node_modules/
-build/
-log/
-certs/
-.*/*
-scripts/
-storybook_build/
-**/__tests__/*
-*.test.js
-
-!.storybook/*
-!.git/*
+!./build
+!./storybook_build
+!./admin_build
+!./config

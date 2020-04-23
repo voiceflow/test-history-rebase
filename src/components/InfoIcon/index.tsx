@@ -16,11 +16,11 @@ export const IconContainer = styled.div<IconContainerProps>`
   top: 3px;
 
   ${({ isOpen }) =>
-      isOpen &&
-      css`
-        color: #5d9df5 !important;
-      `}
-    :hover {
+    isOpen &&
+    css`
+      color: #5d9df5 !important;
+    `}
+  :hover {
     color: #8da2b5;
   }
 `;

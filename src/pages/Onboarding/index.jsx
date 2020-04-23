@@ -9,6 +9,7 @@ import { Form, FormGroup, Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
+import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as OnboardingDuck from '@/ducks/onboarding';
 import * as Router from '@/ducks/router';
@@ -75,7 +76,7 @@ class Onboarding extends React.Component {
       const project = await createProject(workspaceID, {
         name: 'My First Project',
         locales: ['en-US'],
-        platform: 'alexa',
+        platform: PlatformType.ALEXA,
       });
 
       setTimeout(() => goToCanvas(project.skill_id, project.diagram), 3000);
@@ -91,12 +92,11 @@ class Onboarding extends React.Component {
 
   loadDefaultTemplates = async () => {
     try {
-      const templates = await this.props.loadTemplates();
-
-      this.images = templates.map((template) => Object.assign(new Image(), { src: template.icon }));
-    } catch (err) {
+      await this.props.loadTemplates();
+    } catch (error) {
       // eslint-disable-next-line no-alert
       alert('Unable to Retrieve Templates');
+      console.error(error);
     }
   };
 

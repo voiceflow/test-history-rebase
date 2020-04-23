@@ -31,11 +31,11 @@ export const {
   remove: removeSlot,
   replace: replaceSlots,
   reorder: reorderSlots,
-} = createCRUDActionCreators(STATE_KEY);
+} = createCRUDActionCreators<Slot>(STATE_KEY);
 
-export const allSlotIDsSelector = createSelector(allSlotsSelector, (slots) => slots.map(({ id }) => id));
+export const allSlotIDsSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ id }) => id));
 
-export const intentsUsingSlotSelector = createSelector(allIntentsSelector, (intents) => (slotID: string) =>
+export const intentsUsingSlotSelector = createSelector([allIntentsSelector], (intents) => (slotID: string) =>
   intents.reduce<typeof intents>((acc, intent) => {
     if (intent.slots.allKeys.includes(slotID)) {
       acc.push(intent);
@@ -45,4 +45,4 @@ export const intentsUsingSlotSelector = createSelector(allIntentsSelector, (inte
   }, [])
 );
 
-export const slotNamesSelector = createSelector(allSlotsSelector, (slots) => slots.map(({ name }) => name));
+export const slotNamesSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ name }) => name));

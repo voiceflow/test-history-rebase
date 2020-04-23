@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { PERIOD, PLANS } from '@/constants';
+import { BillingPeriod, PLANS } from '@/constants';
 import { useSmartReducer } from '@/hooks';
+import { PlanType } from '@/models';
 
 import { StepID } from './constants';
 import { CollaboratorType } from './types';
@@ -22,9 +23,9 @@ export type OnboardingContextProps = {
       teamSize: string;
     };
     paymentMeta: {
-      plan?: string;
+      plan?: PlanType;
       couponCode?: string;
-      period: string;
+      period: BillingPeriod;
     };
     addCollaboratorMeta: {
       isDemoBooked: boolean;
@@ -60,7 +61,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     stepStack: [],
     addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
     paymentMeta: {
-      period: PERIOD.monthly,
+      period: BillingPeriod.MONTHLY,
     },
   },
 });
@@ -86,7 +87,7 @@ export const OnboardingProvider = ({ query, children }: OnboardingProviderProps)
     paymentMeta: {
       plan: plan || PLANS.pro,
       couponCode,
-      period: period || PERIOD.monthly,
+      period: period || BillingPeriod.MONTHLY,
     },
     addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
     numberOfSteps,

@@ -3,8 +3,8 @@
 exports[`Storyshots Upload/Icon Large 1`] = `
 .c4 {
   box-sizing: content-box;
-  width: 30px;
-  height: 30px;
+  width: 25.263157894736842px;
+  height: 25.263157894736842px;
   color: #BECEDC;
 }
 
@@ -114,7 +114,7 @@ exports[`Storyshots Upload/Icon Large 1`] = `
     <span
       className="c3 c4"
       color="#BECEDC"
-      size={30}
+      size={25.263157894736842}
     >
       <svg
         data-file-name="SvgImage"
@@ -127,8 +127,8 @@ exports[`Storyshots Upload/Icon Large 1`] = `
 exports[`Storyshots Upload/Icon Medium 1`] = `
 .c4 {
   box-sizing: content-box;
-  width: 25px;
-  height: 25px;
+  width: 21.05263157894737px;
+  height: 21.05263157894737px;
   color: #BECEDC;
 }
 
@@ -238,7 +238,7 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
     <span
       className="c3 c4"
       color="#BECEDC"
-      size={25}
+      size={21.05263157894737}
     >
       <svg
         data-file-name="SvgImage"
@@ -251,8 +251,8 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
 exports[`Storyshots Upload/Icon Small 1`] = `
 .c4 {
   box-sizing: content-box;
-  width: 20px;
-  height: 20px;
+  width: 16.842105263157894px;
+  height: 16.842105263157894px;
   color: #BECEDC;
 }
 
@@ -362,7 +362,7 @@ exports[`Storyshots Upload/Icon Small 1`] = `
     <span
       className="c3 c4"
       color="#BECEDC"
-      size={20}
+      size={16.842105263157894}
     >
       <svg
         data-file-name="SvgImage"
@@ -375,8 +375,8 @@ exports[`Storyshots Upload/Icon Small 1`] = `
 exports[`Storyshots Upload/Icon Xlarge 1`] = `
 .c4 {
   box-sizing: content-box;
-  width: 37.5px;
-  height: 37.5px;
+  width: 31.57894736842105px;
+  height: 31.57894736842105px;
   color: #BECEDC;
 }
 
@@ -486,7 +486,7 @@ exports[`Storyshots Upload/Icon Xlarge 1`] = `
     <span
       className="c3 c4"
       color="#BECEDC"
-      size={37.5}
+      size={31.57894736842105}
     >
       <svg
         data-file-name="SvgImage"

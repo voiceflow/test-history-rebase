@@ -6,6 +6,7 @@ import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Workspace from '@/ducks/workspace';
+import * as Models from '@/models';
 import { ThunkResult } from '@/store/types';
 
 import { useOneTimeEffect } from './effect';
@@ -61,8 +62,8 @@ export const useSessionTracking = () => {
 export const useCanvasTracking = () => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
-  const activeSkill = React.useMemo(() => Skill.activeSkillSelector(store.getState()), []);
-  const activeWorkspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState()), []);
+  const activeSkill = React.useMemo(() => Skill.activeSkillSelector(store.getState()) as Models.Skill, []);
+  const activeWorkspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState())!, []);
   const startTime = React.useMemo(() => Date.now(), []);
 
   const trackCanvasTime = React.useCallback(

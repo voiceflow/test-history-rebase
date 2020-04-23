@@ -7,7 +7,7 @@ import { compose, connect } from '@/hocs';
 import { BlockAPI } from '@/pages/Canvas/components/Block';
 import { NodeIDProvider, PlatformContext, useNode } from '@/pages/Canvas/contexts';
 import { BaseStartBlockProps, FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
-import { MergeProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';
 
@@ -16,7 +16,6 @@ export type NodeStartBlockProps = Omit<BaseStartBlockProps, 'commands'> & {
   isRootDiagram: boolean;
   isFocused: boolean;
   isSelected: boolean;
-  diagram: { name: string };
 };
 
 const getBlockState = ({ isFocused, isSelected, isHighlighted }: { isFocused: boolean; isSelected: boolean; isHighlighted: boolean }) => {
@@ -29,7 +28,7 @@ const getBlockState = ({ isFocused, isSelected, isHighlighted }: { isFocused: bo
   return BlockState.REGULAR;
 };
 
-const NodeStartBlock: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChildren<NodeStartBlockProps>> = (
+const NodeStartBlock: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChildren<NodeStartBlockProps> & ConnectedNodeStartBlockProps> = (
   { isRootDiagram, diagram, invocationName, isFocused, isSelected, ...props },
   ref
 ) => {
@@ -70,8 +69,13 @@ const mapStateToProps = {
   diagram: Diagram.diagramByIDSelector,
 };
 
-const mergeProps: MergeProps<typeof mapStateToProps> = ({ diagram: getDiagramByID, activeDiagramID }) => ({
+const mergeProps = (...[{ diagram: getDiagramByID, activeDiagramID }]: MergeArguments<typeof mapStateToProps>) => ({
   diagram: getDiagramByID(activeDiagramID),
 });
 
-export default compose(connect(mapStateToProps, null, mergeProps, { forwardRef: true }), React.forwardRef)(NodeStartBlock);
+type ConnectedNodeStartBlockProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
+
+export default compose(
+  connect(mapStateToProps, null, mergeProps, { forwardRef: true }),
+  React.forwardRef
+)<React.PropsWithChildren<NodeStartBlockProps>, { api: BlockAPI }>(NodeStartBlock as React.FC);

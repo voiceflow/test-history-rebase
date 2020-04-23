@@ -1,8 +1,14 @@
 import { css, styled, units } from '@/hocs';
 
-type Badge = { onClick?: any; slide?: boolean };
+type Badge = { onClick?: any; slide?: boolean; marginLeft?: number };
 
 const Badge = styled.span<Badge>`
+
+${({ marginLeft }) =>
+  marginLeft &&
+  css`
+    margin-left: ${marginLeft}px;
+  `}
   ${({ onClick }) =>
     !!onClick &&
     css`

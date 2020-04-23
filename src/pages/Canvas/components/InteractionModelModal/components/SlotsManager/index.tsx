@@ -9,23 +9,16 @@ import { ModalType } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
+import { Slot } from '@/models';
+import { ConnectedProps } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
-import { Slot } from './types';
 
-export type SlotsManagerProps = {
-  slots: Slot[];
-  addSlot: (id: string, slot: Slot) => void;
-  slotsIDs: string[];
-  removeSlot: (id: string) => void;
-  reorderSlots: (ids: string[]) => void;
-};
-
-const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, addSlot, slotsIDs, removeSlot, reorderSlots }) => {
+const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, slotsIDs, removeSlot, reorderSlots }) => {
   const [selectedID, setSelectedID] = React.useState(slots[0]?.id);
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
 
@@ -70,7 +63,7 @@ const SlotsManager: React.FC<SlotsManagerProps> = ({ slots, addSlot, slotsIDs, r
   const addNewSlot = React.useCallback(() => {
     toggleSlotEdit({
       isCreate: true,
-      onSave: async ({ type, name, color, inputs = [] }: { type: string; name: string; color: string; inputs: string[] }) => {
+      onSave: async ({ type, name, color, inputs = [] }: Slot) => {
         const id = cuid.slug();
         await addSlot(id, { id, type, name, color, inputs });
 
@@ -138,5 +131,7 @@ const mapDispatchToProps = {
   removeSlot: SlotDuck.removeSlot,
   reorderSlots: SlotDuck.reorderSlots,
 };
+
+type ConnectedSlotsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlotsManager);

@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import Badge from '@/components/Badge';
@@ -21,7 +20,7 @@ function StartEditor({ nodeID, data, commands }) {
           options={[
             {
               label: 'Add Command',
-              onClick: () => engine.node.addNested(nodeID, cuid(), BlockType.COMMAND),
+              onClick: () => engine.node.addNested(nodeID, BlockType.COMMAND),
             },
           ]}
           tutorial={{
@@ -46,7 +45,7 @@ function StartEditor({ nodeID, data, commands }) {
           />
         ))
       ) : (
-        <EditorSection header="No commands exist in this flow" variant={SectionVariant.secondary} isCollapsed />
+        <EditorSection header="No commands exist in this flow" variant={SectionVariant.SECONDARY} isCollapsed />
       )}
     </Content>
   );

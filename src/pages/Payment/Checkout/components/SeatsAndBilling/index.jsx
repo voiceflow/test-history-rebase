@@ -5,7 +5,7 @@ import { Tooltip } from 'react-tippy';
 import Dropdown from '@/components/Dropdown';
 import Flex, { FlexApart } from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import { PERIOD, PERIOD_NAME } from '@/constants';
+import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
@@ -27,9 +27,9 @@ function SeatsAndBilling({
   let discountMessage;
 
   if (plan.pricing) {
-    if (period === PERIOD.monthly) {
+    if (period === BillingPeriod.MONTHLY) {
       discountMessage = 'You could be saving 20% with annual billing';
-    } else if (period === PERIOD.annually) {
+    } else if (period === BillingPeriod.ANNUALLY) {
       const savings = (plan.pricing.MO.price - plan.pricing.YR.price) * 0.12 * seats;
       discountMessage = `You're saving $${savings} with annual billing ✨`;
     }
@@ -53,11 +53,11 @@ function SeatsAndBilling({
                 options={[
                   {
                     label: 'Monthly',
-                    onClick: () => setPeriod(PERIOD.monthly),
+                    onClick: () => setPeriod(BillingPeriod.MONTHLY),
                   },
                   {
                     label: 'Annual',
-                    onClick: () => setPeriod(PERIOD.annually),
+                    onClick: () => setPeriod(BillingPeriod.ANNUALLY),
                   },
                 ]}
                 placement="bottom-start"

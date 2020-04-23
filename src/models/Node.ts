@@ -1,5 +1,7 @@
 import { BlockType } from '@/constants';
 
+import { DBPort } from './Port';
+
 export type Node = {
   id: string;
   type: BlockType;
@@ -8,6 +10,25 @@ export type Node = {
   parentNode: string | null;
   combinedNodes: string[];
   ports: { in: string[]; out: string[] };
+  virtual?: boolean;
 };
 
-export type DBNode = {};
+export type DBNode = {
+  id: string;
+  name: string;
+  x?: number;
+  y?: number;
+  ports: DBPort[];
+  combines?: DBNode[] | null;
+  parentNode?: string;
+  extras: {
+    type: string;
+    virtualExtras?: {
+      color?: string;
+      name?: string;
+      id?: string;
+      inPortID?: string;
+    };
+    [key: string]: any;
+  };
+};

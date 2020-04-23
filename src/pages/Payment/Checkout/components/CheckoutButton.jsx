@@ -3,13 +3,13 @@ import React from 'react';
 
 import Button from '@/components/Button';
 import Icon from '@/components/SvgIcon';
-import { PERIOD } from '@/constants';
+import { BillingPeriod } from '@/constants';
 import { styled } from '@/hocs';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 
 const LoadingButton = styled(Button)`
-  curosr: auto;
+  cursor: auto;
   pointer-events: none;
 `;
 
@@ -31,7 +31,7 @@ function CheckoutButton({
   } else {
     checkoutButton = (
       <Button variant="primary" onClick={checkout} disabled={!_isEmpty(errors) || !(stripeCompleted || usingExistingSource)}>
-        Upgrade and Pay{!loading.price && price ? ` $${period === PERIOD.monthly ? price : 12 * price}` : ''}
+        Upgrade and Pay{!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
       </Button>
     );
   }

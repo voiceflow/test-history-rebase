@@ -4,7 +4,7 @@ export type Display = {
   skillID: number;
   document: string;
   datasource: string;
-  title: string;
+  name: string;
   description: string | null;
 };
 

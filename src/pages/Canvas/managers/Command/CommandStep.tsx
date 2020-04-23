@@ -5,14 +5,11 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { MergeProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
-export type Command = {
+export type CommandStepProps = {
   name?: string;
-};
-
-export type CommandStepProps = Command & {
   onCommandClick: () => void;
 };
 
@@ -24,18 +21,20 @@ export const CommandStep: React.FC<CommandStepProps> = ({ name, onCommandClick }
   </Step>
 );
 
-export type ConnectedCommandStep = ConnectedStepProps<NodeData.Command> & {
-  goToDiagram: () => void;
-};
-
-const ConnectedCommandStep: React.FC<ConnectedCommandStep> = ({ data, goToDiagram }) => <CommandStep onCommandClick={goToDiagram} name={data.name} />;
+const ConnectedCommandStep: React.FC<ConnectedStepProps<NodeData.Command> & ConnectedCommandStepProps> = ({ data, goToDiagram }) => (
+  <CommandStep onCommandClick={goToDiagram} name={data.name} />
+);
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,
 };
 
-const mergeProps: MergeProps<{}, typeof mapDispatchToProps, ConnectedStepProps<NodeData.Command>> = (_, { goToDiagram }, { data, platform }) => ({
-  goToDiagram: () => data[platform].diagramID && goToDiagram(data[platform].diagramID),
+const mergeProps = (
+  ...[, { goToDiagram }, { data, platform }]: MergeArguments<{}, typeof mapDispatchToProps, ConnectedStepProps<NodeData.Command>>
+) => ({
+  goToDiagram: () => !!data[platform].diagramID && goToDiagram(data[platform].diagramID!),
 });
 
-export default connect(null, mapDispatchToProps, mergeProps)(ConnectedCommandStep);
+export type ConnectedCommandStepProps = ConnectedProps<{}, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(null, mapDispatchToProps, mergeProps)<ConnectedStepProps<NodeData.Command>>(ConnectedCommandStep);

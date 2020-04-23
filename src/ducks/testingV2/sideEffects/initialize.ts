@@ -3,13 +3,13 @@ import slotAdapter from '@/client/adapters/slot';
 import { allIntentsSelector } from '@/ducks/intent';
 import { activeLocalesSelector } from '@/ducks/skill';
 import { allSlotsSelector } from '@/ducks/slot';
+import { SyncThunk } from '@/store/types';
 import { createAndRegister } from '@/utils/nlc';
 
 import { updateTesting } from '../actions';
-import { TestingThunk } from '../types';
 import resetState from './reset';
 
-export const initializeTest = (): TestingThunk => (dispatch, getState) => {
+export const initializeTest = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const [locale] = activeLocalesSelector(state);
   const intents = intentAdapter.mapToDB(allIntentsSelector(state));

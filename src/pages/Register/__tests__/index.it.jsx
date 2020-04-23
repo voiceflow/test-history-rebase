@@ -72,10 +72,7 @@ describe('Onboarding', () => {
 
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);
-      app
-        .find('.onboarding-survey button')
-        .first()
-        .simulate('click');
+      app.find('.onboarding-survey button').first().simulate('click');
       app.find('.onboarding-survey input[name="company_name"]').simulate('change', { target: { value: 'Voiceflow' } });
       app.find('.onboarding-survey input[name="role"]').simulate('change', { target: { value: 'Tester' } });
       app.find('.onboarding-survey input[name="company_size"]').simulate('change', { target: { value: 'B' } });

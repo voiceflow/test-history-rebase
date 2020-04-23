@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import client from '@/client';
 import { toast } from '@/components/Toast';
-import { ModalType, PERIOD } from '@/constants';
+import { BillingPeriod, ModalType } from '@/constants';
 import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
@@ -34,7 +34,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
     focus: null,
     seats: 1,
     price: 0,
-    period: PERIOD.monthly,
+    period: BillingPeriod.MONTHLY,
     errors: {},
     coupon: '',
     source: null,
@@ -135,7 +135,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
 
       actions.update({
         plan: plans.find(({ id }) => id === plan) || plans[0],
-        period: period || PERIOD.monthly,
+        period: period || BillingPeriod.MONTHLY,
         seats: seats || 1,
         source: source || null,
         usingExistingSource: !!source,

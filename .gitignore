@@ -41,7 +41,7 @@ jspm_packages/
 .npm
 # production
 /build
-/adminbuild
+/admin_build
 # storybook
 /storybook_build
 

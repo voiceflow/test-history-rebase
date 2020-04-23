@@ -1,4 +1,5 @@
 import { Node } from '@/models';
+import { Point } from '@/types';
 
 import { EngineConsumer } from './utils';
 
@@ -36,7 +37,7 @@ class LinkCreationEngine extends EngineConsumer {
   }
 
   isSourceNode(nodeID: string) {
-    const port = this.engine.getPortByID(this.sourcePortID);
+    const port = this.engine.getPortByID(this.sourcePortID!);
 
     return nodeID === port.nodeID;
   }
@@ -64,13 +65,16 @@ class LinkCreationEngine extends EngineConsumer {
   async complete(targetPortID: string) {
     this.isCompleting = true;
 
-    await this.engine.link.add(this.sourcePortID, targetPortID);
+    await this.engine.link.add(this.sourcePortID!, targetPortID);
 
     this.abort();
   }
 
   abort() {
-    this.engine.port.api(this.sourcePortID)?.clearHighlight?.();
+    if (this.sourcePortID) {
+      this.engine.port.api(this.sourcePortID)?.clearHighlight?.();
+    }
+
     this.newLink?.unpin();
     this.newLink?.hide();
     this.reset();
@@ -93,12 +97,12 @@ class LinkCreationEngine extends EngineConsumer {
   }
 
   getLinkPoints() {
-    const { right, top, height } = this.engine.port.getRect(this.sourcePortID);
+    const { right, top, height } = this.engine.port.getRect(this.sourcePortID!);
 
-    const startPoint = [right, top + height / 2];
-    const endPoint = this.mouseOrigin;
+    const startPoint: Point = [right, top + height / 2];
+    const endPoint = this.mouseOrigin!;
 
-    return [this.engine.canvas.transformPoint(startPoint), this.engine.canvas.transformPoint(endPoint, true)];
+    return [this.engine.canvas!.transformPoint(startPoint), this.engine.canvas!.transformPoint(endPoint, true)];
   }
 
   reset() {

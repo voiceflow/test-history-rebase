@@ -18,25 +18,25 @@ export const {
   has: hasIntentsSelector,
 } = createCRUDSelectors<Intent>(STATE_KEY);
 
-export const allIntentIDsSelector = createSelector(allIntentsSelector, (intents) => intents.map(({ id }) => id));
+export const allIntentIDsSelector = createSelector([allIntentsSelector], (intents) => intents.map(({ id }) => id));
 
-export const allSlotsByIntentIDSelector = createSelector(intentByIDSelector, (getIntentByID) => (id: string): string[] => {
+export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (getIntentByID) => (id: string): string[] => {
   const intent = getIntentByID(id);
 
   return !intent ? [] : _uniq(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
 });
 
-export const allPlatformIntentsSelector = createSelector(allIntentsSelector, activePlatformSelector, (intents, platform: PlatformType) =>
+export const allPlatformIntentsSelector = createSelector([allIntentsSelector, activePlatformSelector], (intents, platform: PlatformType) =>
   intents.concat(BUILT_IN_INTENTS[platform] || [])
 );
 
-export const mapPlatformIntentsSelector = createSelector(allPlatformIntentsSelector, (intents) =>
+export const mapPlatformIntentsSelector = createSelector([allPlatformIntentsSelector], (intents) =>
   intents.reduce<Record<string, Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
-export const platformIntentByIDSelector = createSelector(mapPlatformIntentsSelector, (intentsMap) => (id: string) => intentsMap[id]);
+export const platformIntentByIDSelector = createSelector([mapPlatformIntentsSelector], (intentsMap) => (id: string) => intentsMap[id]);
 
-export const allSlotsIDsByIntentIDsSelector = createSelector(allSlotsByIntentIDSelector, (getSlotIDsByIntentID) => (intentIDs: string[]) =>
+export const allSlotsIDsByIntentIDsSelector = createSelector([allSlotsByIntentIDSelector], (getSlotIDsByIntentID) => (intentIDs: string[]) =>
   Array.from(
     intentIDs.reduce<Set<string>>((acc, intentID) => {
       getSlotIDsByIntentID(intentID).forEach((slotID) => acc.add(slotID));
@@ -46,7 +46,7 @@ export const allSlotsIDsByIntentIDsSelector = createSelector(allSlotsByIntentIDS
   )
 );
 
-export const intentSlotByIntentIDSlotIDSelector = createSelector(intentByIDSelector, (getIntentByID) => (intentID: string, slotID: string) => {
+export const intentSlotByIntentIDSlotIDSelector = createSelector([intentByIDSelector], (getIntentByID) => (intentID: string, slotID: string) => {
   const intent = getIntentByID(intentID);
 
   return intent.slots.byKey[slotID];

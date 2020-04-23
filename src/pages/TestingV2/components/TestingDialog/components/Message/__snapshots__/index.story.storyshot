@@ -163,7 +163,7 @@ exports[`Storyshots Testing/Message Debug 1`] = `
     size={16}
   >
     <svg
-      data-file-name="SvgCard"
+      data-file-name="SvgVar"
     />
   </span>
   <div

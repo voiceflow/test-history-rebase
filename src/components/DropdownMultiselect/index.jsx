@@ -23,8 +23,11 @@ function DropdownMultiselect({
   dropdownLabel,
   autoWidth,
   placement,
+  maxHeight,
+  maxVisibleItems,
   placeholder,
   dropdownActive,
+  customOptionLabelStyling,
   withCaret,
 }) {
   const genKey = useKeygen();
@@ -40,9 +43,16 @@ function DropdownMultiselect({
 
   return (
     <Dropdown
+      maxHeight={maxHeight}
+      maxVisibleItems={maxVisibleItems}
       menu={
         menu || (
-          <Menu disabled={buttonDisabled} multiSelectProps={{ multiselect: true, buttonClick, buttonLabel }}>
+          <Menu
+            maxHeight={maxHeight}
+            maxVisibleItems={maxVisibleItems}
+            disabled={buttonDisabled}
+            multiSelectProps={{ multiselect: true, buttonClick, buttonLabel }}
+          >
             {dropdownOptions.map(({ sectionLabel, options }, index) => {
               return (
                 <span key={index}>
@@ -56,7 +66,7 @@ function DropdownMultiselect({
                       })}
                     >
                       <Checkbox readOnly checked={selectedItems.includes(value)}>
-                        <Label>{label || value.toString()}</Label>
+                        <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
                       </Checkbox>
                     </MenuItem>
                   ))}
@@ -73,11 +83,11 @@ function DropdownMultiselect({
         Component ? (
           <Component ref={ref} onClick={onToggle} />
         ) : (
-          <TriggerContainer active={dropdownActive && isOpen} ref={ref} onClick={onToggle}>
-            <InnerContainer>
+          <TriggerContainer ref={ref} onClick={onToggle}>
+            <InnerContainer active={dropdownActive && isOpen}>
               {dropdownLabel && <Label>{dropdownLabel}</Label>}
               <ValueContainer>{selectedValue || <span>{placeholder}</span>}</ValueContainer>
-              {withCaret ? <SvgIcon icon="caretDown" size={9} color="#8da2b5" /> : <Count>{selectedItems.length}</Count>}
+              {withCaret ? <SvgIcon icon="caretDown" size={10} color="#6e849a" /> : <Count>{selectedItems.length}</Count>}
             </InnerContainer>
           </TriggerContainer>
         )

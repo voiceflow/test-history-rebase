@@ -1,7 +1,7 @@
-export type State = {};
+export type TrackingState = {};
 
 export type ProjectEventInfo = {
-  skillID: number;
-  projectID: number;
-  workspaceID: number;
+  skillID: string;
+  projectID: string;
+  workspaceID: string;
 };

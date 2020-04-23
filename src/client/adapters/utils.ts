@@ -11,12 +11,26 @@ export interface Options {
   debug?: boolean;
 }
 
-export type Adapter<I, O> = (value: I, ...args: any[]) => O;
+export type Adapter<I, A extends any[], O> = (value: I, ...args: A) => O;
 
-export const createSimpleAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<APP, DB>, options: Options = {}) => ({
+export type BidirectionalAdapter<I, O, T extends any[], R extends any[]> = {
+  fromDB: Adapter<I, T, O>;
+  toDB: Adapter<O, R, I>;
+};
+
+export type BidirectionalMultiadapter<I, O, T extends any[], R extends any[]> = BidirectionalAdapter<I, O, T, R> & {
+  mapFromDB: Adapter<I[], T, O[]>;
+  mapToDB: Adapter<O[], R, I[]>;
+};
+
+export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
+  fromDB: Adapter<I, T, O>,
+  toDB: Adapter<O, R, I>,
+  options: Options = {}
+): BidirectionalAdapter<I, O, T, R> => ({
   fromDB:
     !IS_PRODUCTION && options.debug
-      ? (dbValue: DB, ...args: any[]) => {
+      ? (dbValue, ...args) => {
           // eslint-disable-next-line no-console
           console.log('adapter called with value from DB:', dbValue);
 
@@ -30,7 +44,7 @@ export const createSimpleAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Ada
       : fromDB,
   toDB:
     !IS_PRODUCTION && options.debug
-      ? (appValue: APP, ...args: any[]) => {
+      ? (appValue, ...args) => {
           // eslint-disable-next-line no-console
           console.log('adapter called with value from the store:', appValue);
 
@@ -44,9 +58,13 @@ export const createSimpleAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Ada
       : toDB,
 });
 
-export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<APP, DB>, options: Options = {}) => ({
-  ...createSimpleAdapter(fromDB, toDB, options),
-  mapFromDB: (dbValues: DB[], ...args: any[]) => {
+export const createAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
+  fromDB: Adapter<I, T, O>,
+  toDB: Adapter<O, R, I>,
+  options: Options = {}
+): BidirectionalMultiadapter<I, O, T, R> => ({
+  ...createSimpleAdapter<I, O, T, R>(fromDB, toDB, options),
+  mapFromDB: (dbValues, ...args) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from DB:', dbValues);
@@ -61,7 +79,7 @@ export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<A
 
     return result;
   },
-  mapToDB: (appValues: APP[], ...args: any[]) => {
+  mapToDB: (appValues, ...args) => {
     if (!IS_PRODUCTION && options.debug) {
       // eslint-disable-next-line no-console
       console.log('adapter called with values from store:', appValues);
@@ -78,4 +96,7 @@ export const createAdapter = <DB, APP>(fromDB: Adapter<DB, APP>, toDB: Adapter<A
   },
 });
 
-export const identityAdapter = createSimpleAdapter(identity, identity);
+export const identityAdapter: {
+  fromDB: <T>(value: T) => T;
+  toDB: <T>(value: T) => T;
+} = createSimpleAdapter<any, any>(identity, identity);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IconButton from '@/components/IconButton';
+import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { useEnableDisable } from '@/hooks';
 
 import DeleteComponentWrapper from './DeleteComponentWrapper';
@@ -15,11 +15,7 @@ const DeleteComponent: React.FC<DeleteComponentProps> = ({ message = 'Drop here 
 
   return (
     <DeleteComponentWrapper ref={ref} onDragOver={startHover} onDragLeave={stopHover}>
-      {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        <IconButton icon={hover ? 'trashOpen' : 'trash'} variant="flat" />
-      }
+      <IconButton icon={hover ? 'trashOpen' : 'trash'} variant={IconButtonVariant.FLAT} />
       <DeleteText>{message}</DeleteText>
     </DeleteComponentWrapper>
   );

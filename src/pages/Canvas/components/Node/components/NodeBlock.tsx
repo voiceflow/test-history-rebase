@@ -11,6 +11,7 @@ import { useEnableDisable, useHover } from '@/hooks';
 import Block, { BlockAPI, HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
 import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
 import { EngineContext, NodeIDProvider, NodeInjectedProps, useNodeData, withNode } from '@/pages/Canvas/contexts';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { buildVirtualDOMRect } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
@@ -27,8 +28,6 @@ export type NodeBlockProps = {
   canModify: boolean;
 };
 
-export type ConnectedNodeProps = NodeInjectedProps & NodeBlockProps & { linkIDs: string[] };
-
 const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { isHovered: boolean; hasLinkWarning: boolean }) => {
   if (isHovered && hasLinkWarning) return BlockState.DISABLED;
 
@@ -41,7 +40,10 @@ const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { i
   return BlockState.REGULAR;
 };
 
-const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNodeProps, ref: React.RefObject<{ api: BlockAPI }>) => {
+const NodeBlock = (
+  { nodeID, node, lockOwner, linkIDs, ...props }: NodeInjectedProps & NodeBlockProps & ConnectedNodeProps,
+  ref: React.RefObject<{ api: BlockAPI }>
+) => {
   const isTransitioning = React.useRef(false);
   const { data } = useNodeData();
 
@@ -51,7 +53,7 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
     const { x, y } = ref.current!.api.getBoundingClientRect();
 
     // account for the correct spacing for the header
-    return buildVirtualDOMRect([x, y + 4 * engine.canvas.getZoom()]);
+    return buildVirtualDOMRect([x, y + 4 * engine.canvas!.getZoom()]);
   }, []);
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const hasNestedInPort = engine.getNodeByID(node.combinedNodes[0])?.ports.in.length !== 0;
@@ -77,7 +79,7 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
 
           const { x, y } = getAnchorPoint();
 
-          engine.linkCreation.pin(inPortID, engine.canvas.transformPoint([x, y + (HEADER_HEIGHT / 2) * engine.canvas.getZoom()]));
+          engine.linkCreation.pin(inPortID, engine.canvas!.transformPoint([x, y + (HEADER_HEIGHT / 2) * engine.canvas!.getZoom()]));
 
           return true;
         }
@@ -225,13 +227,19 @@ const NodeBlock = ({ nodeID, node, lockOwner, linkIDs, ...props }: ConnectedNode
   );
 };
 
-const mapStateToProps = (state: any, { node }: NodeInjectedProps) => ({
-  linkIDs: Creator.linkIDsByPortIDSelector(state)(node.ports.in[0]),
+const mapStateToProps = {
+  linkIDs: Creator.linkIDsByPortIDSelector,
+};
+
+const mergeProps = (...[{ linkIDs: getLinkIDs }, , { node }]: MergeArguments<typeof mapStateToProps, {}, NodeInjectedProps>) => ({
+  linkIDs: getLinkIDs(node.ports.in[0]),
 });
 
-export default compose<ConnectedNodeProps, NodeBlockProps>(
+type ConnectedNodeProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
+
+export default compose(
   withNode,
-  connect(mapStateToProps, null, null, { forwardRef: true }),
+  connect(mapStateToProps, null, mergeProps, { forwardRef: true }),
   React.memo,
   React.forwardRef
-)(NodeBlock);
+)(NodeBlock) as React.FC<NodeBlockProps>;

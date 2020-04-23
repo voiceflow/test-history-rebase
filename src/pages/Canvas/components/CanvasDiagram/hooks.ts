@@ -22,13 +22,13 @@ export const useCursorControls = () => {
     (moveX, moveY) => {
       engine.realtime.panViewport(moveX, moveY);
 
-      if (mousePosition.current !== null && engine.canvas.isTrackpadPanning()) {
-        const zoom = engine.canvas.getZoom();
+      if (mousePosition.current !== null && engine.canvas!.isTrackpadPanning()) {
+        const zoom = engine.canvas!.getZoom();
         const [currX, currY] = mousePosition.current;
         const nextMousePosition: [number, number] = [currX - moveX / zoom, currY - moveY / zoom];
 
         if (engine.linkCreation.isDrawing) {
-          const transformedPosition = engine.canvas.reverseTransformPoint(nextMousePosition, true);
+          const transformedPosition = engine.canvas!.reverseTransformPoint(nextMousePosition, true);
           const sourcePortID = engine.linkCreation.sourcePortID!;
 
           engine.linkCreation.abort();
@@ -53,7 +53,7 @@ export const useCursorControls = () => {
   React.useEffect(() => {
     if (engine.canvas) {
       const onMouseMove = () => {
-        if (!engine.canvas.isPanning()) {
+        if (!engine.canvas!.isPanning()) {
           const transformedPoint = engine.getCanvasMousePosition();
 
           mousePosition.current = transformedPoint;

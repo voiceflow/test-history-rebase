@@ -1,33 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
-.c11 {
+.c17 {
   box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #becedc;
-}
-
-.c11 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c20 {
-  box-sizing: content-box;
-  width: 30px;
-  height: 30px;
+  width: 25.263157894736842px;
+  height: 25.263157894736842px;
   color: #BECEDC;
 }
 
-.c20 > svg {
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c13 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42,7 +29,14 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   justify-content: center;
 }
 
-.c22 {
+.c9 {
+  -webkit-animation: kctwvn 180ms ease-in-out;
+  animation: kctwvn 180ms ease-in-out;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.c19 {
   display: inline-block;
   color: #5d9df5;
   cursor: pointer;
@@ -52,11 +46,11 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   user-select: none;
 }
 
-.c22:hover {
+.c19:hover {
   color: #4886da;
 }
 
-.c24 {
+.c21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -89,51 +83,24 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   box-shadow: none;
 }
 
-.c24:focus,
-.c24:active {
+.c21:focus,
+.c21:active {
   outline: 0;
 }
 
-.c24 .c29 {
+.c21 .c26 {
   opacity: 0.46;
 }
 
-.c24:active {
+.c21:active {
   box-shadow: 0 0 6px 0 rgba(17,49,96,0.1),0 6px 12px 0 rgba(17,49,96,0.2);
 }
 
-.c25 {
+.c22 {
   padding: 0 22px;
 }
 
-.c26 .c23 {
-  margin-right: 2px;
-}
-
-.c26 .c23:not(:first-of-type) {
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
-  margin-right: 0;
-}
-
-.c26 .c23:not(:last-of-type) {
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
-}
-
-.c26 .c23:last-of-type {
-  margin-right: 0;
-}
-
-.c27 .c10 {
-  color: #fff;
-}
-
-.c28 .c10 {
-  color: #6e849a;
-}
-
-.c15 {
+.c11 {
   min-height: 42px;
   display: block;
   width: 100%;
@@ -151,24 +118,51 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
 }
 
-.c15:disabled {
+.c11:disabled {
   color: #949db0;
   pointer-events: none;
 }
 
-.c15:active,
-.c15:focus,
-.c15:focus-within {
+.c11:active,
+.c11:focus,
+.c11:focus-within {
   border: 1px solid #5d9df5;
   box-shadow: 0 0 3px 0 rgba(17,49,96,0.06);
   outline: 0;
 }
 
-.c18 {
+.c23 .c20 {
+  margin-right: 2px;
+}
+
+.c23 .c20:not(:first-of-type) {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  margin-right: 0;
+}
+
+.c23 .c20:not(:last-of-type) {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.c23 .c20:last-of-type {
+  margin-right: 0;
+}
+
+.c24 .c16 {
+  color: #fff;
+}
+
+.c25 .c16 {
+  color: #6e849a;
+}
+
+.c14 {
   display: none;
 }
 
-.c19 {
+.c15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -194,11 +188,11 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   background-size: cover;
 }
 
-.c19:hover {
+.c15:hover {
   background-color: rgba(212,217,230,0.44);
 }
 
-.c19:before {
+.c15:before {
   background: none;
   border: 3px solid #fff;
   border-radius: 50%;
@@ -212,17 +206,17 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   pointer-events: none;
 }
 
-.c17:focus {
+.c13:focus {
   outline: none;
 }
 
-.c14 {
+.c10 {
   width: 480px;
   padding-top: 65px;
   text-align: center;
 }
 
-.c16 {
+.c12 {
   border: none;
   text-align: center;
   border-bottom: 1px solid #dfe3ed;
@@ -230,19 +224,40 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
   border-radius: 0;
   font-size: 18px;
   margin-bottom: 40px;
+  line-height: normal;
 }
 
-.c16:placeholder {
-  color: #8da2b5;
+.c12::-webkit-input-placeholder {
+  color: #8da2b5 !important;
+  font-size: 18px !important;
+  line-height: normal;
 }
 
-.c16:focus {
+.c12::-moz-placeholder {
+  color: #8da2b5 !important;
+  font-size: 18px !important;
+  line-height: normal;
+}
+
+.c12:-ms-input-placeholder {
+  color: #8da2b5 !important;
+  font-size: 18px !important;
+  line-height: normal;
+}
+
+.c12::placeholder {
+  color: #8da2b5 !important;
+  font-size: 18px !important;
+  line-height: normal;
+}
+
+.c12:focus {
   box-shadow: none;
   border: none;
   border-bottom: 1px solid #5d9df5;
 }
 
-.c21 {
+.c18 {
   text-align: center;
   color: #8da2b5;
   line-height: 22px;
@@ -254,36 +269,6 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
 .c3 {
   min-width: 60px;
   text-align: center;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin-bottom: 5px;
-}
-
-.c8 {
-  height: 100%;
-  width: 100%;
-  cursor: pointer;
-}
-
-.c12 {
-  text-transform: uppercase;
-  color: #6e849a;
-  font-size: 11px;
-  font-weight: bold;
-  font-stretch: normal;
 }
 
 .c2 {
@@ -384,124 +369,104 @@ exports[`Storyshots Creator/Steps/If Step Normal 1`] = `
         </div>
         <div
           className="c3"
-        >
-          <div
-            className="c8"
-            onClick={[Function]}
-          >
-            <div
-              className="c9"
-            >
-              <span
-                className="c10 c11"
-                color="#becedc"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgNext"
-                />
-              </span>
-            </div>
-            <div
-              className="c12"
-            >
-              skip
-            </div>
-          </div>
-        </div>
+        />
       </div>
       <div
-        className="c13"
+        className="c8"
       >
         <div
-          className="c14"
+          className="c9"
         >
-          <input
-            className="c15 c16"
-            onChange={[Function]}
-            placeholder="Enter your workspace name"
-            value=""
-          />
           <div
-            className="c13"
+            className="c10"
           >
+            <input
+              className="c11 c12"
+              onChange={[Function]}
+              placeholder="Enter your workspace name"
+              value=""
+            />
             <div
-              className="c17"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onDragEnter={[Function]}
-              onDragLeave={[Function]}
-              onDragOver={[Function]}
-              onDrop={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              tabIndex={0}
+              className="c8"
             >
-              <input
-                accept={
-                  Array [
-                    "image/jpeg",
-                    "image/png",
-                  ]
-                }
-                autoComplete="off"
-                className="c18"
-                multiple={true}
-                onChange={[Function]}
-                onClick={[Function]}
-                style={
-                  Object {
-                    "display": "none",
-                  }
-                }
-                tabIndex={-1}
-                type="file"
-              />
               <div
-                className="c19"
+                className="c13"
+                onBlur={[Function]}
                 onClick={[Function]}
-                size={120}
+                onDragEnter={[Function]}
+                onDragLeave={[Function]}
+                onDragOver={[Function]}
+                onDrop={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                tabIndex={0}
               >
-                <span
-                  className="c10 c20"
-                  color="#BECEDC"
-                  size={30}
+                <input
+                  accept={
+                    Array [
+                      "image/jpeg",
+                      "image/png",
+                    ]
+                  }
+                  autoComplete="off"
+                  className="c14"
+                  multiple={true}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "display": "none",
+                    }
+                  }
+                  tabIndex={-1}
+                  type="file"
+                />
+                <div
+                  className="c15"
+                  onClick={[Function]}
+                  size={120}
                 >
-                  <svg
-                    data-file-name="SvgImage"
-                  />
-                </span>
+                  <span
+                    className="c16 c17"
+                    color="#BECEDC"
+                    size={25.263157894736842}
+                  >
+                    <svg
+                      data-file-name="SvgImage"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            className="c21"
-          >
-            Drop workspace icon here 
-            <br />
-            or 
-            <span
-              className="c22"
-              onClick={[Function]}
+            <div
+              className="c18"
             >
-              Browse
-            </span>
-             (optional)
-          </div>
-          <div
-            className="c13"
-          >
-            <button
-              className="c23 c24"
-              disabled={true}
-              onClick={[Function]}
-            >
+              Drop workspace icon here 
+              <br />
+              or 
               <span
-                className="c25"
+                className="c19"
+                onClick={[Function]}
               >
-                Continue
+                Browse
               </span>
-            </button>
+               (optional)
+            </div>
+            <div
+              className="c8"
+            >
+              <button
+                className="c20 c21"
+                disabled={true}
+                onClick={[Function]}
+              >
+                <span
+                  className="c22"
+                >
+                  Continue
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

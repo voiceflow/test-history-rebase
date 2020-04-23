@@ -7,6 +7,7 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
+import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as List from '@/ducks/lists';
 import * as Router from '@/ducks/router';
@@ -76,7 +77,7 @@ class Templates extends React.Component {
       const project = await createProject(workspaceID, {
         name,
         locales,
-        platform: google ? 'google' : 'alexa',
+        platform: google ? PlatformType.GOOGLE : PlatformType.ALEXA,
       });
 
       const listID = computedMatch?.params?.listID;

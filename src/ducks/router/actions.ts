@@ -34,9 +34,3 @@ export const goToProducts = (versionID: string) => goTo(`${RootRoutes.PROJECT}/$
 export const goToNewProduct = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/new`);
 
 export const goToEditProduct = (versionID: string, productID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/${productID}`);
-
-export const goToDisplays = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals`);
-
-export const goToNewDisplay = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals/new`);
-
-export const goToDisplay = (versionID: string, displayID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/visuals/${displayID}`);

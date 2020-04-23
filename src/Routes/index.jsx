@@ -58,8 +58,6 @@ const Routes = ({ authToken }) => {
         <Redirect from="/tools/:versionID/products" to={`/${RootRoutes.PROJECT}/:versionID/tools/products`} />
         <Redirect from="/tools/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/tools`} />
         <Redirect from="/migrate/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/migrate`} />
-        <Redirect from="/visuals/:versionID/display/:id" to={`/${RootRoutes.PROJECT}/:versionID/visuals/:id`} />
-        <Redirect from="/visuals/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/visuals`} />
         <Redirect from="/publish/:versionID/google" to={`/${RootRoutes.PROJECT}/:versionID/publish/google`} />
         <Redirect from="/publish/:versionID/alexa" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
         <Redirect from="/publish/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />

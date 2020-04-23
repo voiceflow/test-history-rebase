@@ -29,7 +29,6 @@ import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
 import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import Testing from '@/pages/Testing';
-import Visuals from '@/pages/Visuals';
 import { isOnlyViewerSelector } from '@/store/selectors';
 import { getActivePageAndMatch } from '@/utils/routes';
 
@@ -42,7 +41,6 @@ const PAGES_MATCHES = {
   tools: ['/tools'],
   canvas: ['/canvas/:diagramID?'],
   migrate: ['/migrate'],
-  visuals: ['/visuals'],
   publish: ['/publish'],
 };
 
@@ -128,8 +126,6 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
           <PrivateRoute path={`${match.path}/tools`} component={Business} />
 
           <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
-
-          <PrivateRoute path={`${match.path}/visuals`} component={Visuals} />
 
           <PrivateRoute path={`${match.path}/publish`} component={Publish} />
 

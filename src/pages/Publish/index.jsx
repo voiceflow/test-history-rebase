@@ -13,6 +13,8 @@ import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOve
 
 import PublishAmazon from './Amazon';
 import PublishGoogle from './Google';
+import Container from './components/PublishContainer';
+import PlatformContainer from './components/PublishPlatformContainer';
 import Sidebar from './components/PublishSidebar';
 import SidebarItem from './components/PublishSidebarItem';
 
@@ -61,8 +63,8 @@ function Publish(props) {
   return (
     <LockedResourceOverlay type={Realtime.ResourceType.PUBLISH}>
       {({ lockOwner, prevOwner, forceUpdateKey }) => (
-        <div id="business">
-          <Sidebar md="3">
+        <Container>
+          <Sidebar>
             {TABS.map((tab, i) => (
               <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
                 {tab.display(i)}
@@ -70,7 +72,7 @@ function Publish(props) {
             ))}
           </Sidebar>
 
-          <div md="9" className="business-page">
+          <PlatformContainer>
             <Switch>
               <PrivateRoute
                 {...ownProps}
@@ -89,8 +91,8 @@ function Publish(props) {
                 isLocked={!!lockOwner || !!prevOwner}
               />
             </Switch>
-          </div>
-        </div>
+          </PlatformContainer>
+        </Container>
       )}
     </LockedResourceOverlay>
   );

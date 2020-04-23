@@ -1,5 +1,5 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
-import '@/pages/Business/react-table.css';
+import './react-table.css';
 
 import axios from 'axios';
 import _ from 'lodash';

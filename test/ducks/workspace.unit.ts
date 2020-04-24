@@ -1,5 +1,6 @@
 import { UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
+import * as Models from '@/models';
 import * as ColorUtils from '@/utils/colors';
 
 import suite from './_suite';
@@ -14,12 +15,12 @@ const WORKSPACE = {
   plan: 'pro',
   members: MEMBERS,
   seatLimits: SEAT_LIMITS,
-};
-const MOCK_STATE = {
+} as Models.Workspace;
+const MOCK_STATE: Workspace.WorkspaceState = {
   activeWorkspaceID: WORKSPACE_ID,
   byId: {
     abc: WORKSPACE,
-    def: { name: 'Team' },
+    def: { name: 'Team' } as Models.Workspace,
   },
   allIds: ['abc', 'def'],
 };
@@ -41,7 +42,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       it('should update workspace state', () => {
         const nextWorkspaces = {
           byId: {
-            ghi: { name: 'Shared' },
+            ghi: { name: 'Shared' } as Models.Workspace,
           },
           allIds: ['ghi'],
         };

@@ -26,9 +26,9 @@ import { createServerAction, removeSelfFromLocks } from './utils';
 export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => async (dispatch, getState) => {
   const state = getState();
   const diagramID = Skill.activeDiagramIDSelector(state);
-  const workspaceMemberSelector = Workspace.workspaceMemberSelector(state);
+  const hasWorkspaceMemberSelector = Workspace.hasWorkspaceMemberSelector(state);
   const diagramViewers = Object.values(users[diagramID] ?? {});
-  const newMembers = diagramViewers.filter((viewer) => !workspaceMemberSelector(viewer));
+  const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberSelector(viewer));
 
   if (newMembers.length) {
     const workspaceID = Workspace.activeWorkspaceIDSelector(state)!;

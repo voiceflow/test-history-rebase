@@ -8,7 +8,7 @@ import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
 import display, * as Display from '@/ducks/display';
 import feature, * as Feature from '@/ducks/feature';
-import integrationUsers from '@/ducks/integration';
+import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
 import list from '@/ducks/lists';
 import modal, * as Modal from '@/ducks/modal';
@@ -35,18 +35,16 @@ import workspace, * as Workspace from '@/ducks/workspace';
 const createReducer = (history: History) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(history),
+    form: formReducer,
     list,
+    publish,
     [UsertSetting.STATE_KEY]: userSetting,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
-    integrationUsers,
+    [IntegrationUsers.STATE_KEY]: integrationUsers,
     [Testing.STATE_KEY]: testing,
     [TestingV2.STATE_KEY]: testingV2,
-    publish,
-    form: formReducer,
-
-    // v2 reducers
     [Session.STATE_KEY]: session,
     [Creator.STATE_KEY]: creator,
     [Diagram.STATE_KEY]: diagram,
@@ -61,7 +59,7 @@ const createReducer = (history: History) =>
     [UI.STATE_KEY]: ui,
     [Realtime.STATE_KEY]: realtime,
     [Viewport.STATE_KEY]: viewport,
-    [Notifications.STATE_KEY]: notifications as any,
+    [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,

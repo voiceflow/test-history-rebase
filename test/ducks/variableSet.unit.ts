@@ -80,7 +80,7 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
   describeSideEffects(({ applyEffect, stubEffect }) => {
     describe('saveVariableSet()', () => {
       it('should save the latest variables from the store to the DB if they have changed', async () => {
-        const findVariables = stub(client.diagram, 'findVariables').returns(newVariableSet);
+        const findVariables = stub(client.diagram, 'findVariables').resolves(newVariableSet);
         const updateVariables = stub(client.diagram, 'updateVariables');
 
         await applyEffect(VariableSet.saveVariableSet(DIAGRAM_ID));
@@ -90,7 +90,7 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
       });
 
       it('should do nothing if variables have not changed', async () => {
-        const findVariables = stub(client.diagram, 'findVariables').returns(VARIABLE_SET);
+        const findVariables = stub(client.diagram, 'findVariables').resolves(VARIABLE_SET);
         const updateVariables = stub(client.diagram, 'updateVariables');
 
         await applyEffect(VariableSet.saveVariableSet(DIAGRAM_ID));
@@ -114,9 +114,9 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
 
     describe('loadVariableSetForDiagram()', () => {
       it('should replace variables in store from the DB', async () => {
-        const findVariables = stub(client.diagram, 'findVariables').returns(VARIABLE_SET);
+        const findVariables = stub(client.diagram, 'findVariables').resolves(VARIABLE_SET);
 
-        const { expectDispatch } = await applyEffect(VariableSet.loadVariableSetForDiagram(DIAGRAM_ID, VARIABLE));
+        const { expectDispatch } = await applyEffect(VariableSet.loadVariableSetForDiagram(DIAGRAM_ID));
 
         expectDispatch(VariableSet.replaceVariableSetDiagram(DIAGRAM_ID, VARIABLE_SET));
         expect(findVariables).to.be.calledWithExactly(DIAGRAM_ID);
@@ -129,7 +129,7 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
         const creatorDiagramIDSelector = stub(Creator, 'creatorDiagramIDSelector').returns(DIAGRAM_ID);
         const [saveVariableSet, saveVariableSetEffect] = stubEffect(VariableSet, 'saveVariableSet');
 
-        const { expectDispatch } = await applyEffect(VariableSet.saveActiveDiagramVariables(DIAGRAM_ID, VARIABLE));
+        const { expectDispatch } = await applyEffect(VariableSet.saveActiveDiagramVariables());
 
         expect(creatorDiagramIDSelector).to.be.called;
         expect(saveVariableSet).to.be.calledWithExactly(DIAGRAM_ID);
@@ -140,7 +140,7 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
         const [saveVariableSet] = stubEffect(VariableSet, 'saveVariableSet');
         stub(Creator, 'creatorDiagramIDSelector').returns(null);
 
-        await applyEffect(VariableSet.saveActiveDiagramVariables(DIAGRAM_ID, VARIABLE));
+        await applyEffect(VariableSet.saveActiveDiagramVariables());
 
         expect(saveVariableSet).to.not.be.called;
       });

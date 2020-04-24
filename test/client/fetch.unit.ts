@@ -1,15 +1,20 @@
+import { SinonStub } from 'sinon';
+
 import suite from '@/../test/_suite';
 import fetch, { DEFAULT_FETCH_OPTIONS, REQUEST_CACHE } from '@/client/fetch';
 import rawFetch from '@/client/fetch/raw';
+import { FetchOptions } from '@/client/fetch/types';
 import * as FetchUtils from '@/client/fetch/utils';
 import { generate } from '@/utils/testing';
+
+type MockResult = { status?: number; body?: string };
 
 const TEST_URL = 'test/12345';
 const FULL_TEST_URL = `https://undefined/${TEST_URL}`;
 
 suite('fetch', ({ expect, spy, stub, mockDate }) => {
-  const mockRequestCache = ({ get = null, set = null, has = null } = {}) => {
-    spy(REQUEST_CACHE);
+  const mockRequestCache = ({ get = null, set = null, has = null }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
+    spy(REQUEST_CACHE as any);
 
     return {
       verify: () => {
@@ -28,7 +33,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
 
   const stubFetch = () => {
     const fetchCall = stub(FetchUtils, '_fetch');
-    const yieldResult = (call, { status = 200, body = '' }) =>
+    const yieldResult = (call: SinonStub, { status = 200, body = '' }: MockResult) =>
       call.returns(
         Promise.resolve({
           status,
@@ -37,7 +42,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       );
 
     return Object.assign(fetchCall, {
-      yields: (result = {}, ...nextResults) => {
+      yields: (result: MockResult = {}, ...nextResults: MockResult[]) => {
         if (nextResults.length) {
           yieldResult(fetchCall.onCall(0), result);
           nextResults.forEach((nextResult, index) => yieldResult(fetchCall.onCall(index + 1), nextResult));
@@ -58,7 +63,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     it('passes options', async () => {
       const fetchCall = stubFetch().yields();
 
-      await rawFetch(TEST_URL, { foo: 'bar' });
+      await rawFetch(TEST_URL, { foo: 'bar' } as any);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
         ...DEFAULT_FETCH_OPTIONS,
@@ -84,15 +89,15 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const [mockResponse1, mockResponse2, mockResponse3] = generate.array(3, () => ({ status: generate.number(), body: generate.string() }));
       const fetchCall = stubFetch().yields(mockResponse1, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 6, get: 4, set: 3 });
-      const opts = { cache: true, expiry: false };
+      const opts: FetchOptions = { cache: true, expiry: false };
 
       const response1 = await rawFetch('a', opts);
       const response2 = await rawFetch('a', opts);
       const response3 = await rawFetch('a', opts);
       expect(fetchCall).to.have.callCount(1);
 
-      const response4 = await rawFetch('a', { ...opts, foo: 'bar' });
-      const response5 = await rawFetch('a', { ...opts, foo: 'bar' });
+      const response4 = await rawFetch('a', { ...opts, foo: 'bar' } as any);
+      const response5 = await rawFetch('a', { ...opts, foo: 'bar' } as any);
       expect(fetchCall).to.have.callCount(2);
 
       const response6 = await rawFetch('b', opts);
@@ -154,8 +159,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response3 = await rawFetch('a');
       expect(fetchCall).to.have.callCount(3);
 
-      const response4 = await rawFetch('a', { foo: 'bar' });
-      const response5 = await rawFetch('a', { foo: 'bar' });
+      const response4 = await rawFetch('a', { foo: 'bar' } as any);
+      const response5 = await rawFetch('a', { foo: 'bar' } as any);
       expect(fetchCall).to.have.callCount(5);
 
       const response6 = await rawFetch('b');

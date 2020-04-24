@@ -1,28 +1,30 @@
 import client from '@/client';
 import * as Feature from '@/ducks/feature';
+import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 
-const FEATURE_ID = 'abc';
+const FEATURE_ID: any = generate.id();
 const TIMESTAMP = 1234500000;
 const FEATURE = { isEnabled: true, lastUpdated: TIMESTAMP };
-const MOCK_STATE = {
+const MOCK_STATE: Feature.FeatureState = {
   isLoaded: true,
   features: {
     [FEATURE_ID]: FEATURE,
     ghi: { isEnabled: false },
-  },
+  } as any,
 };
 
 suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describeReducer, describeSelectors, describeSideEffects }) => {
   describeReducer(({ expectAction }) => {
     describe('updateFeatureStatus()', () => {
       it('should update the feature status', () => {
+        const featureID: any = generate.id();
         const timestamp = TIMESTAMP + 1000;
         mockDate(timestamp);
 
-        expectAction(Feature.updateFeatureStatus('def', false)).toModify({
-          features: { ...MOCK_STATE.features, def: { isEnabled: false, lastUpdated: timestamp } },
+        expectAction(Feature.updateFeatureStatus(featureID, false)).toModify({
+          features: { ...MOCK_STATE.features, [featureID]: { isEnabled: false, lastUpdated: timestamp } },
         });
       });
     });
@@ -30,7 +32,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
     describe('setFeaturesLoaded()', () => {
       it('should mark the features as loaded', () => {
         expectAction(Feature.setFeaturesLoaded())
-          .withState({ isLoaded: false })
+          .withState({ isLoaded: false } as Feature.FeatureState)
           .toModify({ isLoaded: true });
       });
     });
@@ -49,11 +51,11 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
       });
 
       it('should select that feature is not enabled', () => {
-        expect(select(Feature.isFeatureEnabledSelector)('ghi')).to.be.false;
+        expect(select(Feature.isFeatureEnabledSelector)('ghi' as any)).to.be.false;
       });
 
       it('should select that feature is not registered', () => {
-        expect(select(Feature.isFeatureEnabledSelector)('xyz')).to.be.null;
+        expect(select(Feature.isFeatureEnabledSelector)('xyz' as any)).to.be.null;
       });
     });
 
@@ -76,7 +78,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
       });
 
       it('should not refresh feature if remote value has not changed', async () => {
-        const isEnabled = stub(client.feature, 'isEnabled').returns(true);
+        const isEnabled = stub(client.feature, 'isEnabled').resolves(true);
         mockDate(TIMESTAMP + 1000000);
 
         const { dispatch } = await applyEffect(Feature.refreshFeature(FEATURE_ID));
@@ -86,7 +88,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
       });
 
       it('should refresh feature if remote value has changed', async () => {
-        stub(client.feature, 'isEnabled').returns(false);
+        stub(client.feature, 'isEnabled').resolves(false);
         mockDate(TIMESTAMP + 1000000);
 
         const { dispatch } = await applyEffect(Feature.refreshFeature(FEATURE_ID));
@@ -97,8 +99,8 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
 
     describe.skip('loadFeatures()', () => {
       it('should not refresh feature if not enough time has passed', async () => {
-        const features = ['abc', 'def', 'ghi'];
-        const findFeatures = stub(client.feature, 'find').returns(features);
+        const features: any[] = ['abc', 'def', 'ghi'];
+        const findFeatures = stub(client.feature, 'find').resolves(features);
 
         const { dispatch } = await applyEffect(Feature.loadFeatures());
 

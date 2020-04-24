@@ -15,7 +15,6 @@ chai.use(chaiAsPromised);
 
 // mocks
 
-mockRequire('cuid', () => 'mockID');
 mockRequire('redux-persist', { persistReducer: (_, reducer) => reducer });
 mockRequire('redux-persist/lib/storage', {});
 mockRequire('redux-persist/lib/storage/session', {});

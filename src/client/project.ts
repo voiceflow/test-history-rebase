@@ -4,10 +4,10 @@ import { DBProject } from '@/models';
 import projectAdapter from './adapters/project';
 import fetch, { NetworkError, StatusCode } from './fetch';
 
-const VERSION_PATH = 'version';
-const PROJECT_PATH = 'project';
-const PROJECTS_PATH = 'projects';
-const TEAM_PATH = 'team';
+export const VERSION_PATH = 'version';
+export const PROJECT_PATH = 'project';
+export const PROJECTS_PATH = 'projects';
+export const TEAM_PATH = 'team';
 
 export type ProjectVersion = {
   skill_id: string;
@@ -22,11 +22,13 @@ const projectClient = {
   copy: (versionID: string, teamID: string) => fetch.post<DBProject>(`${VERSION_PATH}/${versionID}/copy/team/${teamID}`).then(projectAdapter.fromDB),
 
   delete: (projectID: string) =>
-    fetch.delete(`${PROJECTS_PATH}/${projectID}`).catch((err) => {
-      if (err instanceof NetworkError && err.statusCode === StatusCode.FORBIDDEN) {
-        throw new NetworkError(err.statusCode, 'Project has active users and cannot be deleted at the moment');
+    fetch.delete(`${PROJECTS_PATH}/${projectID}`).catch((err: Error | NetworkError<any>) => {
+      const statusCode = (err instanceof NetworkError && err.statusCode) || StatusCode.SERVER_ERROR;
+
+      if (statusCode === StatusCode.FORBIDDEN) {
+        throw new NetworkError(statusCode, 'Project has active users and cannot be deleted at the moment');
       } else {
-        throw new NetworkError(err.statusCode || StatusCode.SERVER_ERROR, 'Error Deleting Project');
+        throw new NetworkError(statusCode, 'Error Deleting Project');
       }
     }),
 
@@ -35,7 +37,7 @@ const projectClient = {
       .post<DBProject>(`importProject/${teamID}/`, { token })
       .then(projectAdapter.fromDB),
 
-  claimReference: (projectID: string) => fetch.post(`${PROJECT_PATH}/${projectID}/use_reference`),
+  claimReference: (projectID: string) => fetch.post<{ skill_id: string }>(`${PROJECT_PATH}/${projectID}/use_reference`),
 
   updateVendorId: (projectID: string, vendorID: string) => fetch.post<string>(`${PROJECT_PATH}/${projectID}/vendor_id`, { vendor_id: vendorID }),
 

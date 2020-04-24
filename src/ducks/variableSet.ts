@@ -86,7 +86,7 @@ export const activeDiagramVariables = createSelector([creatorDiagramIDSelector, 
 
 // action creators
 
-export const replaceVariableSet = (variableSet: VariableSetState, meta: object): ReplaceVariableSet =>
+export const replaceVariableSet = (variableSet: VariableSetState, meta?: object): ReplaceVariableSet =>
   createAction(REPLACE_VARIABLE_SET, variableSet, meta);
 
 export const replaceVariableSetDiagram = (diagramID: string, variables: VariableSet): ReplaceVariableSetDiagram =>

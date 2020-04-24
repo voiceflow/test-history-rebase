@@ -22,11 +22,12 @@ export type AnyWorkspaceAction = UpdateCurrentWorkspace | UpdateWorkspaces;
 
 // action creators
 
-export const updateWorkspaces = ({ byId, allIds }: ActionPayload<UpdateWorkspaces>) =>
+export const updateWorkspaces = ({ byId, allIds }: ActionPayload<UpdateWorkspaces>): UpdateWorkspaces =>
   createAction(WorkspaceAction.UPDATE_WORKSPACES, { byId, allIds });
 
 const Workspaces = new Normalize('id', STATE_KEY, updateWorkspaces);
 
 export const updateWorkspace = (workspaceID: string, data: Partial<Workspace>): SyncThunk => Workspaces.update({ id: workspaceID, data });
 
-export const updateCurrentWorkspace = (workspaceID: string) => createAction(WorkspaceAction.UPDATE_CURRENT_WORKSPACE, workspaceID);
+export const updateCurrentWorkspace = (workspaceID: string): UpdateCurrentWorkspace =>
+  createAction(WorkspaceAction.UPDATE_CURRENT_WORKSPACE, workspaceID);

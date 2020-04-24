@@ -1,22 +1,22 @@
 import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
-import { Fixtures } from '@/utils/testing';
+import { Fixtures, generate } from '@/utils/testing';
 
 import suite from './_suite';
 
-const CREATOR_ID = '123';
-const AMAZON_ACCOUNT = {
+const CREATOR_ID = 123;
+const AMAZON_ACCOUNT: any = {
   token: 'abc',
 };
-const GOOGLE_ACCOUNT = {
+const GOOGLE_ACCOUNT: any = {
   token: 'def',
 };
 const MOCK_STATE = {
   creator_id: CREATOR_ID,
   amazon: AMAZON_ACCOUNT,
   google: GOOGLE_ACCOUNT,
-};
+} as Account.AccountState;
 
 suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
   describeReducer(({ expectAction }) => {
@@ -28,20 +28,24 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('updateAmazonAccount()', () => {
       it('should update the existing amazon account', () => {
-        expectAction(Account.updateAmazonAccount(Fixtures.USER)).toModify({
+        const amazonAccount: any = { token: 'xyz' };
+
+        expectAction(Account.updateAmazonAccount(amazonAccount)).toModify({
           amazon: {
             ...AMAZON_ACCOUNT,
-            ...Fixtures.USER,
+            ...amazonAccount,
           },
         });
       });
     });
 
     it('should update the existing google account', () => {
-      expectAction(Account.updateGoogleAccount(Fixtures.USER)).toModify({
+      const googleAccount: any = { token: 'xyz' };
+
+      expectAction(Account.updateGoogleAccount(googleAccount)).toModify({
         google: {
           ...GOOGLE_ACCOUNT,
-          ...Fixtures.USER,
+          ...googleAccount,
         },
       });
     });
@@ -70,14 +74,14 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
   describeSideEffects(({ applyEffect, createState }) => {
     describe('getVendors()', () => {
       it('should be a noop if no amazon account available', async () => {
-        const { dispatch } = await applyEffect(Account.getVendors(), createState({}));
+        const { dispatch } = await applyEffect(Account.getVendors(), createState({} as any));
 
         expect(dispatch).to.not.be.called;
       });
 
       it('should store array of vendors', async () => {
-        const vendors = ['a', 'b', 'c'];
-        const getVendors = stub(client.user, 'getVendors').returns(vendors);
+        const vendors: any[] = generate.array();
+        const getVendors = stub(client.user, 'getVendors').resolves(vendors);
 
         const { expectDispatch } = await applyEffect(Account.getVendors());
 
@@ -89,8 +93,8 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('createAmazonSession()', () => {
       it('should link amazon account', async () => {
         const code = '!@#';
-        const amazonAccount = { token: 'xyz' };
-        const linkAccount = stub(client.session.amazon, 'linkAccount').returns(amazonAccount);
+        const amazonAccount: any = { token: 'xyz' };
+        const linkAccount = stub(client.session.amazon, 'linkAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.createAmazonSession(code));
 
@@ -101,8 +105,8 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('checkAmazonAccount()', () => {
       it('should update amazon account on success', async () => {
-        const amazonAccount = { token: 'xyz' };
-        const getAccount = stub(client.session.amazon, 'getAccount').returns(amazonAccount);
+        const amazonAccount: any = { token: 'xyz' };
+        const getAccount = stub(client.session.amazon, 'getAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.checkAmazonAccount());
 
@@ -121,8 +125,8 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('deleteAmazonAccount()', () => {
       it('should clear amazon account on success', async () => {
-        const amazonAccount = { token: 'xyz' };
-        const deleteAccount = stub(client.session.amazon, 'deleteAccount').returns(amazonAccount);
+        const amazonAccount: any = { token: 'xyz' };
+        const deleteAccount = stub(client.session.amazon, 'deleteAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.deleteAmazonAccount());
 
@@ -143,7 +147,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('createGoogleSession()', () => {
       it('should link google account', async () => {
         const code = '!@#';
-        const googleAccount = { token: 'xyz' };
+        const googleAccount: any = { token: 'xyz' };
         const linkAccount = stub(client.session.google, 'linkAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.createGoogleSession(code));
@@ -155,7 +159,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('checkGoogleAccount()', () => {
       it('should update google account on success', async () => {
-        const googleAccount = { token: 'xyz' };
+        const googleAccount: any = { token: 'xyz' };
         const getAccount = stub(client.session.google, 'getAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.checkGoogleAccount());
@@ -175,7 +179,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('deleteGoogleAccount()', () => {
       it('should clear google account on success', async () => {
-        const googleAccount = { token: 'xyz' };
+        const googleAccount: any = { token: 'xyz' };
         const deleteAccount = stub(client.session.google, 'deleteAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.deleteGoogleAccount());

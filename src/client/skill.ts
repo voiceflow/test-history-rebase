@@ -5,8 +5,8 @@ import displayAdapter from './adapters/display';
 import productAdapter from './adapters/product';
 import fetch from './fetch';
 
-const SKILL_PATH = 'skill';
-const DISPLAYS_PATH = 'multimodal/displays';
+export const SKILL_PATH = 'skill';
+export const DISPLAYS_PATH = 'multimodal/displays';
 
 const skillClient = {
   get: (skillID: string) => fetch.get<DBSkill>(`${SKILL_PATH}/${skillID}?simple=1&user_modules=1`),

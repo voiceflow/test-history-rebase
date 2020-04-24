@@ -1,6 +1,7 @@
 import * as ReduxUndo from 'redux-undo';
 
 import client from '@/client';
+import { SocketClient } from '@/client/socket';
 import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
@@ -44,8 +45,10 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         const diagramID = 'qrs';
         const locks = {
           blocks: {
-            movement: { xyz: 'ghi' },
+            [Realtime.LockType.MOVEMENT]: { xyz: 'ghi' },
+            [Realtime.LockType.EDIT]: { lmn: 'opq' },
           },
+          resources: {},
         };
 
         expectAction(Realtime.initializeRealtime(diagramID, locks)).toModify({
@@ -62,8 +65,10 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         const diagramID = 'qrs';
         const locks = {
           blocks: {
-            movement: { xyz: 'ghi' },
+            [Realtime.LockType.MOVEMENT]: { xyz: 'ghi' },
+            [Realtime.LockType.EDIT]: { lmn: 'opq' },
           },
+          resources: {},
           users: {
             [diagramID]: {
               def: 'iop',
@@ -123,7 +128,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should add new node locks', () => {
         const tabID = 'tty';
 
-        expectAction(Realtime.addNodeLocks(['EDIT', 'Delete'], ['cvv', 'ajj'], tabID)).toModify({
+        expectAction(Realtime.addNodeLocks(['EDIT', 'Delete'] as any[], ['cvv', 'ajj'], tabID)).toModify({
           locks: {
             ...LOCKS,
             blocks: {
@@ -137,7 +142,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
                 ajj: tabID,
                 cvv: tabID,
               },
-            },
+            } as any,
           },
         });
       });
@@ -145,14 +150,14 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('removeNodeLocks()', () => {
       it('should remove node locks', () => {
-        expectAction(Realtime.removeNodeLocks(['movement', 'delete'], ['def'])).toModify({
+        expectAction(Realtime.removeNodeLocks([Realtime.LockType.MOVEMENT, 'delete'] as any[], ['def'])).toModify({
           locks: {
             ...LOCKS,
             blocks: {
               ...LOCKS.blocks,
               movement: { jkl: 'eea' },
               delete: {},
-            },
+            } as any,
           },
         });
       });
@@ -162,7 +167,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should add resource lock', () => {
         const tabID = 'abc';
 
-        expectAction(Realtime.addResourceLock('variables', tabID)).toModify({
+        expectAction(Realtime.addResourceLock(Realtime.ResourceType.VARIABLES, tabID)).toModify({
           locks: {
             ...LOCKS,
             resources: {
@@ -176,7 +181,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('removeResourceLock()', () => {
       it('should remove resource lock', () => {
-        expectAction(Realtime.removeResourceLock('settings')).toModify({
+        expectAction(Realtime.removeResourceLock(Realtime.ResourceType.SETTINGS)).toModify({
           locks: {
             ...LOCKS,
             resources: {},
@@ -255,11 +260,11 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('isNodeLockedSelector()', () => {
       it('should return node is locked', () => {
-        expect(select(Realtime.isNodeLockedSelector)('edit', 'jkl')).to.be.true;
+        expect(select(Realtime.isNodeLockedSelector)(Realtime.LockType.EDIT, 'jkl')).to.be.true;
       });
 
       it('should return node is not locked', () => {
-        expect(select(Realtime.isNodeLockedSelector)('delete', 'def')).to.be.false;
+        expect(select(Realtime.isNodeLockedSelector)('delete' as any, 'def')).to.be.false;
       });
     });
 
@@ -283,13 +288,13 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('lockOwnerTabIDSelector()', () => {
       it('should return whether node is edit locked', () => {
-        expect(select(Realtime.lockOwnerTabIDSelector)('edit', 'jkl')).to.eq('mno');
+        expect(select(Realtime.lockOwnerTabIDSelector)(Realtime.LockType.EDIT, 'jkl')).to.eq('mno');
       });
     });
 
     describe('resourceLockOwnerTabIDSelector()', () => {
       it('should return whether node is edit locked', () => {
-        expect(select(Realtime.resourceLockOwnerTabIDSelector)('settings')).to.eq('mno');
+        expect(select(Realtime.resourceLockOwnerTabIDSelector)(Realtime.ResourceType.SETTINGS)).to.eq('mno');
       });
     });
 
@@ -301,7 +306,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
   });
 
   describeSideEffects(({ applyEffect, createState, stubEffect }) => {
-    const stubRealtimeClient = (name) => {
+    const stubRealtimeClient = (name: keyof SocketClient['realtime']) => {
       const clientMethod = stub();
 
       stub(client, 'socket').get(() => ({ realtime: { [name]: clientMethod } }));
@@ -313,7 +318,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should update active diagrams with no viewers', async () => {
         const users = {};
         stub(Skill, 'activeDiagramIDSelector').returns('890');
-        stub(Workspace, 'workspaceMemberSelector');
+        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
 
@@ -323,7 +328,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should update active diagrams with a single, pre-existing viewer', async () => {
         stub(Skill, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
-        stub(Workspace, 'workspaceMemberSelector').returns(() => true);
+        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => true);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(USER_LOCKS));
 
@@ -343,7 +348,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         };
         const [getMembers, getMembersEffect] = stubEffect(Workspace, 'getMembers');
         stub(Skill, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
-        stub(Workspace, 'workspaceMemberSelector').returns(() => false);
+        stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
         stub(Workspace, 'activeWorkspaceIDSelector').returns(workspaceID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
@@ -366,8 +371,8 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     });
 
     describe('sendRealtimeUpdate()', () => {
-      const action = { type: 'SOME_ACTION' };
-      const serverAction = { type: 'server::SOME_ACTION' };
+      const action: any = { type: 'SOME_ACTION' };
+      const serverAction: any = { type: 'server::SOME_ACTION' };
 
       it('should send realtime update action when connected', async () => {
         const sendUpdate = stubRealtimeClient('sendUpdate');
@@ -381,7 +386,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should send realtime update action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
-        const updateLockAction = { type: 'SOME_ACTION', meta: { lock: lockAction } };
+        const updateLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
         const sendUpdate = stubRealtimeClient('sendUpdate');
         stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
@@ -400,7 +405,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     });
 
     describe('sendRealtimeVolatileUpdate()', () => {
-      const volatileAction = { type: 'SOME_ACTION' };
+      const volatileAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime volatile action when connected', async () => {
         const sendVolatileUpdate = stubRealtimeClient('sendVolatileUpdate');
@@ -420,7 +425,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     });
 
     describe('sendRealtimeProjectUpdate()', () => {
-      const projectAction = { type: 'SOME_ACTION' };
+      const projectAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime project action when connected', async () => {
         const sendProjectUpdate = stubRealtimeClient('sendProjectUpdate');
@@ -432,7 +437,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should send realtime project action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
-        const projectLockAction = { type: 'SOME_ACTION', meta: { lock: lockAction } };
+        const projectLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
         const sendProjectUpdate = stubRealtimeClient('sendProjectUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectLockAction));
@@ -508,7 +513,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should setup a realtime connection', async () => {
         const locks = { blocks: { movement: { def: tabID } } };
-        const filteredLocks = { blocks: { movement: {} } };
+        const filteredLocks: any = { blocks: { movement: {} } };
         const initialize = stubRealtimeClient('initialize').returns(locks);
         const removeSelfFromLocks = stub(RealtimeUtils, 'removeSelfFromLocks').returns(filteredLocks);
         stub(Session, 'tabIDSelector').returns(tabID);
@@ -539,9 +544,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         stub(Skill, 'activeSkillIDSelector').returns(skillID);
         stub(Skill, 'activeDiagramIDSelector').returns(diagramID);
 
-        const { expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
-
-        expectDispatch();
+        await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
       });
     });
   });

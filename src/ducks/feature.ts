@@ -80,10 +80,10 @@ export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) =>
 
 // action creators
 
-export const updateFeatureStatus = (featureID: FeatureFlag, isEnabled: boolean) =>
+export const updateFeatureStatus = (featureID: FeatureFlag, isEnabled: boolean): UpdateFeatureStatus =>
   createAction(FeatureAction.UPDATE_FEATURE_STATUS, { featureID, isEnabled, lastUpdated: Date.now() });
 
-export const setFeaturesLoaded = () => createAction(FeatureAction.SET_FEATURES_LOADED);
+export const setFeaturesLoaded = (): SetFeaturesLoaded => createAction(FeatureAction.SET_FEATURES_LOADED);
 
 // side effects
 

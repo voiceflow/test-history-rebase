@@ -1,9 +1,10 @@
 import * as Modal from '@/ducks/modal';
+import { noop } from '@/utils/functional';
 
 import suite from './_suite';
 
-const MOCK_STATE = {
-  confirmModal: { message: 'something' },
+const MOCK_STATE: Modal.ModalState = {
+  confirmModal: { message: 'something', confirm: noop },
   errorModal: { message: 'something' },
   modal: { value: 'something' },
 };
@@ -18,9 +19,9 @@ suite(Modal, MOCK_STATE)('Ducks - Modal', ({ expect, spy, describeReducer }) => 
 
         const nextState = applyAction(Modal.setConfirm({ message, confirm: confirmCallback }));
 
-        expect(nextState.confirmModal.message).to.eq(message);
+        expect(nextState.confirmModal!.message).to.eq(message);
 
-        nextState.confirmModal.confirm();
+        nextState.confirmModal!.confirm();
 
         expect(confirmCallback).to.be.calledWithExactly();
       });
@@ -31,7 +32,7 @@ suite(Modal, MOCK_STATE)('Ducks - Modal', ({ expect, spy, describeReducer }) => 
 
         const nextState = applyAction(Modal.setConfirm({ message, params, confirm: confirmCallback }));
 
-        nextState.confirmModal.confirm();
+        nextState.confirmModal!.confirm();
 
         expect(confirmCallback).to.be.calledWithExactly(...params);
       });

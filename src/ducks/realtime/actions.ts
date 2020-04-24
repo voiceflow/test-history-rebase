@@ -61,7 +61,7 @@ export type AnyRealtimeAction =
 
 // action creators
 
-export const initializeRealtime = (diagramID: string, locks: WithOptional<RealtimeLocks, 'users'>) =>
+export const initializeRealtime = (diagramID: string, locks: WithOptional<RealtimeLocks, 'users'>): InitializeRealtime =>
   createAction(RealtimeAction.INITIALIZE_REALTIME, {
     diagramID,
     locks: {

@@ -8,6 +8,7 @@ const TEST_CONFIG = {
 };
 const MOCK_STATE = {
   testing: TEST_CONFIG,
+  _persist: { version: 1, rehydrated: false },
 };
 
 suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describeSelectors }) => {
@@ -16,7 +17,7 @@ suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describe
       it('should update test configuration', () => {
         const testConfig = { debug: false };
 
-        expectAction(Recent.updateRecentTesting(testConfig)).toModify({ testing: { debug: false, logger: false } });
+        expectAction(Recent.updateRecentTesting(testConfig)).toModify({ testing: { debug: false, logger: false } as any });
       });
     });
   });

@@ -6,8 +6,8 @@ import suite from './_suite';
 suite('Client - Feature', ({ expect, stubFetch, expectCall }) => {
   describe('find()', () => {
     it('should find all features', async () => {
-      const features = generate.array(3, generate.string);
-      const fetch = stubFetch().yields(features);
+      const features = generate.array();
+      const fetch = stubFetch().resolves(features);
 
       await expectCall(client.find).toYield(features);
 
@@ -18,7 +18,7 @@ suite('Client - Feature', ({ expect, stubFetch, expectCall }) => {
   describe('isEnabled()', () => {
     it('should return the feature status', async () => {
       const featureID = 'abc';
-      const fetch = stubFetch().yields({ status: true });
+      const fetch = stubFetch().resolves({ status: true });
 
       await expectCall(client.isEnabled, featureID).toYield(true);
 

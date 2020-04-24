@@ -3,11 +3,21 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { setError } from '@/ducks/modal';
+import { Account } from '@/models';
+import { Action, RootReducer, Thunk } from '@/store/types';
+import { NullableRecord } from '@/types';
 
 import { createAction, createRootSelector } from './utils';
 
+export type AccountState = NullableRecord<Account> & {
+  loading: boolean;
+  admin: number;
+  amazon: Account.Amazon | null;
+  google: Account.Google | null;
+};
+
 export const STATE_KEY = 'account';
-export const INITIAL_STATE = {
+export const INITIAL_STATE: AccountState = {
   loading: false,
   email: null,
   name: null,
@@ -18,31 +28,45 @@ export const INITIAL_STATE = {
   google: null,
 };
 
-// actions
+export enum AccountAction {
+  UPDATE_ACCOUNT = 'UPDATE_ACCOUNT',
+  UPDATE_AMAZON_ACCOUNT = 'UPDATE_AMAZON_ACCOUNT',
+  UPDATE_GOOGLE_ACCOUNT = 'UPDATE_GOOGLE_ACCOUNT',
+  RESET_ACCOUNT = 'RESET_ACCOUNT',
+}
 
-export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
-export const UPDATE_AMAZON_ACCOUNT = 'UPDATE_AMAZON_ACCOUNT';
-export const UPDATE_GOOGLE_ACCOUNT = 'UPDATE_GOOGLE_ACCOUNT';
-export const RESET_ACCOUNT = 'RESET_ACCOUNT';
+// action types
+
+export type UpdateGoogleAccount = Action<AccountAction.UPDATE_GOOGLE_ACCOUNT, Account.Google>;
+
+export type UpdateAmazonAccount = Action<AccountAction.UPDATE_AMAZON_ACCOUNT, Account.Amazon>;
+
+export type UpdateAccount = Action<AccountAction.UPDATE_ACCOUNT, Partial<AccountState>>;
+
+export type ResetAccount = Action<AccountAction.RESET_ACCOUNT>;
+
+type AnyAccountAction = UpdateGoogleAccount | UpdateAmazonAccount | UpdateAccount | ResetAccount;
 
 // reducers
 
-export default function accountReducer(state = INITIAL_STATE, action) {
+const accountReducer: RootReducer<AccountState, AnyAccountAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_GOOGLE_ACCOUNT:
+    case AccountAction.UPDATE_GOOGLE_ACCOUNT:
       if (!state.google) return state;
       return update(state, { google: { $merge: action.payload } });
-    case UPDATE_AMAZON_ACCOUNT:
+    case AccountAction.UPDATE_AMAZON_ACCOUNT:
       if (!state.amazon) return state;
       return update(state, { amazon: { $merge: action.payload } });
-    case UPDATE_ACCOUNT:
+    case AccountAction.UPDATE_ACCOUNT:
       return { ...state, ...action.payload };
-    case RESET_ACCOUNT:
+    case AccountAction.RESET_ACCOUNT:
       return INITIAL_STATE;
     default:
       return state;
   }
-}
+};
+
+export default accountReducer;
 
 // selectors
 
@@ -56,17 +80,17 @@ export const amazonVendorsSelector = createSelector(amazonAccountSelector, (amaz
 
 // action creators
 
-export const resetAccount = () => createAction(RESET_ACCOUNT);
+export const resetAccount = (): ResetAccount => createAction(AccountAction.RESET_ACCOUNT);
 
-export const updateAccount = (account) => createAction(UPDATE_ACCOUNT, account);
+export const updateAccount = (account: Partial<AccountState>): UpdateAccount => createAction(AccountAction.UPDATE_ACCOUNT, account);
 
-export const updateAmazonAccount = (account) => createAction(UPDATE_AMAZON_ACCOUNT, account);
+export const updateAmazonAccount = (account: Account.Amazon): UpdateAmazonAccount => createAction(AccountAction.UPDATE_AMAZON_ACCOUNT, account);
 
-export const updateGoogleAccount = (account) => createAction(UPDATE_GOOGLE_ACCOUNT, account);
+export const updateGoogleAccount = (account: Account.Google): UpdateGoogleAccount => createAction(AccountAction.UPDATE_GOOGLE_ACCOUNT, account);
 
 // side effects
 
-export const getVendors = () => async (dispatch, getState) => {
+export const getVendors = (): Thunk => async (dispatch, getState) => {
   const state = getState();
 
   if (!amazonAccountSelector(state)) return;
@@ -81,7 +105,7 @@ export const getVendors = () => async (dispatch, getState) => {
   }
 };
 
-export const createAmazonSession = (code) => async (dispatch) => {
+export const createAmazonSession = (code: string): Thunk => async (dispatch) => {
   try {
     const amazon = (await client.session.amazon.linkAccount(code)) || null;
     dispatch(updateAccount({ amazon }));
@@ -91,7 +115,7 @@ export const createAmazonSession = (code) => async (dispatch) => {
   }
 };
 
-export const checkAmazonAccount = () => async (dispatch) => {
+export const checkAmazonAccount = (): Thunk => async (dispatch) => {
   let amazon = null;
   try {
     amazon = (await client.session.amazon.getAccount()) || null;
@@ -101,7 +125,7 @@ export const checkAmazonAccount = () => async (dispatch) => {
   dispatch(updateAccount({ amazon }));
 };
 
-export const deleteAmazonAccount = () => async (dispatch) => {
+export const deleteAmazonAccount = (): Thunk => async (dispatch) => {
   try {
     await client.session.amazon.deleteAccount();
     dispatch(updateAccount({ amazon: null }));
@@ -110,7 +134,7 @@ export const deleteAmazonAccount = () => async (dispatch) => {
   }
 };
 
-export const createGoogleSession = (code) => async (dispatch) => {
+export const createGoogleSession = (code: string): Thunk => async (dispatch) => {
   try {
     const google = (await client.session.google.linkAccount(code)) || null;
     dispatch(updateAccount({ google }));
@@ -120,7 +144,7 @@ export const createGoogleSession = (code) => async (dispatch) => {
   }
 };
 
-export const checkGoogleAccount = () => async (dispatch) => {
+export const checkGoogleAccount = (): Thunk => async (dispatch) => {
   let google = null;
   try {
     google = (await client.session.google.getAccount()) || null;
@@ -130,7 +154,7 @@ export const checkGoogleAccount = () => async (dispatch) => {
   dispatch(updateAccount({ google }));
 };
 
-export const deleteGoogleAccount = () => async (dispatch) => {
+export const deleteGoogleAccount = (): Thunk => async (dispatch) => {
   try {
     await client.session.google.deleteAccount();
     dispatch(updateAccount({ google: null }));

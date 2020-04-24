@@ -5,6 +5,8 @@ import type { State } from '@/ducks/_root';
 
 import { AnyThunk, Dispatchable, ThunkResult } from './store/types';
 
+export type NullableRecord<T extends object> = { [K in keyof T]: T[K] | null };
+
 export type Pair<T> = [T, T];
 
 export type Point = Pair<number>;

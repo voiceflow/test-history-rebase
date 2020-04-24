@@ -13,6 +13,7 @@ const MOCK_STATE = {
     openSections: [BlockCategoryType.ADVANCED],
   },
   local: {},
+  _persist: { version: 1, rehydrated: false },
 };
 
 suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelectors }) => {

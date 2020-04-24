@@ -309,7 +309,7 @@
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key --static-dir=public",
     "storybook:build": "build-storybook --output-dir storybook_build --static-dir=public --quiet",
     "tdd:integration": "yarn test:integration --watchAll=true",
-    "tdd:unit": "NODE_ENV=test ts-mocha --paths --config config/test/unit/mocharc.yml --watch",
+    "tdd:unit": "NODE_ENV=test ts-mocha --paths --config config/test/unit/mocharc.yml --watch --watch-extensions ts",
     "test": "yarn test:unit && yarn test:integration",
     "test:dependencies": "depcheck $(exargs .depcheckrc)",
     "test:integration": "NODE_ENV=test jest --config config/test/integration/jest.config.js",

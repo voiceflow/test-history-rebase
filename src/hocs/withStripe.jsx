@@ -3,7 +3,7 @@ import React from 'react';
 import { Elements, StripeProvider, injectStripe } from 'react-stripe-elements';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import { STRIPE_KEY } from '@/config';
+import { IS_TEST, STRIPE_KEY } from '@/config';
 import { delay } from '@/utils/promise';
 
 import { withExternalResources } from './withExternalResources';
@@ -26,7 +26,7 @@ export const withStripe = (Component) => {
         const [stripe, setStripe] = React.useState(window.stripe);
 
         React.useEffect(() => {
-          if (!stripe) {
+          if (!stripe && !IS_TEST) {
             window.stripe = window.Stripe(STRIPE_KEY);
             setStripe(window.stripe);
           }

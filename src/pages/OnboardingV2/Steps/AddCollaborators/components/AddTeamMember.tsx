@@ -21,7 +21,7 @@ export type AddTeamMembersProps = {
 const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, onUpdate, enableWithoutErrors, disableWithErrors }) => {
   const [errorIndexes, updateErrorIndexes] = React.useState<number[]>([]);
 
-  const onAdd = (value: string) => onUpdate([...collaborators, { email: value }]);
+  const onAdd = (value: string) => onUpdate([...collaborators, { email: value, permission: UserRole.EDITOR }]);
   const onFocus = (index: number) => () => {
     updateErrorIndexes(errorIndexes.filter((idx) => idx !== index));
     enableWithoutErrors();

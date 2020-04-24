@@ -11,7 +11,6 @@ import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/ClickableText';
 import { BillingPeriod, PERIOD_NAME } from '@/constants';
-import { withStripe } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 import { OnboardingProps } from '@/pages/OnboardingV2/types';
@@ -36,7 +35,7 @@ import {
 const DropdownComponent: any = Dropdown;
 const PeriodDropdown: any = BillingDropdown;
 
-const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }> = ({ stripe, checkChargeable }) => {
+const Payment: React.FC<OnboardingProps> = () => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
   const { collaborators } = state.addCollaboratorMeta;
@@ -53,7 +52,6 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
   const [creditCardComplete, setCreditCardComplete] = React.useState(false);
 
   const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError;
-
   const onContinue = async () => {
     actions.setPaymentMeta({
       ...state.paymentMeta,
@@ -61,16 +59,8 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
       period: paymentPeriod,
     });
 
-    const stripeSource = await stripe.createSource({
-      type: 'card',
-    });
-    const source = stripeSource.source;
-    if (!source) {
-      throw new Error(stripeSource.error?.message || 'Invalid Card Information');
-    }
-    await checkChargeable(source);
+    actions.finishCreateOnboarding();
   };
-
   const verifyCoupon = () => {
     throttle(async () => {
       const data = (await client.workspace.checkCoupon(coupon)).data;
@@ -167,4 +157,4 @@ const Payment: React.FC<OnboardingProps & { stripe: any; checkChargeable: any }>
   );
 };
 
-export default withStripe(Payment);
+export default Payment;

@@ -1,7 +1,7 @@
 /* eslint-disable lodash/prefer-constant */
 /* eslint-disable import/prefer-default-export */
 
-import { AddCollaborators, CreateWorkspace, Payment, PersonalizeWorkspace } from './Steps';
+import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace } from './Steps';
 import { OnboardingProps } from './types';
 
 export enum StepID {
@@ -57,6 +57,6 @@ export const STEP_META: StepMetaProps = {
     canSkip: true,
     skipTo: null,
 
-    component: null,
+    component: JoinWorkspace,
   },
 };

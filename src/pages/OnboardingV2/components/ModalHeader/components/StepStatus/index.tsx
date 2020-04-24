@@ -1,4 +1,3 @@
-import { times } from 'lodash';
 import React, { useContext } from 'react';
 
 import { STEP_META, StepID } from '@/pages/OnboardingV2/constants';
@@ -16,14 +15,16 @@ const StepStatus: React.FC = () => {
   return (
     <Container>
       <Title>{STEP_META[currentStepID].title(titleMeta)}</Title>
-      <>
-        {stepStack.map((_, index) => (
-          <ProgressLine active key={`filled-${index}`} />
-        ))}
-        {times(numberOfSteps - stepStack.length, (index) => (
-          <ProgressLine key={`empty-${index}`} />
-        ))}
-      </>
+      {numberOfSteps > 1 && (
+        <>
+          {stepStack.map((_, index) => (
+            <ProgressLine active key={`filled-${index}`} />
+          ))}
+          {Array.from({ length: numberOfSteps - stepStack.length }, (index) => (
+            <ProgressLine key={`empty-${index}`} />
+          ))}
+        </>
+      )}
     </Container>
   );
 };

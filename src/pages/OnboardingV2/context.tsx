@@ -82,6 +82,11 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
+export enum onBoardingType {
+  create = 'create_workspace',
+  join = 'join_workpsace',
+}
+
 type OnboardingProviderProps = {
   query?: any;
   numberOfSteps?: number;
@@ -94,6 +99,27 @@ type OnboardingProviderProps = {
   updateWorkspace: () => void;
 };
 
+const getFirstStep = (flow: onBoardingType) => {
+  switch (flow) {
+    case onBoardingType.create:
+      return StepID.CREATE_WORKSPACE;
+    case onBoardingType.join:
+      return StepID.JOIN_WORKSPACE;
+    default:
+      return StepID.CREATE_WORKSPACE;
+  }
+};
+
+const getNumberOfSteps = (query: any, firstStep: StepID) => {
+  if (firstStep === StepID.JOIN_WORKSPACE) {
+    return 1;
+  }
+  if (!query) {
+    return 3;
+  }
+  return 4;
+};
+
 const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   query,
   children,
@@ -104,13 +130,12 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   createWorkspace,
   sendInvite,
 }) => {
-  const { plan, couponCode, period } = query;
-
-  let numberOfSteps = 3;
-  if (query) numberOfSteps = 4;
+  const { plan, couponCode, period, flow = onBoardingType.create } = query;
+  const firstStep = getFirstStep(flow);
+  const numberOfSteps = getNumberOfSteps(query, firstStep);
 
   const [state, actions] = useSmartReducer({
-    stepStack: [StepID.CREATE_WORKSPACE],
+    stepStack: [firstStep],
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
     paymentMeta: {

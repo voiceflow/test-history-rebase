@@ -12,6 +12,7 @@ const ActionContainer = styled(Container)`
 
   &:hover {
     box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
+    color: #5d9df5;
   }
 
   ${({ disabled }) =>

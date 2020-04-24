@@ -4,25 +4,25 @@ import { FlexCenter } from '@/components/Flex';
 import { styled, transition } from '@/hocs';
 
 const ImageContainer = styled(FlexCenter)`
-  ${transition('background-color, border')}
+  ${transition('background-color', 'border')}
   border-radius: 50%;
   border: 1px solid #d4d9e6;
   cursor: pointer;
   position: relative;
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
-  background-color: rgba(212, 217, 230, 0.24);
+  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
   background-image: ${({ image }) => image && `url(${image})`};
 
   &:hover {
-    background-color: rgba(212, 217, 230, 0.44);
+    background-color: #f1f3f8;
   }
 
   &:before {
     background: none;
-    border: 3px solid #fff;
+    border: 2px solid #fff;
     border-radius: 50%;
     content: '';
     display: block;
@@ -37,9 +37,9 @@ const ImageContainer = styled(FlexCenter)`
   ${({ isLoading }) =>
     isLoading &&
     css`
-      background-color: white;
+      background-color: #fff;
       :hover {
-        background-color: white;
+        background-color: #fff;
       }
     `}
 

@@ -39,26 +39,26 @@ exports[`Storyshots Upload/Icon Large 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-transition: background-color,border 0.15s ease;
-  transition: background-color,border 0.15s ease;
+  -webkit-transition: background-color 0.15s ease,border 0.15s ease;
+  transition: background-color 0.15s ease,border 0.15s ease;
   border-radius: 50%;
   border: 1px solid #d4d9e6;
   cursor: pointer;
   position: relative;
   width: 120px;
   height: 120px;
-  background-color: rgba(212,217,230,0.24);
+  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
 }
 
 .c2:hover {
-  background-color: rgba(212,217,230,0.44);
+  background-color: #f1f3f8;
 }
 
 .c2:before {
   background: none;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   content: '';
   display: block;
@@ -163,26 +163,26 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-transition: background-color,border 0.15s ease;
-  transition: background-color,border 0.15s ease;
+  -webkit-transition: background-color 0.15s ease,border 0.15s ease;
+  transition: background-color 0.15s ease,border 0.15s ease;
   border-radius: 50%;
   border: 1px solid #d4d9e6;
   cursor: pointer;
   position: relative;
   width: 100px;
   height: 100px;
-  background-color: rgba(212,217,230,0.24);
+  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
 }
 
 .c2:hover {
-  background-color: rgba(212,217,230,0.44);
+  background-color: #f1f3f8;
 }
 
 .c2:before {
   background: none;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   content: '';
   display: block;
@@ -287,26 +287,26 @@ exports[`Storyshots Upload/Icon Small 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-transition: background-color,border 0.15s ease;
-  transition: background-color,border 0.15s ease;
+  -webkit-transition: background-color 0.15s ease,border 0.15s ease;
+  transition: background-color 0.15s ease,border 0.15s ease;
   border-radius: 50%;
   border: 1px solid #d4d9e6;
   cursor: pointer;
   position: relative;
   width: 80px;
   height: 80px;
-  background-color: rgba(212,217,230,0.24);
+  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
 }
 
 .c2:hover {
-  background-color: rgba(212,217,230,0.44);
+  background-color: #f1f3f8;
 }
 
 .c2:before {
   background: none;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   content: '';
   display: block;
@@ -411,26 +411,26 @@ exports[`Storyshots Upload/Icon Xlarge 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-transition: background-color,border 0.15s ease;
-  transition: background-color,border 0.15s ease;
+  -webkit-transition: background-color 0.15s ease,border 0.15s ease;
+  transition: background-color 0.15s ease,border 0.15s ease;
   border-radius: 50%;
   border: 1px solid #d4d9e6;
   cursor: pointer;
   position: relative;
   width: 150px;
   height: 150px;
-  background-color: rgba(212,217,230,0.24);
+  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
 }
 
 .c2:hover {
-  background-color: rgba(212,217,230,0.44);
+  background-color: #f1f3f8;
 }
 
 .c2:before {
   background: none;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   content: '';
   display: block;

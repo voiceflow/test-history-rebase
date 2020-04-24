@@ -298,7 +298,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transition: box-shadow 0.15s ease,color 0.15s ease;
   height: 34px;
   width: 34px;
-  color: rgba(110,132,154,0.8);
+  color: rgba(110,132,154,0.75);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
@@ -318,7 +318,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 .c44:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -364,7 +364,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 .c54:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -659,7 +659,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   -webkit-transition: left 150ms ease;
   transition: left 150ms ease;
   z-index: 20;
-  padding: 16px;
+  padding: 10px 10px 10px 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -975,9 +975,9 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   position: absolute;
   top: 50%;
   right: 16px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-40%);
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
 }
 
 .c1 {
@@ -2189,7 +2189,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transition: box-shadow 0.15s ease,color 0.15s ease;
   height: 34px;
   width: 34px;
-  color: rgba(110,132,154,0.8);
+  color: rgba(110,132,154,0.75);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
@@ -2209,7 +2209,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 .c44:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -2255,7 +2255,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 .c54:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -2550,7 +2550,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   -webkit-transition: left 150ms ease;
   transition: left 150ms ease;
   z-index: 20;
-  padding: 16px;
+  padding: 10px 10px 10px 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2866,9 +2866,9 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   position: absolute;
   top: 50%;
   right: 16px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-40%);
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
 }
 
 .c1 {
@@ -3911,7 +3911,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   transition: box-shadow 0.15s ease,color 0.15s ease;
   height: 34px;
   width: 34px;
-  color: rgba(110,132,154,0.8);
+  color: rgba(110,132,154,0.75);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
@@ -3931,7 +3931,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 .c27:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -3977,7 +3977,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 .c37:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -4306,7 +4306,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   -webkit-transition: left 150ms ease;
   transition: left 150ms ease;
   z-index: 20;
-  padding: 16px;
+  padding: 10px 10px 10px 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -4613,9 +4613,9 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   position: absolute;
   top: 50%;
   right: 16px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-40%);
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
 }
 
 .c1 {
@@ -5491,7 +5491,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transition: box-shadow 0.15s ease,color 0.15s ease;
   height: 34px;
   width: 34px;
-  color: rgba(110,132,154,0.8);
+  color: rgba(110,132,154,0.75);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
@@ -5511,7 +5511,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 .c51:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -5557,7 +5557,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 .c61:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -5852,7 +5852,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   -webkit-transition: left 150ms ease;
   transition: left 150ms ease;
   z-index: 20;
-  padding: 16px;
+  padding: 10px 10px 10px 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -6168,9 +6168,9 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   position: absolute;
   top: 50%;
   right: 16px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-40%);
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
 }
 
 .c1 {
@@ -7748,7 +7748,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transition: box-shadow 0.15s ease,color 0.15s ease;
   height: 34px;
   width: 34px;
-  color: rgba(110,132,154,0.8);
+  color: rgba(110,132,154,0.75);
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
@@ -7768,7 +7768,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 .c46:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -7814,7 +7814,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 .c56:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -8109,7 +8109,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   -webkit-transition: left 150ms ease;
   transition: left 150ms ease;
   z-index: 20;
-  padding: 16px;
+  padding: 10px 10px 10px 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -8425,9 +8425,9 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   position: absolute;
   top: 50%;
   right: 16px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-40%);
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
 }
 
 .c1 {

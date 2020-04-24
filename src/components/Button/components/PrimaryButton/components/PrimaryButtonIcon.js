@@ -7,7 +7,7 @@ const PrimaryButtonIcon = styled.span`
   height: 30px;
   width: 30px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.16);
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export default PrimaryButtonIcon;

@@ -59,7 +59,7 @@ exports[`Storyshots Dropdown Normal 1`] = `
 .c0:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
@@ -146,7 +146,7 @@ exports[`Storyshots Dropdown With Custom Menu 1`] = `
 .c0:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
-  color: #5b9dfa !important;
+  color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 

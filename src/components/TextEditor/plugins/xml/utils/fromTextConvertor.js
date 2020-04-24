@@ -70,7 +70,7 @@ const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entity
     // Can't use empty string because MSWord
     textContent = textContent.replace(REGEX_LF, SPACE);
 
-    addedText = next(textContent, { cursor: nextCursor, entityMap, entityRanges }); // eslint-disable-line callback-return
+    addedText = next(textContent, { cursor: nextCursor, entityMap, entityRanges, withoutTrim: true }); // eslint-disable-line callback-return
 
     nextCursor += addedText.length;
 

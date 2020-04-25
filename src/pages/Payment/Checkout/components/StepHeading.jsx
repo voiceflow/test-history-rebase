@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FlexApart } from '@/components/Flex';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { styled } from '@/hocs';
 
 const HeadingText = styled.div`

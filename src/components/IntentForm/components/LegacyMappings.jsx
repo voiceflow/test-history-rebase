@@ -3,7 +3,7 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import SvgIcon, { Container as SvgIconContainer } from '@/components/SvgIcon';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { Paragraph } from '@/components/Tooltip';
 import { SlotTag, VariableTag } from '@/components/VariableTag';
 import { setConfirm } from '@/ducks/modal';

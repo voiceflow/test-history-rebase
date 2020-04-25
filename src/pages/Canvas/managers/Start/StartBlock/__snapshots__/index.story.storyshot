@@ -184,9 +184,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 }
 
 .c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -194,14 +191,14 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .c21 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
@@ -804,9 +801,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c20 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -814,9 +808,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -824,14 +815,14 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .c21 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
@@ -1375,9 +1366,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1385,8 +1373,8 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -1805,9 +1793,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c18 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1815,9 +1800,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1825,14 +1807,14 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .c19 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
@@ -2411,9 +2393,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 }
 
 .c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2421,14 +2400,14 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .c21 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;

@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Text from '.';
+
+<Meta title="Text" component={Text} />
+
+# Text
+
+General Text component
+
+<Preview>
+  <Story name="text">{stories.TextStory()}</Story>
+  <Story name="clickable">{stories.ClickableTextStory()}</Story>
+  <Story name="overflow">{stories.OverflowTextStory()}</Story>
+  <Story name="link">{stories.LinkStory()}</Story>
+</Preview>

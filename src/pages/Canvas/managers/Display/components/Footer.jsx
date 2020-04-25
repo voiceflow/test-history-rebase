@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import TutorialTooltip from '@/components/TutorialTooltip';
 import { Controls } from '@/pages/Canvas/components/Editor';
 

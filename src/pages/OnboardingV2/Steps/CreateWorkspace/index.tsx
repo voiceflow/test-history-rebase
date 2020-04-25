@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { JustIconUpload } from '@/components/Upload/ImageUpload/IconUpload';
 import { StepID } from '@/pages/OnboardingV2/constants';
 

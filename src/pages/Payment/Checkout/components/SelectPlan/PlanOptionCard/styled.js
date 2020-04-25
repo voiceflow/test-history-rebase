@@ -2,7 +2,7 @@ import Checkbox from '@/components/Checkbox';
 import { styled, transition } from '@/hocs';
 
 export const Container = styled.div`
-  background-color: ${({ theme }) => theme.color.offWhite};
+  background-color: ${({ theme }) => theme.backgrounds.offWhiteBlue};
   padding: 14px;
   border: 1px solid ${({ active, color }) => (active ? color : '#ebf0f5')};
   margin-right: 10px;

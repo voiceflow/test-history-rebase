@@ -10,7 +10,7 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import Select from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { CUSTOM_SLOT_TYPE, SLOT_COLORS } from '@/constants';
 import * as Slot from '@/ducks/slot';

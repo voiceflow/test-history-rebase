@@ -138,9 +138,6 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -148,9 +145,6 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 }
 
 .c17 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -158,8 +152,8 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -645,9 +639,6 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -655,9 +646,6 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
 }
 
 .c19 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -665,8 +653,8 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -1186,9 +1174,6 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1196,8 +1181,8 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -1576,9 +1561,6 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1586,9 +1568,6 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 }
 
 .c17 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1596,8 +1575,8 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -2083,9 +2062,6 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2093,9 +2069,6 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 }
 
 .c17 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2103,8 +2076,8 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 

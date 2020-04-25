@@ -6,7 +6,7 @@ import IntentForm from '@/components/IntentForm';
 import { StandaloneIntentSlotForm } from '@/components/IntentSlotForm';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';

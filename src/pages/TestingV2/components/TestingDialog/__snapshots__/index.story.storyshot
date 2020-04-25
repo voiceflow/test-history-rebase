@@ -42,7 +42,7 @@ exports[`Storyshots Testing/Dialog Basic 1`] = `
 
 .c15 {
   display: inline-block;
-  color: #5d9df5;
+  color: #5D9DF5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -472,7 +472,7 @@ exports[`Storyshots Testing/Dialog Debug 1`] = `
 
 .c16 {
   display: inline-block;
-  color: #5d9df5;
+  color: #5D9DF5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -960,7 +960,7 @@ exports[`Storyshots Testing/Dialog Loading 1`] = `
 
 .c16 {
   display: inline-block;
-  color: #5d9df5;
+  color: #5D9DF5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

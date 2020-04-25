@@ -9,7 +9,7 @@ import { FlexApart, FlexCenter } from '@/components/Flex';
 import { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import { useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';

@@ -1,3 +1,5 @@
+import { SpaceProps, space } from 'styled-system';
+
 import { css, keyframes, styled } from '@/hocs';
 
 const FadeHorizontalKeyframes = (distance = 40) => keyframes`
@@ -11,20 +13,26 @@ const FadeHorizontalKeyframes = (distance = 40) => keyframes`
   }
 `;
 
-export const FadeLeft = css`
+export type FadeProps = {
+  distance?: number;
+};
+
+export const FadeLeft = css<FadeProps>`
   animation: ${({ distance }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
   animation-fill-mode: both;
 `;
 
-export const FadeRight = css`
+export const FadeRight = css<FadeProps>`
   animation: ${({ distance = -40 }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
   animation-fill-mode: both;
 `;
 
-export const FadeLeftContainer = styled.div`
+export const FadeLeftContainer = styled.div<FadeProps & SpaceProps>`
+  ${space}
   ${FadeLeft}
 `;
 
-export const FadeRightContainer = styled.div`
+export const FadeRightContainer = styled.div<FadeProps & SpaceProps>`
+  ${space}
   ${FadeRight}
 `;

@@ -1,12 +1,14 @@
 import { css, styled } from '@/hocs';
 
+import { BlockText } from './Text';
+
 export const overflowTextStyles = css`
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
-const OverflowText = styled.span`
+const OverflowText = styled(BlockText)`
   ${overflowTextStyles}
 `;
 

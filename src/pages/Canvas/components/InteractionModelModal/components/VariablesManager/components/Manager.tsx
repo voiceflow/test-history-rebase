@@ -1,13 +1,14 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import { FlexApart } from '@/components/Flex';
 import Input from '@/components/Input';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section, { SectionVariant } from '@/components/Section';
+import { VariableTag } from '@/components/VariableTag';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
 import Description from './Description';
-import VariableTag from './VariableTag';
 
 export type ManagerProps = {
   variable: string;
@@ -18,8 +19,17 @@ export type ManagerProps = {
 
 const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => {
   return (
-    <FadeLeftContainer style={{ marginTop: 10 }}>
-      <Section status={<VariableTag>{`{${variable}}`}</VariableTag>} dividers={false} variant={SectionVariant.TERTIARY} header="Variable Name">
+    <FadeLeftContainer mt={10}>
+      <Section
+        status={
+          <Box mr={isBuiltIn ? 0 : 44}>
+            <VariableTag>{`{${variable}}`}</VariableTag>
+          </Box>
+        }
+        dividers={false}
+        variant={SectionVariant.TERTIARY}
+        header="Variable Name"
+      >
         <FlexApart>
           <Input value={variable} disabled />
 

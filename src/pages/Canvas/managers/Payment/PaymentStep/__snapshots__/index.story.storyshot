@@ -164,6 +164,9 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -171,6 +174,9 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -720,6 +726,9 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -727,6 +736,9 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1268,6 +1280,9 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1646,6 +1661,9 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1653,6 +1671,9 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

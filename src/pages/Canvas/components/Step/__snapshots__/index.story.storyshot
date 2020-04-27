@@ -104,6 +104,9 @@ exports[`Storyshots Creator/Step Active 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -442,6 +445,9 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -780,6 +786,9 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1122,6 +1131,9 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1522,6 +1534,9 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2064,6 +2079,9 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2071,6 +2089,9 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 .c17 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2470,6 +2491,9 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2837,6 +2861,9 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3182,6 +3209,9 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3520,6 +3550,9 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3848,6 +3881,9 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4315,6 +4351,9 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4691,6 +4730,9 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -5161,6 +5203,9 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -5499,6 +5544,9 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 }
 
 .c11 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

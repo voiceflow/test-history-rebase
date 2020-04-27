@@ -61,13 +61,13 @@ exports[`Storyshots Text Overflow Text Story 1`] = `
 <div
   className="c0"
 >
-  <div
+  <span
     className="c1"
     color="primary"
     fontSize="m"
   >
     Hello this is some text
-  </div>
+  </span>
 </div>
 `;
 

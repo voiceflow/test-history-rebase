@@ -1,6 +1,6 @@
 import { css, styled } from '@/hocs';
 
-import { BlockText } from './Text';
+import { Text } from './Text';
 
 export const overflowTextStyles = css`
   overflow: hidden;
@@ -8,7 +8,7 @@ export const overflowTextStyles = css`
   text-overflow: ellipsis;
 `;
 
-const OverflowText = styled(BlockText)`
+const OverflowText = styled(Text)`
   ${overflowTextStyles}
 `;
 

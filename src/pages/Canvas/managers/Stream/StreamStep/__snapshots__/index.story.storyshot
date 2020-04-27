@@ -138,6 +138,9 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -145,6 +148,9 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -582,6 +588,9 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -589,6 +598,9 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1058,6 +1070,9 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1065,6 +1080,9 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1489,6 +1507,9 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1875,6 +1896,9 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1882,6 +1906,9 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2319,6 +2346,9 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
 }
 
 .c16 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2326,6 +2356,9 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

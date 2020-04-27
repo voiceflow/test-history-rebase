@@ -186,31 +186,10 @@
   cursor: pointer;	
 }	
 
-.expression-add {	
-  font-weight: normal;	
-  background-image: url(/expression-add.svg);	
-  background-repeat: no-repeat;	
-  background-repeat: no-repeat;	
-  background-position: center;	
-  border: none;	
-  cursor: pointer;	
-}	
-
 .expression-button {	
   width: 23px;	
   height: 23px;	
   background-size: 16px;	
-}	
-
-.expression-remove {	
-  margin-right: 5px;	
-  font-weight: normal;	
-  background-image: url(/expression-minus.svg);	
-  background-repeat: no-repeat;	
-  background-repeat: no-repeat;	
-  background-position: center;	
-  border: none;	
-  cursor: pointer;	
 }	
 
 .expression-container {	

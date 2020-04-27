@@ -557,23 +557,6 @@
   padding-top: 100px;
 }
 
-.banner {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 50px;
-  color: rgb(255, 255, 255);
-  text-align: center;
-  background-color: rgb(75, 83, 251);
-  background-image: url(/screen.png), url(/plane.svg);
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-position: 102% 125%, 0 80%, 0 0;
-  background-size: 130px, 150px, auto;
-  border-top: 2px none rgb(255, 255, 255);
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.21) 0 1px 24px 0;
-}
-
 .close-absolute {
   position: absolute;
   right: 30px;

@@ -125,6 +125,9 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -507,6 +510,9 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -913,6 +919,9 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1286,6 +1295,9 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1668,6 +1680,9 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

@@ -125,6 +125,9 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -513,6 +516,9 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -925,6 +931,9 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1298,6 +1307,9 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1686,6 +1698,9 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2074,6 +2089,9 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

@@ -184,6 +184,9 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 }
 
 .c15 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -801,6 +804,9 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c20 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -808,6 +814,9 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1366,6 +1375,9 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1793,6 +1805,9 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c18 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1800,6 +1815,9 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2393,6 +2411,9 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 }
 
 .c15 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

@@ -1,4 +1,4 @@
-import { overflowTextStyles } from '@/components/Text/OverflowText';
+import { overflowTextStyles } from '@/components/Text';
 import { css, styled } from '@/hocs';
 
 import { LINE_HEIGHT } from '../constants';

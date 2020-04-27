@@ -5,8 +5,8 @@ import creatorAdapter from './adapters/creator';
 import diagramAdapter from './adapters/diagram';
 import fetch, { NetworkError, StatusCode } from './fetch';
 
-const DIAGRAM_PATH = 'diagram';
-const VARIABLES_PATH = 'variables';
+export const DIAGRAM_PATH = 'diagram';
+export const VARIABLES_PATH = 'variables';
 
 export type CreateDiagramPayload = {
   id: string;
@@ -39,16 +39,18 @@ const diagramClient = {
 
   delete: (diagramID: string) =>
     fetch.delete(`${DIAGRAM_PATH}/${diagramID}`).catch((err) => {
-      if (err instanceof NetworkError && err.statusCode === StatusCode.FORBIDDEN) {
-        throw new NetworkError(err.statusCode, 'Flow has active users and cannot be deleted at the moment');
+      const statusCode = (err instanceof NetworkError && err.statusCode) || StatusCode.SERVER_ERROR;
+
+      if (statusCode === StatusCode.FORBIDDEN) {
+        throw new NetworkError(statusCode, 'Flow has active users and cannot be deleted at the moment');
       } else {
-        throw new NetworkError(err.statusCode || StatusCode.SERVER_ERROR, 'Error Deleting Flow');
+        throw new NetworkError(statusCode, 'Error Deleting Flow');
       }
     }),
 
   rename: (diagramID: string, name: string) => fetch.post(`${DIAGRAM_PATH}/${diagramID}/name`, { name }),
 
-  update: (diagram: UpdateDiagramPayload) => fetch.post(`${DIAGRAM_PATH}`, diagram),
+  update: (diagram: UpdateDiagramPayload) => fetch.post(DIAGRAM_PATH, diagram),
 
   findVariables: (diagramID: string) => fetch.get<string[]>(`${DIAGRAM_PATH}/${diagramID}/${VARIABLES_PATH}`),
 

@@ -18,10 +18,14 @@ export type BidirectionalAdapter<I, O, T extends any[], R extends any[]> = {
   toDB: Adapter<O, R, I>;
 };
 
+export type AnyBidirectionalAdapter = BidirectionalAdapter<any, any, any[], any[]>;
+
 export type BidirectionalMultiadapter<I, O, T extends any[], R extends any[]> = BidirectionalAdapter<I, O, T, R> & {
   mapFromDB: Adapter<I[], T, O[]>;
   mapToDB: Adapter<O[], R, I[]>;
 };
+
+export type AnyBidirectionalMultiadapter = BidirectionalMultiadapter<any, any, any[], any[]>;
 
 export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   fromDB: Adapter<I, T, O>,

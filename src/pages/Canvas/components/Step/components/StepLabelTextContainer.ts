@@ -1,4 +1,4 @@
-import OverflowText from '@/components/Text/OverflowText';
+import OverflowText from '@/components/Text';
 import { StepLabelVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 

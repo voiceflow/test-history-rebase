@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d8d6315726f4eb09e278701f739147d)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=storyflow/creator-app&utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/voiceflow/creator-app/tree/master.svg?style=shield&circle-token=d2fee4e418aa5f2a3499ac21cbc5f86c2e0fcdf4)](https://circleci.com/gh/voiceflow/creator-app/tree/master)
+[![codecov](https://codecov.io/gh/voiceflow/creator-app/branch/master/graph/badge.svg?token=TUP0DNJ4GU)](https://codecov.io/gh/voiceflow/creator-app)
 
 ## Getting Started
 

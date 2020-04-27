@@ -9,10 +9,13 @@ const UploadButton = styled(Button).attrs({ speed: 2000, icon: 'publishSpin' })`
     isUploading &&
     css`
       background: linear-gradient(-180deg, #5d9df588 0%, #176ce088 68%);
+      box-shadow: none;
     `}
 
   ${Icon} {
     background: linear-gradient(-180deg, #427fcf 0%, #125bc1 68%);
+    box-shadow: none;
+
     ${SvgIcon.Container} {
       display: block;
       opacity: 1;

@@ -1,14 +1,14 @@
 import chai from 'chai';
 import mochaSuite from 'mocha-suite';
-import sinon, { SinonMockStatic, SinonSpyStatic, SinonStubStatic } from 'sinon';
+import sinon, { SinonMockStatic, SinonSpyStatic, SinonStub, SinonStubStatic } from 'sinon';
 
 export type Utils = {
   spy: SinonSpyStatic;
   stub: SinonStubStatic;
   mock: SinonMockStatic;
   expect: typeof chai.expect;
-  mockDate: (ms: number) => void;
-  stubLocalStorage: (getter: (key: string) => string) => { getItem: (key: string) => string; setItem: (key: string, value: string) => void };
+  mockDate: (ms: number) => SinonStub;
+  stubLocalStorage: (getter?: (key: string) => string) => { getItem: (key: string) => string; setItem: (key: string, value: string) => void };
 };
 
 export const createSuite = <T = {}>(createUtils?: (utils: Utils) => T) =>
@@ -23,8 +23,8 @@ export const createSuite = <T = {}>(createUtils?: (utils: Utils) => T) =>
       mock: sandbox.mock.bind(sandbox),
       expect: chai.expect,
       mockDate: (ms: number) => sandbox.stub(Date, 'now').returns(ms),
-      stubLocalStorage: (getter: (key: string) => string) => {
-        const getItem = sandbox.spy(getter);
+      stubLocalStorage: (getter?: (key: string) => string) => {
+        const getItem = getter ? sandbox.spy(getter) : sandbox.spy();
         const setItem = sandbox.spy();
         const localStorage = { getItem, setItem };
 

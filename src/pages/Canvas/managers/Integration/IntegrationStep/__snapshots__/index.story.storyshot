@@ -151,9 +151,6 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -161,9 +158,6 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -171,8 +165,8 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -656,9 +650,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -666,9 +657,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -676,8 +664,8 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -1161,9 +1149,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 .c17 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1171,9 +1156,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1181,8 +1163,8 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -1663,9 +1645,6 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1673,9 +1652,6 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1683,8 +1659,8 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -2196,9 +2172,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 }
 
 .c15 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2206,9 +2179,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2216,8 +2186,8 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -2688,9 +2658,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2698,9 +2665,6 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2708,8 +2672,8 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -3190,9 +3154,6 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3200,9 +3161,6 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3210,8 +3168,8 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -3679,9 +3637,6 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -3689,8 +3644,8 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -4059,9 +4014,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4069,9 +4021,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4079,8 +4028,8 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -4564,9 +4513,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
 }
 
 .c16 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4574,9 +4520,6 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
 }
 
 .c13 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -4584,8 +4527,8 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
 }
 
 .c14 {
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 

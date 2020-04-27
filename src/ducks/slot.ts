@@ -33,6 +33,8 @@ export const {
   reorder: reorderSlots,
 } = createCRUDActionCreators<Slot>(STATE_KEY);
 
+// selectors
+
 export const allSlotIDsSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ id }) => id));
 
 export const intentsUsingSlotSelector = createSelector([allIntentsSelector], (intents) => (slotID: string) =>

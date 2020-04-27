@@ -19,7 +19,7 @@ const MenuContainer = styled.ul`
   margin-bottom: 5px;
   padding: 8px 0;
   border-radius: 5px;
-  background: ${({ theme }) => theme.color.gradient[0]};
+  background: #fff;
   color: #132144;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
   font-size: 15px;

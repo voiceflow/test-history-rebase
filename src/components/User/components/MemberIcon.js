@@ -2,10 +2,10 @@ import { css, styled, transition } from '@/hocs';
 
 const MemberIcon = styled.div`
   ${transition('color', 'border')}
-  width: 26px;
-  height: 26px;
-  line-height: 22px;
-  font-size: 13px;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 14px;
   text-align: center;
   color: #becedc;
   position: relative;
@@ -13,7 +13,7 @@ const MemberIcon = styled.div`
   background-position: center center;
   background-size: contain;
   border-radius: 100%;
-  border: 2px solid #fff;
+  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
   cursor: default;
   font-weight: 600;
   text-transform: uppercase;
@@ -28,8 +28,6 @@ const MemberIcon = styled.div`
     left: -3px;
     right: -3px;
     bottom: -3px;
-
-    border: 1px solid rgba(17, 49, 96, 0.08);
     border-radius: 100%;
 
     content: '';
@@ -42,10 +40,10 @@ const MemberIcon = styled.div`
   ${({ large }) =>
     large &&
     css`
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       font-size: 18px;
-      line-height: 36px;
+      line-height: 42px;
     `}
 
   ${({ solid }) =>

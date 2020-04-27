@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Text Clickable Text Story 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 15px;
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0:hover {
+  color: #4886da;
+}
+
+<span
+  className="c0"
+  color="primary"
+  fontSize="m"
+>
+  Hello this is some text
+</span>
+`;
+
+exports[`Storyshots Text Link Story 1`] = `
+.c0 {
+  color: #5D9DF5;
+}
+
+.c0:hover {
+  color: #4886da;
+}
+
+<a
+  className="c0"
+  href="#"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  this is a link
+</a>
+`;
+
+exports[`Storyshots Text Overflow Text Story 1`] = `
+.c1 {
+  color: #132144;
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.c0 {
+  max-width: 150px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    color="primary"
+    fontSize="m"
+  >
+    Hello this is some text
+  </div>
+</div>
+`;
+
+exports[`Storyshots Text Text Story 1`] = `
+.c0 {
+  color: #132144;
+  font-size: 15px;
+}
+
+<span
+  className="c0"
+  color="primary"
+  fontSize="m"
+>
+  Hello this is some text
+</span>
+`;

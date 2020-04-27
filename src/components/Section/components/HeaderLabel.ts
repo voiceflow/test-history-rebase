@@ -1,4 +1,4 @@
-import { overflowTextStyles } from '@/components/Text/OverflowText';
+import { overflowTextStyles } from '@/components/Text';
 import { styled, units } from '@/hocs';
 
 type HeaderLabelProps = {

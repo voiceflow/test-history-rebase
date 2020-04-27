@@ -13,15 +13,30 @@ const THEME = {
     lg: '992px',
     xl: '1200px',
   },
-  color: {
-    background: '#f9f9f9',
-    gradient: [
-      // brightest
-      '#fff', // '0'
-      // darkest
-    ],
-    offWhite: '#FAFAFC',
+  backgrounds: {
+    offWhite: '#f9f9f9',
+    offWhiteBlue: '#FAFAFC',
+  },
+  colors: {
+    primary: '#132144',
+    secondary: '#62778c',
+    tertiary: '#8da2b5',
+    quaternary: '#949DB0',
+    red: '#E91E63',
+    green: '#279745',
     blue: COLOR_BLUE,
+    darkBlue: '#4886da',
+  },
+  space: {
+    xs: 4,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+  },
+  fontSizes: {
+    s: 13,
+    m: 15,
   },
   components: {
     button: {

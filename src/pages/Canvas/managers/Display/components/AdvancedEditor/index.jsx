@@ -3,7 +3,7 @@ import React from 'react';
 import AceEditor from '@/components/AceEditor';
 import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import Link from '@/components/Text/Link';
+import { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';

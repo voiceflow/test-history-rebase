@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 const PageContent = styled.main`
   position: relative;
   flex-grow: 1;
-  background: ${({ theme }) => theme.color.background};
+  background: ${({ theme }) => theme.backgrounds.offWhite};
 
   ${({ scrollHorizontal }) =>
     scrollHorizontal &&

@@ -1,5 +1,5 @@
 import Flex from '@/components/Flex';
-import { styled, units } from '@/hocs';
+import { styled } from '@/hocs';
 
 export type FlowControlsContainerProps = {
   withMenu: boolean;
@@ -13,7 +13,7 @@ const FlowControlsContainer = styled(Flex)<FlowControlsContainerProps>`
   top: 2px;
   transition: left 150ms ease;
   z-index: 20;
-  padding: ${units(2)}px;
+  padding: 10px 10px 10px 0px;
   user-select: none;
 `;
 

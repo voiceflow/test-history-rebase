@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import { BlockText } from '@/components/Text';
 import TextArea from '@/components/TextArea';
 import { useToggle } from '@/hooks/toggle';
 import { preventDefault, withEnterPress } from '@/utils/dom';
@@ -54,7 +55,7 @@ const TestingInput: React.FC<TestingInputProps> = ({ locale, disabled, forceFocu
       >
         <TextArea
           value={value}
-          minRows={2}
+          minRows={3}
           onChange={(e) => setValue(e.target.value)}
           disabled={disabled}
           inputRef={textAreaRef}
@@ -62,7 +63,9 @@ const TestingInput: React.FC<TestingInputProps> = ({ locale, disabled, forceFocu
           onKeyPress={withEnterPress(onEnterPress)}
           placeholder="Enter Response"
         />
-        <p>'Press Enter to send'</p>
+        <BlockText color="tertiary" fontSize="s" mt="s" mb="xl">
+          Press 'Enter' to send
+        </BlockText>
       </UncontrolledSection>
 
       <SpeechBar locale={locale} isPublic={isPublic} onTranscript={onUserInput} onToggleListening={onToggleListening} />

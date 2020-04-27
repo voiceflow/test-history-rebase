@@ -1,11 +1,11 @@
 import React from 'react';
 
+import Badge from '@/components/Badge';
 import Button from '@/components/Button';
 import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
-import BubbleText from '@/components/Text/BubbleText';
 import { PLANS } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
@@ -100,7 +100,7 @@ function PlansDetails({
           </ImagesContainer>
 
           <PlanTypeBubbleContainer>
-            <BubbleText color={plan.color}>{plan.name}</BubbleText>
+            <Badge color={plan.color}>{plan.name}</Badge>
           </PlanTypeBubbleContainer>
           <DetailsSection>
             <LeftSection>

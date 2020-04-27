@@ -8,5 +8,4 @@ recursive: true
 
 spec:
   - ./config/test/unit/setup.js
-  - ./test/**/*.unit.js
   - ./test/**/*.unit.ts

@@ -14,7 +14,10 @@ const SIZE_VARIANT = {
   large: 120,
   medium: 100,
   small: 80,
+  xsmall: 43,
 };
+
+const MINIMUM_ICON_SIZE = 14;
 
 const hasError = (acceptedFiles) => {
   return !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
@@ -30,7 +33,7 @@ const Icon = React.forwardRef(
     });
 
     const iconSize = SIZE_VARIANT[size];
-    const placeholderIconSize = SIZE_VARIANT[size] / 4.75;
+    const placeholderIconSize = Math.max(SIZE_VARIANT[size] / 4.75, MINIMUM_ICON_SIZE);
     const iconUploadInput = React.useRef();
 
     const clickIconInput = () => {

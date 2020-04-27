@@ -18,7 +18,7 @@ exports[`Storyshots Testing/Reset Base 1`] = `
 
 .c4 {
   display: inline-block;
-  color: #5d9df5;
+  color: #5D9DF5;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

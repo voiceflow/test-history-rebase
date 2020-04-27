@@ -27,12 +27,12 @@ export const DragItem = {
   BLOCK_MENU: 'blockMenu',
 };
 
-export const SessionType = {
-  GOOGLE: 'google',
-  FACEBOOK: 'facebook',
-  BASIC_AUTH: 'session',
-  SIGN_UP: 'user',
-};
+export enum SessionType {
+  GOOGLE = 'google',
+  FACEBOOK = 'facebook',
+  BASIC_AUTH = 'session',
+  SIGN_UP = 'user',
+}
 
 export enum PlatformType {
   ALEXA = 'alexa',

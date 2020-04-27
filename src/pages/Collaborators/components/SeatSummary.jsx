@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { ModalType, PLANS } from '@/constants';
 import { planTypeSelector } from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';

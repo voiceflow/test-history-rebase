@@ -3,6 +3,7 @@ import { Node } from './Node';
 import { NodeData } from './NodeData';
 import { Port } from './Port';
 
+export * from './Account';
 export * from './AccountLinking';
 export * from './Billing';
 export * from './CreatorDiagram';

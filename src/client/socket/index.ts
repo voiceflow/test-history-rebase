@@ -1,11 +1,11 @@
 import { Dispatch } from '@/store/types';
 
-import SocketClient from './client';
+import Client from './client';
 import createGlobalSocketClient from './global';
 import createRealtimeClient from './realtime';
 
 function createSocketClient(dispatch: Dispatch) {
-  const client = new SocketClient(dispatch);
+  const client = new Client(dispatch);
 
   return {
     global: createGlobalSocketClient(client),
@@ -18,3 +18,5 @@ function createSocketClient(dispatch: Dispatch) {
 }
 
 export default createSocketClient;
+
+export type SocketClient = ReturnType<typeof createSocketClient>;

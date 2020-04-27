@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
-import OverflowText from '@/components/Text/OverflowText';
+import OverflowText from '@/components/Text';
 import { Members } from '@/components/User';
 import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';

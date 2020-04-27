@@ -3,28 +3,16 @@ import React, { useContext } from 'react';
 import Button from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
-import Select from '@/components/Select';
 import { StepID } from '@/pages/OnboardingV2/constants';
 import { toggleMembership } from '@/utils/array';
 
 import { OnboardingContext } from '../../context';
-import { Container, Label, SizeButton, SizeRow, TeamSizeContainer } from './components';
+import { Label, RoleSelect } from '../components';
+import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components';
 
-const RoleSelect: any = Select;
 const ChannelSelect: any = DropdownMultiselect;
 
 const TEAM_SIZES = ['Only Me', '2 - 5', '6 - 10', '11 - 15', '16 - 20', '20 +'];
-
-const ROLE_OPTIONS = [
-  'Conversation Designer',
-  'UI / UX Designer',
-  'Content Writer',
-  'Project Manager',
-  'Developer',
-  'Marketing',
-  'Sales',
-  'VP / Manager',
-];
 
 const CHANNEL_OPTIONS = [
   // Voice
@@ -90,19 +78,7 @@ const PersonalizeWorkspace: React.FC = () => {
   return (
     <Container>
       <Label>Choose your role</Label>
-      <RoleSelect
-        value={userRole}
-        options={ROLE_OPTIONS}
-        placeholder="Select your role"
-        onSelect={setUserRole}
-        creatable
-        createInputPlaceholder="Add new role"
-        onCreate={(role: string) => {
-          setUserRole(role);
-        }}
-        dropdownActive
-        withSearchIcon={false}
-      />
+      <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       <Label>What channels are you creating for?</Label>
       <ChannelSelect
         maxHeight={320}

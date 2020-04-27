@@ -139,16 +139,6 @@ ul {
   border-radius: 7px;
 }
 
-.main-list-dropzone {
-  width: 384px;
-  height: 500px;
-  background-color: #fff;
-  background-color: url('/emptylist-state.svg') !important;
-  background-position: center;
-  background-size: cover;
-  border: 1px solid #eaeff4;
-}
-
 .main-list__dragzone {
   width: 384px;
   height: 100%;
@@ -468,15 +458,6 @@ ul {
   background-repeat: no-repeat !important;
   background-position: 13px 13px !important;
   background-size: auto 16px !important;
-}
-
-.dollar-input {
-  padding-left: 35px !important;
-  background-image: url('/dollar.svg') !important;
-  background-repeat: no-repeat !important;
-  background-position: 15px center !important;
-  background-size: auto 40% !important;
-  border-radius: 6px;
 }
 
 .rotate {
@@ -1849,14 +1830,6 @@ body.modal-open {
 .seperated-links a {
   display: inline-block;
   margin: 0 10px;
-}
-
-#icon-test {
-  background-image: url('/test.svg') !important;
-}
-
-#icon-resources {
-  background-image: url('/resources.svg') !important;
 }
 
 .icon-settings {

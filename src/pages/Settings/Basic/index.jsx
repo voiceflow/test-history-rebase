@@ -5,7 +5,7 @@ import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
 import SSML from '@/components/SSML';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import ClickableText from '@/components/Text/ClickableText';
+import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';

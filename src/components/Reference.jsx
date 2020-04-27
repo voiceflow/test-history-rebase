@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
+import client from '@/client';
 import { FullSpinner } from '@/components/Spinner';
 import { RootRoutes } from '@/utils/routes';
 
@@ -23,7 +23,7 @@ function Reference(props) {
   const history = props.history;
 
   useEffect(() => {
-    axios.post(`/project/${projectID}/use_reference`).then((res) => history.replace(`/${RootRoutes.PROJECT}/${res.data.skill_id}/canvas`));
+    client.project.claimReference(projectID).then(({ skill_id }) => history.replace(`/${RootRoutes.PROJECT}/${skill_id}/canvas`));
   }, [projectID]);
 
   return (

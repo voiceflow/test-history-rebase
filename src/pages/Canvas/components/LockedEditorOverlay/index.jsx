@@ -13,7 +13,7 @@ const LockedEditorOverlay = ({ lockOwner, prevOwner, acquireLock }) => {
     return (
       <Container>
         <User user={lockOwner} large />
-        <p>{lockOwner.name} is hard at work here, check back soon to access this section</p>
+        <p>{lockOwner.name} is hard at work here, check back soon to access</p>
       </Container>
     );
   }
@@ -22,7 +22,7 @@ const LockedEditorOverlay = ({ lockOwner, prevOwner, acquireLock }) => {
     <Container>
       <p>{prevOwner.name} is all done, you can now takeover edit access</p>
       <Button variant="secondary" onClick={acquireLock}>
-        Enter Editor
+        Enter
       </Button>
     </Container>
   );

@@ -12,8 +12,8 @@ import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './compone
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta },
-    actions: { setAddCollaboratorMeta, stepForward },
+    state: { addCollaboratorMeta, stepStack, numberOfSteps },
+    actions: { setAddCollaboratorMeta, stepForward, finishCreateOnboarding },
   } = React.useContext(OnboardingContext);
 
   const [collaborators, setCollaborators] = React.useState(
@@ -41,7 +41,11 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
 
   const onContinue = () => {
     setAddCollaboratorMeta({ collaborators, isDemoBooked });
-    stepForward(StepID.PAYMENT);
+    if (stepStack.length === numberOfSteps) {
+      finishCreateOnboarding();
+    } else {
+      stepForward(StepID.PAYMENT);
+    }
   };
 
   return (

@@ -42,6 +42,8 @@ export const workspaceMemberSelector = createSelector([activeWorkspaceMembersSel
   members?.find((member) => String(member.creator_id) === creatorID) || null
 );
 
+export const hasWorkspaceMemberSelector = createSelector([workspaceMemberSelector], (getMember) => (creatorID: string) => !!getMember(creatorID));
+
 export const distinctWorkspaceMemberSelector = createSelector(
   [workspaceMemberSelector],
   (getWorkspaceMember) => (creatorID: string, tabID: string) => {

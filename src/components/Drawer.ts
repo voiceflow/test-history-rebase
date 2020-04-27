@@ -14,7 +14,7 @@ const Drawer = styled(SlideOut)<DrawerProps>`
   border-style: solid;
   border-width: 0;
   border-color: #dfe3ed;
-  background-color: ${({ theme }) => theme.color.gradient[0]};
+  background-color: #fff;
 
   ${({ direction = SlideOutDirection.RIGHT }) =>
     direction === SlideOutDirection.RIGHT

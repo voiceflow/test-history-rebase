@@ -10,7 +10,7 @@ import { Context } from '../types';
 
 const fetchContext = (request?: any): Thunk<Context | null> => async (dispatch, getState) => {
   const state = getState();
-  const context = testingContextSelector(state);
+  const { trace, ...context } = testingContextSelector(state);
   const [locale] = activeLocalesSelector(state);
 
   try {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
-import { goToCurrentCanvas, goToPublish, goToTestDiagram } from '@/ducks/router';
+import { goToCurrentCanvas, goToPrototype, goToPublish } from '@/ducks/router';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
@@ -16,7 +16,7 @@ const TABS = [
     label: 'design',
   },
   {
-    value: 'test',
+    value: 'prototype',
     label: 'prototype',
   },
   {
@@ -25,14 +25,14 @@ const TABS = [
   },
 ];
 
-const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDiagram, goToPublish }) => {
+const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToPrototype, goToPublish }) => {
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
   const onChange = React.useCallback(
     (value) => {
       switch (value) {
-        case 'test':
-          return goToTestDiagram();
+        case 'prototype':
+          return goToPrototype();
         case 'publish':
           return goToPublish();
         case 'canvas':
@@ -40,10 +40,10 @@ const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToTestDi
           return goToCurrentCanvas();
       }
     },
-    [goToCurrentCanvas, goToTestDiagram, goToPublish]
+    [goToCurrentCanvas, goToPrototype, goToPublish]
   );
 
-  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToTestDiagram());
+  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToCurrentCanvas());
   useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
 
@@ -64,12 +64,12 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToCurrentCanvas,
-  goToTestDiagram,
+  goToPrototype,
   goToPublish,
 };
 
-const mergeProps = ({ skillID, platform }, { goToTestDiagram, goToPublish }) => ({
-  goToTestDiagram: () => goToTestDiagram(skillID),
+const mergeProps = ({ skillID, platform }, { goToPrototype, goToPublish }) => ({
+  goToPrototype: () => goToPrototype(skillID),
   goToPublish: () => goToPublish(skillID, platform),
 });
 

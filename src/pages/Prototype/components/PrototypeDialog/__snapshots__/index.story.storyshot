@@ -1,0 +1,2769 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Prototype/Dialog Basic 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c15:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c16 .c5 {
+  color: #fff;
+}
+
+.c17 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c18 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c14 {
+  margin: 5px 8px 0 20px;
+}
+
+.c14 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c13"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c14"
+      >
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Prototype/Dialog Debug 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c16 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c16:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c17 .c5 {
+  color: #fff;
+}
+
+.c18 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c13 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c15 {
+  margin: 5px 8px 0 20px;
+}
+
+.c15 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4 c13"
+        id="4"
+        type="DEBUG"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVar"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            <span>
+              Choice Block 
+              <code>
+                Right Intent
+              </code>
+               
+              <strong>
+                Path 3
+              </strong>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c14"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c15"
+      >
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Prototype/Dialog Loading 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  font-size: 4rem;
+  line-height: 1;
+  background-color: #fff;
+  background-image: url('/loader-2.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+.c16 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c16:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c17 .c5 {
+  color: #fff;
+}
+
+.c18 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c19 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c15 {
+  margin: 5px 8px 0 20px;
+}
+
+.c15 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c13"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
+          <div
+            className="c7 c12"
+          >
+            <span
+              className="c14"
+              style={
+                Object {
+                  "backgroundSize": "100%",
+                  "display": "block",
+                  "fontSize": "22px",
+                }
+              }
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="c15"
+      >
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Testing/Dialog Basic 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c15:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c16 .c5 {
+  color: #fff;
+}
+
+.c17 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c18 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c14 {
+  margin: 5px 8px 0 20px;
+}
+
+.c14 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c13"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c14"
+      >
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c15"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Testing/Dialog Debug 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c14 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c16 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c16:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c17 .c5 {
+  color: #fff;
+}
+
+.c18 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c13 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c15 {
+  margin: 5px 8px 0 20px;
+}
+
+.c15 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4 c13"
+        id="4"
+        type="DEBUG"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVar"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            <span>
+              Choice Block 
+              <code>
+                Right Intent
+              </code>
+               
+              <strong>
+                Path 3
+              </strong>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c14"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c15"
+      >
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Testing/Dialog Loading 1`] = `
+.c6 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c6 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f65b6d;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6b95e9;
+}
+
+.c11 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  font-size: 4rem;
+  line-height: 1;
+  background-color: #fff;
+  background-image: url('/loader-2.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+.c16 {
+  display: inline-block;
+  color: #5D9DF5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c16:hover {
+  color: #4886da;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8da2b5;
+  white-space: nowrap;
+}
+
+.c3::before,
+.c3::after {
+  width: 100%;
+  border-top: 1px solid #dfe3ed;
+  margin: 12px 0;
+  display: block;
+  content: '';
+}
+
+.c3::before {
+  margin-right: 8px;
+}
+
+.c3::after {
+  margin-left: 8px;
+}
+
+.c17 .c5 {
+  color: #fff;
+}
+
+.c18 .c5 {
+  color: #6e849a;
+}
+
+.c12 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+}
+
+.c8 {
+  position: relative;
+  max-width: 100%;
+  padding: 0.5rem;
+  overflow: hidden;
+  color: #132144;
+  text-align: left;
+  word-break: break-word;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.c4 > .c5 {
+  margin-right: 8px;
+  margin-bottom: 2px;
+}
+
+.c4 .c7 {
+  border-bottom-left-radius: 5px;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  margin-top: 8px;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.c10 > .c5 {
+  margin-bottom: 2px;
+  margin-left: 8px;
+}
+
+.c10 .c7 {
+  border-bottom-right-radius: 5px;
+}
+
+.c9 {
+  width: 100%;
+  color: #62778c;
+}
+
+.c19 .c7 {
+  background: #eef4f6;
+}
+
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 500px;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #fdfdfd;
+}
+
+.c1 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px 20px 20px;
+  overflow-x: hidden;
+}
+
+.c2 {
+  width: 100%;
+}
+
+.c15 {
+  margin: 5px 8px 0 20px;
+}
+
+.c15 > span {
+  margin: 5px 5px 0 5px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        Session started
+      </div>
+      <div
+        className="c4"
+        id="2"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            <div
+              className="c9"
+            >
+              Kendra
+            </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nibh risus, feugiat ut nibh eget, pulvinar sollicitudin erat. Do you want to go left or right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="3"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            I want to go right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="5"
+        src="src.mp3"
+        type="SPEAK"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            sure going right
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+        id="6"
+        src="src.mp3"
+        type="AUDIO"
+      >
+        <span
+          className="c5 c13"
+          color="#f65b6d"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgVolume"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c8"
+            onClick={[Function]}
+          >
+            spooky_music.mp3
+          </div>
+        </div>
+      </div>
+      <div
+        className="c10"
+        id="7"
+        type="USER"
+      >
+        <span
+          className="c5 c11"
+          color="#6b95e9"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgUser"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+          title="00:00"
+        >
+          <div
+            className="c7 c12"
+          >
+            That is very spooky
+          </div>
+        </div>
+      </div>
+      <div
+        className="c4"
+      >
+        <span
+          className="c5 c6"
+          color="currentColor"
+          size={16}
+        >
+          <svg
+            data-file-name="SvgAlexa"
+          />
+        </span>
+        <div
+          className=""
+          style={
+            Object {
+              "display": "inline",
+            }
+          }
+        >
+          <div
+            className="c7 c12"
+          >
+            <span
+              className="c14"
+              style={
+                Object {
+                  "backgroundSize": "100%",
+                  "display": "block",
+                  "fontSize": "22px",
+                }
+              }
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="c15"
+      >
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          left
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          right
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          up
+        </span>
+        <span
+          className="c16"
+          onClick={[Function]}
+        >
+          down
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

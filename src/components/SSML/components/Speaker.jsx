@@ -42,7 +42,7 @@ function Speaker({ voice, setError, getSSMLToPlay }) {
     enableLoading();
 
     try {
-      const src = await client.testing.getSpeakAudio({ ssml, voice: voice === 'Alexa' ? '_DEFAULT' : voice });
+      const src = await client.prototype.getSpeakAudio({ ssml, voice: voice === 'Alexa' ? '_DEFAULT' : voice });
 
       enablePlaying();
 

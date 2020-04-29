@@ -23,7 +23,7 @@ import Spotlight from './components/Spotlight';
 import { CanvasProviders, HelpModalConsumer, ShortcutModalConsumer } from './contexts';
 import useEngine from './engine';
 
-const Canvas = ({ isTesting }) => {
+const Canvas = ({ isPrototyping }) => {
   const engine = useEngine();
 
   React.useEffect(() => {
@@ -33,7 +33,7 @@ const Canvas = ({ isTesting }) => {
   }, [engine]);
 
   return (
-    <CanvasProviders engine={engine} isTesting={isTesting}>
+    <CanvasProviders engine={engine} isPrototyping={isPrototyping}>
       <Container>
         <ContextMenu />
         <CanvasDiagram />

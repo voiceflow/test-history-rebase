@@ -12,7 +12,7 @@ export type PrototypeConfig = {
 };
 
 export type RecentState = {
-  testing: PrototypeConfig;
+  prototype: PrototypeConfig;
 };
 
 export const STATE_KEY = 'recent';
@@ -23,7 +23,7 @@ const PERSIST_CONFIG = {
 };
 
 export const INITIAL_STATE: RecentState = {
-  testing: {
+  prototype: {
     debug: false,
   },
 };
@@ -34,21 +34,21 @@ export enum RecentAction {
 
 // action types
 
-export type UpdateRecentTesting = Action<RecentAction.UPDATE_RECENT_TESTING, Partial<PrototypeConfig>>;
+export type UpdateRecentPrototype = Action<RecentAction.UPDATE_RECENT_TESTING, Partial<PrototypeConfig>>;
 
-export type AnyRecentAction = UpdateRecentTesting;
+export type AnyRecentAction = UpdateRecentPrototype;
 
 // reducers
 
-export const updateRecentTestingReducer: Reducer<RecentState, UpdateRecentTesting> = (state, { payload }) => {
-  return update(state, { testing: { $merge: payload } });
+export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentPrototype> = (state, { payload }) => {
+  return update(state, { prototype: { $merge: payload } });
 };
 
 const recentReducer: RootReducer<RecentState, AnyRecentAction> = (state = INITIAL_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case RecentAction.UPDATE_RECENT_TESTING:
-      return updateRecentTestingReducer(state, action);
+      return updateRecentPrototypeReducer(state, action);
     default:
       return state;
   }
@@ -60,9 +60,9 @@ export default persistReducer(PERSIST_CONFIG, recentReducer);
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const recentTestingSelector = createSelector(rootSelector, ({ testing }) => testing);
+export const recentprototypeSelector = createSelector(rootSelector, ({ prototype }) => prototype);
 
 //  action creators
 
-export const updateRecentTesting = (payload: Partial<PrototypeConfig>): UpdateRecentTesting =>
+export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>
   createAction(RecentAction.UPDATE_RECENT_TESTING, payload);

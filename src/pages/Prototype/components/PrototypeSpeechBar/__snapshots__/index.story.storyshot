@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Prototype/SpeechBar Base 1`] = `null`;
+
+exports[`Storyshots Prototype/SpeechBar Public Bar 1`] = `null`;
+
+exports[`Storyshots Testing/SpeechBar Base 1`] = `null`;
+
+exports[`Storyshots Testing/SpeechBar Public Bar 1`] = `null`;

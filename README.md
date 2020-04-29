@@ -223,7 +223,7 @@ yarn start --ff_someFeature
 
 #### Available Flags and Environment Variables
 
-- `ff_testToolV2` / `FF_TEST_TOOL_V2`: enable the version of the test tool that is compatible with the refactored server
+n/a
 
 ## Previewing in an ephmeral environment
 

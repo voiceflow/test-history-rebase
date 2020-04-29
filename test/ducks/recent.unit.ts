@@ -7,25 +7,25 @@ const TEST_CONFIG = {
   logger: false,
 };
 const MOCK_STATE = {
-  testing: TEST_CONFIG,
+  prototype: TEST_CONFIG,
   _persist: { version: 1, rehydrated: false },
 };
 
 suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
-    describe('updateRecentTesting()', () => {
+    describe('updateRecentPrototype()', () => {
       it('should update test configuration', () => {
         const testConfig = { debug: false };
 
-        expectAction(Recent.updateRecentTesting(testConfig)).toModify({ testing: { debug: false, logger: false } as any });
+        expectAction(Recent.updateRecentPrototype(testConfig)).toModify({ prototype: { debug: false, logger: false } as any });
       });
     });
   });
 
   describeSelectors(({ select }) => {
-    describe('recentTestingSelector()', () => {
+    describe('recentprototypeSelector()', () => {
       it('should select the test tool configuration', () => {
-        expect(select(Recent.recentTestingSelector)).to.eq(TEST_CONFIG);
+        expect(select(Recent.recentprototypeSelector)).to.eq(TEST_CONFIG);
       });
     });
   });

@@ -16,11 +16,11 @@ import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
 
 function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden, selectActiveTab }) {
-  const { canEdit, isTesting } = React.useContext(EditPermissionContext);
+  const { canEdit, isPrototyping } = React.useContext(EditPermissionContext);
   const selectedTab = React.useMemo(() => (Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS), [activeTab]);
   const [events] = useTrackingEvents();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
-  const showFlowControls = !isTesting && !isRootDiagram && flow;
+  const showFlowControls = !isPrototyping && !isRootDiagram && flow;
 
   useHotKeys(
     Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB,

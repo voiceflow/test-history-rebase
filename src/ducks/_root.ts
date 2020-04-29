@@ -15,6 +15,7 @@ import modal, * as Modal from '@/ducks/modal';
 import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
+import prototype, * as Prototype from '@/ducks/prototype';
 import publish from '@/ducks/publish';
 import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
@@ -23,8 +24,6 @@ import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
 import template, * as Template from '@/ducks/template';
-import testing, * as Testing from '@/ducks/testing';
-import testingV2, * as TestingV2 from '@/ducks/testingV2';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
 import userSetting, * as UsertSetting from '@/ducks/user';
@@ -43,8 +42,7 @@ const createReducer = (history: History) =>
     [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
     [IntegrationUsers.STATE_KEY]: integrationUsers,
-    [Testing.STATE_KEY]: testing,
-    [TestingV2.STATE_KEY]: testingV2,
+    [Prototype.STATE_KEY]: prototype,
     [Session.STATE_KEY]: session,
     [Creator.STATE_KEY]: creator,
     [Diagram.STATE_KEY]: diagram,

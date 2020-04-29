@@ -7,7 +7,6 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
-import { FeatureFlag } from '@/config/features';
 import { FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { updateProjectName } from '@/ducks/project';
@@ -16,11 +15,11 @@ import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
 import { ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, useFeature } from '@/hooks';
+import { useCanvasTracking, useEnableDisable } from '@/hooks';
 import Business from '@/pages/Business';
 import Canvas from '@/pages/Canvas';
 import LeftSidebar from '@/pages/Canvas/components/LeftSidebar';
-import TestingSidebar from '@/pages/Canvas/components/TestingSidebar';
+import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
@@ -28,7 +27,6 @@ import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
 import { SettingsModalProvider } from '@/pages/Settings/contexts';
-import Testing from '@/pages/Testing';
 import { isOnlyViewerSelector } from '@/store/selectors';
 import { getActivePageAndMatch } from '@/utils/routes';
 
@@ -37,7 +35,7 @@ import SkillSubHeader from './components/SkillSubHeader';
 import DiagramSync from './contexts/DiagramSync';
 
 const PAGES_MATCHES = {
-  test: ['/test/:diagramID?'],
+  prototype: ['/prototype/:diagramID?'],
   tools: ['/tools'],
   canvas: ['/canvas/:diagramID?'],
   migrate: ['/migrate'],
@@ -46,20 +44,18 @@ const PAGES_MATCHES = {
 
 const TIMEOUT_COUNT = 5 * 60 * 1000;
 
-function RenderCanvas({ diagramID, isTesting }) {
-  const testToolV2 = useFeature(FeatureFlag.TEST_TOOL_V2);
-
+function RenderCanvas({ diagramID, isPrototyping }) {
   return (
     <>
-      {!isTesting && <DiagramSync diagramID={diagramID} />}
+      {!isPrototyping && <DiagramSync diagramID={diagramID} />}
       <ManagerProvider value={getManager}>
-        <EditPermissionProvider isTesting={isTesting}>
+        <EditPermissionProvider isPrototyping={isPrototyping}>
           <ShortcutModalProvider>
             <SettingsModalProvider>
               <CanvasHeader />
               <LeftSidebar />
-              <Canvas isTesting={isTesting} />
-              {testToolV2.isEnabled ? <TestingSidebar /> : <Testing render />}
+              <Canvas isPrototyping={isPrototyping} />
+              <PrototypeSidebar />
             </SettingsModalProvider>
           </ShortcutModalProvider>
         </EditPermissionProvider>
@@ -73,7 +69,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
   const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
 
   const idleTimer = React.useRef();
-  const isTesting = activePage === 'test';
+  const isPrototyping = activePage === 'prototype';
 
   const setActive = React.useCallback(() => {
     onActive();
@@ -109,7 +105,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
       )}
 
       <Page
-        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isTesting} onChange={updateProjectName} />}
+        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
         userMenu={false}
         canScroll={false}
         subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
@@ -117,10 +113,10 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
       >
         <Switch>
           <PrivateRoute
-            path={[`${match.path}/test/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+            path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
             component={RenderCanvas}
             diagramID={diagramID}
-            isTesting={isTesting}
+            isPrototyping={isPrototyping}
           />
 
           <PrivateRoute path={`${match.path}/tools`} component={Business} />

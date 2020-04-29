@@ -71,7 +71,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                         <>
                           <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
                           <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
-                          {selectedWorkspace.plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Payment</MenuItem>}
+                          {plan && plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Upgrade</MenuItem>}
                           <MenuItem divider />
                           {plan ? (
                             <MenuItem disabled capitalize>

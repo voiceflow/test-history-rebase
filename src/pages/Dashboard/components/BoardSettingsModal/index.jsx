@@ -79,7 +79,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
           {workspace.plan !== PLANS.enterprise && (
             <SettingField hr label="Billing" description="View invoices, update your payment options">
               <Button onClick={openBillingModal} isBtn isLinkLarge>
-                Invoices
+                Manage Payments
               </Button>
             </SettingField>
           )}

@@ -1,9 +1,11 @@
 /* eslint-disable no-process-env */
 
+export const PRICING_REVISIONS_ENABLED = process.env.FF_PRICING_REVISIONS === 'true';
+
 export enum FeatureFlag {
-  EXAMPLE = 'example',
+  PRICING_REVISIONS = 'pricing_revisions',
 }
 
 export const LOCAL_FEATURE_OVERRIDES = {
-  [FeatureFlag.EXAMPLE]: false,
+  [FeatureFlag.PRICING_REVISIONS]: PRICING_REVISIONS_ENABLED,
 };

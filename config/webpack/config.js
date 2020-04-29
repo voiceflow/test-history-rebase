@@ -14,6 +14,7 @@ const {
   debugHttp,
   debugRealtime,
   debugSocket,
+  ff_pricingRevisions,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -45,6 +46,8 @@ module.exports = {
     TRACKING_ENABLED: tracking && 'true',
 
     // feature flags
+    FF_PRICING_REVISIONS: ff_pricingRevisions && 'true',
+
     // n/a
 
     API_HOST: 'localhost',

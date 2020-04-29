@@ -215,10 +215,13 @@ You can invoke the feature by setting the appropriate environment variable or pa
 
 ```sh
 VF_APP_FF_SOME_FEATURE='true'
+
 ```
 
 ```sh
 yarn start --ff_someFeature
+yarn start --ff_pricingRevisions
+
 ```
 
 #### Available Flags and Environment Variables

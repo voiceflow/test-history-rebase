@@ -358,6 +358,7 @@ export enum ModalType {
   ONBOARDING = 'onboarding',
 
   FREE_PROJECT_LIMIT = 'free-project-limit',
+  REALTIME_RESTRICTION = 'realtime-restriction',
 }
 
 export enum UserRole {

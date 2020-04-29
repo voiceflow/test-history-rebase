@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { PrimaryButton, SecondaryButton, TertiaryButton } from './components';
+import { ButtonVariant } from './constants';
 
 const BUTTON_VARIANTS = {
-  primary: PrimaryButton,
-  secondary: SecondaryButton,
-  tertiary: TertiaryButton,
+  [ButtonVariant.PRIMARY]: PrimaryButton,
+  [ButtonVariant.SECONDARY]: SecondaryButton,
+  [ButtonVariant.TERTIARY]: TertiaryButton,
 };
 
 function Button({ variant, children, ...props }, ref) {

@@ -22,6 +22,7 @@ export enum ServerEvent {
   SESSION_TAKEOVER = 'session:takeover',
   SESSION_TAKEN = 'session:taken',
   FORCE_REFRESH = 'force_refresh',
+  WORKSPACE_PLAN_DENIED = 'workspace:plan:denied',
 }
 
 export enum ClientEvent {

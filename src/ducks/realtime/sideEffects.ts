@@ -15,6 +15,7 @@ import {
   initializeRealtime,
   resetRealtime,
   resetSessionBusy,
+  setRealtimeRestriction,
   setSessionBusy,
   updateActiveDiagramViewers,
 } from './actions';
@@ -112,8 +113,15 @@ export const setupRealtimeConnection = (skillID: string, diagramID: string): Thu
     dispatch(initializeRealtime(diagramID, removeSelfFromLocks(locks, tabID)));
     await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
   } catch (e) {
-    // if socket throws an error then session is busy on another browser
-    dispatch(setSessionBusy());
+    // for Starter and Pro plans users will not have Realtime feature | error: {busyBy: ['creatorId1']}
+    if (e.busyBy) {
+      dispatch(setRealtimeRestriction());
+    }
+
+    // for Team or Enterprise plans | error: { browserId: "xxxx", device: {os: "xx", version: "XX.XX.XX", browser: "xx"}
+    else {
+      dispatch(setSessionBusy());
+    }
   }
 };
 

@@ -21,6 +21,7 @@ import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import ProjectLimitModal from '@/pages/Dashboard/FreeProjectLimitModal';
+import RealtimeRestrictionModal from '@/pages/Dashboard/RealtimeRestrictionModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
@@ -46,6 +47,7 @@ const App = () => {
       <IntercomChat />
       <CollaboratorsModal />
       <ProjectLimitModal />
+      <RealtimeRestrictionModal />
       <BillingModal />
       <PaymentModal />
     </>

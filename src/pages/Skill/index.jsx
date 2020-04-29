@@ -13,7 +13,7 @@ import { updateProjectName } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
-import { ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
+import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable } from '@/hooks';
 import Business from '@/pages/Business';
@@ -166,6 +166,7 @@ export default compose(
         };
       },
     ],
+    PlanRestrictionGate,
     ProjectLockGate,
     WorkspaceLoadingGate,
     RealtimeLoadingGate

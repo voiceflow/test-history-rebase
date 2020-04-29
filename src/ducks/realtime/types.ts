@@ -17,4 +17,5 @@ export type RealtimeState = {
   connected: boolean;
   errorState: boolean;
   sessionBusy: boolean;
+  restricted: boolean;
 };

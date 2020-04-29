@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
@@ -8,30 +9,28 @@ import { Spinner } from '@/components/Spinner';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 
-class Reset extends Component {
-  constructor(props) {
-    super(props);
+export type ResetState = {
+  email: string;
+  stage: number;
+  error: string | null;
+};
 
-    this.state = {
-      email: '',
-      stage: 0,
-      error: null,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.resetEmail = this.resetEmail.bind(this);
-    this.renderStage = this.renderStage.bind(this);
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+class Reset extends Component<RouteComponentProps, ResetState> {
+  state: ResetState = {
+    email: '',
+    stage: 0,
+    error: null,
   };
 
-  resetEmail(e) {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    } as any);
+  };
+
+  resetEmail = (event: React.FormEvent) => {
     const { email } = this.state;
-    e.preventDefault();
+    event.preventDefault();
     this.setState({ stage: 1 });
     axios
       .post('/user/reset', {
@@ -54,7 +53,7 @@ class Reset extends Component {
         }
       });
     return false;
-  }
+  };
 
   renderStage() {
     const { stage } = this.state;
@@ -63,7 +62,7 @@ class Reset extends Component {
         return (
           <form onSubmit={this.resetEmail} className="w-100">
             <FormGroup>
-              <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="Email address" required minLength="6" />
+              <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="Email address" required minLength={6} />
             </FormGroup>
             <div style={{ height: '45px', marginTop: '32px' }}>
               <div className="float-left auth__link">

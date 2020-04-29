@@ -1,39 +1,45 @@
-import '../Account.css';
+import './Account.css';
 
 import axios from 'axios';
 import throttle from 'lodash/throttle';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
-import { signup } from '@/ducks/session';
+import * as Session from '@/ducks/session';
+import { ConnectedProps } from '@/types';
 
-import { AuthBox } from '../AuthBoxes';
-import AuthenticationContainer from '../AuthenticationWrapper';
-import SocialLogin from '../SocialLogin';
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
+import SocialLogin from './SocialLogin';
 
-export const SignupForm = ({ signup, history, promo, location }) => {
+export type SignupFormProps = RouteComponentProps & {
+  promo?: boolean;
+};
+
+export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = ({ signup, history, promo, location }) => {
   const query = queryString.parse(location.search);
-  const [signupError, setSignupError] = useState(null);
-  const [email, setEmail] = useState(query.email ? query.email : '');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState(query.name ? query.name : '');
+  const [signupError, setSignupError] = React.useState<string | boolean | null>(null);
+  const [email, setEmail] = React.useState(query.email ? query.email : '');
+  const [password, setPassword] = React.useState('');
+  const [name, setName] = React.useState(query.name ? query.name : '');
 
-  const [coupon, setCoupon] = useState('');
-  const [couponValid, setCouponValid] = useState(false);
-  let timeout;
+  const [coupon, setCoupon] = React.useState('');
+  const [couponValid, setCouponValid] = React.useState(false);
+  let timeout: number | undefined;
 
-  const openLogin = (e) => {
-    e.preventDefault();
+  const openLogin = (event: React.MouseEvent) => {
+    event.preventDefault();
     history.push(`/login${location.search}`);
     return false;
   };
 
-  const signupSubmit = (e) => {
-    e.preventDefault();
+  const signupSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
     signup({
       name,
@@ -46,7 +52,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
     return false;
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     timeout = setTimeout(() => {
       setSignupError(false);
     }, 5000);
@@ -55,7 +61,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
   });
 
   const verifyCoupon = React.useCallback(
-    throttle(async (input) => {
+    throttle<(input?: string) => Promise<void>>(async (input) => {
       setCouponValid(false);
 
       if (!input) return;
@@ -65,18 +71,24 @@ export const SignupForm = ({ signup, history, promo, location }) => {
       if (data) {
         setCouponValid(true);
       }
-    }, 1000)
+    }, 1000),
+    []
   );
 
-  const onCouponChange = React.useCallback(async (value) => {
-    setCoupon(value.toUpperCase());
-    verifyCoupon(value.toLowerCase());
-  }, []);
+  const onCouponChange = React.useCallback(
+    async (value) => {
+      setCoupon(value.toUpperCase());
+      verifyCoupon(value.toLowerCase());
+    },
+    [verifyCoupon]
+  );
 
-  const isSignupDisabled = coupon && !couponValid;
+  const isSignupDisabled = !!coupon && !couponValid;
 
-  useEffect(() => {
-    if (promo && query.coupon) onCouponChange(query.coupon);
+  React.useEffect(() => {
+    if (promo && query.coupon) {
+      onCouponChange(query.coupon);
+    }
   }, [promo, query.coupon]);
 
   return (
@@ -93,7 +105,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Full name"
                 required
-                minLength="3"
+                minLength={3}
                 value={name}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
@@ -107,7 +119,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
                 required
-                minLength="6"
+                minLength={6}
                 value={email}
               />
             </FormGroup>
@@ -119,7 +131,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 required
-                minLength="8"
+                minLength={8}
                 value={password}
               />
             </FormGroup>
@@ -132,7 +144,7 @@ export const SignupForm = ({ signup, history, promo, location }) => {
                   placeholder="Promo Code"
                   value={coupon}
                   complete={couponValid}
-                  error={coupon && !couponValid}
+                  error={isSignupDisabled}
                 />
               </FormGroup>
             )}
@@ -166,7 +178,9 @@ export const SignupForm = ({ signup, history, promo, location }) => {
 };
 
 const mapDispatchToProps = {
-  signup,
+  signup: Session.signup,
 };
+
+type ConnectedSignupFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(SignupForm);

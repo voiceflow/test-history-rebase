@@ -1,11 +1,16 @@
 import { css, styled } from '@/hocs';
 
-const Input = styled.input`
+export type InputProps = {
+  fullWidth?: boolean;
+};
+
+const Input = styled.input<InputProps>`
   ${({ fullWidth }) =>
     fullWidth &&
     css`
       width: 100%;
     `}
+
   outline: none !important;
   background-color: inherit;
   border: none;

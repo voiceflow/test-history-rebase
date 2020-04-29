@@ -1,6 +1,10 @@
-import styled, { css } from 'styled-components';
+import { css, styled } from '@/hocs';
 
-const AuthenticationContainer = styled.div`
+export type AuthenticationContainerProps = {
+  dark?: boolean;
+};
+
+const AuthenticationContainer = styled.div<AuthenticationContainerProps>`
   display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;

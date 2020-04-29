@@ -52,7 +52,7 @@ const ColorPicker = (props: InjectedColorProps) => {
         <Input
           value={localHex}
           onBlur={() => onSubmitHexColor(`#${localHex}`)}
-          onChange={({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => setLocalHex(currentTarget.value)}
+          onChange={({ currentTarget }) => setLocalHex(currentTarget.value)}
           leftAction={<InputAction>HEX</InputAction>}
           maxLength={6}
           onKeyPress={withEnterPress(() => onSubmitHexColor(`#${localHex}`))}

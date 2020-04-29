@@ -11,7 +11,12 @@ export const inputDisabled = css`
   pointer-events: none;
 `;
 
-export const inputStyle = css`
+export type StyledInputProps = {
+  error?: boolean;
+  borderColor?: string;
+};
+
+export const inputStyle = css<StyledInputProps>`
   min-height: ${({ theme }) => theme.components.input.height}px;
   display: block;
   width: 100%;

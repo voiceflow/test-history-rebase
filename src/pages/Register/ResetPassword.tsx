@@ -3,6 +3,7 @@
 import axios from 'axios';
 import cn from 'classnames';
 import React, { Component } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
@@ -11,26 +12,27 @@ import { Spinner } from '@/components/Spinner';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 
-class ResetPassword extends Component {
-  constructor(props) {
-    super(props);
+export type ResetPasswordState = {
+  password: string;
+  confirm: string;
+  stage: number;
+  error: string | null;
+  email: string;
+};
 
-    this.state = {
-      password: '',
-      confirm: '',
-      stage: 0,
-      error: null,
-      email: '',
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.resetPassword = this.resetPassword.bind(this);
-    this.renderStage = this.renderStage.bind(this);
-  }
+class ResetPassword extends Component<RouteComponentProps<{ id: string }>, ResetPasswordState> {
+  state: ResetPasswordState = {
+    password: '',
+    confirm: '',
+    stage: 0,
+    error: null,
+    email: '',
+  };
 
   // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
     const { match } = this.props;
+
     axios
       .get(`/user/reset/${match.params.id}`)
       .then(() => {
@@ -52,17 +54,17 @@ class ResetPassword extends Component {
       });
   }
 
-  handleChange = (event) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       [event.target.name]: event.target.value,
-    });
+    } as any);
   };
 
-  resetPassword(e) {
+  resetPassword = (event: React.FormEvent) => {
     const { confirm, password } = this.state;
     const { match } = this.props;
 
-    e.preventDefault();
+    event.preventDefault();
     if (password !== confirm) {
       return this.setState({
         error: 'Passwords do not match',
@@ -86,10 +88,10 @@ class ResetPassword extends Component {
         });
       });
     return false;
-  }
+  };
 
-  resetEmail = (e) => {
-    e.preventDefault();
+  resetEmail = (event: React.FormEvent) => {
+    event.preventDefault();
     const { email } = this.state;
     axios
       .post('/user/reset', {
@@ -131,7 +133,7 @@ class ResetPassword extends Component {
                 onChange={this.handleChange}
                 placeholder="New Password"
                 required
-                minLength="8"
+                minLength={8}
               />
             </FormGroup>
             <FormGroup>
@@ -141,7 +143,7 @@ class ResetPassword extends Component {
                 onChange={this.handleChange}
                 placeholder="Confirm Password"
                 required
-                minLength="8"
+                minLength={8}
                 className={cn('form-bg', {
                   invalid: password !== confirm,
                 })}
@@ -187,7 +189,7 @@ class ResetPassword extends Component {
                   onChange={this.handleChange}
                   placeholder="Email address"
                   required
-                  minLength="6"
+                  minLength={6}
                 />
               </FormGroup>
               <div style={{ height: '45px', marginTop: '32px' }}>

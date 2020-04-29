@@ -46,7 +46,7 @@ const Manager = React.forwardRef<{ resetPath: () => void }, ManagerProps & Conne
             <Input
               value={name}
               onBlur={() => updateIntent(id, { id, name }, true)}
-              onChange={({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => setName(formatIntentName(currentTarget.value))}
+              onChange={({ currentTarget }) => setName(formatIntentName(currentTarget.value))}
               placeholder="Intent Name"
             />
 

@@ -1,12 +1,16 @@
-import styled, { keyframes } from 'styled-components';
+import { css, keyframes, styled } from '@/hocs';
 
 const fadeIn = keyframes`
   from { opacity: 0; }
   to   { opacity: 1; }
 `;
 
-export const MsgBox = styled.div`
-  ${({ error }) => (error ? 'color: #e91e63;' : '')}
+export const MsgBox = styled.div<{ error: boolean }>`
+  ${({ error }) =>
+    error &&
+    css`
+      color: #e91e63;
+    `}
   font-size: 12px;
   line-height: 15px;
   padding: 5px 0px 0px 15px;
@@ -71,11 +75,9 @@ export const AuthBox = styled.div`
     position: relative;
 
     .forgotLink {
-      position: absolute;
-      top: 13px;
-      right: 15px;
-      color: #5d9df5;
-      cursor: pointer;
+      display: block;
+      margin-top: 11px;
+      text-align: right;
       font-size: 13px;
     }
 

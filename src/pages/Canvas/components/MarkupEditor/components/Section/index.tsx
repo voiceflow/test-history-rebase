@@ -2,22 +2,20 @@ import React from 'react';
 
 import { UncontrolledSection } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
+import { Either } from '@/types';
 
 import { ContentContainer, IconContainer, Title } from './components';
 
 export type SectionProps = {
   title?: string;
   isLast?: boolean;
-} & (
-  | {
-      opened: boolean;
-      onAddRemove: () => void;
-    }
-  | {
-      opened?: never;
-      onAddRemove?: never;
-    }
-);
+} & Either<
+  {
+    opened: boolean;
+    onAddRemove: () => void;
+  },
+  {}
+>;
 
 const Section: React.FC<SectionProps> = ({ title, children, opened, isLast, onAddRemove }) => (
   <UncontrolledSection

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { goToLogin } from '@/ducks/router';
-import { restoreSession } from '@/ducks/session';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { isLoggingInSelector } from '@/store/selectors';
 
@@ -17,8 +16,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  restoreSession,
-  goToLogin,
+  restoreSession: Session.restoreSession,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLoadingGate);

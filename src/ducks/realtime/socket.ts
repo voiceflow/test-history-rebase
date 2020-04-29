@@ -2,7 +2,7 @@ import * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
 import { EntityMap, NodeData, PartialModel, Port } from '@/models';
 import { Action, ActionPayload } from '@/store/types';
-import { Pair, Point } from '@/types';
+import { Either, Pair, Point } from '@/types';
 
 import { LockAction, LockType, ResourceType } from './constants';
 import { AnyNodeLock } from './types';
@@ -85,7 +85,7 @@ export type RemovePort = Action<SocketAction.REMOVE_PORT, ActionPayload<Creator.
 
 export type ReorderPorts = Action<SocketAction.REORDER_PORTS, ActionPayload<Creator.ReorderPorts>>;
 
-export type MoveLink = Action<SocketAction.MOVE_LINK, { reset: true; points: never } | { reset: never; points: Pair<Point> }>;
+export type MoveLink = Action<SocketAction.MOVE_LINK, Either<{ reset: true }, { points: Pair<Point> }>>;
 
 export type AddLink = Action<SocketAction.ADD_LINK, ActionPayload<Creator.AddLink>>;
 
@@ -186,8 +186,7 @@ export const reorderPorts = (nodeID: string, from: number, to: number): ReorderP
 
 // links
 
-export const moveLink = (linkData: { reset: true; points: never } & { reset: never; points: Pair<Point> }): MoveLink =>
-  createAction(SocketAction.MOVE_LINK, linkData);
+export const moveLink = (linkData: Either<{ reset: true }, { points: Pair<Point> }>): MoveLink => createAction(SocketAction.MOVE_LINK, linkData);
 
 export const addLink = (sourcePortID: string, targetPortID: string, linkID: string): AddLink =>
   createAction(SocketAction.ADD_LINK, { sourcePortID, targetPortID, linkID });

@@ -1,46 +1,46 @@
 import cn from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
-import { basicAuthLogin } from '@/ducks/session';
+import * as Session from '@/ducks/session';
+import { ConnectedProps } from '@/types';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
-export const LoginForm = ({ basicAuthLogin, history, location }) => {
+export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
   const query = queryString.parse(location.search);
-  const [loginError, setLoginError] = useState(null);
-  const [email, setEmail] = useState(query.email ? query.email : '');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [unverified] = useState(false);
-  let timeout;
+  const [loginError, setLoginError] = React.useState<string | false | null>(null);
+  const [email, setEmail] = React.useState(query.email ? query.email : '');
+  const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+  let timeout: number | undefined;
 
-  const openRegister = (e) => {
-    e.preventDefault();
+  const openRegister = (event: React.MouseEvent) => {
+    event.preventDefault();
     history.push(`/signup${location.search}`);
     return false;
   };
 
-  const loginSubmit = (e) => {
-    e.preventDefault();
+  const loginSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     basicAuthLogin({
       email,
       password,
-    }).catch((err) => {
-      const errText = _.get(err, ['body', 'data']) || (unverified ? 'Please verify your email to use Facebook login' : false);
+    }).catch((error) => {
+      const errText = _.get(error, ['body', 'data']) || false;
       setLoginError(errText);
     });
     return false;
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     timeout = setTimeout(() => {
       setLoginError(false);
     }, 5000);
@@ -62,7 +62,7 @@ export const LoginForm = ({ basicAuthLogin, history, location }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 required
-                minLength="6"
+                minLength={6}
                 value={email}
               />
             </FormGroup>
@@ -74,14 +74,10 @@ export const LoginForm = ({ basicAuthLogin, history, location }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 required
-                minLength="8"
+                minLength={8}
                 value={password}
               />
-              {password.length === 0 ? (
-                <Link className="forgotLink" to="/reset">
-                  Forgot?
-                </Link>
-              ) : (
+              {password.length !== 0 && (
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                 <img
                   onClick={() => setShowPassword(!showPassword)}
@@ -90,6 +86,9 @@ export const LoginForm = ({ basicAuthLogin, history, location }) => {
                   alt=""
                 />
               )}
+              <Link className="forgotLink" to="/reset">
+                Forgot password?
+              </Link>
             </FormGroup>
             <div className="row">
               <div className="col-8 auth__link">
@@ -119,7 +118,9 @@ export const LoginForm = ({ basicAuthLogin, history, location }) => {
 };
 
 const mapDispatchToProps = {
-  basicAuthLogin,
+  basicAuthLogin: Session.basicAuthLogin,
 };
+
+type ConnectedLoginFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(LoginForm);

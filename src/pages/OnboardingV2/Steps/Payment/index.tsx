@@ -140,7 +140,7 @@ const Payment: React.FC<OnboardingProps> = () => {
               setCoupon(e.target.value);
               verifyCoupon();
             }}
-            error={couponError}
+            error={!!couponError}
             complete={!couponError && !!coupon}
             message={couponError}
           />

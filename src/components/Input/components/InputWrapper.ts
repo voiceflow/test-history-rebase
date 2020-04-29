@@ -1,9 +1,13 @@
 import Badge from '@/components/Badge';
 import { styled } from '@/hocs';
 
-import { inputDisabled, inputStyle } from '../styles';
+import { StyledInputProps, inputDisabled, inputStyle } from '../styles';
 
-const InputWrapper = styled.div`
+export type InputWrapperProps = StyledInputProps & {
+  disabled?: boolean;
+};
+
+const InputWrapper = styled.div<InputWrapperProps>`
   ${inputStyle}
 
   display: flex;

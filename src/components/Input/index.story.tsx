@@ -1,7 +1,7 @@
 import { boolean, text } from '@storybook/addon-knobs';
 import React from 'react';
 
-import Input, { ControlledInput } from '.';
+import Input, { ControlledInput, InputVariant } from '.';
 
 const getProps = () => ({
   disabled: boolean('disabled', false),
@@ -27,7 +27,13 @@ export const inline = () => {
     <div style={{ width: '300px' }}>
       <p>
         NOT INPUT&nbsp;
-        <Input variant="inline" placeholder="INPUT" value={inlineValue} onChange={(e) => setInlineValue(e.target.value)} {...getProps()} />
+        <Input
+          variant={InputVariant.INLINE}
+          placeholder="INPUT"
+          value={inlineValue}
+          onChange={(e) => setInlineValue(e.target.value)}
+          {...getProps()}
+        />
       </p>
     </div>
   );

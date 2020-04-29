@@ -2,7 +2,7 @@ import * as ConnectedReactRouter from 'connected-react-router';
 import CookiesJS from 'cookies-js';
 import cuid from 'cuid';
 import queryString from 'query-string';
-import { persistReducer } from 'redux-persist';
+import { PersistConfig, PersistPartial, persistReducer } from 'redux-persist';
 import { CookieStorage } from 'redux-persist-cookie-storage';
 import storageLocal from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
@@ -11,8 +11,8 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import { ROOT_DOMAIN } from '@/config';
 import { SessionType } from '@/constants';
+import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
-import { identity } from '@/utils/functional';
 import { identifyLogRocketUser } from '@/vendors/logRocket';
 
 import { resetAccount, updateAccount } from './account';
@@ -40,81 +40,88 @@ const TAB_ID_PERSIST_CONFIG = {
   whitelist: ['value'],
 };
 
-const DEFAULT_STATE = {
-  websocketsEnabled: true,
-  token: { value: null },
-  browserID: { value: cuid() },
-  tabID: { value: cuid() },
+export type SessionState = {
+  websocketsEnabled: boolean;
+  token: { value: string | null } & PersistPartial;
+  browserID: { value: string } & PersistPartial;
+  tabID: { value: string } & PersistPartial;
 };
 
-// actions
+const INITIAL_STATE: Omit<SessionState, 'token' | 'browserID' | 'tabID'> = {
+  websocketsEnabled: true,
+};
 
-export const SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN';
-export const DISABLE_WEBSOCKETS = 'SESSION:DISABLE_WEBSOCKETS';
+export enum SessionAction {
+  SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',
+  DISABLE_WEBSOCKETS = 'SESSION:DISABLE_WEBSOCKETS',
+}
+
+// action types
+
+export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
+
+export type DisableWebsockets = Action<SessionAction.DISABLE_WEBSOCKETS>;
+
+type AnySessionAction = SetAuthToken | DisableWebsockets;
 
 // reducers
 
-export const setAuthTokenReducer = (state, { payload: token }) => ({
-  ...state,
-  value: token,
-});
-
-export function authTokenReducer(state, action) {
-  if (action.type === SET_AUTH_TOKEN) {
-    return setAuthTokenReducer(state, action);
+export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = { value: null }, action) => {
+  if (action.type === SessionAction.SET_AUTH_TOKEN) {
+    return { ...state, value: action.payload };
   }
 
   return state;
-}
+};
 
-export const disableWebsocketsReducer = (state) => ({
+export const disableWebsocketsReducer: Reducer<SessionState> = (state) => ({
   ...state,
   websocketsEnabled: false,
 });
 
-const sessionReducer = (state = DEFAULT_STATE, action) => {
+const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
-    case DISABLE_WEBSOCKETS:
+    case SessionAction.DISABLE_WEBSOCKETS:
       return disableWebsocketsReducer(state);
     default:
       return state;
   }
 };
 
+const sessionBoundReducer = <T>(config: PersistConfig, initialValue: T) =>
+  persistReducer<{ value: T }, AnySessionAction>(config, (state = { value: initialValue }) => state);
+
 export default compositeReducer(sessionReducer, {
   token: persistReducer(TOKEN_PERSIST_CONFIG, authTokenReducer),
-  browserID: persistReducer(BROWSER_ID_PERSIST_CONFIG, identity),
-  tabID: persistReducer(TAB_ID_PERSIST_CONFIG, identity),
+  browserID: sessionBoundReducer(BROWSER_ID_PERSIST_CONFIG, cuid()),
+  tabID: sessionBoundReducer(TAB_ID_PERSIST_CONFIG, cuid()),
 });
 
 // selectors
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const authTokenSelector = createSelector(rootSelector, ({ token }) => token.value);
+export const authTokenSelector = createSelector([rootSelector], ({ token }) => token.value);
 
-export const tabIDSelector = createSelector(rootSelector, ({ tabID }) => tabID.value);
+export const tabIDSelector = createSelector([rootSelector], ({ tabID }) => tabID.value);
 
-export const browserIDSelector = createSelector(rootSelector, ({ browserID }) => browserID.value);
+export const browserIDSelector = createSelector([rootSelector], ({ browserID }) => browserID.value);
 
-export const isWebsocketsEnabledSelector = createSelector(rootSelector, ({ websocketsEnabled }) => websocketsEnabled);
+export const isWebsocketsEnabledSelector = createSelector([rootSelector], ({ websocketsEnabled }) => websocketsEnabled);
 
 // action creators
 
-export const setAuthToken = (token) => createAction(SET_AUTH_TOKEN, token);
+export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
 
-export const disableWebsockets = () => createAction(DISABLE_WEBSOCKETS);
+export const disableWebsockets = (): DisableWebsockets => createAction(SessionAction.DISABLE_WEBSOCKETS);
 
 // side effects
 
 /**
  * update the auth token in the store and in the cookie jar
- *
- * @param {string} token authentication token
- * @returns {function}
  */
-export const updateAuthToken = (token) => async (dispatch) => {
+export const updateAuthToken = (token: string | null): Thunk => async (dispatch) => {
   if (token === null) {
     Cookies.removeAuthCookie();
   } else {
@@ -124,13 +131,13 @@ export const updateAuthToken = (token) => async (dispatch) => {
   dispatch(setAuthToken(token));
 };
 
-export const resetSession = () => async (dispatch) => {
+export const resetSession = (): Thunk => async (dispatch) => {
   await dispatch(updateAuthToken(null));
   dispatch(resetAccount());
   dispatch(goToLogin());
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = (): Thunk => async (dispatch) => {
   try {
     await client.session.delete();
   } catch (err) {
@@ -141,15 +148,15 @@ export const logout = () => async (dispatch) => {
   await dispatch(resetSession());
 };
 
-export const restoreSession = () => async (dispatch, getState) => {
+export const restoreSession = (): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
-    const token = authTokenSelector(state);
+    const token = authTokenSelector(state)!;
     const browserID = browserIDSelector(state);
     const tabID = tabIDSelector(state);
     const user = await client.user.get();
 
-    await client.socket.auth(token, browserID, tabID);
+    await client.socket!.auth(token, browserID, tabID);
     dispatch(updateAccount(user));
 
     identifyLogRocketUser(user);
@@ -158,7 +165,7 @@ export const restoreSession = () => async (dispatch, getState) => {
   }
 };
 
-const createSession = (sessionType) => (authRequest) => async (dispatch, getState) => {
+const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk => async (dispatch, getState) => {
   const state = getState();
   const browserID = browserIDSelector(state);
   const tabID = tabIDSelector(state);
@@ -167,7 +174,7 @@ const createSession = (sessionType) => (authRequest) => async (dispatch, getStat
   Cookies.removeLastSessionCookie();
   await dispatch(updateAuthToken(token));
 
-  await client.socket.auth(token, browserID, tabID);
+  await client.socket!.auth(token, browserID, tabID);
   dispatch(updateAccount(user));
 
   const location = ConnectedReactRouter.getLocation(state);

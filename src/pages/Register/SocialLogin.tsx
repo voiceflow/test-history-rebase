@@ -1,19 +1,29 @@
 import cn from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import GoogleLogin from 'react-google-login';
+import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 import { connect } from 'react-redux';
 
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
-import { facebookLogin, googleLogin } from '@/ducks/session';
+import * as Session from '@/ducks/session';
+import { ConnectedProps } from '@/types';
+import { noop } from '@/utils/functional';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
-const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebookLogin }) => {
-  const [authError, setAuthError] = useState(null);
-  let timeout;
+export type SocialLoginProps = {
+  entryText: string;
+  light?: boolean;
+  coupon?: string;
+  disabled?: boolean;
+};
 
-  const triggerGoogleLogin = (userProfile) => {
+const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ entryText, light, coupon, disabled, googleLogin, facebookLogin }) => {
+  const [authError, setAuthError] = useState<null | boolean>(null);
+  let timeout: number | undefined;
+
+  const triggerGoogleLogin = (userProfile: GoogleLoginResponse) => {
     googleLogin({
       name: userProfile.profileObj.name,
       email: userProfile.profileObj.email,
@@ -26,7 +36,7 @@ const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebook
     return false;
   };
 
-  const triggerFbLogin = (fbUser) => {
+  const triggerFbLogin = (fbUser: ReactFacebookLoginInfo) => {
     facebookLogin({
       name: fbUser.name,
       email: fbUser.email,
@@ -56,7 +66,7 @@ const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebook
         render={(renderProps) => (
           <div
             onClick={() => {
-              !disabled && renderProps.onClick();
+              !disabled && renderProps!.onClick();
             }}
             className={cn('social-button', { 'social-button-light': light })}
           >
@@ -64,7 +74,8 @@ const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebook
             Google
           </div>
         )}
-        onSuccess={triggerGoogleLogin}
+        onSuccess={triggerGoogleLogin as GoogleLoginProps['onSuccess']}
+        onFailure={noop}
       />
       <FacebookLogin
         appId={FACEBOOK_APP_ID}
@@ -95,8 +106,10 @@ const SocialLogin = ({ entryText, light, coupon, disabled, googleLogin, facebook
 };
 
 const mapDispatchToProps = {
-  facebookLogin,
-  googleLogin,
+  facebookLogin: Session.facebookLogin,
+  googleLogin: Session.googleLogin,
 };
+
+type ConnectedSocialLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(SocialLogin);

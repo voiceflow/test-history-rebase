@@ -8,9 +8,9 @@ import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import LoginForm from '@/pages/Register/LoginForm';
+import Reset from '@/pages/Register/Reset';
+import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
-import Reset from '@/pages/Register/reset';
-import ResetPassword from '@/pages/Register/resetPassword';
 import { RootRoutes } from '@/utils/routes';
 
 import PrivateRoute from './PrivateRoute';

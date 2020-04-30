@@ -321,6 +321,7 @@ workflows:
             branches:
               ignore:
                 - /ephemeral.*/
+                - staging
       - test:
           filters:
             branches:
@@ -332,6 +333,7 @@ workflows:
             branches:
               ignore:
                 - /ephemeral.*/
+                - staging
       - build-deploy-app-image:
           requires:
             - test

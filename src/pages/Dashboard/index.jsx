@@ -25,7 +25,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
-import { useModals } from '@/hooks';
+import { useModals, useWorkspaceTracking } from '@/hooks';
 import { useScrollHelpers } from '@/hooks/scroll';
 import { copyProject, importProject } from '@/store/sideEffects';
 
@@ -183,6 +183,8 @@ export const DashBoard = (props) => {
       openCollaboratorsModal();
     }
   }, []);
+
+  useWorkspaceTracking();
 
   const LOCKED = props.workspace.state === 'LOCKED';
 

@@ -59,6 +59,17 @@ export const useSessionTracking = () => {
   }, [authToken]);
 };
 
+export const useWorkspaceTracking = () => {
+  const [trackEvents] = useTrackingEvents();
+  const workspace = useSelector(Workspace.activeWorkspaceSelector);
+
+  React.useEffect(() => {
+    if (workspace) {
+      trackEvents.trackWorkspace(workspace);
+    }
+  }, [workspace]);
+};
+
 export const useCanvasTracking = () => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
@@ -76,6 +87,8 @@ export const useCanvasTracking = () => {
       }),
     []
   );
+
+  useWorkspaceTracking();
 
   useSetup(() => {
     trackEvents.trackActiveProjectSessionBegin({

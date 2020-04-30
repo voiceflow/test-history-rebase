@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Alert, FormGroup } from 'reactstrap';
 
 import Button from '@/components/Button';
+import Flex from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
+import SvgIcon from '@/components/SvgIcon';
+import { BlockText } from '@/components/Text';
 import { checkDialogflow, linkDialogflowCredential } from '@/ducks/publish/google';
 
 import { PopUpText, PopupButtonSection, UploadPromptWrapper } from '../styled';
@@ -74,10 +77,12 @@ const NoDialogFlow = ({ credentials, linkDialogflowCredential, error, checkDialo
             </div>
           )}
           {credentials && !error && (
-            <div className="align-self-center mx-2 d-flex">
-              <i className="fal fa-check-circle text-success align-self-center mx-2" />
+            <Flex>
+              <BlockText color="green" mr="s">
+                <SvgIcon icon="check2" />
+              </BlockText>
               <span>Successfully Uploaded</span>
-            </div>
+            </Flex>
           )}
           {error && (
             <div className="rejected-file text-danger">

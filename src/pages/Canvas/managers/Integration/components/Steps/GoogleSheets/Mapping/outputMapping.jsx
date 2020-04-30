@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 
 import Button from '@/components/LegacyButton';
+import SvgIcon, { IconVariant } from '@/components/SvgIcon';
 import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
@@ -24,7 +25,7 @@ const OutputMapping = (props) => (
               options={Array.isArray(props.arg1_options) ? props.arg1_options : null}
             />
           </div>
-          <img src="/arrow-right.svg" alt="comment" className="mr-2 ml-2" width="7px" />
+          <SvgIcon icon="arrowRight" variant={IconVariant.TERTIARY} size={12} mx="xs" />
           <div className="flex-1">
             <VariableSelect
               value={argument.arg2 ? argument.arg2 : null}

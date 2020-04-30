@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Button from '@/components/LegacyButton';
-import SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const Container = styled.div`
@@ -32,7 +31,7 @@ const Description = styled.p`
 function NoProducts({ onClick }) {
   return (
     <Container>
-      <SvgIcon icon="noProducts" size={100} />
+      <img src="/images/safe.svg" alt="no products" height={100} />
       <Title>No products exists</Title>
       <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
       <Button isPrimary varient="contained" color="publish" onClick={onClick}>

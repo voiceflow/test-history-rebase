@@ -2,9 +2,10 @@ import './Skill.css';
 
 import React from 'react';
 import { NavLink, Switch } from 'react-router-dom';
-import { Badge } from 'reactstrap';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
+import Flex from '@/components/Flex';
+import SvgIcon from '@/components/SvgIcon';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
@@ -26,10 +27,10 @@ const TABS = [
   {
     // eslint-disable-next-line react/display-name
     display: () => (
-      <>
-        <i className="fab fa-amazon mr-2" />
+      <Flex>
+        <SvgIcon icon="amazon" mr="s" />
         Alexa
-      </>
+      </Flex>
     ),
     link: '/alexa',
     exact: true,
@@ -38,13 +39,10 @@ const TABS = [
   {
     // eslint-disable-next-line react/display-name
     display: () => (
-      <>
-        <i className="fab fa-google mr-2" />
+      <Flex>
+        <SvgIcon icon="google" mr="s" />
         Google
-        <Badge color="primary" className="beta-badge align-middle ml-1">
-          Beta
-        </Badge>
-      </>
+      </Flex>
     ),
     link: '/google',
     match: ['google'],

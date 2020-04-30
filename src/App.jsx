@@ -3,7 +3,6 @@ import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'simplebar/dist/simplebar.min.css';
-import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 

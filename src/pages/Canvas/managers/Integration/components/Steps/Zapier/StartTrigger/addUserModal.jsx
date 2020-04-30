@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { Input } from 'reactstrap';
 
+import Button from '@/components/Button';
+import { FlexCenter } from '@/components/Flex';
 import { userSelector } from '@/ducks/account';
 import { addIntegrationUser } from '@/ducks/integration';
 import { connect } from '@/hocs/connect';
@@ -34,19 +36,17 @@ class FeedAddUserModal extends Component {
     return (
       <form
         id="feed-submit"
+        className="mx-4 mb-4"
         onSubmit={(e) => {
           this.add();
           e.preventDefault();
           return false;
         }}
       >
-        <FormGroup className="p-3 mb-0 text-center">
-          <Label>Name Your Trigger</Label>
-          <Input placeholder="Trigger Name" onChange={(e) => this.setState({ name: e.target.value })} className="mb-3" />
-          <span className="key-bubble forward pointer" onClick={this.add}>
-            <i className="far fa-long-arrow-right" />
-          </span>
-        </FormGroup>
+        <Input placeholder="Trigger Name" onChange={(e) => this.setState({ name: e.target.value })} className="mb-3" />
+        <FlexCenter>
+          <Button onClick={this.add}>Save Trigger</Button>
+        </FlexCenter>
       </form>
     );
   }

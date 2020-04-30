@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import Flex from '@/components/Flex';
 import Button from '@/components/LegacyButton';
-import SvgIcon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -15,10 +15,6 @@ const BodyContainer = styled(ModalBody)`
   text-align: center;
 `;
 
-const SuccessImage = styled(SvgIcon)`
-  margin-bottom: 20px;
-`;
-
 export const SuccessModal = () => {
   const { close, toggle, isOpened, data } = useModals(ModalType.SUCCESS);
   const { message, title } = data;
@@ -28,7 +24,7 @@ export const SuccessModal = () => {
       <ModalHeader header={title} toggle={toggle} />
       <BodyContainer>
         <Flex column>
-          <SuccessImage size={100} icon="takeoff" />
+          <Box as="img" alt="Success" height={100} src="/images/icons/takeoff.svg" mb="xl" />
           <div>{message}</div>
         </Flex>
       </BodyContainer>

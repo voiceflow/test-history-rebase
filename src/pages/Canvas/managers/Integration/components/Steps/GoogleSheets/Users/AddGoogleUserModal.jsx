@@ -1,6 +1,7 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
 
+import SvgIcon from '@/components/SvgIcon';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import { userSelector } from '@/ducks/account';
 import { addIntegrationUser } from '@/ducks/integration';
@@ -46,8 +47,8 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
 
   return (
     <div className="d-flex flex-column">
-      <div className="text-center mt-3">
-        <img className="add-user-image" src="/google-sheets.svg" alt="empty" />
+      <div className="d-flex justify-content-center mt-3">
+        <SvgIcon icon="googleSheets" size={42} />
       </div>
       <div className="d-flex justify-content-center">
         <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>

@@ -1,4 +1,6 @@
+import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
+import { SpaceProps, space } from 'styled-system';
 
 import { IconVariant } from '@/constants';
 import { css, styled } from '@/hocs';
@@ -14,15 +16,27 @@ export type SvgIconContainerProps = {
   clickable?: boolean;
   transition?: string;
   ignoreEvents?: boolean;
-};
+  inline?: boolean;
+  rotation?: number;
+} & SpaceProps;
 
 const SvgIconContainer = styled.span<SvgIconContainerProps>`
+  ${space}
+
   ${({ theme, transition }) => transition && theme.transition(...(_isString(transition) ? [transition] : transition))}
 
   box-sizing: content-box;
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
   color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant].color) || color};
+
+  ${false};
+  
+  ${({ rotation }) =>
+    _isNumber(rotation) &&
+    css`
+      transform: rotate(${rotation}deg);
+    `}
 
   ${({ spin }) =>
     spin &&
@@ -66,6 +80,12 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       &:active {
         color: ${theme.components.icon[variant].activeColor || theme.components.icon[variant].hoverColor || color};
       }
+    `}
+
+  ${({ inline }) =>
+    inline &&
+    css`
+      display: inline-block;
     `}
 `;
 

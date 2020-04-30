@@ -4,7 +4,6 @@ import React from 'react';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import SvgIcon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
@@ -109,7 +108,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
       <RightColumn>
         {!slots.length ? (
           <EmptyContainer>
-            <SvgIcon icon="noSlots" size={64} />
+            <img src="/images/no-slots.svg" height={64} alt="no slots" />
             <p>Your project doesn’t contain any Slots</p>
           </EmptyContainer>
         ) : (

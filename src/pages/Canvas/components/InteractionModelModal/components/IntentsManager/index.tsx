@@ -3,7 +3,6 @@ import React from 'react';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import SvgIcon from '@/components/SvgIcon';
 import * as IntentDuck from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
@@ -104,7 +103,7 @@ const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIn
       <RightColumn>
         {!intents.length ? (
           <EmptyContainer>
-            <SvgIcon icon="noIntents" size={64} />
+            <img src="/images/no-intents.svg" height={64} alt="no intents" />
             <p>Your project doesn’t contain any Intents</p>
           </EmptyContainer>
         ) : (

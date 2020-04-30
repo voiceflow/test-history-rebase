@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import Icon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
@@ -22,7 +21,7 @@ const FreeProjectLimitModal: React.FC = () => {
     <Modal modalname="freeProjectLimit" isOpen={isOpened} toggle={toggle}>
       <Header toggle={toggle} header="Free Project Limit" />
       <BodyContainer column>
-        <Icon icon="projectLimit" size={80} />
+        <img src="/images/project-limit.svg" height={80} alt="project limit" />
         <div>
           {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to <span>unlock unlimited projects.</span>
         </div>

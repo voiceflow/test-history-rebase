@@ -15,6 +15,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
@@ -217,9 +218,8 @@ export const DashBoard = (props) => {
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             {/* TODO: flush out subscription failed logic */}
             <Alert color="danger" className="pointer text-center py-3">
-              <h1>
-                <i className="far fa-ban" />
-              </h1>
+              <SvgIcon icon="ban" size={32} inline />
+              <br />
               Your subscription has failed
               <br />
               Please update your payment to continue

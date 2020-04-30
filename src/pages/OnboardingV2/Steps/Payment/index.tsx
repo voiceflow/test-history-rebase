@@ -92,7 +92,7 @@ const Payment: React.FC<OnboardingProps> = () => {
     <Container>
       <SubHeader>voiceflow {plan} plan</SubHeader>
       <InfoBubble>
-        <SvgIcon icon="teamGroup" size={64} />
+        <img src="/images/team-group.svg" alt="team" height={64} />
         <BubbleTextContainer column>
           <EditorSeatsText>{numberOfSeats} Editor Seats</EditorSeatsText>
           <PeriodDropdownContainer>

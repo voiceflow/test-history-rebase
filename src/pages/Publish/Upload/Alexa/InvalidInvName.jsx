@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Tooltip } from 'react-tippy';
 
+import { Flex } from '@/components/Box';
 import Button from '@/components/Button';
+import SvgIcon, { IconVariant } from '@/components/SvgIcon';
+import { BlockText } from '@/components/Text';
 import { checkInvName, invNameError } from '@/ducks/publish/alexa';
 import { activeLocalesSelector, invNameSelector, updateInvName } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -41,26 +44,26 @@ const InvalidInvName = (props) => {
 
   return (
     <UploadPromptWrapper>
-      <div className="d-flex text-muted align-items-center">
-        <label className="mr-1">
-          Invocation Name{' '}
-          <Tooltip
-            html={
-              <>
-                Alexa listens for the Invocation Name
-                <br /> to launch your Skill
-                <br /> e.g.{' '}
-                <i>
-                  Alexa, open <b>Invocation Name</b>
-                </i>
-              </>
-            }
-            position="bottom"
-          >
-            <i className="fal fa-question-circle" />
-          </Tooltip>
-        </label>
-      </div>
+      <Flex mb="s">
+        <BlockText color="secondary" fontWeight={600} mr={4}>
+          Invocation Name
+        </BlockText>
+        <Tooltip
+          html={
+            <>
+              Alexa listens for the Invocation Name
+              <br /> to launch your Skill
+              <br /> e.g.{' '}
+              <i>
+                Alexa, open <b>Invocation Name</b>
+              </i>
+            </>
+          }
+          position="bottom"
+        >
+          <SvgIcon icon="info" clickable variant={IconVariant.STANDARD} />
+        </Tooltip>
+      </Flex>
       <input className="form-control" value={name} placeholder="Invocation Name" onChange={updateName} />
       <PopUpText>
         <small>{error}</small>

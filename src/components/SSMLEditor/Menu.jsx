@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
-import CaretDown from '@/svgs/toggle.svg';
 
 import MenuContainer from './MenuContainer';
 import SubMenu from './SubMenu';
@@ -32,7 +31,7 @@ function Menu(props) {
     // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
     <MenuContainer onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
       <AddEffectText hover={hover}>ADD EFFECT</AddEffectText>
-      <CaretDownIcon hover={hover} hoverColor="#5d9df5" icon={CaretDown} height={10} width={10} />
+      <CaretDownIcon hover={hover} hoverColor="#5d9df5" icon="caretDown" height={10} width={10} />
       <SubMenuContainer>
         {DATA.map((val, i) => (
           <SubMenu key={i} options={val} data={{ VF_path: [] }} onClick={onClick} />

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { ButtonVariant } from '@/components/Button/constants';
 import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import Icon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
@@ -23,7 +22,7 @@ const RealtimeRestrictionModal: React.FC = () => {
     <Modal modalname="realtimeRestriction" isOpen={isOpened} toggle={toggle}>
       <Header toggle={toggle} header="Realtime Collaboration" />
       <BodyContainer column>
-        <Icon icon="teamGroup" size={80} />
+        <img src="/images/team-group.svg" height={80} alt="Team" />
         <div>
           A teammate is actively editing this project. Real-time collaboration is a <span>Team</span> feature, please upgrade your plan to continue.
         </div>

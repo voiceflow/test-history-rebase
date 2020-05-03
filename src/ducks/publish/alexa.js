@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { PlatformType } from '@/constants';
-import { getVendors } from '@/ducks/account';
+import { amazonVendorsSelector, getVendors } from '@/ducks/account';
 import { saveActiveDiagram } from '@/ducks/diagram';
 import {
   activeLocalesSelector,
@@ -401,4 +401,16 @@ export const updateVendor = (vendorId) => async (dispatch, getState) => {
 
   const amznID = (await client.project.updateVendorId(projectID, vendorId)) || null;
   dispatch(updatePublishInfo({ amznID, vendorId }));
+};
+
+export const syncVendors = () => async (dispatch, getState) => {
+  await dispatch(getVendors());
+
+  const state = getState();
+  const vendors = amazonVendorsSelector(state);
+  const skillVendor = vendorIdSelector(state);
+
+  if (skillVendor && vendors.length && !vendors.includes(skillVendor)) {
+    await dispatch(updateVendor(vendors[0]?.id));
+  }
 };

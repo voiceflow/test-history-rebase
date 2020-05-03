@@ -3,7 +3,8 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import { checkAmazonAccount, getVendors } from '@/ducks/account';
+import { checkAmazonAccount } from '@/ducks/account';
+import { syncVendors } from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 
@@ -15,13 +16,13 @@ export const Stage = {
   SUCCESS: 3,
 };
 
-function MigrateStages({ checkAmazonAccount, getVendors }) {
+function MigrateStages({ checkAmazonAccount, syncVendors }) {
   const [stage, setStage] = React.useState(Stage.LOADING);
   const [error, setError] = React.useState(null);
 
   useAsyncMountUnmount(async () => {
     await checkAmazonAccount();
-    await getVendors();
+    await syncVendors();
     setStage(Stage.FORM);
   });
 
@@ -48,7 +49,7 @@ function MigrateStages({ checkAmazonAccount, getVendors }) {
 
 const mapDispatchToProps = {
   checkAmazonAccount,
-  getVendors,
+  syncVendors,
 };
 
 export default connect(null, mapDispatchToProps)(MigrateStages);

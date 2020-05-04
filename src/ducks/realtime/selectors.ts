@@ -50,6 +50,8 @@ export const resourceLockOwnerTabIDSelector = createSelector([realtimeLocksSelec
 
 export const isSessionBusy = createSelector([rootSelector], ({ sessionBusy }) => sessionBusy);
 
+export const isRestrictedSelector = createSelector([rootSelector], ({ restricted }) => restricted);
+
 /**
  * get the tabID by the creatorID
  */

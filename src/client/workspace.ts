@@ -1,5 +1,5 @@
 import { BillingPeriod, PlatformType, UserRole } from '@/constants';
-import { DBBilling, DBProject, DBWorkspace, PlanType } from '@/models';
+import { DBBilling, DBProject, DBWorkspace, PlanType, Price } from '@/models';
 
 import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
@@ -61,7 +61,7 @@ const workspaceClient = {
       period: BillingPeriod;
       coupon?: string;
     }
-  ) => fetch.post(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
+  ) => fetch.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
 
   checkout: (
     workspaceID: string,

@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
-import SvgIcon from '@/components/SvgIcon';
 import { clearModal } from '@/ducks/modal';
 import { connect } from '@/hocs';
 
@@ -17,7 +16,7 @@ export const ErrorModal = ({ error, dismiss }) => {
     <Modal isOpen={!!error} centered modalWidth={350}>
       <ModalHeader header="ERROR OCCURED" toggle={dismiss} />
       <ModalBody className="text-center">
-        <SvgIcon icon="connectSupport" size="auto" />
+        <img src="/images/connect-support.svg" alt="Support" height={80} />
         {error.message ? (
           <>
             <Alert color="danger">{error.message}</Alert>

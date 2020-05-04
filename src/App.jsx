@@ -3,7 +3,6 @@ import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'simplebar/dist/simplebar.min.css';
-import './assets/fontawesome/css/all.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
@@ -21,6 +20,7 @@ import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import ProjectLimitModal from '@/pages/Dashboard/FreeProjectLimitModal';
+import RealtimeRestrictionModal from '@/pages/Dashboard/RealtimeRestrictionModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
@@ -46,6 +46,7 @@ const App = () => {
       <IntercomChat />
       <CollaboratorsModal />
       <ProjectLimitModal />
+      <RealtimeRestrictionModal />
       <BillingModal />
       <PaymentModal />
     </>

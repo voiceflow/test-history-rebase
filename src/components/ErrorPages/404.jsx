@@ -1,15 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SvgIcon from '@/components/SvgIcon';
-
 import { Page404Wrapper } from './styled';
 
 const Page404 = () => {
   return (
     <Page404Wrapper>
       <div>
-        <SvgIcon icon="error404" size={128} />
+        <img src="/images/404.svg" height={128} alt="404 Not Found" />
       </div>
 
       <h4>Alexa, where am I?</h4>

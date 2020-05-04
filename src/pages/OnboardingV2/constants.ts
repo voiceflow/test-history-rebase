@@ -1,16 +1,9 @@
 /* eslint-disable lodash/prefer-constant */
 /* eslint-disable import/prefer-default-export */
 
+import StepID from './StepIDs';
 import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace } from './Steps';
 import { OnboardingProps } from './types';
-
-export enum StepID {
-  CREATE_WORKSPACE = 'create_workspace',
-  PERSONALIZE_WORKSPACE = 'personalize_workspace',
-  ADD_COLLABORATORS = 'add_collaborators',
-  PAYMENT = 'payment',
-  JOIN_WORKSPACE = 'join_workspace',
-}
 
 export type StepMetaPropsType = {
   title: (val?: string) => string;
@@ -40,7 +33,7 @@ export const STEP_META: StepMetaProps = {
   [StepID.ADD_COLLABORATORS]: {
     title: () => 'Add Collaborators',
     canBack: true,
-    canSkip: true,
+    canSkip: false,
     skipTo: StepID.PAYMENT,
     component: AddCollaborators,
   },

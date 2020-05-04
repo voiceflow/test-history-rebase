@@ -242,33 +242,6 @@ button {
   border-radius: 40px !important;
 }
 
-/* Home Button */
-.btn-home {
-  padding-top: 3px;
-  padding-right: 15px;
-  padding-bottom: 3px;
-  padding-left: 30px !important;
-  color: #8da2b5;
-  font-size: 13px;
-  background-color: #fff;
-  background-image: url('/return_home.svg');
-  background-repeat: no-repeat;
-  background-position: 14% 50%;
-  background-size: 13px;
-  border: none !important;
-  border-radius: 5px;
-  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.08);
-  transition: all 0.1s ease;
-}
-
-.btn-home:hover {
-  background-position: 12% 50%;
-}
-
-.btn-home:active {
-  box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 3px 6px 0 rgba(17, 49, 96, 0.18);
-}
-
 /* Icon Button */
 .btn-icon {
   position: relative;
@@ -312,36 +285,6 @@ button {
   opacity: 0;
   transition: opacity 0.12s linear;
   content: '';
-}
-
-/* Save Button */
-.btn-icon.__type-save {
-  position: relative;
-  z-index: 1;
-  line-height: 1;
-
-  /* padding: 11px 9px; */
-  text-align: center;
-  background-image: url('/saved.svg'), linear-gradient(-180deg, rgba(62, 207, 142, 0.09), rgba(62, 207, 142, 0.25) 98%) !important;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  border: 1px solid #fff !important;
-  border-color: #fff;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s linear !important;
-}
-
-.btn-icon.__type-save:hover {
-  background-image: url('/saved-2.svg'), linear-gradient(-180deg, rgba(62, 207, 142, 0.15), rgba(62, 207, 142, 0.22) 98%) !important;
-}
-
-.btn-icon.__type-save:active {
-  border: 1px solid #fff !important;
-  border: 2px solid #fff;
-  -webkit-box-shadow: 0 0 0 2px rgba(62, 207, 142, 40%);
-  -moz-box-shadow: 0 0 0 2px rgba(62, 207, 142, 40%);
-  box-shadow: 0 0 0 1px rgba(62, 207, 142, 40%);
 }
 
 /* Success Button */

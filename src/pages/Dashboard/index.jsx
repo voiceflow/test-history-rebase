@@ -15,6 +15,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
@@ -24,7 +25,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
-import { useModals } from '@/hooks';
+import { useModals, useWorkspaceTracking } from '@/hooks';
 import { useScrollHelpers } from '@/hooks/scroll';
 import { copyProject, importProject } from '@/store/sideEffects';
 
@@ -83,6 +84,7 @@ export const DashBoard = (props) => {
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const closeImport = () => {
     toggleImport(false);
@@ -180,8 +182,12 @@ export const DashBoard = (props) => {
 
     if (query.invite_collaborators) {
       openCollaboratorsModal();
+    } else if (query.upgrade_workspace) {
+      openPaymentModal();
     }
   }, []);
+
+  useWorkspaceTracking();
 
   const LOCKED = props.workspace.state === 'LOCKED';
 
@@ -217,9 +223,8 @@ export const DashBoard = (props) => {
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
             {/* TODO: flush out subscription failed logic */}
             <Alert color="danger" className="pointer text-center py-3">
-              <h1>
-                <i className="far fa-ban" />
-              </h1>
+              <SvgIcon icon="ban" size={32} inline />
+              <br />
               Your subscription has failed
               <br />
               Please update your payment to continue

@@ -57,7 +57,7 @@ function PlansDetails({
 
   const tabsOptions = React.useMemo(() => {
     return plans
-      .filter(({ id }) => id !== PLANS.enterprise)
+      .filter(({ id }) => id !== PLANS.ENTERPRISE)
       .map((option) => {
         const price = option.pricing?.MO?.price;
         const dollarPrice = price ? price / 100 : null;

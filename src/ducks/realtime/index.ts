@@ -31,6 +31,7 @@ export const INITIAL_STATE: RealtimeState = {
   connected: false,
   errorState: false,
   sessionBusy: false,
+  restricted: false,
 };
 
 // reducers
@@ -45,6 +46,7 @@ export const initializeRealtimeReducer: RealtimeReducer<InitializeRealtime> = (s
   connected: true,
   errorState: false,
   sessionBusy: false,
+  restricted: false,
 });
 
 export const updateLastTimestampReducer: RealtimeReducer<UpdateLastTimestamp> = (state, { payload: lastTimestamp }) => ({
@@ -143,6 +145,10 @@ export const setSessionBusyReducer: RealtimeReducer = (state) => ({ ...state, se
 
 export const resetSessionBusyReducer: RealtimeReducer = (state) => ({ ...state, sessionBusy: false });
 
+export const setRealtimeRestrictionReducer: RealtimeReducer = (state) => ({ ...state, restricted: true });
+
+export const resetRealtimeRestrictionReducer: RealtimeReducer = (state) => ({ ...state, restricted: false });
+
 const realtimeReducer: RootReducer<RealtimeState, AnyRealtimeAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case RealtimeAction.INITIALIZE_REALTIME:
@@ -167,6 +173,10 @@ const realtimeReducer: RootReducer<RealtimeState, AnyRealtimeAction> = (state = 
       return setSessionBusyReducer(state);
     case RealtimeAction.RESET_SESSION_BUSY:
       return resetSessionBusyReducer(state);
+    case RealtimeAction.SET_RESTRICTION:
+      return setRealtimeRestrictionReducer(state);
+    case RealtimeAction.RESET_RESTRICTION:
+      return resetRealtimeRestrictionReducer(state);
     case RealtimeAction.RESET_REALTIME:
       return INITIAL_STATE;
     default:

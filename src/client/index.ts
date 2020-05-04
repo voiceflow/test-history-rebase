@@ -8,12 +8,11 @@ import list from './lists';
 import onboarding from './onboarding';
 import product from './product';
 import project from './project';
+import prototype from './prototype';
 import session from './session';
 import skill from './skill';
 import createSocketClient from './socket';
 import template from './template';
-import testing from './testing';
-import testingV2 from './testingV2';
 import user from './user';
 import workspace from './workspace';
 
@@ -27,8 +26,7 @@ const client = {
   workspace,
   list,
   project,
-  testing,
-  testingV2,
+  prototype,
   clipboard,
   skill,
   display,

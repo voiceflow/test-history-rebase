@@ -15,6 +15,9 @@ function createRealtimeSocketClient(client: SocketClient) {
         // once this is received, we can choose to take over the seesion
         client.once(ServerEvent.SESSION_BUSY, reject);
 
+        // once this is receive user will get prompt to upgrade plan
+        client.once(ServerEvent.WORKSPACE_PLAN_DENIED, reject);
+
         // once this is received, we have the ability to modify the diagram
         client.once(ServerEvent.INITIALIZE_DIAGRAM, resolve);
 

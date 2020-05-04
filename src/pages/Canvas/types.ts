@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
 import { LockOwnerType } from '@/models';
-import { Pair, Point } from '@/types';
+import { Either, Pair, Point } from '@/types';
 
 import { MergeStatus } from './constants';
 
@@ -86,6 +86,6 @@ export type RealtimeCursorOverlayAPI = {
 };
 
 export type RealtimeLinkOverlayAPI = {
-  moveLink: (tabID: string, linkData: { reset: true; points: never } | { reset: never; points: Pair<Point> }) => void;
+  moveLink: (tabID: string, linkData: Either<{ reset: true }, { points: Pair<Point> }>) => void;
   removeUser: (tabID: string) => void;
 };

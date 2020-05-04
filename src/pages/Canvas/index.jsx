@@ -8,7 +8,6 @@ import IntentsModal from '@/pages/Canvas/components/IntentsModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
-import HelpModal from '@/pages/Help';
 import SettingsModal from '@/pages/Settings';
 import { SettingsModalConsumer } from '@/pages/Settings/contexts';
 import { compose } from '@/utils/functional';
@@ -20,10 +19,10 @@ import ContextMenu from './components/ContextMenu';
 import EditSidebar from './components/EditSidebar';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Spotlight from './components/Spotlight';
-import { CanvasProviders, HelpModalConsumer, ShortcutModalConsumer } from './contexts';
+import { CanvasProviders, ShortcutModalConsumer } from './contexts';
 import useEngine from './engine';
 
-const Canvas = ({ isTesting }) => {
+const Canvas = ({ isPrototyping }) => {
   const engine = useEngine();
 
   React.useEffect(() => {
@@ -33,7 +32,7 @@ const Canvas = ({ isTesting }) => {
   }, [engine]);
 
   return (
-    <CanvasProviders engine={engine} isTesting={isTesting}>
+    <CanvasProviders engine={engine} isPrototyping={isPrototyping}>
       <Container>
         <ContextMenu />
         <CanvasDiagram />
@@ -41,8 +40,6 @@ const Canvas = ({ isTesting }) => {
         <EditSidebar />
         <Spotlight />
       </Container>
-
-      <HelpModalConsumer>{({ isEnabled, toggle, type }) => <HelpModal open={isEnabled} help={{ type }} toggle={toggle} />}</HelpModalConsumer>
 
       <ShortcutModalConsumer>
         {({ isEnabled, toggle }) => <DefaultModal open={isEnabled} header="Keyboard Shortcuts" toggle={toggle} content={<ShortCuts />} />}

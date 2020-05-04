@@ -36,6 +36,7 @@ const MOCK_STATE = {
   connected: true,
   sessionBusy: true,
   errorState: true,
+  restricted: false,
 };
 
 suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
@@ -58,6 +59,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           connected: true,
           errorState: false,
           sessionBusy: false,
+          restricted: false,
         });
       });
 
@@ -527,12 +529,22 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should set session as busy', async () => {
-        stubRealtimeClient('initialize').throws();
+        stubRealtimeClient('initialize').throws({ browserId: 'abc', device: {} });
         stub(Session, 'tabIDSelector').returns(tabID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
 
         expectDispatch(Realtime.setSessionBusy());
+        expect(dispatch).to.be.calledOnce;
+      });
+
+      it('should set realtime restriction', async () => {
+        stubRealtimeClient('initialize').throws({ busyBy: ['11'] });
+        stub(Session, 'tabIDSelector').returns(tabID);
+
+        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
+
+        expectDispatch(Realtime.setRealtimeRestriction());
         expect(dispatch).to.be.calledOnce;
       });
     });

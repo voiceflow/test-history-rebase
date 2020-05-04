@@ -11,7 +11,6 @@ import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
 import { GroupSelectionProvider } from './GroupSelectionContext';
-import { HelpModalProvider } from './HelpModalContext';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './EditPermissionContext';
@@ -21,7 +20,6 @@ export * from './ContextMenuContext';
 export * from './GroupSelectionContext';
 export * from './SpotlightContext';
 export * from './ShortcutModalContext';
-export * from './HelpModalContext';
 export * from './NodeIDContext';
 export * from './PortIDContext';
 export * from './LinkIDContext';
@@ -55,9 +53,7 @@ export const CanvasProviders = connect({
       <ContextMenuProvider>
         <GroupSelectionProvider>
           <ClipboardProvider>
-            <SpotlightProvider>
-              <HelpModalProvider>{children}</HelpModalProvider>
-            </SpotlightProvider>
+            <SpotlightProvider>{children}</SpotlightProvider>
           </ClipboardProvider>
         </GroupSelectionProvider>
       </ContextMenuProvider>

@@ -31,7 +31,6 @@ const Icon = React.forwardRef(
       onDropRejected: _.noop(),
       disabled: isLoading,
     });
-
     const iconSize = SIZE_VARIANT[size];
     const placeholderIconSize = Math.max(SIZE_VARIANT[size] / 4.75, MINIMUM_ICON_SIZE);
     const iconUploadInput = React.useRef();
@@ -72,10 +71,10 @@ const Icon = React.forwardRef(
 );
 
 // Have to have a separate export for a withUpload connected instance of Icon, because Icon is being used in its default form in ImageGroup component without withUpload
-export const JustIconUpload = React.forwardRef(({ update, image, ...props }, ref) => {
+const JustIcon = React.forwardRef(({ update, image, ...props }, ref) => {
   return <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} ref={ref} />;
 });
 
-withUpload(JustIconUpload, { fileType: 'image', clientFunc: 'uploadImage', validate: hasError });
+export const UploadJustIcon = withUpload(JustIcon, { fileType: 'image', clientFunc: 'uploadImage', validate: hasError });
 
 export default Icon;

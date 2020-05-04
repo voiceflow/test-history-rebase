@@ -215,15 +215,18 @@ You can invoke the feature by setting the appropriate environment variable or pa
 
 ```sh
 VF_APP_FF_SOME_FEATURE='true'
+
 ```
 
 ```sh
 yarn start --ff_someFeature
+yarn start --ff_pricingRevisions
+
 ```
 
 #### Available Flags and Environment Variables
 
-- `ff_testToolV2` / `FF_TEST_TOOL_V2`: enable the version of the test tool that is compatible with the refactored server
+n/a
 
 ## Previewing in an ephmeral environment
 

@@ -76,10 +76,9 @@ class Image extends Component {
         <div className="dropzone reject enter-url">
           <div className="text-center text-danger">
             {this.state.error}
-            <Button isBtn onClick={() => this.setState({ error: false })} className="upload-btn exit">
-              <i className="far fa-chevron-left" />
+            <div className="pointer" onClick={() => this.setState({ error: false })}>
               Back
-            </Button>
+            </div>
           </div>
         </div>
       );
@@ -176,9 +175,7 @@ class Image extends Component {
                 </Button>
               )}
             </div>
-            <div className="rejected-file text-danger text-center">
-              {this.props.tiny ? <i className="far fa-exclamation-triangle" /> : 'File not Accepted'}
-            </div>
+            <div className="rejected-file text-danger text-center">File not Accepted</div>
           </div>
         </Dropzone>
       );

@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
-import { Alert, Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
@@ -199,26 +199,6 @@ class TestSection extends Component {
     });
   };
 
-  showConfirmModal = () => {
-    const { setConfirm, confirmWarningMessage } = this.props;
-    this.setState({
-      test_content: null,
-    });
-    setConfirm({
-      text: (
-        <Alert color="danger" className="mb-0">
-          <i className="fas fa-exclamation-triangle fa-2x" />
-          <br />
-          {confirmWarningMessage}
-        </Alert>
-      ),
-      warning: true,
-      confirm: () => {
-        this.runTest();
-      },
-    });
-  };
-
   renderTestContent = () => {
     const { test_loading, test_content } = this.state;
     if (test_loading) {
@@ -238,7 +218,6 @@ class TestSection extends Component {
   };
 
   render() {
-    const { showConfirm } = this.props;
     const { variables_modal, variables } = this.state;
     return (
       <>
@@ -257,7 +236,7 @@ class TestSection extends Component {
               {!_.isEmpty(variables) && (
                 <>
                   <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
-                    <i className="fas fa-play mr-2" /> Run
+                    Run Integration
                   </Button>
                   <br />
                   <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
@@ -283,13 +262,7 @@ class TestSection extends Component {
           noPadding={true}
         />
 
-        <Button
-          className="mb-2 btn btn-lg btn-block"
-          color="clear"
-          onClick={() => (showConfirm ? this.showConfirmModal() : this.runTest())}
-          size="sm"
-          block
-        >
+        <Button className="mb-2 btn btn-lg btn-block" color="clear" onClick={() => this.runTest()} size="sm" block>
           Test Integration
         </Button>
         {this.renderTestContent()}

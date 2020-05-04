@@ -25,3 +25,19 @@ export type DBProject = {
   small_icon: string | null;
   large_icon: string | null;
 };
+
+export type Price = {
+  price: number;
+  errors: {
+    coupon?: {
+      message: string;
+    };
+    seats?: {
+      message: string;
+    };
+    period?: {
+      message: string;
+    };
+  };
+  discount?: {};
+};

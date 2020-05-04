@@ -24,7 +24,7 @@ export const goToNewTeamFlow = () => goTo('team/new');
 
 export const gotToNewProjectFlow = (boardID: string) => goTo(`team/template/${boardID}`);
 
-export const goToTestDiagram = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/test`);
+export const goToPrototype = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/prototype`);
 
 export const goToPublish = (versionID: string, platform: PlatformType) =>
   goTo(`${RootRoutes.PROJECT}/${versionID}/publish${platform ? `/${platform}` : ''}`);

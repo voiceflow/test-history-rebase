@@ -157,7 +157,6 @@ export default class Button extends Component {
         'btn-icon-flat': isIconFlat,
         'btn-warning': isWarning,
         'round-btn': isRound,
-        'btn-icon __type-save': isSaveIcon,
         'btn-action __type-success': isActionSuccess,
         'btn-tertiary gray': isFlatGray,
         'btn-danger': withDangerIndicator,

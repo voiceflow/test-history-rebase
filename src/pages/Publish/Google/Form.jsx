@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
 import { googleIDSelector, updatePublishInfo } from '@/ducks/publish/google';
@@ -99,9 +100,7 @@ class GooglePublish extends Component {
                 <span>This Action is linked on the Google Actions Console</span>
                 <b onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
                   {id_collapse ? 'Hide' : 'More Info'}{' '}
-                  <span style={{ width: '9px', display: 'inline-block', textAlign: 'right' }}>
-                    <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
-                  </span>
+                  <SvgIcon icon="caretDown" rotation={id_collapse ? 0 : 90} transition="transform" size={10} inline />
                 </b>
               </div>
               <Collapse isOpen={id_collapse}>
@@ -197,7 +196,7 @@ class GooglePublish extends Component {
     const enterText = (
       <>
         Publish Action
-        <i className="fab fa-google ml-2" />
+        <SvgIcon icon="google" inline ml="s" />
       </>
     );
 

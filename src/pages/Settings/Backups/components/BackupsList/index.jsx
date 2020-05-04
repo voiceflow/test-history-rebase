@@ -1,10 +1,10 @@
-import cn from 'classnames';
 import moment from 'moment';
 import React from 'react';
 import { Alert, Table } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 
 function BackupsList({ loading, versions, live_version, live_version_id, confirmRestore }) {
   if (loading) {
@@ -37,12 +37,7 @@ function BackupsList({ loading, versions, live_version, live_version_id, confirm
               {moment(live_version.created).fromNow()} <br /> (Current live version)
             </td>
             <td>
-              <i
-                className={cn('fab', {
-                  'fa-google': live_version.published_platform === 'google',
-                  'fa-amazon': live_version.published_platform !== 'google',
-                })}
-              />
+              <SvgIcon icon={live_version.published_platform === 'google' ? 'google' : 'amazon'} />
             </td>
             <td className="text-right">
               <Button isPrimary onClick={() => confirmRestore(live_version_id)}>
@@ -56,12 +51,7 @@ function BackupsList({ loading, versions, live_version, live_version_id, confirm
             <tr key={i}>
               <td>{moment(version.created).fromNow()}</td>
               <td>
-                <i
-                  className={cn('fab', {
-                    'fa-google': version.published_platform === 'google',
-                    'fa-amazon': version.published_platform !== 'google',
-                  })}
-                />
+                <SvgIcon icon={version.published_platform === 'google' ? 'google' : 'amazon'} />
               </td>
               <td className="text-right">
                 <Button isPrimarySmall onClick={() => confirmRestore(version.skill_id)}>

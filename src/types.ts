@@ -5,6 +5,10 @@ import type { State } from '@/ducks/_root';
 
 import { AnyThunk, Dispatchable, ThunkResult } from './store/types';
 
+export type Either<T extends object, R extends object> =
+  | (T & { [K in Exclude<keyof R, keyof T>]?: never })
+  | (R & { [K in Exclude<keyof T, keyof R>]?: never });
+
 export type NullableRecord<T extends object> = { [K in keyof T]: T[K] | null };
 
 export type Pair<T> = [T, T];

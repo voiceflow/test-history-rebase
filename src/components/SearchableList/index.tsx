@@ -58,7 +58,7 @@ const SearchableList: React.FC<SearchableListProps> = (
   );
 
   const onChangeValue = React.useCallback(
-    ({ currentTarget }: React.KeyboardEvent<HTMLInputElement>) => {
+    ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
       const value = formatValue(currentTarget.value);
 
       setSearchValue(value);

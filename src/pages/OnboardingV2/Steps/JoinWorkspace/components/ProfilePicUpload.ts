@@ -1,7 +1,7 @@
-import { JustIconUpload } from '@/components/Upload/ImageUpload/IconUpload/index';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload/index';
 import { styled } from '@/hocs';
 
-const IconUpload: any = JustIconUpload;
+const IconUpload: any = UploadJustIcon;
 
 const ProfilePicUpload = styled(IconUpload)`
   display: inline-block;

@@ -34,7 +34,7 @@ function SelectPlan({
       <StepSection>
         <Flex>
           {plans
-            .filter(({ id }) => id !== PLANS.enterprise)
+            .filter(({ id }) => id !== PLANS.ENTERPRISE)
             .map((option) => (
               <PlanOptionCard key={option.id} plan={option} active={plan.id === option.id} selectPlan={setPlan} period={period} />
             ))}

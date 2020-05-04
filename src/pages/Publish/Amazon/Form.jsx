@@ -15,6 +15,7 @@ import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
 import Image from '@/components/LegacyUpload/Image';
 import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
+import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
 import { userSelector } from '@/ducks/account';
 import { setError } from '@/ducks/modal';
@@ -241,11 +242,7 @@ class Skill extends Component {
     const enterText = (
       <>
         Submit for Review
-        {saving && (
-          <span className="ml-2">
-            <i className="fas fa-sync fa-spin" />
-          </span>
-        )}
+        {saving && <SvgIcon icon="loader" spin inline ml="s" />}
       </>
     );
 
@@ -405,11 +402,7 @@ class Skill extends Component {
               prepend="Alexa,"
               update={(list) => this.setState({ invocations: list })}
               placeholder={`open/start/launch ${name}`}
-              add={
-                <span>
-                  <i className="fas fa-plus" /> Add Invocation
-                </span>
-              }
+              add="Add Invocation"
             />
           </FormGroup>
         </>
@@ -651,15 +644,7 @@ class Skill extends Component {
                     <span>This skill is linked on Amazon Developer Console</span>
                     <div onClick={() => this.setState({ id_collapse: !id_collapse })} className="pointer">
                       {id_collapse ? 'Hide' : 'More Info'}{' '}
-                      <span
-                        style={{
-                          width: '9px',
-                          display: 'inline-block',
-                          textAlign: 'right',
-                        }}
-                      >
-                        <i className={`fas fa-caret-left rotate${id_collapse ? ' fa-rotate--90' : ''}`} />
-                      </span>
+                      <SvgIcon icon="caretDown" rotation={id_collapse ? 0 : 90} transition="transform" size={10} inline />
                     </div>
                   </div>
                   <Collapse isOpen={id_collapse}>

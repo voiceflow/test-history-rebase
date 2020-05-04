@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { checkAmazonAccount, getVendors } from '@/ducks/account';
-import { ALEXA_STAGES, ALEXA_STATES, resetAlexaUpload } from '@/ducks/publish/alexa';
+import { checkAmazonAccount } from '@/ducks/account';
+import { ALEXA_STAGES, ALEXA_STATES, resetAlexaUpload, syncVendors } from '@/ducks/publish/alexa';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 
 import { Close, PopupContainer, PopupTransition } from '../styled';
 import Upload from './Upload';
 
 const AlexaActionGroup = (props) => {
-  const { stage, id, amazon, checkAmazonAccount, getVendors, resetAlexaUpload } = props;
+  const { stage, id, amazon, checkAmazonAccount, syncVendors, resetAlexaUpload } = props;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -22,12 +22,12 @@ const AlexaActionGroup = (props) => {
     if (!amazon) {
       (async () => {
         await checkAmazonAccount();
-        await getVendors();
+        await syncVendors();
       })();
     }
     // reset state on unmount
     return resetAlexaUpload;
-  }, [amazon, checkAmazonAccount, getVendors, resetAlexaUpload]);
+  }, [amazon, checkAmazonAccount, syncVendors, resetAlexaUpload]);
 
   return (
     <>
@@ -51,6 +51,6 @@ export default connect(
   {
     resetAlexaUpload,
     checkAmazonAccount,
-    getVendors,
+    syncVendors,
   }
 )(AlexaActionGroup);

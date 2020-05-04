@@ -73,6 +73,9 @@ const THEME = {
       freeProjectLimit: {
         width: 392,
       },
+      realtimeRestriction: {
+        width: 392,
+      },
     },
     block: BLOCK_THEME,
     blockStep: BLOCK_STEP_THEME,

@@ -52,7 +52,7 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
     setPermissionType(option);
   };
 
-  if (plan === PLANS.enterprise && members.length >= numberOfSeats) {
+  if (plan === PLANS.ENTERPRISE && members.length >= numberOfSeats) {
     return (
       <Container>
         Enterprise Workspace Seat Limit Reached

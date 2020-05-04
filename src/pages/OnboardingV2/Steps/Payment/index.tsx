@@ -1,4 +1,4 @@
-import throttle from 'lodash/throttle';
+import { isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 
 import client from '@/client';
@@ -10,8 +10,8 @@ import { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
-import { BillingPeriod, PERIOD_NAME } from '@/constants';
-import { useToggle } from '@/hooks';
+import { BillingPeriod, PERIOD_NAME, PLANS } from '@/constants';
+import { useDebouncedCallback, useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 import { OnboardingProps } from '@/pages/OnboardingV2/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
@@ -32,26 +32,29 @@ import {
   SubHeader,
 } from './components';
 
+export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
+
 const DropdownComponent: any = Dropdown;
 const PeriodDropdown: any = BillingDropdown;
 
 const Payment: React.FC<OnboardingProps> = () => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
+  const { sendingRequests } = state;
   const { collaborators } = state.addCollaboratorMeta;
 
   const numberOfSeats = collaborators.length;
 
-  const [usingCoupon, toggleCoupon] = useToggle(false);
+  const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
   const [coupon, setCoupon] = React.useState(couponCode || '');
   const [paymentPeriod, setPaymentPeriod] = React.useState(period);
   const [couponError, setCouponError] = React.useState('');
-  const [price, setPrice] = React.useState('--');
+  const [price, setPrice] = React.useState(0);
   const [priceError, setPriceError] = React.useState('');
   const [creditCardError, setCreditCardError] = React.useState('');
   const [creditCardComplete, setCreditCardComplete] = React.useState(false);
-
   const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError;
+
   const onContinue = async () => {
     actions.setPaymentMeta({
       ...state.paymentMeta,
@@ -61,38 +64,42 @@ const Payment: React.FC<OnboardingProps> = () => {
 
     actions.finishCreateOnboarding();
   };
-  const verifyCoupon = () => {
-    throttle(async () => {
-      const data = (await client.workspace.checkCoupon(coupon)).data;
-      setCouponError(data);
-    }, 1000);
-  };
 
   const handleStripeOnChange = ({ error }: any) => {
     setCreditCardError(error);
   };
 
-  const getPrice = async () => {
-    const { price, errors }: any = await client.workspace.calculatePrice(null, {
-      plan: plan!,
-      seats: numberOfSeats,
-      period: paymentPeriod,
-      coupon: coupon || undefined,
-    });
+  const getPrice = useDebouncedCallback(
+    500,
+    async (plan: PLANS, numberOfSeats: number, paymentPeriod: BillingPeriod, coupon: string) => {
+      const { price, errors } = await client.workspace.calculatePrice(GET_PRICE_WITHOUT_TEAM_ID_CONST, {
+        plan: plan!,
+        seats: numberOfSeats,
+        period: paymentPeriod,
+        coupon: coupon || undefined,
+      });
 
-    setPrice(price);
-    setPriceError(errors);
-  };
+      if (isEmpty(errors)) {
+        setPrice(price);
+        setCouponError('');
+      } else {
+        setCouponError(errors.coupon?.message || '');
+      }
+    },
+    [setPrice, setCouponError, setPriceError, setCouponError]
+  );
 
   React.useEffect(() => {
-    getPrice();
-  }, [coupon, paymentPeriod]);
+    getPrice(plan, numberOfSeats, paymentPeriod, coupon);
+  }, [coupon, paymentPeriod, plan, numberOfSeats, setCouponError, setPriceError]);
+
+  const dollarPrice = price / 100;
 
   return (
     <Container>
       <SubHeader>voiceflow {plan} plan</SubHeader>
       <InfoBubble>
-        <SvgIcon icon="teamGroup" size={64} />
+        <img src="/images/team-group.svg" alt="team" height={64} />
         <BubbleTextContainer column>
           <EditorSeatsText>{numberOfSeats} Editor Seats</EditorSeatsText>
           <PeriodDropdownContainer>
@@ -120,7 +127,7 @@ const Payment: React.FC<OnboardingProps> = () => {
         </BubbleTextContainer>
         <PriceContainer>
           <DollarSymbol>$</DollarSymbol>
-          <PriceAmount>{price}</PriceAmount>
+          <PriceAmount>{dollarPrice}</PriceAmount>
           <CostTimeUnit>/ month</CostTimeUnit>
         </PriceContainer>
       </InfoBubble>
@@ -138,9 +145,8 @@ const Payment: React.FC<OnboardingProps> = () => {
             value={coupon}
             onChange={(e: any) => {
               setCoupon(e.target.value);
-              verifyCoupon();
             }}
-            error={couponError}
+            error={!!couponError}
             complete={!couponError && !!coupon}
             message={couponError}
           />
@@ -149,8 +155,8 @@ const Payment: React.FC<OnboardingProps> = () => {
       </PaymentDetailsContainer>
 
       <FlexCenter>
-        <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
-          Pay ${price}
+        <Button disabled={!canContinue || sendingRequests} variant="primary" onClick={onContinue}>
+          {sendingRequests ? <SvgIcon icon="publishSpin" size={24} spin /> : <>Pay ${dollarPrice}</>}
         </Button>
       </FlexCenter>
     </Container>

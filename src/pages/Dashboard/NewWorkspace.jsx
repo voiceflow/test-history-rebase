@@ -33,7 +33,6 @@ function NewWorkspace({ history, createWorkspace }) {
 
   const onContinue = React.useCallback(async () => {
     const newWorkspace = await createWorkspace({ name, image: imageUrl || undefined });
-
     if (newWorkspace && newWorkspace.id) {
       history.push(`/workspace/${newWorkspace.id}`);
 

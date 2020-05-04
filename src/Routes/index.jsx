@@ -3,14 +3,12 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
-import { FeatureFlag } from '@/config/features';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import LoginForm from '@/pages/Register/LoginForm';
+import Reset from '@/pages/Register/Reset';
+import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
-import Reset from '@/pages/Register/reset';
-import ResetPassword from '@/pages/Register/resetPassword';
 import { RootRoutes } from '@/utils/routes';
 
 import PrivateRoute from './PrivateRoute';
@@ -22,14 +20,11 @@ const Skill = React.lazy(() => import('@/pages/Skill'));
 const Account = React.lazy(() => import('@/pages/Account'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
 const Reference = React.lazy(() => import('@/components/Reference'));
-const UserTesting = React.lazy(() => import('@/pages/UserTesting'));
-const UserTestingV2 = React.lazy(() => import('@/pages/UserTestingV2'));
+const PublicPrototype = React.lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = React.lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
 const Routes = ({ authToken }) => {
-  const testToolV2 = useFeature(FeatureFlag.TEST_TOOL_V2);
-
   return (
     <Suspense fallback={<FullSpinner name="Assets" />}>
       <Switch>
@@ -48,12 +43,13 @@ const Routes = ({ authToken }) => {
         <PrivateRoute path={['/workspace', '/dashboard', '/onboarding']} component={Workspace} />
 
         <PrivateRoute path="/reference/:project_id" component={Reference} page="canvas" />
-        <Route path="/demo/:versionID" component={testToolV2.isEnabled ? UserTestingV2 : UserTesting} />
+        <Route path="/demo/:versionID" component={PublicPrototype} />
 
         <Redirect from="/team/:team_id?" to="/workspace/:workspaceID?" />
         <Redirect from="/canvas/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/canvas/:diagramID?`} />
         <Redirect from="/preview/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/canvas/:diagramID?`} />
         <Redirect from="/test/:versionID/:diagramID?" to={`/${RootRoutes.PROJECT}/:versionID/test/:diagramID?`} />
+        <Redirect from={`/${RootRoutes.PROJECT}/:versionID/test/:diagramID?`} to={`/${RootRoutes.PROJECT}/:versionID/prototype/:diagramID?`} />
         <Redirect from="/tools/:versionID/product/:id" to={`/${RootRoutes.PROJECT}/:versionID/tools/product/:id`} />
         <Redirect from="/tools/:versionID/products" to={`/${RootRoutes.PROJECT}/:versionID/tools/products`} />
         <Redirect from="/tools/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/tools`} />

@@ -1,3 +1,5 @@
+import { Workspace } from '@/models';
+
 import fetch from './fetch';
 
 const ANALYTICS_PATH = 'analytics';
@@ -17,6 +19,10 @@ const analyticsClient = {
 
   identify: (traits: {}) => {
     fetch.post(`${ANALYTICS_PATH}/identify`, { traits });
+  },
+
+  identifyWorkspace: (workspace: Workspace) => {
+    fetch.post(`${ANALYTICS_PATH}/workspace/identify`, workspace);
   },
 };
 

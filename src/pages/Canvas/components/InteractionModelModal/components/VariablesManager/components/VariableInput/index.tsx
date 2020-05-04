@@ -27,6 +27,7 @@ const DropdownComponent = Dropdown as React.FC<any>;
 
 export type VariableInputProps = {
   setSelected: (type: VariableType, variable: string) => void;
+  children?: never;
 };
 
 const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> = ({ addVariable, addFlowVariable, setSelected, ...props }) => {

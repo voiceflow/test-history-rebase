@@ -7,7 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType, PLANS } from '@/constants';
+import { FEATURE_IDS, ModalType, PLANS, WORKSPACES_LIMIT } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -31,7 +31,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
       label: workspace.name,
     }));
 
-    if (workspaces.length < 3) {
+    if (workspaces.length < WORKSPACES_LIMIT) {
       tabs.push({
         to: '/workspace/new',
         value: '/workspace/new',
@@ -71,7 +71,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                         <>
                           <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
                           <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
-                          {selectedWorkspace.plan !== PLANS.enterprise && <MenuItem onClick={togglePayment}>Payment</MenuItem>}
+                          {plan && plan !== PLANS.ENTERPRISE && <MenuItem onClick={togglePayment}>Upgrade</MenuItem>}
                           <MenuItem divider />
                           {plan ? (
                             <MenuItem disabled capitalize>

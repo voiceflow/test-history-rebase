@@ -15,6 +15,8 @@ export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 
 export const HOVER_THROTTLE_TIMEOUT = 24;
 
+export const WORKSPACES_LIMIT = 3;
+
 export enum BlockCategoryType {
   BASIC = 'basic',
   LOGIC = 'logic',
@@ -358,6 +360,7 @@ export enum ModalType {
   ONBOARDING = 'onboarding',
 
   FREE_PROJECT_LIMIT = 'free-project-limit',
+  REALTIME_RESTRICTION = 'realtime-restriction',
 }
 
 export enum UserRole {
@@ -380,11 +383,11 @@ export const FEATURE_PERMISSIONS = {
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
-export const PLANS = {
-  pro: 'pro',
-  team: 'team',
-  enterprise: 'enterprise',
-};
+export enum PLANS {
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
+}
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
 

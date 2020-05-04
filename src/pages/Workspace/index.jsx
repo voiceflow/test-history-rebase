@@ -4,11 +4,14 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
+import { FeatureFlag } from '@/config/features';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
+import { useFeature } from '@/hooks';
 import Dashboard from '@/pages/Dashboard';
 import Onboarding from '@/pages/Onboarding';
+import OnboardingV2 from '@/pages/OnboardingV2';
 import Templates from '@/pages/Templates';
 import { getActivePageAndMatch } from '@/utils/routes';
 
@@ -19,6 +22,9 @@ const PAGES_MATCHES = {
 };
 
 function Workspace({ workspaces }) {
+  const onboardingV2 = useFeature(FeatureFlag.ONBOARDING_V2);
+  const onboardingV2Enabled = onboardingV2.isEnabled;
+
   if (workspaces.length === 0) {
     return (
       <div className="h-100 d-flex justify-content-center">
@@ -48,7 +54,7 @@ function Workspace({ workspaces }) {
     <Switch>
       <PrivateRoute exact path={['/workspace/template', '/workspace/template/:listID']} component={Templates} />
       <PrivateRoute exact path={['/workspace/:workspaceID', '/dashboard']} component={Dashboard} />
-      <PrivateRoute exact path="/onboarding" component={Onboarding} />
+      <PrivateRoute exact path="/onboarding" component={onboardingV2Enabled ? OnboardingV2 : Onboarding} />
     </Switch>
   );
 }

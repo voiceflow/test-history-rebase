@@ -3,9 +3,9 @@ import React, { useContext } from 'react';
 import Button from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
-import { StepID } from '@/pages/OnboardingV2/constants';
 import { toggleMembership } from '@/utils/array';
 
+import StepID from '../../StepIDs';
 import { OnboardingContext } from '../../context';
 import { Label, RoleSelect } from '../components';
 import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components';

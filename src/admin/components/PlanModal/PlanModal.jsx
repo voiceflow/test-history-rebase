@@ -125,9 +125,9 @@ class PlanModal extends React.Component {
               <Button variant="secondary" onClick={this.updatePlan(null)}>
                 Basic (Free)
               </Button>
-              <Button onClick={this.updatePlan(PLANS.pro)}>Pro</Button>
-              <Button onClick={this.updatePlan(PLANS.team)}>Team</Button>
-              <Button onClick={this.updatePlan(PLANS.enterprise)}>Enterprise</Button>
+              <Button onClick={this.updatePlan(PLANS.PRO)}>Pro</Button>
+              <Button onClick={this.updatePlan(PLANS.TEAM)}>Team</Button>
+              <Button onClick={this.updatePlan(PLANS.ENTERPRISE)}>Enterprise</Button>
             </FlexApart>
           </ModalBody>
         </Modal>

@@ -3,15 +3,17 @@ import React from 'react';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
-import { BillingPeriod, PLANS, UserRole } from '@/constants';
-import { createWorkspace, fetchWorkspace, sendInvite, updateCurrentWorkspace } from '@/ducks/workspace';
+import { BillingPeriod, PLANS, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { goToDashboard } from '@/ducks/router';
+import * as Tracking from '@/ducks/tracking';
+import { allWorkspacesSelector, createWorkspace, fetchWorkspaces, sendInvite, updateCurrentWorkspace, validateInvite } from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useSmartReducer } from '@/hooks';
 import { PlanType } from '@/models';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
-import { StepID } from './constants';
+import StepID from './StepIDs';
 import { CollaboratorType } from './types';
 
 const toast: any = toastNotif;
@@ -51,6 +53,7 @@ export type OnboardingContextProps = {
     setPaymentMeta: (data: {}) => void;
     setAddCollaboratorMeta: (data: {}) => void;
     finishCreateOnboarding: () => void;
+    finishJoiningWorkspace: () => void;
   };
 };
 
@@ -64,6 +67,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     stepForward: _.constant(null),
     setAddCollaboratorMeta: _.constant(null),
     finishCreateOnboarding: _.constant(null),
+    finishJoiningWorkspace: _.constant(null),
   },
   state: {
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
@@ -74,6 +78,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
+      couponCode: '',
     },
     onboardingComplete: false,
     sendingRequests: false,
@@ -88,7 +93,8 @@ export enum onBoardingType {
 }
 
 type OnboardingProviderProps = {
-  query?: any;
+  workspaces: string[];
+  query: { ob_payment?: string; ob_plan?: PLANS; ob_coupon?: any; ob_period?: BillingPeriod; invite?: string };
   numberOfSteps?: number;
   children: React.ReactNode;
   createWorkspace: (data: { name: string; image: string }) => { id: string };
@@ -96,7 +102,10 @@ type OnboardingProviderProps = {
   updateCurrentWorkspace: (id: string) => void;
   stripe: any;
   checkChargeable: (data: any) => void;
-  updateWorkspace: () => void;
+  fetchWorkspaces: () => void;
+  goToDashboard: () => void;
+  validateInvite: (invite: string) => string;
+  trackInvitationAccepted: (workspaceId: string) => void;
 };
 
 const getFirstStep = (flow: onBoardingType) => {
@@ -114,23 +123,55 @@ const getNumberOfSteps = (query: any, firstStep: StepID) => {
   if (firstStep === StepID.JOIN_WORKSPACE) {
     return 1;
   }
-  if (!query) {
+  if (!query?.ob_payment) {
     return 3;
   }
   return 4;
 };
 
+const extractQueryParams = ({
+  ob_plan,
+  ob_coupon,
+  ob_period,
+  invite,
+}: {
+  ob_plan?: PLANS;
+  ob_coupon?: any;
+  ob_period?: BillingPeriod;
+  invite?: string;
+}) => {
+  const configurations = {
+    plan: PLANS.PRO,
+    period: BillingPeriod.ANNUALLY,
+    couponCode: ob_coupon || '',
+    flow: invite ? onBoardingType.join : onBoardingType.create,
+  };
+  if (ob_plan && Object.values(PLANS).includes(ob_plan)) {
+    configurations.plan = ob_plan;
+  }
+
+  if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
+    configurations.period = ob_period;
+  }
+
+  return configurations;
+};
+
 const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   query,
   children,
-  updateWorkspace,
   stripe,
   checkChargeable,
+  goToDashboard,
   updateCurrentWorkspace,
   createWorkspace,
   sendInvite,
+  fetchWorkspaces,
+  validateInvite,
+  workspaces,
+  trackInvitationAccepted,
 }) => {
-  const { plan, couponCode, period, flow = onBoardingType.create } = query;
+  const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, firstStep);
 
@@ -139,9 +180,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
     paymentMeta: {
-      plan: plan || PLANS.pro,
+      plan,
       couponCode,
-      period: period || BillingPeriod.MONTHLY,
+      period,
     },
     addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
     numberOfSteps,
@@ -184,21 +225,39 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   };
 
   const handlePayment = async (workspaceID: string, source: any) => {
+    const { plan, period, couponCode } = paymentMeta;
     await client.workspace.checkout(workspaceID, {
-      plan: paymentMeta.plan,
-      seats: addCollaboratorMeta.length,
-      period: paymentMeta.period,
-      coupon: paymentMeta.couponCode || undefined,
+      plan,
+      seats: addCollaboratorMeta.collaborators.length,
+      period,
+      coupon: couponCode || undefined,
       source_id: source?.id,
     });
+  };
 
-    updateWorkspace();
+  const finishJoiningWorkspace = async () => {
+    const newWorkspaceID = await validateInvite(query.invite || '');
+    if (!newWorkspaceID) {
+      toastNotif.error('Error joining workspace');
+    } else {
+      await fetchWorkspaces();
+      updateCurrentWorkspace(newWorkspaceID);
+
+      goToDashboard();
+      trackInvitationAccepted(newWorkspaceID);
+      setOnboardingComplete(true);
+
+      toastNotif.success('Successfully joined workspace');
+    }
   };
 
   const finishCreateOnboarding = async () => {
     setSendingRequests(true);
     const isOnLastStep = stepStack.length === numberOfSteps;
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
+
+    if (workspaces.length >= WORKSPACES_LIMIT) return;
+
     if (isOnLastStep) {
       const name = createWorkspaceMeta.workspaceName;
       const workspaceImage = createWorkspaceMeta.workspaceImage;
@@ -212,27 +271,28 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
         }
       }
 
-      const { id } = await createWorkspace({ name, image: workspaceImage });
-
-      updateCurrentWorkspace(id);
-      const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.shift();
-
-      await asyncForEach(teamMembers, async (member: CollaboratorType) => {
-        const { email, permission } = member;
-        await sendInvite(email, permission, false);
-      });
+      const workspace = await createWorkspace({ name, image: workspaceImage });
+      await fetchWorkspaces();
+      updateCurrentWorkspace(workspace.id);
 
       if (hasPaymentStep) {
         try {
-          await handlePayment(id, source);
+          await handlePayment(workspace.id, source);
         } catch (e) {
           setSendingRequests(false);
           return toast.error(e);
         }
       }
+      const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
+      await asyncForEach(teamMembers, async (member: CollaboratorType) => {
+        const { email, permission } = member;
+        await sendInvite(email, permission, false);
+      });
 
       setSendingRequests(false);
       setOnboardingComplete(true);
+      goToDashboard();
+      toastNotif.success('Successfully created workspace');
     }
   };
 
@@ -245,17 +305,25 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       ...actions,
       stepForward,
       stepBack,
+      finishJoiningWorkspace,
       finishCreateOnboarding,
     },
   };
   return <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
+const mapStateToProps = {
+  workspaces: allWorkspacesSelector,
+};
+
 const mapDispatchToProps = {
   createWorkspace,
   sendInvite,
+  validateInvite,
+  goToDashboard,
   updateCurrentWorkspace,
-  updateWorkspace: fetchWorkspace,
+  fetchWorkspaces,
+  trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
 
-export const OnboardingProvider: any = compose(withStripe, connect(null, mapDispatchToProps))(OnboardingProviderFunc);
+export const OnboardingProvider: any = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(OnboardingProviderFunc);

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 
-import { STEP_META, StepID } from '@/pages/OnboardingV2/constants';
+import { STEP_META } from '@/pages/OnboardingV2/constants';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
+import StepID from '../../../../StepIDs';
 import Container from './components/Container';
 import ProgressLine from './components/ProgressLine';
 import Title from './components/Title';

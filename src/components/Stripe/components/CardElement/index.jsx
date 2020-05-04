@@ -27,7 +27,7 @@ const getIcon = (error, complete) => {
     case !!error:
       return 'error';
     case !!complete:
-      return 'error';
+      return 'checkmark';
     default:
       return 'creditCard';
   }

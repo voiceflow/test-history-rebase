@@ -47,9 +47,6 @@ module.exports = merge(commonConfig, {
               '**/types.ts',
               'models/**/*',
 
-              // TODO: remove when onboarding redesign
-              'pages/OnboardingV2/**/*',
-
               // TODO: remove when markup is deployed
               'components/Slider/**/*',
 

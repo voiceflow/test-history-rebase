@@ -4,15 +4,18 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import { updateAccount } from '@/ducks/account';
 import { connect } from '@/hocs';
+import { OnboardingContext } from '@/pages/OnboardingV2/context';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-type CreateWorkspaceProps = {
+type JoinWorkspaceProps = {
   updateAccount: (data: { image: string }) => void;
 };
 
-const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({ updateAccount }) => {
+const JoinWorkspace: React.FC<JoinWorkspaceProps> = ({ updateAccount }) => {
+  const { actions } = React.useContext(OnboardingContext);
+
   const [userRole, setUserRole] = React.useState('');
   const [userImage, setUserImage] = React.useState('');
   const [name, setName] = React.useState('');
@@ -22,6 +25,7 @@ const CreateWorkspace: React.FC<CreateWorkspaceProps> = ({ updateAccount }) => {
     if (userImage) {
       updateAccount({ image: userImage });
     }
+    actions.finishJoiningWorkspace();
   };
 
   return (
@@ -54,4 +58,4 @@ const mapDispatchToProps = {
   updateAccount,
 };
 
-export default connect(null, mapDispatchToProps)(CreateWorkspace);
+export default connect(null, mapDispatchToProps)(JoinWorkspace);

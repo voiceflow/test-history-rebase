@@ -15,8 +15,8 @@ function SeatSummary({ plan }) {
 
   return (
     <Container>
-      {plan !== PLANS.enterprise && (
-        <ClickableText onClick={openPaymentsModal}>{plan === PLANS.team ? <span>Need more room?</span> : <span>Upgrade</span>}</ClickableText>
+      {plan !== PLANS.ENTERPRISE && (
+        <ClickableText onClick={openPaymentsModal}>{plan === PLANS.TEAM ? <span>Need more room?</span> : <span>Upgrade</span>}</ClickableText>
       )}
     </Container>
   );

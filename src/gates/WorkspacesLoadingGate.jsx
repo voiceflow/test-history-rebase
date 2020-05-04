@@ -57,7 +57,11 @@ class WorkspacesLoadingGate extends Component {
   }
 
   load = async () => {
-    await this.showInviteModal();
+    const { activePage } = this.props;
+
+    if (activePage !== 'onboarding') {
+      await this.showInviteModal();
+    }
 
     await this.props.fetchWorkspaces();
 

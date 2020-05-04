@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import { ClickableText } from '@/components/Text';
-import { JustIconUpload } from '@/components/Upload/ImageUpload/IconUpload';
-import { StepID } from '@/pages/OnboardingV2/constants';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
+import StepID from '../../StepIDs';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
 
-const IconUpload: any = JustIconUpload;
+const IconUpload: React.FC<any> = UploadJustIcon;
 
 const CreateWorkspace: React.FC = () => {
-  const { state, actions } = useContext(OnboardingContext);
+  const { state, actions } = React.useContext(OnboardingContext);
   const { createWorkspaceMeta } = state;
   const { stepForward, setCreateWorkspaceMeta } = actions;
   const [workspaceName, setWorkspaceName] = React.useState<string>(createWorkspaceMeta.workspaceName || '');

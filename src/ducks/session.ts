@@ -180,7 +180,10 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
   const location = ConnectedReactRouter.getLocation(state);
   const search = queryString.parse(location.search);
 
-  if (search.invite || !user.first_login) {
+  // Show join workspace onboarding on first login of an invite
+  if (search.invite && user.first_login) {
+    dispatch(goToOnboarding());
+  } else if (search.invite || !user.first_login) {
     dispatch(goToDashboardWithSearch(location.search));
   } else {
     // TODO: put these in redux

@@ -65,9 +65,10 @@ function DropdownMultiselect({
                         onSelect?.(value);
                       })}
                     >
-                      <Checkbox readOnly checked={selectedItems.includes(value)}>
-                        <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
-                      </Checkbox>
+                      {/* So weird, if u put the label inside the checkbox component, the menu item onclick will trigger twice on label click // */}
+                      {/* (something to do with stopImmediateProp and the checkbox component) */}
+                      <Checkbox readOnly checked={selectedItems.includes(value)} />
+                      <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
                     </MenuItem>
                   ))}
                 </span>

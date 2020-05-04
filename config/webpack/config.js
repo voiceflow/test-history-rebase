@@ -15,6 +15,7 @@ const {
   debugRealtime,
   debugSocket,
   ff_pricingRevisions,
+  ff_onboardingV2,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -47,8 +48,7 @@ module.exports = {
 
     // feature flags
     FF_PRICING_REVISIONS: ff_pricingRevisions && 'true',
-
-    // n/a
+    FF_ONBOARDING_V2: ff_onboardingV2 && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

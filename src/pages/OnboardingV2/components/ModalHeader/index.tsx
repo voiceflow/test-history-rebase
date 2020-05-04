@@ -13,8 +13,9 @@ const OnboardingModalHeader: React.FC = () => {
   const { stepBack, stepForward } = actions;
 
   const currentStepMeta = STEP_META[currentStepID];
-  const hasBackButton = currentStepMeta.canBack && stepStack.length > 1;
-  const hasSkipButton = currentStepMeta.canSkip && !!currentStepMeta.skipTo;
+  const hasBackButton = currentStepMeta?.canBack && stepStack.length > 1;
+  const hasSkipButton = currentStepMeta?.canSkip && !!currentStepMeta?.skipTo;
+
   return (
     <Container>
       <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
@@ -24,7 +25,7 @@ const OnboardingModalHeader: React.FC = () => {
         icon="next"
         label="skip"
         onClick={() => {
-          stepForward(currentStepMeta.skipTo);
+          stepForward(currentStepMeta?.skipTo);
         }}
       />
     </Container>

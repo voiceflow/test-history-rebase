@@ -3,16 +3,17 @@ import React from 'react';
 import Badge from '@/components/Badge';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
+import Icon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks';
-import { StepID } from '@/pages/OnboardingV2/constants';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 import { CollaboratorType, OnboardingProps } from '@/pages/OnboardingV2/types';
 
+import StepID from '../../StepIDs';
 import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './components';
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta, stepStack, numberOfSteps },
+    state: { addCollaboratorMeta, stepStack, numberOfSteps, sendingRequests },
     actions: { setAddCollaboratorMeta, stepForward, finishCreateOnboarding },
   } = React.useContext(OnboardingContext);
 
@@ -62,8 +63,8 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
       />
       <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={collaborators.length <= 1 || isDisabledWithErrors} />
       <FlexCenter>
-        <Button onClick={onContinue} disabled={isDisabledWithErrors}>
-          Continue
+        <Button disabled={isDisabledWithErrors || sendingRequests} variant="primary" onClick={onContinue}>
+          {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Continue'}
         </Button>
       </FlexCenter>
     </Container>

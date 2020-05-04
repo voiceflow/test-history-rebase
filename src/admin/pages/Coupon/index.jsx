@@ -13,7 +13,7 @@ class Coupon extends React.Component {
 
     this.state = {
       coupons: [],
-      coupon: { plan: PLANS.pro },
+      coupon: { plan: PLANS.PRO },
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -113,9 +113,9 @@ class Coupon extends React.Component {
               </Label>
               <Col sm={10}>
                 <Select name="plan" id="plan" type="select" value={this.state.coupon.plan} onChange={this.handleInputChange}>
-                  <option value={PLANS.pro}>Pro</option>
-                  <option value={PLANS.team}>Team</option>
-                  <option value={PLANS.enterprise}>Enterprise</option>
+                  <option value={PLANS.PRO}>Pro</option>
+                  <option value={PLANS.TEAM}>Team</option>
+                  <option value={PLANS.ENTERPRISE}>Enterprise</option>
                 </Select>
               </Col>
             </FormGroup>

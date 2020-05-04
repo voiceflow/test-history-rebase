@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
-import { checkAmazonAccount, getVendors } from '@/ducks/account';
-import { ALEXA_STATES, publish, resetAlexaUpload } from '@/ducks/publish/alexa';
+import { checkAmazonAccount } from '@/ducks/account';
+import { ALEXA_STATES, publish, resetAlexaUpload, syncVendors } from '@/ducks/publish/alexa';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 
 import PublishAmazonForm from './Form';
 
 export function PublishAmazon(props) {
-  const { stage, amazon, isLocked, checkAmazonAccount, getVendors, resetAlexaUpload, publish } = props;
+  const { stage, amazon, isLocked, checkAmazonAccount, syncVendors, resetAlexaUpload, publish } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
@@ -25,7 +25,7 @@ export function PublishAmazon(props) {
     if (!amazon) {
       (async () => {
         await checkAmazonAccount();
-        await getVendors();
+        await syncVendors();
       })();
     }
     // reset state on unmount
@@ -51,7 +51,7 @@ export default connect(
   {
     resetAlexaUpload,
     checkAmazonAccount,
-    getVendors,
+    syncVendors,
     publish,
   }
 )(PublishAmazon);

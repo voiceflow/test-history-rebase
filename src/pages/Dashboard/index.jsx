@@ -84,6 +84,7 @@ export const DashBoard = (props) => {
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const closeImport = () => {
     toggleImport(false);
@@ -181,6 +182,8 @@ export const DashBoard = (props) => {
 
     if (query.invite_collaborators) {
       openCollaboratorsModal();
+    } else if (query.upgrade_workspace) {
+      openPaymentModal();
     }
   }, []);
 

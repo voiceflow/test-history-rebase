@@ -1,10 +1,10 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
 import * as Account from '@/ducks/account';
 import * as GooglePublish from '@/ducks/publish/google';
+import { connect } from '@/hocs';
 import UploadGoogle from '@/pages/Publish/Upload/Google';
 
 import { Close, PopupContainer, PopupTransition } from '../styled';

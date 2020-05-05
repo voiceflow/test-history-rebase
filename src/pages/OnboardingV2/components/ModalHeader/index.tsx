@@ -25,7 +25,7 @@ const OnboardingModalHeader: React.FC = () => {
         icon="next"
         label="skip"
         onClick={() => {
-          stepForward(currentStepMeta?.skipTo);
+          stepForward(currentStepMeta?.skipTo, { skip: true });
         }}
       />
     </Container>

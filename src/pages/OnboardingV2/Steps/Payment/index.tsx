@@ -62,6 +62,7 @@ const Payment: React.FC<OnboardingProps> = () => {
       period: paymentPeriod,
     });
 
+    actions.stepForward(null);
     actions.finishCreateOnboarding();
   };
 

@@ -1,19 +1,29 @@
 import _ from 'lodash';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
 import { BillingPeriod, PLANS, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { userSelector } from '@/ducks/account';
 import { goToDashboard } from '@/ducks/router';
-import * as Tracking from '@/ducks/tracking';
-import { allWorkspacesSelector, createWorkspace, fetchWorkspaces, sendInvite, updateCurrentWorkspace, validateInvite } from '@/ducks/workspace';
+import {
+  activeWorkspaceIDSelector,
+  allWorkspacesSelector,
+  createWorkspace,
+  fetchWorkspaces,
+  sendInvite,
+  updateCurrentWorkspace,
+  validateInvite,
+} from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useSmartReducer } from '@/hooks';
+import { useSmartReducer, useTrackingEvents } from '@/hooks';
 import { PlanType } from '@/models';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
 import StepID from './StepIDs';
+import { STEP_META } from './constants';
 import { CollaboratorType } from './types';
 
 const toast: any = toastNotif;
@@ -41,16 +51,21 @@ export type OnboardingContextProps = {
       isDemoBooked: boolean;
       collaborators: CollaboratorType[];
     };
+    joinWorkspaceMeta: {
+      role: string;
+    };
     onboardingComplete: boolean;
     sendingRequests: boolean;
+    workspaceId: string;
   };
   actions: {
     stepBack: () => null;
-    stepForward: (stepID: StepID | null) => void;
+    stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
     closeOnboarding: () => void;
     setCreateWorkspaceMeta: (data: {}) => void;
     setPersonalizeWorkspaceMeta: (data: {}) => void;
     setPaymentMeta: (data: {}) => void;
+    setJoinWorkspaceMeta: (data: {}) => void;
     setAddCollaboratorMeta: (data: {}) => void;
     finishCreateOnboarding: () => void;
     finishJoiningWorkspace: () => void;
@@ -66,6 +81,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     stepBack: _.constant(null),
     stepForward: _.constant(null),
     setAddCollaboratorMeta: _.constant(null),
+    setJoinWorkspaceMeta: _.constant(null),
     finishCreateOnboarding: _.constant(null),
     finishJoiningWorkspace: _.constant(null),
   },
@@ -80,8 +96,12 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       period: BillingPeriod.MONTHLY,
       couponCode: '',
     },
+    joinWorkspaceMeta: {
+      role: '',
+    },
     onboardingComplete: false,
     sendingRequests: false,
+    workspaceId: '',
   },
 });
 
@@ -106,6 +126,8 @@ type OnboardingProviderProps = {
   goToDashboard: () => void;
   validateInvite: (invite: string) => string;
   trackInvitationAccepted: (workspaceId: string) => void;
+  account: any;
+  currentWorkspaceId?: string;
 };
 
 const getFirstStep = (flow: onBoardingType) => {
@@ -170,12 +192,17 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   validateInvite,
   workspaces,
   trackInvitationAccepted,
+  account,
+  currentWorkspaceId,
 }) => {
+  const dispatch = useDispatch();
+  const [trackingEvents] = useTrackingEvents();
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, firstStep);
 
   const [state, actions] = useSmartReducer({
+    workspaceId: '',
     stepStack: [firstStep],
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
@@ -185,6 +212,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       period,
     },
     addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
+    joinWorkspaceMeta: {
+      role: '',
+    },
     numberOfSteps,
     onboardingComplete: false,
     sendingRequests: false,
@@ -193,11 +223,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta } = state;
   const { setStepStack, setOnboardingComplete, setSendingRequests } = actions;
 
-  const stepForward = async (stepID: StepID | null) => {
-    if (!stepStack.includes(stepID)) {
-      setStepStack([stepID, ...stepStack]);
-    }
-  };
+  const cache = React.useRef({ stepStack, state, skipped: false });
+
+  cache.current.state = state;
 
   const stepBack = () => {
     if (stepStack.length > 1) {
@@ -253,48 +281,113 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
   const finishCreateOnboarding = async () => {
     setSendingRequests(true);
+
     const isOnLastStep = stepStack.length === numberOfSteps;
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
 
-    if (workspaces.length >= WORKSPACES_LIMIT) return;
+    if (workspaces.length >= WORKSPACES_LIMIT || !isOnLastStep) {
+      return null;
+    }
 
-    if (isOnLastStep) {
-      const name = createWorkspaceMeta.workspaceName;
-      const workspaceImage = createWorkspaceMeta.workspaceImage;
-      let source;
-      if (hasPaymentStep) {
-        try {
-          source = await checkPayment();
-        } catch (e) {
-          setSendingRequests(false);
-          return toast.error(e);
-        }
+    const name = createWorkspaceMeta.workspaceName;
+    const workspaceImage = createWorkspaceMeta.workspaceImage;
+    let source;
+
+    if (hasPaymentStep) {
+      try {
+        source = await checkPayment();
+      } catch (e) {
+        setSendingRequests(false);
+        toast.error(e);
+        return null;
       }
+    }
 
-      const workspace = await createWorkspace({ name, image: workspaceImage });
-      await fetchWorkspaces();
-      updateCurrentWorkspace(workspace.id);
+    const workspace = await createWorkspace({ name, image: workspaceImage });
 
-      if (hasPaymentStep) {
-        try {
-          await handlePayment(workspace.id, source);
-        } catch (e) {
-          setSendingRequests(false);
-          return toast.error(e);
-        }
+    await fetchWorkspaces();
+
+    updateCurrentWorkspace(workspace.id);
+
+    if (hasPaymentStep) {
+      try {
+        await handlePayment(workspace.id, source);
+      } catch (e) {
+        setSendingRequests(false);
+        toast.error(e);
+        return null;
       }
-      const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
-      await asyncForEach(teamMembers, async (member: CollaboratorType) => {
-        const { email, permission } = member;
-        await sendInvite(email, permission, false);
-      });
+    }
+    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
 
-      setSendingRequests(false);
-      setOnboardingComplete(true);
-      goToDashboard();
-      toastNotif.success('Successfully created workspace');
+    await asyncForEach(teamMembers, async (member: CollaboratorType) => {
+      const { email, permission } = member;
+      await sendInvite(email, permission, false);
+    });
+
+    setSendingRequests(false);
+    setOnboardingComplete(true);
+
+    const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
+    const { email, name: userName } = account;
+
+    trackingEvents.trackOnboardingV2Identify({
+      name: userName,
+      role,
+      email,
+      channels,
+      teamSize,
+    });
+
+    goToDashboard();
+
+    toastNotif.success('Successfully created workspace');
+
+    return workspace;
+  };
+
+  const handleLastStep = async (currentStepID: StepID) => {
+    let workspaceId: string | null = null;
+
+    if (currentStepID === StepID.ADD_COLLABORATORS || currentStepID === StepID.PAYMENT) {
+      const workspace = await finishCreateOnboarding();
+      workspaceId = workspace?.id ?? null;
+    } else if (currentStepID === StepID.JOIN_WORKSPACE) {
+      workspaceId = currentWorkspaceId ?? null;
+
+      await finishJoiningWorkspace();
+    }
+
+    return workspaceId;
+  };
+
+  const stepForward = async (stepID: StepID | null, { skip = false }: { skip?: boolean } = {}) => {
+    const isLastStep = stepStack.length === numberOfSteps;
+    const currentStepID: StepID = stepStack[0];
+
+    if (isLastStep) {
+      const workspaceID = await handleLastStep(currentStepID);
+
+      dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip }));
+
+      if (workspaceID) {
+        trackingEvents.trackOnboardingV2Complete({ skip, workspaceID });
+      }
+    } else if (!stepStack.includes(stepID)) {
+      cache.current.skipped = skip;
+      setStepStack([stepID, ...stepStack]);
     }
   };
+
+  React.useEffect(() => {
+    if (cache.current.stepStack.length < stepStack.length) {
+      const prevStepID: StepID = cache.current.stepStack[0];
+
+      dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
+    }
+
+    cache.current.stepStack = stepStack;
+  }, [stepStack]);
 
   const api = {
     state: {
@@ -309,11 +402,14 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       finishCreateOnboarding,
     },
   };
+
   return <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
 const mapStateToProps = {
   workspaces: allWorkspacesSelector,
+  account: userSelector,
+  currentWorkspaceId: activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -323,7 +419,6 @@ const mapDispatchToProps = {
   goToDashboard,
   updateCurrentWorkspace,
   fetchWorkspaces,
-  trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
 
 export const OnboardingProvider: any = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(OnboardingProviderFunc);

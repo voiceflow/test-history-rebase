@@ -22,6 +22,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ updateAccount })
     if (userImage) {
       updateAccount({ image: userImage });
     }
+    actions.setJoinWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
   };
 

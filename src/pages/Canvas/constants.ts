@@ -13,12 +13,6 @@ export enum ContextMenuTarget {
   CANVAS = 'canvas',
 }
 
-export enum MergeStatus {
-  ACCEPT = 'accept',
-  COMBINED_ACCEPT = 'combined_accept',
-  DENY = 'deny',
-}
-
 export const BLOCK_MENU_CATEGORIES: Record<BlockCategoryType, { label: string; color: string }> = {
   [BlockCategoryType.BASIC]: {
     label: 'Basic',

@@ -3,15 +3,17 @@ import mouseEventOffset from 'mouse-event-offset';
 const MOUSE_BOUNDING_TOLERANCE = 1;
 
 export default class MouseMovement {
-  movementX = null;
+  private event: null | MouseEvent = null;
 
-  movementY = null;
+  private movementX: null | number = null;
 
-  prevClientX = null;
+  private movementY: null | number = null;
 
-  prevClientY = null;
+  private prevClientX: null | number = null;
 
-  track(event) {
+  private prevClientY: null | number = null;
+
+  track(event: MouseEvent) {
     const { clientX, clientY, movementX, movementY } = event;
 
     const prevClientX = this.prevClientX;
@@ -20,31 +22,31 @@ export default class MouseMovement {
     this.prevClientX = clientX;
     this.prevClientY = clientY;
 
-    if (prevClientX === null) {
-      this.movementX = movementX;
-      this.movementY = movementY;
-    } else {
+    if (prevClientX !== null && prevClientY !== null) {
       this.movementX = clientX - prevClientX;
       this.movementY = clientY - prevClientY;
+    } else {
+      this.movementX = movementX;
+      this.movementY = movementY;
     }
 
     this.event = event;
   }
 
   getMovement() {
-    return [this.movementX, this.movementY];
+    return [this.movementX!, this.movementY!] as const;
   }
 
   getBoundedMovement() {
     const { clientWidth, clientHeight } = document.body;
-    const [mouseX, mouseY] = mouseEventOffset(this.event, document.body);
+    const [mouseX, mouseY] = mouseEventOffset(this.event!, document.body);
 
     /* eslint-disable no-nested-ternary */
-    const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementX;
-    const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementY;
+    const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementX!;
+    const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementY!;
     /* eslint-enable no-nested-ternary */
 
-    return [offsetX, offsetY];
+    return [offsetX, offsetY] as const;
   }
 
   clear() {

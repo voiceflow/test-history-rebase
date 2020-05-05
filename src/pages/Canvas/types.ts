@@ -4,8 +4,6 @@ import { BlockVariant } from '@/constants/canvas';
 import { LockOwnerType } from '@/models';
 import { Either, Pair, Point } from '@/types';
 
-import { MergeStatus } from './constants';
-
 export type EntityAPI = {
   instanceID: string;
 };
@@ -33,7 +31,6 @@ export type NodeAPI<T extends HTMLElement = HTMLElement> = EntityAPI & {
 };
 
 export type BlockNodeAPI = {
-  setMergeStatus: (status: MergeStatus) => void;
   setMergeTarget: () => void;
   clearMergeTarget: () => void;
   translate: (movement: Pair<number>) => void;

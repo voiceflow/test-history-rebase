@@ -59,3 +59,5 @@ export const linksByPortIDSelector = createSelector([allLinksByIDsSelector, link
 export const hasLinksByPortIDSelector = createSelector([linksByPortIDSelector], (getLinks) => (portID: string) => !!getLinks(portID).length);
 
 export const sectionStateSelector = createSelector([rootSelector], ({ sections }) => (key: string) => sections[key]);
+
+export const markupNodeIDsSelector = createSelector([rootSelector], ({ markupNodeIDs }) => markupNodeIDs);

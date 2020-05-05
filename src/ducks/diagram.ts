@@ -185,7 +185,7 @@ export const saveActiveDiagram = (): Thunk => async (dispatch, getState) => {
 
   const viewport = viewportByIDSelector(state)(diagramID);
   const platform = activePlatformSelector(state);
-  const { rootNodeIDs, nodes, ports, data, linksByPortID } = Creator.creatorDiagramSelector(state);
+  const { rootNodeIDs, nodes, ports, data, linksByPortID, markupNodeIDs } = Creator.creatorDiagramSelector(state);
   const links = Creator.allLinksSelector(state);
 
   const dataString = JSON.stringify(
@@ -196,6 +196,7 @@ export const saveActiveDiagram = (): Thunk => async (dispatch, getState) => {
         rootNodeIDs,
         links,
         data,
+        markupNodeIDs,
       } as CreatorDiagram,
       {
         nodes,

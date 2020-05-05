@@ -43,7 +43,7 @@ import unmergeNodeReducer from './unmergeNode';
 // reducers
 
 export const initializeCreatorReducer: ActionReducer<DiagramState, InitializeCreator> = ({
-  payload: { diagramID, rootNodeIDs, nodes, links, ports, data },
+  payload: { diagramID, rootNodeIDs, nodes, links, ports, data, markupNodeIDs },
 }) => ({
   diagramID,
   rootNodeIDs,
@@ -55,6 +55,7 @@ export const initializeCreatorReducer: ActionReducer<DiagramState, InitializeCre
   linksByNodeID: buildLinksByNodeID(links),
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),
   sections: {},
+  markupNodeIDs,
 });
 
 export const updateNodeDataReducer: Reducer<DiagramState, UpdateNodeData> = (state, { payload: { nodeID, data, patch } }) => {

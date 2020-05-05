@@ -26,6 +26,7 @@ export type NodeBlockProps = {
   isSelected: boolean;
   isHighlighted: boolean;
   canModify: boolean;
+  newSourceNodeIndex: null | number;
 };
 
 const getBlockState = (props: NodeBlockProps, { isHovered, hasLinkWarning }: { isHovered: boolean; hasLinkWarning: boolean }) => {
@@ -242,4 +243,4 @@ export default compose(
   connect(mapStateToProps, null, mergeProps, { forwardRef: true }),
   React.memo,
   React.forwardRef
-)(NodeBlock) as React.FC<NodeBlockProps>;
+)(NodeBlock) as React.ForwardRefExoticComponent<NodeBlockProps & React.RefAttributes<{ api: BlockAPI }>>;

@@ -13,8 +13,7 @@ import { MergeArguments } from '@/types';
 import { buildVirtualDOMRect } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
-import { useNodeLifecycle } from '../hocs';
-import { useNodeAPI, useNodeSubscription, useStepAPI } from '../hooks';
+import { useNodeAPI, useNodeLifecycle, useNodeSubscription, useStepAPI } from '../hooks';
 import NodePort from './NodePort';
 
 export type NodeStepProps = {

@@ -3,9 +3,12 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
+import { FeatureFlag } from '@/config/features';
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
+import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import { ContextMenuContext, EditPermissionContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
@@ -28,6 +31,7 @@ type ConnectedCanvasDiagramProps = {
 const DiagramCanvas: React.FC<any> = Canvas;
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
+  const markup = useFeature(FeatureFlag.MARKUP);
   const engine = React.useContext(EngineContext)!;
   const groupSelection = React.useContext(GroupSelectionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
@@ -83,6 +87,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     >
       <LinkLayer />
       <NodeLayer />
+      {markup.isEnabled && <MarkupLayer />}
       <MergeLayer />
       <GroupSelection />
     </DiagramCanvas>

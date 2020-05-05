@@ -71,6 +71,7 @@ export enum BlockType {
   COMBINED = 'combined',
   COMMAND = 'command',
   COMMENT = 'comment',
+
   // basic
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
@@ -98,6 +99,10 @@ export enum BlockType {
   CANCEL_PAYMENT = 'cancel_payment',
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
+
+  MARKUP_TEXT = 'markup_text',
+  MARKUP_IMAGE = 'markup_image',
+  MARKUP_SHAPE = 'markup_shape',
 }
 
 export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];

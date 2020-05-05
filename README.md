@@ -226,7 +226,7 @@ yarn start --ff_pricingRevisions
 
 #### Available Flags and Environment Variables
 
-n/a
+- `ff_markup` / `FF_MARKUP`: enable the markup feature
 
 ## Previewing in an ephmeral environment
 

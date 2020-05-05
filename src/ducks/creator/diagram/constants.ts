@@ -15,4 +15,5 @@ export const INITIAL_DIAGRAM_STATE: DiagramState = {
   linksByNodeID: {},
   linkedNodesByNodeID: {},
   sections: {},
+  markupNodeIDs: [],
 };

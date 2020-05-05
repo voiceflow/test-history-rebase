@@ -11,12 +11,16 @@ import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';
 
-export type NodeStartBlockProps = Omit<BaseStartBlockProps, 'commands'> & {
-  invocationName: string;
-  isRootDiagram: boolean;
+type NodeExportedProps = {
   isFocused: boolean;
   isSelected: boolean;
 };
+
+export type NodeStartBlockProps = Omit<BaseStartBlockProps, 'commands'> &
+  NodeExportedProps & {
+    invocationName: string;
+    isRootDiagram: boolean;
+  };
 
 const getBlockState = ({ isFocused, isSelected, isHighlighted }: { isFocused: boolean; isSelected: boolean; isHighlighted: boolean }) => {
   if (isFocused) return BlockState.ACTIVE;
@@ -78,4 +82,4 @@ type ConnectedNodeStartBlockProps = ConnectedProps<typeof mapStateToProps, {}, t
 export default compose(
   connect(mapStateToProps, null, mergeProps, { forwardRef: true }),
   React.forwardRef
-)<React.PropsWithChildren<NodeStartBlockProps>, { api: BlockAPI }>(NodeStartBlock as React.FC);
+)(NodeStartBlock as any) as React.ForwardRefExoticComponent<NodeExportedProps & React.RefAttributes<{ api: BlockAPI }>>;

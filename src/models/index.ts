@@ -23,6 +23,7 @@ export * from './Integration';
 export * from './Intent';
 export * from './Slot';
 export * from './Workspace';
+export * from './Markup';
 
 export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;
 

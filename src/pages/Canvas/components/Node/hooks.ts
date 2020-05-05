@@ -14,6 +14,40 @@ import { NodeAPI, PortAPI, StepAPI } from '@/pages/Canvas/types';
 import { buildVirtualDOMRect, stopPropagation } from '@/utils/dom';
 import { isInRange } from '@/utils/number';
 
+export const useNodeLifecycle = () => {
+  const { nodeID, node } = useNode();
+  const engine = React.useContext(EngineContext)!;
+  const nodeCache = React.useRef(node);
+
+  nodeCache.current = node || nodeCache.current;
+
+  // redraw links when rendering
+  React.useEffect(() => {
+    if (node) {
+      engine.node.redrawLinks(nodeID);
+    }
+  }, [!!node]);
+
+  // update origin when changing position
+  React.useEffect(() => {
+    if (node) {
+      engine.node.setOrigin(nodeID, [node.x, node.y]);
+    }
+  }, [node?.x, node?.y]);
+
+  // redraw links in parent block when unmounting
+  React.useEffect(
+    () => () => {
+      const { parentNode } = nodeCache.current;
+
+      if (parentNode) {
+        engine.node.redrawNestedLinks(parentNode);
+      }
+    },
+    []
+  );
+};
+
 export const useStepAPI = <T extends HTMLElement>(
   isForceHighlighted: boolean,
   withPorts: boolean,

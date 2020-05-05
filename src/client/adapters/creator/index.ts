@@ -17,6 +17,7 @@ import portAdapter from './port';
 type DBNodeWithCoords = WithRequired<DBNode, 'x' | 'y'>;
 
 const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
 
 const findDiagramCenter = (nodes: DBNodeWithCoords[]): Point => {
   const xValues = nodes.map((node) => node.x);
@@ -41,7 +42,14 @@ const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
   CreatorDiagram,
   [PlatformType],
-  [{ linksByPortID: Record<string, string[]>; platform: PlatformType; nodes: Normalized<Node>; ports: Normalized<Port> }]
+  [
+    {
+      linksByPortID: Record<string, string[]>;
+      platform: PlatformType;
+      nodes: Normalized<Node>;
+      ports: Normalized<Port>;
+    }
+  ]
 >(
   (diagram, platform) => {
     const rootNodeIDs: string[] = [];
@@ -50,6 +58,7 @@ const creatorAdapter = createSimpleAdapter<
     const ports: Port[] = [];
     const portIDs: string[] = [];
     const data: Record<string, NodeData<unknown>> = {};
+    const markupNodeIDs: string[] = [];
 
     const registerNode = (node: DBNode, parentNode?: string) => {
       const nodeData = nodeDataAdapter.fromDB(node.extras, node);
@@ -80,6 +89,14 @@ const creatorAdapter = createSimpleAdapter<
 
       const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
       const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}${node.id}`;
+
+      if (MARKUP_NODES.includes(nodeType)) {
+        markupNodeIDs.push(node.id);
+
+        registerNode(node);
+
+        return;
+      }
 
       if (nodeType === BlockType.COMBINED) {
         _node = {
@@ -137,10 +154,12 @@ const creatorAdapter = createSimpleAdapter<
       links: validLinks,
       ports,
       data,
+      markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, rootNodeIDs, links, data }, { nodes, ports, linksByPortID, platform }) => {
+  ({ diagramID, viewport, rootNodeIDs, links, data, markupNodeIDs }, { nodes, ports, linksByPortID, platform }) => {
     const rootNodes = getAllNormalizedByKeys(nodes, rootNodeIDs);
+    const markupNodes = getAllNormalizedByKeys(nodes, markupNodeIDs);
 
     return {
       id: diagramID,
@@ -148,7 +167,7 @@ const creatorAdapter = createSimpleAdapter<
       offsetY: viewport.y,
       zoom: viewport.zoom,
       links: linkAdapter.mapToDB(links, { nodes }),
-      nodes: nodeAdapter.mapToDB(rootNodes, { nodes, ports, data, linksByPortID, platform }).map((node) => {
+      nodes: nodeAdapter.mapToDB([...rootNodes, ...markupNodes], { nodes, ports, data, linksByPortID, platform }).map((node) => {
         if (data[node.id].type !== BlockType.COMBINED || node.combines?.length !== 1) {
           return node;
         }

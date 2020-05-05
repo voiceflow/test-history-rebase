@@ -1,4 +1,4 @@
-import { UserRole } from '@/constants';
+import { PlanType, UserRole } from '@/constants';
 
 export type Workspace = {
   id: string;
@@ -64,5 +64,3 @@ export type SeatLimits = {
 };
 
 export type StripeStatus = 'incomplete_expired' | 'incomplete' | 'unpaid' | 'past_due';
-
-export type PlanType = 'pro' | 'team' | 'enterprise';

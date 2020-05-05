@@ -7,7 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType, PLANS, WORKSPACES_LIMIT } from '@/constants';
+import { FEATURE_IDS, ModalType, PlanType, WORKSPACES_LIMIT } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -71,7 +71,9 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                         <>
                           <MenuItem onClick={toggleCollaborators}>Collaborators</MenuItem>
                           <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
-                          {plan && plan !== PLANS.ENTERPRISE && <MenuItem onClick={togglePayment}>Upgrade</MenuItem>}
+                          {plan && (plan !== PlanType.ENTERPRISE || plan !== PlanType.OLD_ENTERPRISE) && (
+                            <MenuItem onClick={togglePayment}>Upgrade</MenuItem>
+                          )}
                           <MenuItem divider />
                           {plan ? (
                             <MenuItem disabled capitalize>

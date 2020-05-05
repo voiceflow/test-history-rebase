@@ -391,12 +391,6 @@ export const FEATURE_PERMISSIONS = {
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
-export enum PLANS {
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
-}
-
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
 
 export const UNLIMITED_SEAT_NUMBER = 100;
@@ -450,4 +444,16 @@ export enum KeyCode {
 export enum DisplayType {
   SPLASH = 'splash',
   ADVANCED = 'advanced',
+}
+
+export enum PlanType {
+  OLD_STARTER = 'old_starter',
+  OLD_PRO = 'old_pro',
+  OLD_TEAM = 'old_team',
+  OLD_ENTERPRISE = 'old_enterprise',
+
+  STARTER = 'starter',
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
 }

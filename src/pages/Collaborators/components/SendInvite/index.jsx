@@ -2,7 +2,7 @@ import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import { toast } from '@/components/Toast';
-import { ModalType, PLANS, UserRole } from '@/constants';
+import { ModalType, UserRole } from '@/constants';
 import {
   activeWorkspaceMembersSelector,
   planTypeSelector,
@@ -22,7 +22,7 @@ const OPTIONS_ARRAY = [
   { value: UserRole.VIEWER, label: 'can view' },
 ];
 
-function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, usedEditorSeats, usedViewerSeats }) {
+function SendInvite({ sendInvite, numberOfSeats, seatLimits, usedEditorSeats, usedViewerSeats }) {
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -52,16 +52,6 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
     setPermissionType(option);
   };
 
-  if (plan === PLANS.ENTERPRISE && members.length >= numberOfSeats) {
-    return (
-      <Container>
-        Enterprise Workspace Seat Limit Reached
-        <br />
-        Contact Voiceflow for Allocation
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <ButtonDropdownInput
@@ -74,7 +64,7 @@ function SendInvite({ plan, sendInvite, numberOfSeats, members, seatLimits, used
         onTextChange={setEmail}
       />
 
-      <SendInviteButton onClick={onSendInviteClick} disabled={!email} variant="secondary">
+      <SendInviteButton onClick={onSendInviteClick} variant="secondary">
         Send Invite
       </SendInviteButton>
     </Container>

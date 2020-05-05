@@ -4,8 +4,8 @@ import Badge from '@/components/Badge';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
+import { PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
-import { PlanType } from '@/models/Workspace';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 

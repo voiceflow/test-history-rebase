@@ -6,7 +6,7 @@ import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
-import { PLANS } from '@/constants';
+import { PlanType } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
@@ -57,7 +57,7 @@ function PlansDetails({
 
   const tabsOptions = React.useMemo(() => {
     return plans
-      .filter(({ id }) => id !== PLANS.ENTERPRISE)
+      .filter(({ id }) => id !== PlanType.ENTERPRISE || id !== PlanType.OLD_ENTERPRISE)
       .map((option) => {
         const price = option.pricing?.MO?.price;
         const dollarPrice = price ? price / 100 : null;

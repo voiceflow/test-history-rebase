@@ -10,7 +10,7 @@ import { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
-import { BillingPeriod, PERIOD_NAME, PLANS } from '@/constants';
+import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
 import { useDebouncedCallback, useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
 import { OnboardingProps } from '@/pages/OnboardingV2/types';
@@ -72,7 +72,7 @@ const Payment: React.FC<OnboardingProps> = () => {
 
   const getPrice = useDebouncedCallback(
     500,
-    async (plan: PLANS, numberOfSeats: number, paymentPeriod: BillingPeriod, coupon: string) => {
+    async (plan: PlanType, numberOfSeats: number, paymentPeriod: BillingPeriod, coupon: string) => {
       const { price, errors } = await client.workspace.calculatePrice(GET_PRICE_WITHOUT_TEAM_ID_CONST, {
         plan: plan!,
         seats: numberOfSeats,

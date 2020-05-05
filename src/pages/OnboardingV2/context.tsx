@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
-import { BillingPeriod, PLANS, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { BillingPeriod, PlanType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import { userSelector } from '@/ducks/account';
 import { goToDashboard } from '@/ducks/router';
 import {
@@ -18,7 +18,6 @@ import {
 } from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useSmartReducer, useTrackingEvents } from '@/hooks';
-import { PlanType } from '@/models';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
@@ -114,7 +113,7 @@ export enum onBoardingType {
 
 type OnboardingProviderProps = {
   workspaces: string[];
-  query: { ob_payment?: string; ob_plan?: PLANS; ob_coupon?: any; ob_period?: BillingPeriod; invite?: string };
+  query: { ob_payment?: string; ob_plan?: PlanType; ob_coupon?: any; ob_period?: BillingPeriod; invite?: string };
   numberOfSteps?: number;
   children: React.ReactNode;
   createWorkspace: (data: { name: string; image: string }) => { id: string };
@@ -157,18 +156,18 @@ const extractQueryParams = ({
   ob_period,
   invite,
 }: {
-  ob_plan?: PLANS;
+  ob_plan?: PlanType;
   ob_coupon?: any;
   ob_period?: BillingPeriod;
   invite?: string;
 }) => {
   const configurations = {
-    plan: PLANS.PRO,
+    plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
     couponCode: ob_coupon || '',
     flow: invite ? onBoardingType.join : onBoardingType.create,
   };
-  if (ob_plan && Object.values(PLANS).includes(ob_plan)) {
+  if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
     configurations.plan = ob_plan;
   }
 

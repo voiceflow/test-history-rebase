@@ -8,6 +8,8 @@ import Section, { SectionToggleVariant } from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
@@ -23,8 +25,8 @@ import {
   SAVE_SETTINGS_DEBOUNCE_DELAY,
 } from './constants';
 
-function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
-  const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta, importToken } = meta;
+function Basic({ meta, skill, getImportToken, saveSkillSettings, isFeatureEnabled }) {
+  const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta } = meta;
   const { name: nameSkill } = skill;
 
   const [state, actions] = useSyncedSmartReducer({
@@ -223,16 +225,18 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
           <RadioGroup options={REPEAT_OPTIONS} name="multiple" checked={repeat || 1} onChange={setRepeat} />
         </FormControl>
       </Section>
-      <Section
-        collapseVariant={SectionToggleVariant.ARROW}
-        header="Downloadable Link"
-        isDividerNested
-        headerToggle={true}
-        tooltip="This link allows someone to import this project into their Voiceflow Account"
-        tooltipProps={{ portalNode: document.body }}
-      >
-        <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${importToken}`} id="shareLink" />
-      </Section>
+      {!isFeatureEnabled && (
+        <Section
+          collapseVariant={SectionToggleVariant.ARROW}
+          header="Downloadable Link"
+          isDividerNested
+          headerToggle={true}
+          tooltip="This link allows someone to import this project into their Voiceflow Account"
+          tooltipProps={{ portalNode: document.body }}
+        >
+          <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${meta?.importToken}`} id="shareLink" />
+        </Section>
+      )}
     </FormControl>
   );
 }
@@ -240,6 +244,7 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
 const mapStateToProps = {
   meta: skillMetaSelector,
   skill: activeSkillSelector,
+  isFeatureEnabled: Feature.featureSelector,
 };
 
 const mapDispatchToProps = {
@@ -247,4 +252,8 @@ const mapDispatchToProps = {
   getImportToken,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Basic);
+const mergeProps = ({ isFeatureEnabled: featureSelector }) => ({
+  isFeatureEnabled: featureSelector(FeatureFlag.PRICING_REVISIONS),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Basic);

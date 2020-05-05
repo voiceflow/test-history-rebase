@@ -16,6 +16,7 @@ export function useDismissable(
 
   const handleClose = React.useCallback(
     (event?: MouseEvent) => {
+      if (event?.defaultPrevented) return;
       if (ref?.current?.contains?.(event?.target as Element)) {
         return;
       }

@@ -2,7 +2,9 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import IconButton from '@/components/IconButton';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
+import * as Feature from '@/ducks/feature';
 import { setError } from '@/ducks/modal';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -12,6 +14,7 @@ import { SettingsModalConsumer } from '@/pages/Settings/contexts';
 
 import Alexa from './Alexa';
 import Google from './Google';
+import ShareProject from './ShareProject';
 import { SubTitleGroup } from './styled';
 
 function ActionGroup(props) {
@@ -43,10 +46,7 @@ function ActionGroup(props) {
           )}
         </SettingsModalConsumer>
       </SubTitleGroup>
-      <SubTitleGroup>
-        <PrototypeShare render />
-      </SubTitleGroup>
-
+      <SubTitleGroup>{props.isFeatureEnabled ? <ShareProject render /> : <PrototypeShare render />}</SubTitleGroup>
       {renderPlatform()}
     </>
   );
@@ -54,10 +54,15 @@ function ActionGroup(props) {
 
 const mapStateToProps = {
   platform: activePlatformSelector,
+  isFeatureEnabled: Feature.featureSelector,
 };
 
 const mapDispatchToProps = {
   setError,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);
+const mergeProps = ({ isFeatureEnabled: featureSelector }) => ({
+  isFeatureEnabled: featureSelector(FeatureFlag.PRICING_REVISIONS),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ActionGroup);

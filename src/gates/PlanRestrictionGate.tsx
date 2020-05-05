@@ -18,7 +18,7 @@ const PlanRestrictionGate: React.FC<PlanRestrictionGateProps & ConnectedPlanRest
   goToHome,
   children,
 }) => {
-  const { open: openRestrictionModal } = useModals(ModalType.REALTIME_RESTRICTION);
+  const { open: openRestrictionModal } = useModals(ModalType.REALTIME_DENIED);
 
   const lockProject = React.useCallback(() => {
     if (hasRestriction) {

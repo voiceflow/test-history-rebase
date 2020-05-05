@@ -3,6 +3,8 @@ import React from 'react';
 import { PrimaryButton, SecondaryButton, TertiaryButton } from './components';
 import { ButtonVariant } from './constants';
 
+export { ButtonVariant };
+
 const BUTTON_VARIANTS = {
   [ButtonVariant.PRIMARY]: PrimaryButton,
   [ButtonVariant.SECONDARY]: SecondaryButton,

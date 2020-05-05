@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@/components/Button';
+import Button, { ButtonVariant } from '@/components/Button';
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { goToCurrentCanvas } from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -24,7 +24,7 @@ function PrototypeHeader({ goToCurrentCanvas, status }) {
       <SubTitleGroup>
         <PrototypeShare />
       </SubTitleGroup>
-      <Button icon="exitFullscreen" variant="secondary" onClick={goToCurrentCanvas}>
+      <Button icon="exitFullscreen" variant={ButtonVariant.SECONDARY} onClick={goToCurrentCanvas}>
         Return to Canvas
       </Button>
     </>

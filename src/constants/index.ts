@@ -360,7 +360,10 @@ export enum ModalType {
   ONBOARDING = 'onboarding',
 
   FREE_PROJECT_LIMIT = 'free-project-limit',
-  REALTIME_RESTRICTION = 'realtime-restriction',
+  REALTIME_DENIED = 'realtime-denied',
+  PROJECT_DOWNLOAD = 'project-download',
+  TESTABLE_LINKS = 'testable-links',
+  SHARE_MENU = 'share-menu',
 }
 
 export enum UserRole {

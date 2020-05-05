@@ -2,7 +2,6 @@ import React from 'react';
 
 import { BlockState } from '@/constants/canvas';
 
-import Content from './BlockContent';
 import Header, { BlockHeaderProps } from './BlockHeader';
 import Container from './BlockSectionContainer';
 
@@ -18,7 +17,7 @@ const BlockSection: React.FC<BlockSectionProps> = ({ state, children, ...props }
   return (
     <Container>
       <Header {...props} disabled={state === BlockState.DISABLED} isActivated={isActivated} />
-      <Content>{children}</Content>
+      <section>{children}</section>
     </Container>
   );
 };

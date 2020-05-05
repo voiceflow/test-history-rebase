@@ -243,6 +243,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border: 4px solid white;
 }
 
+.c7:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -368,10 +372,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   padding: 0 5px;
 }
 
-.c7 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -438,12 +438,9 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c7"
-    >
+    <section>
       <div
-        className="c8"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -454,38 +451,43 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c8"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c14"
-                color="#5589eb"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgAddTeammate"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c16"
+                className="c13"
               >
-                Alexa, open Headspace
+                <span
+                  className="c4 c14"
+                  color="#5589eb"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAddTeammate"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c15"
+              >
+                <div
+                  className="c16"
+                >
+                  Alexa, open Headspace
+                </div>
+              </span>
+              <div
+                className="c17"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -537,12 +539,9 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c7"
-    >
+    <section>
       <div
-        className="c19"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -553,40 +552,44 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c19"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c20"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c13"
               >
-                Help
+                <span
+                  className="c4 c20"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c15"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Help
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="c19"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -597,34 +600,39 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c19"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c20"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c13"
               >
-                Stop
+                <span
+                  className="c4 c20"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c15"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Stop
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -889,6 +897,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -990,10 +1002,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1047,12 +1055,9 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1063,46 +1068,51 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgInFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Conversation continues here
+                <span
+                  className="c11 c12"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgInFlow"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Conversation continues here
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1154,12 +1164,9 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c18"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1170,40 +1177,44 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c18"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c20"
+              className="c8 c9"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c10"
               >
-                Help
+                <span
+                  className="c11 c19"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c20"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Help
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="c18"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1214,34 +1225,39 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c18"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c19"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c20"
+              className="c8 c9"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c10"
               >
-                Stop
+                <span
+                  className="c11 c19"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c20"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Stop
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -1420,6 +1436,10 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1521,10 +1541,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1578,12 +1594,9 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1594,38 +1607,43 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgInFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Conversation continues here
+                <span
+                  className="c11 c12"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgInFlow"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Conversation continues here
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1874,6 +1892,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1975,10 +1997,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2032,12 +2050,9 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2048,38 +2063,43 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgInFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Conversation continues here
+                <span
+                  className="c11 c12"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgInFlow"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Conversation continues here
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2131,12 +2151,9 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c16"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2147,40 +2164,44 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c16"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c17"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c18"
+              className="c8 c9"
             >
               <div
-                className="c19"
-                onClick={[Function]}
+                className="c10"
               >
-                Help
+                <span
+                  className="c11 c17"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c18"
+              >
+                <div
+                  className="c19"
+                  onClick={[Function]}
+                >
+                  Help
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="c16"
-        draggable={false}
+        className="c4"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2191,34 +2212,39 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c16"
+          draggable={false}
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c17"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c18"
+              className="c8 c9"
             >
               <div
-                className="c19"
-                onClick={[Function]}
+                className="c10"
               >
-                Stop
+                <span
+                  className="c11 c17"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c18"
+              >
+                <div
+                  className="c19"
+                  onClick={[Function]}
+                >
+                  Stop
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -2470,6 +2496,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border: 4px solid white;
 }
 
+.c7:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2595,10 +2625,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   padding: 0 5px;
 }
 
-.c7 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2665,12 +2691,9 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c7"
-    >
+    <section>
       <div
-        className="c8"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2681,38 +2704,43 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c8"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c14"
-                color="#5589eb"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgAddTeammate"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c16"
+                className="c13"
               >
-                Hey Google, start Headspace
+                <span
+                  className="c4 c14"
+                  color="#5589eb"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAddTeammate"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c15"
+              >
+                <div
+                  className="c16"
+                >
+                  Hey Google, start Headspace
+                </div>
+              </span>
+              <div
+                className="c17"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2764,12 +2792,9 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c7"
-    >
+    <section>
       <div
-        className="c19"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2780,40 +2805,44 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c19"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c20"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c13"
               >
-                Help
+                <span
+                  className="c4 c20"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c15"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Help
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="c19"
-        draggable={false}
+        className="c7"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2824,34 +2853,39 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c9 c10"
+          className="c19"
+          draggable={false}
         >
           <div
-            className="c11 c12"
+            className="c9 c10"
           >
             <div
-              className="c13"
-            >
-              <span
-                className="c4 c20"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgFlow"
-                />
-              </span>
-            </div>
-            <span
-              className="c15"
+              className="c11 c12"
             >
               <div
-                className="c21"
-                onClick={[Function]}
+                className="c13"
               >
-                Stop
+                <span
+                  className="c4 c20"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgFlow"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c15"
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  Stop
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>

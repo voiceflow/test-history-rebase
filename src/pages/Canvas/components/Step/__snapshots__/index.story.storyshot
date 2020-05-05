@@ -149,6 +149,10 @@ exports[`Storyshots Creator/Step Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -250,10 +254,6 @@ exports[`Storyshots Creator/Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -307,36 +307,38 @@ exports[`Storyshots Creator/Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -490,6 +492,10 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -591,10 +597,6 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -648,36 +650,38 @@ exports[`Storyshots Creator/Step Primary 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Primary Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Primary Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -831,6 +835,10 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -932,10 +940,6 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -989,36 +993,38 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Secondary Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Secondary Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1192,6 +1198,10 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1293,10 +1303,6 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1350,44 +1356,46 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c14"
-            >
-              <path
-                className="c15"
-                d="M 0 4 L 13 4"
+                className="c10"
               />
-            </svg>
+              <span
+                className="c11"
+              >
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c14"
+              >
+                <path
+                  className="c15"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1653,6 +1661,10 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1754,10 +1766,6 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1811,128 +1819,130 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c14"
-            >
-              <path
-                className="c15"
-                d="M 0 4 L 13 4"
+                className="c10"
               />
-            </svg>
+              <span
+                className="c11"
+              >
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c14"
+              >
+                <path
+                  className="c15"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c16 c17"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
+              </div>
               <span
-                className="c16 c17"
+                className="c11"
+              >
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c18"
                 color="#d94c4c"
-                size={16}
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c14"
               >
-                <svg
-                  data-file-name="SvgError"
+                <path
+                  className="c15"
+                  d="M 0 4 L 13 4"
                 />
-              </span>
+              </svg>
             </div>
-            <span
-              className="c11"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
               >
-                Step
+                <span
+                  className="c16 c19"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c14"
-            >
-              <path
-                className="c15"
-                d="M 0 4 L 13 4"
-              />
-            </svg>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c16 c19"
-                color="#279745"
-                size={16}
+                className="c11"
               >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
               </span>
-            </div>
-            <span
-              className="c11"
-            >
               <div
-                className="c12"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c20"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c14"
-            >
-              <path
-                className="c15"
-                d="M 0 4 L 13 4"
+                className="c20"
+                color="#279745"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c14"
+              >
+                <path
+                  className="c15"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -2134,6 +2144,10 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2235,10 +2249,6 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2292,76 +2302,78 @@ exports[`Storyshots Creator/Step With Else 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="red"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCode"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Step
+                <span
+                  className="c11 c12"
+                  color="red"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCode"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c16"
-                color="#6e849a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgElse"
-                />
-              </span>
-            </div>
-            <span
-              className="c17"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Else
+                <span
+                  className="c11 c16"
+                  color="#6e849a"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgElse"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c17"
+              >
+                <div
+                  className="c14"
+                >
+                  Else
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -2536,6 +2548,10 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2637,10 +2653,6 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2694,46 +2706,48 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="red"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCode"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Step With Icon
+                <span
+                  className="c11 c12"
+                  color="red"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCode"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Step With Icon
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2906,6 +2920,10 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -3007,10 +3025,6 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -3064,44 +3078,46 @@ exports[`Storyshots Creator/Step With Image 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Step
-              </div>
-            </span>
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c14"
+          >
             <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
+              className="c15"
             />
           </div>
-        </div>
-        <div
-          className="c14"
-        >
-          <div
-            className="c15"
-          />
         </div>
       </div>
     </section>
@@ -3254,6 +3270,10 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -3355,10 +3375,6 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -3412,36 +3428,38 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -3565,6 +3583,10 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -3666,10 +3688,6 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -3723,31 +3741,33 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </div>
-            </span>
+                <div
+                  className="c12"
+                >
+                  Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -3942,6 +3962,10 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -4043,10 +4067,6 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -4100,149 +4120,151 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c12"
+                  color="red"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCode"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c12"
-                color="red"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgCode"
-                />
+                <div
+                  className="c14"
+                >
+                  Step
+                </div>
               </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
-              />
-            </svg>
           </div>
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
-              >
-                Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
-              </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
+                className="c10"
               />
-            </svg>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
+            <div
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Cupidatat dolor non est non esse. Consectetur veniam nisi exercitation.
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
+                className="c10"
               />
-            </svg>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c15"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -4396,6 +4418,10 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -4497,10 +4523,6 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -4554,36 +4576,38 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                This step has a placeholder
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  This step has a placeholder
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -4835,6 +4859,10 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -4936,10 +4964,6 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -4993,104 +5017,106 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c14 c15"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
+              </div>
               <span
-                className="c14 c15"
+                className="c11"
+              >
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c16"
                 color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgError"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c11"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
               >
-                Step
+                <span
+                  className="c14 c17"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c16"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c14 c17"
-                color="#279745"
-                size={16}
+                className="c11"
               >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
               </span>
-            </div>
-            <span
-              className="c11"
-            >
               <div
-                className="c12"
-              >
-                Step
-              </div>
-            </span>
-            <div
-              className="c18"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c18"
+                color="#279745"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -5248,6 +5274,10 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -5349,10 +5379,6 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -5406,36 +5432,38 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Step
-              </div>
-            </span>
-            <div
-              className="c13"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                <div
+                  className="c12"
+                >
+                  Step
+                </div>
+              </span>
+              <div
+                className="c13"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -5559,6 +5587,10 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -5660,10 +5692,6 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -5717,31 +5745,33 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            />
-            <span
-              className="c11"
+              className="c8 c9"
             >
               <div
-                className="c12"
+                className="c10"
+              />
+              <span
+                className="c11"
               >
-                Step without port
-              </div>
-            </span>
+                <div
+                  className="c12"
+                >
+                  Step without port
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -220,6 +220,10 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -321,10 +325,6 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -378,107 +378,109 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c15"
-                color="#f83f55"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgVolume"
-                />
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                </div>
               </span>
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c17"
+                className="c10"
               >
-                man_breathing_heavily(loud).mp3
+                <span
+                  className="c11 c15"
+                  color="#f83f55"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgVolume"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
+                <div
+                  className="c17"
+                >
+                  man_breathing_heavily(loud).mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#6e849a"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c19"
-            >
-              <path
-                className="c20"
-                d="M 0 4 L 13 4"
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                </div>
+              </span>
+              <div
+                className="c18"
+                color="#6e849a"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c19"
+              >
+                <path
+                  className="c20"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -627,6 +629,10 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -728,10 +734,6 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -785,41 +787,43 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                What will Alexa say?
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  What will Alexa say?
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -1032,6 +1036,10 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1133,10 +1141,6 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1190,99 +1194,101 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c15"
-                color="#f83f55"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgVolume"
-                />
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                </div>
               </span>
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c17"
+                className="c10"
               >
-                man_breathing_heavily(loud).mp3
+                <span
+                  className="c11 c15"
+                  color="#f83f55"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgVolume"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
+                <div
+                  className="c17"
+                >
+                  man_breathing_heavily(loud).mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#6e849a"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                </div>
+              </span>
+              <div
+                className="c18"
+                color="#6e849a"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1466,6 +1472,10 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1567,10 +1577,6 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1624,47 +1630,49 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeakRandomized"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeakRandomized"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              color="#6e849a"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                </div>
+              </span>
+              <div
+                className="c15"
+                color="#6e849a"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1848,6 +1856,10 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1949,10 +1961,6 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2006,47 +2014,49 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              color="#6e849a"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                </div>
+              </span>
+              <div
+                className="c15"
+                color="#6e849a"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2229,6 +2239,10 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
   -webkit-line-clamp: 4;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2330,10 +2344,6 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2387,93 +2397,95 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces.
+                </div>
+              </span>
+            </div>
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c15"
-                color="#f83f55"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgVolume"
-                />
-              </span>
-            </div>
-            <span
-              className="c16"
+              className="c8 c9"
             >
               <div
-                className="c17"
+                className="c10"
               >
-                man_breathing_heavily(loud).mp3
+                <span
+                  className="c11 c15"
+                  color="#f83f55"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgVolume"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-          <div
-            className="c8 c9"
-          >
+              <span
+                className="c16"
+              >
+                <div
+                  className="c17"
+                >
+                  man_breathing_heavily(loud).mp3
+                </div>
+              </span>
+            </div>
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#8f8e94"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgSpeak"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                <span
+                  className="c11 c12"
+                  color="#8f8e94"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgSpeak"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Welcome to Voiceflow, the best way to design, prototype and build conversational interfaces. Welcome to Voiceflow, the best way to design.
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>

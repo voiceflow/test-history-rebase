@@ -3,8 +3,8 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
-import { userSelector } from '@/ducks/account';
-import { addIntegrationUser } from '@/ducks/integration';
+import * as Account from '@/ducks/account';
+import * as Integration from '@/ducks/integration';
 import { connect } from '@/hocs/connect';
 
 class FeedAddUserModal extends Component {
@@ -53,11 +53,11 @@ class FeedAddUserModal extends Component {
 }
 
 const mapStateToProps = {
-  user: userSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  addUser: (body) => addIntegrationUser('Zapier', body),
+  addUser: (body) => Integration.addIntegrationUser('Zapier', body),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedAddUserModal);

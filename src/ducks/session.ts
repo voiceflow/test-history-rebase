@@ -11,11 +11,13 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import { ROOT_DOMAIN } from '@/config';
 import { SessionType } from '@/constants';
+import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
-import { identifyLogRocketUser } from '@/vendors/logRocket';
+import * as LogRocket from '@/vendors/logRocket';
+import * as Userflow from '@/vendors/userflow';
 
-import { resetAccount, updateAccount } from './account';
+import * as Account from './account';
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
 import { compositeReducer, createAction, createRootSelector } from './utils';
 
@@ -133,7 +135,7 @@ export const updateAuthToken = (token: string | null): Thunk => async (dispatch)
 
 export const resetSession = (): Thunk => async (dispatch) => {
   await dispatch(updateAuthToken(null));
-  dispatch(resetAccount());
+  dispatch(Account.resetAccount());
   dispatch(goToLogin());
 };
 
@@ -148,6 +150,11 @@ export const logout = (): Thunk => async (dispatch) => {
   await dispatch(resetSession());
 };
 
+export const identifyUser = (user: Models.Account) => {
+  LogRocket.identify(user);
+  Userflow.identify(user);
+};
+
 export const restoreSession = (): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
@@ -157,9 +164,9 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     const user = await client.user.get();
 
     await client.socket!.auth(token, browserID, tabID);
-    dispatch(updateAccount(user));
+    dispatch(Account.updateAccount(user));
 
-    identifyLogRocketUser(user);
+    identifyUser(user);
   } catch (err) {
     await dispatch(resetSession());
   }
@@ -175,7 +182,7 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
   await dispatch(updateAuthToken(token));
 
   await client.socket!.auth(token, browserID, tabID);
-  dispatch(updateAccount(user));
+  dispatch(Account.updateAccount(user));
 
   const location = ConnectedReactRouter.getLocation(state);
   const search = queryString.parse(location.search);
@@ -192,7 +199,7 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
     dispatch(goToOnboarding());
   }
 
-  identifyLogRocketUser(user);
+  identifyUser(user);
 };
 
 export const signup = createSession(SessionType.SIGN_UP);

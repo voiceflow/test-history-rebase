@@ -8,7 +8,6 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import { PlatformType } from '@/constants';
-import * as Account from '@/ducks/account';
 import * as List from '@/ducks/lists';
 import * as Router from '@/ducks/router';
 import * as Template from '@/ducks/template';
@@ -153,7 +152,6 @@ class Templates extends React.Component {
 }
 
 const mapStateToProps = {
-  user: Account.userSelector,
   workspaceID: Workspace.activeWorkspaceIDSelector,
 };
 

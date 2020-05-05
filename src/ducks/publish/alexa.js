@@ -6,24 +6,17 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { PlatformType } from '@/constants';
-import { amazonVendorsSelector, getVendors } from '@/ducks/account';
-import { saveActiveDiagram } from '@/ducks/diagram';
-import {
-  activeLocalesSelector,
-  activeProjectIDSelector,
-  activeSkillIDSelector,
-  invNameSelector,
-  publishPlatformSelectors,
-  updatePublishPlatforms,
-} from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as Diagram from '@/ducks/diagram';
+import * as Skill from '@/ducks/skill';
 
 import { createPublishStateSelector, createUploadStep, invNameError } from './utils';
 
 export { invNameError };
 
 export const PLATFORM = PlatformType.ALEXA;
-export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
-export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
+export const publishInfoSelector = Skill.publishPlatformSelectors[PLATFORM];
+export const updatePublishInfo = Skill.updatePublishPlatforms[PLATFORM];
 
 export const amznIDSelector = createSelector(publishInfoSelector, ({ amznID }) => amznID);
 
@@ -202,7 +195,7 @@ const uploadStep = createUploadStep(PLATFORM);
 export const submitForReview = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
-    const skillID = activeSkillIDSelector(state);
+    const skillID = Skill.activeSkillIDSelector(state);
     const amznID = amznIDSelector(state);
 
     dispatch(updateAlexaStage(ALEXA_STAGES.SUBMITTING_SKILL));
@@ -253,7 +246,7 @@ export const checkInteractionModel = () =>
     const state = getState();
     // get submit option
     const { options } = publishStateSelector(state);
-    const locales = activeLocalesSelector(state);
+    const locales = Skill.activeLocalesSelector(state);
     const amznID = amznIDSelector(state);
 
     dispatch(updateAlexaStage(ALEXA_STAGES.CHOICE_MODEL));
@@ -295,7 +288,7 @@ export const checkInteractionModel = () =>
 // STEP 5
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = activeProjectIDSelector(getState());
+    const projectID = Skill.activeProjectIDSelector(getState());
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOADING_ALEXA));
     try {
       const { data: amznID } = await axios.post(`/project/${projectID}/version/${newVersionId}/alexa`);
@@ -332,11 +325,11 @@ export const submitProject = (newVersionId) =>
 // STEP 4
 export const renderProject = () =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = activeProjectIDSelector(getState());
+    const projectID = Skill.activeProjectIDSelector(getState());
 
     dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING));
     try {
-      await dispatch(saveActiveDiagram());
+      await dispatch(Diagram.saveActiveDiagram());
       const {
         new_skill: { skill_id: newVersionId },
       } = (await axios.post(`/project/${projectID}/render`, { platform: 'alexa' })).data;
@@ -351,8 +344,8 @@ export const renderProject = () =>
 export const checkInvName = () =>
   uploadStep((dispatch, getState) => {
     const state = getState();
-    const locales = activeLocalesSelector(state);
-    const invName = invNameSelector(state);
+    const locales = Skill.activeLocalesSelector(state);
+    const invName = Skill.invNameSelector(state);
 
     if (invNameError(invName, locales)) return dispatch(updateAlexaStage(ALEXA_STAGES.INVALID_INV_NAME));
     dispatch(renderProject());
@@ -361,13 +354,13 @@ export const checkInvName = () =>
 // STEP 2 - check that user has vendors (developer account) associated with his amazon account
 export const checkVendors = () =>
   uploadStep(async (dispatch, getState) => {
-    if (!getState().account?.amazon?.vendors?.length) {
+    if (!Account.amazonVendorsSelector(getState()).length) {
       // get vendors and check again
       dispatch(updateAlexaStage(ALEXA_STAGES.CHECKING_VENDOR));
-      await dispatch(getVendors());
+      await dispatch(Account.getVendors());
 
       // STEP 2.5: if no vendors again then send to developer account screen
-      if (!getState().account?.amazon?.vendors?.length) {
+      if (!Account.amazonVendorsSelector(getState()).length) {
         dispatch(updateAlexaStage(ALEXA_STAGES.NO_VENDOR));
         return;
       }
@@ -379,7 +372,7 @@ export const checkVendors = () =>
 // STEP 1 - check that user is logged in with valid amazon account
 export const AmazonLogin = () =>
   uploadStep((dispatch, getState) => {
-    if (!getState().account.amazon) return dispatch(updateAlexaStage(ALEXA_STAGES.AMAZON_LOGIN));
+    if (!Account.amazonAccountSelector(getState())) return dispatch(updateAlexaStage(ALEXA_STAGES.AMAZON_LOGIN));
     dispatch(checkVendors());
   });
 
@@ -397,17 +390,17 @@ export const publish = (options = {}) => (dispatch, getState) => {
 
 export const updateVendor = (vendorId) => async (dispatch, getState) => {
   const state = getState();
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
 
   const amznID = (await client.project.updateVendorId(projectID, vendorId)) || null;
   dispatch(updatePublishInfo({ amznID, vendorId }));
 };
 
 export const syncVendors = () => async (dispatch, getState) => {
-  await dispatch(getVendors());
+  await dispatch(Account.getVendors());
 
   const state = getState();
-  const vendors = amazonVendorsSelector(state);
+  const vendors = Account.amazonVendorsSelector(state);
   const skillVendor = vendorIdSelector(state);
 
   if (skillVendor && vendors.length && !vendors.includes(skillVendor)) {

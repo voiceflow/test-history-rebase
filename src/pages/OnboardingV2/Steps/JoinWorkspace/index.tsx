@@ -2,18 +2,15 @@ import React from 'react';
 
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
-import { updateAccount } from '@/ducks/account';
+import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { OnboardingContext } from '@/pages/OnboardingV2/context';
+import { ConnectedProps } from '@/types';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-type JoinWorkspaceProps = {
-  updateAccount: (data: { image: string }) => void;
-};
-
-const JoinWorkspace: React.FC<JoinWorkspaceProps> = ({ updateAccount }) => {
+const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ updateAccount }) => {
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
@@ -55,7 +52,9 @@ const JoinWorkspace: React.FC<JoinWorkspaceProps> = ({ updateAccount }) => {
 };
 
 const mapDispatchToProps = {
-  updateAccount,
+  updateAccount: Account.updateAccount,
 };
+
+export type ConnectedJoinWorkspaceProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(JoinWorkspace);

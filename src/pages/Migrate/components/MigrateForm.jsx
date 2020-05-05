@@ -7,9 +7,9 @@ import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Input from '@/components/Input';
 import Menu, { MenuItem } from '@/components/Menu';
-import { amazonAccountSelector } from '@/ducks/account';
-import { amznIDSelector, updatePublishInfo, updateVendor, vendorIdSelector } from '@/ducks/publish/alexa';
-import { activeProjectIDSelector } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 function Migrate({ amznID, amazonAccount, projectID, updateVendor, updatePublishInfo, vendorID, onError, onSuccess }) {
@@ -81,15 +81,15 @@ function Migrate({ amznID, amazonAccount, projectID, updateVendor, updatePublish
 }
 
 const mapStateToProps = {
-  amznID: amznIDSelector,
-  projectID: activeProjectIDSelector,
-  amazonAccount: amazonAccountSelector,
-  vendorID: vendorIdSelector,
+  amznID: AlexaPublish.amznIDSelector,
+  projectID: Skill.activeProjectIDSelector,
+  amazonAccount: Account.amazonAccountSelector,
+  vendorID: AlexaPublish.vendorIdSelector,
 };
 
 const mapDispatchToProps = {
-  updatePublishInfo,
-  updateVendor,
+  updatePublishInfo: AlexaPublish.updatePublishInfo,
+  updateVendor: AlexaPublish.updateVendor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Migrate);

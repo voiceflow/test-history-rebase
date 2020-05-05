@@ -1,9 +1,10 @@
-import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI, UpdateOptions } from 'react-intercom';
 
 import { INTERCOM_ENABLED, LOGROCKET_PROJECT } from '@/config';
+import { Account, Workspace } from '@/models';
+import { NullableRecord } from '@/types';
 
-// eslint-disable-next-line import/prefer-default-export
-export function createIntercomUser(user, workspace = {}) {
+export function createUser(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace) {
   return user.creator_id
     ? {
         // user info
@@ -23,4 +24,4 @@ export function createIntercomUser(user, workspace = {}) {
       };
 }
 
-export const updateSettings = (data) => INTERCOM_ENABLED && IntercomAPI('update', data);
+export const updateSettings = (data: UpdateOptions) => INTERCOM_ENABLED && IntercomAPI('update', data);

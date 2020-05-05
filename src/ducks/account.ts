@@ -26,6 +26,7 @@ export const INITIAL_STATE: AccountState = {
   image: null,
   amazon: null,
   google: null,
+  created: null,
 };
 
 export enum AccountAction {
@@ -39,7 +40,7 @@ export enum AccountAction {
 
 export type UpdateGoogleAccount = Action<AccountAction.UPDATE_GOOGLE_ACCOUNT, Account.Google>;
 
-export type UpdateAmazonAccount = Action<AccountAction.UPDATE_AMAZON_ACCOUNT, Account.Amazon>;
+export type UpdateAmazonAccount = Action<AccountAction.UPDATE_AMAZON_ACCOUNT, Partial<Account.Amazon>>;
 
 export type UpdateAccount = Action<AccountAction.UPDATE_ACCOUNT, Partial<AccountState>>;
 
@@ -72,11 +73,17 @@ export default accountReducer;
 
 export const userSelector = createRootSelector(STATE_KEY);
 
-export const userIDSelector = createSelector(userSelector, ({ creator_id }) => creator_id);
+export const userIDSelector = createSelector([userSelector], ({ creator_id }) => creator_id);
 
-export const amazonAccountSelector = createSelector(userSelector, ({ amazon }) => amazon);
+export const userEmailSelector = createSelector([userSelector], ({ email }) => email);
 
-export const amazonVendorsSelector = createSelector(amazonAccountSelector, (amazon) => amazon?.vendors ?? []);
+export const amazonAccountSelector = createSelector([userSelector], ({ amazon }) => amazon);
+
+export const amazonVendorsSelector = createSelector([amazonAccountSelector], (amazon) => amazon?.vendors ?? []);
+
+export const googleAccountSelector = createSelector([userSelector], ({ google }) => google);
+
+export const googleEmailSelector = createSelector([googleAccountSelector], (google) => google?.profile?.email || '0');
 
 // action creators
 
@@ -84,7 +91,8 @@ export const resetAccount = (): ResetAccount => createAction(AccountAction.RESET
 
 export const updateAccount = (account: Partial<AccountState>): UpdateAccount => createAction(AccountAction.UPDATE_ACCOUNT, account);
 
-export const updateAmazonAccount = (account: Account.Amazon): UpdateAmazonAccount => createAction(AccountAction.UPDATE_AMAZON_ACCOUNT, account);
+export const updateAmazonAccount = (account: Partial<Account.Amazon>): UpdateAmazonAccount =>
+  createAction(AccountAction.UPDATE_AMAZON_ACCOUNT, account);
 
 export const updateGoogleAccount = (account: Account.Google): UpdateGoogleAccount => createAction(AccountAction.UPDATE_GOOGLE_ACCOUNT, account);
 

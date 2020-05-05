@@ -1,24 +1,26 @@
-/* eslint-disable no-secrets/no-secrets */
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import { checkAmazonAccount } from '@/ducks/account';
-import { ALEXA_STAGES, ALEXA_STATES, resetAlexaUpload, syncVendors } from '@/ducks/publish/alexa';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
+import { connect } from '@/hocs';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 
 import { Close, PopupContainer, PopupTransition } from '../styled';
 import Upload from './Upload';
 
 const AlexaActionGroup = (props) => {
-  const { stage, id, amazon, checkAmazonAccount, syncVendors, resetAlexaUpload } = props;
-  const [open, setOpen] = useState(false);
+  const { alexaPublish, amazon, checkAmazonAccount, syncVendors, resetAlexaUpload } = props;
+  const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
-    if (stage === ALEXA_STAGES.IDLE) setOpen(false);
-    else if (ALEXA_STATES[stage].end) setOpen(true);
-  }, [stage, id]);
+  React.useEffect(() => {
+    if (alexaPublish.stage === AlexaPublish.ALEXA_STAGES.IDLE) {
+      setOpen(false);
+    } else if (AlexaPublish.ALEXA_STATES[alexaPublish.stage].end) {
+      setOpen(true);
+    }
+  }, [alexaPublish.stage, alexaPublish.id]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!amazon) {
       (async () => {
         await checkAmazonAccount();
@@ -42,15 +44,15 @@ const AlexaActionGroup = (props) => {
   );
 };
 
-export default connect(
-  (state) => ({
-    stage: state.publish.alexa.stage,
-    id: state.publish.alexa.id,
-    amazon: state.account.amazon,
-  }),
-  {
-    resetAlexaUpload,
-    checkAmazonAccount,
-    syncVendors,
-  }
-)(AlexaActionGroup);
+const mapStateToProps = {
+  alexaPublish: AlexaPublish.publishStateSelector,
+  amazon: Account.amazonAccountSelector,
+};
+
+const mapDispatchToProps = {
+  resetAlexaUpload: AlexaPublish.resetAlexaUpload,
+  checkAmazonAccount: Account.checkAmazonAccount,
+  syncVendors: AlexaPublish.syncVendors,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlexaActionGroup);

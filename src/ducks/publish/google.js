@@ -4,15 +4,16 @@ import randomstring from 'randomstring';
 import { createSelector } from 'reselect';
 
 import { PlatformType } from '@/constants';
-import { saveActiveDiagram } from '@/ducks/diagram';
-import { activeProjectIDSelector, publishPlatformSelectors, updatePublishPlatforms } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as Diagram from '@/ducks/diagram';
+import * as Skill from '@/ducks/skill';
 
 import { createPublishStateSelector, createUploadStep } from './utils';
 
 export const PLATFORM = PlatformType.GOOGLE;
 
-export const publishInfoSelector = publishPlatformSelectors[PLATFORM];
-export const updatePublishInfo = updatePublishPlatforms[PLATFORM];
+export const publishInfoSelector = Skill.publishPlatformSelectors[PLATFORM];
+export const updatePublishInfo = Skill.updatePublishPlatforms[PLATFORM];
 
 export const googleIDSelector = createSelector(publishInfoSelector, ({ googleID }) => googleID);
 
@@ -118,10 +119,11 @@ export const resetGoogleUpload = () => (dispatch) => {
 };
 
 export const publishStateSelector = createPublishStateSelector(PLATFORM);
+export const publishStageSelector = createSelector(publishStateSelector, ({ stage }) => stage);
 const uploadStep = createUploadStep(PLATFORM);
 
 export const resetDialogflowCredential = () => async (dispatch, getState) => {
-  const projectID = activeProjectIDSelector(getState());
+  const projectID = Skill.activeProjectIDSelector(getState());
 
   await axios.delete('/session/google/dialogflow_access_token', {
     data: {
@@ -141,7 +143,7 @@ export const uploadSuccess = () =>
 // STEP 4
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = activeProjectIDSelector(getState());
+    const projectID = Skill.activeProjectIDSelector(getState());
     dispatch(updateGoogleStage(GOOGLE_STAGES.UPLOADING_GOOGLE));
     try {
       await axios.post(`/project/${projectID}/version/${newVersionId}/google`);
@@ -156,12 +158,12 @@ export const submitProject = (newVersionId) =>
 export const renderProject = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
-    const projectID = activeProjectIDSelector(state);
+    const projectID = Skill.activeProjectIDSelector(state);
     const { googleID } = publishStateSelector(state);
 
     dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING));
     try {
-      await dispatch(saveActiveDiagram());
+      await dispatch(Diagram.saveActiveDiagram());
       const { data } = await axios.post(`/project/${projectID}/render`, { platform: 'google', google_id: googleID });
       const newVersionId = data.new_skill.skill_id;
       dispatch(submitProject(newVersionId));
@@ -174,7 +176,7 @@ export const renderProject = () =>
 // STEP 2.2 Link Dialogflow Cred
 export const linkDialogflowCredential = (token) =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = activeProjectIDSelector(getState());
+    const projectID = Skill.activeProjectIDSelector(getState());
     try {
       const { data } = await axios.post('/session/google/verify_dialogflow_token', {
         token,
@@ -191,7 +193,7 @@ export const linkDialogflowCredential = (token) =>
 // STEP 2.1 Load Dialogflow Cred
 export const loadDialogflow = () =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = activeProjectIDSelector(getState());
+    const projectID = Skill.activeProjectIDSelector(getState());
     const {
       data: { token: checkToken },
     } = await axios.get(`/session/google/dialogflow_access_token/${projectID}`);
@@ -224,7 +226,10 @@ export const checkDialogflow = () =>
 // STEP 1 - check that user is logged in with valid google account
 export const GoogleLogin = () =>
   uploadStep((dispatch, getState) => {
-    if (!getState().account.google) return dispatch(updateGoogleStage(GOOGLE_STAGES.GOOGLE_LOGIN));
+    if (!Account.googleAccountSelector(getState())) {
+      return dispatch(updateGoogleStage(GOOGLE_STAGES.GOOGLE_LOGIN));
+    }
+
     dispatch(checkDialogflow());
   });
 

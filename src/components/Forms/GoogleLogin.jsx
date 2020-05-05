@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import { GOOGLE_OAUTH_ID } from '@/config';
-import { createGoogleSession } from '@/ducks/account';
+import * as Account from '@/ducks/account';
 
 // eslint-disable-next-line no-secrets/no-secrets
 const OAUTH_URL = `https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${GOOGLE_OAUTH_ID}&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=state`;
@@ -78,4 +78,8 @@ GoogleLoginForm.propTypes = {
   onLoad: PropTypes.func,
 };
 
-export default connect(null, { createGoogleSession })(GoogleLoginForm);
+const mapDispatchToProps = {
+  createGoogleSession: Account.createGoogleSession,
+};
+
+export default connect(null, mapDispatchToProps)(GoogleLoginForm);

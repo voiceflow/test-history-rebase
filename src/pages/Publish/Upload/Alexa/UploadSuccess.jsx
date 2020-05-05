@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import BaseConfetti from 'react-dom-confetti';
 import { Alert } from 'reactstrap';
 
-import { userIDSelector } from '@/ducks/account';
-import { amznIDSelector, publishStateSelector } from '@/ducks/publish/alexa';
-import { activeLocalesSelector, invNameSelector } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 import { UploadPromptWrapper } from '../styled';
@@ -86,9 +86,9 @@ const UploadSuccess = (props) => {
 };
 
 export default connect({
-  locales: activeLocalesSelector,
-  invName: invNameSelector,
-  amznID: amznIDSelector,
-  userID: userIDSelector,
-  publishState: publishStateSelector,
+  locales: Skill.activeLocalesSelector,
+  invName: Skill.invNameSelector,
+  amznID: AlexaPublish.amznIDSelector,
+  userID: Account.userIDSelector,
+  publishState: AlexaPublish.publishStateSelector,
 })(UploadSuccess);

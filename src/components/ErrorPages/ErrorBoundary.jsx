@@ -2,9 +2,6 @@ import LogRocket from 'logrocket';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { userSelector } from '@/ducks/account';
-import { connect } from '@/hocs';
-
 import Error from './Error';
 import { ErrorBoundaryWrapper } from './styled';
 
@@ -44,8 +41,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const mapStateToProps = {
-  user: userSelector,
-};
-
-export default connect(mapStateToProps)(ErrorBoundary);
+export default ErrorBoundary;

@@ -5,10 +5,10 @@ import React from 'react';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
 import { INTEGRATION_DATA_MODELS } from '@/constants';
-import { userSelector } from '@/ducks/account';
-import { deleteIntegrationUser, integrationUsersErrorSelector, integrationUsersLoadingSelector, integrationUsersSelector } from '@/ducks/integration';
-import { clearModal, setConfirm, setError } from '@/ducks/modal';
-import { activeSkillIDSelector } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as Integration from '@/ducks/integration';
+import * as Modal from '@/ducks/modal';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 
@@ -26,6 +26,7 @@ function AddGoogleUser({
   setError,
   integration_user_error,
   setConfirm,
+  clearModal,
   deleteUser: deleteIntUser,
   skill_id,
 }) {
@@ -146,18 +147,18 @@ function AddGoogleUser({
 }
 
 const mapStateToProps = {
-  integration_users: integrationUsersSelector,
-  integration_users_loading: integrationUsersLoadingSelector,
-  integration_user_error: integrationUsersErrorSelector,
-  skill_id: activeSkillIDSelector,
-  user: userSelector,
+  integration_users: Integration.integrationUsersSelector,
+  integration_users_loading: Integration.integrationUsersLoadingSelector,
+  integration_user_error: Integration.integrationUsersErrorSelector,
+  skill_id: Skill.activeSkillIDSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  setConfirm: (confirm) => setConfirm(confirm),
-  clearModal: () => clearModal(),
-  setError: (error) => setError(error),
-  deleteUser: (integration, data) => deleteIntegrationUser(integration, data),
+  setConfirm: Modal.setConfirm,
+  clearModal: Modal.clearModal,
+  setError: Modal.setError,
+  deleteUser: Integration.deleteIntegrationUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddGoogleUser);

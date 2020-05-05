@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import Dropdown from '@/components/Dropdown';
 import Menu, { MenuItem } from '@/components/Menu';
 import User from '@/components/User';
-import { userSelector } from '@/ducks/account';
-import { logout } from '@/ducks/session';
+import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
 import { connect, styled } from '@/hocs';
 import { preventDefault } from '@/utils/dom';
 
@@ -48,11 +48,11 @@ export function UserMenu({ user, logout, preview }) {
 }
 
 const mapStateToProps = {
-  user: userSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  logout,
+  logout: Session.logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

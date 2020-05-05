@@ -3,19 +3,20 @@ import setupLogRocketReact from 'logrocket-react';
 import { IntercomAPI } from 'react-intercom';
 
 import { INTERCOM_ENABLED, LOGROCKET_ENABLED, LOGROCKET_PROJECT } from '@/config';
+import { Account } from '@/models';
 
-export function initializeLogRocket(cb) {
+export function initialize(callback: (sessionURL: string) => void) {
   if (LOGROCKET_ENABLED) {
     LogRocket.init(LOGROCKET_PROJECT);
     setupLogRocketReact(LogRocket);
 
-    LogRocket.getSessionURL(cb);
+    LogRocket.getSessionURL(callback);
   }
 }
 
-export function identifyLogRocketUser(user) {
+export function identify(user: Account) {
   if (LOGROCKET_ENABLED) {
-    LogRocket.identify(user.creator_id || user.id, {
+    LogRocket.identify(String(user.creator_id), {
       email: user.email,
       name: user.name,
     });

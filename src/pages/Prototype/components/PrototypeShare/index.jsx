@@ -4,9 +4,9 @@ import { Tooltip } from 'react-tippy';
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import { ModalType } from '@/constants';
-import { userSelector } from '@/ducks/account';
-import { setConfirm } from '@/ducks/modal';
-import { renderPrototype, sharePrototype } from '@/ducks/prototype';
+import * as Account from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
+import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 
@@ -60,13 +60,13 @@ const PrototypeShare = (props) => {
 };
 
 const mapStateToProps = {
-  user: userSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  sharePrototype,
-  renderPrototype,
-  setConfirm,
+  sharePrototype: Prototype.sharePrototype,
+  renderPrototype: Prototype.renderPrototype,
+  setConfirm: Modal.setConfirm,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrototypeShare);

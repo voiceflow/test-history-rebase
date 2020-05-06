@@ -259,7 +259,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -334,7 +334,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -602,7 +602,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -677,7 +677,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -945,7 +945,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1020,7 +1020,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1308,7 +1308,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1383,7 +1383,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1771,7 +1771,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1846,7 +1846,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1889,7 +1889,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1929,7 +1929,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c20"
+                className="c20 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2254,7 +2254,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2339,7 +2339,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2658,7 +2658,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2743,7 +2743,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -3030,7 +3030,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3105,7 +3105,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -3380,7 +3380,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3455,7 +3455,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -3693,7 +3693,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4072,7 +4072,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4157,7 +4157,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -4190,7 +4190,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -4219,7 +4219,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -4252,7 +4252,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -4528,7 +4528,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4603,7 +4603,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -4969,7 +4969,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -5044,7 +5044,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -5079,7 +5079,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c16"
+                className="c16 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -5111,7 +5111,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -5384,7 +5384,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -5459,7 +5459,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
                 </div>
               </span>
               <div
-                className="c13"
+                className="c13 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -5697,7 +5697,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

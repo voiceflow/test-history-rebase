@@ -295,7 +295,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -380,7 +380,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -680,7 +680,7 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -765,7 +765,7 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1090,7 +1090,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1175,7 +1175,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1483,7 +1483,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1568,7 +1568,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1877,7 +1877,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1962,7 +1962,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2277,7 +2277,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2362,7 +2362,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2662,7 +2662,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2747,7 +2747,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -3026,7 +3026,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

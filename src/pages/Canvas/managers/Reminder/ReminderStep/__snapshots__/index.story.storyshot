@@ -346,7 +346,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -461,7 +461,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -493,7 +493,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -868,7 +868,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -983,7 +983,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1023,7 +1023,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c21"
+                className="c21 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1391,7 +1391,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1506,7 +1506,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1538,7 +1538,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1898,7 +1898,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2013,7 +2013,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2045,7 +2045,7 @@ exports[`Storyshots Creator/Steps/Reminder Step With Longlabel 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2309,7 +2309,7 @@ exports[`Storyshots Creator/Steps/Reminder Step Without Ports 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

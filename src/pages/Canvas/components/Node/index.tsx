@@ -9,6 +9,7 @@ import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EditPermissionContext, EngineContext, useNode, withNode } from '@/pages/Canvas/contexts';
 import { useNodeDragApi } from '@/pages/Canvas/hooks';
+import { ClassName } from '@/styles/constants';
 
 import NodeBlock from './components/NodeBlock';
 import Container from './components/NodeContainer';
@@ -116,7 +117,7 @@ const Node = () => {
       tabIndex={-1}
       position={position}
       isActive={isHighlighted}
-      className={cn({ [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeTarget })}
+      className={cn(ClassName.CANVAS_NODE, { [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeTarget })}
       isDragging={isDragging}
       onMouseDown={onMouseDown}
       onContextMenu={onRightClick}

@@ -363,7 +363,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -508,7 +508,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -550,7 +550,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c21"
+                className="c21 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -942,7 +942,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1087,7 +1087,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1137,7 +1137,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c23"
+                className="c23 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1409,7 +1409,7 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1866,7 +1866,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2011,7 +2011,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2053,7 +2053,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
                 </div>
               </span>
               <div
-                className="c21"
+                className="c21 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}

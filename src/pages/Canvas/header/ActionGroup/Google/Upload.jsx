@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tippy';
 
 import { GOOGLE_STATES, publish } from '@/ducks/publish/google';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
@@ -23,7 +24,7 @@ function Upload(props) {
       distance={19}
       disabled={isViewer}
     >
-      <UploadButton onClick={action} isUploading={!state.end}>
+      <UploadButton id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
         {text}
       </UploadButton>
     </Tooltip>

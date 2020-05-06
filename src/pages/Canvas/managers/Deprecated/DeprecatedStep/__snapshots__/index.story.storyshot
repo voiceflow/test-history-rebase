@@ -250,7 +250,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

@@ -73,6 +73,7 @@ exports[`Storyshots Prototype/Reset Base 1`] = `
       >
         <span
           className="c4"
+          id="vf-prototype__reset"
           onClick={[Function]}
         >
           Reset Test

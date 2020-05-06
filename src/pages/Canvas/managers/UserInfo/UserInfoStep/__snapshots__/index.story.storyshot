@@ -350,7 +350,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -470,7 +470,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -502,7 +502,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c20"
+                className="c20 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -881,7 +881,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1001,7 +1001,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1041,7 +1041,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c22"
+                className="c22 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1409,7 +1409,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1524,7 +1524,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1556,7 +1556,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1920,7 +1920,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2040,7 +2040,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2072,7 +2072,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
                 </div>
               </span>
               <div
-                className="c20"
+                className="c20 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2340,7 +2340,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

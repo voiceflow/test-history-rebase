@@ -11,6 +11,7 @@ import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasGoHome, CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { Identifier } from '@/styles/constants';
 
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
@@ -50,7 +51,12 @@ function LeftSidebar({ isHidden, activeTab, flow, isRootDiagram, toggleIsHidden,
 
   return (
     <>
-      <Container isOpen={isOpen} onMouseEnter={canEdit ? openByHover : null} onMouseLeave={canEdit ? closeByLoseHover : null}>
+      <Container
+        id={Identifier.DESIGN_MENU}
+        isOpen={isOpen}
+        onMouseEnter={canEdit ? openByHover : null}
+        onMouseLeave={canEdit ? closeByLoseHover : null}
+      >
         <Content isOpen={isOpen} activeTab={selectedTab}>
           <Header tabs={TABS} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={selectActiveTab} />
 

@@ -280,7 +280,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -365,7 +365,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -658,7 +658,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -743,7 +743,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Configured 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1052,7 +1052,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1137,7 +1137,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1438,7 +1438,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1523,7 +1523,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1786,7 +1786,7 @@ exports[`Storyshots Creator/Steps/Account Linking Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

@@ -4,6 +4,7 @@ import { SectionToggleVariant, UncontrolledSection } from '@/components/Section'
 import { BlockText } from '@/components/Text';
 import TextArea from '@/components/TextArea';
 import { useToggle } from '@/hooks/toggle';
+import { Identifier } from '@/styles/constants';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import SpeechBar from './PrototypeSpeechBar';
@@ -54,6 +55,7 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, force
         collapseVariant={SectionToggleVariant.ARROW}
       >
         <TextArea
+          id={Identifier.PROTOTYPE_RESPONSE}
           value={value}
           minRows={3}
           onChange={(e) => setValue(e.target.value)}

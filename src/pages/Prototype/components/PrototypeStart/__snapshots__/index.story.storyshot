@@ -143,7 +143,7 @@ exports[`Storyshots Prototype/Start Base 1`] = `
     Start test to see the dialog transcription
   </div>
   <button
-    className="c1 c2"
+    className="c1 c2 vf-button"
     onClick={[Function]}
   >
     <span

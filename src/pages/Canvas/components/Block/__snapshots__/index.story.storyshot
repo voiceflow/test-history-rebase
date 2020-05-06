@@ -116,7 +116,7 @@ exports[`Storyshots Creator/Block Active State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -486,7 +486,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   }
 >
   <div
-    className="c0"
+    className="c0 vf-canvas__block"
   >
     <div
       className="c1 c2"
@@ -845,7 +845,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1044,7 +1044,7 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1247,7 +1247,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1450,7 +1450,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1653,7 +1653,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1856,7 +1856,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2059,7 +2059,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2254,7 +2254,7 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2457,7 +2457,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2660,7 +2660,7 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3071,7 +3071,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   }
 >
   <div
-    className="c0"
+    className="c0 vf-canvas__block"
   >
     <div
       className="c1"
@@ -3472,7 +3472,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

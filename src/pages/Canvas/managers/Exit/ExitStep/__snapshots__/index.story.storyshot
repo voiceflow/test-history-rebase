@@ -250,7 +250,7 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -593,7 +593,7 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -936,7 +936,7 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

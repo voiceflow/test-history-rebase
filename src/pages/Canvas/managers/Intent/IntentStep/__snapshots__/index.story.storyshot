@@ -280,7 +280,7 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -365,7 +365,7 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -674,7 +674,7 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -759,7 +759,7 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1060,7 +1060,7 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1145,7 +1145,7 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1438,7 +1438,7 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1523,7 +1523,7 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1786,7 +1786,7 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

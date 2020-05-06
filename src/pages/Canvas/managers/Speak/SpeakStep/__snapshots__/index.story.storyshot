@@ -330,7 +330,7 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -467,7 +467,7 @@ exports[`Storyshots Creator/Steps/Speak Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#6e849a"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -739,7 +739,7 @@ exports[`Storyshots Creator/Steps/Speak Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1146,7 +1146,7 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1283,7 +1283,7 @@ exports[`Storyshots Creator/Steps/Speak Step Multi Steps 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#6e849a"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1582,7 +1582,7 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1667,7 +1667,7 @@ exports[`Storyshots Creator/Steps/Speak Step Random 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 color="#6e849a"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1966,7 +1966,7 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2051,7 +2051,7 @@ exports[`Storyshots Creator/Steps/Speak Step Single Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 color="#6e849a"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2349,7 +2349,7 @@ exports[`Storyshots Creator/Steps/Speak Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

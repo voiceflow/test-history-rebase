@@ -1046,6 +1046,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 >
   <aside
     className="c0"
+    id="vf-design-menu"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -1056,7 +1057,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-tabs"
         >
           <div
             className="tab-tooltip"
@@ -1067,7 +1068,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             }
           >
             <button
-              className="c4 c5"
+              className="c4 c5 vf-tab"
               onClick={[Function]}
             >
               STEPS
@@ -1082,7 +1083,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             }
           >
             <button
-              className="c4 c6"
+              className="c4 c6 vf-tab"
               onClick={[Function]}
             >
               FLOWS
@@ -2937,6 +2938,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 >
   <aside
     className="c0"
+    id="vf-design-menu"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -2947,7 +2949,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-tabs"
         >
           <div
             className="tab-tooltip"
@@ -2958,7 +2960,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             }
           >
             <button
-              className="c4 c5"
+              className="c4 c5 vf-tab"
               onClick={[Function]}
             >
               STEPS
@@ -2973,7 +2975,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             }
           >
             <button
-              className="c4 c6"
+              className="c4 c6 vf-tab"
               onClick={[Function]}
             >
               FLOWS
@@ -4684,6 +4686,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 >
   <aside
     className="c0"
+    id="vf-design-menu"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -4694,7 +4697,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-tabs"
         >
           <div
             className="tab-tooltip"
@@ -4705,7 +4708,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
             }
           >
             <button
-              className="c4 c5"
+              className="c4 c5 vf-tab"
               onClick={[Function]}
             >
               STEPS
@@ -4720,7 +4723,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
             }
           >
             <button
-              className="c4 c6"
+              className="c4 c6 vf-tab"
               onClick={[Function]}
             >
               FLOWS
@@ -6239,6 +6242,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 >
   <aside
     className="c0"
+    id="vf-design-menu"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -6249,7 +6253,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-tabs"
         >
           <div
             className="tab-tooltip"
@@ -6260,7 +6264,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             }
           >
             <button
-              className="c4 c5"
+              className="c4 c5 vf-tab"
               onClick={[Function]}
             >
               STEPS
@@ -6275,7 +6279,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             }
           >
             <button
-              className="c4 c6"
+              className="c4 c6 vf-tab"
               onClick={[Function]}
             >
               FLOWS
@@ -8496,6 +8500,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 >
   <aside
     className="c0"
+    id="vf-design-menu"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -8506,7 +8511,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-tabs"
         >
           <div
             className="tab-tooltip"
@@ -8517,7 +8522,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             }
           >
             <button
-              className="c4 c5"
+              className="c4 c5 vf-tab"
               onClick={[Function]}
             >
               STEPS
@@ -8532,7 +8537,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             }
           >
             <button
-              className="c4 c6"
+              className="c4 c6 vf-tab"
               onClick={[Function]}
             >
               FLOWS

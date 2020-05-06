@@ -303,7 +303,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -418,7 +418,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -439,7 +439,7 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -771,7 +771,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -886,7 +886,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -915,7 +915,7 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1239,7 +1239,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1354,7 +1354,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1375,7 +1375,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1668,7 +1668,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1753,7 +1753,7 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2069,7 +2069,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2184,7 +2184,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2205,7 +2205,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2521,7 +2521,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2636,7 +2636,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2657,7 +2657,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2678,7 +2678,7 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />

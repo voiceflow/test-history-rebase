@@ -296,7 +296,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -443,7 +443,7 @@ exports[`Storyshots Creator/Steps/Set Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -768,7 +768,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -915,7 +915,7 @@ exports[`Storyshots Creator/Steps/Set Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1216,7 +1216,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1301,7 +1301,7 @@ exports[`Storyshots Creator/Steps/Set Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1610,7 +1610,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1757,7 +1757,7 @@ exports[`Storyshots Creator/Steps/Set Step Multiple Expression 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2061,7 +2061,7 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2156,7 +2156,7 @@ exports[`Storyshots Creator/Steps/Set Step Single Expression 1`] = `
                 </div>
               </span>
               <div
-                className="c16"
+                className="c16 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2435,7 +2435,7 @@ exports[`Storyshots Creator/Steps/Set Step Without Port 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"

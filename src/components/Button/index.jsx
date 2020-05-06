@@ -1,4 +1,7 @@
+import cn from 'classnames';
 import React from 'react';
+
+import { ClassName } from '@/styles/constants';
 
 import { PrimaryButton, SecondaryButton, TertiaryButton } from './components';
 import { ButtonVariant } from './constants';
@@ -11,11 +14,11 @@ const BUTTON_VARIANTS = {
   [ButtonVariant.TERTIARY]: TertiaryButton,
 };
 
-function Button({ variant, children, ...props }, ref) {
+function Button({ variant, className, children, ...props }, ref) {
   const Component = BUTTON_VARIANTS[variant] || PrimaryButton;
 
   return (
-    <Component ref={ref} {...props}>
+    <Component className={cn(ClassName.BUTTON, className)} ref={ref} {...props}>
       {children}
     </Component>
   );

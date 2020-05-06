@@ -4,13 +4,13 @@ import axios from 'axios';
 import throttle from 'lodash/throttle';
 import queryString from 'query-string';
 import React from 'react';
-import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import * as Session from '@/ducks/session';
+import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 import { AuthBox } from './AuthBoxes';

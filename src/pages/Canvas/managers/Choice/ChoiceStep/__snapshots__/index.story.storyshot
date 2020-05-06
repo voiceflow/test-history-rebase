@@ -333,7 +333,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -418,7 +418,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -439,7 +439,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -460,7 +460,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -495,7 +495,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#8da2b5"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -857,7 +857,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -942,7 +942,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -971,7 +971,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1000,7 +1000,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1043,7 +1043,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c20"
+                className="c20 vf-canvas__port"
                 color="#8da2b5"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1345,7 +1345,7 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1430,7 +1430,7 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 color="#8da2b5"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1777,7 +1777,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1862,7 +1862,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1883,7 +1883,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1904,7 +1904,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -1939,7 +1939,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#8da2b5"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2286,7 +2286,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2371,7 +2371,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
                 </div>
               </span>
               <div
-                className="c15"
+                className="c15 vf-canvas__port"
                 onClick={[Function]}
                 onMouseDown={[Function]}
               />
@@ -2406,7 +2406,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#8da2b5"
                 onClick={[Function]}
                 onMouseDown={[Function]}

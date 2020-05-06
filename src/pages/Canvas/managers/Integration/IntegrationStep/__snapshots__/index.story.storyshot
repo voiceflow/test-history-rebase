@@ -346,7 +346,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -461,7 +461,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -493,7 +493,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -853,7 +853,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -968,7 +968,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1000,7 +1000,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1364,7 +1364,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1485,7 +1485,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1517,7 +1517,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c20"
+                className="c20 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -1883,7 +1883,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2004,7 +2004,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2044,7 +2044,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
                 </div>
               </span>
               <div
-                className="c21"
+                className="c21 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2399,7 +2399,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2514,7 +2514,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c16"
+                className="c16 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2546,7 +2546,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c18"
+                className="c18 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -2897,7 +2897,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3018,7 +3018,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -3050,7 +3050,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -3401,7 +3401,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3522,7 +3522,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -3554,7 +3554,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -3822,7 +3822,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4270,7 +4270,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4385,7 +4385,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -4417,7 +4417,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -4777,7 +4777,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -4892,7 +4892,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c17"
+                className="c17 vf-canvas__port"
                 color="#279745"
                 onClick={[Function]}
                 onMouseDown={[Function]}
@@ -4924,7 +4924,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
                 </div>
               </span>
               <div
-                className="c19"
+                className="c19 vf-canvas__port"
                 color="#d94c4c"
                 onClick={[Function]}
                 onMouseDown={[Function]}

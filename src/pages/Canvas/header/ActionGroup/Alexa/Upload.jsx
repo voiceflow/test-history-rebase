@@ -8,6 +8,7 @@ import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
@@ -30,6 +31,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
     >
       {multiVendor ? (
         <DropdownButton
+          id={Identifier.UPLOAD}
           buttonProps={{
             onClick: action,
           }}
@@ -51,7 +53,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
           {text}
         </DropdownButton>
       ) : (
-        <UploadButton onClick={action} isUploading={!state.end}>
+        <UploadButton id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
           {text}
         </UploadButton>
       )}

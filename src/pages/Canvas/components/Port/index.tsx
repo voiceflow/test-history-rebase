@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { usePort } from '@/pages/Canvas/contexts';
+import { ClassName } from '@/styles/constants';
 
 import { Container, Link, LinkPath } from './components';
 import { LINK_WIDTH } from './constants';
@@ -23,6 +24,7 @@ const Port: React.FC<PortProps> = ({ color }) => {
   return (
     <>
       <Container
+        className={ClassName.CANVAS_PORT}
         onMouseDown={onStartLink}
         onClick={onStartLink}
         color={color}

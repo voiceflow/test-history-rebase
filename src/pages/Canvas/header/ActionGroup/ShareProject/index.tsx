@@ -3,7 +3,7 @@ import React from 'react';
 import Button, { ButtonVariant } from '@/components/Button';
 import BaseDropdown from '@/components/Dropdown';
 import Tooltip from '@/components/TippyTooltip';
-import { ModalType } from '@/constants';
+import { ModalType, PlanType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
@@ -38,7 +38,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectPropsProps
   };
 
   const onOpenMenu = (callback: () => void) => () => {
-    plan && makeConfig();
+    plan !== PlanType.STARTER && makeConfig();
     callback();
   };
 

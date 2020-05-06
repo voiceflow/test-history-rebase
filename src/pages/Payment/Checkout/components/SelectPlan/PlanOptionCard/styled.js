@@ -2,7 +2,6 @@ import Checkbox from '@/components/Checkbox';
 import { styled, transition } from '@/hocs';
 
 export const Container = styled.div`
-  background-color: ${({ theme }) => theme.backgrounds.offWhiteBlue};
   padding: 14px;
   border: 1px solid ${({ active, color }) => (active ? color : '#ebf0f5')};
   margin-right: 10px;
@@ -27,15 +26,19 @@ export const Container = styled.div`
 export const Description = styled.div`
   margin: 10px 0;
   margin-bottom: 0;
+  margin-top: 12px;
 `;
 
-export const Price = styled.span`
+export const Price = styled.div`
   font-weight: 600;
   margin-right: 4px;
   font-size: 15px;
+  color: #2b3950;
+  font-size: 22px;
+  font-weight: 600;
 `;
 
-export const PriceDescription = styled.span`
+export const PriceDescription = styled.div`
   color: #8da2b5;
 `;
 

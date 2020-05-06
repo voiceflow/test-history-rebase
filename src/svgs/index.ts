@@ -140,3 +140,4 @@ export { default as template } from './template.svg';
 export { default as shortcuts } from './shortcuts.svg';
 export { default as youtube } from './youtube.svg';
 export { default as reminder } from './reminder.svg';
+export { default as receipt } from './Receipt.svg';

@@ -36,7 +36,7 @@ function PaymentDetails({
 
   return (
     <>
-      <StepHeading heading="3. Payment details" actions={actions} />
+      <StepHeading heading="3. Payment details" actions={actions} noBottomPadding />
       <StepSection>
         <Collapsable opened={usingCoupon}>
           <ControlledInput

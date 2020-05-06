@@ -5,10 +5,11 @@ import { compose } from 'recompose';
 
 import client from '@/client';
 import { toast } from '@/components/Toast';
-import { BillingPeriod, ModalType } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { BillingPeriod, ModalType, PlanType } from '@/constants';
 import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useFeature, useModals, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -24,6 +25,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
+  const { isEnabled: NewPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
 
@@ -34,7 +36,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
     focus: null,
     seats: 1,
     price: 0,
-    period: BillingPeriod.MONTHLY,
+    period: BillingPeriod.ANNUALLY,
     errors: {},
     coupon: '',
     source: null,
@@ -106,10 +108,10 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
       closePaymentsModal();
 
       const message = source?.id
-        ? `Your Voiceflow ${state.plan.name} plan has been activated. Thank you.`
+        ? `Your Voiceflow ${state.plan.name} subscription has been activated.`
         : 'Your workspace has been successfully updated. Thank you.';
 
-      openSuccessModal({ title: 'Payment Successful', message });
+      openSuccessModal({ title: 'Payment Successful', message, icon: 'receipt' });
     } catch (err) {
       stopCheckingOut();
       let error;
@@ -124,9 +126,23 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
     }
   };
 
+  const getPlans = async () => {
+    const plans = await client.workspace.getPlans();
+    const paidPlans = plans.filter(({ pricing }) => {
+      return !!pricing;
+    });
+    return NewPricingEnabled
+      ? paidPlans.filter(({ legacy }) => {
+          return !legacy;
+        })
+      : paidPlans.filter(({ interactionsLimit, id }) => {
+          return !interactionsLimit && id !== PlanType.ENTERPRISE;
+        });
+  };
+
   useAsyncMountUnmount(async () => {
     startloadingPlan();
-    const plans = await client.workspace.getPlans();
+    const plans = await getPlans();
     actions.setPlans(plans);
 
     try {
@@ -135,7 +151,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
 
       actions.update({
         plan: plans.find(({ id }) => id === plan) || plans[0],
-        period: period || BillingPeriod.MONTHLY,
+        period: period || BillingPeriod.ANNUALLY,
         seats: seats || 1,
         source: source || null,
         usingExistingSource: !!source,

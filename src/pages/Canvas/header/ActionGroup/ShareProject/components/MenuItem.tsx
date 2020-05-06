@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Badge from '@/components/Badge';
+import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
@@ -31,7 +31,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
   }, []);
 
   const button = (
-    <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan ? onCopy : onRedirect)}>
+    <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan !== PlanType.STARTER ? onCopy : onRedirect)}>
       Copy
     </Button>
   );
@@ -47,7 +47,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
       <div>
         <Header>
           <span>{title}</span>
-          {!plan && <Badge color="green">Pro</Badge>}
+          {plan === PlanType.STARTER && <BubbleText color="green">Pro</BubbleText>}
         </Header>
         <Description>
           <span>{description} </span>

@@ -18,7 +18,7 @@ function SelectPlan({
   return (
     <>
       <StepHeading
-        heading="1. Select plan"
+        heading="1. Select workspace plan"
         actions={[
           {
             label: (

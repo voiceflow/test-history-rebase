@@ -7,7 +7,7 @@ import { useSmartReducerV2 } from '@/hooks';
 import { BlockAPI } from '@/pages/Canvas/components/Block';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EditPermissionContext, EngineContext, useNode, withNode } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EditPermissionContext, EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
 import { useNodeDragApi } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
 
@@ -22,6 +22,7 @@ const Node = () => {
   const { nodeID, node, isHighlighted } = useNode();
   const engine = React.useContext(EngineContext)!;
   const editPermission = React.useContext(EditPermissionContext)!;
+  const isPresentationMode = React.useContext(PresentationModeContext);
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { api: dragApi, nodeRef, position, isDragging, onMouseDown } = useNodeDragApi<HTMLDivElement>();
 
@@ -117,6 +118,7 @@ const Node = () => {
       tabIndex={-1}
       position={position}
       isActive={isHighlighted}
+      isTransform={!isPresentationMode}
       className={cn(ClassName.CANVAS_NODE, { [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeTarget })}
       isDragging={isDragging}
       onMouseDown={onMouseDown}

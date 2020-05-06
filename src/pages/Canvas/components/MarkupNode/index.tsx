@@ -3,12 +3,13 @@ import _noop from 'lodash/noop';
 import React from 'react';
 
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
-import { EngineContext, useNode, withNode } from '@/pages/Canvas/contexts';
+import { EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
 import { useNodeDragApi } from '@/pages/Canvas/hooks';
 
 const Node = () => {
   const { nodeID } = useNode();
   const engine = React.useContext(EngineContext)!;
+  const isPresentationMode = React.useContext(PresentationModeContext);
 
   const { api: dragApi, nodeRef, position, isDragging, onMouseDown } = useNodeDragApi<HTMLDivElement>();
 
@@ -47,6 +48,7 @@ const Node = () => {
       ref={nodeRef}
       tabIndex={-1}
       position={position}
+      isTransform={!isPresentationMode}
       isDragging={isDragging}
       onMouseDown={onMouseDown}
       onContextMenu={onRightClick}

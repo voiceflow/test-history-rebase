@@ -2,7 +2,7 @@ import React from 'react';
 
 import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
 import { useEnableDisable } from '@/hooks';
-import { EditPermissionContext, EngineContext, useNode } from '@/pages/Canvas/contexts';
+import { EditPermissionContext, EngineContext, PresentationModeContext, useNode } from '@/pages/Canvas/contexts';
 import MouseMovement from '@/utils/mouseMovement';
 
 type Position = [number, number];
@@ -15,6 +15,7 @@ export const useNodeDragApi = <N extends HTMLElement>() => {
   } = useNode();
   const engine = React.useContext(EngineContext)!;
   const editPermission = React.useContext(EditPermissionContext)!;
+  const isPresentationMode = React.useContext(PresentationModeContext);
 
   const nodeRef = React.useRef<N>(null);
   const [isDragging, setDragging, unsetDragging] = useEnableDisable(false);
@@ -25,7 +26,12 @@ export const useNodeDragApi = <N extends HTMLElement>() => {
     const nodeEl = nodeRef.current!;
 
     window.requestAnimationFrame(() => {
-      nodeEl.style.transform = `translate(${position[0]}px, ${position[1]}px)`;
+      if (isPresentationMode) {
+        nodeEl.style.left = `${position[0]}px`;
+        nodeEl.style.top = `${position[1]}px`;
+      } else {
+        nodeEl.style.transform = `translate(${position[0]}px, ${position[1]}px)`;
+      }
 
       callback?.();
     });

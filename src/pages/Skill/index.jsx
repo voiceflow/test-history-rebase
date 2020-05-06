@@ -23,6 +23,7 @@ import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
+import ExportCanvas from '@/pages/Export';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
@@ -38,6 +39,7 @@ const PAGES_MATCHES = {
   prototype: ['/prototype/:diagramID?'],
   tools: ['/tools'],
   canvas: ['/canvas/:diagramID?'],
+  export: ['/export/:diagramID?'],
   migrate: ['/migrate'],
   publish: ['/publish'],
 };
@@ -103,31 +105,33 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
           <InactivityModal open={isIdle} onActive={setActive} />
         </>
       )}
+      <Switch>
+        <PrivateRoute path={`${match.path}/export/:diagramID?`} component={ExportCanvas} diagramID={diagramID} isPrototyping={isPrototyping} />
+        <Page
+          header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
+          userMenu={false}
+          canScroll={false}
+          subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+          onNavigateBack={goToDashboard}
+        >
+          <Switch>
+            <PrivateRoute
+              path={[`${match.path}/test/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+              component={RenderCanvas}
+              diagramID={diagramID}
+              isPrototyping={isPrototyping}
+            />
 
-      <Page
-        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
-        userMenu={false}
-        canScroll={false}
-        subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-        onNavigateBack={goToDashboard}
-      >
-        <Switch>
-          <PrivateRoute
-            path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
-            component={RenderCanvas}
-            diagramID={diagramID}
-            isPrototyping={isPrototyping}
-          />
+            <PrivateRoute path={`${match.path}/tools`} component={Business} />
 
-          <PrivateRoute path={`${match.path}/tools`} component={Business} />
+            <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
 
-          <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
+            <PrivateRoute path={`${match.path}/publish`} component={Publish} />
 
-          <PrivateRoute path={`${match.path}/publish`} component={Publish} />
-
-          <Redirect to={`${match.path}/canvas`} />
-        </Switch>
-      </Page>
+            <Redirect to={`${match.path}/canvas`} />
+          </Switch>
+        </Page>
+      </Switch>
     </>
   );
 }

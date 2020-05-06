@@ -23,6 +23,7 @@ export * from './ShortcutModalContext';
 export * from './NodeIDContext';
 export * from './PortIDContext';
 export * from './LinkIDContext';
+export * from './PresentationModeContext';
 
 export type LinkLayerValue = {};
 

@@ -6,8 +6,8 @@ import { compose } from 'recompose';
 import client from '@/client';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { BillingPeriod, ModalType, PlanType } from '@/constants';
-import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';
+import { BillingPeriod, ModalType, PlanType, UserRole } from '@/constants';
+import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useFeature, useModals, useSmartReducer } from '@/hooks';
 
@@ -21,13 +21,15 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable, updateWorkspace }) => {
+const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, updateWorkspace }) => {
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
   const { isEnabled: NewPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
+
+  const { isEnabled: newPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
 
   const [state, actions] = useSmartReducer({
     view: VIEWS.checkout,
@@ -149,10 +151,17 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
       // get the user's current plan and settings
       const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
+      let numberOfSeats = seats;
+      if (newPricingEnabled && plan === PlanType.STARTER) {
+        const editorCount = workspace.members.filter(({ role }) => role === UserRole.EDITOR || role === UserRole.ADMIN).length;
+        numberOfSeats = editorCount;
+      }
+
       actions.update({
         plan: plans.find(({ id }) => id === plan) || plans[0],
         period: period || BillingPeriod.ANNUALLY,
-        seats: seats || 1,
+        // Some users may have null seats in their plan (legacy), so default to 1
+        seats: numberOfSeats || 1,
         source: source || null,
         usingExistingSource: !!source,
       });
@@ -218,6 +227,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
 
 const mapStateToProps = {
   workspaceID: activeWorkspaceIDSelector,
+  workspace: activeWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

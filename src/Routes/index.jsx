@@ -7,6 +7,7 @@ import { FeatureFlag } from '@/config/features';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
+import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
 import OnboardingV2 from '@/pages/OnboardingV2';
 import LoginForm from '@/pages/Register/LoginForm';
@@ -67,6 +68,7 @@ const Routes = ({ authToken }) => {
         <Redirect from="/publish/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
         <Redirect exact from={`/${RootRoutes.PROJECT}/:versionID/publish`} to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
 
+        <PrivateRoute path={`/${RootRoutes.PROJECT}/:versionID/export/:diagramID`} component={Export} />
         <PrivateRoute path={`/${RootRoutes.PROJECT}/:versionID`} component={Skill} />
 
         <PrivateRoute path="/account" name="Account" component={Account} />

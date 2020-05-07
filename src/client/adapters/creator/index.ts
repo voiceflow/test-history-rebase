@@ -1,6 +1,6 @@
 import _isNumber from 'lodash/isNumber';
 
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType, MARKUP_NODES, PlatformType, ROOT_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { CreatorDiagram, DBCreatorDiagram, DBNode, Node, NodeData, Port } from '@/models';
 import { Point } from '@/types';
@@ -15,9 +15,6 @@ import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
 type DBNodeWithCoords = WithRequired<DBNode, 'x' | 'y'>;
-
-const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
-const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
 
 const findDiagramCenter = (nodes: DBNodeWithCoords[]): Point => {
   const xValues = nodes.map((node) => node.x);

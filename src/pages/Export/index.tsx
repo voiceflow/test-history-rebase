@@ -1,13 +1,17 @@
 import _isNumber from 'lodash/isNumber';
+import _noop from 'lodash/noop';
 import React from 'react';
 
 import client from '@/client';
 import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
 import { FeatureFlag } from '@/config/features';
+import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
-import { connect, styled } from '@/hocs';
+import { ProjectLoadingGate } from '@/gates';
+import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
+import { connect, styled, withBatchLoadingGate } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { Node } from '@/models';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
@@ -61,6 +65,12 @@ const ExportCanvasDiagram = styled(Canvas as any)`
 
 const AnyCanvasProviders = CanvasProviders as any;
 
+const MockRealtimeGate: React.FC<{ children: () => React.ReactElement }> = ({ children }) => (
+  <RealtimeSubscriptionContext.Provider value={{ onUpdate: _noop as any, destroy: _noop as any, on: _noop as any }}>
+    {children()}
+  </RealtimeSubscriptionContext.Provider>
+);
+
 const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string) => void }> = ({ diagramID, initialize }) => {
   const engine = useEngine();
   const markup = useFeature(FeatureFlag.MARKUP);
@@ -90,8 +100,10 @@ const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string
 };
 
 const findCanvasExportOffsets = (nodes: Node[]): Point => {
-  const xValues = nodes.map((node) => node.x);
-  const yValues = nodes.map((node) => node.y);
+  const rootNodes = nodes.filter(({ type }) => ROOT_NODES.includes(type) || MARKUP_NODES.includes(type));
+
+  const xValues = rootNodes.map((node) => node.x);
+  const yValues = rootNodes.map((node) => node.y);
 
   const minX = Math.min(...xValues);
   const minY = Math.min(...yValues);
@@ -122,4 +134,17 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   dispatch(Creator.initializeCreator({ ...creator, diagramID }));
 };
 
-export default compose(React.memo, connect(null, { initialize }))(ExportCanvas);
+export default compose(
+  React.memo,
+  connect(null, { initialize }),
+  withBatchLoadingGate(
+    [
+      ProjectLoadingGate,
+      ({ match }: { match: any }) => ({
+        versionID: match.params?.versionID,
+        diagramID: match.params?.diagramID,
+      }),
+    ],
+    MockRealtimeGate
+  )
+)(ExportCanvas);

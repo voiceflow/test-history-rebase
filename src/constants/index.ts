@@ -466,3 +466,7 @@ export enum MarkupModeType {
   ARROW = 'arrow',
   IMAGE = 'image',
 }
+
+export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+
+export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];

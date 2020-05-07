@@ -13,8 +13,8 @@ import { renderPrototype, resetPrototype } from '@/ducks/prototype';
 import { recentprototypeSelector } from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
 import Prototype from '@/pages/Prototype';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
 
 import PrototypeSettings from './components/PrototypeSettings';

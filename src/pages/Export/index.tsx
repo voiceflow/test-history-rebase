@@ -16,9 +16,10 @@ import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeContainer from '@/pages/Canvas/components/Node/components/NodeContainer';
-import { CanvasProviders, EditPermissionProvider, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
+import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
+import { EditPermissionProvider } from '@/pages/Skill/contexts';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
 

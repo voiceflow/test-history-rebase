@@ -457,3 +457,12 @@ export enum PlanType {
   TEAM = 'team',
   ENTERPRISE = 'enterprise',
 }
+
+export enum MarkupModeType {
+  TEXT = 'text',
+  SQUARE = 'square',
+  CIRCLE = 'circle',
+  LINE = 'line',
+  ARROW = 'arrow',
+  IMAGE = 'image',
+}

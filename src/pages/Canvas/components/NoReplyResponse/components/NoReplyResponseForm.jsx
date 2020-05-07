@@ -2,12 +2,13 @@ import React from 'react';
 import { createSelector } from 'reselect';
 
 import SSMLWithVars from '@/components/SSMLWithVars';
+import Section from '@/components/Section';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { RepromptType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { useUpdateData } from '@/pages/Canvas/components/EditSidebar/hooks';
-import { FormControl, Section } from '@/pages/Canvas/components/Editor';
+import { FormControl } from '@/pages/Canvas/components/Editor';
+import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 
 import ResponseTypeSelect from './ResponseTypeSelect';
 

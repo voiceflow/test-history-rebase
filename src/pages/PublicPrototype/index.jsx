@@ -15,8 +15,8 @@ import { initializePrototype, updateVariables } from '@/ducks/prototype';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
-import { EditPermissionProvider } from '@/pages/Canvas/contexts';
 import Prototype from '@/pages/Prototype';
+import { EditPermissionProvider } from '@/pages/Skill/contexts';
 import { FadeDownContainer } from '@/styles/animations';
 import * as Intercom from '@/vendors/intercom';
 

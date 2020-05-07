@@ -9,8 +9,9 @@ import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useEnableDisable, useHover, useTeardown } from '@/hooks';
 import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EditPermissionContext, EngineContext, ManagerContext, useNode } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext, ManagerContext, useNode } from '@/pages/Canvas/contexts';
 import { NodeAPI, PortAPI, StepAPI } from '@/pages/Canvas/types';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { buildVirtualDOMRect, stopPropagation } from '@/utils/dom';
 import { isInRange } from '@/utils/number';
 

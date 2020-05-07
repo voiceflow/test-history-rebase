@@ -6,11 +6,12 @@ import Drawer from '@/components/Drawer';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { SidebarProvider } from '@/pages/Canvas/components/EditSidebar/contexts';
+import { Content, Controls as EditorControls, FormControl } from '@/pages/Canvas/components/Editor';
+import { SidebarProvider } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EngineProvider } from '@/pages/Canvas/contexts';
 import { withRedux } from '@/utils/testing';
 
-import Editor, { Content, Controls as EditorControls, FormControl } from '.';
+import Editor from '.';
 
 const LOREM_IPSUM =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.';

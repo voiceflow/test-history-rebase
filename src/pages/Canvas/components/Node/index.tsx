@@ -7,8 +7,9 @@ import { useSmartReducerV2 } from '@/hooks';
 import { BlockAPI } from '@/pages/Canvas/components/Block';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EditPermissionContext, EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
 import { useNodeDragApi } from '@/pages/Canvas/hooks';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
 import NodeBlock from './components/NodeBlock';

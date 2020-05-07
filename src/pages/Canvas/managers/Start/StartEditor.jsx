@@ -5,7 +5,7 @@ import { SectionVariant } from '@/components/Section';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { HelpMessage, HelpTooltip } from '@/pages/Canvas/managers/Command/components';

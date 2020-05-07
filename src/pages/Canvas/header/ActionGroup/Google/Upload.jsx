@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
 import { GOOGLE_STATES, publish } from '@/ducks/publish/google';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';

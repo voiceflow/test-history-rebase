@@ -220,13 +220,13 @@ VF_APP_FF_SOME_FEATURE='true'
 
 ```sh
 yarn start --ff_someFeature
-yarn start --ff_pricingRevisions
-
 ```
 
 #### Available Flags and Environment Variables
 
-- `ff_markup` / `FF_MARKUP`: enable the markup feature
+- `ff_markup` / `VF_APP_FF_MARKUP`:                       enable canvas markup feature
+- `ff_pricingRevisions` / `VF_APP_FF_PRICING_REVISIONS`:  enable new pricing revisions
+- `ff_onboardingV2` / `VF_APP_FF_ONBOARDING_V2`:          enable new onboarding experience
 
 ## Previewing in an ephmeral environment
 

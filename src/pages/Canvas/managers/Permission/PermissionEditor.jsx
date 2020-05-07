@@ -2,7 +2,7 @@ import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Section from '@/components/Section';
-import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { without } from '@/utils/array';
 
 import { HelpMessage, HelpTooltip } from './components';

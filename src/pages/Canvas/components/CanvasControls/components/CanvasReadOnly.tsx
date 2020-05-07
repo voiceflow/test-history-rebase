@@ -2,6 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import { styled } from '@/hocs';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 
 const CanvasReadOnlyContainer = styled(Flex)`
   position: absolute;
@@ -23,11 +24,19 @@ const CanvasReadOnlyContainer = styled(Flex)`
   user-select: none;
 `;
 
-const CanvasReadOnly = () => (
-  <CanvasReadOnlyContainer>
-    <img className="mr-2" alt="eye" src="/eye.svg" width={16} height={16} />
-    <span>Read Only</span>
-  </CanvasReadOnlyContainer>
-);
+const CanvasReadOnly = () => {
+  const { canEdit } = React.useContext(EditPermissionContext)!;
+
+  if (canEdit) {
+    return null;
+  }
+
+  return (
+    <CanvasReadOnlyContainer>
+      <img className="mr-2" alt="eye" src="/eye.svg" width={16} height={16} />
+      <span>Read Only</span>
+    </CanvasReadOnlyContainer>
+  );
+};
 
 export default CanvasReadOnly;

@@ -9,10 +9,9 @@ import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
+import { useDebouncedCallback, useFeature, useSyncedSmartReducer, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 import ErrorMessage from './components/ErrorMessage';
@@ -25,9 +24,11 @@ import {
   SAVE_SETTINGS_DEBOUNCE_DELAY,
 } from './constants';
 
-function Basic({ meta, skill, getImportToken, saveSkillSettings, isFeatureEnabled }) {
+function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
   const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta } = meta;
   const { name: nameSkill } = skill;
+
+  const pricingRevisings = useFeature(FeatureFlag.PRICING_REVISIONS);
 
   const [state, actions] = useSyncedSmartReducer({
     invName: invNameMeta,
@@ -225,7 +226,7 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings, isFeatureEnable
           <RadioGroup options={REPEAT_OPTIONS} name="multiple" checked={repeat || 1} onChange={setRepeat} />
         </FormControl>
       </Section>
-      {!isFeatureEnabled && (
+      {!pricingRevisings.isEnabled && (
         <Section
           collapseVariant={SectionToggleVariant.ARROW}
           header="Downloadable Link"
@@ -244,7 +245,6 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings, isFeatureEnable
 const mapStateToProps = {
   meta: skillMetaSelector,
   skill: activeSkillSelector,
-  isFeatureEnabled: Feature.featureSelector,
 };
 
 const mapDispatchToProps = {
@@ -252,8 +252,4 @@ const mapDispatchToProps = {
   getImportToken,
 };
 
-const mergeProps = ({ isFeatureEnabled: featureSelector }) => ({
-  isFeatureEnabled: featureSelector(FeatureFlag.PRICING_REVISIONS),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Basic);
+export default connect(mapStateToProps, mapDispatchToProps)(Basic);

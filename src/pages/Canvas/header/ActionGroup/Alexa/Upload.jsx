@@ -7,7 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';

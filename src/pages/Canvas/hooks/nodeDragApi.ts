@@ -2,7 +2,8 @@ import React from 'react';
 
 import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
 import { useEnableDisable } from '@/hooks';
-import { EditPermissionContext, EngineContext, PresentationModeContext, useNode } from '@/pages/Canvas/contexts';
+import { EngineContext, PresentationModeContext, useNode } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import MouseMovement from '@/utils/mouseMovement';
 
 type Position = [number, number];

@@ -9,11 +9,12 @@ import { connect } from '@/hocs';
 import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useEnableDisable } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
-import { EditPermissionContext, ManagerContext } from '@/pages/Canvas/contexts';
+import { ManagerContext } from '@/pages/Canvas/contexts';
+import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { stopImmediatePropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
-import Editor from '../Editor';
 import EditorModal from './components/EditorModal';
 import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
@@ -46,7 +47,7 @@ function EditSidebar({ focus, node, parent, theme }) {
 
     editor = (
       <NamespaceProvider value={['editor', node.type, node.id]}>
-        <Editor
+        <BlockEditor
           key={`${node.id}-${path.length}`}
           path={path}
           goToPath={goToPath}
@@ -68,7 +69,7 @@ function EditSidebar({ focus, node, parent, theme }) {
             popFromPath={popFromPath}
             isOpen={isOpen}
           />
-        </Editor>
+        </BlockEditor>
         <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
       </NamespaceProvider>
     );

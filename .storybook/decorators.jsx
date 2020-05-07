@@ -15,7 +15,8 @@ import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
-import { EditPermissionContext, EngineContext } from '@/pages/Canvas/contexts';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { identity } from '@/utils/functional';
 import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 

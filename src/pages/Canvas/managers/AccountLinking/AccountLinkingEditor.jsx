@@ -3,6 +3,7 @@ import React from 'react';
 
 import Input from '@/components/Input';
 import { SubHeader } from '@/components/Page/components';
+import Section from '@/components/Section';
 import Select from '@/components/Select';
 import { Spinner } from '@/components/Spinner';
 import SubHeaderTabs from '@/components/Tabs';
@@ -10,7 +11,7 @@ import { setError } from '@/ducks/modal';
 import { getAccountLinking, saveAccountLinking } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducer } from '@/hooks';
-import { Content, Controls, FormControl, Section } from '@/pages/Canvas/components/Editor';
+import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { Client, Domain, HelpTooltip, Scope, SpinnerContainer } from './components';
 import { CLIENT_AUTH_SCHEMES, EMPTY_ACCOUNT_DATA, TABS } from './constants';

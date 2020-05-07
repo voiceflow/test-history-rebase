@@ -3,15 +3,14 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
 import FlowControlsContainer, { FlowControlsContainerProps } from './FlowControlsContainer';
 import HomeButton from './HomeButton';
 
-export type CanvasGoHomeProps = FlowControlsContainerProps & {
-  goToRootDiagram: () => void;
-};
+export type CanvasGoHomeProps = FlowControlsContainerProps;
 
-const CanvasGoHome: React.FC<CanvasGoHomeProps> = ({ goToRootDiagram, ...props }) => (
+const CanvasGoHome: React.FC<CanvasGoHomeProps & ConnectedCanvasGoHomeProps> = ({ goToRootDiagram, ...props }) => (
   <FlowControlsContainer {...props}>
     <HomeButton onClick={goToRootDiagram}>
       <SvgIcon icon="returnHome" size={13} color="currentColor" />
@@ -24,4 +23,6 @@ const mapDispatchToProps = {
   goToRootDiagram: Router.goToRootDiagram,
 };
 
-export default connect(null, mapDispatchToProps)(CanvasGoHome);
+type ConnectedCanvasGoHomeProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(CanvasGoHome) as React.FC<CanvasGoHomeProps>;

@@ -8,7 +8,7 @@ import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
-import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 
 import AudioIcon from './components/AudioIcon';
 import DraggableItem from './components/DraggableItem';

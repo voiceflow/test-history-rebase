@@ -14,19 +14,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   height: inherit;
 }
 
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #5589eb;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c20 {
   box-sizing: content-box;
   width: 16px;
@@ -35,6 +22,19 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 }
 
 .c20 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #5589eb;
+}
+
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -642,19 +642,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
-.c19 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c19 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -663,6 +650,19 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c19 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3c6997;
+}
+
+.c19 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1653,19 +1653,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
-.c17 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c17 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c12 {
   box-sizing: content-box;
   width: 16px;
@@ -1674,6 +1661,19 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c17 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #3c6997;
+}
+
+.c17 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -2267,19 +2267,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   height: inherit;
 }
 
-.c14 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #5589eb;
-}
-
-.c14 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c20 {
   box-sizing: content-box;
   width: 16px;
@@ -2288,6 +2275,19 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 }
 
 .c20 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c14 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #5589eb;
+}
+
+.c14 > svg {
   display: block;
   width: inherit;
   height: inherit;

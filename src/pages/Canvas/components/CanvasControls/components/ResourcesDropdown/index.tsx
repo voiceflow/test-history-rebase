@@ -6,7 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Tracking from '@/ducks/tracking';
 import { useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { ShortcutModalContext } from '@/pages/Canvas/contexts';
+import { ShortcutModalContext } from '@/pages/Skill/contexts';
 
 import { STATIC_RESOURCES, StaticResource } from '../../constants';
 import { OptionLabel } from './components';

@@ -5,13 +5,13 @@ import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.s
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
 import { EventualEngineProvider, OverlayProvider, RegisterEngine, RolePermissionsProvider } from '@/contexts';
-import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
+import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Skill/contexts';
 
-import LeftSidebar from '.';
+import DesignMenu from '.';
 
 export default {
   title: 'Creator/Left Sidebar',
-  component: LeftSidebar,
+  component: DesignMenu,
 };
 
 const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a409df7a789a9075c95350658' } = {}) =>
@@ -266,8 +266,8 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
     )
   );
 
-export const base = createStory()(() => <LeftSidebar />);
-export const cantEdit = createStory({ userId: 0 })(() => <LeftSidebar />);
-export const stepsAlexa = createStory({ platform: 'alexa' })(() => <LeftSidebar />);
-export const stepsGoogle = createStory({ platform: 'google' })(() => <LeftSidebar />);
-export const flowsSelected = createStory({ tab: 'flows' })(() => <LeftSidebar />);
+export const base = createStory()(() => <DesignMenu />);
+export const cantEdit = createStory({ userId: 0 })(() => <DesignMenu />);
+export const stepsAlexa = createStory({ platform: 'alexa' })(() => <DesignMenu />);
+export const stepsGoogle = createStory({ platform: 'google' })(() => <DesignMenu />);
+export const flowsSelected = createStory({ tab: 'flows' })(() => <DesignMenu />);

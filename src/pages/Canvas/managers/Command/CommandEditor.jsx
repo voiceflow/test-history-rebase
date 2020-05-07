@@ -8,8 +8,8 @@ import * as Intent from '@/ducks/intent';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { withHeaderActions } from '@/pages/Canvas/components/EditSidebar/hocs';
-import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
+import { withHeaderActions } from '@/pages/Canvas/components/EditorSidebar/hocs';
 import { compose } from '@/utils/functional';
 import { prettifyIntentName } from '@/utils/intent';
 

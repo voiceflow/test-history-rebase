@@ -4,7 +4,7 @@ import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { SidebarContext } from '@/pages/Canvas/components/EditSidebar/contexts';
+import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
 

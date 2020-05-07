@@ -4,7 +4,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager } from '@/hooks';
-import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import { EngineContext } from '@/pages/Canvas/contexts';
 

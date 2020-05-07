@@ -1,18 +1,34 @@
 import React from 'react';
 
 import { isSafari } from '@/config';
-import { BlockType } from '@/constants';
+import { BlockType, MarkupModeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { connect, styled } from '@/hocs';
+import { connect, css, styled } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { ClipboardContext, EditPermissionContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { Callback, ConnectedProps } from '@/types';
 
-const Wrapper = styled.div`
+export const MARKUP_MODE_CURSORS: Record<MarkupModeType, string> = {
+  [MarkupModeType.TEXT]: 'text',
+  [MarkupModeType.SQUARE]: 'crosshair',
+  [MarkupModeType.CIRCLE]: 'crosshair',
+  [MarkupModeType.LINE]: 'crosshair',
+  [MarkupModeType.ARROW]: 'crosshair',
+  [MarkupModeType.IMAGE]: 'default',
+};
+
+const Wrapper = styled.div<{ markupMode?: MarkupModeType | null }>`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
+
+  ${({ markupMode }) =>
+    markupMode &&
+    css`
+      cursor: ${MARKUP_MODE_CURSORS[markupMode]};
+    `}
 `;
 
 const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children }) => {
@@ -20,6 +36,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
+  const markupTool = React.useContext(MarkupModeContext);
 
   const showSpotlight = React.useCallback(() => canEdit && spotlight.toggle(), [canEdit]);
   const deleteActive = React.useCallback<Callback>(() => canEdit && engine.removeActive(), [canEdit]);
@@ -36,7 +53,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.COMMENT, addComment, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
 
-  return <Wrapper>{children}</Wrapper>;
+  return <Wrapper markupMode={markupTool?.modeType}>{children}</Wrapper>;
 };
 
 const mapDispatchToProps = {

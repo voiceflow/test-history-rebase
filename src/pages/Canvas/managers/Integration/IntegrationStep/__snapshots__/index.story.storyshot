@@ -521,19 +521,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
   height: inherit;
 }
 
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #74a4bf;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c15 {
   box-sizing: content-box;
   width: 16px;
@@ -542,6 +529,19 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
 }
 
 .c15 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1028,19 +1028,6 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
   height: inherit;
 }
 
-.c12 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #74a4bf;
-}
-
-.c12 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c16 {
   box-sizing: content-box;
   width: 16px;
@@ -1049,6 +1036,19 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
 }
 
 .c16 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c12 > svg {
   display: block;
   width: inherit;
   height: inherit;

@@ -13,6 +13,7 @@ import { updateProjectName } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable } from '@/hooks';
@@ -38,7 +39,7 @@ const PAGES_MATCHES = {
 
 const TIMEOUT_COUNT = 5 * 60 * 1000;
 
-function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
+function Skill({ match, error, diagramID, activeWorkspaceId, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
 
@@ -66,7 +67,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
   }
 
   return (
-    <MarkupModeProvider>
+    <MarkupModeProvider skillID={activeSkill.id} projectID={activeSkill.projectID} activeWorkspaceID={activeWorkspaceId}>
       <Helmet>
         <title>{activeSkill.name || 'Voiceflow Creator'}</title>
       </Helmet>
@@ -108,6 +109,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
 const mapStateToProps = {
   activeSkill: activeSkillSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
+  activeWorkspaceId: activeWorkspaceIDSelector,
   isOnlyViewer: isOnlyViewerSelector,
 };
 

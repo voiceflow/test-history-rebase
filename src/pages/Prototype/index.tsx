@@ -51,7 +51,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ locale,
           locale={locale}
           isPublic={isPublic}
           disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
-          forceFocus={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.WAITING_USER_INTERACTION, PMStatus.DIALOG_WAITING_USER_INTERACTION)}
           onUserInput={onInteraction}
         />
       )}

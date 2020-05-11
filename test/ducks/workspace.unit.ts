@@ -79,7 +79,14 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
 
     describe('onPaidPlan()', () => {
       it('should select whether the active workspace is on a paid plan', () => {
-        expect(select(Workspace.onPaidPlan)).to.be.true;
+        const ROOT_STATE = {
+          feature: {
+            features: {
+              isEnabled: true,
+            },
+          },
+        };
+        expect(select(Workspace.onPaidPlan, ROOT_STATE)).to.be.true;
       });
     });
 

@@ -44,10 +44,19 @@ function ButtonDropdownInput({
   onTextChange,
   noScroll = false,
   orientation = OrientationType.RIGHT,
+  error,
+  onFocus,
 }) {
   const Input = (
     <TextInputContainer>
-      <TextInput orientation={orientation} value={textValue} placeholder={placeholder} onChange={(e) => onTextChange(e.target.value)} />
+      <TextInput
+        orientation={orientation}
+        value={textValue}
+        onFocus={onFocus}
+        placeholder={placeholder}
+        onChange={(e) => onTextChange(e.target.value)}
+        error={error}
+      />
     </TextInputContainer>
   );
 
@@ -57,8 +66,9 @@ function ButtonDropdownInput({
       <InputGroupAddon orientation={orientation} addonType="prepend">
         <Dropdown options={options} onSelect={onDropdownChange} noScroll={noScroll}>
           {(ref, onToggle, isOpen) => (
-            <DropdownButton orientation={orientation} ref={ref} onClick={onToggle} active={isOpen}>
-              {dropdownValue.label} <Icon icon={SectionToggleVariant.TOGGLE} size={7} />
+            <DropdownButton orientation={orientation} ref={ref} onClick={onToggle} active={isOpen} error={error} disabled={error}>
+              {dropdownValue.label}
+              <Icon icon={SectionToggleVariant.TOGGLE} size={7} />
             </DropdownButton>
           )}
         </Dropdown>

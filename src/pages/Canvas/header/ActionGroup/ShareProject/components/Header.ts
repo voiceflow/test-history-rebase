@@ -1,7 +1,6 @@
-import Flex from '@/components/Flex';
 import { styled } from '@/hocs';
 
-const Header = styled(Flex as any)`
+const Header = styled.div`
   font-size: 15px;
   font-weight: 600;
   color: #132144;
@@ -9,6 +8,7 @@ const Header = styled(Flex as any)`
 
   span {
     margin-right: 12px;
+    vertical-align: middle;
   }
 `;
 

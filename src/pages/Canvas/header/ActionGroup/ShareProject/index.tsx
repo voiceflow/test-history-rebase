@@ -9,6 +9,7 @@ import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
+import { FadeDownContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
 import { MenuContainer, MenuItem } from './components';
@@ -32,48 +33,51 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectPropsProps
   const [testableLink, setLink] = React.useState<string | boolean>(false);
 
   const makeConfig = async () => {
-    setLink(false);
-    if (render) await renderPrototype();
+    if (render) {
+      await renderPrototype();
+    }
     setLink(`${window.location.origin}/demo/${await sharePrototype()}`);
   };
 
-  const onOpenMenu = (callback: () => void) => () => {
-    plan !== PlanType.STARTER && makeConfig();
-    callback();
-  };
-
   React.useEffect(() => {
+    if (plan !== PlanType.STARTER) {
+      makeConfig();
+    } else {
+      setLink(false);
+    }
     getImportToken();
-  }, [getImportToken]);
+  }, [getImportToken, plan]);
 
   return (
     <Dropdown
       placement="bottom"
       zIndex={999}
-      menu={
+      menu={() => (
         <MenuContainer>
-          <MenuItem
-            plan={plan}
-            title="Testable Link"
-            description="Share your project with others for in browser prototyping."
-            onRedirect={openTestableLinksModal}
-            help="https://docs.voiceflow.com/voiceflow-documentation/downloading-and-sharing-projects"
-            link={testableLink}
-          />
-          <MenuItem
-            plan={plan}
-            title="Project Download"
-            description="Allow other to download this project to their own Voiceflow account."
-            onRedirect={openProjectDownloadModal}
-            help="https://docs.voiceflow.com/voiceflow-documentation/downloading-and-sharing-projects"
-            link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
-          />
+          <FadeDownContainer>
+            <MenuItem
+              plan={plan}
+              title="Testable Link"
+              description="Share your project with others for in browser prototyping."
+              onRedirect={openTestableLinksModal}
+              help="https://docs.voiceflow.com/voiceflow-documentation/downloading-and-sharing-projects"
+              link={testableLink}
+            />
+            <MenuItem
+              plan={plan}
+              title="Project Download"
+              description="Allow other to download this project to their own Voiceflow account."
+              onRedirect={openProjectDownloadModal}
+              help="https://docs.voiceflow.com/voiceflow-documentation/downloading-and-sharing-projects"
+              link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
+            />
+          </FadeDownContainer>
         </MenuContainer>
-      }
+      )}
     >
-      {(ref: any, onToggle: any, isOpen: any) => (
+      {(ref: React.Ref<HTMLElement>, onToggle: () => void, isOpen: boolean) => (
         <Tooltip title="Share Project">
-          <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={onOpenMenu(onToggle)} isActive={isOpen}>
+          <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={onToggle} isActive={isOpen}>
             Share
           </Button>
         </Tooltip>

@@ -55,7 +55,7 @@ export default function StripeCardElement({ onChangeComplete, disabled = false, 
   return (
     <Tooltip open={!!error && focused} title={error || errorMessageRef.current} position="bottom-start" theme="warning" animation="fade" distance={5}>
       <Wrapper disabled={disabled} onClick={onClick} borderColor={getColor(error, complete, focused)}>
-        <Flex style={{ overflow: 'hidden' }}>
+        <Flex style={{ overflow: 'hidden', paddingLeft: '2px' }}>
           <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />
 
           <StripeCardElementWrapper>

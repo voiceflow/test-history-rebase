@@ -4,6 +4,7 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import client from '@/client';
+import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { BillingPeriod, ModalType, PlanType, UserRole } from '@/constants';
@@ -113,7 +114,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         ? `Your Voiceflow ${state.plan.name} subscription has been activated.`
         : 'Your workspace has been successfully updated. Thank you.';
 
-      openSuccessModal({ title: 'Payment Successful', message, icon: 'receipt' });
+      openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
     } catch (err) {
       stopCheckingOut();
       let error;

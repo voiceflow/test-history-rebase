@@ -1,9 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { EDITOR_SEAT_ROLES } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { EDITOR_SEAT_ROLES, PlanType } from '@/constants';
 import { createRootSelector } from '@/ducks/utils';
 import { getAlternativeColor } from '@/utils/colors';
 
+import { isFeatureEnabledSelector } from '../feature';
 import { STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
@@ -20,7 +22,9 @@ export const workspaceNumberOfSeatsSelector = createSelector([activeWorkspaceSel
 
 export const planTypeSelector = createSelector([activeWorkspaceSelector], ({ plan }) => plan);
 
-export const onPaidPlan = createSelector([planTypeSelector], (plan) => !!plan);
+export const onPaidPlan = createSelector([planTypeSelector, isFeatureEnabledSelector], (plan, feature) =>
+  feature(FeatureFlag.PRICING_REVISIONS) ? plan !== PlanType.STARTER : !!plan
+);
 
 export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSelector], (activeWorkspace) => activeWorkspace?.members || []);
 

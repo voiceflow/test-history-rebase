@@ -30,12 +30,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
     setCopiedStatus();
   }, []);
 
-  const button = (
-    <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan !== PlanType.STARTER ? onCopy : onRedirect)}>
-      Copy
-    </Button>
-  );
-
   React.useEffect(() => {
     if (isCopied) {
       setTimeout(clearCopiedStatus, 1000);
@@ -55,13 +49,11 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
         </Description>
       </div>
       <div>
-        {isCopied ? (
-          <Tooltip title="Copied to clipboard" position="top">
-            {button}
-          </Tooltip>
-        ) : (
-          button
-        )}
+        <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
+          <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan !== PlanType.STARTER ? onCopy : onRedirect)}>
+            Copy
+          </Button>
+        </Tooltip>
       </div>
     </MenuItemContainer>
   );

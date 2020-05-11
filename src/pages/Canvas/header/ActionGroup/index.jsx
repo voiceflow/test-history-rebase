@@ -48,6 +48,7 @@ function ActionGroup(props) {
         </SettingsModalConsumer>
       </SubTitleGroup>
       <SubTitleGroup>{pricingRevisings.isEnabled ? <ShareProject render /> : <PrototypeShare render />}</SubTitleGroup>
+
       {renderPlatform()}
     </>
   );

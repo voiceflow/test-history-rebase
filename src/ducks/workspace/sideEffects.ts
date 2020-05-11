@@ -259,22 +259,21 @@ export const getMembers = (workspaceID: string): Thunk => async (dispatch) => {
   }
 };
 
-export const createProject = (
-  workspaceID: string,
-  project: {
-    name: string;
-    locales: string[];
-    platform: PlatformType;
-  }
-): Thunk<DBProject> => async (_, getState) => {
+export interface NewProjectOptions {
+  name: string;
+  locales: string[];
+  platform: PlatformType;
+}
+
+export const createProject = (workspaceID: string, project: NewProjectOptions, templateIndex = 0): Thunk<DBProject> => async (dispatch, getState) => {
+  await dispatch(Template.loadTemplates());
   const templates = Template.allTemplatesSelector(getState());
+  const templateID = templates[templateIndex]?.id;
 
   // onboarding failsafe
-  if (!templates[0]?.id) {
+  if (!templateID) {
     throw new NoValidTemplateError();
   }
-
-  const { id: templateID } = templates[0];
 
   try {
     const createdProject = await client.workspace.createProjectFromModule(workspaceID, templateID, project);

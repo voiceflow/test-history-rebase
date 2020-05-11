@@ -62,10 +62,6 @@ class Templates extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this.loadDefaultTemplates();
-  }
-
   async createProject() {
     const { workspaceID, computedMatch, addProjectToList, goToCanvas, createProject } = this.props;
     const { name, locales, google } = this.state;
@@ -87,15 +83,6 @@ class Templates extends React.Component {
       setTimeout(() => goToCanvas(project.skill_id, project.diagram, true), 3000);
     } catch (err) {
       alert('unable to create skill');
-    }
-  }
-
-  async loadDefaultTemplates() {
-    try {
-      await this.props.loadTemplates();
-    } catch (err) {
-      // eslint-disable-next-line no-alert
-      alert('Unable to Retrieve Templates');
     }
   }
 

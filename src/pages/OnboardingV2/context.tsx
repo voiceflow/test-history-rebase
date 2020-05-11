@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
-import { BillingPeriod, PlanType, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import { userSelector } from '@/ducks/account';
-import { goToDashboard } from '@/ducks/router';
+import { goToCanvas, goToDashboard } from '@/ducks/router';
 import {
+  NewProjectOptions,
   activeWorkspaceIDSelector,
   allWorkspacesSelector,
+  createProject,
   createWorkspace,
   fetchWorkspaces,
   sendInvite,
@@ -18,11 +20,12 @@ import {
 } from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useSmartReducer, useTrackingEvents } from '@/hooks';
+import { DBProject } from '@/models';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
 import StepID from './StepIDs';
-import { STEP_META } from './constants';
+import { ONBOARDING_PROJECT_NAME, STEP_META } from './constants';
 import { CollaboratorType } from './types';
 
 const toast: any = toastNotif;
@@ -123,8 +126,10 @@ type OnboardingProviderProps = {
   checkChargeable: (data: any) => void;
   fetchWorkspaces: () => void;
   goToDashboard: () => void;
+  goToCanvas: (skillID: string, diagramID: string) => void;
   validateInvite: (invite: string) => string;
   trackInvitationAccepted: (workspaceId: string) => void;
+  createProject: (workspaceID: string, project: NewProjectOptions, templateID: number) => DBProject;
   account: any;
   currentWorkspaceId?: string;
 };
@@ -184,11 +189,13 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   stripe,
   checkChargeable,
   goToDashboard,
+  goToCanvas,
   updateCurrentWorkspace,
   createWorkspace,
   sendInvite,
   fetchWorkspaces,
   validateInvite,
+  createProject,
   workspaces,
   trackInvitationAccepted,
   account,
@@ -324,7 +331,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       await sendInvite(email, permission, false);
     });
 
-    setSendingRequests(false);
     setOnboardingComplete(true);
 
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
@@ -338,9 +344,21 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       teamSize,
     });
 
-    goToDashboard();
+    try {
+      const { skill_id, diagram } = await createProject(
+        workspace.id,
+        { name: ONBOARDING_PROJECT_NAME, locales: ['en-US'], platform: PlatformType.ALEXA },
+        1
+      );
+      goToCanvas(skill_id, diagram);
+    } catch (error) {
+      // if it fails to create a project for the user, go to dashboard
+      console.error(error);
+      toastNotif.success('Successfully created workspace');
+      goToDashboard();
+    }
 
-    toastNotif.success('Successfully created workspace');
+    setSendingRequests(false);
 
     return workspace;
   };
@@ -414,10 +432,12 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   createWorkspace,
   sendInvite,
+  goToCanvas,
   validateInvite,
   goToDashboard,
   updateCurrentWorkspace,
   fetchWorkspaces,
+  createProject,
 };
 
 export const OnboardingProvider: any = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(OnboardingProviderFunc);

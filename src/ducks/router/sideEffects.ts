@@ -26,7 +26,7 @@ export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: 
     }
   }
 
-  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}${window.location.search}`));
+  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : '/canvas'}${window.location.search}`));
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {

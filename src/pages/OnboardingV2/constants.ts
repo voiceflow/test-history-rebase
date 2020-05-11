@@ -4,6 +4,8 @@ import * as Tracking from '@/ducks/tracking';
 
 import StepID from './StepIDs';
 
+export const ONBOARDING_PROJECT_NAME = 'First Project';
+
 export type StepMetaPropsType = {
   title: (val?: string) => string;
   canBack: boolean;

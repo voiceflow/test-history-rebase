@@ -15,6 +15,7 @@ import createSocketClient from './socket';
 import template from './template';
 import user from './user';
 import workspace from './workspace';
+import zapier from './zapier';
 
 export * from './onboarding';
 
@@ -35,6 +36,7 @@ const client = {
   template,
   onboarding,
   feature,
+  zapier,
   socket: null as ReturnType<typeof createSocketClient> | null,
 };
 

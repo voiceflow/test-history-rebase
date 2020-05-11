@@ -81,8 +81,8 @@ const PersonalizeWorkspace: React.FC = () => {
       <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       <Label>What channels are you creating for?</Label>
       <ChannelSelect
-        maxHeight={320}
-        maxVisibleItems={9.5}
+        maxHeight={190}
+        maxVisibleItems={6.5}
         multiSectionOptions={CHANNEL_TYPE_OPTIONS}
         buttonLabel="Unselect All"
         selectedValue={displayName}

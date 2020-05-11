@@ -18,7 +18,7 @@ const CreateWorkspace: React.FC = () => {
   const [workspaceName, setWorkspaceName] = React.useState<string>(createWorkspaceMeta.workspaceName || '');
   const [workspaceImage, setWorkspaceImage] = React.useState<string>(createWorkspaceMeta.workspaceImage || '');
   const canContinue = !!workspaceName.trim();
-  const iconUploadRef: React.Ref<any> = React.createRef();
+  const iconUploadRef = React.createRef<HTMLElement>();
   const inputRef = React.createRef<HTMLElement>();
 
   React.useEffect(() => {

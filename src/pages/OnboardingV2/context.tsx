@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
 import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { ONBOARDING_ZAPIER_PATH } from '@/config';
 import { userSelector } from '@/ducks/account';
 import { goToCanvas, goToDashboard } from '@/ducks/router';
 import {
@@ -29,6 +30,13 @@ import { ONBOARDING_PROJECT_NAME, STEP_META } from './constants';
 import { CollaboratorType } from './types';
 
 const toast: any = toastNotif;
+
+export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
+  return collaborators.filter((collaborator: CollaboratorType) => {
+    const { permission } = collaborator;
+    return permission === UserRole.ADMIN || permission === UserRole.EDITOR;
+  }).length;
+};
 
 export type OnboardingContextProps = {
   state: {
@@ -203,6 +211,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
+  const [isFinalizing, setIsFinalizing] = React.useState(false);
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, firstStep);
@@ -226,7 +235,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
     sendingRequests: false,
   });
 
-  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta } = state;
+  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests } = state;
   const { setStepStack, setOnboardingComplete, setSendingRequests } = actions;
 
   const cache = React.useRef({ stepStack, state, skipped: false });
@@ -238,6 +247,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       const [, ...newStepStack] = stepStack;
       setStepStack([...newStepStack]);
     }
+  };
+
+  const sendZap = (name: string, email: string, workspaceID: string, workspaceName: string) => {
+    client.zapier.triggerZap(ONBOARDING_ZAPIER_PATH, { name, email, workspaceID, workspaceName });
   };
 
   const checkPayment = async () => {
@@ -260,9 +273,11 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
   const handlePayment = async (workspaceID: string, source: any) => {
     const { plan, period, couponCode } = paymentMeta;
+    const numberOfEditors = getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
+
     await client.workspace.checkout(workspaceID, {
       plan,
-      seats: addCollaboratorMeta.collaborators.length,
+      seats: numberOfEditors,
       period,
       coupon: couponCode || undefined,
       source_id: source?.id,
@@ -287,6 +302,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
   const finishCreateOnboarding = async () => {
     setSendingRequests(true);
+    if (sendingRequests) return;
 
     const isOnLastStep = stepStack.length === numberOfSteps;
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
@@ -360,6 +376,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
     setSendingRequests(false);
 
+    if (addCollaboratorMeta.isDemoBooked) {
+      sendZap(userName, email, workspace.id, name);
+    }
+
     return workspace;
   };
 
@@ -380,21 +400,30 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
   const stepForward = async (stepID: StepID | null, { skip = false }: { skip?: boolean } = {}) => {
     const isLastStep = stepStack.length === numberOfSteps;
-    const currentStepID: StepID = stepStack[0];
-
     if (isLastStep) {
-      const workspaceID = await handleLastStep(currentStepID);
-
-      dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip }));
-
-      if (workspaceID) {
-        trackingEvents.trackOnboardingV2Complete({ skip, workspaceID });
-      }
+      setIsFinalizing(true);
     } else if (!stepStack.includes(stepID)) {
       cache.current.skipped = skip;
       setStepStack([stepID, ...stepStack]);
     }
   };
+
+  React.useEffect(() => {
+    const isLastStep = stepStack.length === numberOfSteps;
+    const lastStepHandler = async () => {
+      const currentStepID: StepID = stepStack[0];
+      const workspaceID = await handleLastStep(currentStepID);
+
+      dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
+
+      if (workspaceID) {
+        trackingEvents.trackOnboardingV2Complete({ skip: false, workspaceID });
+      }
+    };
+    if (isFinalizing && isLastStep) {
+      lastStepHandler();
+    }
+  }, [isFinalizing]);
 
   React.useEffect(() => {
     if (cache.current.stepStack.length < stepStack.length) {

@@ -12,7 +12,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
 import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { OnboardingContext } from '@/pages/OnboardingV2/context';
+import { OnboardingContext, getNumberOfEditorSeats } from '@/pages/OnboardingV2/context';
 import { OnboardingProps } from '@/pages/OnboardingV2/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 
@@ -43,7 +43,7 @@ const Payment: React.FC<OnboardingProps> = () => {
   const { sendingRequests } = state;
   const { collaborators } = state.addCollaboratorMeta;
 
-  const numberOfSeats = collaborators.length;
+  const numberOfSeats = getNumberOfEditorSeats(collaborators);
 
   const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
   const [coupon, setCoupon] = React.useState(couponCode || '');

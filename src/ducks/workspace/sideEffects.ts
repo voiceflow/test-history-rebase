@@ -159,7 +159,7 @@ export const validateInvite = (invite: string): Thunk<string | null> => async (d
 // New workspace actions  //
 // /////////////////////////
 
-export const sendInvite = (email: string, permissionType: UserRole): Thunk<boolean> => async (dispatch, getState) => {
+export const sendInvite = (email: string, permissionType: UserRole, showToast = true): Thunk<boolean> => async (dispatch, getState) => {
   const state = getState();
   try {
     const currentWorkspaceID = activeWorkspaceIDSelector(state)!;
@@ -171,7 +171,9 @@ export const sendInvite = (email: string, permissionType: UserRole): Thunk<boole
       dispatch(Tracking.trackInvitationSent(currentWorkspaceID, email));
     }
 
-    toast.success('Sent invite');
+    if (showToast) {
+      toast.success('Sent invite');
+    }
 
     return true;
   } catch (err) {

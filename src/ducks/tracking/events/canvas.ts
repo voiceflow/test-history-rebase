@@ -19,15 +19,10 @@ export const trackCanvasSpotlightOpened = createProjectEventTracker((options) =>
   client.analytics.track(EventName.CANVAS_SPOTLIGHT_OPENED, createProjectEventPayload(options))
 );
 
-export const trackMarkupOpen = ({ skillID, projectID, workspaceID }: { skillID: string; projectID: string; workspaceID: string }) => () =>
-  client.analytics.track(EventName.CANVAS_MARKUP_OPENED, {
-    teamhashed: ['workspace_id'],
-    properties: {
-      skill_id: skillID,
-      workspace_id: workspaceID,
-      project_id: projectID,
-    },
-  });
+export const trackMarkupOpen = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_OPENED, createProjectEventPayload(options))
+);
 
-export const trackMarkupSessionDuration = (duration: number) => () =>
-  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, { properties: { duration: Math.floor(duration / 1000) } });
+export const trackMarkupSessionDuration = createProjectEventTracker<{ duration: number }>((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: options.duration }))
+);

@@ -12,16 +12,10 @@ export type MarkupModeContextType = {
   setModeType: (value: MarkupModeType | null) => void;
 };
 
-type MarkupProviderProps = {
-  skillID: string;
-  projectID: string;
-  activeWorkspaceID: string;
-};
-
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
 export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
-export const MarkupModeProvider: React.FC<MarkupProviderProps> = ({ skillID, projectID, activeWorkspaceID, children }) => {
+export const MarkupModeProvider: React.FC = ({ children }) => {
   const [trackEvents] = useTrackingEvents();
   const [startTime, setStartTime] = React.useState(0);
   const [isOpen, openTool, closeTool] = useEnableDisable(false);
@@ -30,14 +24,15 @@ export const MarkupModeProvider: React.FC<MarkupProviderProps> = ({ skillID, pro
   const enableMarkup = () => {
     if (!isOpen) {
       openTool();
-      trackEvents.trackMarkupOpen({ skillID, projectID, workspaceID: activeWorkspaceID });
+      trackEvents.trackMarkupOpen();
       setStartTime(Date.now());
     }
   };
 
   const disableMarkup = () => {
     if (isOpen) {
-      trackEvents.trackMarkupSessionDuration(Date.now() - startTime);
+      const duration: number = Date.now() - startTime;
+      trackEvents.trackMarkupSessionDuration({ duration });
       setStartTime(0);
       closeTool();
     }

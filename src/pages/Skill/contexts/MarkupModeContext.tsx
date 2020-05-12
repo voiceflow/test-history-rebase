@@ -29,14 +29,25 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     }
   };
 
-  const disableMarkup = () => {
+  const trackMarkupTime = React.useCallback(() => {
     if (isOpen) {
       const duration: number = Date.now() - startTime;
       trackEvents.trackMarkupSessionDuration({ duration });
+    }
+  }, [isOpen]);
+
+  const disableMarkup = React.useCallback(() => {
+    if (isOpen) {
+      trackMarkupTime();
       setStartTime(0);
       closeTool();
     }
-  };
+  }, [isOpen, trackMarkupTime]);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', trackMarkupTime);
+    return window.removeEventListener('beforeunload', trackMarkupTime);
+  }, [isOpen]);
 
   return (
     <MarkupModeContext.Provider value={{ isOpen, openTool: enableMarkup, closeTool: disableMarkup, modeType, setModeType }}>

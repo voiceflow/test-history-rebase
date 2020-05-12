@@ -111,7 +111,7 @@ const Payment: React.FC<OnboardingProps> = () => {
                   onClick: () => setPaymentPeriod(BillingPeriod.MONTHLY),
                 },
                 {
-                  label: 'Annual',
+                  label: 'Annually',
                   onClick: () => setPaymentPeriod(BillingPeriod.ANNUALLY),
                 },
               ]}

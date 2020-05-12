@@ -314,7 +314,7 @@ export enum BillingPeriod {
 
 export const PERIOD_NAME = {
   [BillingPeriod.MONTHLY]: 'Monthly',
-  [BillingPeriod.ANNUALLY]: 'Yearly',
+  [BillingPeriod.ANNUALLY]: 'Annually',
 };
 
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;

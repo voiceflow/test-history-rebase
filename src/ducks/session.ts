@@ -150,9 +150,9 @@ export const logout = (): Thunk => async (dispatch) => {
   await dispatch(resetSession());
 };
 
-export const identifyUser = (user: Models.Account) => {
+export const identifyUser = async (user: Models.Account) => {
   LogRocket.identify(user);
-  Userflow.identify(user);
+  await Userflow.identify(user);
 };
 
 export const restoreSession = (): Thunk => async (dispatch, getState) => {
@@ -166,7 +166,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     await client.socket!.auth(token, browserID, tabID);
     dispatch(Account.updateAccount(user));
 
-    identifyUser(user);
+    await identifyUser(user);
   } catch (err) {
     await dispatch(resetSession());
   }
@@ -199,7 +199,7 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
     dispatch(goToOnboarding());
   }
 
-  identifyUser(user);
+  await identifyUser(user);
 };
 
 export const signup = createSession(SessionType.SIGN_UP);

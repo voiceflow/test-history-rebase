@@ -9,12 +9,18 @@ export const initialize = () => {
   }
 };
 
-export const identify = (user: Account) => {
+export const identify = async (user: Account) => {
   if (USERFLOW_ENABLED) {
-    userflow.identify(String(user.creator_id), {
+    await userflow.identify(String(user.creator_id), {
       name: user.name,
       email: user.email,
       signed_up_at: user.created,
     });
+  }
+};
+
+export const startFlow = async (flowID: string) => {
+  if (USERFLOW_ENABLED) {
+    await (userflow.start || userflow.startFlow)(flowID);
   }
 };

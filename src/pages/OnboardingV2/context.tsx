@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
+import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
-import { ONBOARDING_ZAPIER_PATH } from '@/config';
 import { userSelector } from '@/ducks/account';
 import { goToCanvas, goToDashboard } from '@/ducks/router';
 import {
@@ -24,6 +24,7 @@ import { useSmartReducer, useTrackingEvents } from '@/hooks';
 import { DBProject } from '@/models';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
+import * as Userflow from '@/vendors/userflow';
 
 import StepID from './StepIDs';
 import { ONBOARDING_PROJECT_NAME, STEP_META } from './constants';
@@ -367,6 +368,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
         1
       );
       goToCanvas(skill_id, diagram);
+      await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
       console.error(error);

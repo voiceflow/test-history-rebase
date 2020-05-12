@@ -71,6 +71,6 @@ export const trackOnboardingV2Identify = ({
     role,
     email,
     channels,
-    'team size': teamSize,
+    teamsize: teamSize,
   });
 };

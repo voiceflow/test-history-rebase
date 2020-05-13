@@ -39,7 +39,7 @@ class WorkspacesLoadingGate extends Component {
           header: true,
           body: (
             <div className="text-center py-1 mb-5 text-muted">
-              <img src="/images/icons/takeoff.svg" height={140} alt="blast off" />
+              <img src="/images/takeoff.svg" height={140} alt="blast off" />
               <br />
               <br />
               Successfully Accepted Invite

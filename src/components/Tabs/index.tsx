@@ -2,6 +2,7 @@ import React from 'react';
 
 import TippyTooltip from '@/components/TippyTooltip';
 import { useKeygen } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab, Wrapper } from './components';
 
@@ -61,12 +62,13 @@ const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange,
   }, [options, selected]);
 
   return (
-    <Wrapper>
+    <Wrapper className={ClassName.TABS}>
       {options.map(({ value, label, color, tooltip, ...tabProps }) => {
         const tab = (
           <Tab
             {...tabProps}
             {...{ [innerRef ? 'innerRef' : 'ref']: tooltip ? null : onRef(value) }}
+            className={ClassName.TAB}
             as={as}
             color={color}
             key={genKey(value)}

@@ -5,7 +5,7 @@ import { ActionCreators } from 'redux-undo';
 import { PlatformType } from '@/constants';
 import { activePlatformSelector, setActivePlatform } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { projectViewerCountSelector } from '@/store/selectors';
 
 import ActionGroup from './ActionGroup';

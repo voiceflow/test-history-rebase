@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
-import { connect } from 'react-redux';
 
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
 import * as Session from '@/ducks/session';
+import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
@@ -112,4 +112,4 @@ const mapDispatchToProps = {
 
 type ConnectedSocialLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(SocialLogin);
+export default connect(null, mapDispatchToProps)(SocialLogin) as React.FC<SocialLoginProps>;

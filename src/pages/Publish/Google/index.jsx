@@ -1,9 +1,9 @@
 /* eslint-disable no-secrets/no-secrets */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
-import { checkGoogleAccount } from '@/ducks/account';
-import { GOOGLE_STATES, loadDialogflow, publish, resetGoogleUpload } from '@/ducks/publish/google';
+import * as Account from '@/ducks/account';
+import * as PublishGoogleDuck from '@/ducks/publish/google';
 import { activeProjectIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import UploadGoogle from '@/pages/Publish/Upload/Google';
@@ -11,9 +11,9 @@ import UploadGoogle from '@/pages/Publish/Upload/Google';
 import PublishGoogleForm from './Form';
 
 export function PublishGoogle(props) {
-  const { stage, google, isLocked, projectID, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
-  const [open, setOpen] = useState(false);
-  const [close, setClose] = useState(false);
+  const { publishStage, googleAccount, isLocked, projectID, checkGoogleAccount, resetGoogleUpload, publish, loadDialogflow } = props;
+  const [open, setOpen] = React.useState(false);
+  const [close, setClose] = React.useState(false);
 
   const onPublish = () => {
     setOpen(true);
@@ -21,13 +21,14 @@ export function PublishGoogle(props) {
     publish();
   };
 
-  useEffect(() => setClose(GOOGLE_STATES[stage].end), [stage]);
+  React.useEffect(() => setClose(PublishGoogleDuck.GOOGLE_STATES[publishStage].end), [publishStage]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     loadDialogflow();
   }, [projectID]);
-  useEffect(() => {
-    if (!google) {
+
+  React.useEffect(() => {
+    if (!googleAccount) {
       (async () => {
         await checkGoogleAccount();
       })();
@@ -40,24 +41,24 @@ export function PublishGoogle(props) {
     <>
       <PublishGoogleForm isLocked={isLocked} publish={onPublish} />
       <Modal isOpen={open} centered contentClassName="overflow-hidden">
-        {close && <ModalHeader toggle={() => setOpen(false)} header={GOOGLE_STATES[stage]?.description} />}
+        {close && <ModalHeader toggle={() => setOpen(false)} header={PublishGoogleDuck.GOOGLE_STATES[publishStage]?.description} />}
         <UploadGoogle />
       </Modal>
     </>
   );
 }
 
-const mapStateToProps = (state) => ({
-  stage: state.publish.google.stage,
-  google: state.account.google,
-  projectID: activeProjectIDSelector(state),
-});
+const mapStateToProps = {
+  publishStage: PublishGoogleDuck.publishStageSelector,
+  googleAccount: Account.googleAccountSelector,
+  projectID: activeProjectIDSelector,
+};
 
 const mapDispatchToProps = {
-  resetGoogleUpload,
-  checkGoogleAccount,
-  publish,
-  loadDialogflow,
+  resetGoogleUpload: PublishGoogleDuck.resetGoogleUpload,
+  checkGoogleAccount: Account.checkGoogleAccount,
+  publish: PublishGoogleDuck.publish,
+  loadDialogflow: PublishGoogleDuck.loadDialogflow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublishGoogle);

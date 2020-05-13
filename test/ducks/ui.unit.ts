@@ -1,6 +1,6 @@
 import { BlockCategoryType } from '@/constants';
 import * as UI from '@/ducks/ui';
-import { Tab } from '@/pages/Canvas/components/LeftSidebar/constants';
+import { Tab } from '@/pages/Skill/menus/DesignMenu/constants';
 
 import suite from './_suite';
 

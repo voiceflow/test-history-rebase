@@ -9,7 +9,9 @@ import { Modal, ModalBody } from 'reactstrap';
 import { updateWorkspace } from '@/admin/store/ducks/admin';
 import Button from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
-import { PLANS } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { PlanType } from '@/constants';
+import { featureSelector } from '@/ducks/feature';
 
 class PlanModal extends React.Component {
   constructor(props) {
@@ -63,7 +65,7 @@ class PlanModal extends React.Component {
 
     const selectedDays = this.getSelectedDays();
 
-    const { workspace } = this.props;
+    const { workspace, isFeatureEnabled } = this.props;
     const { seats } = this.state;
 
     return (
@@ -80,7 +82,7 @@ class PlanModal extends React.Component {
                 <div className="ctg__charge_header">Team #{workspace.team_id}</div>
                 <div className="ctg__receipt_divider"></div>
                 <div className="ctg__charge_amount">
-                  <div>Current Plan: {PLANS[workspace.plan]?.toUpperCase() || 'BASIC'}</div>
+                  <div>Current Plan: {PlanType[workspace.plan]?.toUpperCase() || 'BASIC'}</div>
                   <div>Expiry: {workspace.expiry ? moment(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
                   <div className="ctg__date-picker">
                     <DayPicker
@@ -122,12 +124,12 @@ class PlanModal extends React.Component {
             <hr />
             <label>Set Plan to: (currently {workspace.plan?.toUpperCase() || 'BASIC'})</label>
             <FlexApart>
-              <Button variant="secondary" onClick={this.updatePlan(null)}>
+              <Button variant="secondary" onClick={this.updatePlan(isFeatureEnabled ? PlanType.STARTER : null)}>
                 Basic (Free)
               </Button>
-              <Button onClick={this.updatePlan(PLANS.PRO)}>Pro</Button>
-              <Button onClick={this.updatePlan(PLANS.TEAM)}>Team</Button>
-              <Button onClick={this.updatePlan(PLANS.ENTERPRISE)}>Enterprise</Button>
+              <Button onClick={this.updatePlan(PlanType.PRO)}>Pro</Button>
+              <Button onClick={this.updatePlan(PlanType.TEAM)}>Team</Button>
+              <Button onClick={this.updatePlan(PlanType.ENTERPRISE)}>Enterprise</Button>
             </FlexApart>
           </ModalBody>
         </Modal>
@@ -136,4 +138,12 @@ class PlanModal extends React.Component {
   }
 }
 
-export default connect(null, { updateWorkspace })(PlanModal);
+const mapStateToProps = {
+  isFeatureEnabled: featureSelector,
+};
+
+const mergeProps = ({ isFeatureEnabled: featureSelector }) => ({
+  isFeatureEnabled: featureSelector(FeatureFlag.PRICING_REVISIONS),
+});
+
+export default connect(mapStateToProps, { updateWorkspace }, mergeProps)(PlanModal);

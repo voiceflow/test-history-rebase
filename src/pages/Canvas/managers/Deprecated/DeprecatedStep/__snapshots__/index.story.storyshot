@@ -140,6 +140,10 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -241,16 +245,12 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -298,41 +298,43 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#adadad"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgClose"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Deprecated
+                <span
+                  className="c11 c12"
+                  color="#adadad"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgClose"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Deprecated
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { HeaderPortal } from '@/components/Page';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 
 import ProjectHeader from './ProjectHeader';
 import PrototypeHeader from './Prototype/PrototypeHeader';

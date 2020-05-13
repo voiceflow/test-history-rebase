@@ -35,7 +35,7 @@ exports[`Storyshots Creator/Block Active State 1`] = `
   border-color: #C5CBD6;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -94,15 +94,11 @@ exports[`Storyshots Creator/Block Active State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -120,7 +116,7 @@ exports[`Storyshots Creator/Block Active State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -168,31 +164,29 @@ exports[`Storyshots Creator/Block Active State 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -202,24 +196,24 @@ exports[`Storyshots Creator/Block Active State 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Block User Lock 1`] = `
-.c11 {
+.c10 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c11 > svg {
+.c10 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c12 .c10 {
+.c11 .c9 {
   color: #fff;
 }
 
-.c13 .c10 {
+.c12 .c9 {
   color: #6e849a;
 }
 
@@ -320,6 +314,16 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
+.c13 .c1 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
 .c14 .c1 {
   position: absolute;
   top: 6px;
@@ -380,16 +384,6 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c20 .c1 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -407,7 +401,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   text-overflow: ellipsis;
 }
 
-.c8 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -457,21 +451,17 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   background: transparent;
 }
 
-.c9 {
+.c8 {
   position: absolute;
   left: 0;
   padding: 0 5px;
-}
-
-.c6 > *:not(:last-of-type) {
-  margin-bottom: 6px;
 }
 
 .c3 {
   position: relative;
 }
 
-.c7 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -496,7 +486,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   }
 >
   <div
-    className="c0"
+    className="c0 vf-canvas__block"
   >
     <div
       className="c1 c2"
@@ -555,31 +545,29 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c6"
-      >
+      <section>
         <div
-          className="c7"
+          className="c6"
         >
           Step 1
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 2
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 3
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 4
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 5
         </div>
@@ -589,13 +577,13 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       className="c3"
     >
       <div
-        className="c8"
+        className="c7"
       >
         <div
-          className="c9"
+          className="c8"
         >
           <span
-            className="c10 c11"
+            className="c9 c10"
             color="#6e849a"
             size={16}
           >
@@ -644,16 +632,14 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c6"
-      >
+      <section>
         <div
-          className="c7"
+          className="c6"
         >
           Step 1
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 2
         </div>
@@ -663,13 +649,13 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       className="c3"
     >
       <div
-        className="c8"
+        className="c7"
       >
         <div
-          className="c9"
+          className="c8"
         >
           <span
-            className="c10 c11"
+            className="c9 c10"
             color="#6e849a"
             size={16}
           >
@@ -718,16 +704,14 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c6"
-      >
+      <section>
         <div
-          className="c7"
+          className="c6"
         >
           Step 1
         </div>
         <div
-          className="c7"
+          className="c6"
         >
           Step 2
         </div>
@@ -780,7 +764,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -839,15 +823,11 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -865,7 +845,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -913,31 +893,29 @@ exports[`Storyshots Creator/Block Blue 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -985,7 +963,7 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1044,15 +1022,11 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1070,7 +1044,7 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1118,31 +1092,29 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -1194,7 +1166,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1253,15 +1225,11 @@ exports[`Storyshots Creator/Block Green 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1279,7 +1247,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1327,31 +1295,29 @@ exports[`Storyshots Creator/Block Green 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -1403,7 +1369,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1462,15 +1428,11 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1488,7 +1450,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1536,31 +1498,29 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -1612,7 +1572,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1671,15 +1631,11 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1697,7 +1653,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1745,31 +1701,29 @@ exports[`Storyshots Creator/Block Purple 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -1821,7 +1775,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1880,15 +1834,11 @@ exports[`Storyshots Creator/Block Red 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1906,7 +1856,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1954,31 +1904,29 @@ exports[`Storyshots Creator/Block Red 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -2030,7 +1978,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2089,15 +2037,11 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2115,7 +2059,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2163,31 +2107,29 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -2231,7 +2173,7 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   display: none;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2290,15 +2232,11 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2316,7 +2254,7 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2364,31 +2302,29 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -2440,7 +2376,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2499,15 +2435,11 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2525,7 +2457,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2573,31 +2505,29 @@ exports[`Storyshots Creator/Block Standard 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -2649,7 +2579,7 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   opacity: 1;
 }
 
-.c0 .c6 {
+.c0 .c5 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2708,15 +2638,11 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2734,7 +2660,7 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2782,31 +2708,29 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -2816,24 +2740,24 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Step User Lock 1`] = `
-.c9 {
+.c8 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c9 > svg {
+.c8 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c13 .c8 {
+.c13 .c7 {
   color: #fff;
 }
 
-.c14 .c8 {
+.c14 .c7 {
   color: #6e849a;
 }
 
@@ -2917,6 +2841,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 
 .node--merge-active .c10 {
   z-index: -1;
+}
+
+.c9:not(:last-of-type) {
+  padding-bottom: 6px;
 }
 
 .c0 {
@@ -3058,7 +2986,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   text-overflow: ellipsis;
 }
 
-.c6 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3108,21 +3036,17 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   background: transparent;
 }
 
-.c7 {
+.c6 {
   position: absolute;
   left: 0;
   padding: 0 5px;
-}
-
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
 }
 
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3147,7 +3071,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   }
 >
   <div
-    className="c0"
+    className="c0 vf-canvas__block"
   >
     <div
       className="c1"
@@ -3195,31 +3119,29 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c4"
-      >
+      <section>
         <div
-          className="c5"
+          className="c4"
         >
           Step 1
         </div>
         <div
-          className="c5"
+          className="c4"
         >
           Step 2
         </div>
         <div
-          className="c5"
+          className="c4"
         >
           Step 3
         </div>
         <div
-          className="c5"
+          className="c4"
         >
           Step 4
         </div>
         <div
-          className="c5"
+          className="c4"
         >
           Step 5
         </div>
@@ -3229,13 +3151,13 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       className="c1"
     >
       <div
-        className="c6"
+        className="c5"
       >
         <div
-          className="c7"
+          className="c6"
         >
           <span
-            className="c8 c9"
+            className="c7 c8"
             color="#6e849a"
             size={16}
           >
@@ -3284,16 +3206,14 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c4"
-      >
+      <section>
         <div
-          className="c5"
+          className="c4"
         >
           Step 1
         </div>
         <div
-          className="c5"
+          className="c4"
         >
           Step 2
         </div>
@@ -3345,31 +3265,37 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           </div>
         </div>
       </div>
-      <section
-        className="c4"
-      >
+      <section>
         <div
-          className="c10"
-          onMouseDown={[Function]}
-        >
-          Order Pizza
-        </div>
-        <div
-          className="c10"
+          className="c9"
           onMouseDown={[Function]}
         >
           <div
-            className="c11 c12"
-            style={
-              Object {
-                "backgroundColor": "#ECF8FA",
-                "color": "#36B4D2",
-              }
-            }
+            className="c10"
           >
-            M
+            Order Pizza
           </div>
-          New Order
+        </div>
+        <div
+          className="c9"
+          onMouseDown={[Function]}
+        >
+          <div
+            className="c10"
+          >
+            <div
+              className="c11 c12"
+              style={
+                Object {
+                  "backgroundColor": "#ECF8FA",
+                  "color": "#36B4D2",
+                }
+              }
+            >
+              M
+            </div>
+            New Order
+          </div>
         </div>
       </section>
     </div>
@@ -3378,24 +3304,24 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Sub Sections 1`] = `
-.c9 {
+.c8 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c9 > svg {
+.c8 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c10 .c8 {
+.c9 .c7 {
   color: #fff;
 }
 
-.c11 .c8 {
+.c10 .c7 {
   color: #6e849a;
 }
 
@@ -3441,7 +3367,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   opacity: 1;
 }
 
-.c0 .c12 {
+.c0 .c11 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3468,7 +3394,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   text-overflow: ellipsis;
 }
 
-.c6 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3518,21 +3444,17 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   background: transparent;
 }
 
-.c7 {
+.c6 {
   position: absolute;
   left: 0;
   padding: 0 5px;
-}
-
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
 }
 
 .c1 {
   position: relative;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3550,7 +3472,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3598,31 +3520,29 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 3
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 4
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 5
       </div>
@@ -3632,13 +3552,13 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     className="c1"
   >
     <div
-      className="c6"
+      className="c5"
     >
       <div
-        className="c7"
+        className="c6"
       >
         <span
-          className="c8 c9"
+          className="c7 c8"
           color="#6e849a"
           size={16}
         >
@@ -3687,16 +3607,14 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>
@@ -3706,13 +3624,13 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     className="c1"
   >
     <div
-      className="c6"
+      className="c5"
     >
       <div
-        className="c7"
+        className="c6"
       >
         <span
-          className="c8 c9"
+          className="c7 c8"
           color="#6e849a"
           size={16}
         >
@@ -3761,16 +3679,14 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
       >
         Step 1
       </div>
       <div
-        className="c5"
+        className="c4"
       >
         Step 2
       </div>

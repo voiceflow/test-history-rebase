@@ -82,14 +82,13 @@ export const TRACKING_ENABLED = IS_PRODUCTION || process.env.TRACKING_ENABLED ==
 export const GA_ENABLED = TRACKING_ENABLED || process.env.GA_ENABLED === 'true';
 export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID!;
 
-// segment
-export const SEGMENT_ENABLED = TRACKING_ENABLED || process.env.SEGMENT_ENABLED === 'true';
-export const SEGMENT_KEY = process.env.SEGMENT_KEY!;
-
 // zapier
 const ZAPIER_DEV_PATH = process.env.ZAPIER_DEV_PATH!;
 const ZAPIER_PROD_PATH = process.env.ZAPIER_PROD_PATH!;
 export const ZAPIER_PATH = IS_PRODUCTION && BUILD_ENV !== 'staging' ? ZAPIER_PROD_PATH : ZAPIER_DEV_PATH;
+
+const ONBOARDING_ZAPIER_PROD_PATH = process.env.ONBOARDING_ZAPIER_PROD_PATH!;
+export const ONBOARDING_ZAPIER_PATH = IS_PRODUCTION && BUILD_ENV !== 'staging' ? ONBOARDING_ZAPIER_PROD_PATH : '';
 
 // facebook
 export const FACEBOOK_GROUP_ID = process.env.FACEBOOK_GROUP_ID!;
@@ -112,9 +111,17 @@ export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
 
 // intercom
 export const INTERCOM_ENABLED = IS_PRODUCTION || process.env.INTERCOM_ENABLED === 'true';
+export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID!;
 
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE!;
 
 // copy-paste
 export const COPY_PASTE_KEY = process.env.COPY_PASTE_KEY!;
+
+// userflow
+export const USERFLOW_ENABLED = IS_PRODUCTION || process.env.USERFLOW_ENABLED === 'true';
+const USERFLOW_PROD_TOKEN = process.env.USERFLOW_PROD_TOKEN!;
+const USERFLOW_DEV_TOKEN = process.env.USERFLOW_DEV_TOKEN!;
+export const USERFLOW_TOKEN = IS_PRODUCTION ? USERFLOW_PROD_TOKEN : USERFLOW_DEV_TOKEN;
+export const USERFLOW_ONBOARDING_FLOW_ID = process.env.USERFLOW_ONBOARDING_FLOW_ID!;

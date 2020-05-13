@@ -56,6 +56,9 @@ const blockAdapter = {
   [BlockType.COMMAND]: commandBlockAdapter,
   [BlockType.COMBINED]: emptyAdapter,
   [BlockType.COMMENT]: emptyAdapter,
+  [BlockType.MARKUP_TEXT]: emptyAdapter,
+  [BlockType.MARKUP_IMAGE]: emptyAdapter,
+  [BlockType.MARKUP_SHAPE]: emptyAdapter,
   // user defined
   [BlockType.CANCEL_PAYMENT]: cancelPaymentBlockAdapter,
   [BlockType.CAPTURE]: captureBlockAdapter,

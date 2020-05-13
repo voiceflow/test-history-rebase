@@ -6,6 +6,7 @@ import { activeLocalesSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTrackingEvents } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 
@@ -26,14 +27,14 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ locale,
 
   if (status === PrototypeStatus.IDLE) {
     return (
-      <Container isPublic={isPublic}>
+      <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
         <Start start={() => (isPublic ? startPrototype() : trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart')())} />
       </Container>
     );
   }
 
   return (
-    <Container isPublic={isPublic}>
+    <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <Dialog
         isLoading={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING)}
         messages={messages}
@@ -50,7 +51,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ locale,
           locale={locale}
           isPublic={isPublic}
           disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
-          forceFocus={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.WAITING_USER_INTERACTION, PMStatus.DIALOG_WAITING_USER_INTERACTION)}
           onUserInput={onInteraction}
         />
       )}

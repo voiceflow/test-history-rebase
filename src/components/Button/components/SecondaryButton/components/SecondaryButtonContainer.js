@@ -14,8 +14,6 @@ const SecondaryButtonContainer = styled(ButtonContainer)`
   background-color: #eef4f6d9;
   transition: all 0.15s ease-out;
   background-size: 1px 42px;
-
-  /* background: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6); */
   box-sizing: border-box;
   transition: all ease 0.15s;
 
@@ -35,6 +33,12 @@ const SecondaryButtonContainer = styled(ButtonContainer)`
             ${hoverStyles}
           }
         `}
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      ${hoverStyles}
+    `}
 `;
 
 export default SecondaryButtonContainer;

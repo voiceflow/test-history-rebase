@@ -70,10 +70,7 @@ const THEME = {
       collaborators: {
         width: 545,
       },
-      freeProjectLimit: {
-        width: 392,
-      },
-      realtimeRestriction: {
+      planRestriction: {
         width: 392,
       },
     },

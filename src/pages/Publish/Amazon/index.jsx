@@ -1,10 +1,10 @@
 /* eslint-disable no-secrets/no-secrets */
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
-import { checkAmazonAccount } from '@/ducks/account';
-import { ALEXA_STATES, publish, resetAlexaUpload, syncVendors } from '@/ducks/publish/alexa';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
+import { connect } from '@/hocs';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 
 import PublishAmazonForm from './Form';
@@ -19,7 +19,7 @@ export function PublishAmazon(props) {
     publish({ submit: true });
   };
 
-  useEffect(() => setClose(ALEXA_STATES[stage].end), [stage]);
+  useEffect(() => setClose(AlexaPublish.ALEXA_STATES[stage].end), [stage]);
 
   useEffect(() => {
     if (!amazon) {
@@ -36,22 +36,23 @@ export function PublishAmazon(props) {
     <>
       <PublishAmazonForm isLocked={isLocked} publish={onPublish} />
       <Modal isOpen={open} onClosed={resetAlexaUpload} centered contentClassName="overflow-hidden">
-        {close && <ModalHeader toggle={() => setOpen(false)} header={ALEXA_STATES[stage]?.description} />}
+        {close && <ModalHeader toggle={() => setOpen(false)} header={AlexaPublish.ALEXA_STATES[stage]?.description} />}
         <UploadAlexa />
       </Modal>
     </>
   );
 }
 
-export default connect(
-  (state) => ({
-    stage: state.publish.alexa.stage,
-    amazon: state.account.amazon,
-  }),
-  {
-    resetAlexaUpload,
-    checkAmazonAccount,
-    syncVendors,
-    publish,
-  }
-)(PublishAmazon);
+const mapStateToProps = {
+  stage: AlexaPublish.publishStageSelector,
+  amazon: Account.amazonAccountSelector,
+};
+
+const mapDispatchToProps = {
+  resetAlexaUpload: AlexaPublish.resetAlexaUpload,
+  checkAmazonAccount: Account.checkAmazonAccount,
+  syncVendors: AlexaPublish.syncVendors,
+  publish: AlexaPublish.publish,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PublishAmazon);

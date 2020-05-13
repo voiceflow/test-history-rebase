@@ -36,7 +36,11 @@ function NewWorkspace({ history, createWorkspace }) {
     if (newWorkspace && newWorkspace.id) {
       history.push(`/workspace/${newWorkspace.id}`);
 
-      openSuccessModal({ title: 'Success', message: `Your workplace ${newWorkspace.name} has been successfully created` });
+      openSuccessModal({
+        title: 'Success',
+        message: `Your workplace ${newWorkspace.name} has been successfully created`,
+        icon: '/images/takeoff.svg',
+      });
     } else {
       history.push('/dashboard');
     }

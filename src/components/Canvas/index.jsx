@@ -254,6 +254,7 @@ class Canvas extends React.PureComponent {
     return (
       <CanvasProvider value={this.api}>
         <Container
+          id="vf-canvas"
           className={className}
           onContextMenu={onRightClick}
           onMouseDown={disableClick ? undefined : this.controls.mousedown}

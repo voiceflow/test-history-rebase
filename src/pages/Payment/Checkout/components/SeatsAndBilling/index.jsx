@@ -42,13 +42,13 @@ function SeatsAndBilling({
 
   return (
     <>
-      <StepHeading heading="2. Seats and billing" />
+      <StepHeading heading="2. Editors and billing" />
       <StepSection secondary>
         <FlexApart>
           <Flex>
             <SeatsInput errorMessage={seatError} hasError={!!seatError} onChange={setSeats} value={seats} />
             <SeatsBillingText>
-              <div>Editor Seats</div>
+              <div>Editors</div>
               <Dropdown
                 options={[
                   {

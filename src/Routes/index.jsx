@@ -3,8 +3,13 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
+import { FeatureFlag } from '@/config/features';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
+import Export from '@/pages/Export';
+import Onboarding from '@/pages/Onboarding';
+import OnboardingV2 from '@/pages/OnboardingV2';
 import LoginForm from '@/pages/Register/LoginForm';
 import Reset from '@/pages/Register/Reset';
 import ResetPassword from '@/pages/Register/ResetPassword';
@@ -25,6 +30,9 @@ const Workspace = React.lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
 const Routes = ({ authToken }) => {
+  const onboardingV2 = useFeature(FeatureFlag.ONBOARDING_V2);
+  const onboardingV2Enabled = onboardingV2.isEnabled;
+
   return (
     <Suspense fallback={<FullSpinner name="Assets" />}>
       <Switch>
@@ -35,12 +43,13 @@ const Routes = ({ authToken }) => {
         <PublicRoute exact path="/login" name="Login" page="login" component={LoginForm} />
         <PublicRoute exact path="/signup/promo" name="SignUpPromo" page="signupPromo" component={SignupForm} promo />
         <PublicRoute exact path="/signup" name="SignUp" page="signup" component={SignupForm} />
+        <Route exact path="/onboarding" component={onboardingV2Enabled ? OnboardingV2 : Onboarding} />
 
         <Route exact path={['/creator/terms', '/creator/privacy_policy']} name="Privacy Policy" component={Legal} />
 
         <Redirect exact from="/workspace" to="/dashboard" />
         <PrivateRoute exact path="/workspace/new" component={NewWorkspace} />
-        <PrivateRoute path={['/workspace', '/dashboard', '/onboarding']} component={Workspace} />
+        <PrivateRoute path={['/workspace', '/dashboard']} component={Workspace} />
 
         <PrivateRoute path="/reference/:project_id" component={Reference} page="canvas" />
         <Route path="/demo/:versionID" component={PublicPrototype} />
@@ -59,6 +68,7 @@ const Routes = ({ authToken }) => {
         <Redirect from="/publish/:versionID" to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
         <Redirect exact from={`/${RootRoutes.PROJECT}/:versionID/publish`} to={`/${RootRoutes.PROJECT}/:versionID/publish/alexa`} />
 
+        <PrivateRoute path={`/${RootRoutes.PROJECT}/:versionID/export/:diagramID`} component={Export} />
         <PrivateRoute path={`/${RootRoutes.PROJECT}/:versionID`} component={Skill} />
 
         <PrivateRoute path="/account" name="Account" component={Account} />

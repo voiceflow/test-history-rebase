@@ -1,17 +1,17 @@
 import { constants } from '@voiceflow/common';
 import axios from 'axios';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Button, ButtonGroup, Collapse, Form, FormGroup, Label } from 'reactstrap';
 import styled from 'styled-components';
 
 import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
-import { userSelector } from '@/ducks/account';
-import { setError } from '@/ducks/modal';
-import { googleIDSelector, updatePublishInfo } from '@/ducks/publish/google';
-import { activeNameSelector, activeSkillIDSelector } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
+import * as GooglePublishDuck from '@/ducks/publish/google';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
 
 import GuidedSteps, { GuidedStepsWrapper } from '../../../components/GuidedSteps';
 import UnlinkProject from './Unlink';
@@ -64,7 +64,7 @@ const LegalDisclaimer = styled.div`
   margin-bottom: 24px;
 `;
 
-class GooglePublish extends Component {
+class GooglePublish extends React.Component {
   state = {
     loaded: false,
     name: this.props.name,
@@ -280,16 +280,16 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: userSelector(state),
-  name: activeNameSelector(state),
-  googleID: googleIDSelector(state),
-  versionID: activeSkillIDSelector(state),
-  googleEmail: state.account.google?.profile?.email || '0',
+  user: Account.userSelector(state),
+  name: Skill.activeNameSelector(state),
+  googleID: GooglePublishDuck.googleIDSelector(state),
+  versionID: Skill.activeSkillIDSelector(state),
+  googleEmail: Account.googleEmailSelector,
 });
 
 const mapDispatchToProps = {
-  setError,
-  updatePublishInfo,
+  setError: Modal.setError,
+  updatePublishInfo: GooglePublishDuck.updatePublishInfo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GooglePublish);

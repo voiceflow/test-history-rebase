@@ -8,7 +8,6 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import { PlatformType } from '@/constants';
-import * as Account from '@/ducks/account';
 import * as List from '@/ducks/lists';
 import * as Router from '@/ducks/router';
 import * as Template from '@/ducks/template';
@@ -63,10 +62,6 @@ class Templates extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this.loadDefaultTemplates();
-  }
-
   async createProject() {
     const { workspaceID, computedMatch, addProjectToList, goToCanvas, createProject } = this.props;
     const { name, locales, google } = this.state;
@@ -88,15 +83,6 @@ class Templates extends React.Component {
       setTimeout(() => goToCanvas(project.skill_id, project.diagram, true), 3000);
     } catch (err) {
       alert('unable to create skill');
-    }
-  }
-
-  async loadDefaultTemplates() {
-    try {
-      await this.props.loadTemplates();
-    } catch (err) {
-      // eslint-disable-next-line no-alert
-      alert('Unable to Retrieve Templates');
     }
   }
 
@@ -153,7 +139,6 @@ class Templates extends React.Component {
 }
 
 const mapStateToProps = {
-  user: Account.userSelector,
   workspaceID: Workspace.activeWorkspaceIDSelector,
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { useManager, useToggle } from '@/hooks';
-import { Content, Controls } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { DraggableItem, HelpMessage, HelpTooltip } from './components';
 

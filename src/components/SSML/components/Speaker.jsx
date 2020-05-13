@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tippy';
 import client from '@/client';
 import SvgIcon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks/toggle';
+import { ClassName } from '@/styles/constants';
 
 import SpeakerWrapper from './SpeakerWrapper';
 
@@ -73,7 +74,7 @@ function Speaker({ voice, setError, getSSMLToPlay }) {
   return (
     <Tooltip title={playing ? 'Stop' : 'Play'} position="top">
       <SpeakerWrapper>
-        <SvgIcon onClick={onSpeak} icon={icon} size={loading || !playing ? 14 : 16} />
+        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} icon={icon} size={loading || !playing ? 14 : 16} />
       </SpeakerWrapper>
     </Tooltip>
   );

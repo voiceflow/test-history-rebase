@@ -1,4 +1,5 @@
 import './onboarding.css';
+import '../Templates/Template.css';
 
 import cn from 'classnames';
 import React from 'react';

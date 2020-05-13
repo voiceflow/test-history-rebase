@@ -42,8 +42,8 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
-              'pages/Canvas/components/MarkupEditor/**/*',
-              'pages/Canvas/components/MarkupSidebar/**/*',
+              'pages/Canvas/editors/MarkupEditor/**/*',
+              'pages/Canvas/menus/MarkupMenu/**/*',
               '**/types.ts',
               'models/**/*',
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { FEATURE_PERMISSIONS } from '@/constants';
-import { userIDSelector } from '@/ducks/account';
-import { activeWorkspaceMembersSelector } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 
 export const RolePermissionsContext = React.createContext();
@@ -25,8 +25,8 @@ export const usePermissions = (featureId) => {
 };
 
 const mapStateToProps = {
-  activeWorkspaceMembers: activeWorkspaceMembersSelector,
-  userId: userIDSelector,
+  activeWorkspaceMembers: Workspace.activeWorkspaceMembersSelector,
+  userId: Account.userIDSelector,
 };
 
 export const RolePermissionsProvider = connect(mapStateToProps)(PermissionsProvider);

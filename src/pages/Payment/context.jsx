@@ -4,11 +4,13 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import client from '@/client';
+import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
-import { BillingPeriod, ModalType } from '@/constants';
-import { activeWorkspaceIDSelector, fetchWorkspace } from '@/ducks/workspace';
+import { FeatureFlag } from '@/config/features';
+import { BillingPeriod, ModalType, PlanType, UserRole } from '@/constants';
+import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useFeature, useModals, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -20,12 +22,15 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable, updateWorkspace }) => {
+const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, updateWorkspace }) => {
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
+  const { isEnabled: NewPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
+
+  const { isEnabled: newPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
 
   const [state, actions] = useSmartReducer({
     view: VIEWS.checkout,
@@ -34,7 +39,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
     focus: null,
     seats: 1,
     price: 0,
-    period: BillingPeriod.MONTHLY,
+    period: BillingPeriod.ANNUALLY,
     errors: {},
     coupon: '',
     source: null,
@@ -106,10 +111,10 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
       closePaymentsModal();
 
       const message = source?.id
-        ? `Your Voiceflow ${state.plan.name} plan has been activated. Thank you.`
+        ? `Your Voiceflow ${state.plan.name} subscription has been activated.`
         : 'Your workspace has been successfully updated. Thank you.';
 
-      openSuccessModal({ title: 'Payment Successful', message });
+      openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
     } catch (err) {
       stopCheckingOut();
       let error;
@@ -124,19 +129,40 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
     }
   };
 
+  const getPlans = async () => {
+    const plans = await client.workspace.getPlans();
+    const paidPlans = plans.filter(({ pricing }) => {
+      return !!pricing;
+    });
+    return NewPricingEnabled
+      ? paidPlans.filter(({ legacy }) => {
+          return !legacy;
+        })
+      : paidPlans.filter(({ interactionsLimit, id }) => {
+          return !interactionsLimit && id !== PlanType.ENTERPRISE;
+        });
+  };
+
   useAsyncMountUnmount(async () => {
     startloadingPlan();
-    const plans = await client.workspace.getPlans();
+    const plans = await getPlans();
     actions.setPlans(plans);
 
     try {
       // get the user's current plan and settings
       const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
+      let numberOfSeats = seats;
+      if (newPricingEnabled && plan === PlanType.STARTER) {
+        const editorCount = workspace.members.filter(({ role }) => role === UserRole.EDITOR || role === UserRole.ADMIN).length;
+        numberOfSeats = editorCount;
+      }
+
       actions.update({
         plan: plans.find(({ id }) => id === plan) || plans[0],
-        period: period || BillingPeriod.MONTHLY,
-        seats: seats || 1,
+        period: period || BillingPeriod.ANNUALLY,
+        // Some users may have null seats in their plan (legacy), so default to 1
+        seats: numberOfSeats || 1,
         source: source || null,
         usingExistingSource: !!source,
       });
@@ -202,6 +228,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, checkChargeable
 
 const mapStateToProps = {
   workspaceID: activeWorkspaceIDSelector,
+  workspace: activeWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

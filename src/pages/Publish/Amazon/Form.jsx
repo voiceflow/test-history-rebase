@@ -17,10 +17,10 @@ import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
-import { userSelector } from '@/ducks/account';
-import { setError } from '@/ducks/modal';
-import { amznIDSelector, reviewSelector } from '@/ducks/publish/alexa';
-import { activeSkillIDSelector, updateActiveSkill, updateSkillMeta } from '@/ducks/skill';
+import * as Account from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
+import * as AlexaPublish from '@/ducks/publish/alexa';
+import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
 import amazonFormAdapter from '@/pages/Publish/Amazon/amazonAdaptor';
 
@@ -690,17 +690,17 @@ const validate = (values) => {
 };
 
 const mapStateToProps = {
-  user: userSelector,
-  skillID: activeSkillIDSelector,
-  amznID: amznIDSelector,
-  review: reviewSelector,
+  user: Account.userSelector,
+  skillID: SkillDuck.activeSkillIDSelector,
+  amznID: AlexaPublish.amznIDSelector,
+  review: AlexaPublish.reviewSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
 };
 
 const mapDispatchToProps = {
-  updateSkill: updateActiveSkill,
-  updateSkillMeta,
-  setError,
+  updateSkill: SkillDuck.updateActiveSkill,
+  updateSkillMeta: SkillDuck.updateSkillMeta,
+  setError: Modal.setError,
 };
 
 export default compose(

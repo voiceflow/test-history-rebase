@@ -4,16 +4,17 @@ import { Tooltip } from 'react-tippy';
 import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Menu, { MenuItem } from '@/components/Menu';
-import { amazonVendorsSelector } from '@/ducks/account';
-import { ALEXA_STATES, publish, publishStageSelector, updateVendor, vendorIdSelector } from '@/ducks/publish/alexa';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
-import { EditPermissionContext } from '@/pages/Canvas/contexts';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
 function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
   const { isViewer } = React.useContext(EditPermissionContext);
-  const state = ALEXA_STATES[stage];
+  const state = AlexaPublish.ALEXA_STATES[stage];
 
   // show dropdown list for vendors
   const multiVendor = vendors.length > 1 && state.end;
@@ -30,6 +31,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
     >
       {multiVendor ? (
         <DropdownButton
+          id={Identifier.UPLOAD}
           buttonProps={{
             onClick: action,
           }}
@@ -51,7 +53,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
           {text}
         </DropdownButton>
       ) : (
-        <UploadButton onClick={action} isUploading={!state.end}>
+        <UploadButton id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
           {text}
         </UploadButton>
       )}
@@ -60,15 +62,15 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
 }
 
 const mapStateToProps = {
-  stage: publishStageSelector,
-  vendors: amazonVendorsSelector,
-  vendorID: vendorIdSelector,
+  stage: AlexaPublish.publishStageSelector,
+  vendors: Account.amazonVendorsSelector,
+  vendorID: AlexaPublish.vendorIdSelector,
 };
 
 const mapDispatchToProps = {
-  publishStageSelector,
-  publish,
-  updateVendor,
+  publishStageSelector: AlexaPublish.publishStageSelector,
+  publish: AlexaPublish.publish,
+  updateVendor: AlexaPublish.updateVendor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Upload);

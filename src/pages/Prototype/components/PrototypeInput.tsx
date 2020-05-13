@@ -4,6 +4,7 @@ import { SectionToggleVariant, UncontrolledSection } from '@/components/Section'
 import { BlockText } from '@/components/Text';
 import TextArea from '@/components/TextArea';
 import { useToggle } from '@/hooks/toggle';
+import { Identifier } from '@/styles/constants';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import SpeechBar from './PrototypeSpeechBar';
@@ -12,11 +13,10 @@ export type PrototypeInputProps = {
   locale: string;
   disabled?: boolean;
   isPublic?: boolean;
-  forceFocus?: boolean;
   onUserInput: (input: string) => void;
 };
 
-const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, forceFocus, isPublic, onUserInput }) => {
+const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, isPublic, onUserInput }) => {
   const [value, setValue] = React.useState('');
   const [collapsed, onCollapse] = useToggle(false);
   const [isListening, setListening] = React.useState(false);
@@ -26,8 +26,10 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, force
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const onEnterPress = preventDefault(() => {
-    onUserInput(value);
-    setValue('');
+    if (!disabled) {
+      onUserInput(value);
+      setValue('');
+    }
   });
 
   const onToggleListening = React.useCallback(
@@ -39,12 +41,6 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, force
     [collapsed]
   );
 
-  React.useEffect(() => {
-    if (forceFocus) {
-      textAreaRef.current?.focus();
-    }
-  }, [forceFocus]);
-
   return (
     <>
       <UncontrolledSection
@@ -54,12 +50,12 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, force
         collapseVariant={SectionToggleVariant.ARROW}
       >
         <TextArea
+          id={Identifier.PROTOTYPE_RESPONSE}
           value={value}
           minRows={3}
           onChange={(e) => setValue(e.target.value)}
-          disabled={disabled}
           inputRef={textAreaRef}
-          autoFocus={forceFocus} // eslint-disable-line jsx-a11y/no-autofocus
+          autoFocus // eslint-disable-line jsx-a11y/no-autofocus
           onKeyPress={withEnterPress(onEnterPress)}
           placeholder="Enter Response"
         />

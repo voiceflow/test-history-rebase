@@ -101,6 +101,12 @@ export const rootFlowStructureSelector = createSelector(
   (getFlowStructure, rootDiagramID) => getFlowStructure(rootDiagramID)
 );
 
+export const activeFlowStructureSelector = createSelector(
+  Diagram.flowStructureSelector,
+  Skill.activeDiagramIDSelector,
+  (getFlowStructure, acitveDiagramID) => getFlowStructure(acitveDiagramID)
+);
+
 export const unusedDiagramsSelector = createSelector(
   rootFlowStructureSelector,
   Diagram.allDiagramIDsSelector,

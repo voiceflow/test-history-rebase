@@ -7,7 +7,7 @@ const {
   logrocket,
   intercom,
   ga,
-  segment,
+  userflow,
   tracking,
   debug,
   debugNet,
@@ -16,6 +16,7 @@ const {
   debugSocket,
   ff_pricingRevisions,
   ff_onboardingV2,
+  ff_markup,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -40,15 +41,18 @@ module.exports = {
     BUILD_ENV: env || process.env.BUILD_ENV || 'local',
 
     // analytics
+    GA_ENABLED: ga && 'true',
+    TRACKING_ENABLED: tracking && 'true',
+
+    // vendors
     LOGROCKET_ENABLED: logrocket && 'true',
     INTERCOM_ENABLED: intercom && 'true',
-    GA_ENABLED: ga && 'true',
-    SEGMENT_ENABLED: segment && 'true',
-    TRACKING_ENABLED: tracking && 'true',
+    USERFLOW_ENABLED: userflow && 'true',
 
     // feature flags
     FF_PRICING_REVISIONS: ff_pricingRevisions && 'true',
     FF_ONBOARDING_V2: ff_onboardingV2 && 'true',
+    FF_MARKUP: ff_markup && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

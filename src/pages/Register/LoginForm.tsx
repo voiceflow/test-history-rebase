@@ -2,12 +2,12 @@ import cn from 'classnames';
 import _ from 'lodash';
 import queryString from 'query-string';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import * as Session from '@/ducks/session';
+import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 import { AuthBox } from './AuthBoxes';

@@ -13,3 +13,4 @@ export { default as SuccessItem } from './SuccessStepItem';
 export { default as FailureItem } from './FailureStepItem';
 export { default as VariableLabel } from './VariableLabel';
 export { default as ReorderIndicator } from './StepReorderIndicator';
+export { default as HoverContainer } from './HoverContainer';

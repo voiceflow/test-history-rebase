@@ -14,6 +14,7 @@ export type DiagramState = {
   linksByNodeID: Record<string, string[]>;
   linkedNodesByNodeID: Record<string, string[]>;
   sections: Record<string, unknown>;
+  markupNodeIDs: string[];
 };
 
 export type NodeDescriptor = Overwrite<Node, { ports: Record<'in' | 'out', PartialModel<Port>[]> }>;

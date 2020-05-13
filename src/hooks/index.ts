@@ -20,3 +20,4 @@ export * from './modals';
 export * from './keygen';
 export * from './feature';
 export * from './hover';
+export * from './reducerV2';

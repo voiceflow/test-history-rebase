@@ -2,11 +2,11 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
-import { goToCurrentCanvas, goToPrototype, goToPublish } from '@/ducks/router';
-import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 
 import CanvasViewers from './CanvasViewers';
 
@@ -25,27 +25,46 @@ const TABS = [
   },
 ];
 
-const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToPrototype, goToPublish }) => {
+const SkillSubHeader = ({ showPublish, activePage, goToDesign, goToPrototype, goToPublish }) => {
+  const markupTool = React.useContext(MarkupModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
+
+  const closeMarkupTool = React.useCallback(() => {
+    if (markupTool?.isOpen) {
+      markupTool?.closeTool();
+    }
+  }, [markupTool?.isOpen, markupTool?.closeTool]);
 
   const onChange = React.useCallback(
     (value) => {
       switch (value) {
         case 'prototype':
+          closeMarkupTool();
           return goToPrototype();
         case 'publish':
+          closeMarkupTool();
           return goToPublish();
         case 'canvas':
         default:
-          return goToCurrentCanvas();
+          closeMarkupTool();
+          return goToDesign();
       }
     },
-    [goToCurrentCanvas, goToPrototype, goToPublish]
+    [goToDesign, goToPrototype, goToPublish, closeMarkupTool]
   );
 
-  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
-  useHotKeys(Hotkey.DESIGN_PAGE, () => goToCurrentCanvas());
-  useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
+  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => {
+    closeMarkupTool();
+    goToPrototype();
+  });
+  useHotKeys(Hotkey.DESIGN_PAGE, () => {
+    closeMarkupTool();
+    goToDesign();
+  });
+  useHotKeys(Hotkey.BUILD_PAGE, () => {
+    closeMarkupTool();
+    goToPublish();
+  });
 
   return (
     <>
@@ -57,20 +76,10 @@ const SkillSubHeader = ({ showPublish, activePage, goToCurrentCanvas, goToProtot
   );
 };
 
-const mapStateToProps = {
-  platform: activePlatformSelector,
-  skillID: activeSkillIDSelector,
-};
-
 const mapDispatchToProps = {
-  goToCurrentCanvas,
-  goToPrototype,
-  goToPublish,
+  goToDesign: Router.goToCurrentCanvas,
+  goToPrototype: Router.goToCurrentPrototype,
+  goToPublish: Router.goToActivePlatformPublish,
 };
 
-const mergeProps = ({ skillID, platform }, { goToPrototype, goToPublish }) => ({
-  goToPrototype: () => goToPrototype(skillID),
-  goToPublish: () => goToPublish(skillID, platform),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SkillSubHeader);
+export default connect(null, mapDispatchToProps)(SkillSubHeader);

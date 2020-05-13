@@ -249,6 +249,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -350,10 +354,6 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -370,7 +370,7 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -418,151 +418,68 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#f86683"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgIf"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                <div
-                  className="c15 expressionfy"
+                <span
+                  className="c11 c12"
+                  color="#f86683"
+                  size={16}
                 >
-                   
-                  <span
-                    className="brackets"
-                  >
-                    <span
-                      className="c16 c17"
-                    >
-                      {timestamp}
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      className="less"
-                    >
-                      <span
-                        className="c18 plus"
-                      >
-                        <span
-                          className="c11 c19"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgLess"
-                          />
-                        </span>
-                      </span>
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      212
-                    </span>
-                  </span>
-                </div>
+                  <svg
+                    data-file-name="SvgIf"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
+              <span
+                className="c13"
               >
                 <div
-                  className="c15 expressionfy"
+                  className="c14"
                 >
-                   
-                  <span
-                    className="math brackets"
+                  <div
+                    className="c15 expressionfy"
                   >
-                    <span
-                      className="math value"
-                    >
-                      4
-                    </span>
-                     
-                    <span
-                      className="c18 plus"
-                    >
-                      <span
-                        className="c11 c19"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgDivide"
-                        />
-                      </span>
-                    </span>
                      
                     <span
                       className="brackets"
                     >
                       <span
-                        className="parenthesis"
+                        className="c16 c17"
                       >
-                        ( 
-                      </span>
-                      <span
-                        className="math value"
-                      >
-                        5
+                        {timestamp}
                       </span>
                       <span>
                          
                       </span>
                       <span
-                        className="or"
+                        className="less"
                       >
                         <span
                           className="c18 plus"
                         >
-                          <span>
-                            OR
+                          <span
+                            className="c11 c19"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgLess"
+                            />
                           </span>
                         </span>
                       </span>
@@ -570,62 +487,45 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                          
                       </span>
                       <span
-                        className="math brackets"
+                        className="math value"
                       >
-                        
-                        <span
-                          className="c16 c17"
-                        >
-                          {sessions}
-                        </span>
-                        .includes('en')
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        212
                       </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </span>
+              </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
             <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c13"
               >
                 <div
-                  className="c15 expressionfy"
+                  className="c14"
                 >
-                   
-                  <span
-                    className="brackets"
+                  <div
+                    className="c15 expressionfy"
                   >
+                     
                     <span
-                      className="c16 c17"
+                      className="math brackets"
                     >
-                      {timestamp}
-                    </span>
-                    <span>
+                      <span
+                        className="math value"
+                      >
+                        4
+                      </span>
                        
-                    </span>
-                    <span
-                      className="less"
-                    >
                       <span
                         className="c18 plus"
                       >
@@ -635,64 +535,166 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
                           size={16}
                         >
                           <svg
-                            data-file-name="SvgLess"
+                            data-file-name="SvgDivide"
                           />
                         </span>
                       </span>
-                    </span>
-                    <span>
                        
+                      <span
+                        className="brackets"
+                      >
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="math value"
+                        >
+                          5
+                        </span>
+                        <span>
+                           
+                        </span>
+                        <span
+                          className="or"
+                        >
+                          <span
+                            className="c18 plus"
+                          >
+                            <span>
+                              OR
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                        </span>
+                        <span
+                          className="math brackets"
+                        >
+                          
+                          <span
+                            className="c16 c17"
+                          >
+                            {sessions}
+                          </span>
+                          .includes('en')
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
+                      </span>
                     </span>
-                    <span
-                      className="math value"
-                    >
-                      212
-                    </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c21"
-                color="#6e849a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgElse"
-                />
               </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c13"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c13"
               >
-                Else
-              </div>
-            </span>
+                <div
+                  className="c14"
+                >
+                  <div
+                    className="c15 expressionfy"
+                  >
+                     
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="c16 c17"
+                      >
+                        {timestamp}
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="less"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span
+                            className="c11 c19"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgLess"
+                            />
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        212
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c6 c7"
+          >
             <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c21"
+                  color="#6e849a"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgElse"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Else
+                </div>
+              </span>
+              <div
+                className="c22 vf-canvas__port"
+                color="#8da2b5"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -894,6 +896,10 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -995,16 +1001,12 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1052,77 +1054,79 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#f86683"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgIf"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Add IF statement
+                <span
+                  className="c11 c12"
+                  color="#f86683"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgIf"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Add IF statement
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c15"
-                color="#6e849a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgElse"
-                />
-              </span>
-            </div>
-            <span
-              className="c16"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Else
+                <span
+                  className="c11 c15"
+                  color="#6e849a"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgElse"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              color="#8da2b5"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Else
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
+                color="#8da2b5"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1380,6 +1384,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1481,10 +1489,6 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -1501,7 +1505,7 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1549,151 +1553,68 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#f86683"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgIf"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                <div
-                  className="c15 expressionfy"
+                <span
+                  className="c11 c12"
+                  color="#f86683"
+                  size={16}
                 >
-                   
-                  <span
-                    className="brackets"
-                  >
-                    <span
-                      className="c16 c17"
-                    >
-                      {timestamp}
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      className="less"
-                    >
-                      <span
-                        className="c18 plus"
-                      >
-                        <span
-                          className="c11 c19"
-                          color="currentColor"
-                          size={16}
-                        >
-                          <svg
-                            data-file-name="SvgLess"
-                          />
-                        </span>
-                      </span>
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      className="math value"
-                    >
-                      212
-                    </span>
-                  </span>
-                </div>
+                  <svg
+                    data-file-name="SvgIf"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
+              <span
+                className="c13"
               >
                 <div
-                  className="c15 expressionfy"
+                  className="c14"
                 >
-                   
-                  <span
-                    className="math brackets"
+                  <div
+                    className="c15 expressionfy"
                   >
-                    <span
-                      className="math value"
-                    >
-                      4
-                    </span>
-                     
-                    <span
-                      className="c18 plus"
-                    >
-                      <span
-                        className="c11 c19"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgDivide"
-                        />
-                      </span>
-                    </span>
                      
                     <span
                       className="brackets"
                     >
                       <span
-                        className="parenthesis"
+                        className="c16 c17"
                       >
-                        ( 
-                      </span>
-                      <span
-                        className="math value"
-                      >
-                        5
+                        {timestamp}
                       </span>
                       <span>
                          
                       </span>
                       <span
-                        className="or"
+                        className="less"
                       >
                         <span
                           className="c18 plus"
                         >
-                          <span>
-                            OR
+                          <span
+                            className="c11 c19"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgLess"
+                            />
                           </span>
                         </span>
                       </span>
@@ -1701,62 +1622,45 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                          
                       </span>
                       <span
-                        className="math brackets"
+                        className="math value"
                       >
-                        
-                        <span
-                          className="c16 c17"
-                        >
-                          {sessions}
-                        </span>
-                        .includes('en')
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        212
                       </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </span>
+              </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
             <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c13"
               >
                 <div
-                  className="c15 expressionfy"
+                  className="c14"
                 >
-                   
-                  <span
-                    className="brackets"
+                  <div
+                    className="c15 expressionfy"
                   >
+                     
                     <span
-                      className="c16 c17"
+                      className="math brackets"
                     >
-                      {timestamp}
-                    </span>
-                    <span>
+                      <span
+                        className="math value"
+                      >
+                        4
+                      </span>
                        
-                    </span>
-                    <span
-                      className="less"
-                    >
                       <span
                         className="c18 plus"
                       >
@@ -1766,64 +1670,166 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
                           size={16}
                         >
                           <svg
-                            data-file-name="SvgLess"
+                            data-file-name="SvgDivide"
                           />
                         </span>
                       </span>
-                    </span>
-                    <span>
                        
+                      <span
+                        className="brackets"
+                      >
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="math value"
+                        >
+                          5
+                        </span>
+                        <span>
+                           
+                        </span>
+                        <span
+                          className="or"
+                        >
+                          <span
+                            className="c18 plus"
+                          >
+                            <span>
+                              OR
+                            </span>
+                          </span>
+                        </span>
+                        <span>
+                           
+                        </span>
+                        <span
+                          className="math brackets"
+                        >
+                          
+                          <span
+                            className="c16 c17"
+                          >
+                            {sessions}
+                          </span>
+                          .includes('en')
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
+                      </span>
                     </span>
-                    <span
-                      className="math value"
-                    >
-                      212
-                    </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
-              <span
-                className="c11 c21"
-                color="#6e849a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgElse"
-                />
               </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c13"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c13"
               >
-                Else
-              </div>
-            </span>
+                <div
+                  className="c14"
+                >
+                  <div
+                    className="c15 expressionfy"
+                  >
+                     
+                    <span
+                      className="brackets"
+                    >
+                      <span
+                        className="c16 c17"
+                      >
+                        {timestamp}
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="less"
+                      >
+                        <span
+                          className="c18 plus"
+                        >
+                          <span
+                            className="c11 c19"
+                            color="currentColor"
+                            size={16}
+                          >
+                            <svg
+                              data-file-name="SvgLess"
+                            />
+                          </span>
+                        </span>
+                      </span>
+                      <span>
+                         
+                      </span>
+                      <span
+                        className="math value"
+                      >
+                        212
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c6 c7"
+          >
             <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c21"
+                  color="#6e849a"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgElse"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Else
+                </div>
+              </span>
+              <div
+                className="c22 vf-canvas__port"
+                color="#8da2b5"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2081,6 +2087,10 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2182,10 +2192,6 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
@@ -2202,7 +2208,7 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2250,157 +2256,159 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#f86683"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgIf"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              >
+                <span
+                  className="c11 c12"
+                  color="#f86683"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgIf"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
               >
                 <div
-                  className="c15 expressionfy"
+                  className="c14"
                 >
-                   
-                  <span
-                    className="math brackets"
+                  <div
+                    className="c15 expressionfy"
                   >
-                    <span
-                      className="math value"
-                    >
-                      4
-                    </span>
                      
                     <span
-                      className="c16 plus"
+                      className="math brackets"
                     >
-                      <span
-                        className="c11 c17"
-                        color="currentColor"
-                        size={16}
-                      >
-                        <svg
-                          data-file-name="SvgDivide"
-                        />
-                      </span>
-                    </span>
-                     
-                    <span
-                      className="brackets"
-                    >
-                      <span
-                        className="parenthesis"
-                      >
-                        ( 
-                      </span>
                       <span
                         className="math value"
                       >
-                        5
+                        4
                       </span>
-                      <span>
-                         
-                      </span>
+                       
                       <span
-                        className="or"
+                        className="c16 plus"
                       >
                         <span
-                          className="c16 plus"
+                          className="c11 c17"
+                          color="currentColor"
+                          size={16}
                         >
-                          <span>
-                            OR
+                          <svg
+                            data-file-name="SvgDivide"
+                          />
+                        </span>
+                      </span>
+                       
+                      <span
+                        className="brackets"
+                      >
+                        <span
+                          className="parenthesis"
+                        >
+                          ( 
+                        </span>
+                        <span
+                          className="math value"
+                        >
+                          5
+                        </span>
+                        <span>
+                           
+                        </span>
+                        <span
+                          className="or"
+                        >
+                          <span
+                            className="c16 plus"
+                          >
+                            <span>
+                              OR
+                            </span>
                           </span>
                         </span>
-                      </span>
-                      <span>
-                         
-                      </span>
-                      <span
-                        className="math brackets"
-                      >
-                        
-                        <span
-                          className="c18 c19"
-                        >
-                          {sessions}
+                        <span>
+                           
                         </span>
-                        .includes('en')
-                      </span>
-                      <span
-                        className="parenthesis"
-                      >
-                         )
+                        <span
+                          className="math brackets"
+                        >
+                          
+                          <span
+                            className="c18 c19"
+                          >
+                            {sessions}
+                          </span>
+                          .includes('en')
+                        </span>
+                        <span
+                          className="parenthesis"
+                        >
+                           )
+                        </span>
                       </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </span>
-            <div
-              className="c20"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              </span>
+              <div
+                className="c20 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c21"
-                color="#6e849a"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgElse"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Else
+                <span
+                  className="c11 c21"
+                  color="#6e849a"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgElse"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c22"
-              color="#8da2b5"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Else
+                </div>
+              </span>
+              <div
+                className="c22 vf-canvas__port"
+                color="#8da2b5"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>

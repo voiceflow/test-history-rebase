@@ -113,7 +113,7 @@ const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
   workspaceID: Workspace.activeWorkspaceIDSelector,
   getWorkspace: Workspace.workspaceByIDSelector,
-  user: Account.userSelector,
+  email: Account.userEmailSelector,
 };
 
 const mapDispatchToProps = {
@@ -124,8 +124,8 @@ const mapDispatchToProps = {
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
 
-const mergeProps = ({ user }, { trackInvitationAccepted }) => ({
-  trackInvitationAccepted: (workspaceID) => trackInvitationAccepted(workspaceID, user.email),
+const mergeProps = ({ email }, { trackInvitationAccepted }) => ({
+  trackInvitationAccepted: (workspaceID) => trackInvitationAccepted(workspaceID, email),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspacesLoadingGate);

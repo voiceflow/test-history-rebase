@@ -22,12 +22,12 @@ const DropdownButton = styled.button`
           padding-right: 2px;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
-          border-right: 0;
+          border-right: 0 !important;
         `
       : css`
           padding-left: 2px;
           padding-right: 12px;
-          border-left: 0;
+          border-left: 0 !important;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}

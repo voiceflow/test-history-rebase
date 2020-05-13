@@ -71,6 +71,7 @@ export enum BlockType {
   COMBINED = 'combined',
   COMMAND = 'command',
   COMMENT = 'comment',
+
   // basic
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
@@ -98,6 +99,10 @@ export enum BlockType {
   CANCEL_PAYMENT = 'cancel_payment',
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
+
+  MARKUP_TEXT = 'markup_text',
+  MARKUP_IMAGE = 'markup_image',
+  MARKUP_SHAPE = 'markup_shape',
 }
 
 export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];
@@ -309,7 +314,7 @@ export enum BillingPeriod {
 
 export const PERIOD_NAME = {
   [BillingPeriod.MONTHLY]: 'Monthly',
-  [BillingPeriod.ANNUALLY]: 'Yearly',
+  [BillingPeriod.ANNUALLY]: 'Annually',
 };
 
 export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
@@ -360,7 +365,10 @@ export enum ModalType {
   ONBOARDING = 'onboarding',
 
   FREE_PROJECT_LIMIT = 'free-project-limit',
-  REALTIME_RESTRICTION = 'realtime-restriction',
+  REALTIME_DENIED = 'realtime-denied',
+  PROJECT_DOWNLOAD = 'project-download',
+  TESTABLE_LINKS = 'testable-links',
+  SHARE_MENU = 'share-menu',
 }
 
 export enum UserRole {
@@ -382,12 +390,6 @@ export const FEATURE_PERMISSIONS = {
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
 };
-
-export enum PLANS {
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
-}
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
 
@@ -443,3 +445,28 @@ export enum DisplayType {
   SPLASH = 'splash',
   ADVANCED = 'advanced',
 }
+
+export enum PlanType {
+  OLD_STARTER = 'old_starter',
+  OLD_PRO = 'old_pro',
+  OLD_TEAM = 'old_team',
+  OLD_ENTERPRISE = 'old_enterprise',
+
+  STARTER = 'starter',
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
+}
+
+export enum MarkupModeType {
+  TEXT = 'text',
+  SQUARE = 'square',
+  CIRCLE = 'circle',
+  LINE = 'line',
+  ARROW = 'arrow',
+  IMAGE = 'image',
+}
+
+export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+
+export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];

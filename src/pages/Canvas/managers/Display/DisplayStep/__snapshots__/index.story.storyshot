@@ -185,6 +185,10 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -286,16 +290,12 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -343,54 +343,56 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas.
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c16"
+          >
             <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
+              className="c17"
             />
           </div>
-        </div>
-        <div
-          className="c16"
-        >
-          <div
-            className="c17"
-          />
         </div>
       </div>
     </section>
@@ -568,6 +570,10 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -669,16 +675,12 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -726,49 +728,51 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Dogs_and_Cats.json
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Dogs_and_Cats.json
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
+          
         </div>
-        
       </div>
     </section>
   </div>
@@ -976,6 +980,10 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1077,16 +1085,12 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1134,62 +1138,64 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c16"
-            >
-              <path
-                className="c17"
-                d="M 0 4 L 13 4"
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas.
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c16"
+              >
+                <path
+                  className="c17"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-        <div
-          className="c18"
-        >
           <div
-            className="c19"
-          />
+            className="c18"
+          >
+            <div
+              className="c19"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -1367,6 +1373,10 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1468,16 +1478,12 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1525,49 +1531,51 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Add a multimodal display
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Add a multimodal display
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
+          
         </div>
-        
       </div>
     </section>
   </div>
@@ -1759,6 +1767,10 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1860,16 +1872,12 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1917,54 +1925,56 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas showroom in Seattle.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas showroom in Seattle.
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c16"
+          >
             <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
+              className="c17"
             />
           </div>
-        </div>
-        <div
-          className="c16"
-        >
-          <div
-            className="c17"
-          />
         </div>
       </div>
     </section>
@@ -2157,6 +2167,10 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2258,16 +2272,12 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2315,54 +2325,56 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas.
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="c16"
+          >
             <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
+              className="c17"
             />
           </div>
-        </div>
-        <div
-          className="c16"
-        >
-          <div
-            className="c17"
-          />
         </div>
       </div>
     </section>
@@ -2540,6 +2552,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2641,16 +2657,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2698,49 +2710,51 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas.
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
+          
         </div>
-        
       </div>
     </section>
   </div>
@@ -2902,6 +2916,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -3003,16 +3021,12 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -3060,49 +3074,51 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#3c6997"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgBlocks"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Adidas.
+                <span
+                  className="c11 c12"
+                  color="#3c6997"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgBlocks"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Adidas.
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c15"
-        >
           <div
-            className="c16"
-          />
+            className="c15"
+          >
+            <div
+              className="c16"
+            />
+          </div>
         </div>
       </div>
     </section>

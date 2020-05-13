@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
-import { createAmazonSession } from '@/ducks/account';
+import * as Account from '@/ducks/account';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {
@@ -72,4 +72,8 @@ AmazonLoginButton.propTypes = {
   onLoad: PropTypes.func,
 };
 
-export default connect(null, { createAmazonSession })(AmazonLoginButton);
+const mapDispatchToProps = {
+  createAmazonSession: Account.createAmazonSession,
+};
+
+export default connect(null, mapDispatchToProps)(AmazonLoginButton);

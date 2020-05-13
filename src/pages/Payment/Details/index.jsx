@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Badge from '@/components/Badge';
+import BubbleText from '@/components/BubbleText';
 import Button from '@/components/Button';
 import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
-import { PLANS } from '@/constants';
+import { PlanType } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
@@ -57,9 +57,9 @@ function PlansDetails({
 
   const tabsOptions = React.useMemo(() => {
     return plans
-      .filter(({ id }) => id !== PLANS.ENTERPRISE)
+      .filter(({ id }) => id !== PlanType.ENTERPRISE || id !== PlanType.OLD_ENTERPRISE)
       .map((option) => {
-        const price = option.pricing?.MO?.price;
+        const price = option.pricing?.YR?.price;
         const dollarPrice = price ? price / 100 : null;
         return {
           value: option.id,
@@ -100,7 +100,7 @@ function PlansDetails({
           </ImagesContainer>
 
           <PlanTypeBubbleContainer>
-            <Badge color={plan.color}>{plan.name}</Badge>
+            <BubbleText color={plan.color}>{plan.name}</BubbleText>
           </PlanTypeBubbleContainer>
           <DetailsSection>
             <LeftSection>

@@ -6,7 +6,7 @@ import { ExpressionType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
-import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor/components';
+import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 

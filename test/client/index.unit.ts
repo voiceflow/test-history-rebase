@@ -15,12 +15,13 @@ suite('Client - Root', ({ expect }) => {
       'clipboard',
       'skill',
       'display',
-      'socket',
       'product',
       'file',
       'template',
       'onboarding',
       'feature',
+      'zapier',
+      'socket',
     ]);
   });
 });

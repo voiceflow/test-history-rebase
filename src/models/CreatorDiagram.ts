@@ -13,6 +13,7 @@ export type CreatorDiagram = {
   links: Link[];
   ports: Port[];
   data: Record<string, NodeData<unknown>>;
+  markupNodeIDs: string[];
 };
 
 export type DBCreatorDiagram = {

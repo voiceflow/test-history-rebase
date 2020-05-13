@@ -4,7 +4,7 @@ import { Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import Image from '@/components/LegacyUpload/Image';
-import { ModalType, PLANS } from '@/constants';
+import { ModalType, PlanType } from '@/constants';
 import { updateCurrentWorkspaceItem, updateWorkspaceName } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -76,7 +76,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
             <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
           </SettingField>
 
-          {workspace.plan !== PLANS.ENTERPRISE && (
+          {(workspace.plan !== PlanType.ENTERPRISE || workspace.plan !== PlanType.OLD_ENTERPRISE) && (
             <SettingField hr label="Billing" description="View invoices, update your payment options">
               <Button onClick={openBillingModal} isBtn isLinkLarge>
                 Manage Payments
@@ -95,11 +95,9 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
   );
 }
 
-const mapStateToProps = {};
-
 const mapDispatchToProps = {
   updateWorkspaceName,
   updateCurrentWorkspaceItem,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardSettingsModal);
+export default connect(null, mapDispatchToProps)(BoardSettingsModal);

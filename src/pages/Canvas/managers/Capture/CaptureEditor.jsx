@@ -3,10 +3,11 @@ import React from 'react';
 import Input from '@/components/Input';
 import ListManager from '@/components/ListManager';
 import OverflowMenu from '@/components/OverflowMenu';
+import Section from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import { Content, Controls, FormControl, Section } from '@/pages/Canvas/components/Editor';
+import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 
 import HelpTooltip from './components/HelpTooltip';

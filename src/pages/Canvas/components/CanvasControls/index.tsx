@@ -2,20 +2,28 @@ import React from 'react';
 
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
-import { useHotKeys, useModals, useTrackingEvents } from '@/hooks';
+import * as Router from '@/ducks/router';
+import { connect } from '@/hocs';
+import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { ConnectedProps } from '@/types';
+import { noop } from '@/utils/functional';
 
 import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
 
 const ZOOM_DELTA = 15;
 
-const CanvasControls: React.FC = () => {
+const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
   const { open } = useModals(ModalType.INTERACTION_MODEL);
-
+  const markupTool = React.useContext(MarkupModeContext);
+  const { isPrototyping } = React.useContext(EditPermissionContext)!;
   const eventualEngine = React.useContext(EventualEngineContext)!;
+  const markupFeature = useFeature(FeatureFlag.MARKUP);
 
   const onZoomIn = React.useCallback(() => {
     eventualEngine.get().canvas.applyTransition();
@@ -31,13 +39,31 @@ const CanvasControls: React.FC = () => {
     eventualEngine.get().focusHome();
   }, [eventualEngine]);
 
+  const onOpenMarkup = React.useCallback(() => {
+    if (isPrototyping) {
+      goToDesign();
+    }
+
+    markupTool?.openTool();
+  }, [goToDesign, markupTool?.openTool, isPrototyping]);
+
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(() => trackingEventsWrapper(open, 'trackCanvasControlInteractionModel')(), []);
+
+  const toggleMarkup = React.useCallback(() => {
+    if (markupTool?.isOpen) {
+      markupTool?.closeTool();
+    } else {
+      onOpenMarkup();
+    }
+  }, [onOpenMarkup, markupTool?.closeTool, markupTool?.isOpen]);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
   useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
+  useHotKeys(Hotkey.OPEN_MARKUP, onOpenMarkup, { preventDefault: true });
+  useHotKeys(Hotkey.CLOSE_MARKUP, markupTool?.closeTool || noop, { preventDefault: true });
 
   return (
     <Container>
@@ -52,6 +78,19 @@ const CanvasControls: React.FC = () => {
           <IconButton icon="code" onClick={onOpenCMS} />
         </Tooltip>
       </ControlContainer>
+
+      {markupFeature.isEnabled && (
+        <ControlContainer>
+          <Tooltip distance={6} title="Markup" position="top" hotkey="A">
+            <IconButton
+              active={markupTool?.isOpen}
+              icon={markupTool?.isOpen ? 'close' : 'editName'}
+              onClick={toggleMarkup}
+              size={markupTool?.isOpen ? 14 : 16}
+            />
+          </Tooltip>
+        </ControlContainer>
+      )}
 
       <ControlContainer>
         <Tooltip distance={6} title="Resources" position="top" hotkey="I">
@@ -74,4 +113,10 @@ const CanvasControls: React.FC = () => {
   );
 };
 
-export default React.memo(CanvasControls);
+const mapDispatchToProps = {
+  goToDesign: Router.goToCurrentCanvas,
+};
+
+type ConnectedCanvasControlsProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(CanvasControls);

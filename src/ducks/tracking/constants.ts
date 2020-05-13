@@ -22,6 +22,13 @@ export enum EventName {
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
   CANVAS_CONTROL_HELP_MENU = 'Canvas Control Help Menu',
   CANVAS_CONTROL_INTERACTION_MODEL = 'Canvas Control Interaction Model',
+
+  ONBOARDING_PAY = 'Onboarding - Pay',
+  ONBOARDING_JOIN = 'Onboarding - Join',
+  ONBOARDING_CREATE = 'Onboarding - Create',
+  ONBOARDING_COMPLETE = 'Onboarding - Complete',
+  ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',
+  ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 }
 
 export enum OnboardingStage {

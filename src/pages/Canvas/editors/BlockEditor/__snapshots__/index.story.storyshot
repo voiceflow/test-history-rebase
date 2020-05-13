@@ -1,0 +1,1110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Editor Normal 1`] = `
+.c13 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.c13 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c21 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #787878;
+}
+
+.c21 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c28 {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  color: #BECEDC;
+}
+
+.c28 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c28:hover {
+  color: #BECEDC;
+}
+
+.c28:active {
+  color: #BECEDC;
+}
+
+.c37 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #6E849A;
+}
+
+.c37 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c37:hover {
+  color: #6E849A;
+}
+
+.c37:active {
+  color: #6E849A;
+}
+
+.c41 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c24 {
+  cursor: pointer;
+  color: #5d9df5;
+  font-size: 15px;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.c24:hover {
+  color: #4886da;
+}
+
+.c25 {
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  color: #becedc;
+  top: 3px;
+}
+
+.c25:hover {
+  color: #8da2b5;
+}
+
+.c45 {
+  height: 16px;
+  width: 16px;
+  margin-right: 16px;
+  color: rgba(110,132,154,0.85);
+}
+
+.c43 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 1px solid #dfe3ed;
+  font-weight: 600;
+  padding: 9px 22px 10px;
+  color: #132144;
+  line-height: 22px;
+  background-color: #eef4f6d9;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  background-size: 1px 42px;
+  box-sizing: border-box;
+  -webkit-transition: all ease 0.15s;
+  transition: all ease 0.15s;
+}
+
+.c43:focus,
+.c43:active {
+  outline: 0;
+}
+
+.c43:hover,
+.c43:active {
+  background-color: #e0ebee;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: inherit;
+  height: 42px;
+  border-radius: 90px;
+  font-size: 15px;
+  line-height: 18px;
+  width: auto;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.15s ease,color 0.15s ease;
+  transition: box-shadow 0.15s ease,color 0.15s ease;
+  height: 34px;
+  width: 34px;
+  color: #8da2b5;
+  background: inherit;
+}
+
+.c11:focus,
+.c11:active {
+  outline: 0;
+}
+
+.c11:hover {
+  box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
+}
+
+.c11:active {
+  background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
+  border: 1px solid #fff;
+  color: #5d9df5;
+  box-shadow: 0 0 0 1px #5b9dfa99 !important;
+}
+
+.c8 {
+  outline: none !important;
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.c46 .c12 {
+  color: #fff;
+}
+
+.c47 .c12 {
+  color: #6e849a;
+}
+
+.c30 {
+  padding: 0 32px;
+}
+
+.c39 {
+  padding: 20px 32px;
+}
+
+.c23 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+  margin-right: 12px;
+  opacity: 1;
+}
+
+.c18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+  cursor: pointer;
+}
+
+.c33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
+.c38 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c38:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c16 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c16:not(:first-child)::before {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  top: 0;
+}
+
+.c16 .c22 {
+  font-weight: normal;
+}
+
+.c32 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c32:not(:first-child)::before {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  top: 0;
+}
+
+.c32 .c22 {
+  color: #62778c;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.c32 .c17 {
+  height: 40px;
+}
+
+.c32 .c29 {
+  padding-bottom: 16px;
+}
+
+.c36 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c36:not(:first-child)::before {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  top: 0;
+}
+
+.c36 .c22 {
+  font-weight: 600;
+}
+
+.c34 {
+  margin-right: 12px;
+}
+
+.c20:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #8da2b5;
+  font-size: 13px;
+}
+
+.c27 {
+  -webkit-transition: -webkit-transform 0.15s ease;
+  -webkit-transition: transform 0.15s ease;
+  transition: transform 0.15s ease;
+  color: #becedc;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+
+.c27:hover {
+  color: #8da2b5;
+}
+
+.c35 {
+  position: relative;
+  height: 20px;
+  margin-top: -2px;
+  margin-right: -4px;
+  margin-left: -4px;
+  -webkit-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  transform: scale(0.8);
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.c40 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 32px;
+  z-index: 0;
+  height: 90px;
+  min-height: 90px;
+  background-color: #fff;
+}
+
+.c40:not(:first-child) {
+  border-top: 1px solid #dfe3ed;
+}
+
+.c15 {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-top: none !important;
+  -webkit-scrollbar-width: none;
+  -moz-scrollbar-width: none;
+  -ms-scrollbar-width: none;
+  scrollbar-width: none;
+}
+
+.c15:not(:first-child) {
+  border-top: 1px solid #dfe3ed;
+}
+
+.c15::-webkit-scrollbar {
+  display: none;
+}
+
+.c42 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c42 > *:not(:first-child) {
+  margin-left: 8px;
+}
+
+.c42 > *:not(:last-child) {
+  margin-right: 8px;
+}
+
+.c31 {
+  padding-bottom: 16px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 100px;
+  padding-top: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dfe3ed;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.c2:not(:first-child) {
+  border-top: 1px solid #dfe3ed;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+
+.c4 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  color: #5d9df5;
+  overflow: hidden;
+}
+
+.c4:hover {
+  color: #4986da;
+}
+
+.c4:active {
+  color: #4986da;
+}
+
+.c6 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  color: #5d9df5;
+  cursor: default;
+}
+
+.c5 {
+  margin: 0 8px;
+  color: #8da2b5;
+}
+
+.c9 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 22px;
+  font-weight: 600;
+  color: #132144;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin-right: 16px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c14 {
+  -webkit-animation: laeTZU 180ms ease-in-out;
+  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c44 {
+  color: rgba(110,132,154,0.85);
+}
+
+.c48 .c10:not(:active) {
+  box-shadow: none;
+}
+
+.c48 > div:not(:last-of-type) .c10 {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.c48 > div:not(:first-of-type) .c10 {
+  margin-left: 1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.c0 {
+  position: absolute;
+  width: 450px;
+  background-color: inherit;
+  z-index: 20;
+  -webkit-transition: -webkit-transform 0.15s ease;
+  -webkit-transition: transform 0.15s ease;
+  transition: transform 0.15s ease;
+  right: 0;
+  -webkit-transform: translate3d(-0px,0,0);
+  -ms-transform: translate3d(-0px,0,0);
+  transform: translate3d(-0px,0,0);
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  border-style: solid;
+  border-width: 0;
+  border-color: #dfe3ed;
+  background-color: #fff;
+  border-left-width: 1px;
+}
+
+<div
+  className="c0"
+  direction="left"
+  open={true}
+  width={450}
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        <a
+          className="c4"
+          href=""
+          onClick={[Function]}
+        >
+          Blocks
+        </a>
+        <span
+          className="c5"
+        >
+          /
+        </span>
+        <span
+          className="c6"
+        >
+          Welcome Block
+        </span>
+      </div>
+      <div
+        className="c7"
+      >
+        <input
+          className="c8 c9"
+          onBlur={[Function]}
+          onChange={[Function]}
+        />
+        <button
+          className="c10 c11"
+          onClick={[Function]}
+        >
+          <span
+            className="c12 c13"
+            color="currentColor"
+            size={16}
+          >
+            <svg
+              data-file-name="SvgElipsis"
+            />
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="c14"
+    >
+      <div
+        className="c15"
+      >
+        <div
+          className="c16"
+        >
+          <div
+            className="c17 c18"
+            onClick={[Function]}
+          >
+            <div
+              className="c19"
+            >
+              <div
+                className="c20"
+              >
+                <span
+                  className="c12 c21"
+                  color="#787878"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgStar"
+                  />
+                </span>
+              </div>
+              <div
+                className="c22 c23"
+                disabled={false}
+              >
+                Collapsible Section, Fully Clickable
+              </div>
+              <div
+                className="c24"
+                onClick={[Function]}
+              >
+                <div
+                  className="c25"
+                >
+                  <span
+                    className="c12 c13"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <svg
+                      data-file-name="SvgInfo"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className="c26"
+            >
+              <div>
+                <div
+                  className="c27"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="c12 c28"
+                    color="currentColor"
+                    size={12}
+                  >
+                    <svg
+                      data-file-name="SvgArrowLeft"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c29 c30"
+          >
+            <div
+              className="collapse"
+              style={Object {}}
+            >
+              <div
+                className="c31"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c32"
+        >
+          <div
+            className="c17 c33"
+          >
+            <div
+              className="c19"
+            >
+              <div
+                className="c22 c23"
+                disabled={false}
+              >
+                Toggle in Child
+              </div>
+              <div
+                className="c24"
+                onClick={[Function]}
+              >
+                <div
+                  className="c25"
+                >
+                  <span
+                    className="c12 c13"
+                    color="currentColor"
+                    size={16}
+                  >
+                    <svg
+                      data-file-name="SvgInfo"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className="c26"
+            >
+              <div
+                className="c34"
+              >
+                3
+              </div>
+              <div>
+                <div
+                  className="c35"
+                >
+                  <div
+                    className="react-toggle"
+                    onClick={[Function]}
+                    onTouchEnd={[Function]}
+                    onTouchMove={[Function]}
+                    onTouchStart={[Function]}
+                  >
+                    <div
+                      className="react-toggle-track"
+                    >
+                      <div
+                        className="react-toggle-track-check"
+                      />
+                      <div
+                        className="react-toggle-track-x"
+                      />
+                    </div>
+                    <div
+                      className="react-toggle-thumb"
+                    />
+                    <input
+                      checked={false}
+                      className="react-toggle-screenreader-only"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      type="checkbox"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c29 c30"
+          >
+            <div
+              className="collapse"
+              style={Object {}}
+            >
+              <div
+                className="c31"
+              >
+                <button
+                  onClick={[Function]}
+                >
+                  Click me to toggle
+                </button>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c36"
+        >
+          <div
+            className="c17 c33"
+          >
+            <div
+              className="c19"
+            >
+              <div
+                className="c20"
+              >
+                <span
+                  style={
+                    Object {
+                      "border": "1px solid black",
+                    }
+                  }
+                >
+                  Prefix Elmnt
+                </span>
+              </div>
+              <div
+                className="c22 c23"
+                disabled={false}
+              >
+                No Collapse Section
+              </div>
+            </div>
+          </div>
+          <div
+            className="c29 c30"
+          >
+            <div
+              className="collapse show"
+              style={Object {}}
+            >
+              <div
+                className="c31"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c16"
+        >
+          <div
+            className="c17 c33"
+          >
+            <div
+              className="c19"
+            >
+              <div
+                className="c20"
+              >
+                <span
+                  className="c12 c37"
+                  color="currentColor"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgVolume"
+                  />
+                </span>
+              </div>
+              <div
+                className="c22 c23"
+                disabled={false}
+              >
+                Fourth Section
+              </div>
+            </div>
+            <div
+              className="c26"
+            >
+              <div
+                className="c38"
+              >
+                Status
+              </div>
+              <div>
+                <div
+                  className="c27"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="c12 c28"
+                    color="currentColor"
+                    size={12}
+                  >
+                    <svg
+                      data-file-name="SvgArrowLeft"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c29 c30"
+          >
+            <div
+              className="collapse"
+              style={Object {}}
+            >
+              <div
+                className="c31"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c36"
+        >
+          <div
+            className="c29 c39"
+          >
+            <div
+              className="collapse show"
+              style={Object {}}
+            >
+              <div
+                className="c31"
+              >
+                NO HEADER SECTION 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quas, eligendi pariatur dolores fuga expedita, placeat ullam earum similique porro repellendus provident iusto esse saepe totam perferendis, deserunt accusamus ducimus.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c40"
+      >
+        <div
+          className="c41"
+        >
+          <div>
+            <a
+              href=""
+            >
+              What?
+            </a>
+          </div>
+          <div
+            className="c42"
+          >
+            <button
+              className="c43 c44"
+              onClick={[Function]}
+            >
+              <span
+                className="c12 c13"
+                color="currentColor"
+                size={16}
+              >
+                <svg
+                  data-file-name="SvgElipsis"
+                />
+              </span>
+            </button>
+            <button
+              className="c43 vf-button"
+              disabled={false}
+            >
+              <span
+                className="c45"
+              >
+                <span
+                  className="c12 c13"
+                  color="currentColor"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAlexa"
+                  />
+                </span>
+              </span>
+              Action
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

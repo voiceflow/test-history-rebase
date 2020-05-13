@@ -1,19 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c19 {
   box-sizing: content-box;
   width: 16px;
@@ -35,6 +22,19 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 .c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -253,6 +253,10 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   color: #132144;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -354,16 +358,12 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -411,149 +411,151 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#558B2F"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPurchase"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Hogwarts
+                <span
+                  className="c11 c12"
+                  color="#558B2F"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPurchase"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c15"
-                color="#616c60"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgAlexa"
-                />
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Hogwarts
+                </div>
               </span>
             </div>
-            <span
-              className="c16"
-            >
-              <div
-                className="c14"
-              >
-                If you'd like to access the full collection, visit NYT website
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#616c60"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAlexa"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c17"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  If you'd like to access the full collection, visit NYT website
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="c6 c7"
+          >
+            <div
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c17"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
+              <span
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Purchased
+                </div>
+              </span>
+              <div
+                className="c18 vf-canvas__port"
                 color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Purchased
+                <span
+                  className="c11 c19"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c19"
-                color="#d94c4c"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  <span
+                    className="c20"
+                  >
+                    Declined
+                  </span>
+                   or 
+                  <span
+                    className="c20"
+                  >
+                    Error
+                  </span>
+                </div>
               </span>
-            </div>
-            <span
-              className="c13"
-            >
               <div
-                className="c14"
-              >
-                <span
-                  className="c20"
-                >
-                  Declined
-                </span>
-                 or 
-                <span
-                  className="c20"
-                >
-                  Error
-                </span>
-              </div>
-            </span>
-            <div
-              className="c21"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c21 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -563,19 +565,6 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c21 {
   box-sizing: content-box;
   width: 16px;
@@ -597,6 +586,19 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 .c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -830,6 +832,10 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   color: #132144;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -931,16 +937,12 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -988,165 +990,167 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#558B2F"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPurchase"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Hogwarts
+                <span
+                  className="c11 c12"
+                  color="#558B2F"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPurchase"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c15"
-                color="#616c60"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgAlexa"
-                />
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Hogwarts
+                </div>
               </span>
             </div>
-            <span
-              className="c16"
-            >
-              <div
-                className="c14"
-              >
-                If you'd like to access the full collection, visit NYT website
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#616c60"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAlexa"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c17"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  If you'd like to access the full collection, visit NYT website
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="c6 c7"
+          >
+            <div
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c17"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
+              <span
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Purchased
+                </div>
+              </span>
+              <div
+                className="c18 vf-canvas__port"
                 color="#279745"
-                size={16}
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c19"
               >
-                <svg
-                  data-file-name="SvgCheckmark"
+                <path
+                  className="c20"
+                  d="M 0 4 L 13 4"
                 />
-              </span>
+              </svg>
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Purchased
+                <span
+                  className="c11 c21"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c19"
-            >
-              <path
-                className="c20"
-                d="M 0 4 L 13 4"
-              />
-            </svg>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c21"
-                color="#d94c4c"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  <span
+                    className="c22"
+                  >
+                    Declined
+                  </span>
+                   or 
+                  <span
+                    className="c22"
+                  >
+                    Error
+                  </span>
+                </div>
               </span>
-            </div>
-            <span
-              className="c13"
-            >
               <div
-                className="c14"
-              >
-                <span
-                  className="c22"
-                >
-                  Declined
-                </span>
-                 or 
-                <span
-                  className="c22"
-                >
-                  Error
-                </span>
-              </div>
-            </span>
-            <div
-              className="c23"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c19"
-            >
-              <path
-                className="c20"
-                d="M 0 4 L 13 4"
+                className="c23 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c19"
+              >
+                <path
+                  className="c20"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1295,6 +1299,10 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1396,16 +1404,12 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1453,44 +1457,46 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#558B2F"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPurchase"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Select a product
+                <span
+                  className="c11 c12"
+                  color="#558B2F"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPurchase"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Select a product
+                </div>
+              </span>
+            </div>
           </div>
+          
         </div>
-        
       </div>
     </section>
   </div>
@@ -1498,19 +1504,6 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 `;
 
 exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
-.c15 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #616c60;
-}
-
-.c15 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c19 {
   box-sizing: content-box;
   width: 16px;
@@ -1532,6 +1525,19 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 .c17 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1750,6 +1756,10 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   color: #132144;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1851,16 +1861,12 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1908,149 +1914,151 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#558B2F"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPurchase"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Hi {name}, welcome to Hogwarts
+                <span
+                  className="c11 c12"
+                  color="#558B2F"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPurchase"
+                  />
+                </span>
               </div>
-            </span>
-          </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c15"
-                color="#616c60"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgAlexa"
-                />
+                <div
+                  className="c14"
+                >
+                  Hi {name}, welcome to Hogwarts
+                </div>
               </span>
             </div>
-            <span
-              className="c16"
-            >
-              <div
-                className="c14"
-              >
-                If you'd like to access the full collection, visit NYT website
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#616c60"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAlexa"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c17"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  If you'd like to access the full collection, visit NYT website
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            className="c6 c7"
+          >
+            <div
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c17"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
+              <span
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Purchased
+                </div>
+              </span>
+              <div
+                className="c18 vf-canvas__port"
                 color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Purchased
+                <span
+                  className="c11 c19"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c18"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c19"
-                color="#d94c4c"
-                size={16}
+                className="c13"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  <span
+                    className="c20"
+                  >
+                    Declined
+                  </span>
+                   or 
+                  <span
+                    className="c20"
+                  >
+                    Error
+                  </span>
+                </div>
               </span>
-            </div>
-            <span
-              className="c13"
-            >
               <div
-                className="c14"
-              >
-                <span
-                  className="c20"
-                >
-                  Declined
-                </span>
-                 or 
-                <span
-                  className="c20"
-                >
-                  Error
-                </span>
-              </div>
-            </span>
-            <div
-              className="c21"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c21 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>

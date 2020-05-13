@@ -54,6 +54,9 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CANCEL_PAYMENT]: CancelPaymentManager,
   [BlockType.REMINDER]: ReminderManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
+  [BlockType.MARKUP_TEXT]: DeprecatedManager,
+  [BlockType.MARKUP_IMAGE]: DeprecatedManager,
+  [BlockType.MARKUP_SHAPE]: DeprecatedManager,
 };
 
 const MANAGERS = Object.values(MANAGERS_BY_TYPE);

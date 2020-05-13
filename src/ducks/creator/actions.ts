@@ -19,6 +19,7 @@ export type InitializeCreator = Action<
     links: Link[];
     ports: Port[];
     data: Record<string, NodeData<unknown>>;
+    markupNodeIDs: string[];
   }
 >;
 

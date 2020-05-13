@@ -140,6 +140,10 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -241,16 +245,12 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -298,41 +298,43 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgExit"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Skill ends in current state
+                <span
+                  className="c11 c12"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgExit"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Skill ends in current state
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -481,6 +483,10 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -582,16 +588,12 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -639,41 +641,43 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgExit"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Skill ends in current state
+                <span
+                  className="c11 c12"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgExit"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Skill ends in current state
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -822,6 +826,10 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -923,16 +931,12 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -980,41 +984,43 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#d94c4c"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgExit"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Google Action ends in current state
+                <span
+                  className="c11 c12"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgExit"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Google Action ends in current state
+                </div>
+              </span>
+            </div>
           </div>
         </div>
       </div>

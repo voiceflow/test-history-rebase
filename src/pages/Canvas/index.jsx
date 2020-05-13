@@ -10,16 +10,17 @@ import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
 import SettingsModal from '@/pages/Settings';
 import { SettingsModalConsumer } from '@/pages/Settings/contexts';
+import { ShortcutModalConsumer } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
 import CanvasNotifications from './components/CanvasNotifications';
 import ContextMenu from './components/ContextMenu';
-import EditSidebar from './components/EditSidebar';
+import EditSidebar from './components/EditorSidebar';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Spotlight from './components/Spotlight';
-import { CanvasProviders, ShortcutModalConsumer } from './contexts';
+import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
 const Canvas = ({ isPrototyping }) => {

@@ -8,7 +8,6 @@ import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import { EntityMap, Node, NodeData } from '@/models';
-import { MergeStatus } from '@/pages/Canvas/constants';
 import { Pair, Point } from '@/types';
 import { isCommandNode } from '@/utils/node';
 
@@ -423,10 +422,6 @@ class NodeManager extends EngineConsumer {
 
   drop(nodeID: string) {
     this.api(nodeID)?.drop?.();
-  }
-
-  setMergeStatus(nodeID: string, mergeStatus: MergeStatus) {
-    this.api(nodeID)?.setMergeStatus?.(mergeStatus);
   }
 
   getBlockRect(nodeID: string) {

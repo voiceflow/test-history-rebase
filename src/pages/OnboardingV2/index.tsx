@@ -2,8 +2,9 @@ import queryString from 'query-string';
 import React from 'react';
 
 import { UserRole } from '@/constants';
-import { userSelector } from '@/ducks/account';
+import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
 import { Header, InnerContainer, OuterContainer } from './components';
 import CurrentStep from './components/CurrentStep';
@@ -27,18 +28,18 @@ export const Onboarding: React.FC<OnboardingProps> = ({ data, location }) => {
   );
 };
 
-const mapStateToProps = {
-  user: userSelector,
-};
-
-type ConnectedOnboardingProps = { user: Record<string, string> };
-
 const ConnectedOnboarding: React.FC<ConnectedOnboardingProps> = ({ user, ...props }) => {
   const data: OnboardingDataProps = {
-    collaborators: [{ email: user.email, permission: UserRole.ADMIN }],
+    collaborators: [{ email: user.email!, permission: UserRole.ADMIN }],
   };
 
   return <Onboarding data={data} {...props} />;
 };
+
+const mapStateToProps = {
+  user: Account.userSelector,
+};
+
+type ConnectedOnboardingProps = ConnectedProps<typeof mapStateToProps>;
 
 export default connect(mapStateToProps)(ConnectedOnboarding);

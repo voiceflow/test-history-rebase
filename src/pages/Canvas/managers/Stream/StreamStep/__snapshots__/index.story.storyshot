@@ -193,6 +193,10 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -294,16 +298,12 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -351,97 +351,99 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
+              <div
+                className="c10"
               >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  How_to_train_your_dragon.mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                How_to_train_your_dragon.mp3
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#3a5999"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgChoice"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
-                color="#3a5999"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgChoice"
-                />
+                <div
+                  className="c14"
+                >
+                  Next
+                </div>
               </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c16"
               >
-                Next
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
-            >
+                <div
+                  className="c14"
+                >
+                  Previous
+                </div>
+              </span>
               <div
-                className="c14"
-              >
-                Previous
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -659,6 +661,10 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -760,16 +766,12 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -817,113 +819,115 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
+              <div
+                className="c10"
               >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  How_to_train_your_dragon.mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                How_to_train_your_dragon.mp3
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#3a5999"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgChoice"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
-                color="#3a5999"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgChoice"
-                />
+                <div
+                  className="c14"
+                >
+                  Next
+                </div>
               </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c18"
+              >
+                <path
+                  className="c19"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
-              >
-                Next
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c18"
-            >
-              <path
-                className="c19"
-                d="M 0 4 L 13 4"
+                className="c10"
               />
-            </svg>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
-            >
+              <span
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Previous
+                </div>
+              </span>
               <div
-                className="c14"
-              >
-                Previous
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c18"
-            >
-              <path
-                className="c19"
-                d="M 0 4 L 13 4"
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c18"
+              >
+                <path
+                  className="c19"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1125,6 +1129,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1226,16 +1234,12 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1283,97 +1287,99 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
+              <div
+                className="c10"
               >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Add an Audio file, URL or variable
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                Add an Audio file, URL or variable
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#3a5999"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgChoice"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
-                color="#3a5999"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgChoice"
-                />
+                <div
+                  className="c14"
+                >
+                  Next
+                </div>
               </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c16"
               >
-                Next
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
-            >
+                <div
+                  className="c14"
+                >
+                  Previous
+                </div>
+              </span>
               <div
-                className="c14"
-              >
-                Previous
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1552,6 +1558,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1653,16 +1663,12 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1710,46 +1716,48 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Add an Audio file, URL or variable
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c15"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Add an Audio file, URL or variable
+                </div>
+              </span>
+              <div
+                className="c15 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1951,6 +1959,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2052,16 +2064,12 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2109,97 +2117,99 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
+              <div
+                className="c10"
               >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  How_to_train_your_dragon.mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                How_to_train_your_dragon.mp3
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#3a5999"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgChoice"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
-                color="#3a5999"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgChoice"
-                />
+                <div
+                  className="c14"
+                >
+                  Next
+                </div>
               </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c16"
               >
-                Next
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
-            >
+                <div
+                  className="c14"
+                >
+                  Previous
+                </div>
+              </span>
               <div
-                className="c14"
-              >
-                Previous
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2401,6 +2411,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2502,16 +2516,12 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2559,118 +2569,120 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
-              <span
-                className="c11 c12"
-                color="#4f98c6"
-                size={16}
+              <div
+                className="c10"
               >
-                <svg
-                  data-file-name="SvgAudioPlayer"
-                />
+                <span
+                  className="c11 c12"
+                  color="#4f98c6"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgAudioPlayer"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  How_to_train_your_dragon.mp3
+                </div>
               </span>
             </div>
-            <span
-              className="c13"
-            >
-              <div
-                className="c14"
-              >
-                How_to_train_your_dragon.mp3
-              </div>
-            </span>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#3a5999"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgChoice"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
-                color="#3a5999"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgChoice"
-                />
+                <div
+                  className="c14"
+                >
+                  Next
+                </div>
               </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c16"
               >
-                Next
-              </div>
-            </span>
+                <div
+                  className="c14"
+                >
+                  Previous
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
             <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
+              />
+              <span
+                className="c16"
               >
-                Previous
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            />
-            <span
-              className="c16"
-            >
+                <div
+                  className="c14"
+                >
+                  Pause
+                </div>
+              </span>
               <div
-                className="c14"
-              >
-                Pause
-              </div>
-            </span>
-            <div
-              className="c17"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c17 vf-canvas__port"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>

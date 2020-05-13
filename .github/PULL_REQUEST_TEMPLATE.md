@@ -1,6 +1,6 @@
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
 
-**Fixes or implements [CORE-XXX](https://voiceflow.atlassian.net/browse/CORE-XXX)**
+**Fixes or implements CORE-XXX**
 
 ### Description
 
@@ -21,11 +21,7 @@
 
 ### Deployment Notes
 
-<!-- Notes regarding deployment the contained body of work.  These should note any db migrations, etc. -->
-
-### Impacted Areas in Application
-
-<!-- List general components of the application that this PR will affect: -->
+<!-- Notes regarding deployment the contained body of work. These should note any db migrations, etc. -->
 
 ### Checklist
 

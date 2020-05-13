@@ -68,7 +68,9 @@ export const BackButton = styled.span`
 
 export const Logo = styled.img`
   height: 42px;
+  width: 42px;
   margin-right: 6px;
+  border-radius: 50%;
   cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
 `;
 

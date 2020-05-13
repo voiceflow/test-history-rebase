@@ -8,8 +8,7 @@ import { useDismissable } from '@/hooks/dismiss';
 
 const DEFAULT_PORTAL_NODE = document.body;
 export const PopoverContainer = styled.div`
-  z-index: 1051;
-  z-index: 1100;
+  z-index: ${({ zIndex = 1100 }) => zIndex};
   /* to override default width css from react-popper */
   width: ${({ autoWidth }) => !autoWidth && 'auto !important'};
 
@@ -38,6 +37,7 @@ function Dropdown({
   autoWidth = false,
   selfDismiss = false,
   portal = DEFAULT_PORTAL_NODE,
+  zIndex,
 }) {
   const containerRef = useRef(null);
 
@@ -77,6 +77,7 @@ function Dropdown({
                 data-placement={placement}
                 autoWidth={autoWidth}
                 noScroll={noScroll}
+                zIndex={zIndex}
               >
                 {(typeof menu === 'function' ? menu(onToggle) : menu) ||
                   (options && (

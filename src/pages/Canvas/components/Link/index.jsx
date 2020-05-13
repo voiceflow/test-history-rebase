@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
-import { withEditPermission, withEngine, withLink, withPlatform } from '@/pages/Canvas/contexts';
+import { withEngine, withLink, withPlatform } from '@/pages/Canvas/contexts';
+import { withEditPermission } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
 
 import { Group, HeadMarker, Overlay, Path, RemoveButton } from './components';

@@ -19,8 +19,7 @@ import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadin
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
-import ProjectLimitModal from '@/pages/Dashboard/FreeProjectLimitModal';
-import RealtimeRestrictionModal from '@/pages/Dashboard/RealtimeRestrictionModal';
+import { ProjectDownloadModal, ProjectLimitModal, RealtimeDeniedModal, TestableLinkModal } from '@/pages/Dashboard/RestrictionModals';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
@@ -45,8 +44,10 @@ const App = () => {
       <Routes />
       <IntercomChat />
       <CollaboratorsModal />
+      <ProjectDownloadModal />
+      <TestableLinkModal />
       <ProjectLimitModal />
-      <RealtimeRestrictionModal />
+      <RealtimeDeniedModal />
       <BillingModal />
       <PaymentModal />
     </>

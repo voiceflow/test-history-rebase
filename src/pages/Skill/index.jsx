@@ -17,22 +17,16 @@ import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadi
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable } from '@/hooks';
 import Business from '@/pages/Business';
-import Canvas from '@/pages/Canvas';
-import LeftSidebar from '@/pages/Canvas/components/LeftSidebar';
-import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
-import { EditPermissionProvider, ManagerProvider, ShortcutModalProvider } from '@/pages/Canvas/contexts';
-import CanvasHeader from '@/pages/Canvas/header';
-import { getManager } from '@/pages/Canvas/managers';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
-import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import { isOnlyViewerSelector } from '@/store/selectors';
 import { getActivePageAndMatch } from '@/utils/routes';
 
+import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
-import DiagramSync from './contexts/DiagramSync';
+import { MarkupModeProvider } from './contexts';
 
 const PAGES_MATCHES = {
   prototype: ['/prototype/:diagramID?'],
@@ -43,26 +37,6 @@ const PAGES_MATCHES = {
 };
 
 const TIMEOUT_COUNT = 5 * 60 * 1000;
-
-function RenderCanvas({ diagramID, isPrototyping }) {
-  return (
-    <>
-      {!isPrototyping && <DiagramSync diagramID={diagramID} />}
-      <ManagerProvider value={getManager}>
-        <EditPermissionProvider isPrototyping={isPrototyping}>
-          <ShortcutModalProvider>
-            <SettingsModalProvider>
-              <CanvasHeader />
-              <LeftSidebar />
-              <Canvas isPrototyping={isPrototyping} />
-              <PrototypeSidebar />
-            </SettingsModalProvider>
-          </ShortcutModalProvider>
-        </EditPermissionProvider>
-      </ManagerProvider>
-    </>
-  );
-}
 
 function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
   const [isIdle, onIdle, onActive] = useEnableDisable();
@@ -92,7 +66,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
   }
 
   return (
-    <>
+    <MarkupModeProvider>
       <Helmet>
         <title>{activeSkill.name || 'Voiceflow Creator'}</title>
       </Helmet>
@@ -103,7 +77,6 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
           <InactivityModal open={isIdle} onActive={setActive} />
         </>
       )}
-
       <Page
         header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
         userMenu={false}
@@ -114,7 +87,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
         <Switch>
           <PrivateRoute
             path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
-            component={RenderCanvas}
+            component={Diagram}
             diagramID={diagramID}
             isPrototyping={isPrototyping}
           />
@@ -128,7 +101,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
           <Redirect to={`${match.path}/canvas`} />
         </Switch>
       </Page>
-    </>
+    </MarkupModeProvider>
   );
 }
 

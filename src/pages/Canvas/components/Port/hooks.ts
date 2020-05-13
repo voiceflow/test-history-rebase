@@ -3,8 +3,9 @@ import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
 import { useEnableDisable, useTeardown } from '@/hooks';
-import { EditPermissionContext, EngineContext, useNode } from '@/pages/Canvas/contexts';
+import { EngineContext, useNode } from '@/pages/Canvas/contexts';
 import { PortAPI } from '@/pages/Canvas/types';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { swallowEvent } from '@/utils/dom';
 
 export const useLinkTerminal = (portID: string): Record<'onStart' | 'onEnd', (event: React.MouseEvent) => void> => {

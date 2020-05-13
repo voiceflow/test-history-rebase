@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ClickableText } from '@/components/Text';
-import { ModalType, PLANS } from '@/constants';
+import { ModalType, PlanType } from '@/constants';
 import { planTypeSelector } from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -15,8 +15,8 @@ function SeatSummary({ plan }) {
 
   return (
     <Container>
-      {plan !== PLANS.ENTERPRISE && (
-        <ClickableText onClick={openPaymentsModal}>{plan === PLANS.TEAM ? <span>Need more room?</span> : <span>Upgrade</span>}</ClickableText>
+      {(plan !== PlanType.ENTERPRISE || plan !== PlanType.OLD_ENTERPRISE) && (
+        <ClickableText onClick={openPaymentsModal}>Upgrade Workspace</ClickableText>
       )}
     </Container>
   );

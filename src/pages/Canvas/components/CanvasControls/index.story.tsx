@@ -5,7 +5,7 @@ import { composeDecorators, withModalContext, withRedux } from '@/../.storybook'
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
-import { ShortcutModalProvider } from '@/pages/Canvas/contexts';
+import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Skill/contexts';
 
 import CanvasControlsV2 from '.';
 
@@ -20,17 +20,19 @@ const createStory = () =>
     <TextEditorVariablesPopoverProvider value={document.body}>
       <EventualEngineProvider>
         <ShortcutModalProvider>
-          <RegisterEngine
-            engine={{
-              canvas: {
-                zoomIn: action('zoomIn'),
-                zoomOut: action('zoomOut'),
-                applyTransition: action('applyTransition'),
-              },
-            }}
-          />
+          <EditPermissionProvider isPrototyping>
+            <RegisterEngine
+              engine={{
+                canvas: {
+                  zoomIn: action('zoomIn'),
+                  zoomOut: action('zoomOut'),
+                  applyTransition: action('applyTransition'),
+                },
+              }}
+            />
 
-          <Component />
+            <Component />
+          </EditPermissionProvider>
         </ShortcutModalProvider>
       </EventualEngineProvider>
     </TextEditorVariablesPopoverProvider>

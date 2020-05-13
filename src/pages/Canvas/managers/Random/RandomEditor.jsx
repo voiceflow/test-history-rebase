@@ -1,8 +1,9 @@
 import React from 'react';
 
+import Section from '@/components/Section';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { Content, Controls, Section } from '@/pages/Canvas/components/Editor';
+import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { Button, Checkbox, InfoTooltip } from './components';

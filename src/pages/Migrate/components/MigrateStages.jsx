@@ -3,8 +3,8 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import { checkAmazonAccount } from '@/ducks/account';
-import { syncVendors } from '@/ducks/publish/alexa';
+import * as Account from '@/ducks/account';
+import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 
@@ -48,8 +48,8 @@ function MigrateStages({ checkAmazonAccount, syncVendors }) {
 }
 
 const mapDispatchToProps = {
-  checkAmazonAccount,
-  syncVendors,
+  checkAmazonAccount: Account.checkAmazonAccount,
+  syncVendors: AlexaPublish.syncVendors,
 };
 
 export default connect(null, mapDispatchToProps)(MigrateStages);

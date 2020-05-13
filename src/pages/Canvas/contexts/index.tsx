@@ -13,16 +13,15 @@ import { EngineProvider } from './EngineContext';
 import { GroupSelectionProvider } from './GroupSelectionContext';
 import { SpotlightProvider } from './SpotlightContext';
 
-export * from './EditPermissionContext';
 export * from './EngineContext';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
 export * from './GroupSelectionContext';
 export * from './SpotlightContext';
-export * from './ShortcutModalContext';
 export * from './NodeIDContext';
 export * from './PortIDContext';
 export * from './LinkIDContext';
+export * from './PresentationModeContext';
 
 export type LinkLayerValue = {};
 
@@ -41,8 +40,6 @@ export type ManagerValue = {
 
 export const ManagerContext = React.createContext<((type: BlockType) => ManagerValue) | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
-
-export const withManager = withContext(ManagerContext, 'getManager');
 
 export const CanvasProviders = connect({
   platform: activePlatformSelector,

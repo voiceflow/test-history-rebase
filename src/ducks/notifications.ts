@@ -6,7 +6,7 @@ import { createAction, createRootSelector } from '@/ducks/utils';
 import { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
 import { MD5 } from '@/utils/crypto';
 
-import { userIDSelector } from './account';
+import * as Account from './account';
 
 export type Notification = {
   id: string;
@@ -109,7 +109,7 @@ export const forceNotificationIfNew = (notification: Notification): SyncThunk =>
 };
 
 export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
-  const useId = userIDSelector(getState());
+  const useId = Account.userIDSelector(getState());
 
   let {
     data: { rows: notifications, last_checked: lastChecked },
@@ -126,7 +126,7 @@ export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
 };
 
 export const readNotifications = (): SyncThunk => (dispatch, getState) => {
-  const useId = userIDSelector(getState());
+  const useId = Account.userIDSelector(getState());
 
   axios.post(`/product_updates/${useId}`);
 

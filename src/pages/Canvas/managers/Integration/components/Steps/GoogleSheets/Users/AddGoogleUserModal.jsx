@@ -3,8 +3,8 @@ import GoogleLogin from 'react-google-login';
 
 import SvgIcon from '@/components/SvgIcon';
 import { GOOGLE_CLIENT_ID } from '@/config';
-import { userSelector } from '@/ducks/account';
-import { addIntegrationUser } from '@/ducks/integration';
+import * as Account from '@/ducks/account';
+import * as Integration from '@/ducks/integration';
 import { connect } from '@/hocs/connect';
 
 const GOOGLE_SHEETS = 'Google Sheets';
@@ -70,11 +70,11 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
 }
 
 const mapStateToProps = {
-  user: userSelector,
+  user: Account.userSelector,
 };
 
 const mapDispatchToProps = {
-  addUser: (body) => addIntegrationUser(GOOGLE_SHEETS, body),
+  addUser: (body) => Integration.addIntegrationUser(GOOGLE_SHEETS, body),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddGoogleUserModal);

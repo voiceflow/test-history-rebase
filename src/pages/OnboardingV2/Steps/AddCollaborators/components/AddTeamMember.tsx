@@ -1,12 +1,12 @@
 import React from 'react';
 
+import InvalidEmailError from '@/components/InvalidEmailError';
 import { UserRole } from '@/constants';
 import { CollaboratorType } from '@/pages/OnboardingV2/types';
+import { isValidEmail, isValueDuplicate } from '@/utils/emails';
 
-import { isValidEmail, isValueDuplicate } from '../utils';
 import CollaboratorListContainer from './CollaboratorListContainer';
 import DropdownInput from './DropdownInput';
-import InvalidEmailError from './InvalidEmailError';
 
 const OPTIONS: { value: UserRole; label: string }[] = [
   { value: UserRole.VIEWER, label: 'Can View' },

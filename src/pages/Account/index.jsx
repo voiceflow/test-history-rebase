@@ -6,8 +6,8 @@ import React, { Component } from 'react';
 import Header from '@/components/Header';
 import Button from '@/components/LegacyButton';
 import Image from '@/components/LegacyUpload/Image';
-import { checkAmazonAccount, checkGoogleAccount, deleteAmazonAccount, deleteGoogleAccount, updateAccount, userSelector } from '@/ducks/account';
-import { setConfirm, setError } from '@/ducks/modal';
+import * as AccountDuck from '@/ducks/account';
+import * as Modal from '@/ducks/modal';
 import { connect } from '@/hocs';
 
 class Account extends Component {
@@ -210,17 +210,17 @@ class Account extends Component {
 }
 
 const mapStateToProps = {
-  user: userSelector,
+  user: AccountDuck.userSelector,
 };
 
 const mapDispatchToProps = {
-  checkAmazonAccount,
-  checkGoogleAccount,
-  deleteAmazonAccount,
-  deleteGoogleAccount,
-  setConfirm,
-  setError,
-  updateAccount,
+  checkAmazonAccount: AccountDuck.checkAmazonAccount,
+  checkGoogleAccount: AccountDuck.checkGoogleAccount,
+  deleteAmazonAccount: AccountDuck.deleteAmazonAccount,
+  deleteGoogleAccount: AccountDuck.deleteGoogleAccount,
+  updateAccount: AccountDuck.updateAccount,
+  setConfirm: Modal.setConfirm,
+  setError: Modal.setError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

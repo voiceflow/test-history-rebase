@@ -6,7 +6,7 @@ import { Skill as SkillModel } from '@/models';
 import { Thunk } from '@/store/types';
 import { RootRoutes } from '@/utils/routes';
 
-import { goTo } from './actions';
+import { goTo, goToPrototype, goToPublish } from './actions';
 
 export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
   const state = getState();
@@ -26,7 +26,7 @@ export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: 
     }
   }
 
-  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : ''}${window.location.search}`));
+  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : '/canvas'}${window.location.search}`));
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
@@ -47,4 +47,18 @@ export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getSta
   const versionID = Skill.activeSkillIDSelector(getState());
 
   dispatch(goToCanvas(versionID, diagramID));
+};
+
+export const goToCurrentPrototype = (): Thunk => async (dispatch, getState) => {
+  const versionID = Skill.activeSkillIDSelector(getState());
+
+  dispatch(goToPrototype(versionID));
+};
+
+export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const platform = Skill.activePlatformSelector(state);
+
+  dispatch(goToPublish(versionID, platform));
 };

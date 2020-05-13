@@ -236,6 +236,10 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -337,16 +341,12 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -394,109 +394,111 @@ exports[`Storyshots Creator/Steps/Code Step Active 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Custom code added
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Custom code added
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Success
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
                 color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Success
+                <span
+                  className="c11 c18"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c18"
-                color="#d94c4c"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  Failure
+                </div>
               </span>
-            </div>
-            <span
-              className="c16"
-            >
               <div
-                className="c14"
-              >
-                Failure
-              </div>
-            </span>
-            <div
-              className="c19"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c19 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -741,6 +743,10 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -842,16 +848,12 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -899,109 +901,111 @@ exports[`Storyshots Creator/Steps/Code Step Code Added 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Custom code added
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Custom code added
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Success
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
                 color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Success
+                <span
+                  className="c11 c18"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c18"
-                color="#d94c4c"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  Failure
+                </div>
               </span>
-            </div>
-            <span
-              className="c16"
-            >
               <div
-                className="c14"
-              >
-                Failure
-              </div>
-            </span>
-            <div
-              className="c19"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c19 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1261,6 +1265,10 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   transform: translateY(-2px);
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1362,16 +1370,12 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1419,125 +1423,127 @@ exports[`Storyshots Creator/Steps/Code Step Connected 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Custom code added
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Custom code added
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Success
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
                 color="#279745"
-                size={16}
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+              <svg
+                className="c18"
               >
-                <svg
-                  data-file-name="SvgCheckmark"
+                <path
+                  className="c19"
+                  d="M 0 4 L 13 4"
                 />
-              </span>
+              </svg>
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Success
+                <span
+                  className="c11 c20"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c18"
-            >
-              <path
-                className="c19"
-                d="M 0 4 L 13 4"
-              />
-            </svg>
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c20"
-                color="#d94c4c"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  Failure
+                </div>
               </span>
-            </div>
-            <span
-              className="c16"
-            >
               <div
-                className="c14"
-              >
-                Failure
-              </div>
-            </span>
-            <div
-              className="c21"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-            <svg
-              className="c18"
-            >
-              <path
-                className="c19"
-                d="M 0 4 L 13 4"
+                className="c21 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
               />
-            </svg>
+              <svg
+                className="c18"
+              >
+                <path
+                  className="c19"
+                  d="M 0 4 L 13 4"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -1782,6 +1788,10 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   border: 4px solid white;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1883,16 +1893,12 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -1940,109 +1946,111 @@ exports[`Storyshots Creator/Steps/Code Step Empty 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Enter custom code snippet
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Enter custom code snippet
+                </div>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="c6 c7"
-        >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
+              className="c8 c9"
             >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c15"
+                  color="#279745"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgCheckmark"
+                  />
+                </span>
+              </div>
               <span
-                className="c11 c15"
+                className="c16"
+              >
+                <div
+                  className="c14"
+                >
+                  Success
+                </div>
+              </span>
+              <div
+                className="c17 vf-canvas__port"
                 color="#279745"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgCheckmark"
-                />
-              </span>
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
             </div>
-            <span
-              className="c16"
+            <div
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Success
+                <span
+                  className="c11 c18"
+                  color="#d94c4c"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgError"
+                  />
+                </span>
               </div>
-            </span>
-            <div
-              className="c17"
-              color="#279745"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
-          </div>
-          <div
-            className="c8 c9"
-          >
-            <div
-              className="c10"
-            >
               <span
-                className="c11 c18"
-                color="#d94c4c"
-                size={16}
+                className="c16"
               >
-                <svg
-                  data-file-name="SvgError"
-                />
+                <div
+                  className="c14"
+                >
+                  Failure
+                </div>
               </span>
-            </div>
-            <span
-              className="c16"
-            >
               <div
-                className="c14"
-              >
-                Failure
-              </div>
-            </span>
-            <div
-              className="c19"
-              color="#d94c4c"
-              onClick={[Function]}
-              onMouseDown={[Function]}
-            />
+                className="c19 vf-canvas__port"
+                color="#d94c4c"
+                onClick={[Function]}
+                onMouseDown={[Function]}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -2191,6 +2199,10 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2292,16 +2304,12 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2349,46 +2357,48 @@ exports[`Storyshots Creator/Steps/Code Step Empty Without Ports 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Enter custom code snippet
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Enter custom code snippet
+                </div>
+              </span>
+            </div>
           </div>
+          <div
+            className="c6 c7"
+          />
         </div>
-        <div
-          className="c6 c7"
-        />
       </div>
     </section>
   </div>
@@ -2535,6 +2545,10 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   text-overflow: ellipsis;
 }
 
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -2636,16 +2650,12 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
   background: transparent;
 }
 
-.c4 > *:not(:last-of-type) {
-  margin-bottom: 6px;
-}
-
 .c1 {
   position: relative;
 }
 
 <div
-  className="c0"
+  className="c0 vf-canvas__block"
 >
   <div
     className="c1"
@@ -2693,46 +2703,48 @@ exports[`Storyshots Creator/Steps/Code Step Without Ports 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c4"
-    >
+    <section>
       <div
-        className="c5"
+        className="c4"
         onMouseDown={[Function]}
       >
         <div
-          className="c6 c7"
+          className="c5"
         >
           <div
-            className="c8 c9"
+            className="c6 c7"
           >
             <div
-              className="c10"
-            >
-              <span
-                className="c11 c12"
-                color="#cdad32"
-                size={16}
-              >
-                <svg
-                  data-file-name="SvgPower"
-                />
-              </span>
-            </div>
-            <span
-              className="c13"
+              className="c8 c9"
             >
               <div
-                className="c14"
+                className="c10"
               >
-                Custom code added
+                <span
+                  className="c11 c12"
+                  color="#cdad32"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPower"
+                  />
+                </span>
               </div>
-            </span>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Custom code added
+                </div>
+              </span>
+            </div>
           </div>
+          <div
+            className="c6 c7"
+          />
         </div>
-        <div
-          className="c6 c7"
-        />
       </div>
     </section>
   </div>

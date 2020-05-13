@@ -4,6 +4,7 @@ import { Icon } from '@/components/SvgIcon';
 import User from '@/components/User';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 import { LockOwnerType } from '@/models';
+import { ClassName } from '@/styles/constants';
 
 import { Container, Section } from './components';
 import { BlockSectionProps } from './components/BlockSection';
@@ -78,7 +79,15 @@ const Block: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChil
   );
 
   return (
-    <Container variant={variant} state={state} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={rootRef} hasLinkWarning={hasLinkWarning}>
+    <Container
+      className={ClassName.CANVAS_BLOCK}
+      variant={variant}
+      state={state}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      ref={rootRef}
+      hasLinkWarning={hasLinkWarning}
+    >
       {lockOwner && <LockOwner user={lockOwner} />}
       <Section variant={variant} state={state} isEditing={isEditing} setIsEditing={setIsEditing} titleRef={titleRef} {...props}>
         {children}

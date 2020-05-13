@@ -1,33 +1,19 @@
 import { css, styled } from '@/hocs';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
+import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type NodeContainerProps = {
   isActive: boolean;
-  isDragging: boolean;
-  position: [number, number];
 };
 
-const NodeContainer = styled.div.attrs<NodeContainerProps>(({ position: [left, top] }) => ({
-  style: {
-    transform: `translate(${left}px, ${top}px)`,
-  },
-}))<NodeContainerProps>`
-  position: absolute;
+const NodeContainer = styled(DraggingNode)<NodeContainerProps>`
   box-sizing: content-box;
-  pointer-events: auto;
-  will-change: transform;
 
   ${({ isActive }) =>
     isActive &&
     css`
       z-index: 10;
-    `}
-
-  ${({ isDragging }) =>
-    isDragging &&
-    css`
-      pointer-events: none;
     `}
 
   &:focus {

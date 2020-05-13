@@ -1,3 +1,4 @@
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { PLATFORMS, RepromptType } from '@/constants';
 
@@ -14,7 +15,7 @@ export const repromptAdapter = {
       ? {
           type,
           audio: type === RepromptType.TEXT ? null : reprompt.content,
-          content: type === RepromptType.TEXT ? reprompt.content : '',
+          content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(reprompt.content) : '',
           voice: type === RepromptType.TEXT ? reprompt.voice : null,
         }
       : null;
@@ -22,7 +23,7 @@ export const repromptAdapter = {
   toDB: (reprompt) =>
     reprompt
       ? {
-          content: reprompt.type === RepromptType.TEXT ? reprompt.content : reprompt.audio,
+          content: reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : reprompt.audio,
           voice: reprompt.type === RepromptType.TEXT ? reprompt.voice : 'audio',
           type: reprompt.type,
         }

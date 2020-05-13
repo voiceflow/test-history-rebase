@@ -2,7 +2,7 @@ import React from 'react';
 
 import InvalidEmailError from '@/components/InvalidEmailError';
 import { UserRole } from '@/constants';
-import { CollaboratorType } from '@/pages/OnboardingV2/types';
+import { CollaboratorType } from '@/pages/Onboarding/types';
 import { isValidEmail, isValueDuplicate } from '@/utils/emails';
 
 import CollaboratorListContainer from './CollaboratorListContainer';

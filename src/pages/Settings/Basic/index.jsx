@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
 import SSML from '@/components/SSML';
@@ -8,10 +7,9 @@ import Section, { SectionToggleVariant } from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
-import { FeatureFlag } from '@/config/features';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useFeature, useSyncedSmartReducer, useTeardown } from '@/hooks';
+import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 import ErrorMessage from './components/ErrorMessage';
@@ -27,8 +25,6 @@ import {
 function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
   const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta } = meta;
   const { name: nameSkill } = skill;
-
-  const pricingRevisings = useFeature(FeatureFlag.PRICING_REVISIONS);
 
   const [state, actions] = useSyncedSmartReducer({
     invName: invNameMeta,
@@ -226,18 +222,6 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
           <RadioGroup options={REPEAT_OPTIONS} name="multiple" checked={repeat || 1} onChange={setRepeat} />
         </FormControl>
       </Section>
-      {!pricingRevisings.isEnabled && (
-        <Section
-          collapseVariant={SectionToggleVariant.ARROW}
-          header="Downloadable Link"
-          isDividerNested
-          headerToggle={true}
-          tooltip="This link allows someone to import this project into their Voiceflow Account"
-          tooltipProps={{ portalNode: document.body }}
-        >
-          <ClipBoard name="link" value={`${window.location.origin}/dashboard?import=${meta?.importToken}`} id="shareLink" />
-        </Section>
-      )}
     </FormControl>
   );
 }

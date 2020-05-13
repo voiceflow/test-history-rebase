@@ -4,16 +4,7 @@ import Flex from '@/components/Flex';
 import Menu from '@/components/Menu';
 import { toast } from '@/components/Toast';
 import { UserRole } from '@/constants';
-import {
-  cancelInvite,
-  deleteMember,
-  seatLimits,
-  updateInvite,
-  updateMember,
-  usedEditorSeats,
-  usedViewerSeats,
-  workspaceNumberOfSeatsSelector,
-} from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
 
@@ -120,17 +111,17 @@ const MemberRow = ({
 };
 
 const mapStateToProps = {
-  numberOfUsedEditorSeats: usedEditorSeats,
-  numberOfUsedViewerSeats: usedViewerSeats,
-  seatLimits,
-  seats: workspaceNumberOfSeatsSelector,
+  numberOfUsedEditorSeats: Workspace.usedEditorSeatsSelector,
+  numberOfUsedViewerSeats: Workspace.usedViewerSeatsSelector,
+  seatLimits: Workspace.seatLimitsSelector,
+  seats: Workspace.workspaceNumberOfSeatsSelector,
 };
 
-const MapDispatchToProps = {
-  updateMember,
-  deleteMember,
-  cancelInvite,
-  updateInvite,
+const mapDispatchToProps = {
+  updateMember: Workspace.updateMember,
+  deleteMember: Workspace.deleteMember,
+  cancelInvite: Workspace.cancelInvite,
+  updateInvite: Workspace.updateInvite,
 };
 
-export default connect(mapStateToProps, MapDispatchToProps)(MemberRow);
+export default connect(mapStateToProps, mapDispatchToProps)(MemberRow);

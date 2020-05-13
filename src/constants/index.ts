@@ -393,8 +393,6 @@ export const FEATURE_PERMISSIONS = {
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
 
-export const UNLIMITED_SEAT_NUMBER = 100;
-
 export const SLOT_COLORS = [
   '#4F9ED1',
   '#4FA9B3',

@@ -1,27 +1,12 @@
 import client from '@/client';
 
-import { EventName, OnboardingExperience, OnboardingStage, OnboardingTeam, OnboardingUsage } from '../constants';
+import { EventName } from '../constants';
 
-type Choices = {
-  [OnboardingStage.TEAM]: OnboardingTeam;
-  [OnboardingStage.USAGE]: OnboardingUsage;
-  [OnboardingStage.EXPERIENCE]: OnboardingExperience;
-};
+export const trackOnboardingCreate = () => () => client.analytics.track(EventName.ONBOARDING_CREATE);
 
-export const trackOnboardingStage = (stage: OnboardingStage, choices: Choices) => () =>
-  client.analytics.identify({ onboarding_stage: stage, ...choices });
+export const trackOnboardingPersonalize = () => () => client.analytics.track(EventName.ONBOARDING_PERSONALIZE);
 
-export const trackOnboardingBegin = (choices: Choices) => trackOnboardingStage(OnboardingStage.WELCOME, choices);
-
-export const trackOnboardingComplete = (choices: Choices) => trackOnboardingStage(OnboardingStage.COMPLETE, choices);
-
-// OnboardingV2
-
-export const trackOnboardingV2Create = () => () => client.analytics.track(EventName.ONBOARDING_CREATE);
-
-export const trackOnboardingV2Personalize = () => () => client.analytics.track(EventName.ONBOARDING_PERSONALIZE);
-
-export const trackOnboardingV2Collaborators = ({
+export const trackOnboardingCollaborators = ({
   skip,
   bookDemo,
   collaboratorCount,
@@ -38,13 +23,13 @@ export const trackOnboardingV2Collaborators = ({
     },
   });
 
-export const trackOnboardingV2Pay = (properties: { skip: boolean; plan: string }) => () =>
+export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) => () =>
   client.analytics.track(EventName.ONBOARDING_PAY, { properties });
 
-export const trackOnboardingV2Join = (properties: { skip: boolean; role: string }) => () =>
+export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
   client.analytics.track(EventName.ONBOARDING_JOIN, { properties });
 
-export const trackOnboardingV2Complete = ({ skip, workspaceID }: { skip: boolean; workspaceID: string }) => () =>
+export const trackOnboardingComplete = ({ skip, workspaceID }: { skip: boolean; workspaceID: string }) => () =>
   client.analytics.track(EventName.ONBOARDING_COMPLETE, {
     teamhashed: ['workspace_id'],
     properties: {
@@ -53,7 +38,7 @@ export const trackOnboardingV2Complete = ({ skip, workspaceID }: { skip: boolean
     },
   });
 
-export const trackOnboardingV2Identify = ({
+export const trackOnboardingIdentify = ({
   name,
   role,
   email,

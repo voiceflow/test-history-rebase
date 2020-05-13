@@ -6,11 +6,10 @@ import { compose } from 'recompose';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { BillingPeriod, ModalType, PlanType, UserRole } from '@/constants';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useFeature, useModals, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -26,11 +25,8 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
-  const { isEnabled: NewPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
-
-  const { isEnabled: newPricingEnabled } = useFeature(FeatureFlag.PRICING_REVISIONS);
 
   const [state, actions] = useSmartReducer({
     view: VIEWS.checkout,
@@ -131,16 +127,9 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
 
   const getPlans = async () => {
     const plans = await client.workspace.getPlans();
-    const paidPlans = plans.filter(({ pricing }) => {
-      return !!pricing;
-    });
-    return NewPricingEnabled
-      ? paidPlans.filter(({ legacy }) => {
-          return !legacy;
-        })
-      : paidPlans.filter(({ interactionsLimit, id }) => {
-          return !interactionsLimit && id !== PlanType.ENTERPRISE;
-        });
+    const paidPlans = plans.filter(({ pricing }) => !!pricing);
+
+    return paidPlans.filter(({ legacy }) => !legacy);
   };
 
   useAsyncMountUnmount(async () => {
@@ -153,7 +142,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
       const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
       let numberOfSeats = seats;
-      if (newPricingEnabled && plan === PlanType.STARTER) {
+      if (plan === PlanType.STARTER) {
         const editorCount = workspace.members.filter(({ role }) => role === UserRole.EDITOR || role === UserRole.ADMIN).length;
         numberOfSeats = editorCount;
       }

@@ -1,7 +1,7 @@
 /* eslint-disable lodash/prefer-constant */
 import React from 'react';
 
-import { OnboardingProps } from '@/pages/OnboardingV2/types';
+import { OnboardingProps } from '@/pages/Onboarding/types';
 
 import StepID from '../../StepIDs';
 import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace } from '../../Steps';

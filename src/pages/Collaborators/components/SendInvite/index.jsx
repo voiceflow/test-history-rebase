@@ -5,14 +5,7 @@ import Flex from '@/components/Flex';
 import InvalidEmailError from '@/components/InvalidEmailError';
 import { toast } from '@/components/Toast';
 import { ModalType, UserRole } from '@/constants';
-import {
-  activeWorkspaceMembersSelector,
-  planTypeSelector,
-  seatLimits,
-  usedEditorSeats,
-  usedViewerSeats,
-  workspaceNumberOfSeatsSelector,
-} from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
 import { isValidEmail } from '@/utils/emails';
@@ -86,12 +79,12 @@ function SendInvite({ sendInvite, numberOfSeats, seatLimits, usedEditorSeats, us
 }
 
 const mapStateToProps = {
-  seatLimits,
-  plan: planTypeSelector,
-  members: activeWorkspaceMembersSelector,
-  numberOfSeats: workspaceNumberOfSeatsSelector,
-  usedEditorSeats,
-  usedViewerSeats,
+  seatLimits: Workspace.seatLimitsSelector,
+  plan: Workspace.planTypeSelector,
+  members: Workspace.activeWorkspaceMembersSelector,
+  numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
+  usedEditorSeats: Workspace.usedEditorSeatsSelector,
+  usedViewerSeats: Workspace.usedViewerSeatsSelector,
 };
 
 export default connect(mapStateToProps)(SendInvite);

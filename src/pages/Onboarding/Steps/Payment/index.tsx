@@ -12,8 +12,8 @@ import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
 import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { OnboardingContext, getNumberOfEditorSeats } from '@/pages/OnboardingV2/context';
-import { OnboardingProps } from '@/pages/OnboardingV2/types';
+import { OnboardingContext, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
+import { OnboardingProps } from '@/pages/Onboarding/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 
 import {

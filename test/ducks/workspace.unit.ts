@@ -77,7 +77,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
     });
 
-    describe('onPaidPlan()', () => {
+    describe('isOnPaidPlanSelector()', () => {
       it('should select whether the active workspace is on a paid plan', () => {
         const ROOT_STATE = {
           feature: {
@@ -86,7 +86,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
             },
           },
         };
-        expect(select(Workspace.onPaidPlan, ROOT_STATE)).to.be.true;
+        expect(select(Workspace.isOnPaidPlanSelector, ROOT_STATE)).to.be.true;
       });
     });
 
@@ -106,25 +106,25 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
     });
 
-    describe('seatLimits()', () => {
+    describe('seatLimitsSelector()', () => {
       it('should select the seat limits of the active workspace', () => {
-        expect(select(Workspace.seatLimits)).to.eq(SEAT_LIMITS);
+        expect(select(Workspace.seatLimitsSelector)).to.eq(SEAT_LIMITS);
       });
     });
 
-    describe('usedEditorSeats()', () => {
+    describe('usedEditorSeatsSelector()', () => {
       it('should select the number of occupied seats in the active workspace', () => {
-        expect(select(Workspace.usedEditorSeats)).to.eq(2);
+        expect(select(Workspace.usedEditorSeatsSelector)).to.eq(2);
       });
 
       it('should always have at least 1 used seat', () => {
-        expect(select(Workspace.usedEditorSeats, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eq(1);
+        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eq(1);
       });
     });
 
-    describe('usedViewerSeats()', () => {
+    describe('usedViewerSeatsSelector()', () => {
       it('should select the number of viewers in the active workspace', () => {
-        expect(select(Workspace.usedViewerSeats)).to.eq(1);
+        expect(select(Workspace.usedViewerSeatsSelector)).to.eq(1);
       });
     });
 

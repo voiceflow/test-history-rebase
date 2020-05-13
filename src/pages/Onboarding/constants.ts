@@ -22,14 +22,14 @@ export const STEP_META: StepMetaProps = {
     canBack: true,
     canSkip: false,
     skipTo: null,
-    trackStep: () => Tracking.trackOnboardingV2Create(),
+    trackStep: () => Tracking.trackOnboardingCreate(),
   },
   [StepID.PERSONALIZE_WORKSPACE]: {
     title: () => 'Personalize Workspace',
     canBack: true,
     canSkip: false,
     skipTo: null,
-    trackStep: () => Tracking.trackOnboardingV2Personalize(),
+    trackStep: () => Tracking.trackOnboardingPersonalize(),
   },
   [StepID.ADD_COLLABORATORS]: {
     title: () => 'Add Collaborators',
@@ -37,7 +37,7 @@ export const STEP_META: StepMetaProps = {
     canSkip: false,
     skipTo: StepID.PAYMENT,
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
-      Tracking.trackOnboardingV2Collaborators({
+      Tracking.trackOnboardingCollaborators({
         skip,
         bookDemo: addCollaboratorMeta.isDemoBooked,
         collaboratorCount: addCollaboratorMeta.collaborators.length,
@@ -49,7 +49,7 @@ export const STEP_META: StepMetaProps = {
     canSkip: false,
     skipTo: null,
     trackStep: ({ paymentMeta }, { skip }) =>
-      Tracking.trackOnboardingV2Pay({
+      Tracking.trackOnboardingPay({
         skip,
         plan: paymentMeta.plan,
       }),
@@ -60,7 +60,7 @@ export const STEP_META: StepMetaProps = {
     canSkip: true,
     skipTo: null,
     trackStep: ({ joinWorkspaceMeta }, { skip }) =>
-      Tracking.trackOnboardingV2Join({
+      Tracking.trackOnboardingJoin({
         skip,
         role: joinWorkspaceMeta.role,
       }),

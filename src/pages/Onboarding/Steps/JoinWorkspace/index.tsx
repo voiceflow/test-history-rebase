@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
-import { OnboardingContext } from '@/pages/OnboardingV2/context';
+import { OnboardingContext } from '@/pages/Onboarding/context';
 import { ConnectedProps } from '@/types';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';

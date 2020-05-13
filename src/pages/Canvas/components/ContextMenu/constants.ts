@@ -1,4 +1,4 @@
-import { BlockType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
@@ -41,14 +41,23 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Paste',
     value: CanvasAction.PASTE,
+    shouldRender: (_, { isMarkupFeatureEnabled }) => {
+      return isMarkupFeatureEnabled && !!localStorage.getItem(CLIPBOARD_DATA_KEY);
+    },
   },
   {
     label: 'Add Comment',
     value: CanvasAction.ADD_COMMENT,
+    shouldRender: (_, { isMarkupModeEnabled }) => {
+      return !isMarkupModeEnabled;
+    },
   },
   {
     label: 'Return to Home',
     value: CanvasAction.RETURN_TO_HOME,
+    shouldRender: (_, { isMarkupModeEnabled }) => {
+      return !isMarkupModeEnabled;
+    },
   },
 ];
 

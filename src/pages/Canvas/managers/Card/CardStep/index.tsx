@@ -3,7 +3,7 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { transformVariablesToReadable } from '@/utils/slot';
+import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 export type CardStepProps = {
   image: string | null;
@@ -26,8 +26,10 @@ export const CardStep: React.FC<CardStepProps> = ({ title, image, portID }) => (
   </Step>
 );
 
-const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Card>> = ({ node, data }) => (
-  <CardStep portID={node.ports.out[0]} image={data.largeImage} title={data.title} />
-);
+const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Card>> = ({ node, data }) => {
+  const image = isVariable(data.largeImage) ? null : data.largeImage;
+
+  return <CardStep portID={node.ports.out[0]} image={image} title={data.title} />;
+};
 
 export default ConnectedCardStep;

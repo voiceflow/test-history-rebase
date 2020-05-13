@@ -4127,7 +4127,7 @@
     eslint-plugin-sonarjs "^0.4.0"
     eslint-plugin-xss "^0.1.9"
 
-"@voiceflow/git-branch-check@^1.0.5":
+"@voiceflow/git-branch-check@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.1.0.tgz#26c7863f82bfb42f511225acc408db73361853d8"
   integrity sha512-5zVSnSzCYMIaXGTmNFseNqgH/n3BGt2cE8WgekeUN6IXqsqpY3xMjX2ie5564yRtz+s16KQBKno/vuTzFC53nw==

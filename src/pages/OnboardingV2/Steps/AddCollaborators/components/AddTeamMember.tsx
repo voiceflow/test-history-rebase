@@ -16,25 +16,21 @@ const OPTIONS: { value: UserRole; label: string }[] = [
 export type AddTeamMembersProps = {
   onUpdate: (value: CollaboratorType[]) => void;
   collaborators: CollaboratorType[];
-  enableWithoutErrors: () => void;
-  disableWithErrors: () => void;
+  errorIndexes: number[];
+  updateErrorIndexes: (indxes: number[]) => void;
 };
 
-const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, onUpdate, enableWithoutErrors, disableWithErrors }) => {
-  const [errorIndexes, updateErrorIndexes] = React.useState<number[]>([]);
-
+const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, errorIndexes, updateErrorIndexes, onUpdate }) => {
   const onAdd = (value: string) => onUpdate([...collaborators, { email: value, permission: UserRole.EDITOR }]);
   const onFocus = (index: number) => () => {
-    updateErrorIndexes(errorIndexes.filter((idx) => idx !== index));
-    enableWithoutErrors();
+    updateErrorIndexes(errorIndexes.filter((idx: number) => idx !== index));
   };
   const onBlur = (index: number, hasError: boolean) => () => {
     if (hasError) {
       updateErrorIndexes([...errorIndexes, index]);
-      disableWithErrors();
     } else {
-      updateErrorIndexes(errorIndexes.filter((idx) => idx !== index));
-      enableWithoutErrors();
+      const newErrorIndexs = errorIndexes.filter((idx: number) => idx !== index);
+      updateErrorIndexes(newErrorIndexs);
     }
   };
   const onRemoveCollaborator = (index: number) => () => onUpdate(collaborators.filter((collaborator, idx) => idx !== index && collaborator));

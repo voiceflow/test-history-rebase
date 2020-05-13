@@ -15,6 +15,17 @@ import { useModals } from '@/hooks';
 
 import { AddCollaborators, ButtonSquare, NavChildItem, NewWorkspaceTab, TabsContainer } from './components';
 
+const PLAN_NAMES = {
+  [PlanType.OLD_PRO]: 'Pro',
+  [PlanType.PRO]: 'Pro',
+  [PlanType.OLD_STARTER]: 'Free',
+  [PlanType.STARTER]: 'Starter',
+  [PlanType.OLD_TEAM]: 'Team',
+  [PlanType.TEAM]: 'Team',
+  [PlanType.OLD_ENTERPRISE]: 'Enterprise',
+  [PlanType.ENTERPRISE]: 'Enterprise',
+};
+
 const SafeLink = ({ isActive, ...props }) => <Link {...props} />;
 
 function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspaceID, workspace: selectedWorkspace, fetchBoards, plan }) {
@@ -77,7 +88,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
                           <MenuItem divider />
                           {plan ? (
                             <MenuItem disabled capitalize>
-                              {plan} Plan
+                              {PLAN_NAMES[plan]} Plan
                             </MenuItem>
                           ) : (
                             <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>

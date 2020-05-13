@@ -21,8 +21,7 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators
   );
   const [isDemoBooked, bookDemo, notBookDemo] = useEnableDisable(addCollaboratorMeta.isDemoBooked);
-  const [isDisabledWithErrors, disableWithErrors, enableWithoutErrors] = useEnableDisable(false);
-
+  const [errorIndexes, updateErrorIndexes] = React.useState<number[]>([]);
   const onMemberUpdate = (members: CollaboratorType[]) => {
     setCollaborators(members);
 
@@ -51,15 +50,10 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
         <Text>INVITE TEAM MEMBERS</Text>
         <Badge>{collaborators.length}</Badge>
       </HeaderLabel>
-      <AddTeamMember
-        onUpdate={onMemberUpdate}
-        collaborators={collaborators}
-        disableWithErrors={disableWithErrors}
-        enableWithoutErrors={enableWithoutErrors}
-      />
-      <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={collaborators.length <= 1 || isDisabledWithErrors} />
+      <AddTeamMember errorIndexes={errorIndexes} updateErrorIndexes={updateErrorIndexes} onUpdate={onMemberUpdate} collaborators={collaborators} />
+      <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={collaborators.length <= 1 || errorIndexes.length !== 0} />
       <FlexCenter>
-        <Button disabled={isDisabledWithErrors || sendingRequests} variant="primary" onClick={onContinue}>
+        <Button disabled={errorIndexes.length !== 0 || sendingRequests} variant="primary" onClick={onContinue}>
           {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Continue'}
         </Button>
       </FlexCenter>

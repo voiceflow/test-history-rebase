@@ -345,7 +345,11 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 
     await asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;
-      await sendInvite(email, permission, false);
+      try {
+        await sendInvite(email, permission, false);
+      } catch (e) {
+        toastNotif.error(`Problem inviting ${email}, please try again later`);
+      }
     });
 
     setOnboardingComplete(true);
@@ -369,10 +373,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       );
       goToCanvas(skill_id, diagram);
       await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+      toastNotif.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
       console.error(error);
-      toastNotif.success('Successfully created workspace');
       goToDashboard();
     }
 

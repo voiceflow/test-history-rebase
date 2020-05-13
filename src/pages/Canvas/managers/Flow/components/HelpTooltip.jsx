@@ -15,7 +15,7 @@ function HelpTooltip() {
       <Title>Learn More</Title>
       <Paragraph>
         To learn more about flows, and how they can be used check our documentation{' '}
-        <Link href="https://docs.voiceflow.com/voiceflow-documentation/untitled/flow-block">here.</Link>
+        <Link href="https://docs.voiceflow.com/#/blocks/flow-block">here.</Link>
       </Paragraph>
     </>
   );

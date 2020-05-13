@@ -17,4 +17,4 @@ export const REMINDER_ROUTES = [
   },
 ];
 
-export const HELP_LINK = 'https://docs.voiceflow.com/voiceflow-documentation/untitled/reminder-block';
+export const HELP_LINK = 'https://docs.voiceflow.com/#/blocks/reminder-block';

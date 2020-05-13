@@ -31,4 +31,4 @@ export const EMPTY_ACCOUNT_DATA = {
   defaultTokenExpirationInSeconds: 3600,
 };
 
-export const HELP_LINK = 'https://docs.voiceflow.com/voiceflow-documentation/linking-to-external-accounts/alexa-skill-account-linking';
+export const HELP_LINK = 'https://docs.voiceflow.com';

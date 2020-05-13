@@ -12,7 +12,7 @@ import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoRe
 
 import HelpTooltip from './components/HelpTooltip';
 
-const DOCUMENTATION_LINK = 'https://docs.voiceflow.com/voiceflow-documentation/untitled/capture-block';
+const DOCUMENTATION_LINK = 'https://docs.voiceflow.com/#/blocks/capture-block';
 const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
 function CaptureEdtitor({ data, onChange, pushToPath }) {

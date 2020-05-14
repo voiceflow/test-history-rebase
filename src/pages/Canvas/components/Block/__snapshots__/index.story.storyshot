@@ -3271,7 +3271,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           onMouseDown={[Function]}
         >
           <div
-            className="c10"
+            className="c10 vf-canvas__step"
           >
             Order Pizza
           </div>
@@ -3281,7 +3281,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           onMouseDown={[Function]}
         >
           <div
-            className="c10"
+            className="c10 vf-canvas__step"
           >
             <div
               className="c11 c12"

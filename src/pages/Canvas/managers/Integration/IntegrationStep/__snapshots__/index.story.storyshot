@@ -400,7 +400,7 @@ exports[`Storyshots Creator/Steps/Integration Step Active 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -907,7 +907,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1418,7 +1418,7 @@ exports[`Storyshots Creator/Steps/Integration Step Api Filled 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1937,7 +1937,7 @@ exports[`Storyshots Creator/Steps/Integration Step Connected 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2453,7 +2453,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2951,7 +2951,7 @@ exports[`Storyshots Creator/Steps/Integration Step Google Filled 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -3455,7 +3455,7 @@ exports[`Storyshots Creator/Steps/Integration Step Long Label 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -3876,7 +3876,7 @@ exports[`Storyshots Creator/Steps/Integration Step No Connector 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -4324,7 +4324,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -4831,7 +4831,7 @@ exports[`Storyshots Creator/Steps/Integration Step Zapier Filled 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"

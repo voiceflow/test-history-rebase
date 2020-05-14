@@ -4,14 +4,13 @@ import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
-import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID, USERFLOW_SIMPLE_ONBOARDING_FLOW_ID } from '@/config';
-import { FeatureFlag } from '@/config/features';
+import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useFeature, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useSmartReducer, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
@@ -187,7 +186,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, firstStep);
-  const simpleUserflowOnboarding = useFeature(FeatureFlag.SIMPLE_USERFLOW_ONBOARDING);
 
   const [state, actions] = useSmartReducer({
     workspaceId: '',
@@ -344,7 +342,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         1
       );
       await goToCanvas(skill_id, diagram);
-      await Userflow.startFlow(simpleUserflowOnboarding.isEnabled ? USERFLOW_SIMPLE_ONBOARDING_FLOW_ID : USERFLOW_ONBOARDING_FLOW_ID);
+      await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
       toastNotif.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard

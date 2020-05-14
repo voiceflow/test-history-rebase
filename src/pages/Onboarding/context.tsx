@@ -4,24 +4,16 @@ import { useDispatch } from 'react-redux';
 
 import client from '@/client';
 import { toast as toastNotif } from '@/components/Toast';
-import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID, USERFLOW_SIMPLE_ONBOARDING_FLOW_ID } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
-import { userSelector } from '@/ducks/account';
-import { goToCanvas, goToDashboard } from '@/ducks/router';
-import {
-  NewProjectOptions,
-  activeWorkspaceIDSelector,
-  allWorkspacesSelector,
-  createProject,
-  createWorkspace,
-  fetchWorkspaces,
-  sendInvite,
-  updateCurrentWorkspace,
-  validateInvite,
-} from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useSmartReducer, useTrackingEvents } from '@/hooks';
-import { DBProject } from '@/models';
+import { useFeature, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { Query } from '@/models';
+import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import * as Userflow from '@/vendors/userflow';
@@ -123,26 +115,6 @@ export enum onBoardingType {
   join = 'join_workpsace',
 }
 
-type OnboardingProviderProps = {
-  workspaces: string[];
-  query: { ob_payment?: string; ob_plan?: PlanType; ob_coupon?: any; ob_period?: BillingPeriod; invite?: string };
-  numberOfSteps?: number;
-  children: React.ReactNode;
-  createWorkspace: (data: { name: string; image: string }) => { id: string };
-  sendInvite: (email: string, permission: UserRole, showToasts?: boolean) => void;
-  updateCurrentWorkspace: (id: string) => void;
-  stripe: any;
-  checkChargeable: (data: any) => void;
-  fetchWorkspaces: () => void;
-  goToDashboard: () => void;
-  goToCanvas: (skillID: string, diagramID: string) => void;
-  validateInvite: (invite: string) => string;
-  trackInvitationAccepted: (workspaceId: string) => void;
-  createProject: (workspaceID: string, project: NewProjectOptions, templateID: number) => DBProject;
-  account: any;
-  currentWorkspaceId?: string;
-};
-
 const getFirstStep = (flow: onBoardingType) => {
   switch (flow) {
     case onBoardingType.create:
@@ -164,17 +136,7 @@ const getNumberOfSteps = (query: any, firstStep: StepID) => {
   return 4;
 };
 
-const extractQueryParams = ({
-  ob_plan,
-  ob_coupon,
-  ob_period,
-  invite,
-}: {
-  ob_plan?: PlanType;
-  ob_coupon?: any;
-  ob_period?: BillingPeriod;
-  invite?: string;
-}) => {
+const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite }: Query) => {
   const configurations = {
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
@@ -192,7 +154,16 @@ const extractQueryParams = ({
   return configurations;
 };
 
-const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
+type OnboardingProviderProps = {
+  query: Query;
+  numberOfSteps?: number;
+  children: React.ReactNode;
+  stripe: any;
+  checkChargeable: (data: any) => void;
+  trackInvitationAccepted: (workspaceId: string) => void;
+};
+
+const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
   query,
   children,
   stripe,
@@ -208,7 +179,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   workspaces,
   trackInvitationAccepted,
   account,
-  currentWorkspaceId,
+  currentWorkspaceID,
 }) => {
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
@@ -216,6 +187,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, firstStep);
+  const simpleUserflowOnboarding = useFeature(FeatureFlag.SIMPLE_USERFLOW_ONBOARDING);
 
   const [state, actions] = useSmartReducer({
     workspaceId: '',
@@ -358,9 +330,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
     const { email, name: userName } = account;
 
     trackingEvents.trackOnboardingIdentify({
-      name: userName,
+      name: userName!,
       role,
-      email,
+      email: email!,
       channels,
       teamSize,
     });
@@ -371,8 +343,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
         { name: ONBOARDING_PROJECT_NAME, locales: ['en-US'], platform: PlatformType.ALEXA },
         1
       );
-      goToCanvas(skill_id, diagram);
-      await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+      await goToCanvas(skill_id, diagram);
+      await Userflow.startFlow(simpleUserflowOnboarding.isEnabled ? USERFLOW_SIMPLE_ONBOARDING_FLOW_ID : USERFLOW_ONBOARDING_FLOW_ID);
       toastNotif.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
@@ -383,7 +355,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
     setSendingRequests(false);
 
     if (addCollaboratorMeta.isDemoBooked) {
-      sendZap(userName, email, workspace.id, name);
+      sendZap(userName!, email!, workspace.id, name);
     }
 
     return workspace;
@@ -396,7 +368,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       const workspace = await finishCreateOnboarding();
       workspaceId = workspace?.id ?? null;
     } else if (currentStepID === StepID.JOIN_WORKSPACE) {
-      workspaceId = currentWorkspaceId ?? null;
+      workspaceId = currentWorkspaceID ?? null;
 
       await finishJoiningWorkspace();
     }
@@ -459,20 +431,22 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
 };
 
 const mapStateToProps = {
-  workspaces: allWorkspacesSelector,
-  account: userSelector,
-  currentWorkspaceId: activeWorkspaceIDSelector,
+  workspaces: Workspace.allWorkspacesSelector,
+  account: Account.userSelector,
+  currentWorkspaceID: Workspace.activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
-  createWorkspace,
-  sendInvite,
-  goToCanvas,
-  validateInvite,
-  goToDashboard,
-  updateCurrentWorkspace,
-  fetchWorkspaces,
-  createProject,
+  createWorkspace: Workspace.createWorkspace,
+  sendInvite: Workspace.sendInvite,
+  goToCanvas: Router.goToCanvas,
+  validateInvite: Workspace.validateInvite,
+  goToDashboard: Router.goToDashboard,
+  updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
+  fetchWorkspaces: Workspace.fetchWorkspaces,
+  createProject: Workspace.createProject,
 };
+
+type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export const OnboardingProvider: any = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(OnboardingProviderFunc);

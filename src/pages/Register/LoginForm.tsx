@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import _ from 'lodash';
-import queryString from 'query-string';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
@@ -9,13 +8,14 @@ import Button from '@/components/LegacyButton';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import * as Query from '@/utils/query';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
 
 export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
-  const query = queryString.parse(location.search);
+  const query = Query.parse(location.search);
   const [loginError, setLoginError] = React.useState<string | false | null>(null);
   const [email, setEmail] = React.useState(query.email ? query.email : '');
   const [password, setPassword] = React.useState('');

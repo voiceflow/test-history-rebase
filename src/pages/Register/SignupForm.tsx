@@ -2,7 +2,6 @@ import './Account.css';
 
 import axios from 'axios';
 import throttle from 'lodash/throttle';
-import queryString from 'query-string';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
@@ -12,6 +11,7 @@ import Button from '@/components/LegacyButton';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import * as Query from '@/utils/query';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
@@ -22,7 +22,7 @@ export type SignupFormProps = RouteComponentProps & {
 };
 
 export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = ({ signup, history, promo, location }) => {
-  const query = queryString.parse(location.search);
+  const query = Query.parse(location.search);
   const [signupError, setSignupError] = React.useState<string | boolean | null>(null);
   const [email, setEmail] = React.useState(query.email ? query.email : '');
   const [password, setPassword] = React.useState('');

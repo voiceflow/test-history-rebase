@@ -294,6 +294,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       } catch (e) {
         setSendingRequests(false);
         toast.error('Something went wrong when checking out, please try again later');
+        goToDashboard();
         return null;
       }
     }
@@ -304,6 +305,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     } catch (e) {
       toastNotif.error('Error creating workspace, please try again later');
       setSendingRequests(false);
+      goToDashboard();
       return;
     }
 
@@ -312,6 +314,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     } catch (e) {
       toastNotif.error('Error getting workspace, please try again later');
       setSendingRequests(false);
+      goToDashboard();
       return;
     }
 
@@ -323,10 +326,11 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       } catch (e) {
         setSendingRequests(false);
         toast.error('Something went wrong when checking out, please try again later');
+        goToDashboard();
         return null;
       }
     }
-    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
+    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length) || [];
 
     await asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;

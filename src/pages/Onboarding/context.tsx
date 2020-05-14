@@ -293,7 +293,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         source = await checkPayment();
       } catch (e) {
         setSendingRequests(false);
-        toast.error(e);
+        toast.error('Something went wrong when checking out, please try again later');
         return null;
       }
     }
@@ -311,6 +311,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       await fetchWorkspaces();
     } catch (e) {
       toastNotif.error('Error getting workspace, please try again later');
+      setSendingRequests(false);
+      return;
     }
 
     updateCurrentWorkspace(workspace.id);
@@ -320,7 +322,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         await handlePayment(workspace.id, source);
       } catch (e) {
         setSendingRequests(false);
-        toast.error(e);
+        toast.error('Something went wrong when checking out, please try again later');
         return null;
       }
     }

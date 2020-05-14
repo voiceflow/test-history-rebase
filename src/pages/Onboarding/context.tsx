@@ -357,7 +357,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
-    trackingEvents.trackOnboardingV2Identify({
+    trackingEvents.trackOnboardingIdentify({
       name: userName,
       role,
       email,
@@ -423,7 +423,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps> = ({
       dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
 
       if (workspaceID) {
-        trackingEvents.trackOnboardingV2Complete({ skip: false, workspaceID });
+        trackingEvents.trackOnboardingComplete({ skip: false, workspaceID });
       }
     };
     if (isFinalizing && isLastStep) {

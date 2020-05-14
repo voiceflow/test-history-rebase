@@ -62,3 +62,4 @@ export const getSlotTypes = (locales, platform, publishInfo, filter) => {
 export const transformVariablesToReadable = (text) => text.replace(SLOT_REGEXP, '{$1}').trim();
 export const transformVariablesFromReadableWithoutTrim = (text) => text.replace(VARIABLE_STRING_REGEXP, '{{[$1].$1}}');
 export const transformVariablesFromReadable = (text) => transformVariablesFromReadableWithoutTrim(text).trim();
+export const isVariable = (text) => !!text.match(VARIABLE_STRING_REGEXP);

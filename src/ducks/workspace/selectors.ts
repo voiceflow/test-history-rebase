@@ -1,11 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import { EDITOR_SEAT_ROLES, PlanType } from '@/constants';
 import { createRootSelector } from '@/ducks/utils';
 import { getAlternativeColor } from '@/utils/colors';
 
-import { isFeatureEnabledSelector } from '../feature';
 import { STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
@@ -22,20 +20,18 @@ export const workspaceNumberOfSeatsSelector = createSelector([activeWorkspaceSel
 
 export const planTypeSelector = createSelector([activeWorkspaceSelector], ({ plan }) => plan);
 
-export const onPaidPlan = createSelector([planTypeSelector, isFeatureEnabledSelector], (plan, feature) =>
-  feature(FeatureFlag.PRICING_REVISIONS) ? plan !== PlanType.STARTER : !!plan
-);
+export const isOnPaidPlanSelector = createSelector([planTypeSelector], (plan) => plan !== PlanType.STARTER);
 
 export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSelector], (activeWorkspace) => activeWorkspace?.members || []);
 
-export const seatLimits = createSelector([activeWorkspaceSelector], ({ seatLimits }) => seatLimits);
+export const seatLimitsSelector = createSelector([activeWorkspaceSelector], ({ seatLimits }) => seatLimits);
 
-export const usedEditorSeats = createSelector(
+export const usedEditorSeatsSelector = createSelector(
   [activeWorkspaceMembersSelector],
   (members) => members.filter((member) => EDITOR_SEAT_ROLES.includes(member.role)).length || 1
 );
 
-export const usedViewerSeats = createSelector(
+export const usedViewerSeatsSelector = createSelector(
   [activeWorkspaceMembersSelector],
   (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
 );

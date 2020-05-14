@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
-import { STEP_META } from '@/pages/OnboardingV2/constants';
-import { OnboardingContext } from '@/pages/OnboardingV2/context';
+import { STEP_META } from '@/pages/Onboarding/constants';
+import { OnboardingContext } from '@/pages/Onboarding/context';
 
 import StepID from '../../../../StepIDs';
 import Container from './components/Container';

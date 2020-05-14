@@ -2,20 +2,20 @@
 import React from 'react';
 
 import { FEATURE_IDS, ModalType } from '@/constants';
-import { onPaidPlan } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import RolePermissionGate from '@/gates/RolePermissionGate';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
-function UpgradeButton({ onPaidPlan }) {
+function UpgradeButton({ isOnPaidPlan }) {
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   return (
     <RolePermissionGate featureId={FEATURE_IDS.UPGRADE_WORKSPACE}>
       <>
-        {!onPaidPlan ? (
+        {!isOnPaidPlan ? (
           <Container onClick={openPaymentsModal}>
             <UpgradeIcon variant="flat" large icon="upgrade" />
             <UpgradeText>UPGRADE</UpgradeText>
@@ -27,7 +27,7 @@ function UpgradeButton({ onPaidPlan }) {
 }
 
 const mapStateToProps = {
-  onPaidPlan,
+  isOnPaidPlan: Workspace.isOnPaidPlanSelector,
 };
 
 export default connect(mapStateToProps)(UpgradeButton);

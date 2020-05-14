@@ -52,8 +52,3 @@ export const SelectBox = styled(Checkbox)`
   top: 10px;
   right: 0px;
 `;
-
-export const EditorLimitText = styled.div`
-  margin-top: 6px;
-  color: #8da2b5;
-`;

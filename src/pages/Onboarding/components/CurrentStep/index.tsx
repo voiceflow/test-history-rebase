@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 
 import { FlexCenter } from '@/components/Flex';
-import { OnboardingContext } from '@/pages/OnboardingV2/context';
-import { OnboardingProps } from '@/pages/OnboardingV2/types';
+import { OnboardingContext } from '@/pages/Onboarding/context';
+import { OnboardingProps } from '@/pages/Onboarding/types';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { STEP_COMPONENTS } from './constants';

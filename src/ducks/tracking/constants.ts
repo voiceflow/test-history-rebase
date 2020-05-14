@@ -31,34 +31,10 @@ export enum EventName {
   ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 }
 
-export enum OnboardingStage {
-  TEAM = 'team',
-  USAGE = 'usage',
-  WELCOME = 'welcome',
-  COMPLETE = 'complete',
-  EXPERIENCE = 'experience',
-}
-
 export enum OnboardingChoice {
   TEAM = 'onboarding_team',
   USAGE = 'onboarding_usage',
   EXPERIENCE = 'onboarding_experience',
-}
-
-export enum OnboardingTeam {
-  PERSONAL = 'personal',
-  PROFESSIONAL = 'professional',
-}
-
-export enum OnboardingUsage {
-  BUILD_AND_PUBLISH = 'build_and_publish',
-  DESIGN_AND_PROTOTYPE = 'design_and_prototype',
-}
-
-export enum OnboardingExperience {
-  EXPERT = 'expert',
-  BEGINNER = 'beginner',
-  INTERMEDIATE = 'intermediate',
 }
 
 export enum CanvasMenuLockState {

@@ -6,12 +6,10 @@ import DayPicker from 'react-day-picker';
 import { connect } from 'react-redux';
 import { Modal, ModalBody } from 'reactstrap';
 
-import { updateWorkspace } from '@/admin/store/ducks/admin';
+import * as Admin from '@/admin/store/ducks/admin';
 import Button from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
-import { FeatureFlag } from '@/config/features';
 import { PlanType } from '@/constants';
-import { featureSelector } from '@/ducks/feature';
 
 class PlanModal extends React.Component {
   constructor(props) {
@@ -65,7 +63,7 @@ class PlanModal extends React.Component {
 
     const selectedDays = this.getSelectedDays();
 
-    const { workspace, isFeatureEnabled } = this.props;
+    const { workspace } = this.props;
     const { seats } = this.state;
 
     return (
@@ -124,7 +122,7 @@ class PlanModal extends React.Component {
             <hr />
             <label>Set Plan to: (currently {workspace.plan?.toUpperCase() || 'BASIC'})</label>
             <FlexApart>
-              <Button variant="secondary" onClick={this.updatePlan(isFeatureEnabled ? PlanType.STARTER : null)}>
+              <Button variant="secondary" onClick={this.updatePlan(PlanType.STARTER)}>
                 Basic (Free)
               </Button>
               <Button onClick={this.updatePlan(PlanType.PRO)}>Pro</Button>
@@ -138,12 +136,8 @@ class PlanModal extends React.Component {
   }
 }
 
-const mapStateToProps = {
-  isFeatureEnabled: featureSelector,
+const mapDispatchToProps = {
+  updateWorkspace: Admin.updateWorkspace,
 };
 
-const mergeProps = ({ isFeatureEnabled: featureSelector }) => ({
-  isFeatureEnabled: featureSelector(FeatureFlag.PRICING_REVISIONS),
-});
-
-export default connect(mapStateToProps, { updateWorkspace }, mergeProps)(PlanModal);
+export default connect(null, mapDispatchToProps)(PlanModal);

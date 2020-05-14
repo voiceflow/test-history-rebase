@@ -5,8 +5,8 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks';
-import { OnboardingContext } from '@/pages/OnboardingV2/context';
-import { CollaboratorType, OnboardingProps } from '@/pages/OnboardingV2/types';
+import { OnboardingContext } from '@/pages/Onboarding/context';
+import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
 
 import StepID from '../../StepIDs';
 import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './components';

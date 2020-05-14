@@ -4,7 +4,7 @@ import { DisplayType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { transformVariablesToReadable } from '@/utils/slot';
+import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 export type DisplayStepProps = {
   image?: string | null;
@@ -29,8 +29,9 @@ export const DisplayStep: React.FC<DisplayStepProps> = ({ label, portID, image }
 
 const ConnectedDisplayStep: React.FC<ConnectedStepProps<NodeData.Display>> = ({ node, data }) => {
   const label = data.displayType === DisplayType.SPLASH ? transformVariablesToReadable(data.splashHeader) : data.jsonFileName;
+  const image = isVariable(data.backgroundImage) ? null : data.backgroundImage;
 
-  return <DisplayStep portID={node.ports.out[0]} label={label} image={data.backgroundImage} />;
+  return <DisplayStep portID={node.ports.out[0]} label={label} image={image} />;
 };
 
 export default ConnectedDisplayStep;

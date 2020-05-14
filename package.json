@@ -89,7 +89,7 @@
     "react-helmet": "^5.2.1",
     "react-idle-timer": "^4.2.12",
     "react-input-autosize": "^2.2.1",
-    "react-intercom": "^1.0.14",
+    "react-intercom": "^1.0.15",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-popper": "^1.3.3",
     "react-redux": "^7.2.0",

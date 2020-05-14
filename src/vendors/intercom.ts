@@ -1,6 +1,6 @@
 import { IntercomAPI, UpdateOptions } from 'react-intercom';
 
-import { INTERCOM_ENABLED, LOGROCKET_PROJECT } from '@/config';
+import { LOGROCKET_PROJECT } from '@/config';
 import { Account, Workspace } from '@/models';
 import { NullableRecord } from '@/types';
 
@@ -24,4 +24,11 @@ export function createUser(user: NullableRecord<Account>, workspace: Workspace =
       };
 }
 
-export const updateSettings = (data: UpdateOptions) => INTERCOM_ENABLED && IntercomAPI('update', data);
+export const updateSettings = (data: UpdateOptions) => {
+  try {
+    IntercomAPI('update', data);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('failed to update settings', e);
+  }
+};

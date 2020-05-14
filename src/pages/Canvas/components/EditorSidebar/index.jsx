@@ -2,11 +2,11 @@ import React from 'react';
 import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
+import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { useEnableDisable } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext } from '@/pages/Canvas/contexts';

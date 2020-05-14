@@ -10,7 +10,9 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { ROOT_DOMAIN } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
+import * as Feature from '@/ducks/feature';
 import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
@@ -150,8 +152,10 @@ export const logout = (): Thunk => async (dispatch) => {
   await dispatch(resetSession());
 };
 
-export const identifyUser = async (user: Models.Account) => {
-  LogRocket.identify(user);
+export const identifyUser = (user: Models.Account): Thunk => async (_, getState) => {
+  const intercomEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.INTERCOM_INTEGRATION);
+
+  LogRocket.identify(user, intercomEnabled);
   await Userflow.identify(user);
 };
 
@@ -166,7 +170,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     await client.socket!.auth(token, browserID, tabID);
     dispatch(Account.updateAccount(user));
 
-    await identifyUser(user);
+    await dispatch(identifyUser(user));
   } catch (err) {
     await dispatch(resetSession());
   }

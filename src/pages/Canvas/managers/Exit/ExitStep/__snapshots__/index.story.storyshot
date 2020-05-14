@@ -304,7 +304,7 @@ exports[`Storyshots Creator/Steps/Exit Step Active 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -647,7 +647,7 @@ exports[`Storyshots Creator/Steps/Exit Step Alexa 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -990,7 +990,7 @@ exports[`Storyshots Creator/Steps/Exit Step Google 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"

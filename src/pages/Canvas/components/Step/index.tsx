@@ -1,6 +1,7 @@
 import React from 'react';
 
 import User from '@/components/User';
+import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, HoverContainer, Image, ImageContainer } from './components';
@@ -26,6 +27,7 @@ const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, child
   const el = (
     <HoverContainer {...stepAPI?.handlers} ref={stepAPI?.ref} onMouseDown={stopPropagation(null, true)}>
       <Container
+        className={ClassName.CANVAS_STEP}
         isActive={stepAPI?.isActive && !disableHighlightStyle}
         isHovered={stepAPI?.isHovered}
         hasLinkWarning={stepAPI?.hasLinkWarning}

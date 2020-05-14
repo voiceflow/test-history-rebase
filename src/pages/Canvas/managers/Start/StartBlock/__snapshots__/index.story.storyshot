@@ -451,7 +451,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c8"
+          className="c8 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -552,7 +552,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c19 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -600,7 +600,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c19 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -1068,7 +1068,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -1177,7 +1177,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c18"
+          className="c18 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -1225,7 +1225,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c18"
+          className="c18 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -1607,7 +1607,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2063,7 +2063,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2164,7 +2164,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c16"
+          className="c16 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2212,7 +2212,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c16"
+          className="c16 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2704,7 +2704,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c8"
+          className="c8 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2805,7 +2805,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c19 vf-canvas__step"
           draggable={false}
         >
           <div
@@ -2853,7 +2853,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c19 vf-canvas__step"
           draggable={false}
         >
           <div

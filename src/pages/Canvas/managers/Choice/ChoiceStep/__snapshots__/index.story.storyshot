@@ -387,7 +387,7 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -911,7 +911,7 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1399,7 +1399,7 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1831,7 +1831,7 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2340,7 +2340,7 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"

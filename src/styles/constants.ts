@@ -13,6 +13,7 @@ export enum ClassName {
   TEXT_EDITOR = 'vf-text-editor',
   SSML_PLAY_AUDIO = 'vf-ssml__play-audio',
   CANVAS_NODE = 'vf-canvas__node',
+  CANVAS_STEP = 'vf-canvas__step',
   CANVAS_BLOCK = 'vf-canvas__block',
   CANVAS_PORT = 'vf-canvas__port',
 }

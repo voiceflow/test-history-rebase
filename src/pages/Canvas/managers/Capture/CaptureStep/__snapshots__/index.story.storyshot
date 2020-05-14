@@ -338,7 +338,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -747,7 +747,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1144,7 +1144,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1526,7 +1526,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1919,7 +1919,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2282,7 +2282,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"

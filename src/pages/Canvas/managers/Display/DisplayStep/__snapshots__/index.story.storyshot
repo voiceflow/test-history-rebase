@@ -349,7 +349,7 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -734,7 +734,7 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1144,7 +1144,7 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1537,7 +1537,7 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -1931,7 +1931,7 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2331,7 +2331,7 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -2716,7 +2716,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"
@@ -3080,7 +3080,7 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__step"
         >
           <div
             className="c6 c7"

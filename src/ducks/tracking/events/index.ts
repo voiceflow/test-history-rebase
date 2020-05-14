@@ -1,3 +1,4 @@
+export * from './export';
 export * from './canvas';
 export * from './project';
 export * from './session';

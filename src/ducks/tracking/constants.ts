@@ -29,6 +29,8 @@ export enum EventName {
   ONBOARDING_COMPLETE = 'Onboarding - Complete',
   ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',
   ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
+
+  EXPORT_BUTTON_CLICK = 'Export Button Click',
 }
 
 export enum OnboardingChoice {

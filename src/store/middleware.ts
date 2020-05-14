@@ -168,9 +168,11 @@ const createMiddleware = (history: History) => {
     cleanupDisplayMiddleware,
     createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents),
     createAutosaveMiddleware(createStructuredSelector({ platform: Skill.activePlatformSelector }), savePlatformAndActiveDiagram, [
-      Skill.SET_ACTIVE_SKILL,
+      Skill.SkillAction.SET_ACTIVE_SKILL,
     ]),
-    createAutosaveMiddleware(createStructuredSelector({ variables: Skill.globalVariablesSelector }), Skill.saveVariables, [Skill.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(createStructuredSelector({ variables: Skill.globalVariablesSelector }), Skill.saveVariables, [
+      Skill.SkillAction.SET_ACTIVE_SKILL,
+    ]),
     createAutosaveMiddleware(
       createStructuredSelector({ diagramVariables: VariableSet.activeDiagramVariables }),
       VariableSet.saveActiveDiagramVariables,
@@ -182,11 +184,11 @@ const createMiddleware = (history: History) => {
         meta: Skill.skillMetaSelector,
         skillName: Skill.activeNameSelector,
       }),
-      [Skill.SET_ACTIVE_SKILL]
+      [Skill.SkillAction.SET_ACTIVE_SKILL]
     ),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PUBLISH, Skill.publishInfoSelector, [Skill.SET_ACTIVE_SKILL]),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SET_ACTIVE_SKILL]),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DISPLAYS, Display.allDisplaysSelector, [Skill.SET_ACTIVE_SKILL]),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PUBLISH, Skill.publishInfoSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DISPLAYS, Display.allDisplaysSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, Product.allProductsSelector, [
       CRUD_UPDATE,
       (action) => action.type === CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,
@@ -201,7 +203,7 @@ const createMiddleware = (history: History) => {
         globalSet: Skill.globalVariablesSelector,
       }),
       [
-        Skill.SET_ACTIVE_SKILL,
+        Skill.SkillAction.SET_ACTIVE_SKILL,
         VariableSet.REPLACE_VARIABLE_SET_DIAGRAM,
         Creator.CreatorAction.INITIALIZE_CREATOR,
         Creator.CreatorAction.RESET_CREATOR,

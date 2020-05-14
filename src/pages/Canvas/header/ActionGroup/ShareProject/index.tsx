@@ -3,16 +3,17 @@ import React from 'react';
 import Button, { ButtonVariant } from '@/components/Button';
 import BaseDropdown from '@/components/Dropdown';
 import Tooltip from '@/components/TippyTooltip';
+import { FeatureFlag } from '@/config/features';
 import { ModalType, PlanType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useFeature, useModals } from '@/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
-import { MenuContainer, MenuItem } from './components';
+import { ExportItem, MenuContainer, MenuItem } from './components';
 
 const Dropdown: React.FC<any> = BaseDropdown;
 
@@ -20,7 +21,7 @@ type ShareProjectProps = {
   render: boolean;
 };
 
-const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectPropsProps> = ({
+const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({
   meta,
   plan,
   getImportToken,
@@ -30,7 +31,9 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectPropsProps
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
+  const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
   const [testableLink, setLink] = React.useState<string | boolean>(false);
+  const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
 
   const makeConfig = async () => {
     if (render) {
@@ -71,6 +74,8 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectPropsProps
               help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
               link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
             />
+
+            {canvasExportFeature.isEnabled && <ExportItem plan={plan} onRedirect={openCanvasExportModal} />}
           </FadeDownContainer>
         </MenuContainer>
       )}
@@ -97,6 +102,6 @@ const mapDispatchToProps = {
   renderPrototype: Prototype.renderPrototype,
 };
 
-type ConnectedShareProjectPropsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShareProject);

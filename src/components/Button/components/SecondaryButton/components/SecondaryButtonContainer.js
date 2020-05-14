@@ -17,6 +17,12 @@ const SecondaryButtonContainer = styled(ButtonContainer)`
   box-sizing: border-box;
   transition: all ease 0.15s;
 
+  ${({ square }) =>
+    square &&
+    css`
+      padding: 9px 20px 10px;
+    `}
+
   ${({ disabled }) =>
     disabled
       ? css`

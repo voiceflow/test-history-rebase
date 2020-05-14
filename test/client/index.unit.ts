@@ -22,6 +22,7 @@ suite('Client - Root', ({ expect }) => {
       'feature',
       'zapier',
       'socket',
+      'canvasExport',
     ]);
   });
 });

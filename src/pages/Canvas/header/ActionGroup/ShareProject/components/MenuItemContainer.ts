@@ -6,6 +6,7 @@ const MenuItemContainer = styled(Flex as any)`
   border-bottom: 1px solid #eaeff4;
   cursor: default;
   margin-left: 32px;
+  align-items: flex-start;
 
   :last-child {
     border-bottom: none;

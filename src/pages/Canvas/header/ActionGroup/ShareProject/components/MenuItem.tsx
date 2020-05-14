@@ -9,6 +9,7 @@ import { useEnableDisable } from '@/hooks';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 
+import ButtonContainer from './ButtonContainer';
 import Description from './Description';
 import Header from './Header';
 import MenuItemContainer from './MenuItemContainer';
@@ -48,13 +49,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
           <Link href={help}>Learn More</Link>
         </Description>
       </div>
-      <div>
+      <ButtonContainer>
         <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
           <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan !== PlanType.STARTER ? onCopy : onRedirect)}>
             Copy
           </Button>
         </Tooltip>
-      </div>
+      </ButtonContainer>
     </MenuItemContainer>
   );
 };

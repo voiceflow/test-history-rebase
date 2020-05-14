@@ -32,5 +32,11 @@ declare module '@voiceflow/common' {
     };
 
     const slots: Slot[];
+
+    const locales: {
+      LOCALES: {
+        US: string;
+      };
+    };
   }
 }

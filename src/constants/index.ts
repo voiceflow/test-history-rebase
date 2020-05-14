@@ -368,6 +368,7 @@ export enum ModalType {
   REALTIME_DENIED = 'realtime-denied',
   PROJECT_DOWNLOAD = 'project-download',
   TESTABLE_LINKS = 'testable-links',
+  CANVAS_EXPORT = 'canvas-export',
   SHARE_MENU = 'share-menu',
 }
 
@@ -468,3 +469,9 @@ export enum MarkupModeType {
 export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 
 export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
+
+export enum ExportFormat {
+  PNG = 'png',
+  PDF = 'pdf',
+  JSON = 'json',
+}

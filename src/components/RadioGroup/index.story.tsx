@@ -30,6 +30,16 @@ const getProps = () => {
   };
 };
 
+const getMultipleProps = () => {
+  const [checked, toggleChecked] = React.useState(1);
+
+  return {
+    checked,
+    onChange: toggleChecked,
+    disabled: boolean('Disabled', false),
+  };
+};
+
 export default {
   title: 'Radio Group',
   component: RadioGroup,
@@ -38,4 +48,4 @@ export default {
 
 export const normal = () => <RadioGroup name="yesNo" {...getProps()} />;
 
-export const multiselect = () => <RadioGroup options={OPTIONS} name="multiple" {...getProps()} />;
+export const multiselect = () => <RadioGroup options={OPTIONS} name="multiple" {...getMultipleProps()} />;

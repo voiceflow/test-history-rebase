@@ -1,20 +1,11 @@
 import React from 'react';
 
-import * as Intercom from '@/vendors/intercom';
+import { RemoveIntercom } from '@/components/IntercomChat';
 
-export function RemoveIntercom(props) {
-  React.useEffect(() => {
-    Intercom.updateSettings({ hide_default_launcher: true });
-
-    return () => Intercom.updateSettings({ hide_default_launcher: false });
-  }, []);
-
-  return <>{props.children}</>;
-}
-const removeIntercomWrap = (WrappedComponent) => (props) => (
+const removeIntercom = (WrappedComponent) => (props) => (
   <RemoveIntercom>
     <WrappedComponent {...props} />
   </RemoveIntercom>
 );
 
-export default removeIntercomWrap;
+export default removeIntercom;

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { RemoveIntercom } from '@/components/IntercomChat';
 import { MarkupModeType } from '@/constants';
-import { RemoveIntercom } from '@/hocs/removeIntercom';
 import { EditPermissionContext, MarkupModeContext, MarkupModeContextType } from '@/pages/Skill/contexts';
 
 import { AddShapesMenu, MenuContainer, MenuIcon } from './components';

@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
@@ -73,7 +74,7 @@ const rootSelector = createRootSelector(STATE_KEY);
 export const featureSelector = createSelector([rootSelector], ({ features }) => (featureID: FeatureFlag) => features[featureID] ?? {});
 
 export const isFeatureEnabledSelector = createSelector([featureSelector], (getFeature) => (featureID: FeatureFlag) =>
-  LOCAL_FEATURE_OVERRIDES[featureID] || (getFeature(featureID).isEnabled ?? null)
+  (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)
 );
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);

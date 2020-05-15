@@ -326,7 +326,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         return null;
       }
     }
-    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length) || [];
+    const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
 
     await asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;
@@ -342,17 +342,13 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
-    try {
-      trackingEvents.trackOnboardingIdentify({
-        name: userName!,
-        role,
-        email: email!,
-        channels,
-        teamSize,
-      });
-    } catch (e) {
-      console.error('Error tracking');
-    }
+    trackingEvents.trackOnboardingIdentify({
+      name: userName!,
+      role,
+      email: email!,
+      channels,
+      teamSize,
+    });
 
     try {
       const { skill_id, diagram } = await createProject(
@@ -414,6 +410,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         // If anything catastrophic goes wrong, fallback to dashboard
         toastNotif.error('Sorry, something went wrong, try again in a bit.');
         goToDashboard();
+        return;
       }
 
       dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));

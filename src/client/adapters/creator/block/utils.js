@@ -22,7 +22,7 @@ export const repromptAdapter = {
     return reprompt
       ? {
           type,
-          audio: type === RepromptType.TEXT ? null : textEditorContentAdapter.fromDB(content),
+          audio: type === RepromptType.TEXT ? null : reprompt.content,
           content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(content) : '',
           voice: type === RepromptType.TEXT ? reprompt.voice : null,
         }
@@ -31,8 +31,7 @@ export const repromptAdapter = {
   toDB: (reprompt) =>
     reprompt
       ? {
-          content:
-            reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : textEditorContentAdapter.toDB(reprompt.audio),
+          content: reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : reprompt.audio,
           voice: reprompt.type === RepromptType.TEXT ? reprompt.voice : 'audio',
           type: reprompt.type,
         }

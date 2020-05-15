@@ -13,6 +13,8 @@ export const repromptAdapter = {
     }
 
     let content = reprompt.content;
+    // Catch old reprompt formats and convert them to an acceptable fromDB
+    // format before feeding into the adapters below
     if (typeof reprompt.content === 'string') {
       content = textEditorContentAdapter.toDB(reprompt.content);
     }

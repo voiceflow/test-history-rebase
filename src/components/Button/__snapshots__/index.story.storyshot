@@ -234,9 +234,6 @@ exports[`Storyshots Button Secondary With Icon 1`] = `
   height: 16px;
   width: 16px;
   color: rgba(110,132,154,0.85);
-}
-
-.c1:not(:last-child) {
   margin-right: 16px;
 }
 

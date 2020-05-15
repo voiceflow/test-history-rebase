@@ -11,11 +11,19 @@ export const repromptAdapter = {
     if (reprompt.voice === 'audio') {
       type = RepromptType.AUDIO;
     }
+
+    let content = reprompt.content;
+    // Catch old reprompt formats and convert them to an acceptable fromDB
+    // format before feeding into the adapters below
+    if (typeof reprompt.content === 'string') {
+      content = textEditorContentAdapter.toDB(reprompt.content);
+    }
+
     return reprompt
       ? {
           type,
           audio: type === RepromptType.TEXT ? null : reprompt.content,
-          content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(reprompt.content) : '',
+          content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(content) : '',
           voice: type === RepromptType.TEXT ? reprompt.voice : null,
         }
       : null;

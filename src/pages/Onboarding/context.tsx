@@ -272,8 +272,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   };
 
   const finishCreateOnboarding = async () => {
-    setSendingRequests(true);
     if (sendingRequests) return;
+    setSendingRequests(true);
 
     const isOnLastStep = stepStack.length === numberOfSteps;
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
@@ -290,15 +290,28 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       try {
         source = await checkPayment();
       } catch (e) {
-        setSendingRequests(false);
-        toast.error(e);
+        toast.error('Something went wrong when checking out, please try again later');
+        goToDashboard();
         return null;
       }
     }
 
-    const workspace = await createWorkspace({ name, image: workspaceImage });
+    let workspace;
+    try {
+      workspace = await createWorkspace({ name, image: workspaceImage });
+    } catch (e) {
+      toastNotif.error('Error creating workspace, please try again later');
+      goToDashboard();
+      return;
+    }
 
-    await fetchWorkspaces();
+    try {
+      await fetchWorkspaces();
+    } catch (e) {
+      toastNotif.error('Error getting workspace, please try again later');
+      goToDashboard();
+      return;
+    }
 
     updateCurrentWorkspace(workspace.id);
 
@@ -306,8 +319,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       try {
         await handlePayment(workspace.id, source);
       } catch (e) {
-        setSendingRequests(false);
-        toast.error(e);
+        toast.error('Something went wrong when checking out, please try again later');
+        goToDashboard();
         return null;
       }
     }
@@ -388,7 +401,15 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const isLastStep = stepStack.length === numberOfSteps;
     const lastStepHandler = async () => {
       const currentStepID: StepID = stepStack[0];
-      const workspaceID = await handleLastStep(currentStepID);
+      let workspaceID;
+      try {
+        workspaceID = await handleLastStep(currentStepID);
+      } catch (e) {
+        // If anything catastrophic goes wrong, fallback to dashboard
+        toastNotif.error('Sorry, something went wrong, try again in a bit.');
+        goToDashboard();
+        return;
+      }
 
       dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
 

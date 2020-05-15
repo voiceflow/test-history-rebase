@@ -22,18 +22,20 @@ export type AddTeamMembersProps = {
 
 const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, errorIndexes, updateErrorIndexes, onUpdate }) => {
   const onAdd = (value: string) => onUpdate([...collaborators, { email: value, permission: UserRole.EDITOR }]);
-  const onFocus = (index: number) => () => {
-    updateErrorIndexes(errorIndexes.filter((idx: number) => idx !== index));
-  };
+  const onFocus = (index: number) => () => updateErrorIndexes(errorIndexes.filter((idx: number) => idx !== index));
   const onBlur = (index: number, hasError: boolean) => () => {
     if (hasError) {
-      updateErrorIndexes([...errorIndexes, index]);
+      if (!errorIndexes.includes(index)) {
+        updateErrorIndexes([...errorIndexes, index]);
+      }
     } else {
       const newErrorIndexs = errorIndexes.filter((idx: number) => idx !== index);
       updateErrorIndexes(newErrorIndexs);
     }
   };
-  const onRemoveCollaborator = (index: number) => () => onUpdate(collaborators.filter((collaborator, idx) => idx !== index && collaborator));
+  const onRemoveCollaborator = (index: number) => () => {
+    onUpdate(collaborators.filter((collaborator, idx) => idx !== index && collaborator));
+  };
   const onPermissionChange = (index: number) => (permission: UserRole) =>
     onUpdate(collaborators.map((collaborator, idx) => (idx === index ? { ...collaborator, permission } : collaborator)));
   const onEmailChange = (index: number) => (value: string) => {
@@ -69,11 +71,13 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ collaborators, errorInde
                   showDropdown={isValidEmail(collaborator.email)}
                   onFocus={onFocus(index)}
                   onBlur={onBlur(index, isEmailValid || duplicateError)}
-                  hasError={hasError}
+                  hasError={hasError && collaborator.permission !== UserRole.ADMIN}
                   isDisabled={collaborator.permission === UserRole.ADMIN}
                 />
               </CollaboratorListContainer>
-              {hasError && <InvalidEmailError>{isEmailValid ? 'Email is not valid.' : 'Duplicate email.'}</InvalidEmailError>}
+              {hasError && collaborator.permission !== UserRole.ADMIN && (
+                <InvalidEmailError>{isEmailValid ? 'Email is not valid.' : 'Duplicate email.'}</InvalidEmailError>
+              )}
             </div>
           );
         })}

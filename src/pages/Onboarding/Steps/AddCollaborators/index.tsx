@@ -7,6 +7,7 @@ import Icon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
+import { isValidEmail, isValueDuplicate } from '@/utils/emails';
 
 import StepID from '../../StepIDs';
 import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './components';
@@ -43,6 +44,20 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     setAddCollaboratorMeta({ collaborators, isDemoBooked });
     stepForward(StepID.PAYMENT);
   };
+
+  // Recalculate error indexes on removal of team members
+  React.useEffect(() => {
+    const errorIndexArray: number[] = [];
+    collaborators.forEach((collaborator, index) => {
+      const isEmailValid = !isValidEmail(collaborator.email);
+      const duplicateError = isValueDuplicate(collaborator.email, collaborators, 'email');
+      const hasError = isEmailValid || duplicateError;
+      if (hasError) {
+        errorIndexArray.push(index);
+      }
+    });
+    updateErrorIndexes(errorIndexArray);
+  }, [collaborators.length]);
 
   return (
     <Container>

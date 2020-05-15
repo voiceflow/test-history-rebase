@@ -3,3 +3,4 @@ export { default as MenuContainer } from './MenuContainer';
 export { default as MenuItem } from './MenuItem';
 export { default as Header } from './Header';
 export { default as Description } from './Description';
+export { default as ExportItem } from './ExportItem';

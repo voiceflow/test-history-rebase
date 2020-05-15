@@ -1,18 +1,9 @@
-import { PlatformType } from '@/constants';
-import { Intent, IntentInput, IntentSlot } from '@/models';
+import { DBIntent, Intent } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
 import { createAdapter } from './utils';
 
-export interface RawIntent {
-  key: string;
-  name: string;
-  slots?: IntentSlot[];
-  inputs: IntentInput[];
-  _platform: PlatformType;
-}
-
-const intentAdapter = createAdapter<RawIntent, Intent>(
+const intentAdapter = createAdapter<DBIntent, Intent>(
   ({ key, name, inputs, slots = [], _platform }) => ({
     id: key,
     name,

@@ -233,8 +233,8 @@ exports[`Storyshots Button Secondary With Icon 1`] = `
 .c1 {
   height: 16px;
   width: 16px;
-  margin-right: 16px;
   color: rgba(110,132,154,0.85);
+  margin-right: 16px;
 }
 
 .c0 {

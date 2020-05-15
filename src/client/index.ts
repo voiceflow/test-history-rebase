@@ -1,4 +1,5 @@
 import analytics from './analytics';
+import canvasExport from './canvasExport';
 import clipboard from './clipboard';
 import diagram from './diagram';
 import display from './display';
@@ -38,6 +39,7 @@ const client = {
   feature,
   zapier,
   socket: null as ReturnType<typeof createSocketClient> | null,
+  canvasExport,
 };
 
 export default client;

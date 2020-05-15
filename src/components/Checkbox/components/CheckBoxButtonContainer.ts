@@ -7,6 +7,7 @@ const CheckBoxButtonContainer = styled.div`
   padding: 4px;
   padding-left: 0;
   color: #8da2b5;
+
   span {
     box-shadow: none !important;
   }

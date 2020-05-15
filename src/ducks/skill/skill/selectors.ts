@@ -13,8 +13,6 @@ export const activeSkillIDSelector = createSelector(activeSkillSelector, ({ id }
 
 export const activeNameSelector = createSelector(activeSkillSelector, ({ name }) => name);
 
-export const activeSkillVendorSelector = createSelector(activeSkillSelector, ({ vendor_id: vendorId }) => vendorId);
-
 export const activePlatformSelector = createSelector(activeSkillSelector, ({ platform }) => platform);
 
 export const activeDiagramIDSelector = createSelector(activeSkillSelector, ({ diagramID }) => diagramID);
@@ -38,3 +36,5 @@ export const parentCtrlSelector = createSelector(
 );
 
 export const isRootDiagramSelector = createSelector(activeSkillSelector, ({ diagramID, rootDiagramID }) => diagramID === rootDiagramID);
+
+export const isCanvasExportingSelector = createSelector(activeSkillSelector, ({ canvasExporting }) => canvasExporting);

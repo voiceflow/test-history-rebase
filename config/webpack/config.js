@@ -15,6 +15,7 @@ const {
   debugRealtime,
   debugSocket,
   ff_markup,
+  ff_canvasExport,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -49,6 +50,7 @@ module.exports = {
 
     // feature flags
     FF_MARKUP: ff_markup && 'true',
+    FF_CANVAS_EXPORT: ff_canvasExport && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

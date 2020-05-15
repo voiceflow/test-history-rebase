@@ -7,7 +7,15 @@ export type SlotInput = {
 export type Slot = {
   id: string;
   name: string;
-  type: string;
-  color: string;
+  type: null | string;
+  color?: string;
   inputs: SlotInput[];
+};
+
+export type DBSlot = {
+  key: string;
+  name: string;
+  type?: { value?: string };
+  color?: string;
+  inputs: string[];
 };

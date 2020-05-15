@@ -8,7 +8,7 @@ const getProps = () => {
 
   return {
     checked,
-    onChange: setChecked,
+    onChange: () => setChecked(!checked),
     disabled: boolean('Disabled', false),
   };
 };
@@ -20,13 +20,13 @@ export default {
 };
 
 export const normal = () => (
-  <Checkbox type="checkbox" {...getProps()}>
+  <Checkbox {...getProps()}>
     <span>checkbox</span>
   </Checkbox>
 );
 
 export const withError = () => (
-  <Checkbox type="checkbox" error {...getProps()}>
+  <Checkbox error {...getProps()}>
     <span>checkbox</span>
   </Checkbox>
 );

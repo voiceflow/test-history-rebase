@@ -27,3 +27,11 @@ export type Intent = {
   builtIn?: boolean;
   platform: PlatformType;
 };
+
+export type DBIntent = {
+  key: string;
+  name: string;
+  slots?: IntentSlot[];
+  inputs: IntentInput[];
+  _platform: PlatformType;
+};

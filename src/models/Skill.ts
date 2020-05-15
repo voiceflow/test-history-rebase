@@ -1,13 +1,18 @@
 import { PlatformType } from '@/constants';
 
+import { DBIntent } from './Intent';
+import { DBSlot } from './Slot';
+
 export type Skill = {
   name: string;
   id: string;
+  locales: string[];
   creatorID: number;
   projectID: string;
   rootDiagramID: string;
   diagramID: string;
   platform: PlatformType;
+  globalVariables: string[];
 };
 
 export type DBSkill = {
@@ -25,4 +30,11 @@ export type DBSkill = {
   amzn_id?: string;
   vendor_id: string | null;
   google_id: string | null;
+  intents: DBIntent[];
+  slots: DBSlot[];
+};
+
+export type ToDBSkill = Omit<DBSkill, 'intents' | 'slots'> & {
+  intents: string;
+  slots: string;
 };

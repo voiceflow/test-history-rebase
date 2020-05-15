@@ -1,6 +1,10 @@
 import { styled } from '@/hocs';
 
-const CheckBoxContainer = styled.label`
+type CheckBoxContainerProps = {
+  disabled?: boolean;
+};
+
+const CheckBoxContainer = styled.label<CheckBoxContainerProps>`
   position: relative;
   display: flex;
   align-items: center;

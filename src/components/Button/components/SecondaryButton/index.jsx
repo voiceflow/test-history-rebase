@@ -8,7 +8,7 @@ function SecondaryButton({ icon, children, iconProps, ...props }, ref) {
   return (
     <Container {...props} ref={ref}>
       {icon && (
-        <Icon>
+        <Icon withoutChildren={!children}>
           <SvgIcon size={16} icon={icon} {...iconProps} />
         </Icon>
       )}

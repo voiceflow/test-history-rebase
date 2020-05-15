@@ -1,4 +1,4 @@
-import { AccountLinking, DBDiagram, DBDisplay, DBProduct, DBSkill } from '@/models';
+import { AccountLinking, DBDiagram, DBDisplay, DBProduct, DBSkill, ToDBSkill } from '@/models';
 
 import diagramAdapter from './adapters/diagram';
 import displayAdapter from './adapters/display';
@@ -11,7 +11,7 @@ export const DISPLAYS_PATH = 'multimodal/displays';
 const skillClient = {
   get: (skillID: string) => fetch.get<DBSkill>(`${SKILL_PATH}/${skillID}?simple=1&user_modules=1`),
 
-  update: (skillID: string, body: Partial<DBSkill>) => fetch.patch(`${SKILL_PATH}/${skillID}`, body),
+  update: (skillID: string, body: Partial<ToDBSkill>) => fetch.patch(`${SKILL_PATH}/${skillID}`, body),
 
   updateInvName: (skillID: string, name: string) => fetch.patch(`${SKILL_PATH}/${skillID}?inv_name=1`, { inv_name: name }),
 

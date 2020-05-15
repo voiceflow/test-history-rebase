@@ -1,14 +1,14 @@
 import { constants, utils } from '@voiceflow/common';
 import NLC, { IIntentSlot } from '@voiceflow/natural-language-commander';
 
-import { RawIntent } from '@/client/adapters/intent';
-import { RawSlot, spreadSynonyms } from '@/client/adapters/slot';
+import { spreadSynonyms } from '@/client/adapters/slot';
+import { DBIntent, DBSlot } from '@/models';
 
 type BuiltInIntentsFilter = (name: string) => boolean;
 
 type Options = {
-  slots: RawSlot[];
-  intents: RawIntent[];
+  slots: DBSlot[];
+  intents: DBIntent[];
   language: string;
   builtInIntentsFilter?: BuiltInIntentsFilter;
 };
@@ -40,7 +40,7 @@ const AUDIO_INTENTS = [
   },
 ];
 
-export const registerSlots = (nlc: NLC, slots: RawSlot[]) => {
+export const registerSlots = (nlc: NLC, slots: DBSlot[]) => {
   slots.map(spreadSynonyms).forEach((slot) => {
     try {
       if (slot.type?.value === CUSTOM_SLOT_TYPE) {

@@ -23,8 +23,6 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, isPub
 
   const collapsedBeforeListening = React.useRef(collapsed);
 
-  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
-
   const onEnterPress = preventDefault(() => {
     if (!disabled) {
       onUserInput(value);
@@ -54,8 +52,6 @@ const PrototypeInput: React.FC<PrototypeInputProps> = ({ locale, disabled, isPub
           value={value}
           minRows={3}
           onChange={(e) => setValue(e.target.value)}
-          inputRef={textAreaRef}
-          autoFocus // eslint-disable-line jsx-a11y/no-autofocus
           onKeyPress={withEnterPress(onEnterPress)}
           placeholder="Enter Response"
         />

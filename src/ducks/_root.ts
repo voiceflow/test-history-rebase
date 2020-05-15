@@ -50,7 +50,7 @@ const createReducer = (history: History) =>
     [Product.STATE_KEY]: product,
     [Project.STATE_KEY]: project,
     [VariableSet.STATE_KEY]: variableSet,
-    [Skill.STATE_KEY]: skill as any,
+    [Skill.STATE_KEY]: skill,
     [Intent.STATE_KEY]: intent,
     [Slot.STATE_KEY]: slot,
     [Recent.STATE_KEY]: recent,

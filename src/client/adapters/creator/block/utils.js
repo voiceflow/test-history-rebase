@@ -11,11 +11,17 @@ export const repromptAdapter = {
     if (reprompt.voice === 'audio') {
       type = RepromptType.AUDIO;
     }
+
+    let content = reprompt.content;
+    if (typeof reprompt.content === 'string') {
+      content = textEditorContentAdapter.toDB(reprompt.content);
+    }
+
     return reprompt
       ? {
           type,
-          audio: type === RepromptType.TEXT ? null : reprompt.content,
-          content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(reprompt.content) : '',
+          audio: type === RepromptType.TEXT ? null : textEditorContentAdapter.fromDB(content),
+          content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(content) : '',
           voice: type === RepromptType.TEXT ? reprompt.voice : null,
         }
       : null;
@@ -23,7 +29,8 @@ export const repromptAdapter = {
   toDB: (reprompt) =>
     reprompt
       ? {
-          content: reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : reprompt.audio,
+          content:
+            reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : textEditorContentAdapter.toDB(reprompt.audio),
           voice: reprompt.type === RepromptType.TEXT ? reprompt.voice : 'audio',
           type: reprompt.type,
         }

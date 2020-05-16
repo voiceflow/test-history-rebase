@@ -429,7 +429,7 @@ class NodeManager extends EngineConsumer {
   }
 
   center(nodeID: string) {
-    const { x: posX, y: posY } = this.engine.getNodeByID(nodeID);
+    const [posX, posY] = this.api(nodeID)!.getPosition();
 
     const xOffset = window.innerWidth / 2;
     const yOffset = window.innerHeight / 2;

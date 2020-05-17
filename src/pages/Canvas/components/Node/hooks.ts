@@ -165,7 +165,7 @@ export const useNodeAPI = <T extends HTMLElement>(nodeID: string, ref: React.Ref
       getPosition: () => {
         const rect = ref.current!.getBoundingClientRect();
 
-        return engine.canvas!.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2]);
+        return engine.canvas!.transformPoint([rect.x + rect.width / 2, rect.y + rect.height / 2], { relative: true, bounding: true });
       },
       rename: () => engine.focus.set(nodeID, { renameActiveRevision: cuid() }),
       setHighlight,

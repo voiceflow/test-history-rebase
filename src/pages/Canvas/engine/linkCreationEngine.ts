@@ -102,7 +102,7 @@ class LinkCreationEngine extends EngineConsumer {
     const startPoint: Point = [right, top + height / 2];
     const endPoint = this.mouseOrigin!;
 
-    return [this.engine.canvas!.transformPoint(startPoint), this.engine.canvas!.transformPoint(endPoint, true)];
+    return [this.engine.canvas!.transformPoint(startPoint), this.engine.canvas!.transformPoint(endPoint, { relative: true })];
   }
 
   reset() {

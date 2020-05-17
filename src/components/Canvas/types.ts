@@ -8,6 +8,7 @@ export type CanvasAPI = {
   getPosition: () => [number, number];
   getRef: () => HTMLElement;
   getRect: () => DOMRect;
+  getBoundingPosition: () => [number, number];
   zoomIn: (delta: number, options: unknown) => void;
   zoomOut: (delta: number, options: unknown) => void;
   reorient: () => void;
@@ -20,7 +21,7 @@ export type CanvasAPI = {
 
   applyTransition: (options?: unknown) => void;
 
-  transformPoint: (point: [number, number], relative?: boolean) => [number, number];
+  transformPoint: (point: [number, number], options?: { relative?: boolean; bounding?: boolean }) => [number, number];
 
   mapPoint: (point: [number, number]) => [number, number];
 

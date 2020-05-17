@@ -33,6 +33,10 @@ class Canvas extends React.PureComponent {
     getPosition: () => this.position,
     getRef: () => this.rootRef.current,
     getRect: () => this.rootRef.current.getBoundingClientRect(),
+    getBoundingPosition: () => {
+      const { x, y } = this.renderLayerRef.current.getBoundingClientRect();
+      return [x, y];
+    },
     zoomIn: (delta, options) => this.offsetZoom(delta, { animated: true, ...options }),
     zoomOut: (delta, options) => this.offsetZoom(-delta, { animated: true, ...options }),
     reorient: () => this.resetPosition(),
@@ -49,8 +53,8 @@ class Canvas extends React.PureComponent {
 
     applyTransition: (options) => this.applyTransition(options),
 
-    transformPoint(point, relative) {
-      const [posX, posY] = this.getPosition();
+    transformPoint(point, { relative, bounding } = {}) {
+      const [posX, posY] = bounding ? this.getBoundingPosition() : this.getPosition();
       const zoom = this.getZoom();
       const [x, y] = relative ? point : this.mapPoint(point);
 

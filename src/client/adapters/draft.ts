@@ -1,10 +1,15 @@
 import cuid from 'cuid';
+import { RawDraftContentBlock, RawDraftContentState, RawDraftEntityRange } from 'draft-js';
 import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from './utils';
 
-export const extractDraftJSEntities = (text, entityRanges, entityMap) => {
-  const variableContent = [];
+export type VFDraftState = RawDraftContentState & { text: string };
+export type EntityMap = RawDraftContentState['entityMap'];
+export type VFContent = (string | { id?: string; name: string })[];
+
+export const extractDraftJSEntities = (text: string, entityRanges: RawDraftEntityRange[], entityMap: EntityMap) => {
+  const variableContent: (string | { name: string })[] = [];
   let cursor = 0;
 
   entityRanges.forEach(({ key, offset, length }) => {
@@ -24,13 +29,12 @@ export const extractDraftJSEntities = (text, entityRanges, entityMap) => {
   return variableContent;
 };
 
-export const buildDraftJSContent = (content, existingEntitiesMap) => {
-  const [text, entityMap, entityRanges] = content.reduce(
+export const buildDraftJSContent = (content: VFContent, existingEntitiesMap?: EntityMap): VFDraftState => {
+  const [text, entityMap, entityRanges] = content.reduce<[string, EntityMap, RawDraftEntityRange[], number]>(
     ([textAcc, entityMapAcc, entityRangesAcc, cursor], value) => {
-      const isVariable = typeof value === 'object';
-      const textValue = isVariable ? `{${value.name}}` : value;
+      const textValue = _isString(value) ? value : `{${value.name}}`;
 
-      if (isVariable) {
+      if (!_isString(value)) {
         const existingEntity = existingEntitiesMap?.[value.name];
 
         if (!existingEntitiesMap || existingEntity) {
@@ -54,7 +58,7 @@ export const buildDraftJSContent = (content, existingEntitiesMap) => {
     ['', {}, [], 0]
   );
 
-  const blocks = [
+  const blocks: RawDraftContentBlock[] = [
     {
       key: cuid.slug(),
       text,
@@ -72,12 +76,12 @@ export const buildDraftJSContent = (content, existingEntitiesMap) => {
   };
 };
 
-export const draftJSContentAdapter = createSimpleAdapter(
+export const draftJSContentAdapter = createSimpleAdapter<VFDraftState, VFContent>(
   (draftJSContent) =>
     draftJSContent
       ? draftJSContent.blocks
           .flatMap(({ text, entityRanges }) => (entityRanges.length ? extractDraftJSEntities(text, entityRanges, draftJSContent.entityMap) : text))
-          .reduce((acc, content, index) => {
+          .reduce<VFContent>((acc, content, index) => {
             if (index > 0 && _isString(acc[acc.length - 1]) && _isString(content)) {
               acc.push(`${acc.pop()}\n${content}`);
             } else {
@@ -87,5 +91,5 @@ export const draftJSContentAdapter = createSimpleAdapter(
             return acc;
           }, [])
       : [],
-  (content, existingEntitiesMap) => buildDraftJSContent(content, existingEntitiesMap)
+  (content, existingEntitiesMap?: EntityMap) => buildDraftJSContent(content, existingEntitiesMap)
 );

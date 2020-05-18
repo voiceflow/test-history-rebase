@@ -2,9 +2,9 @@ import _isString from 'lodash/isString';
 
 import { SLOT_REGEXP } from '@/constants';
 
-import { draftJSContentAdapter } from './draft';
+import { VFContent, VFDraftState, draftJSContentAdapter } from './draft';
 
-export const matchVariables = (text = '') => {
+export const matchVariables = (text = ''): VFContent => {
   if (Array.isArray(text)) {
     return text;
   }
@@ -22,7 +22,7 @@ export const matchVariables = (text = '') => {
       parsed.push(text.substring(i, match.index));
     } else {
       const prevMatch = matches[i - 1];
-      parsed.push(text.substring(prevMatch.index + prevMatch[0].length, match.index));
+      parsed.push(text.substring(prevMatch.index! + prevMatch[0].length, match.index));
     }
 
     if (match[1] && match[2]) {
@@ -34,14 +34,14 @@ export const matchVariables = (text = '') => {
 
   const lastMatch = matches[matches.length - 1];
 
-  parsed.push(text.substring(lastMatch.index + lastMatch[0].length, text.length));
+  parsed.push(text.substring(lastMatch.index! + lastMatch[0].length, text.length));
 
   return parsed;
 };
 
 export const textEditorContentAdapter = {
-  toDB: (content) => draftJSContentAdapter.toDB(matchVariables(content)),
-  fromDB: (content) =>
+  toDB: (content: string) => draftJSContentAdapter.toDB(matchVariables(content)),
+  fromDB: (content: VFDraftState): string =>
     draftJSContentAdapter
       .fromDB(content)
       .map((val) => (_isString(val) ? val : `{{[${val.name}].${val.name}}}`))

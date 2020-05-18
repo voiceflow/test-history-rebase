@@ -11,6 +11,7 @@
     "@seznam/compose-react-refs": "^1.0.2",
     "@types/chai": "^4.2.11",
     "@types/classnames": "^2.2.10",
+    "@types/draft-js": "^0.10.40",
     "@types/file-saver": "^2.0.1",
     "@types/markdown-to-jsx": "^6.11.0",
     "@types/mousetrap": "^1.6.3",

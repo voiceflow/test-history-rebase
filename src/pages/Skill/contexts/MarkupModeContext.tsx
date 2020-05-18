@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { MarkupModeType } from '@/constants';
-import { useTrackingEvents } from '@/hooks';
+import { useTeardown, useTrackingEvents } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
+import { getMarkupIsOpenedCookie, getMarkupStartTimeCookie, setMarkupIsOpenedCookie, setMarkupStartTimeCookie } from '@/utils/cookies';
 
 export type MarkupModeContextType = {
   isOpen: boolean;
@@ -15,6 +16,16 @@ export type MarkupModeContextType = {
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
 export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
+const beforeUnloadTrack = (trackEvents: any) => {
+  if (getMarkupIsOpenedCookie() === 'true') {
+    const startTime = getMarkupStartTimeCookie();
+    const duration: number = Date.now() - startTime;
+    if (duration) {
+      trackEvents.trackMarkupSessionDuration({ duration });
+    }
+  }
+};
+
 export const MarkupModeProvider: React.FC = ({ children }) => {
   const [trackEvents] = useTrackingEvents();
   const [startTime, setStartTime] = React.useState(0);
@@ -25,7 +36,10 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     if (!isOpen) {
       openTool();
       trackEvents.trackMarkupOpen();
-      setStartTime(Date.now());
+      setMarkupIsOpenedCookie(true);
+      const startTime = Date.now();
+      setMarkupStartTimeCookie(startTime);
+      setStartTime(startTime);
     }
   };
 
@@ -34,20 +48,29 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       const duration: number = Date.now() - startTime;
       trackEvents.trackMarkupSessionDuration({ duration });
     }
-  }, [isOpen]);
+  }, [isOpen, startTime]);
 
   const disableMarkup = React.useCallback(() => {
     if (isOpen) {
       trackMarkupTime();
+      setMarkupIsOpenedCookie(false);
       setStartTime(0);
       closeTool();
     }
-  }, [isOpen, trackMarkupTime]);
+  }, [isOpen, setStartTime, trackMarkupTime]);
 
   React.useEffect(() => {
-    window.addEventListener('beforeunload', trackMarkupTime);
-    return window.removeEventListener('beforeunload', trackMarkupTime);
-  }, [isOpen]);
+    const unloadTrack = () => beforeUnloadTrack(trackEvents);
+    window.addEventListener('beforeunload', unloadTrack);
+    return () => {
+      setMarkupStartTimeCookie(false);
+      window.removeEventListener('beforeunload', unloadTrack);
+    };
+  }, []);
+
+  useTeardown(() => {
+    trackMarkupTime();
+  }, [trackMarkupTime]);
 
   return (
     <MarkupModeContext.Provider value={{ isOpen, openTool: enableMarkup, closeTool: disableMarkup, modeType, setModeType }}>

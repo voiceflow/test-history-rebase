@@ -4,6 +4,8 @@ import { CREATOR_URL, LEGACY_URL, ROOT_DOMAIN } from '@/config';
 
 export const AUTH_COOKIE = 'auth_vf';
 export const MAINTENANCE_COOKIE = 'maintenance';
+export const MARKUP_START_COOKIE = 'markup_start_cookie';
+export const MARKUP_IS_OPENED_COOKIE = 'markup_is_opened_cookie';
 const COOKIE_OPTIONS = { path: '/', domain: ROOT_DOMAIN };
 
 const cookies = new Cookies();
@@ -26,6 +28,22 @@ export const getAuthCookie = () => {
   }
 
   return getByName(AUTH_COOKIE);
+};
+
+export const setMarkupStartTimeCookie = (time) => {
+  cookies.set(MARKUP_START_COOKIE, time);
+};
+
+export const getMarkupStartTimeCookie = () => {
+  return cookies.get(MARKUP_START_COOKIE);
+};
+
+export const setMarkupIsOpenedCookie = (val) => {
+  cookies.set(MARKUP_IS_OPENED_COOKIE, val);
+};
+
+export const getMarkupIsOpenedCookie = () => {
+  return cookies.get(MARKUP_IS_OPENED_COOKIE);
 };
 
 // TODO: is this still needed?

@@ -3,7 +3,7 @@ import { styled, transition } from '@/hocs';
 
 export const Container = styled.div`
   padding: 14px;
-  border: 1px solid ${({ active, color }) => (active ? color : '#ebf0f5')};
+  border: 2px solid ${({ active, color }) => (active ? color : '#ebf0f5')};
   margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
@@ -19,7 +19,7 @@ export const Container = styled.div`
     margin-right: 0;
   }
   :hover {
-    border: 1px solid ${({ color }) => color};
+    border: 2px solid ${({ color }) => color};
   }
 `;
 
@@ -39,7 +39,7 @@ export const Price = styled.div`
 `;
 
 export const PriceDescription = styled.div`
-  color: #8da2b5;
+  color: #62778c;
 `;
 
 export const PriceContainer = styled.div`

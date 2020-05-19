@@ -56,7 +56,7 @@ function SeatsAndBilling({
                     onClick: () => setPeriod(BillingPeriod.MONTHLY),
                   },
                   {
-                    label: 'Annual',
+                    label: 'Annually',
                     onClick: () => setPeriod(BillingPeriod.ANNUALLY),
                   },
                 ]}

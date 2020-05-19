@@ -10,12 +10,12 @@ import { ConnectedProps } from '@/types';
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ updateAccount }) => {
+const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateAccount }) => {
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
   const [userImage, setUserImage] = React.useState('');
-  const [name, setName] = React.useState('');
+  const [name, setName] = React.useState(user.name || '');
   const canContinue = !!userRole && !!name;
 
   const onContinue = () => {
@@ -52,10 +52,14 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ updateAccount })
   );
 };
 
+const mapStateToProps = {
+  user: Account.userSelector,
+};
+
 const mapDispatchToProps = {
   updateAccount: Account.updateAccount,
 };
 
-export type ConnectedJoinWorkspaceProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+export type ConnectedJoinWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(JoinWorkspace);
+export default connect(mapStateToProps, mapDispatchToProps)(JoinWorkspace);

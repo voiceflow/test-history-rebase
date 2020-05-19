@@ -4,14 +4,10 @@ import React from 'react';
 import Button from '@/components/Button';
 import Icon from '@/components/SvgIcon';
 import { BillingPeriod } from '@/constants';
-import { styled } from '@/hocs';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 
-const LoadingButton = styled(Button)`
-  cursor: auto;
-  pointer-events: none;
-`;
+import { CostText, LoadingButton } from './components';
 
 function CheckoutButton({
   payment: {
@@ -20,6 +16,7 @@ function CheckoutButton({
   },
 }) {
   let checkoutButton;
+  const paymentReady = stripeCompleted || usingExistingSource;
   if (!hasPricing) {
     checkoutButton = <StartAChatButton />;
   } else if (loading.checkout) {
@@ -30,8 +27,14 @@ function CheckoutButton({
     );
   } else {
     checkoutButton = (
-      <Button variant="primary" onClick={checkout} disabled={!_isEmpty(errors) || !(stripeCompleted || usingExistingSource)}>
-        Upgrade and Pay{!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
+      <Button variant="primary" onClick={checkout} disabled={!_isEmpty(errors) || !paymentReady}>
+        Upgrade{' '}
+        {paymentReady && (
+          <CostText>
+            and Pay
+            {!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
+          </CostText>
+        )}
       </Button>
     );
   }

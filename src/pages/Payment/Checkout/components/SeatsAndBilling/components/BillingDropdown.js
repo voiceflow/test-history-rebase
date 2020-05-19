@@ -4,7 +4,7 @@ import { css, styled, transition } from '@/hocs';
 const BillingDropdown = styled.div`
   ${transition()}
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   color: #62778c;
 
   ${({ error }) =>

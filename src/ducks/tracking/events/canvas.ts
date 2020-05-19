@@ -18,3 +18,11 @@ export const trackCanvasControlInteractionModel = createProjectEventTracker((opt
 export const trackCanvasSpotlightOpened = createProjectEventTracker((options) =>
   client.analytics.track(EventName.CANVAS_SPOTLIGHT_OPENED, createProjectEventPayload(options))
 );
+
+export const trackMarkupOpen = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_OPENED, createProjectEventPayload(options))
+);
+
+export const trackMarkupSessionDuration = createProjectEventTracker<{ duration: number }>((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }))
+);

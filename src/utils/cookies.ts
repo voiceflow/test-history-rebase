@@ -4,6 +4,7 @@ import { CREATOR_URL, LEGACY_URL, ROOT_DOMAIN } from '@/config';
 
 export const AUTH_COOKIE = 'auth_vf';
 export const MAINTENANCE_COOKIE = 'maintenance';
+
 const COOKIE_OPTIONS = { path: '/', domain: ROOT_DOMAIN };
 
 const cookies = new Cookies();

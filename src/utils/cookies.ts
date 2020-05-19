@@ -30,22 +30,6 @@ export const getAuthCookie = () => {
   return getByName(AUTH_COOKIE);
 };
 
-export const setMarkupStartTimeCookie = (time) => {
-  cookies.set(MARKUP_START_COOKIE, time);
-};
-
-export const getMarkupStartTimeCookie = () => {
-  return cookies.get(MARKUP_START_COOKIE);
-};
-
-export const setMarkupIsOpenedCookie = (val) => {
-  cookies.set(MARKUP_IS_OPENED_COOKIE, val);
-};
-
-export const getMarkupIsOpenedCookie = () => {
-  return cookies.get(MARKUP_IS_OPENED_COOKIE);
-};
-
 // TODO: is this still needed?
 export const removeLastSessionCookie = () => cookies.remove('last_session');
 

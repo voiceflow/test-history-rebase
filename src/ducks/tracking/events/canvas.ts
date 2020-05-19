@@ -24,5 +24,5 @@ export const trackMarkupOpen = createProjectEventTracker((options) =>
 );
 
 export const trackMarkupSessionDuration = createProjectEventTracker<{ duration: number }>((options) =>
-  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: options.duration / 1000 }))
+  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }))
 );

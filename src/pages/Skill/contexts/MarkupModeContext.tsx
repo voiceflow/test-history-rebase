@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { MarkupModeType } from '@/constants';
-import { useTeardown, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
-import { getMarkupIsOpenedCookie, getMarkupStartTimeCookie, setMarkupIsOpenedCookie, setMarkupStartTimeCookie } from '@/utils/cookies';
 
 export type MarkupModeContextType = {
   isOpen: boolean;
@@ -16,61 +15,50 @@ export type MarkupModeContextType = {
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
 export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
-const beforeUnloadTrack = (trackEvents: any) => {
-  if (getMarkupIsOpenedCookie() === 'true') {
-    const startTime = getMarkupStartTimeCookie();
-    const duration: number = Date.now() - startTime;
-    if (duration) {
-      trackEvents.trackMarkupSessionDuration({ duration });
-    }
-  }
-};
-
 export const MarkupModeProvider: React.FC = ({ children }) => {
   const [trackEvents] = useTrackingEvents();
-  const [startTime, setStartTime] = React.useState(0);
   const [isOpen, openTool, closeTool] = useEnableDisable(false);
   const [modeType, setModeType] = React.useState<MarkupModeType | null>(null);
+  const startTimeCache = React.useRef(0);
+  const isOpenCache = React.useRef(isOpen);
 
-  const enableMarkup = () => {
-    if (!isOpen) {
-      openTool();
-      trackEvents.trackMarkupOpen();
-      setMarkupIsOpenedCookie(true);
-      const startTime = Date.now();
-      setMarkupStartTimeCookie(startTime);
-      setStartTime(startTime);
-    }
-  };
+  isOpenCache.current = isOpen;
 
   const trackMarkupTime = React.useCallback(() => {
-    if (isOpen) {
-      const duration: number = Date.now() - startTime;
-      trackEvents.trackMarkupSessionDuration({ duration });
+    if (startTimeCache.current) {
+      trackEvents.trackMarkupSessionDuration({ duration: Date.now() - startTimeCache.current });
+      startTimeCache.current = 0;
     }
-  }, [isOpen, startTime]);
-
-  const disableMarkup = React.useCallback(() => {
-    if (isOpen) {
-      trackMarkupTime();
-      setMarkupIsOpenedCookie(false);
-      setStartTime(0);
-      closeTool();
-    }
-  }, [isOpen, setStartTime, trackMarkupTime]);
-
-  React.useEffect(() => {
-    const unloadTrack = () => beforeUnloadTrack(trackEvents);
-    window.addEventListener('beforeunload', unloadTrack);
-    return () => {
-      setMarkupStartTimeCookie(false);
-      window.removeEventListener('beforeunload', unloadTrack);
-    };
   }, []);
 
-  useTeardown(() => {
+  const enableMarkup = React.useCallback(() => {
+    if (isOpenCache.current) {
+      return;
+    }
+
+    openTool();
+    trackEvents.trackMarkupOpen();
+
+    startTimeCache.current = Date.now();
+  }, []);
+
+  const disableMarkup = React.useCallback(() => {
+    if (!isOpenCache.current) {
+      return;
+    }
+
     trackMarkupTime();
-  }, [trackMarkupTime]);
+    closeTool();
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', trackMarkupTime);
+
+    return () => {
+      trackMarkupTime();
+      window.removeEventListener('beforeunload', trackMarkupTime);
+    };
+  }, []);
 
   return (
     <MarkupModeContext.Provider value={{ isOpen, openTool: enableMarkup, closeTool: disableMarkup, modeType, setModeType }}>

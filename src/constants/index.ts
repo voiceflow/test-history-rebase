@@ -106,7 +106,9 @@ export enum BlockType {
 }
 
 export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];
+export const MARKUP_BLOCKS = [BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE, BlockType.MARKUP_TEXT];
 export const NO_EDITOR_BLOCKS = [...INTERNAL_BLOCKS, BlockType.DEPRECATED];
+export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, ...NO_EDITOR_BLOCKS, ...MARKUP_BLOCKS];
 
 export enum PermissionType {
   USER_EMAIL = 'alexa::profile:email:read',

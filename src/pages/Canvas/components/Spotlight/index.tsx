@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BlockType, IntegrationType, NO_EDITOR_BLOCKS } from '@/constants';
+import { BlockType, IntegrationType, NO_SPOTLIGHT_BLOCKS } from '@/constants';
 import { useDidUpdateEffect, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -9,7 +9,7 @@ import MANAGERS from '@/pages/Canvas/managers';
 import { Container, Select } from './components';
 
 const BLOCK_TYPES = [
-  ...MANAGERS.filter(({ type }) => type !== BlockType.INTEGRATION && !NO_EDITOR_BLOCKS.includes(type)).map(({ type, label, labelV2 }) => ({
+  ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label, labelV2 }) => ({
     value: type,
     label: labelV2 || label,
   })),

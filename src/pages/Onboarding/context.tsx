@@ -17,8 +17,7 @@ import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import * as Userflow from '@/vendors/userflow';
 
-import StepID from './StepIDs';
-import { ONBOARDING_PROJECT_NAME, STEP_META } from './constants';
+import { ONBOARDING_PROJECT_NAME, STEP_META, StepID } from './constants';
 import { CollaboratorType } from './types';
 
 const toast: any = toastNotif;
@@ -109,30 +108,31 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-export enum onBoardingType {
+export enum OnboardingType {
   create = 'create_workspace',
   join = 'join_workpsace',
 }
 
-const getFirstStep = (flow: onBoardingType) => {
+const getFirstStep = (flow: OnboardingType) => {
   switch (flow) {
-    case onBoardingType.create:
-      return StepID.CREATE_WORKSPACE;
-    case onBoardingType.join:
+    case OnboardingType.create:
+      return StepID.WELCOME;
+    case OnboardingType.join:
       return StepID.JOIN_WORKSPACE;
     default:
-      return StepID.CREATE_WORKSPACE;
+      return StepID.WELCOME;
   }
 };
 
-const getNumberOfSteps = (query: any, firstStep: StepID) => {
-  if (firstStep === StepID.JOIN_WORKSPACE) {
+const getNumberOfSteps = (query: any, flow: OnboardingType) => {
+  if (flow === OnboardingType.join) {
     return 1;
   }
   if (!query?.ob_payment) {
-    return 3;
+    return 4;
   }
-  return 4;
+
+  return 5;
 };
 
 const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite }: Query) => {
@@ -140,7 +140,7 @@ const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite }: Query) =>
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
     couponCode: ob_coupon || '',
-    flow: invite ? onBoardingType.join : onBoardingType.create,
+    flow: invite ? OnboardingType.join : OnboardingType.create,
   };
   if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
     configurations.plan = ob_plan;
@@ -185,7 +185,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
-  const numberOfSteps = getNumberOfSteps(query, firstStep);
+  const numberOfSteps = getNumberOfSteps(query, flow);
 
   const [state, actions] = useSmartReducer({
     workspaceId: '',

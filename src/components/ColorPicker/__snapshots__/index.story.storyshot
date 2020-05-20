@@ -439,7 +439,7 @@ exports[`Storyshots Color Picker Base 1`] = `
                 "OBoxShadow": undefined,
                 "WebkitBorderRadius": undefined,
                 "WebkitBoxShadow": undefined,
-                "background": "url(null) center left",
+                "background": "url(data:image/png;base64,00) center left",
                 "borderRadius": undefined,
                 "bottom": "0px",
                 "boxShadow": undefined,

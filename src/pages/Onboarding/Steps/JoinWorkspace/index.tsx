@@ -30,7 +30,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateAcco
     <Container>
       <FieldsContainer>
         <Label>Full Name</Label>
-        <div>
+        <FlexCenter>
           <NameInput placeholder="Your name" value={name} onChange={(e: any) => setName(e.target.value)} />
           <ProfilePicUpload
             image={userImage}
@@ -39,7 +39,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateAcco
             }}
             size="xsmall"
           />
-        </div>
+        </FlexCenter>
         <Label>Choose your role</Label>
         <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       </FieldsContainer>

@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
 
-import { STEP_META } from '@/pages/Onboarding/constants';
+import { STEP_META, StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
-import StepID from '../../../../StepIDs';
-import Container from './components/Container';
-import ProgressLine from './components/ProgressLine';
-import Title from './components/Title';
+import { Container, ProgressLine, Title } from './components';
 
 const StepStatus: React.FC = () => {
   const { state } = useContext(OnboardingContext);
@@ -18,10 +15,9 @@ const StepStatus: React.FC = () => {
       <Title>{STEP_META[currentStepID].title(titleMeta)}</Title>
       {numberOfSteps > 1 && (
         <>
-          {stepStack.map((_, index) => (
-            <ProgressLine active key={`filled-${index}`} />
-          ))}
-          {Array.from({ length: numberOfSteps - stepStack.length }, (index) => (
+          {stepStack.map((type, index) => (type === StepID.WELCOME ? null : <ProgressLine active key={`filled-${index}`} />))}
+
+          {Array.from({ length: numberOfSteps - stepStack.length }, (_, index) => (
             <ProgressLine key={`empty-${index}`} />
           ))}
         </>

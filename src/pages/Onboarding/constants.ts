@@ -1,10 +1,17 @@
-/* eslint-disable lodash/prefer-constant */
+/* eslint-disable lodash/prefer-constant, lodash/prefer-noop */
 
 import * as Tracking from '@/ducks/tracking';
 
-import StepID from './StepIDs';
-
 export const ONBOARDING_PROJECT_NAME = 'First Project';
+
+export enum StepID {
+  WELCOME = 'welcome',
+  CREATE_WORKSPACE = 'create_workspace',
+  PERSONALIZE_WORKSPACE = 'personalize_workspace',
+  ADD_COLLABORATORS = 'add_collaborators',
+  PAYMENT = 'payment',
+  JOIN_WORKSPACE = 'join_workspace',
+}
 
 export type StepMetaPropsType = {
   title: (val?: string) => string;
@@ -17,9 +24,16 @@ export type StepMetaPropsType = {
 export type StepMetaProps = Record<StepID, StepMetaPropsType>;
 
 export const STEP_META: StepMetaProps = {
+  [StepID.WELCOME]: {
+    title: () => 'Welcome',
+    canBack: false,
+    canSkip: false,
+    skipTo: null,
+    trackStep: () => () => null,
+  },
   [StepID.CREATE_WORKSPACE]: {
     title: () => 'Create Workspace',
-    canBack: true,
+    canBack: false,
     canSkip: false,
     skipTo: null,
     trackStep: () => Tracking.trackOnboardingCreate(),

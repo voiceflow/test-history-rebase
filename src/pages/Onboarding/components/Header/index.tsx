@@ -3,11 +3,9 @@ import React, { useContext } from 'react';
 import { STEP_META } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
-import ActionButton from './components/ActionButton';
-import Container from './components/Container';
-import StepStatus from './components/StepStatus';
+import { ActionButton, Container, StepStatus } from './components';
 
-const OnboardingModalHeader: React.FC = () => {
+const OnboardingHeader: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const { currentStepID, stepStack } = state;
   const { stepBack, stepForward } = actions;
@@ -32,4 +30,4 @@ const OnboardingModalHeader: React.FC = () => {
   );
 };
 
-export default OnboardingModalHeader;
+export default OnboardingHeader;

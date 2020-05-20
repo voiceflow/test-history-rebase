@@ -2,10 +2,7 @@ import React from 'react';
 
 import SvgIcon, { Icon } from '@/components/SvgIcon';
 
-import Container from './components/Container';
-import IconContainer from './components/IconContainer';
-import InnerContainer from './components/InnerContainer';
-import Label from './components/Label';
+import { Container, IconContainer, InnerContainer, Label } from './components';
 
 type ActionButtonProps = {
   shouldRender: boolean;
@@ -22,6 +19,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ shouldRender, icon, label, 
           <IconContainer>
             <SvgIcon icon={icon} color="#becedc" />
           </IconContainer>
+
           <Label>{label}</Label>
         </InnerContainer>
       )}

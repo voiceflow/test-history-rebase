@@ -18,13 +18,13 @@ export type FadeProps = {
 };
 
 export const FadeLeft = css<FadeProps>`
-  animation: ${({ distance }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
   animation-fill-mode: both;
+  animation: ${({ distance }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
 `;
 
 export const FadeRight = css<FadeProps>`
-  animation: ${({ distance = -40 }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
   animation-fill-mode: both;
+  animation: ${({ distance = -40 }) => FadeHorizontalKeyframes(distance)} 180ms ease-in-out;
 `;
 
 export const FadeLeftContainer = styled.div<FadeProps & SpaceProps>`

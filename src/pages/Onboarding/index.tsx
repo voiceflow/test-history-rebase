@@ -6,8 +6,7 @@ import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { Header, InnerContainer, OuterContainer } from './components';
-import CurrentStep from './components/CurrentStep';
+import { CurrentStep, Header, InnerContainer, OuterContainer } from './components';
 import { OnboardingProvider } from './context';
 import { OnboardingDataProps, OnboardingProps } from './types';
 

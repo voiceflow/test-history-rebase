@@ -13,6 +13,8 @@ const ROLE_OPTIONS = [
   'Marketing',
   'Sales',
   'VP / Manager',
+  'Student',
+  'Educator',
 ];
 
 type RoleSelectProps = {
@@ -27,6 +29,7 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => {
       options={ROLE_OPTIONS}
       placeholder="Select your role"
       onSelect={setUserRole}
+      maxHeight={192}
       creatable
       createInputPlaceholder="Add new role"
       onCreate={(role: string) => {

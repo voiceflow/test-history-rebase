@@ -430,10 +430,12 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
 
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: gycLFU 180ms ease-in-out;
-  animation: gycLFU 180ms ease-in-out;
+  -webkit-animation: dUYGUX 0.15s ease-in-out;
+  animation: dUYGUX 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .c13 .c16 {
@@ -1667,10 +1669,12 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
 
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: gycLFU 180ms ease-in-out;
-  animation: gycLFU 180ms ease-in-out;
+  -webkit-animation: dUYGUX 0.15s ease-in-out;
+  animation: dUYGUX 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .c13 .c16 {
@@ -2835,10 +2839,12 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-animation: kctwvn 180ms ease-in-out;
-  animation: kctwvn 180ms ease-in-out;
+  -webkit-animation: gbskxb 0.15s ease-in-out;
+  animation: gbskxb 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .c11 {
@@ -3661,10 +3667,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
 
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: gycLFU 180ms ease-in-out;
-  animation: gycLFU 180ms ease-in-out;
+  -webkit-animation: dUYGUX 0.15s ease-in-out;
+  animation: dUYGUX 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .c13 .c16 {
@@ -5264,10 +5272,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
 
 .c13 {
   padding: 11px 16px;
-  -webkit-animation: gycLFU 180ms ease-in-out;
-  animation: gycLFU 180ms ease-in-out;
+  -webkit-animation: dUYGUX 0.15s ease-in-out;
+  animation: dUYGUX 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .c13 .c16 {

@@ -3,9 +3,10 @@ import React from 'react';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import { ClickableText } from '@/components/Text';
+import { toast } from '@/components/Toast';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
-import StepID from '../../StepIDs';
+import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
 
@@ -17,13 +18,14 @@ const CreateWorkspace: React.FC = () => {
   const { stepForward, setCreateWorkspaceMeta } = actions;
   const [workspaceName, setWorkspaceName] = React.useState<string>(createWorkspaceMeta.workspaceName || '');
   const [workspaceImage, setWorkspaceImage] = React.useState<string>(createWorkspaceMeta.workspaceImage || '');
-  const canContinue = !!workspaceName.trim();
+  const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
   const iconUploadRef = React.createRef<HTMLElement>();
-  const inputRef = React.createRef<HTMLElement>();
 
-  React.useEffect(() => {
-    inputRef?.current?.focus();
-  });
+  const onBlur = () => {
+    if (workspaceName.length > 32) {
+      toast.error('Workspace Name Too Long - 32 Characters Max');
+    }
+  };
 
   const onContinue = () => {
     setCreateWorkspaceMeta({
@@ -37,17 +39,22 @@ const CreateWorkspace: React.FC = () => {
     <Container>
       <NameInput
         value={workspaceName}
+        onBlur={onBlur}
         onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
         placeholder="Enter your workspace name"
-        ref={inputRef}
       />
+
       <FlexCenter>
         <IconUpload image={workspaceImage} update={setWorkspaceImage} size="large" ref={iconUploadRef} />
       </FlexCenter>
+
       <LabelContainer>
         Drop workspace icon here <br />
         or <ClickableText onClick={() => iconUploadRef.current?.click()}>Browse</ClickableText> (optional)
       </LabelContainer>
+
       <FlexCenter>
         <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
           Continue

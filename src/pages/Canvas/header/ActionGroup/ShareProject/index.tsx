@@ -10,7 +10,7 @@ import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useModals } from '@/hooks';
-import { FadeDownContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
 import { ExportItem, MenuContainer, MenuItem } from './components';
@@ -57,7 +57,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
       zIndex={999}
       menu={() => (
         <MenuContainer>
-          <FadeDownContainer>
+          <FadeDownDelayedContainer>
             <MenuItem
               plan={plan}
               title="Testable Link"
@@ -76,7 +76,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
             />
 
             {canvasExportFeature.isEnabled && <ExportItem plan={plan} onRedirect={openCanvasExportModal} />}
-          </FadeDownContainer>
+          </FadeDownDelayedContainer>
         </MenuContainer>
       )}
     >

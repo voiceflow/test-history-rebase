@@ -1,0 +1,17 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import { withDnD } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import MarkupTextEditor from '.';
+
+<Meta title="Creator/Editors/Markup Text" component={MarkupTextEditor} decorators={[withDnD]} />
+
+# Markup Text Editor
+
+The editor for "markup text" blocks.
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+</Preview>

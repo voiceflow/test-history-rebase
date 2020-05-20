@@ -1,6 +1,8 @@
 /* eslint-disable simple-import-sort/sort */
 // DANGER ZONE: required to be in this order for storyshots to work
 
+import 'jest-canvas-mock';
+
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 
 import * as Enzyme from 'enzyme';

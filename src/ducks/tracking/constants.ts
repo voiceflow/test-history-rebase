@@ -22,6 +22,8 @@ export enum EventName {
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
   CANVAS_CONTROL_HELP_MENU = 'Canvas Control Help Menu',
   CANVAS_CONTROL_INTERACTION_MODEL = 'Canvas Control Interaction Model',
+  CANVAS_MARKUP_OPENED = 'Canvas Markup Opened',
+  CANVAS_MARKUP_DURATION = 'Markup Session Duration',
 
   ONBOARDING_PAY = 'Onboarding - Pay',
   ONBOARDING_JOIN = 'Onboarding - Join',
@@ -31,6 +33,8 @@ export enum EventName {
   ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 
   EXPORT_BUTTON_CLICK = 'Export Button Click',
+
+  UPGRADE = 'Upgrade',
 }
 
 export enum OnboardingChoice {

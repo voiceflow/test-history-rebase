@@ -4,13 +4,15 @@ import Badge from '@/components/Badge';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
+import { ClickableText } from '@/components/Text';
+import { UserRole } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
-import { isValidEmail, isValueDuplicate } from '@/utils/emails';
 
-import StepID from '../../StepIDs';
+import { StepID } from '../../constants';
 import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './components';
+import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const {
@@ -18,18 +20,30 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
 
-  const [collaborators, setCollaborators] = React.useState(
-    addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators
+  const [collaborators, setCollaborators] = React.useState(() =>
+    withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)
   );
   const [isDemoBooked, bookDemo, notBookDemo] = useEnableDisable(addCollaboratorMeta.isDemoBooked);
-  const [errorIndexes, updateErrorIndexes] = React.useState<number[]>([]);
-  const onMemberUpdate = (members: CollaboratorType[]) => {
-    setCollaborators(members);
+  // eslint-disable-next-line lodash/prefer-constant
+  const [errors, updateErrors] = React.useState<string[]>(() => collaborators.map(() => ''));
 
-    // if no members except owner as collaborator
-    if (members.length <= 1) {
-      notBookDemo();
+  const hasErrors = React.useMemo(() => errors.some(Boolean), [errors]);
+  const validMembers = React.useMemo(
+    () => collaborators.filter(({ email, permission }, index) => !!email && !errors[index] && permission !== UserRole.ADMIN),
+    [errors, collaborators]
+  );
+
+  const recalculateErrors = (members: CollaboratorType[]) => {
+    const newErrors = members.map((member, index) => getError(members, member, index));
+
+    if (newErrors.length) {
+      updateErrors(newErrors);
     }
+  };
+
+  const onMemberUpdate = (members: CollaboratorType[]) => {
+    recalculateErrors(members);
+    setCollaborators(members);
   };
 
   const updateDemo = () => {
@@ -41,36 +55,39 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   };
 
   const onContinue = () => {
-    setAddCollaboratorMeta({ collaborators, isDemoBooked });
+    setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email), isDemoBooked });
     stepForward(StepID.PAYMENT);
   };
 
-  // Recalculate error indexes on removal of team members
   React.useEffect(() => {
-    const errorIndexArray: number[] = [];
-    collaborators.forEach((collaborator, index) => {
-      const isEmailValid = !isValidEmail(collaborator.email);
-      const duplicateError = isValueDuplicate(collaborator.email, collaborators, 'email');
-      const hasError = isEmailValid || duplicateError;
-      if (hasError) {
-        errorIndexArray.push(index);
-      }
-    });
-    updateErrorIndexes(errorIndexArray);
+    recalculateErrors(collaborators);
   }, [collaborators.length]);
+
+  React.useEffect(() => {
+    if (!validMembers.length) {
+      notBookDemo();
+    }
+  }, [validMembers.length]);
 
   return (
     <Container>
       <HeaderLabel>
         <Text>INVITE TEAM MEMBERS</Text>
-        <Badge>{collaborators.length}</Badge>
+        <Badge>{validMembers.length}</Badge>
       </HeaderLabel>
-      <AddTeamMember errorIndexes={errorIndexes} updateErrorIndexes={updateErrorIndexes} onUpdate={onMemberUpdate} collaborators={collaborators} />
-      <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={collaborators.length <= 1 || errorIndexes.length !== 0} />
-      <FlexCenter>
-        <Button disabled={errorIndexes.length !== 0 || sendingRequests} variant="primary" onClick={onContinue}>
-          {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Continue'}
+
+      <AddTeamMember errors={errors} onUpdate={onMemberUpdate} collaborators={collaborators} />
+
+      <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={!validMembers.length} />
+
+      <FlexCenter column>
+        <Button disabled={!validMembers.length || hasErrors || sendingRequests} variant="primary" onClick={onContinue}>
+          {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Send Invites'}
         </Button>
+
+        <ClickableText onClick={() => stepForward(StepID.PAYMENT)} mt={16}>
+          Skip for now
+        </ClickableText>
       </FlexCenter>
     </Container>
   );

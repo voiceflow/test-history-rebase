@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { styled } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import { NestedInput, NestedInputProps } from './DefaultInput';
 

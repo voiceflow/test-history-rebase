@@ -26,7 +26,7 @@ import { getNLCIntentSlotsMap } from './utils/intent';
 export type TraceControllerProps = {
   nlc: NLC;
   debug: boolean;
-  engine?: Engine;
+  engine?: null | Engine;
   setError: (error: string) => void;
   enterFlow?: (diagramID: string) => void;
   fetchContext: (request?: any) => Promise<Context | null>;

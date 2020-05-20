@@ -7,7 +7,6 @@ const ProfilePicUpload = styled(IconUpload)`
   display: inline-block;
   margin-left: 10px;
   position: relative;
-  top: 2px;
 `;
 
 export default ProfilePicUpload;

@@ -18,6 +18,7 @@ import ifBlockAdapter from './if';
 import integrationBlockAdapter from './integration';
 import intentBlockAdapter from './intent';
 import interactionBlockAdapter from './interaction';
+import markupImageBlockAdapter from './markupImage';
 import paymentBlockAdapter from './payment';
 import permissionBlockAdapter from './permission';
 import randomBlockAdapter from './random';
@@ -81,6 +82,7 @@ const blockAdapter = {
   [BlockType.SPEAK]: speakBlockAdapter,
   [BlockType.STREAM]: streamBlockAdapter,
   [BlockType.USER_INFO]: userInfoBlockAdapter,
+  [BlockType.MARKUP_IMAGE]: markupImageBlockAdapter,
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
 };
 

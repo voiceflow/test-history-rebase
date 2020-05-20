@@ -3,14 +3,14 @@ import React from 'react';
 import { ModalFooter } from '@/components/LegacyModal';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
-import CheckoutButton from './components/CheckoutButton';
 import Container from './components/Container';
 import PaymentDetails from './components/PaymentDetails';
 import PlanDetailsContainer from './components/PlanDetailsContainer';
 import SeatsAndBilling from './components/SeatsAndBilling';
 import SelectPlan from './components/SelectPlan';
+import CheckoutButton from './components/SelectPlan/CheckoutButton';
 
 function UpdatePlan({
   payment: {

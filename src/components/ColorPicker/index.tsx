@@ -12,6 +12,8 @@ import { withEnterPress } from '@/utils/dom';
 import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
 import withHexColor from './withHexColor';
 
+export type Color = Required<RGBColor>;
+
 const removeHash = (hex: string) => hex.substr(1);
 
 const ColorPicker = (props: InjectedColorProps) => {

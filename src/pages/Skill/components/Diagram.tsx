@@ -16,6 +16,7 @@ import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 import { EditPermissionProvider, MarkupModeContext, ShortcutModalProvider } from '../contexts';
 import DiagramSync from './DiagramSync';
 import FlowControls from './FlowControls';
+import MarkupImageLoading from './MarkupImageLoading';
 
 export type DiagramProps = {
   diagramID: string;
@@ -43,7 +44,10 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping }) => {
 
               <FlowControls />
 
+              <MarkupImageLoading />
+
               <Canvas isPrototyping={isPrototyping} />
+
               <PrototypeSidebar />
             </SettingsModalProvider>
           </ShortcutModalProvider>

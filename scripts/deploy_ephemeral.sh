@@ -15,7 +15,7 @@ git branch -D ephemeral-$ENV_NAME # Force delete the ephemeral branch for safety
 git checkout -b ephemeral-$ENV_NAME
 git push --force --set-upstream origin ephemeral-$ENV_NAME --no-verify
 
-git checkout $CURRENT_BRANCH
+git checkout "$CURRENT_BRANCH"
 
 STASH_NAME=$(git stash list | head -1 | awk -F'. ' ' { print $NF }')
 if [ "$STASH_NAME" == "EPHEMERAL_ENV_SAVE" ]; then

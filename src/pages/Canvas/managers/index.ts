@@ -17,6 +17,8 @@ import FlowManager from './Flow';
 import IfManager from './If';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
+import MarkupImageManager from './MarkupImage';
+import MarkupTextManager from './MarkupText';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
 import RandomManager from './Random';
@@ -54,8 +56,8 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CANCEL_PAYMENT]: CancelPaymentManager,
   [BlockType.REMINDER]: ReminderManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
-  [BlockType.MARKUP_TEXT]: DeprecatedManager,
-  [BlockType.MARKUP_IMAGE]: DeprecatedManager,
+  [BlockType.MARKUP_TEXT]: MarkupTextManager,
+  [BlockType.MARKUP_IMAGE]: MarkupImageManager,
   [BlockType.MARKUP_SHAPE]: DeprecatedManager,
 };
 

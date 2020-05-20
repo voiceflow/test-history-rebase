@@ -10,7 +10,7 @@ export const BILLING_SEATS_ELEMENT = 'seats';
 const SeatsInputBox = styled(Input)`
   ${transition()}
   display: inline-block;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   width: 55px;
   padding-right: 5px;

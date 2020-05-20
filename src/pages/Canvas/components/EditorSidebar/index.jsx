@@ -3,7 +3,7 @@ import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
-import { BlockType } from '@/constants';
+import { BlockType, MARKUP_NODES } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
@@ -11,6 +11,7 @@ import { useEnableDisable } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
+import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { stopImmediatePropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
@@ -20,7 +21,7 @@ import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.COMMENT];
+const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
 function EditSidebar({ focus, node, parent, theme }) {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext);
@@ -45,34 +46,49 @@ function EditSidebar({ focus, node, parent, theme }) {
       // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
 
-    editor = (
-      <NamespaceProvider value={['editor', node.type, node.id]}>
-        <BlockEditor
-          key={`${node.id}-${path.length}`}
-          path={path}
-          goToPath={goToPath}
-          onRename={onRename}
-          hideTitle={node.type === BlockType.START}
-          hideHeader={isModal}
-          renameRevision={focus.renameActiveRevision}
-          prevPathLength={prevPathLength.current}
-          animationDistance={prevAnimationDistance.current}
-        >
-          <Manager
-            nodeID={node.id}
-            onChange={updateData}
-            onExpand={enableModalMode}
-            expanded={isModal}
-            goToPath={goToPath}
-            activePath={activePath}
-            pushToPath={pushToPath}
-            popFromPath={popFromPath}
-            isOpen={isOpen}
-          />
-        </BlockEditor>
-        <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
-      </NamespaceProvider>
+    const managerElm = (
+      <Manager
+        nodeID={node.id}
+        onChange={updateData}
+        onExpand={enableModalMode}
+        expanded={isModal}
+        goToPath={goToPath}
+        activePath={activePath}
+        pushToPath={pushToPath}
+        popFromPath={popFromPath}
+        isOpen={isOpen}
+      />
     );
+
+    if (MARKUP_NODES.includes(node.type)) {
+      editor = (
+        <NamespaceProvider value={['editor', node.type, node.id]}>
+          <MarkupEditor key={`${node.id}-${path.length}`} animationDistance={prevAnimationDistance.current}>
+            {managerElm}
+          </MarkupEditor>
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
+        </NamespaceProvider>
+      );
+    } else {
+      editor = (
+        <NamespaceProvider value={['editor', node.type, node.id]}>
+          <BlockEditor
+            key={`${node.id}-${path.length}`}
+            path={path}
+            goToPath={goToPath}
+            onRename={onRename}
+            hideTitle={node.type === BlockType.START}
+            hideHeader={isModal}
+            renameRevision={focus.renameActiveRevision}
+            prevPathLength={prevPathLength.current}
+            animationDistance={prevAnimationDistance.current}
+          >
+            {managerElm}
+          </BlockEditor>
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
+        </NamespaceProvider>
+      );
+    }
 
     if (prevPathLength.current !== path.length) {
       prevPathLength.current = path.length;

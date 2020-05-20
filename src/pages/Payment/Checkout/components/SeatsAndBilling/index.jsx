@@ -8,7 +8,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import StepHeading from '../StepHeading';
 import BillingDropdown from './components/BillingDropdown';
@@ -56,7 +56,7 @@ function SeatsAndBilling({
                     onClick: () => setPeriod(BillingPeriod.MONTHLY),
                   },
                   {
-                    label: 'Annual',
+                    label: 'Annually',
                     onClick: () => setPeriod(BillingPeriod.ANNUALLY),
                   },
                 ]}

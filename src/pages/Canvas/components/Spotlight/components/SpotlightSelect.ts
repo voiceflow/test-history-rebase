@@ -1,7 +1,7 @@
 import Select from 'react-select';
 
 import { styled } from '@/hocs';
-import { fadeDownDelayStyles } from '@/styles/animations';
+import { FadeDownDelayed } from '@/styles/animations';
 
 const SpotlightSelect = styled(Select)`
   .spotlight__placeholder {
@@ -32,7 +32,7 @@ const SpotlightSelect = styled(Select)`
     box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
   }
   .spotlight__menu-list {
-    ${fadeDownDelayStyles}
+    ${FadeDownDelayed}
     overflow: hidden;
     max-height: 195px;
   }

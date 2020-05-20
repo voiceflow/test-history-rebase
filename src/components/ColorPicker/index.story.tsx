@@ -8,20 +8,19 @@ export default {
 };
 
 export const base = () => {
-  const [opacity, setOpacity] = React.useState(0.7);
-  const [hexColor, setHexColor] = React.useState('#9a3');
+  const [color, setColor] = React.useState({ r: 150, g: 200, b: 30, a: 0.7 });
 
   return (
     <div style={{ margin: '20px' }}>
-      <div style={{ backgroundColor: hexColor, opacity, width: '50px', height: '50px', borderRadius: '50px' }}></div>
-      <ColorPicker
-        hexColor={hexColor}
-        opacity={opacity}
-        onChange={(color: string, alpha: number) => {
-          setOpacity(alpha);
-          setHexColor(color);
+      <div
+        style={{
+          width: '50px',
+          height: '50px',
+          borderRadius: '50px',
+          backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
         }}
       />
+      <ColorPicker color={color} onChange={setColor} />
     </div>
   );
 };

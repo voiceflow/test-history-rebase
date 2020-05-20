@@ -7,7 +7,7 @@ import { useEnableDisable } from './toggle';
 // eslint-disable-next-line import/prefer-default-export
 export function useDismissable(
   defaultValue = false,
-  onClose?: () => void,
+  onClose?: null | (() => void),
   autoDismiss = false,
   ref?: React.RefObject<Element>
 ): [boolean, () => void, (event?: MouseEvent) => void] {

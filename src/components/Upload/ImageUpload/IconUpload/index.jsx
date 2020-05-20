@@ -14,7 +14,7 @@ const SIZE_VARIANT = {
   large: 120,
   medium: 100,
   small: 80,
-  xsmall: 43,
+  xsmall: 42,
 };
 
 const MINIMUM_ICON_SIZE = 14;

@@ -5,7 +5,7 @@ import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
 import { toggleMembership } from '@/utils/array';
 
-import StepID from '../../StepIDs';
+import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Label, RoleSelect } from '../components';
 import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components';

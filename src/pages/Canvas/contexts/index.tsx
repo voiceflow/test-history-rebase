@@ -5,6 +5,7 @@ import { RegisterEngine } from '@/contexts';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
+import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
 
 import { ClipboardProvider } from './ClipboardContext';
@@ -35,6 +36,8 @@ export const withPlatform = withContext(PlatformContext, 'platform');
 
 export type ManagerValue = {
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
+  label?: string;
+  markupNode?: React.RefForwardingComponent<HTMLElement, ConnectedMarkupNodeProps>;
   mergeTerminator?: boolean;
 };
 

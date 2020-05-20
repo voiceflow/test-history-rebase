@@ -91,7 +91,7 @@ const Payment: React.FC<OnboardingProps> = () => {
   );
 
   React.useEffect(() => {
-    getPrice(plan, numberOfSeats, paymentPeriod, coupon);
+    getPrice(plan!, numberOfSeats, paymentPeriod, coupon);
   }, [coupon, paymentPeriod, plan, numberOfSeats, setCouponError, setPriceError]);
 
   const dollarPrice = price / 100;

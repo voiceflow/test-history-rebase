@@ -1,7 +1,7 @@
 import { down } from 'styled-breakpoints';
 
 import { styled } from '@/hocs';
-import { fadeDownDelayStyles } from '@/styles/animations';
+import { FadeDownDelayed } from '@/styles/animations';
 
 export type ModalContainerProps = {
   fade: boolean;
@@ -10,7 +10,7 @@ export type ModalContainerProps = {
 };
 
 const ModalContainer = styled.section<ModalContainerProps>`
-  ${({ fade }) => fade && fadeDownDelayStyles}
+  ${({ fade }) => fade && FadeDownDelayed}
 
   border-radius: 5px;
   margin: 28px auto;

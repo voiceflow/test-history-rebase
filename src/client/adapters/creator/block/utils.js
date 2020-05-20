@@ -1,3 +1,5 @@
+import _isString from 'lodash/isString';
+
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { PLATFORMS, RepromptType } from '@/constants';
@@ -15,7 +17,7 @@ export const repromptAdapter = {
     let content = reprompt.content;
     // Catch old reprompt formats and convert them to an acceptable fromDB
     // format before feeding into the adapters below
-    if (typeof reprompt.content === 'string') {
+    if (_isString(reprompt.content)) {
       content = textEditorContentAdapter.toDB(reprompt.content);
     }
 

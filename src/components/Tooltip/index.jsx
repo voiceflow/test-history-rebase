@@ -4,7 +4,7 @@ import { Manager, Popper, Reference } from 'react-popper';
 
 import Portal, { rootNode } from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
-import { FadeDownContainer, SlideContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
 import { stopPropagation } from '@/utils/dom';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
@@ -22,9 +22,9 @@ export default function Tooltip({ anchorRenderer, placement = 'auto-end', childr
           <Popper modifiers={{ preventOverflow: { padding: 19, boundariesElement: rootNode } }} placement={placement}>
             {({ ref, style, placement }) => (
               <div ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
-                <SlideContainer delay={0} onClick={stopPropagation(null, true)}>
+                <SlideContainer onClick={stopPropagation(null, true)}>
                   <Container>
-                    <FadeDownContainer>{children}</FadeDownContainer>
+                    <FadeDownDelayedContainer>{children}</FadeDownDelayedContainer>
                   </Container>
                 </SlideContainer>
               </div>

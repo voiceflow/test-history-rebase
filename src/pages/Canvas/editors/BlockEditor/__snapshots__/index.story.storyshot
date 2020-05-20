@@ -246,6 +246,25 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   opacity: 1;
 }
 
+.c33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
 .c18 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -266,25 +285,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   cursor: pointer;
 }
 
-.c33 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  height: auto;
-  padding: 20px 32px;
-  overflow: visible;
-  cursor: default;
-}
-
 .c38 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -302,6 +302,18 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c38:not(:last-child) {
   margin-right: 16px;
+}
+
+.c48 .c22 {
+  font-weight: 600;
+}
+
+.c49 .c22 {
+  font-weight: normal;
+}
+
+.c50 .c22 {
+  font-weight: 600;
 }
 
 .c16 {
@@ -446,6 +458,24 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   overflow: hidden;
 }
 
+.c15 {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-top: none !important;
+  -webkit-scrollbar-width: none;
+  -moz-scrollbar-width: none;
+  -ms-scrollbar-width: none;
+  scrollbar-width: none;
+}
+
+.c15:not(:first-child) {
+  border-top: 1px solid #dfe3ed;
+}
+
+.c15::-webkit-scrollbar {
+  display: none;
+}
+
 .c40 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -464,24 +494,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c40:not(:first-child) {
   border-top: 1px solid #dfe3ed;
-}
-
-.c15 {
-  overflow-x: hidden;
-  overflow-y: auto;
-  border-top: none !important;
-  -webkit-scrollbar-width: none;
-  -moz-scrollbar-width: none;
-  -ms-scrollbar-width: none;
-  scrollbar-width: none;
-}
-
-.c15:not(:first-child) {
-  border-top: 1px solid #dfe3ed;
-}
-
-.c15::-webkit-scrollbar {
-  display: none;
 }
 
 .c42 {
@@ -505,6 +517,41 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 
 .c31 {
   padding-bottom: 16px;
+}
+
+.c4 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  color: #5d9df5;
+  overflow: hidden;
+}
+
+.c4:hover {
+  color: #4986da;
+}
+
+.c4:active {
+  color: #4986da;
+}
+
+.c9 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 22px;
+  font-weight: 600;
+  color: #132144;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin-right: 16px;
+}
+
+.c5 {
+  margin: 0 8px;
+  color: #8da2b5;
 }
 
 .c2 {
@@ -536,6 +583,15 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   border-top: 1px solid #dfe3ed;
 }
 
+.c6 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-transition: color 0.15s ease;
+  transition: color 0.15s ease;
+  color: #5d9df5;
+  cursor: default;
+}
+
 .c3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -548,50 +604,6 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   width: 100%;
   text-transform: capitalize;
   margin-bottom: 5px;
-}
-
-.c4 {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  -webkit-transition: color 0.15s ease;
-  transition: color 0.15s ease;
-  color: #5d9df5;
-  overflow: hidden;
-}
-
-.c4:hover {
-  color: #4986da;
-}
-
-.c4:active {
-  color: #4986da;
-}
-
-.c6 {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  -webkit-transition: color 0.15s ease;
-  transition: color 0.15s ease;
-  color: #5d9df5;
-  cursor: default;
-}
-
-.c5 {
-  margin: 0 8px;
-  color: #8da2b5;
-}
-
-.c9 {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 22px;
-  font-weight: 600;
-  color: #132144;
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin-right: 16px;
 }
 
 .c7 {
@@ -611,10 +623,12 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
 }
 
 .c14 {
-  -webkit-animation: laeTZU 180ms ease-in-out;
-  animation: laeTZU 180ms ease-in-out;
+  -webkit-animation: laeTZU 0.15s ease-in-out;
+  animation: laeTZU 0.15s ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -633,16 +647,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   color: rgba(110,132,154,0.85);
 }
 
-.c48 .c10:not(:active) {
+.c51 .c10:not(:active) {
   box-shadow: none;
 }
 
-.c48 > div:not(:last-of-type) .c10 {
+.c51 > div:not(:last-of-type) .c10 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c48 > div:not(:first-of-type) .c10 {
+.c51 > div:not(:first-of-type) .c10 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;

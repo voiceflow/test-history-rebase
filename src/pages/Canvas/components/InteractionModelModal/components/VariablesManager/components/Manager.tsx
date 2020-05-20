@@ -6,7 +6,7 @@ import Input from '@/components/Input';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section, { SectionVariant } from '@/components/Section';
 import { VariableTag } from '@/components/VariableTag';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import Description from './Description';
 

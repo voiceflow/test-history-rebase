@@ -9,8 +9,8 @@ export type CanvasAPI = {
   getRef: () => HTMLElement;
   getRect: () => DOMRect;
   getBoundingPosition: () => [number, number];
-  zoomIn: (delta: number, options: unknown) => void;
-  zoomOut: (delta: number, options: unknown) => void;
+  zoomIn: (delta: number, options?: unknown) => void;
+  zoomOut: (delta: number, options?: unknown) => void;
   reorient: () => void;
 
   setZoom: (zoom: number, options?: unknown) => void;

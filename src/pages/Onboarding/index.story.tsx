@@ -3,7 +3,7 @@ import React from 'react';
 import { composeDecorators, withRedux } from '@/../.storybook';
 import { UserRole } from '@/constants';
 
-import { onBoardingType } from './context';
+import { OnboardingType } from './context';
 import { Onboarding } from '.';
 
 export default {
@@ -22,5 +22,5 @@ export const createWorkspace = withDecorators(() => {
 });
 
 export const joinWorkspace = withDecorators(() => {
-  return <Onboarding {...getProps()} location={{ search: `flow=${onBoardingType.join}` }} />;
+  return <Onboarding {...getProps()} location={{ search: `flow=${OnboardingType.join}` }} />;
 });

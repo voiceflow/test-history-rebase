@@ -1,0 +1,720 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Markup Components/Section Add 1`] = `
+.c8 {
+  box-sizing: content-box;
+  width: 10px;
+  height: 10px;
+  color: currentColor;
+}
+
+.c8 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 .c7 {
+  color: #fff;
+}
+
+.c12 .c7 {
+  color: #6e849a;
+}
+
+.c9 {
+  padding: 0 32px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
+.c0 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c0::before {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  bottom: 0;
+}
+
+.c0 .c13 {
+  font-weight: normal;
+}
+
+.c3:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #8da2b5;
+  font-size: 13px;
+}
+
+.c4 {
+  height: 20px;
+  margin: -5px 0;
+  font-size: 13px;
+  -webkit-letter-spacing: 0.34px;
+  -moz-letter-spacing: 0.34px;
+  -ms-letter-spacing: 0.34px;
+  letter-spacing: 0.34px;
+  color: #62778c;
+  text-transform: uppercase;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: -3px 0;
+  border: 1px solid #6e849a;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.c10 {
+  padding-bottom: 16px;
+}
+
+<div
+  style={
+    Object {
+      "margin": "50px auto",
+      "maxWidth": "400px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c4"
+          >
+            Title
+          </div>
+        </div>
+      </div>
+      <div
+        className="c5"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c6"
+            onClick={[Function]}
+          >
+            <span
+              className="c7 c8"
+              color="currentColor"
+              size={10}
+            >
+              <svg
+                data-file-name="SvgPlus"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c9"
+    >
+      <div
+        className="collapse"
+        style={Object {}}
+      >
+        <div
+          className="c10"
+        >
+          children
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Markup Components/Section Last 1`] = `
+.c8 {
+  box-sizing: content-box;
+  width: 10px;
+  height: 10px;
+  color: currentColor;
+}
+
+.c8 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 .c7 {
+  color: #fff;
+}
+
+.c12 .c7 {
+  color: #6e849a;
+}
+
+.c9 {
+  padding: 0 32px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
+.c0 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c0::before {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  bottom: 0;
+}
+
+.c0 .c13 {
+  font-weight: 600;
+}
+
+.c3:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #8da2b5;
+  font-size: 13px;
+}
+
+.c4 {
+  height: 20px;
+  margin: -5px 0;
+  font-size: 13px;
+  -webkit-letter-spacing: 0.34px;
+  -moz-letter-spacing: 0.34px;
+  -ms-letter-spacing: 0.34px;
+  letter-spacing: 0.34px;
+  color: #62778c;
+  text-transform: uppercase;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: -3px 0;
+  border: 1px solid #6e849a;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.c10 {
+  padding-bottom: 16px;
+}
+
+<div
+  style={
+    Object {
+      "margin": "50px auto",
+      "maxWidth": "400px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c4"
+          >
+            Title
+          </div>
+        </div>
+      </div>
+      <div
+        className="c5"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c6"
+            onClick={[Function]}
+          >
+            <span
+              className="c7 c8"
+              color="currentColor"
+              size={10}
+            >
+              <svg
+                data-file-name="SvgMinus"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c9"
+    >
+      <div
+        className="collapse show"
+        style={Object {}}
+      >
+        <div
+          className="c10"
+        >
+          children
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Markup Components/Section Normal 1`] = `
+.c5 {
+  padding: 0 32px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
+.c0 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c0::before {
+  position: absolute;
+  left: 32px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  bottom: 0;
+}
+
+.c0 .c7 {
+  font-weight: 600;
+}
+
+.c3:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.c4 {
+  height: 20px;
+  margin: -5px 0;
+  font-size: 13px;
+  -webkit-letter-spacing: 0.34px;
+  -moz-letter-spacing: 0.34px;
+  -ms-letter-spacing: 0.34px;
+  letter-spacing: 0.34px;
+  color: #62778c;
+  text-transform: uppercase;
+}
+
+.c6 {
+  padding-bottom: 16px;
+}
+
+<div
+  style={
+    Object {
+      "margin": "50px auto",
+      "maxWidth": "400px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c4"
+          >
+            Title
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c5"
+    >
+      <div
+        className="collapse show"
+        style={Object {}}
+      >
+        <div
+          className="c6"
+        >
+          children
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Markup Components/Section Remove 1`] = `
+.c8 {
+  box-sizing: content-box;
+  width: 10px;
+  height: 10px;
+  color: currentColor;
+}
+
+.c8 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c11 .c7 {
+  color: #fff;
+}
+
+.c12 .c7 {
+  color: #6e849a;
+}
+
+.c9 {
+  padding: 0 32px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: auto;
+  padding: 20px 32px;
+  overflow: visible;
+  cursor: default;
+}
+
+.c0 {
+  position: relative;
+  background-color: #fff;
+}
+
+.c0::before {
+  position: absolute;
+  left: 32px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
+  bottom: 0;
+}
+
+.c0 .c13 {
+  font-weight: 600;
+}
+
+.c3:not(:last-child) {
+  margin-right: 16px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #8da2b5;
+  font-size: 13px;
+}
+
+.c4 {
+  height: 20px;
+  margin: -5px 0;
+  font-size: 13px;
+  -webkit-letter-spacing: 0.34px;
+  -moz-letter-spacing: 0.34px;
+  -ms-letter-spacing: 0.34px;
+  letter-spacing: 0.34px;
+  color: #62778c;
+  text-transform: uppercase;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: -3px 0;
+  border: 1px solid #6e849a;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.c10 {
+  padding-bottom: 16px;
+}
+
+<div
+  style={
+    Object {
+      "margin": "50px auto",
+      "maxWidth": "400px",
+    }
+  }
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c4"
+          >
+            Title
+          </div>
+        </div>
+      </div>
+      <div
+        className="c5"
+      >
+        <div
+          className="c3"
+        >
+          <div
+            className="c6"
+            onClick={[Function]}
+          >
+            <span
+              className="c7 c8"
+              color="currentColor"
+              size={10}
+            >
+              <svg
+                data-file-name="SvgMinus"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c9"
+    >
+      <div
+        className="collapse show"
+        style={Object {}}
+      >
+        <div
+          className="c10"
+        >
+          children
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

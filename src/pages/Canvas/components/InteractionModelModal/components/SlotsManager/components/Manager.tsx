@@ -4,7 +4,7 @@ import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { Slot } from '@/models';
 import SlotEdit from '@/pages/Canvas/components/SlotEdit';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
 export type ManagerProps = {

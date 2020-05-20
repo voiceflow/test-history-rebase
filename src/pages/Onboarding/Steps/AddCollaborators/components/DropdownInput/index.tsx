@@ -30,6 +30,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   options,
   showDropdown,
   hasError,
+  autoFocus,
   isDisabled,
   ...props
 }) => {
@@ -38,10 +39,10 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
       <TextInputContainer>
         <Input
           // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={!isDisabled}
+          autoFocus={autoFocus}
           orientation={OrientationType.LEFT}
           value={inputValue}
-          placeholder="Enter work email"
+          placeholder="name@example.com"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
           showdropdown={showDropdown}
           error={hasError}

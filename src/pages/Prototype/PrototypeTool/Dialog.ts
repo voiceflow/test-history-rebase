@@ -64,7 +64,9 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
 
     const confirmFulfillment = this.props.nlc.handleDialog(this.dialog, input);
 
-    if (confirmFulfillment.intent === this.dialog.intent) {
+    const confirm = this.dialog.required?.[0].dialog?.confirm;
+
+    if (confirmFulfillment.intent === this.dialog.intent && confirm?.length) {
       const mergedVariables = {
         ...this.props.variables,
         ...confirmFulfillment.slots.reduce<Record<string, any>>((acc, slot) => {
@@ -72,7 +74,8 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
           return acc;
         }, {}),
       };
-      await this.processMessage(this.dialog.required?.[0].dialog?.confirm[0] || 'confirm slot?', mergedVariables);
+
+      await this.processMessage(confirm[0] || 'confirm slot?', mergedVariables);
 
       this.dialog = confirmFulfillment;
       this.status = DialogStatus.CONFIRM_PROMPT;

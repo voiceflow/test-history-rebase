@@ -66,10 +66,17 @@ export const registerCustomIntents = (nlc: NLC, { slots, intents }: Pick<Options
         const slot = slots.find((slot) => slot.key === intentSlot.id);
         if (slot) {
           let dialog;
+
           if (intentSlot.dialog) {
+            let confirm: string[] = [];
+
+            if (intentSlot.dialog.confirmEnabled) {
+              confirm = intentSlot.dialog.confirm[0]?.text ? getUtterancesWithSlotNames(intentSlot.dialog.confirm, slots) : [''];
+            }
+
             dialog = {
               prompt: getUtterancesWithSlotNames(intentSlot.dialog.prompt, slots),
-              confirm: getUtterancesWithSlotNames(intentSlot.dialog.confirm, slots),
+              confirm,
               utterances: getUtterancesWithSlotNames(intentSlot.dialog.utterances, slots),
             };
           }

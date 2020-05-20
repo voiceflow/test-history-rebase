@@ -9,7 +9,7 @@ import Section from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
 import { connect } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { formatIntentName } from '@/utils/intent';
 

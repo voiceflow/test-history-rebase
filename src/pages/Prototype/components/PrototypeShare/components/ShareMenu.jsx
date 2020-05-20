@@ -5,7 +5,7 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Button from '@/components/LegacyButton';
 import { MenuContainer } from '@/components/Menu';
 import { Spinner } from '@/components/Spinner';
-import { FadeDownContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer } from '@/styles/animations';
 
 const ShareMenuContainer = styled(MenuContainer)`
   width: 440px;
@@ -21,7 +21,7 @@ function ShareMenu({ link, user, toggle, handleInviteClick }) {
   return (
     <ShareMenuContainer>
       {link && user ? (
-        <FadeDownContainer>
+        <FadeDownDelayedContainer>
           <BodyContainer index={1}>
             <div className="mb-3">
               <label className="text-muted">Share testable link</label>
@@ -47,7 +47,7 @@ function ShareMenu({ link, user, toggle, handleInviteClick }) {
               </div>
             </div>
           </BodyContainer>
-        </FadeDownContainer>
+        </FadeDownDelayedContainer>
       ) : (
         <Spinner isEmpty isMd />
       )}

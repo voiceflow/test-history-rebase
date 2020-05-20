@@ -6,7 +6,7 @@ import { toast } from '@/components/Toast';
 import { UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
 

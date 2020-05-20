@@ -3,7 +3,7 @@ import React from 'react';
 import { ModalFooter } from '@/components/LegacyModal';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import Container from './components/Container';
 import PaymentDetails from './components/PaymentDetails';

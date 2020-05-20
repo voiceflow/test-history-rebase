@@ -14,6 +14,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider } from '@/contexts';
 import { ModalsContext } from '@/contexts/ModalsContext';
+import { createGlobalStyle } from '@/hocs';
 import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
@@ -23,8 +24,19 @@ import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 import { StoryDetails } from './components';
 import { StoryContext } from './contexts';
 
+const StorybookStyles = createGlobalStyle`
+  html {
+    height: 100%;
+  }
+
+  body {
+    min-height: 100%;
+  }
+`;
+
 const globalDecorator = (Component) => (
   <ThemeProvider>
+    <StorybookStyles />
     <Component />
   </ThemeProvider>
 );

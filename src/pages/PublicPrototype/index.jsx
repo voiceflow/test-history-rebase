@@ -17,7 +17,7 @@ import { replaceSlots } from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
 import Prototype from '@/pages/Prototype';
 import { EditPermissionProvider } from '@/pages/Skill/contexts';
-import { FadeDownContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer } from '@/styles/animations';
 import * as Intercom from '@/vendors/intercom';
 
 const PrototypeContainer = styled.div`
@@ -47,7 +47,7 @@ class PublicPrototype extends React.Component {
 
   renderBody = () => (
     <PublicPrototypeMenuContainer>
-      <FadeDownContainer>
+      <FadeDownDelayedContainer>
         <div className="mb-3">
           <h6 className="text-muted">Share testable link</h6>
           <small className="text-dull">
@@ -55,7 +55,7 @@ class PublicPrototype extends React.Component {
           </small>
         </div>
         <ClipBoard name="link" value={window.location.href} id="shareLink" />
-      </FadeDownContainer>
+      </FadeDownDelayedContainer>
     </PublicPrototypeMenuContainer>
   );
 

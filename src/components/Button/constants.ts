@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-export const ButtonVariant = {
-  PRIMARY: 'primary',
-  SECONDARY: 'secondary',
-  TERTIARY: 'tertiary',
-};
+export enum ButtonVariant {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+}

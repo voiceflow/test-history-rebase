@@ -9,7 +9,7 @@ import Tabs from '@/components/Tabs';
 import { PlanType } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
-import { FadeLeftContainer } from '@/styles/animations/FadeHorizontal';
+import { FadeLeftContainer } from '@/styles/animations';
 
 import ChatWithUsLink from '../components/ChatWithUsLink';
 import {

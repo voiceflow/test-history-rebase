@@ -6,7 +6,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { FlexLabel } from '@/components/Flex';
 import { useKeygen } from '@/hooks';
 import { useCombinedRefs } from '@/hooks/ref';
-import { FadeDownContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer } from '@/styles/animations';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils/dom';
 import { stringify } from '@/utils/functional';
 
@@ -59,7 +59,7 @@ function Menu(
       disableAnimation={disableAnimation}
       nativeScrollbar={scrollBarWidth === 0}
     >
-      <FadeDownContainer length={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
+      <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         {searchable}
         <Scrollbars ref={scrollbarsRef} className="scrollbars" autoHeight autoHide autoHeightMax={maxHeight} hideTracksWhenNotNeeded>
@@ -76,7 +76,7 @@ function Menu(
               </Item>
             ))}
         </Scrollbars>
-      </FadeDownContainer>
+      </FadeDownDelayedContainer>
       {multiselect && (
         <ButtonContainer disabled={disabled} onClick={disabled ? stopImmediatePropagation() : stopImmediatePropagation(buttonClick)}>
           {buttonLabel}

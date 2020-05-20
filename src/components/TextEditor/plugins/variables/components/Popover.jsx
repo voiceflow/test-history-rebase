@@ -6,7 +6,7 @@ import { MenuContainer } from '@/components/Menu';
 import Portal from '@/components/Portal';
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
 import { css, styled } from '@/hocs';
-import { FadeDownContainer } from '@/styles/animations';
+import { FadeDownDelayedContainer } from '@/styles/animations';
 import { preventDefault, stopPropagation, withKeyPress } from '@/utils/dom';
 
 const PopoverContainer = styled.div`
@@ -62,7 +62,7 @@ export default React.forwardRef(
           <Portal portalNode={portalNode}>
             <PopoverContainer ref={ref} onClick={stopPropagation()}>
               <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
-                <FadeDownContainer>
+                <FadeDownDelayedContainer>
                   {creatable && (
                     <>
                       <Header focused={isFocused} onMouseEnter={onHover}>
@@ -92,7 +92,7 @@ export default React.forwardRef(
                   )}
 
                   {children}
-                </FadeDownContainer>
+                </FadeDownDelayedContainer>
               </MenuContainer>
             </PopoverContainer>
           </Portal>

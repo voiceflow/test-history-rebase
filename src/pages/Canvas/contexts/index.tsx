@@ -36,6 +36,7 @@ export const withPlatform = withContext(PlatformContext, 'platform');
 
 export type ManagerValue = {
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
+  label?: string;
   markupNode?: React.RefForwardingComponent<HTMLElement, ConnectedMarkupNodeProps>;
   mergeTerminator?: boolean;
 };

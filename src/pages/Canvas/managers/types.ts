@@ -3,14 +3,15 @@ import { Overwrite } from 'utility-types';
 
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { Node, Port } from '@/models';
+import { Markup, Node, Port } from '@/models';
+import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 
 export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
-export type NodeConfig<T> = {
+export type NodeConfig<T extends object | Markup.NodeData> = {
   type: BlockType;
   icon?: string | React.FC;
   iconColor?: string;
@@ -29,6 +30,7 @@ export type NodeConfig<T> = {
 
   step: React.FC<ConnectedStepProps<T>>;
   editor: React.FC<{ data: T; onChange: (data: Partial<T>) => void }>;
+  markupNode?: T extends Markup.NodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
   editorsByPath?: Record<string, React.FC>;
 
   factory: (
@@ -39,4 +41,4 @@ export type NodeConfig<T> = {
   };
 };
 
-export type BasicNodeConfig<T = {}> = WithRequired<Partial<NodeConfig<T>>, 'type'>;
+export type BasicNodeConfig<T extends object | Markup.NodeData = {}> = WithRequired<Partial<NodeConfig<T>>, 'type'>;

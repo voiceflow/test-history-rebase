@@ -2,7 +2,7 @@ import cuid from 'cuid';
 import { partition as _partition } from 'lodash';
 import { batch } from 'react-redux';
 
-import { BlockType } from '@/constants';
+import { BlockType, MARKUP_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -17,6 +17,8 @@ class NodeManager extends EngineConsumer {
   internal = {
     add: (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor) => {
       if (node.type === BlockType.COMMENT) {
+        this.dispatch(Creator.addNode(node, data));
+      } else if (MARKUP_NODES.includes(node.type)) {
         this.dispatch(Creator.addNode(node, data));
       } else {
         this.dispatch(Creator.addWrappedNode(node, data, parentNode));

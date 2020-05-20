@@ -1,3 +1,4 @@
+import { MARKUP_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { Link, Node, NodeData, PartialModel, Port } from '@/models';
 import { findUnion, reorder, withoutValue } from '@/utils/array';
@@ -135,12 +136,21 @@ export const removePortFromBlockInState = (portID: string) =>
 
 export const removeAllPortsFromBlocksInState = (portIDs: string[]) => compose(...portIDs.map(removePortFromBlockInState));
 
-export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>) => (state: DiagramState) => ({
-  ...state,
-  ...('parentNode' in nodePatch && {
-    rootNodeIDs: nodePatch.parentNode ? withoutValue(state.rootNodeIDs, nodeID) : safeAdd(state.rootNodeIDs, nodeID),
-  }),
-});
+export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>) => (state: DiagramState) =>
+  !MARKUP_NODES.includes(nodePatch.type ?? getNormalizedByKey(state.nodes, nodeID).type) && 'parentNode' in nodePatch
+    ? {
+        ...state,
+        rootNodeIDs: nodePatch.parentNode ? withoutValue(state.rootNodeIDs, nodeID) : safeAdd(state.rootNodeIDs, nodeID),
+      }
+    : state;
+
+export const addNodeToMarkupNodes = (nodeID: string, node: Node) => (state: DiagramState) =>
+  MARKUP_NODES.includes(node.type)
+    ? {
+        ...state,
+        markupNodeIDs: safeAdd(state.markupNodeIDs, nodeID),
+      }
+    : state;
 
 export const updateNodeInState = (node: Node) =>
   compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
@@ -154,15 +164,17 @@ export const patchNodeInState = (nodeID: string, nodePatch: Partial<Node>) =>
     nodes: patchNormalizedByKey(state.nodes, nodeID, nodePatch),
   }));
 
+export const addNode = (node: Node, data: NodeData<unknown>) => (state: DiagramState) => ({
+  ...state,
+  nodes: addNormalizedByKey(state.nodes, node.id, node),
+  data: {
+    ...state.data,
+    [node.id]: data,
+  },
+});
+
 export const addNodeToState = (node: Node, data: NodeData<unknown>) =>
-  compose(updateRootNodesInState(node.id, node), (state: DiagramState) => ({
-    ...state,
-    nodes: addNormalizedByKey(state.nodes, node.id, node),
-    data: {
-      ...state.data,
-      [node.id]: data,
-    },
-  }));
+  compose(updateRootNodesInState(node.id, node), addNodeToMarkupNodes(node.id, node), addNode(node, data));
 
 export const addAllNodesToState = (nodesWithData: { node: Node; data: NodeData<unknown> }[]) =>
   compose(...nodesWithData.map(({ node, data }) => addNodeToState(node, data)));
@@ -174,6 +186,7 @@ export const removeNodeFromState = (node: Node) => (state: DiagramState) => {
     ...state,
     nodes: removeNormalizedByKey(state.nodes, node.id),
     rootNodeIDs: withoutValue(state.rootNodeIDs, node.id),
+    markupNodeIDs: withoutValue(state.markupNodeIDs, node.id),
     data: dataWithoutNode,
   };
 };

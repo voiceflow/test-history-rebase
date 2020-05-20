@@ -2,14 +2,18 @@ import cuid from 'cuid';
 import _noop from 'lodash/noop';
 import React from 'react';
 
+import { Markup, NodeData } from '@/models';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
-import { EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext, PresentationModeContext, useNode, useNodeData, withNode } from '@/pages/Canvas/contexts';
 import { useNodeDragApi } from '@/pages/Canvas/hooks';
 
-const Node = () => {
-  const { nodeID } = useNode();
+const MarkupNode = () => {
   const engine = React.useContext(EngineContext)!;
+  const getManager = React.useContext(ManagerContext)!;
   const isPresentationMode = React.useContext(PresentationModeContext);
+  const { nodeID, node } = useNode();
+  const { data } = useNodeData();
+  const { markupNode: NodeComponent } = getManager(node?.type)!;
 
   const { api: dragApi, nodeRef, position, isDragging, onMouseDown } = useNodeDragApi<HTMLDivElement>();
 
@@ -55,9 +59,9 @@ const Node = () => {
       onDoubleClick={onDoubleClick}
     >
       {/* TODO: add markup node here */}
-      <div style={{ width: '100px', height: '100px', background: '#ffeeff' }} />
+      {NodeComponent && <NodeComponent node={node} data={data as NodeData<Markup.NodeData>} />}
     </DraggingNode>
   );
 };
 
-export default withNode(Node);
+export default withNode(MarkupNode);

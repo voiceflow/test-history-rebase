@@ -20,7 +20,7 @@ import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = [BlockType.COMMENT];
+const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
 function EditSidebar({ focus, node, parent, theme }) {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext);

@@ -13,15 +13,15 @@ const Text = styled.div`
 export type SpinnerProps = {
   message?: string;
   name?: string;
-  isLg?: boolean;
   isMd?: boolean;
   color?: string;
   className?: string;
+  borderLess?: boolean;
 };
 
-const Spinner: React.FC<SpinnerProps> = ({ message, name, isLg, isMd, color, className }) => (
+const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess }) => (
   <div className={cn('text-center', className)}>
-    <Loader isLg={isLg} isMd={isMd} color={color} />
+    <Loader isMd={isMd} color={color} borderLess={borderLess} />
     {!!(message || name) && <Text>{message || `Loading ${name}...`}</Text>}
   </div>
 );

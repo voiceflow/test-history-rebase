@@ -21,3 +21,4 @@ export * from './keygen';
 export * from './feature';
 export * from './hover';
 export * from './reducerV2';
+export * from './upload';

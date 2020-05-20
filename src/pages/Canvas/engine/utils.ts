@@ -53,6 +53,7 @@ export function nodeFactory(
   factoryData?: Partial<NodeData<unknown>>
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
+
   const {
     node: { ports, ...node },
     data,

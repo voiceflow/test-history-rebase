@@ -145,7 +145,7 @@ class StartTrigger extends Component {
                 </div>
               );
             })}
-          {props_integration_users_loading && <Spinner isEmpty isLg />}
+          {props_integration_users_loading && <Spinner isEmpty />}
           <div className="btn btn-clear btn-lg btn-block" onClick={() => this.addUser()}>
             Create Trigger
           </div>

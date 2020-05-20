@@ -22,13 +22,15 @@ const createStory = () =>
         <ShortcutModalProvider>
           <EditPermissionProvider isPrototyping>
             <RegisterEngine
-              engine={{
-                canvas: {
-                  zoomIn: action('zoomIn'),
-                  zoomOut: action('zoomOut'),
-                  applyTransition: action('applyTransition'),
-                },
-              }}
+              engine={
+                {
+                  canvas: {
+                    zoomIn: action('zoomIn'),
+                    zoomOut: action('zoomOut'),
+                    applyTransition: action('applyTransition'),
+                  },
+                } as any
+              }
             />
 
             <Component />

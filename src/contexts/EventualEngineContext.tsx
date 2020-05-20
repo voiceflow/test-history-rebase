@@ -1,20 +1,21 @@
 import React from 'react';
 
 import { withContext } from '@/hocs';
+import type { Engine } from '@/pages/Canvas/engine';
 
 export type EventualEngineContextType = null | {
-  get: () => any;
-  set: (engine: any) => void;
+  get: () => null | Engine;
+  set: (engine: null | Engine) => void;
 };
 
 export const EventualEngineContext = React.createContext<EventualEngineContextType>(null);
 export const { Consumer: EventualEngineConsumer } = EventualEngineContext;
 
 export const EventualEngineProvider: React.FC = ({ children }) => {
-  const engineRef = React.useRef(null);
+  const engineRef = React.useRef<Engine | null>(null);
 
   const get = React.useCallback(() => engineRef.current, []);
-  const set = React.useCallback((engine) => {
+  const set = React.useCallback((engine: null | Engine) => {
     engineRef.current = engine;
   }, []);
 
@@ -22,7 +23,7 @@ export const EventualEngineProvider: React.FC = ({ children }) => {
 };
 
 export type RegisterEngineProps = {
-  engine: any;
+  engine: Engine;
 };
 
 export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {

@@ -26,17 +26,17 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   const markupFeature = useFeature(FeatureFlag.MARKUP);
 
   const onZoomIn = React.useCallback(() => {
-    eventualEngine.get().canvas.applyTransition();
-    eventualEngine.get().canvas.zoomIn(ZOOM_DELTA);
+    eventualEngine.get()?.canvas?.applyTransition();
+    eventualEngine.get()?.canvas?.zoomIn(ZOOM_DELTA);
   }, [eventualEngine]);
 
   const onZoomOut = React.useCallback(() => {
-    eventualEngine.get().canvas.applyTransition();
-    eventualEngine.get().canvas.zoomOut(ZOOM_DELTA);
+    eventualEngine.get()?.canvas?.applyTransition();
+    eventualEngine.get()?.canvas?.zoomOut(ZOOM_DELTA);
   }, [eventualEngine]);
 
   const onFocusHome = React.useCallback(() => {
-    eventualEngine.get().focusHome();
+    eventualEngine.get()?.focusHome();
   }, [eventualEngine]);
 
   const onOpenMarkup = React.useCallback(() => {

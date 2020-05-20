@@ -37,7 +37,8 @@ const nodeDataAdapter = createSimpleAdapter<DBNode['extras'], NodeData<unknown>,
 
     let data: Partial<NodeData<unknown>> = {};
     try {
-      data = blockAdapter[type].fromDB(dbData);
+      const fromDb = blockAdapter[type].fromDB;
+      data = blockAdapter[type].fromDB(dbData as Parameters<typeof fromDb>[0]);
     } catch (err) {
       console.error('Block Adapter Error', err);
       data = dbData as any;

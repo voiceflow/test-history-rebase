@@ -88,9 +88,9 @@ const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string
           <AnyCanvasProviders engine={engine}>
             <ExportStyle />
             <ExportCanvasDiagram onRegister={registerCanvas}>
+              {markup.isEnabled && <MarkupLayer />}
               <LinkLayer />
               <NodeLayer />
-              {markup.isEnabled && <MarkupLayer />}
             </ExportCanvasDiagram>
           </AnyCanvasProviders>
         </EditPermissionProvider>

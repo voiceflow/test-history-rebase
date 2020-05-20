@@ -5,3 +5,4 @@ export * from './session';
 export * from './invitation';
 export * from './onboarding';
 export * from './workspace';
+export * from './upgrade';

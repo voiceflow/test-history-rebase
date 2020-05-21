@@ -46,7 +46,7 @@ export const deleteWorkspace = (workspaceID: string): Thunk => async (dispatch) 
   }
 };
 
-export const fetchWorkspaces = (): Thunk => async (dispatch, getState) => {
+export const fetchWorkspaces = (): SyncThunk => async (dispatch, getState) => {
   try {
     const state = getState();
     const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
@@ -65,6 +65,8 @@ export const fetchWorkspaces = (): Thunk => async (dispatch, getState) => {
     if (!normalizedWorkspaces.byId.hasOwnProperty(activeWorkspaceID)) {
       dispatch(updateCurrentWorkspace(workspaces[0]?.id));
     }
+
+    return normalizedWorkspaces;
   } catch (err) {
     dispatch(Modal.setError('Unable to fetch workspaces'));
 

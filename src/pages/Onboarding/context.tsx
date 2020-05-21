@@ -297,6 +297,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     let workspace;
+    let userWorkspaces: any;
     try {
       workspace = await createWorkspace({ name, image: workspaceImage });
     } catch (e) {
@@ -306,7 +307,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     try {
-      await fetchWorkspaces();
+      userWorkspaces = await fetchWorkspaces();
     } catch (e) {
       toastNotif.error('Error getting workspace, please try again later');
       goToDashboard();
@@ -346,6 +347,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       email: email!,
       channels,
       teamSize,
+      workspaceIDs: userWorkspaces?.allIds,
     });
 
     try {

@@ -2,9 +2,9 @@ import client from '@/client';
 
 import { EventName } from '../constants';
 
-export const trackSessionBegin = () => () => {
+export const trackSessionBegin = (workspaceIDs: string[] = []) => () => {
   client.analytics.track(EventName.SESSION_BEGIN);
-  client.analytics.identify({});
+  client.analytics.identify({ workspace_ids: workspaceIDs });
 };
 
 export const trackSessionDuration = (duration: number) => () =>

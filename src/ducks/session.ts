@@ -13,6 +13,7 @@ import { ROOT_DOMAIN } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
 import * as Feature from '@/ducks/feature';
+import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
@@ -153,9 +154,11 @@ export const logout = (): Thunk => async (dispatch) => {
 };
 
 export const identifyUser = (user: Models.Account): Thunk => async (_, getState) => {
-  const intercomEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.INTERCOM_INTEGRATION);
+  const state = getState();
+  const intercomEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.INTERCOM_INTEGRATION);
+  const workspaceID = Workspace.activeWorkspaceIDSelector(state) || '';
 
-  LogRocket.identify(user, intercomEnabled);
+  LogRocket.identify(user, workspaceID, intercomEnabled);
   await Userflow.identify(user);
 };
 

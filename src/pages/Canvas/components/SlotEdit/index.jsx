@@ -98,7 +98,6 @@ function SlotEdit({
     if (slotType === CUSTOM_SLOT_TYPE && customLines.length <= 1) {
       return;
     }
-
     setCustomLines(without(customLines, index));
   };
 
@@ -126,7 +125,7 @@ function SlotEdit({
     if (isInteraction) {
       updateSlot();
     }
-  }, [selectedColor]);
+  }, [selectedColor, customLines.length]);
 
   return (
     <>

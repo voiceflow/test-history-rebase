@@ -118,13 +118,16 @@ class Canvas extends React.PureComponent {
       return;
     }
 
-    const renderLayerEl = this.renderLayerRef.current;
-
     clearTimeout(this.applyTransitionTimeout);
 
     this.applyTransitionTimeout = null;
 
-    renderLayerEl.style.transition = '';
+    const renderLayerEl = this.renderLayerRef.current;
+
+    // sometimes in the test tool can be undefined
+    if (renderLayerEl) {
+      renderLayerEl.style.transition = '';
+    }
   };
 
   applyStyles = (styles) => {

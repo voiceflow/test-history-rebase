@@ -8,8 +8,10 @@ export type Options = null | {
   preventDefault?: boolean;
 };
 
+type Callback = (e: KeyboardEvent) => void | boolean | Promise<void>;
+
 // eslint-disable-next-line import/prefer-default-export
-export function useHotKeys(key: Hotkey, callback: (e: KeyboardEvent) => void | boolean, options: Options = {}, deps: any[] = []) {
+export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {}, deps: any[] = []) {
   const memoisedCallback = useMemo(
     () => (e: KeyboardEvent) => {
       if (!options?.preventDefault) {
@@ -28,10 +30,12 @@ export function useHotKeys(key: Hotkey, callback: (e: KeyboardEvent) => void | b
     const action = options?.action || 'keydown';
     const keys = HOTKEY_MAPPING[key];
 
-    Mousetrap.bind(keys, memoisedCallback, action);
+    const instance = new Mousetrap();
+
+    instance.bind(keys, memoisedCallback, action);
 
     return () => {
-      Mousetrap.unbind(keys, action);
+      instance.reset();
     };
   }, [memoisedCallback]);
 }

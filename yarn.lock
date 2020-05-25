@@ -3760,6 +3760,7 @@
   dependencies:
     "@types/react" "*"
 
+
 "@types/react-input-autosize@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.0.2.tgz#6ccdfb100c21b6096c1a04c3c3fac196b0ce61c1"

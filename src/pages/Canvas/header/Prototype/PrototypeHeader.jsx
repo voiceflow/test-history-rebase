@@ -4,7 +4,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { goToCurrentCanvas } from '@/ducks/router';
 import { connect } from '@/hocs';
-import PrototypeShare from '@/pages/Prototype/components/PrototypeShare';
+import ShareProject from '@/pages/Canvas/header/ActionGroup/ShareProject';
 
 import { SubTitleGroup } from '../ActionGroup/styled';
 import PrototypeTimer from './PrototypeTimer';
@@ -22,7 +22,7 @@ function PrototypeHeader({ goToCurrentCanvas, status }) {
         <PrototypeTimer />
       </div>
       <SubTitleGroup>
-        <PrototypeShare />
+        <ShareProject />
       </SubTitleGroup>
       <Button icon="exitFullscreen" variant={ButtonVariant.SECONDARY} onClick={goToCurrentCanvas}>
         Return to Canvas

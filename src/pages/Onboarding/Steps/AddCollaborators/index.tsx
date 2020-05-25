@@ -72,7 +72,7 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   return (
     <Container>
       <HeaderLabel>
-        <Text>INVITE TEAM MEMBERS</Text>
+        <Text>ADD COLLABORATORS</Text>
         <Badge>{validMembers.length}</Badge>
       </HeaderLabel>
 

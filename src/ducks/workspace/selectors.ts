@@ -36,6 +36,8 @@ export const usedViewerSeatsSelector = createSelector(
   (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
 );
 
+export const allWorkspaceIdsSelector = createSelector([rootSelector], ({ allIds }) => allIds || []);
+
 export const allWorkspacesSelector = createSelector([rootSelector], ({ allIds, byId }) => allIds.map((workspaceID) => byId[workspaceID]));
 
 export const workspaceMemberSelector = createSelector([activeWorkspaceMembersSelector], (members) => (creatorID: string) =>

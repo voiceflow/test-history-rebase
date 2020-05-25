@@ -7,8 +7,18 @@ import { Container, ProgressLine, Title } from './components';
 
 const StepStatus: React.FC = () => {
   const { state } = useContext(OnboardingContext);
-  const { numberOfSteps, currentStepID, stepStack, paymentMeta } = state;
-  const titleMeta = currentStepID === StepID.PAYMENT ? paymentMeta.plan : undefined;
+  const { numberOfSteps, currentStepID, stepStack, paymentMeta, createWorkspaceMeta } = state;
+  let titleMeta;
+
+  if (currentStepID === StepID.PAYMENT) {
+    titleMeta = paymentMeta.plan;
+  } else if (currentStepID === StepID.ADD_COLLABORATORS) {
+    titleMeta = createWorkspaceMeta.workspaceName;
+  }
+
+  if (currentStepID === StepID.WELCOME) {
+    return <Container />;
+  }
 
   return (
     <Container>

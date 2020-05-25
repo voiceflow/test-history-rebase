@@ -23,10 +23,12 @@ import { CollaboratorType } from './types';
 const toast: any = toastNotif;
 
 export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
-  return collaborators.filter((collaborator: CollaboratorType) => {
+  const members = collaborators.filter((collaborator: CollaboratorType) => {
     const { permission } = collaborator;
-    return permission === UserRole.ADMIN || permission === UserRole.EDITOR;
-  }).length;
+    return permission === UserRole.EDITOR;
+  });
+  // + 1 for the owner
+  return members.length + 1;
 };
 
 export type OnboardingContextProps = {
@@ -297,6 +299,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     let workspace;
+    let userWorkspaces: any;
     try {
       workspace = await createWorkspace({ name, image: workspaceImage });
     } catch (e) {
@@ -306,7 +309,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     try {
-      await fetchWorkspaces();
+      userWorkspaces = await fetchWorkspaces();
     } catch (e) {
       toastNotif.error('Error getting workspace, please try again later');
       goToDashboard();
@@ -346,6 +349,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       email: email!,
       channels,
       teamSize,
+      workspaceIDs: userWorkspaces?.allIds,
     });
 
     try {

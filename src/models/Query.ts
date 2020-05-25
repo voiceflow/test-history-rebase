@@ -19,5 +19,6 @@ export namespace Query {
     email?: string;
     name?: string;
     coupon?: string;
+    invite?: string;
   };
 }

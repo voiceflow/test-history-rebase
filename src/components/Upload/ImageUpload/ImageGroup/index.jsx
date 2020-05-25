@@ -26,7 +26,7 @@ function ImageGroup({ update, image, setError, ...props }) {
   return (
     <Flex>
       {!image && <DropUpload onUpdate={update} label="image" clearError={() => setError(null)} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} />}
-      <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} />
+      <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} canRemove {...props} />
     </Flex>
   );
 }

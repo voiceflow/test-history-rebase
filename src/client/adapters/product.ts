@@ -1,5 +1,6 @@
 import cuid from 'cuid';
 
+import { ProductType } from '@/constants';
 import { DBProduct, Product } from '@/models';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
@@ -79,12 +80,13 @@ const productAdapter = createAdapter<DBProduct, Product>(
       type,
       version,
       referenceName: referenceName || `${name.split(' ').join('_')}_${cuid.slug()}`,
-      ...(subscriptionFrequency && {
-        subscriptionInformation: {
-          subscriptionPaymentFrequency: subscriptionFrequency,
-          subscriptionTrialPeriodDays: trialPeriodDays,
-        },
-      }),
+      ...(type === ProductType.SUBSCRIPTION &&
+        subscriptionFrequency && {
+          subscriptionInformation: {
+            subscriptionPaymentFrequency: subscriptionFrequency,
+            subscriptionTrialPeriodDays: trialPeriodDays,
+          },
+        }),
       publishingInformation: {
         distributionCountries: getDistributionCountries(marketPlaces),
         pricing: formatMarketPlaces(marketPlaces),
@@ -111,7 +113,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       },
       privacyAndCompliance: {
         locales: locales.reduce<Record<string, DBProduct.LocalePrivacyAndCompliance>>((acc, locale) => {
-          acc[locale] = { privacyPolicyUrl };
+          acc[locale] = { privacyPolicyUrl: privacyPolicyUrl?.trim() };
 
           return acc;
         }, {}),

@@ -14,7 +14,7 @@ export function initialize(callback: (sessionURL: string) => void) {
   }
 }
 
-export function identify(user: Account, intercomEnabled: boolean) {
+export function identify(user: Account, workspaceID = '', intercomEnabled: boolean) {
   if (LOGROCKET_ENABLED) {
     LogRocket.identify(String(user.creator_id), {
       email: user.email,
@@ -23,7 +23,8 @@ export function identify(user: Account, intercomEnabled: boolean) {
 
     if (intercomEnabled) {
       // add session URL to intercom timeline
-      LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL }));
+      // session associated with company ID
+      LogRocket.getSessionURL((sessionURL) => IntercomAPI('trackEvent', 'LogRocket', { sessionURL, company_id: workspaceID }));
     }
   }
 }

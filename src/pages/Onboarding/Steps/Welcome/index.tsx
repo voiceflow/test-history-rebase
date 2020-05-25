@@ -2,40 +2,48 @@ import React from 'react';
 
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
-import * as Account from '@/ducks/account';
-import { connect } from '@/hocs';
+import SvgIcon from '@/components/SvgIcon';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { ConnectedProps } from '@/types';
+import { FadeDownContainer } from '@/styles/animations';
 
 import { StepID } from '../../constants';
-import { Container, Description, Title } from './components';
+import { Container, Description, LogoContainer, Title } from './components';
 
-const Welcome: React.FC<ConnectedWelcomeProps> = ({ user }) => {
+const fadeConfig = {
+  height: -30,
+  duration: 0.6,
+  animationFunction: 'ease',
+};
+
+const Welcome: React.FC = () => {
   const { actions } = React.useContext(OnboardingContext);
 
   return (
     <>
       <Container>
         <FlexCenter column>
-          <Title>Hi, {user.name}!</Title>
-
-          <Description>
-            Welcome to Voiceflow. In the next 3 minutes we’ll get your shared workspace created and walk you through your first project!
-          </Description>
-
-          <Button variant="primary" onClick={() => actions.stepForward(StepID.CREATE_WORKSPACE)}>
-            Get Started
-          </Button>
+          <FadeDownContainer delay={0} {...fadeConfig}>
+            <LogoContainer>
+              <SvgIcon icon="voiceflowV" size={24} color="black" />
+            </LogoContainer>
+          </FadeDownContainer>
+          <FadeDownContainer delay={0.12} {...fadeConfig}>
+            <Title>Welcome to Voiceflow</Title>
+          </FadeDownContainer>
+          <FadeDownContainer delay={0.24} {...fadeConfig}>
+            <Description>Collaboratively design, prototype and build voice applications for Amazon Alexa and Google Assistant.</Description>
+          </FadeDownContainer>
+          <FadeDownContainer delay={0.36} {...fadeConfig}>
+            <FlexCenter>
+              <Button variant="primary" onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>
+                Get Started
+              </Button>
+            </FlexCenter>
+          </FadeDownContainer>
         </FlexCenter>
       </Container>
     </>
   );
 };
 
-const mapStateToProps = {
-  user: Account.userSelector,
-};
-
-export type ConnectedWelcomeProps = ConnectedProps<typeof mapStateToProps, {}>;
-
-export default connect(mapStateToProps, null)(Welcome);
+export default Welcome;

@@ -13,11 +13,12 @@ import * as Query from '@/utils/query';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
+import { inviteEmailMatches, replaceSpaceWithPlus } from './utils';
 
 export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
   const query = Query.parse(location.search);
   const [loginError, setLoginError] = React.useState<string | false | null>(null);
-  const [email, setEmail] = React.useState(query.email ? query.email : '');
+  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email) : '');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   let timeout: number | undefined;
@@ -30,6 +31,9 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
 
   const loginSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (query.invite && !inviteEmailMatches(query, email)) {
+      return;
+    }
     basicAuthLogin({
       email,
       password,
@@ -91,13 +95,13 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
               </Link>
             </FormGroup>
             <div className="row">
-              <div className="col-8 auth__link">
+              <div className="col-7 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={openRegister}>Don't have an account?</a>
               </div>
-              <div className="col-4">
+              <div className="col-5">
                 <Button isPrimary isBlock type="submit">
-                  Sign in
+                  {query.invite ? 'Join Team' : 'Sign in'}
                 </Button>
               </div>
             </div>

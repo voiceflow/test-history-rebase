@@ -32,19 +32,21 @@ const CreateWorkspace: React.FC = () => {
       workspaceName,
       workspaceImage,
     });
-    stepForward(StepID.PERSONALIZE_WORKSPACE);
+    stepForward(StepID.ADD_COLLABORATORS);
   };
 
   return (
     <Container>
-      <NameInput
-        value={workspaceName}
-        onBlur={onBlur}
-        onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
-        placeholder="Enter your workspace name"
-      />
+      <FlexCenter>
+        <NameInput
+          value={workspaceName}
+          onBlur={onBlur}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus
+          placeholder="Give your workspace a name"
+        />
+      </FlexCenter>
 
       <FlexCenter>
         <IconUpload image={workspaceImage} update={setWorkspaceImage} size="large" ref={iconUploadRef} />
@@ -57,7 +59,7 @@ const CreateWorkspace: React.FC = () => {
 
       <FlexCenter>
         <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
-          Continue
+          Create Workspace
         </Button>
       </FlexCenter>
     </Container>

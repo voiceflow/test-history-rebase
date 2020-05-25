@@ -1,5 +1,6 @@
 import { css, styled } from '@/hocs';
 
+import RemoveButton from '../../components/RemoveButton';
 import ErrorText from './ErrorText';
 import IconUploadInput from './IconUploadInput';
 import ImageContainer from './ImageContainer';
@@ -7,6 +8,11 @@ import ImageContainer from './ImageContainer';
 export { ErrorText, IconUploadInput, ImageContainer };
 
 export const IconUploadContainer = styled.div`
+  :not(:hover) {
+    ${RemoveButton} {
+      display: none;
+    }
+  }
   ${({ isActive }) =>
     isActive &&
     css`

@@ -76,14 +76,16 @@ const NewWorkspace: React.FC<NewWorkspaceProps & ConnectedNewWorkspaceProps> = (
 
           <FlexCenter>
             <Container>
-              <NameInput
-                value={name}
-                onBlur={onBlur}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
-                placeholder="Enter your workspace name"
-              />
+              <FlexCenter>
+                <NameInput
+                  value={name}
+                  onBlur={onBlur}
+                  onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus
+                  placeholder="Enter your workspace name"
+                />
+              </FlexCenter>
 
               <FlexCenter>
                 <IconUpload image={image} update={setImage} size="large" ref={iconUploadRef} />

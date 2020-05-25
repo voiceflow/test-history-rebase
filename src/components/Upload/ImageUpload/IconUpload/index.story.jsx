@@ -27,3 +27,5 @@ export const medium = () => <IconUpload size="medium" {...getProps()} />;
 export const large = () => <IconUpload size="large" {...getProps()} />;
 
 export const xlarge = () => <IconUpload size="xlarge" {...getProps()} />;
+
+export const canRemove = () => <IconUpload size="xlarge" {...getProps()} image={IMAGE_URL} canRemove />;

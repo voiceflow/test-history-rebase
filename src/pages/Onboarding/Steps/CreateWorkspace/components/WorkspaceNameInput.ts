@@ -2,11 +2,12 @@ import Input from '@/components/Input';
 import { styled } from '@/hocs';
 
 const WorkspaceNameInput = styled(Input)`
-  border: none;
+  border: 1px solid rgb(210, 218, 226);
   text-align: center;
-  border-bottom: 1px solid #dfe3ed;
-  box-shadow: none;
-  border-radius: 0;
+  box-shadow: rgba(17, 49, 96, 0.06) 0px 0px 3px 0px;
+  width: 360px;
+  height: 57px;
+  border-radius: 5px;
   font-size: 18px;
   margin-bottom: 40px;
   line-height: normal;
@@ -14,13 +15,11 @@ const WorkspaceNameInput = styled(Input)`
   ::placeholder {
     color: #8da2b5 !important;
     font-size: 18px !important;
-    line-height: normal;
+    line-height: 34px;
   }
 
   :focus {
     box-shadow: none;
-    border: none;
-    border-bottom: 1px solid #5d9df5;
   }
 `;
 

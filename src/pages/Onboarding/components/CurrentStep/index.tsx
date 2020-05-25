@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import { FlexCenter } from '@/components/Flex';
+import { StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { OnboardingProps } from '@/pages/Onboarding/types';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -12,12 +13,13 @@ const CurrentStep: React.FC<OnboardingProps> = (props) => {
   const { currentStepID } = state;
 
   const CurrentStepComponent = STEP_COMPONENTS[currentStepID]!;
+  const AnimationContainer = currentStepID === StepID.WELCOME ? React.Fragment : FadeLeftContainer;
 
   return (
     <FlexCenter key={currentStepID}>
-      <FadeLeftContainer>
+      <AnimationContainer>
         <CurrentStepComponent {...props} />
-      </FadeLeftContainer>
+      </AnimationContainer>
     </FlexCenter>
   );
 };

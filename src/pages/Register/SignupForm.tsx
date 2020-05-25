@@ -16,6 +16,7 @@ import * as Query from '@/utils/query';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
+import { inviteEmailMatches, replaceSpaceWithPlus } from './utils';
 
 export type SignupFormProps = RouteComponentProps & {
   promo?: boolean;
@@ -24,7 +25,7 @@ export type SignupFormProps = RouteComponentProps & {
 export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = ({ signup, history, promo, location }) => {
   const query = Query.parse(location.search);
   const [signupError, setSignupError] = React.useState<string | boolean | null>(null);
-  const [email, setEmail] = React.useState(query.email ? query.email : '');
+  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email) : '');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
 
@@ -40,6 +41,9 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
 
   const signupSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (query.invite && !inviteEmailMatches(query, email)) {
+      return;
+    }
 
     signup({
       name,
@@ -155,7 +159,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
               </div>
               <div className="col-6">
                 <Button isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
-                  Create Account
+                  {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>
             </div>

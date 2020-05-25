@@ -8,15 +8,16 @@ import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
 import Checkbox from '@/components/Checkbox';
+import { FlexCenter } from '@/components/Flex';
 import { FormTextBox } from '@/components/Form/TextBox';
 import { FormTextInput } from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
-import Image from '@/components/LegacyUpload/Image';
 import RadioGroup from '@/components/RadioGroup';
 import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import * as AlexaPublish from '@/ducks/publish/alexa';
@@ -258,24 +259,31 @@ class Skill extends Component {
             </div>
           </FormGroup>
 
-          <div className="d-flex mb-5">
+          <div className="d-flex mb-2">
             <div style={{ width: '50%' }}>
-              <Image
-                className="icon-image large-icon text-center pa__icon"
-                path="/image/large_icon"
-                image={largeIcon}
-                update={(url) => this.setState({ largeIcon: url })}
-                title="Large Icon"
-              />
+              <Label className="text-center">Large Icon</Label>
+              <FlexCenter>
+                {/* Large Icon */}
+                <UploadJustIcon
+                  image={largeIcon}
+                  update={(url) => this.setState({ largeIcon: url })}
+                  size="xlarge"
+                  canRemove
+                  endpoint="/image/large_icon"
+                />
+              </FlexCenter>
             </div>
             <div style={{ width: '50%' }}>
-              <Image
-                className="icon-image small-icon text-center pa__icon"
-                path="/image/small_icon"
-                image={smallIcon}
-                update={(url) => this.setState({ smallIcon: url })}
-                title="Small Icon"
-              />
+              <Label className="text-center">Small Icon</Label>
+              <FlexCenter>
+                <UploadJustIcon
+                  image={smallIcon}
+                  update={(url) => this.setState({ smallIcon: url })}
+                  size="large"
+                  canRemove
+                  endpoint="/image/small_icon"
+                />
+              </FlexCenter>
             </div>
           </div>
         </>

@@ -4,8 +4,9 @@ import { styled } from '@/hocs';
 const RemoveButton = styled(FlexCenter)`
   cursor: pointer;
   position: absolute;
-  top: 10px;
-  right: 10px;
+
+  top: ${({ top = 10 }) => `${top}px`};
+  right: ${({ right = 10 }) => `${right}px`};
   border-radius: 50%;
   width: 20px;
   height: 20px;

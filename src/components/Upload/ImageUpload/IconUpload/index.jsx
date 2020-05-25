@@ -4,8 +4,10 @@ import { useDropzone } from 'react-dropzone10';
 
 import { LoadCircle } from '@/components/Loader';
 import SvgIcon from '@/components/SvgIcon';
+import { RemoveButton } from '@/components/Upload/ImageUpload/FullImage/components';
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
+import { stopPropagation } from '@/utils/dom';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';
 
@@ -24,7 +26,10 @@ const hasError = (acceptedFiles) => {
 };
 
 const Icon = React.forwardRef(
-  ({ image, size = 'small', isLoading, error, onDropAccepted, acceptedFileTypes = IMAGE_FILE_FORMATS, className }, ref) => {
+  (
+    { image, size = 'small', isLoading, error, onDropAccepted, canRemove = false, update, acceptedFileTypes = IMAGE_FILE_FORMATS, className },
+    ref
+  ) => {
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
       accept: acceptedFileTypes,
       onDropAccepted,
@@ -63,6 +68,11 @@ const Icon = React.forwardRef(
           notAccepted={isDragReject}
           error={error}
         >
+          {canRemove && image && (
+            <RemoveButton top={0} right={0} onClick={stopPropagation(() => update(''))}>
+              <SvgIcon size={8} icon="close" color="#8da2b5" />
+            </RemoveButton>
+          )}
           {content}
         </ImageContainer>
       </IconUploadContainer>

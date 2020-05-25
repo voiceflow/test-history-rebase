@@ -161,6 +161,10 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
   pointer-events: none;
 }
 
+.c8:not(:hover) .c15 {
+  display: none;
+}
+
 .c8:focus {
   outline: none;
 }

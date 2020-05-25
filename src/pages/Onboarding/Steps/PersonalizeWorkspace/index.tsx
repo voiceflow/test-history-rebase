@@ -12,7 +12,7 @@ import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components'
 
 const ChannelSelect: any = DropdownMultiselect;
 
-const TEAM_SIZES = ['Only Me', '2 - 5', '6 - 10', '11 - 15', '16 - 20', '20 +'];
+const TEAM_SIZES = ['Only Me', '2 - 3', '4 - 6', '7 - 10', '11 - 20', '20 +'];
 
 const CHANNEL_OPTIONS = [
   // Voice
@@ -72,7 +72,7 @@ const PersonalizeWorkspace: React.FC = () => {
       channels,
       teamSize,
     });
-    actions.stepForward(StepID.ADD_COLLABORATORS);
+    actions.stepForward(StepID.CREATE_WORKSPACE);
   };
 
   return (
@@ -94,7 +94,7 @@ const PersonalizeWorkspace: React.FC = () => {
         placeholder="Choose all that apply"
         customOptionLabelStyling={customOptionLabelStyling}
       />
-      <Label>How many people are on your team?</Label>
+      <Label>How big is your team?</Label>
       <TeamSizeContainer>
         <SizeRow>
           {TEAM_SIZES.map((size, index) => {

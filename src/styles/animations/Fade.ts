@@ -19,6 +19,7 @@ export type FadeProps = {
   height?: number;
   distance?: number;
   duration?: number;
+  animationFunction?: string;
 };
 
 export const getAnimationStyles = ({
@@ -26,8 +27,15 @@ export const getAnimationStyles = ({
   height: defaultHeight = 0,
   distance: defaultDistance = 0,
   duration: defaultDuration = ANIMATION_SPEED,
-}: FadeProps = {}) => ({ delay = defaultDelay, height = defaultHeight, distance = defaultDistance, duration = defaultDuration }: FadeProps) => css`
-  animation: ${FadeKeyframes(distance, height)} ${duration}s ease-in-out;
+  animationFunction: defaultAnimationFunction = 'ease-in-out',
+}: FadeProps = {}) => ({
+  delay = defaultDelay,
+  height = defaultHeight,
+  distance = defaultDistance,
+  duration = defaultDuration,
+  animationFunction = defaultAnimationFunction,
+}: FadeProps) => css`
+  animation: ${FadeKeyframes(distance, height)} ${duration}s ${animationFunction};
   animation-fill-mode: both;
   animation-delay: ${delay}s;
 `;

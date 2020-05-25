@@ -4,7 +4,7 @@ const ProgressLine = styled.div<{ active?: boolean }>`
   width: 24px;
   display: inline-block;
   margin: 0 1px;
-  height: 1px;
+  height: 2px;
   background: #dfe3ed;
   ${({ active }) =>
     active &&

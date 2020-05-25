@@ -33,22 +33,22 @@ export const STEP_META: StepMetaProps = {
   },
   [StepID.CREATE_WORKSPACE]: {
     title: () => 'Create Workspace',
-    canBack: false,
+    canBack: true,
     canSkip: false,
     skipTo: null,
     trackStep: () => Tracking.trackOnboardingCreate(),
   },
   [StepID.PERSONALIZE_WORKSPACE]: {
-    title: () => 'Personalize Workspace',
+    title: () => 'Create Profile',
     canBack: true,
     canSkip: false,
     skipTo: null,
     trackStep: () => Tracking.trackOnboardingPersonalize(),
   },
   [StepID.ADD_COLLABORATORS]: {
-    title: () => 'Add Collaborators',
+    title: (workspaceName) => `Invite teammates to ${workspaceName}`,
     canBack: true,
-    canSkip: false,
+    canSkip: true,
     skipTo: StepID.PAYMENT,
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({

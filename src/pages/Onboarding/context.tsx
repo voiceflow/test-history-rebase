@@ -23,10 +23,12 @@ import { CollaboratorType } from './types';
 const toast: any = toastNotif;
 
 export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
-  return collaborators.filter((collaborator: CollaboratorType) => {
+  const members = collaborators.filter((collaborator: CollaboratorType) => {
     const { permission } = collaborator;
-    return permission === UserRole.ADMIN || permission === UserRole.EDITOR;
-  }).length;
+    return permission === UserRole.EDITOR;
+  });
+  // + 1 for the owner
+  return members.length + 1;
 };
 
 export type OnboardingContextProps = {

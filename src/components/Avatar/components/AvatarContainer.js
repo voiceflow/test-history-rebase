@@ -20,10 +20,13 @@ const AvatarContainer = styled.div`
     transition: box-shadow 0.15s linear;
   `}
 
-  &:hover {
-    border: 1px solid #fff;
-    border-radius: 50%;
-  }
+  ${({ noHover }) =>
+    !noHover &&
+    css`
+      :hover {
+        border: 1px solid #fff;
+      }
+    `}
 `;
 
 export default AvatarContainer;

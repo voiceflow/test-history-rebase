@@ -21,15 +21,25 @@ type MenuItemProps = {
   link: string | boolean;
   help: string;
   plan: PlanType | null;
+  track: () => void;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirect, help, link }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirect, help, link, track }) => {
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
 
   const onCopy = React.useCallback(() => {
     copy(link);
     setCopiedStatus();
   }, []);
+
+  const onClick = React.useCallback(() => {
+    if (plan !== PlanType.STARTER) {
+      onCopy();
+    } else {
+      onRedirect();
+    }
+    track();
+  }, [plan, track]);
 
   React.useEffect(() => {
     if (isCopied) {
@@ -51,7 +61,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
       </div>
       <ButtonContainer>
         <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
-          <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(plan !== PlanType.STARTER ? onCopy : onRedirect)}>
+          <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
             Copy
           </Button>
         </Tooltip>

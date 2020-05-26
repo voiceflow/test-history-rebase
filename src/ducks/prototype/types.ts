@@ -1,7 +1,5 @@
 import NLC from '@voiceflow/natural-language-commander';
 
-export const STATE_KEY = 'prototype';
-
 // trace types
 export enum TraceType {
   BLOCK = 'block',

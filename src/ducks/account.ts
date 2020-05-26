@@ -7,7 +7,7 @@ import { Account } from '@/models';
 import { Action, RootReducer, Thunk } from '@/store/types';
 import { NullableRecord } from '@/types';
 
-import { createAction, createRootSelector } from './utils';
+import { createAction, createRootSelector, duckLogger } from './utils';
 
 export type AccountState = NullableRecord<Account> & {
   loading: boolean;
@@ -28,6 +28,8 @@ export const INITIAL_STATE: AccountState = {
   google: null,
   created: null,
 };
+
+const log = duckLogger.child(STATE_KEY);
 
 export enum AccountAction {
   UPDATE_ACCOUNT = 'UPDATE_ACCOUNT',
@@ -109,7 +111,7 @@ export const getVendors = (): Thunk => async (dispatch, getState) => {
       dispatch(updateAmazonAccount({ vendors }));
     }
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 };
 
@@ -118,7 +120,7 @@ export const createAmazonSession = (code: string): Thunk => async (dispatch) => 
     const amazon = (await client.session.amazon.linkAccount(code)) || null;
     dispatch(updateAccount({ amazon }));
   } catch (err) {
-    console.error(err);
+    log.error(err);
     throw err;
   }
 };
@@ -128,7 +130,7 @@ export const checkAmazonAccount = (): Thunk => async (dispatch) => {
   try {
     amazon = (await client.session.amazon.getAccount()) || null;
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
   dispatch(updateAccount({ amazon }));
 };
@@ -147,7 +149,7 @@ export const createGoogleSession = (code: string): Thunk => async (dispatch) => 
     const google = (await client.session.google.linkAccount(code)) || null;
     dispatch(updateAccount({ google }));
   } catch (err) {
-    console.error(err);
+    log.error(err);
     throw err;
   }
 };
@@ -157,7 +159,7 @@ export const checkGoogleAccount = (): Thunk => async (dispatch) => {
   try {
     google = (await client.session.google.getAccount()) || null;
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
   dispatch(updateAccount({ google }));
 };

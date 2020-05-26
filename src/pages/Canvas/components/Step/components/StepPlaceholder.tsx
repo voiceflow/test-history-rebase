@@ -3,7 +3,7 @@ import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
 import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
-import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
+import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import CaptureZone from './StepReorderCaptureZone';
 import IndicatorContainer from './StepReorderIndicatorContainer';
@@ -24,7 +24,7 @@ const StepPlaceholder: React.FC<StepPlaceholderProps> = ({ variant, isLast }) =>
 
   return (
     <IndicatorContainer
-      className={cn(MERGE_ACTIVE_NODE_CLASSNAME, REORDER_INDICATOR_CLASSNAME)}
+      className={cn(NODE_MERGE_TARGET_CLASSNAME, REORDER_INDICATOR_CLASSNAME)}
       isActive={true}
       isHovered={forceHover}
       variant={variant}

@@ -4,6 +4,9 @@ import { DBNode, NodeData } from '@/models';
 
 import { createSimpleAdapter } from '../utils';
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
+import { creatorLogger } from './utils';
+
+const log = creatorLogger.child('node-data');
 
 const isSupportedBlockType = (type: BlockType) => Object.values(BlockType).includes(type);
 
@@ -31,7 +34,7 @@ const nodeDataAdapter = createSimpleAdapter<DBNode['extras'], NodeData<unknown>,
         }
       }
     } catch (err) {
-      console.error(err);
+      log.error(err);
     }
     // END EMERGENCY FIX
 
@@ -40,7 +43,7 @@ const nodeDataAdapter = createSimpleAdapter<DBNode['extras'], NodeData<unknown>,
       const fromDb = blockAdapter[type].fromDB;
       data = blockAdapter[type].fromDB(dbData as Parameters<typeof fromDb>[0]);
     } catch (err) {
-      console.error('Block Adapter Error', err);
+      log.error('Block Adapter Error', err);
       data = dbData as any;
       data.deprecatedType = dbData.type;
       type = BlockType.DEPRECATED;

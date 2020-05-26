@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * TODO: recommend removing this and using @seznam/compose-react-refs instead
+ * as this introduces an additional effect callback to propagate ref changes
+ * which can lead to a render cycle where targetRef and the elements of refs
+ * are out of date
+ */
 // eslint-disable-next-line import/prefer-default-export
 export function useCombinedRefs<T>(...refs: (React.MutableRefObject<T | null> | ((value: T) => void) | null)[]) {
   const targetRef = React.useRef<T>(null);

@@ -83,10 +83,6 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
-}
-
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -103,14 +99,14 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #5D9DF5;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -120,7 +116,23 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
   z-index: -1;
 }
 
@@ -152,6 +164,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--merging .c16,
+.vf-canvas__node--disabled .c16 {
+  cursor: inherit;
+}
+
 .c16::before {
   position: absolute;
   display: block;
@@ -168,6 +185,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   width: 5px;
   background-color: #6e849a;
   border: 4px solid white;
+}
+
+.c16.vf-canvas__port--highlighted::before {
+  box-shadow: 0 0 0 1px #5d9df5;
+  background-color: #5d9df5;
 }
 
 .c15 {
@@ -193,7 +215,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -207,20 +229,47 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c20 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -251,6 +300,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -279,6 +333,10 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -287,13 +345,13 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -306,6 +364,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -313,6 +372,7 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -334,13 +394,13 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -381,11 +441,11 @@ exports[`Storyshots Creator/Steps/Capture Step Active 1`] = `
               </span>
               <div
                 className="c16 vf-canvas__port"
-                onClick={[Function]}
                 onMouseDown={[Function]}
+                onMouseUp={[Function]}
               />
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -492,14 +552,14 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c5 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -509,12 +569,24 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
-  z-index: -1;
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
 }
 
-.c21 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -545,6 +617,11 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--merging .c16,
+.vf-canvas__node--disabled .c16 {
+  cursor: inherit;
+}
+
 .c16::before {
   position: absolute;
   display: block;
@@ -562,6 +639,11 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
+.c16.vf-canvas__port--highlighted::before {
+  box-shadow: 0 0 0 1px #5d9df5;
+  background: linear-gradient(to bottom,#5d9df51f,#5d9df53d 100%);
+}
+
 .c17 {
   position: absolute;
   right: -14px;
@@ -577,6 +659,10 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   -webkit-transform: translateY(-2px);
   -ms-transform: translateY(-2px);
   transform: translateY(-2px);
+}
+
+.vf-canvas__link--highlighted .c18 {
+  stroke: #2c85ff;
 }
 
 .c15 {
@@ -602,7 +688,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -616,20 +702,47 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c22 {
+.c0 .c21 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -660,6 +773,11 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -688,6 +806,10 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -696,13 +818,13 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -715,6 +837,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -722,6 +845,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -743,13 +867,13 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -790,8 +914,8 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
               </span>
               <div
                 className="c16 vf-canvas__port"
-                onClick={[Function]}
                 onMouseDown={[Function]}
+                onMouseUp={[Function]}
               />
               <svg
                 className="c17"
@@ -802,7 +926,7 @@ exports[`Storyshots Creator/Steps/Capture Step Connected 1`] = `
                 />
               </svg>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -909,14 +1033,14 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -926,12 +1050,24 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
-  z-index: -1;
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
 }
 
-.c18 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -962,6 +1098,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--merging .c15,
+.vf-canvas__node--disabled .c15 {
+  cursor: inherit;
+}
+
 .c15::before {
   position: absolute;
   display: block;
@@ -978,6 +1119,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   width: 5px;
   background-color: #6e849a;
   border: 4px solid white;
+}
+
+.c15.vf-canvas__port--highlighted::before {
+  box-shadow: 0 0 0 1px #5d9df5;
+  background-color: #5d9df5;
 }
 
 .c4:not(:last-of-type) {
@@ -999,7 +1145,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1013,20 +1159,47 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c19 {
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1057,6 +1230,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1085,6 +1263,10 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -1093,13 +1275,13 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1112,6 +1294,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1119,6 +1302,7 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -1140,13 +1324,13 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -1176,11 +1360,11 @@ exports[`Storyshots Creator/Steps/Capture Step Empty 1`] = `
               </span>
               <div
                 className="c15 vf-canvas__port"
-                onClick={[Function]}
                 onMouseDown={[Function]}
+                onMouseUp={[Function]}
               />
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -1287,14 +1471,14 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1304,12 +1488,24 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
-  z-index: -1;
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -1340,6 +1536,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--merging .c16,
+.vf-canvas__node--disabled .c16 {
+  cursor: inherit;
+}
+
 .c16::before {
   position: absolute;
   display: block;
@@ -1356,6 +1557,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   width: 5px;
   background-color: #6e849a;
   border: 4px solid white;
+}
+
+.c16.vf-canvas__port--highlighted::before {
+  box-shadow: 0 0 0 1px #5d9df5;
+  background-color: #5d9df5;
 }
 
 .c15 {
@@ -1381,7 +1587,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1395,20 +1601,47 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c20 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1439,6 +1672,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1467,6 +1705,10 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -1475,13 +1717,13 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1494,6 +1736,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1501,6 +1744,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -1522,13 +1766,13 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -1569,11 +1813,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Long Variables 1`] = `
               </span>
               <div
                 className="c16 vf-canvas__port"
-                onClick={[Function]}
                 onMouseDown={[Function]}
+                onMouseUp={[Function]}
               />
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -1680,14 +1924,14 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c20 {
+.c5 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1697,12 +1941,24 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
-  z-index: -1;
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
 }
 
-.c19 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -1733,6 +1989,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--merging .c16,
+.vf-canvas__node--disabled .c16 {
+  cursor: inherit;
+}
+
 .c16::before {
   position: absolute;
   display: block;
@@ -1749,6 +2010,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   width: 5px;
   background-color: #6e849a;
   border: 4px solid white;
+}
+
+.c16.vf-canvas__port--highlighted::before {
+  box-shadow: 0 0 0 1px #5d9df5;
+  background-color: #5d9df5;
 }
 
 .c15 {
@@ -1774,7 +2040,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1788,20 +2054,47 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c20 {
+.c0 .c19 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1832,6 +2125,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1860,6 +2158,10 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -1868,13 +2170,13 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1887,6 +2189,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1894,6 +2197,7 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -1915,13 +2219,13 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -1962,11 +2266,11 @@ exports[`Storyshots Creator/Steps/Capture Step With Variables 1`] = `
               </span>
               <div
                 className="c16 vf-canvas__port"
-                onClick={[Function]}
                 onMouseDown={[Function]}
+                onMouseUp={[Function]}
               />
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -2073,14 +2377,14 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
 .c5 .c6:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c5 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2090,12 +2394,24 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c5 {
-  z-index: -1;
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
 }
 
-.c18 .c6:not(:first-of-type) {
-  border-top: 1px solid #eaeff4;
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
 }
 
 .c13 {
@@ -2137,7 +2453,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2151,20 +2467,47 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
-.c0 .c19 {
+.c0 .c18 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2195,6 +2538,11 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -2223,6 +2571,10 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -2231,13 +2583,13 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2250,6 +2602,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -2257,6 +2610,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Capture Block"
         />
         <div
@@ -2278,13 +2632,13 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c4 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5 vf-canvas__step"
+          className="c5"
         >
-          <div
+          <section
             className="c6 c7"
           >
             <div
@@ -2324,7 +2678,7 @@ exports[`Storyshots Creator/Steps/Capture Step Without Port 1`] = `
                 </div>
               </span>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>

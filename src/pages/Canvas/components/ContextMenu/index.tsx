@@ -26,22 +26,29 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
       engine.paste(clipboardDataKey, engine.canvas!.transformPoint(position!));
     }
   },
+
   [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID!),
+
   [CanvasAction.ADD_COMMENT]: ({ position }, { engine }) => engine.node.add(BlockType.COMMENT, engine.canvas!.transformPoint(position!)),
+
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
 
   [CanvasAction.DELETE_BLOCK]: ({ target: nodeID }, { engine }) => {
-    if (engine.isActive(nodeID!) || engine.isNestedNodeActive(nodeID!)) {
+    if (engine.node.isSubtreeActive(nodeID!)) {
       engine.clearActivation();
     }
 
     engine.node.remove(nodeID!);
   },
+
   [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => blockColor && engine.node.updateBlockColor(nodeID!, blockColor),
+
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 };
 
-export type ContextMenuProps = { className: string };
+export type ContextMenuProps = {
+  className?: string;
+};
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
   const contextMenu = React.useContext(ContextMenuContext)!;

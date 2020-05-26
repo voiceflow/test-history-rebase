@@ -1,4 +1,9 @@
+import { duckLogger } from '../utils';
+import { STATE_KEY } from './constants';
+
 const WORKSPACE_FALLBACK_ERROR_MESSAGE = 'Error updating Workspace';
+
+export const log = duckLogger.child(STATE_KEY);
 
 export const extractErrorMessages = (err?: {
   body?: { errors?: Record<string, { message: string } | string> } & Record<string, { message: string } | string>;

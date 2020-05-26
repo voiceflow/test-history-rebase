@@ -1,16 +1,20 @@
 import { css, styled, units } from '@/hocs';
+import { CANVAS_MERGING_CLASSNAME, NODE_DISABLED_CLASSNAME, PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+
+import { PORT_SIZE } from '../constants';
 
 const PORT_LEFT_PADDING = 12;
-const PORT_SIZE = 14;
+const PORT_HIGHLIGHT_COLOR = '#5d9df5';
+const PORT_COLOR = '#6e849a';
+const PORT_BACKGROUND_COLOR = '#62778c';
+
+const getPortColor = ({ color = PORT_COLOR }) => color;
+const getBackgroundColor = ({ color = PORT_BACKGROUND_COLOR }) => color;
 
 export type PortContainerProps = {
   color?: string;
   isConnected?: boolean;
-  isHighlighted?: boolean;
 };
-
-const getPortColor = ({ isHighlighted, color = '#6e849a' }: PortContainerProps) => (isHighlighted ? '#5d9df5' : color);
-const getBackgroundColor = ({ isHighlighted, color = '#62778c' }: PortContainerProps) => (isHighlighted ? '#5d9df5' : color);
 
 const PortContainer = styled.div<PortContainerProps>`
   position: relative;
@@ -20,6 +24,11 @@ const PortContainer = styled.div<PortContainerProps>`
   padding-left: ${PORT_LEFT_PADDING}px;
   align-self: center;
   cursor: copy;
+
+  .${CANVAS_MERGING_CLASSNAME} &,
+  .${NODE_DISABLED_CLASSNAME} & {
+    cursor: inherit;
+  }
 
   &::before {
     position: absolute;
@@ -34,16 +43,29 @@ const PortContainer = styled.div<PortContainerProps>`
 
     ${({ isConnected }) =>
       isConnected
-        ? css<PortContainerProps>`
+        ? css`
             height: 9px;
             width: 9px;
             background: linear-gradient(to bottom, ${getBackgroundColor}1f, ${getBackgroundColor}3d 100%);
           `
-        : css<PortContainerProps>`
+        : css`
             height: 5px;
             width: 5px;
             background-color: ${getPortColor};
             border: 4px solid white;
+          `}
+  }
+
+  &.${PORT_HIGHLIGHTED_CLASSNAME}::before {
+    box-shadow: 0 0 0 1px ${PORT_HIGHLIGHT_COLOR};
+
+    ${({ isConnected }) =>
+      isConnected
+        ? css`
+            background: linear-gradient(to bottom, ${PORT_HIGHLIGHT_COLOR}1f, ${PORT_HIGHLIGHT_COLOR}3d 100%);
+          `
+        : css`
+            background-color: ${PORT_HIGHLIGHT_COLOR};
           `}
   }
 `;

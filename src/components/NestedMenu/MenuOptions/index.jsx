@@ -2,6 +2,7 @@
 import React from 'react';
 import { Manager, Reference } from 'react-popper';
 
+import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
 import Menu from '../Menu';
@@ -92,6 +93,7 @@ function MenuOptions({
 
       return (
         <SelectItem
+          className={ClassName.MENU_ITEM}
           key={getOptionKey(option)}
           ref={onItemRef(index)}
           onClick={stopPropagation(() => onSelect(getOptionValue(option), [...optionsPath, i]))}

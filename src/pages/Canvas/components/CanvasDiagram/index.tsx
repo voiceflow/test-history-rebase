@@ -7,16 +7,16 @@ import { FeatureFlag } from '@/config/features';
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
+import GroupSelection from '@/pages/Canvas/components/GroupSelection';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
+import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { ContextMenuContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
 
-import GroupSelection from './components/GroupSelection';
-import NodeLayer from './components/NodeLayer';
 import { useCursorControls } from './hooks';
 
 const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {

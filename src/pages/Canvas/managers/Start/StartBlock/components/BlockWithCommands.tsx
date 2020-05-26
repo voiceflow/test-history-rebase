@@ -1,20 +1,24 @@
 import React from 'react';
 
-import Block, { BlockAPI, BlockProps } from '@/pages/Canvas/components/Block';
-import { useStepAPI } from '@/pages/Canvas/components/Node/hooks';
+import Block, { BlockProps } from '@/pages/Canvas/components/Block';
+import { useStepAPI } from '@/pages/Canvas/components/Node/components/NodeStep/hooks';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
+import { BlockAPI } from '@/pages/Canvas/types';
 
 import { BaseStartBlockProps } from '../types';
 
-export type BlockWithCommandsProps = BaseStartBlockProps & Pick<BlockProps, 'name' | 'state' | 'icon' | 'lockOwner'>;
+export type BlockWithCommandsProps = BaseStartBlockProps &
+  Pick<BlockProps, 'name' | 'icon' | 'lockOwner'> & {
+    className?: string;
+  };
 
-const BlockWithCommands: React.RefForwardingComponent<{ api: BlockAPI }, React.PropsWithChildren<BlockWithCommandsProps>> = (
+const BlockWithCommands: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<BlockWithCommandsProps>> = (
   { commands, children, ...props },
   ref
 ) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
   const sections = commands ? [{ name: 'Commands', children: commands }] : [];
-  const stepAPI = useStepAPI(true, true, false, stepRef);
+  const stepAPI = useStepAPI(stepRef, true, false);
 
   return (
     <StepAPIProvider value={stepAPI}>

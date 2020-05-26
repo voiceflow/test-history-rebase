@@ -49,6 +49,7 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
       isOpen={isOpen}
       onMouseEnter={canEdit ? openByHover : null}
       onMouseLeave={canEdit ? closeByLoseHover : null}
+      tabIndex={-1}
     >
       <Content isOpen={isOpen} activeTab={selectedTab}>
         <Header tabs={TABS} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={selectActiveTab} />

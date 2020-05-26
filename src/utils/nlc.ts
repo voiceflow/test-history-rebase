@@ -3,6 +3,9 @@ import NLC, { IIntentSlot } from '@voiceflow/natural-language-commander';
 
 import { spreadSynonyms } from '@/client/adapters/slot';
 import { DBIntent, DBSlot } from '@/models';
+import Logger from '@/utils/logger';
+
+const log = Logger.child('nlc');
 
 type BuiltInIntentsFilter = (name: string) => boolean;
 
@@ -49,7 +52,7 @@ export const registerSlots = (nlc: NLC, slots: DBSlot[]) => {
         nlc.addSlotType({ type: slot.name, matcher: /[\S\s]*/ });
       }
     } catch (err) {
-      console.error('NLC Unable To Register Slot:', slot, err);
+      log.error('NLC Unable To Register Slot', log.value(slot), err);
     }
   });
 };
@@ -98,7 +101,7 @@ export const registerCustomIntents = (nlc: NLC, { slots, intents }: Pick<Options
         utterances: samples,
       });
     } catch (err) {
-      console.error('NLC Unable To Register Custom Intent:', intent, err);
+      log.error('NLC Unable To Register Custom Intent', log.value(intent), err);
     }
   });
 };
@@ -120,7 +123,7 @@ export const registerBuiltInIntents = (nlc: NLC, { language, builtInIntentsFilte
           utterances: samples,
         });
       } catch (err) {
-        console.error('NLC Unable To Register Built In Intent:', intent, err);
+        log.error('NLC Unable To Register Built In Intent', log.value(intent), err);
       }
     });
 
@@ -135,11 +138,11 @@ export const registerBuiltInIntents = (nlc: NLC, { language, builtInIntentsFilte
           utterances: [name],
         });
       } catch (err) {
-        console.error('NLC Unable To Register Audio Intent:', intent, err);
+        log.error('NLC Unable To Register Audio Intent', log.value(intent), err);
       }
     });
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 };
 

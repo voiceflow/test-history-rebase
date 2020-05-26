@@ -185,6 +185,7 @@ exports[`Storyshots Creator/Canvas Controls Base 1`] = `
     >
       <button
         className="c2 c3"
+        id="vf-canvas__home-button"
         onClick={[Function]}
       >
         <span

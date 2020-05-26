@@ -1,6 +1,10 @@
 import { IS_PRODUCTION } from '@/config';
 import { identity } from '@/utils/functional';
 
+import { clientLogger } from '../utils';
+
+export const adapterLogger = clientLogger.child('adapter');
+
 export class AdapterNotImplementedError extends Error {
   constructor() {
     super('adapter not implemented');
@@ -35,13 +39,11 @@ export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] 
   fromDB:
     !IS_PRODUCTION && options.debug
       ? (dbValue, ...args) => {
-          // eslint-disable-next-line no-console
-          console.log('adapter called with value from DB:', dbValue);
+          adapterLogger.debug('adapter called with value from DB', dbValue);
 
           const result = fromDB(dbValue, ...args);
 
-          // eslint-disable-next-line no-console
-          console.log('converted DB value to:', result);
+          adapterLogger.debug('converted DB value to', result);
 
           return result;
         }
@@ -49,13 +51,11 @@ export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] 
   toDB:
     !IS_PRODUCTION && options.debug
       ? (appValue, ...args) => {
-          // eslint-disable-next-line no-console
-          console.log('adapter called with value from the store:', appValue);
+          adapterLogger.debug('adapter called with value from the store', appValue);
 
           const result = toDB(appValue, ...args);
 
-          // eslint-disable-next-line no-console
-          console.log('converted store value to:', result);
+          adapterLogger.debug('converted store value to', result);
 
           return result;
         }
@@ -70,30 +70,26 @@ export const createAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   ...createSimpleAdapter<I, O, T, R>(fromDB, toDB, options),
   mapFromDB: (dbValues, ...args) => {
     if (!IS_PRODUCTION && options.debug) {
-      // eslint-disable-next-line no-console
-      console.log('adapter called with values from DB:', dbValues);
+      adapterLogger.debug('adapter called with values from DB', dbValues);
     }
 
     const result = dbValues.map((dbValue) => fromDB(dbValue, ...args));
 
     if (!IS_PRODUCTION && options.debug) {
-      // eslint-disable-next-line no-console
-      console.log('converted DB values to:', result);
+      adapterLogger.debug('converted DB values to', result);
     }
 
     return result;
   },
   mapToDB: (appValues, ...args) => {
     if (!IS_PRODUCTION && options.debug) {
-      // eslint-disable-next-line no-console
-      console.log('adapter called with values from store:', appValues);
+      adapterLogger.debug('adapter called with values from store', appValues);
     }
 
     const result = appValues.map((appValue) => toDB(appValue, ...args));
 
     if (!IS_PRODUCTION && options.debug) {
-      // eslint-disable-next-line no-console
-      console.log('converted store values to:', result);
+      adapterLogger.debug('converted store values to', result);
     }
 
     return result;

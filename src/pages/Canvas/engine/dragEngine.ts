@@ -1,10 +1,13 @@
 import * as Realtime from '@/ducks/realtime';
+import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { EngineConsumer } from './utils';
 
 const DRAG_LOCKS: Realtime.AnyNodeLock[] = [Realtime.LockType.MOVEMENT];
 
 class DragEngine extends EngineConsumer {
+  log = this.engine.log.child('drag');
+
   target: string | null = null;
 
   group: string[] | null = null;
@@ -13,29 +16,49 @@ class DragEngine extends EngineConsumer {
     return this.target !== null;
   }
 
-  isTarget(nodeID: string) {
+  isSoleTarget(nodeID: string) {
     return this.target === nodeID;
   }
 
-  async setGroup(nodeIDs: string[]) {
-    if (!this.group) {
-      this.group = nodeIDs;
-
-      await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
-    }
+  isTarget(nodeID: string) {
+    return this.isSoleTarget(nodeID) || !!this.group?.includes(nodeID);
   }
 
-  async set(nodeID: string) {
-    if (nodeID !== this.target) {
-      await this.reset();
+  addStyle() {
+    this.engine.canvas?.addClass(CANVAS_DRAGGING_CLASSNAME);
+  }
 
-      this.engine.merge.initialize(nodeID);
-      this.engine.node.drag(nodeID);
+  removeStyle() {
+    this.engine.canvas?.removeClass(CANVAS_DRAGGING_CLASSNAME);
+  }
 
-      this.target = nodeID;
+  async setGroup(nodeIDs: string[]) {
+    if (this.group) return;
 
-      await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
-    }
+    this.group = nodeIDs;
+
+    this.log.debug(this.log.pending('setting drag group'), nodeIDs);
+    await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
+    this.addStyle();
+
+    this.log.info(this.log.success('set drag group'), this.log.value(nodeIDs.length));
+  }
+
+  async setTarget(nodeID: string) {
+    if (nodeID === this.target) return;
+
+    this.log.debug(this.log.pending('setting drag target'), this.log.slug(nodeID));
+    await this.reset();
+
+    this.engine.merge.initialize(nodeID);
+
+    this.target = nodeID;
+
+    this.engine.node.redraw(nodeID);
+    await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
+    this.addStyle();
+
+    this.log.info(this.log.success('set drag target'), this.log.slug(nodeID));
   }
 
   async reset() {
@@ -43,19 +66,27 @@ class DragEngine extends EngineConsumer {
       const target = this.target!;
       this.target = null;
 
-      this.engine.node.drop(target);
+      this.log.debug(this.log.pending('resetting drag target'), this.log.slug(target));
       this.engine.merge.reset();
 
+      this.engine.node.redraw(target);
       await this.engine.node.translate(target, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
+      this.removeStyle();
+
+      this.log.info(this.log.reset('reset drag target'), this.log.slug(target));
     }
 
     if (this.group) {
       const group = this.group;
       this.group = null;
 
+      this.log.debug(this.log.pending('resetting drag group'), group);
       await this.engine.node.translateMany(group, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes(group, DRAG_LOCKS));
+      this.removeStyle();
+
+      this.log.info(this.log.reset('reset drag group'), this.log.diff(group.length, 0));
     }
   }
 }

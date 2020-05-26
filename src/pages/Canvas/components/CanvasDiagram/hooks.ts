@@ -9,14 +9,11 @@ export const useCursorControls = () => {
   const mousePosition = React.useRef<[number, number] | null>(null);
   const engine = React.useContext(EngineContext)!;
 
-  const moveMouse = React.useCallback(
-    (location) => {
-      if (DEBUG_REALTIME) return;
+  const moveMouse = React.useCallback((location) => {
+    if (!DEBUG_REALTIME) return;
 
-      engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
-    },
-    [engine.realtime]
-  );
+    engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
+  }, []);
 
   const panViewport = React.useCallback(
     (moveX, moveY) => {
@@ -34,31 +31,31 @@ export const useCursorControls = () => {
           engine.linkCreation.abort();
           engine.linkCreation.start(sourcePortID, transformedPosition);
         }
+
         mousePosition.current = nextMousePosition;
         moveMouse(nextMousePosition);
       }
     },
-    [engine, moveMouse]
+    [moveMouse]
   );
 
-  const zoomViewport = React.useCallback(
-    (calculateMovement) => {
-      engine.realtime.zoomViewport(calculateMovement);
-    },
-    [engine.realtime]
-  );
+  const zoomViewport = React.useCallback((calculateMovement) => engine.realtime.zoomViewport(calculateMovement), []);
 
-  const updateViewport = React.useCallback(({ x, y, zoom }) => engine.updateViewport(x, y, zoom), [engine]);
+  const updateViewport = React.useCallback(({ x, y, zoom }) => engine.updateViewport(x, y, zoom), []);
 
   React.useEffect(() => {
     if (engine.canvas) {
       const onMouseMove = () => {
         if (!engine.canvas!.isPanning()) {
-          const transformedPoint = engine.getCanvasMousePosition();
+          try {
+            const transformedPoint = engine.getCanvasMousePosition();
 
-          mousePosition.current = transformedPoint;
+            mousePosition.current = transformedPoint;
 
-          moveMouse(transformedPoint);
+            moveMouse(transformedPoint);
+          } catch {
+            // user switched to a different window
+          }
         }
       };
 
@@ -68,7 +65,7 @@ export const useCursorControls = () => {
     }
 
     return undefined;
-  }, [engine.canvas, moveMouse]);
+  }, [moveMouse]);
 
   return {
     updateViewport,

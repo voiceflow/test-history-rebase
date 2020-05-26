@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
+import { ErrorMessageWithDivider } from '@/components/ErrorPages/ErrorMessage';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
@@ -10,7 +11,6 @@ import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { ErrorMessageWithDivider } from '@/pages/Canvas/components/ErrorMessage';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';

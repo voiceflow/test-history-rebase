@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { createRootSelector } from '../utils';
-import { STATE_KEY } from './types';
+import { STATE_KEY } from './constants';
 
 export const prototypeSelector = createRootSelector(STATE_KEY);
 

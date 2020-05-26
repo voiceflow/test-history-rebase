@@ -82,7 +82,7 @@ export function Item(props) {
         </Dropdown>
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <ProjectTitle>{name}</ProjectTitle>
+            <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
             <ProjectTitleCaption>{map(language, (l) => getHumanLanguageName(l)).join(', ')}</ProjectTitleCaption>
           </ProjectTitleDetails>
 

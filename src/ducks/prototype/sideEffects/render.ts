@@ -7,6 +7,7 @@ import { activeDiagramIDSelector, activePlatformSelector } from '@/ducks/skill';
 import { allSlotsSelector } from '@/ducks/slot';
 import { Thunk } from '@/store/types';
 
+import { log } from '../utils';
 import initializeTest from './initialize';
 
 const renderPrototype = (): Thunk => async (dispatch, getState) => {
@@ -26,7 +27,7 @@ const renderPrototype = (): Thunk => async (dispatch, getState) => {
     });
     dispatch(initializeTest());
   } catch (err) {
-    console.error(err);
+    log.error(err);
     dispatch(setError('Could Not Render Your Test Project'));
   }
 };

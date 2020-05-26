@@ -7,6 +7,7 @@ import { FlexLabel } from '@/components/Flex';
 import { useKeygen } from '@/hooks';
 import { useCombinedRefs } from '@/hooks/ref';
 import { FadeDownDelayedContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils/dom';
 import { stringify } from '@/utils/functional';
 
@@ -16,6 +17,7 @@ export { Item as MenuItem, Container as MenuContainer, itemStyles as menuItemSty
 
 function Menu(
   {
+    id,
     options,
     disabled,
     onSelect,
@@ -53,6 +55,8 @@ function Menu(
 
   return (
     <Container
+      id={id}
+      className={ClassName.MENU}
       ref={menuRef}
       fullWidth={fullWidth}
       maxVisibleItems={maxVisibleItems}
@@ -66,6 +70,7 @@ function Menu(
           {children ||
             visibleOptions.map(({ value, label, onClick }) => (
               <Item
+                className={ClassName.MENU_ITEM}
                 onClick={stopPropagation(() => {
                   onClick && onClick();
                   onSelect && onSelect(value);

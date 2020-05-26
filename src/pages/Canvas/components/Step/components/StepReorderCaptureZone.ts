@@ -1,5 +1,5 @@
 import { styled } from '@/hocs';
-import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
+import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 const StepReorderCaptureZone = styled.div`
   position: absolute;
@@ -11,7 +11,7 @@ const StepReorderCaptureZone = styled.div`
   z-index: 25;
   pointer-events: none;
 
-  .${MERGE_ACTIVE_NODE_CLASSNAME} & {
+  .${NODE_MERGE_TARGET_CLASSNAME} & {
     pointer-events: auto;
   }
 `;

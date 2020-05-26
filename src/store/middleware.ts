@@ -27,9 +27,12 @@ import { RootRoutes } from '@/utils/routes';
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
 import { AnyAction, Dispatchable, Selector, StoreMiddleware } from './types';
+import { storeLogger } from './utils';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const CREATOR_HISTORY_ACTIONS: string[] = [Creator.DiagramAction.UNDO_HISTORY, Creator.DiagramAction.REDO_HISTORY];
+
+const log = storeLogger.child('middleware');
 
 type ActionBlacklist = (string | ((action: AnyAction) => boolean))[];
 
@@ -92,8 +95,7 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
   const viewers = activeDiagramViewersSelector(store.getState());
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
-  // eslint-disable-next-line no-console
-  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch((e) => console.warn('failed to save diagram', e));
+  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch((e) => log.warn('failed to save diagram', e));
 
   if (action.type === Creator.DiagramAction.SAVE_HISTORY && !action?.meta?.preventUpdate) {
     saveDiagram();

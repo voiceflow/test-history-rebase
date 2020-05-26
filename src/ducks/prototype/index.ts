@@ -11,6 +11,7 @@ import {
 import { PrototypeState, PrototypeStatus } from './types';
 
 export * from './actions';
+export * from './constants';
 export * from './types';
 export * from './selectors';
 export * from './sideEffects';

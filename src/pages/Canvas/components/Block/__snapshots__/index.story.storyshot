@@ -1,200 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Creator/Block Active State 1`] = `
-.c0 {
-  width: 330px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: solid 2px #fff;
-  padding: 0 10px 10px 10px;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
-  position: relative;
-  opacity: 1;
-  border-color: none;
-  -webkit-transition: opacity 0.15s ease;
-  transition: opacity 0.15s ease;
-}
-
-.c0:before {
-  display: block;
-  border-radius: 8px;
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border: 1px solid #D4D9E0;
-  content: '';
-  -webkit-transition: box-shadow 0.15s ease;
-  transition: box-shadow 0.15s ease;
-}
-
-.c0::before {
-  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
-  border-color: #C5CBD6;
-}
-
-.c0 .c5 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 50px;
-  text-overflow: ellipsis;
-}
-
-.c3 {
-  max-width: 100%;
-}
-
-.c3 input {
-  max-width: 100%;
-  box-sizing: content-box !important;
-  -webkit-transition: background 0.15s ease;
-  transition: background 0.15s ease;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0 5px;
-  text-align: center;
-  border: none;
-  white-space: nowrap;
-  background: transparent;
-  border-radius: 3px;
-  outline: none;
-  text-overflow: ellipsis;
-  cursor: text;
-  overflow: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #62778c;
-}
-
-.c3 input:active {
-  background: transparent;
-}
-
-.c1 {
-  position: relative;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 54px;
-  background-color: #fff;
-}
-
-<div
-  className="c0 vf-canvas__block"
->
-  <div
-    className="c1"
-  >
-    <div
-      className="c2"
-    >
-      <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
-      >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
-          style={
-            Object {
-              "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="New Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
-            }
-          }
-        >
-          New Block
-        </div>
-      </div>
-    </div>
-    <section>
-      <div
-        className="c4"
-      >
-        Step 1
-      </div>
-      <div
-        className="c4"
-      >
-        Step 2
-      </div>
-      <div
-        className="c4"
-      >
-        Step 3
-      </div>
-      <div
-        className="c4"
-      >
-        Step 4
-      </div>
-      <div
-        className="c4"
-      >
-        Step 5
-      </div>
-    </section>
-  </div>
-</div>
-`;
-
 exports[`Storyshots Creator/Block Block User Lock 1`] = `
 .c10 {
   box-sizing: content-box;
@@ -277,7 +82,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -291,16 +96,43 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -354,36 +186,6 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c17 .c1 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c18 .c1 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c19 .c1 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -423,6 +225,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c5,
+.vf-canvas--creating-link .c5 {
+  pointer-events: none;
+}
+
 .c5 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -449,6 +256,10 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
 
 .c5 input:active {
   background: transparent;
+}
+
+.c5 .vf-canvas__node--active input {
+  color: #132144;
 }
 
 .c8 {
@@ -500,13 +311,13 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       M
     </div>
     <div
-      className="c3"
+      className="c3 vf-canvas__block__section"
     >
       <div
         className="c4"
       >
         <div
-          className="c5"
+          className="c5 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -519,6 +330,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -526,6 +338,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="New Block"
           />
           <div
@@ -574,7 +387,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       </section>
     </div>
     <div
-      className="c3"
+      className="c3 vf-canvas__block__section"
     >
       <div
         className="c7"
@@ -593,7 +406,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c5"
+          className="c5 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -606,6 +419,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -613,6 +427,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="Section1"
           />
           <div
@@ -646,7 +461,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       </section>
     </div>
     <div
-      className="c3"
+      className="c3 vf-canvas__block__section"
     >
       <div
         className="c7"
@@ -665,7 +480,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c5"
+          className="c5 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -678,6 +493,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -685,6 +501,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="Section2 Blah blah blah blah blah"
           />
           <div
@@ -737,7 +554,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -751,16 +568,43 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #A2C1DC;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #A2C1DC;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -795,6 +639,11 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -823,6 +672,10 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #05588a;
+}
+
 .c1 {
   position: relative;
 }
@@ -848,13 +701,13 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -867,6 +720,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -874,6 +728,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -938,10 +793,9 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
-  opacity: 0.7;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -955,11 +809,43 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -992,6 +878,11 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 
 .c3 {
   max-width: 100%;
+}
+
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
 }
 
 .c3 input {
@@ -1022,6 +913,10 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -1044,86 +939,92 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="vf-canvas__node--disabled"
 >
   <div
-    className="c1"
+    className="c0 vf-canvas__block"
   >
     <div
-      className="c2"
+      className="c1 vf-canvas__block__section"
     >
       <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
+        className="c2"
       >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
+        <div
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="New Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
+              "display": "inline-block",
             }
           }
         >
-          New Block
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            onMouseUp={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            tabIndex={-1}
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
         </div>
       </div>
+      <section>
+        <div
+          className="c4"
+        >
+          Step 1
+        </div>
+        <div
+          className="c4"
+        >
+          Step 2
+        </div>
+        <div
+          className="c4"
+        >
+          Step 3
+        </div>
+        <div
+          className="c4"
+        >
+          Step 4
+        </div>
+        <div
+          className="c4"
+        >
+          Step 5
+        </div>
+      </section>
     </div>
-    <section>
-      <div
-        className="c4"
-      >
-        Step 1
-      </div>
-      <div
-        className="c4"
-      >
-        Step 2
-      </div>
-      <div
-        className="c4"
-      >
-        Step 3
-      </div>
-      <div
-        className="c4"
-      >
-        Step 4
-      </div>
-      <div
-        className="c4"
-      >
-        Step 5
-      </div>
-    </section>
   </div>
 </div>
 `;
 
-exports[`Storyshots Creator/Block Green 1`] = `
+exports[`Storyshots Creator/Block Focused State 1`] = `
 .c0 {
   width: 330px;
   border-radius: 8px;
@@ -1131,7 +1032,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
   border: solid 2px #fff;
   padding: 0 10px 10px 10px;
   background-color: #fff;
-  background-image: linear-gradient(to bottom,#EAF1EA,#e5eee5);
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
   position: relative;
   opacity: 1;
   border-color: none;
@@ -1139,7 +1040,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1147,22 +1048,49 @@ exports[`Storyshots Creator/Block Green 1`] = `
   left: -3px;
   right: -3px;
   bottom: -3px;
-  border: 1px solid #CBD8CC;
+  border: 1px solid #D4D9E0;
   content: '';
   -webkit-transition: box-shadow 0.15s ease;
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
-  border-color: #BECDC3;
+  border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -1197,6 +1125,256 @@ exports[`Storyshots Creator/Block Green 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
+.c1 {
+  position: relative;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 54px;
+  background-color: #fff;
+}
+
+<div
+  className="vf-canvas__node--focused"
+>
+  <div
+    className="c0 vf-canvas__block"
+  >
+    <div
+      className="c1 vf-canvas__block__section"
+    >
+      <div
+        className="c2"
+      >
+        <div
+          className="c3 vf-canvas__block__section__title"
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "display": "inline-block",
+            }
+          }
+        >
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            onMouseUp={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            tabIndex={-1}
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
+        </div>
+      </div>
+      <section>
+        <div
+          className="c4"
+        >
+          Step 1
+        </div>
+        <div
+          className="c4"
+        >
+          Step 2
+        </div>
+        <div
+          className="c4"
+        >
+          Step 3
+        </div>
+        <div
+          className="c4"
+        >
+          Step 4
+        </div>
+        <div
+          className="c4"
+        >
+          Step 5
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creator/Block Green 1`] = `
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EAF1EA,#e5eee5);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0::before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #CBD8CC;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #BECDC3;
+}
+
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #BECDC3;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+  opacity: 0.7;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+  opacity: 1;
+}
+
+.c0 .c5 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1225,6 +1403,10 @@ exports[`Storyshots Creator/Block Green 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #485648;
+}
+
 .c1 {
   position: relative;
 }
@@ -1250,13 +1432,13 @@ exports[`Storyshots Creator/Block Green 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1269,6 +1451,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1276,6 +1459,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -1342,7 +1526,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1356,16 +1540,43 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -1400,6 +1611,11 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1428,6 +1644,10 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -1453,13 +1673,13 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1472,6 +1692,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1479,6 +1700,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -1545,7 +1767,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1559,16 +1781,43 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #CDCAD5;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #CDCAD5;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -1603,6 +1852,11 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1631,6 +1885,10 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #4e355d;
+}
+
 .c1 {
   position: relative;
 }
@@ -1656,13 +1914,13 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1675,6 +1933,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1682,6 +1941,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -1748,7 +2008,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1762,16 +2022,43 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #D8CBD1;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #D8CBD1;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -1806,6 +2093,11 @@ exports[`Storyshots Creator/Block Red 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -1834,6 +2126,10 @@ exports[`Storyshots Creator/Block Red 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #76273d;
+}
+
 .c1 {
   position: relative;
 }
@@ -1859,13 +2155,13 @@ exports[`Storyshots Creator/Block Red 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1878,6 +2174,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -1885,6 +2182,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -1951,7 +2249,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1965,16 +2263,43 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -2009,6 +2334,11 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -2037,6 +2367,10 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -2062,13 +2396,13 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2081,6 +2415,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -2088,6 +2423,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -2152,10 +2488,9 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
-  border-color: #5d9df5;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2169,8 +2504,44 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
   display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+  opacity: 0.7;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+  opacity: 1;
 }
 
 .c0 .c5 {
@@ -2204,6 +2575,11 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -2232,6 +2608,10 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -2254,81 +2634,87 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="vf-canvas__node--selected"
 >
   <div
-    className="c1"
+    className="c0 vf-canvas__block"
   >
     <div
-      className="c2"
+      className="c1 vf-canvas__block__section"
     >
       <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
+        className="c2"
       >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
+        <div
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="New Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
+              "display": "inline-block",
             }
           }
         >
-          New Block
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            onMouseUp={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            tabIndex={-1}
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
         </div>
       </div>
+      <section>
+        <div
+          className="c4"
+        >
+          Step 1
+        </div>
+        <div
+          className="c4"
+        >
+          Step 2
+        </div>
+        <div
+          className="c4"
+        >
+          Step 3
+        </div>
+        <div
+          className="c4"
+        >
+          Step 4
+        </div>
+        <div
+          className="c4"
+        >
+          Step 5
+        </div>
+      </section>
     </div>
-    <section>
-      <div
-        className="c4"
-      >
-        Step 1
-      </div>
-      <div
-        className="c4"
-      >
-        Step 2
-      </div>
-      <div
-        className="c4"
-      >
-        Step 3
-      </div>
-      <div
-        className="c4"
-      >
-        Step 4
-      </div>
-      <div
-        className="c4"
-      >
-        Step 5
-      </div>
-    </section>
   </div>
 </div>
 `;
@@ -2349,7 +2735,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2363,16 +2749,43 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -2407,6 +2820,11 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -2435,6 +2853,10 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -2460,13 +2882,13 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2479,6 +2901,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -2486,6 +2909,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -2552,7 +2976,7 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2566,16 +2990,43 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -2610,6 +3061,11 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -2638,6 +3094,10 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   background: transparent;
 }
 
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
 .c1 {
   position: relative;
 }
@@ -2660,81 +3120,87 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className=""
 >
   <div
-    className="c1"
+    className="c0 vf-canvas__block"
   >
     <div
-      className="c2"
+      className="c1 vf-canvas__block__section"
     >
       <div
-        className="c3"
-        style={
-          Object {
-            "boxSizing": "content-box",
-            "display": "inline-block",
-          }
-        }
+        className="c2"
       >
-        <input
-          onBlur={[Function]}
-          onChange={[Function]}
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          readOnly={true}
+        <div
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
-              "width": "1px",
-            }
-          }
-          value="New Block"
-        />
-        <div
-          style={
-            Object {
-              "height": 0,
-              "left": 0,
-              "overflow": "scroll",
-              "position": "absolute",
-              "top": 0,
-              "visibility": "hidden",
-              "whiteSpace": "pre",
+              "display": "inline-block",
             }
           }
         >
-          New Block
+          <input
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            onMouseUp={[Function]}
+            readOnly={true}
+            style={
+              Object {
+                "boxSizing": "content-box",
+                "width": "1px",
+              }
+            }
+            tabIndex={-1}
+            value="New Block"
+          />
+          <div
+            style={
+              Object {
+                "height": 0,
+                "left": 0,
+                "overflow": "scroll",
+                "position": "absolute",
+                "top": 0,
+                "visibility": "hidden",
+                "whiteSpace": "pre",
+              }
+            }
+          >
+            New Block
+          </div>
         </div>
       </div>
+      <section>
+        <div
+          className="c4"
+        >
+          Step 1
+        </div>
+        <div
+          className="c4"
+        >
+          Step 2
+        </div>
+        <div
+          className="c4"
+        >
+          Step 3
+        </div>
+        <div
+          className="c4"
+        >
+          Step 4
+        </div>
+        <div
+          className="c4"
+        >
+          Step 5
+        </div>
+      </section>
     </div>
-    <section>
-      <div
-        className="c4"
-      >
-        Step 1
-      </div>
-      <div
-        className="c4"
-      >
-        Step 2
-      </div>
-      <div
-        className="c4"
-      >
-        Step 3
-      </div>
-      <div
-        className="c4"
-      >
-        Step 4
-      </div>
-      <div
-        className="c4"
-      >
-        Step 5
-      </div>
-    </section>
   </div>
 </div>
 `;
@@ -2822,10 +3288,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   min-height: 54px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #D3D9E4;
+  border: 1px solid #d3d9e4;
 }
 
-.c10 .c22:not(:first-of-type) {
+.c10 .c19:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2839,7 +3305,23 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.node--merge-active .c10 {
+.vf-canvas__step.vf-canvas__node--active .c10,
+.vf-canvas__step.vf-canvas__node--highlighted .c10 {
+  border: 1px solid #5D9DF5;
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c10:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c10 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c10 {
   z-index: -1;
 }
 
@@ -2862,7 +3344,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2876,16 +3358,43 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -2939,36 +3448,6 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c19 .c11 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c20 .c11 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
-.c21 .c11 {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 99;
-}
-
 .c2 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3008,6 +3487,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -3034,6 +3518,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.c3 .vf-canvas__node--active input {
+  color: #132144;
 }
 
 .c6 {
@@ -3074,13 +3562,13 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
     className="c0 vf-canvas__block"
   >
     <div
-      className="c1"
+      className="c1 vf-canvas__block__section"
     >
       <div
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3093,6 +3581,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -3100,6 +3589,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="New Block"
           />
           <div
@@ -3148,7 +3638,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </section>
     </div>
     <div
-      className="c1"
+      className="c1 vf-canvas__block__section"
     >
       <div
         className="c5"
@@ -3167,7 +3657,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c3"
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3180,6 +3670,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -3187,6 +3678,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="Section 1"
           />
           <div
@@ -3220,13 +3712,13 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </section>
     </div>
     <div
-      className="c1"
+      className="c1 vf-canvas__block__section"
     >
       <div
         className="c2"
       >
         <div
-          className="c3"
+          className="c3 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3239,6 +3731,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
             onChange={[Function]}
             onClick={[Function]}
             onKeyPress={[Function]}
+            onMouseUp={[Function]}
             readOnly={true}
             style={
               Object {
@@ -3246,6 +3739,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
                 "width": "1px",
               }
             }
+            tabIndex={-1}
             value="Block 1"
           />
           <div
@@ -3267,21 +3761,21 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c9"
+          className="c9 vf-canvas__step"
           onMouseDown={[Function]}
         >
           <div
-            className="c10 vf-canvas__step"
+            className="c10"
           >
             Order Pizza
           </div>
         </div>
         <div
-          className="c9"
+          className="c9 vf-canvas__step"
           onMouseDown={[Function]}
         >
           <div
-            className="c10 vf-canvas__step"
+            className="c10"
           >
             <div
               className="c11 c12"
@@ -3340,7 +3834,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.c0:before {
+.c0::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -3354,16 +3848,43 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.canvas--nodes-active .c0 {
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
   opacity: 0.7;
 }
 
-.canvas--nodes-active .c0:not(.node--merge-active):hover {
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
 }
 
@@ -3416,6 +3937,11 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   max-width: 100%;
 }
 
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
 .c3 input {
   max-width: 100%;
   box-sizing: content-box !important;
@@ -3442,6 +3968,10 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.c3 .vf-canvas__node--active input {
+  color: #132144;
 }
 
 .c6 {
@@ -3475,13 +4005,13 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   className="c0 vf-canvas__block"
 >
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c2"
     >
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3494,6 +4024,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -3501,6 +4032,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="New Block"
         />
         <div
@@ -3549,7 +4081,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     </section>
   </div>
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c5"
@@ -3568,7 +4100,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </span>
       </div>
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3581,6 +4113,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -3588,6 +4121,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Section1"
         />
         <div
@@ -3621,7 +4155,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     </section>
   </div>
   <div
-    className="c1"
+    className="c1 vf-canvas__block__section"
   >
     <div
       className="c5"
@@ -3640,7 +4174,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </span>
       </div>
       <div
-        className="c3"
+        className="c3 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3653,6 +4187,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
           onChange={[Function]}
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseUp={[Function]}
           readOnly={true}
           style={
             Object {
@@ -3660,6 +4195,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
               "width": "1px",
             }
           }
+          tabIndex={-1}
           value="Section2 Blah blah blah blah blah"
         />
         <div

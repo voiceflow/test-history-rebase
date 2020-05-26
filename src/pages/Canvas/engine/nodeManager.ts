@@ -14,6 +14,8 @@ import { isCommandNode } from '@/utils/node';
 import { EngineConsumer, nodeFactory } from './utils';
 
 class NodeManager extends EngineConsumer {
+  log = this.engine.log.child('node');
+
   internal = {
     add: (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor) => {
       if (node.type === BlockType.COMMENT) {
@@ -97,7 +99,7 @@ class NodeManager extends EngineConsumer {
     },
 
     translate: (nodeID: string, movement: Pair<number>) => {
-      this.api(nodeID)?.translate?.(movement);
+      this.api(nodeID)?.instance?.translate?.(movement);
       this.updateOrigin(nodeID, movement);
       this.translateAllLinks(nodeID, movement);
     },
@@ -121,6 +123,39 @@ class NodeManager extends EngineConsumer {
     return this.engine.nodes.get(nodeID)?.api;
   }
 
+  isReady(nodeID: string) {
+    return this.engine.nodes.get(nodeID)?.api?.isReady();
+  }
+
+  /**
+   * check to see if a node is active
+   */
+  isActive(nodeID: string) {
+    return this.engine.activation.hasTargets && this.engine.activation.isTarget(nodeID);
+  }
+
+  /**
+   * check to see if a node or its parent parent is active
+   */
+  isBranchActive(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
+
+    return (node?.parentNode && this.isActive(node.parentNode)) || this.isActive(nodeID);
+  }
+
+  /**
+   * check to see if a node or any of its descendents are active
+   */
+  isSubtreeActive(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
+
+    return this.isActive(nodeID) || node.combinedNodes.some((childNodeID) => this.isActive(childNodeID));
+  }
+
+  getRect(nodeID: string) {
+    return this.api(nodeID)?.instance?.getRect();
+  }
+
   // crud methods
 
   // eslint-disable-next-line max-params
@@ -130,35 +165,52 @@ class NodeManager extends EngineConsumer {
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };
 
+    this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
+
     await this.engine.realtime.sendUpdate(Realtime.addNode(augmentedNode, data, parentNode));
     this.internal.add(augmentedNode, data, parentNode);
 
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
 
+    this.log.info(this.log.success('added node'), this.log.slug(nodeID));
+
     return nodeID;
   }
 
   async addMany(entities: EntityMap, position: Point) {
+    this.log.debug(this.log.pending('adding many nodes'), entities);
+
     await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, position));
     this.internal.addMany(entities, position);
     this.engine.saveHistory();
+
+    this.log.info(this.log.success('added many nodes'), this.log.value(entities.nodesWithData.length));
   }
 
   async duplicate(nodeID: string) {
+    this.log.debug(this.log.pending('duplicating node'), this.log.slug(nodeID));
+
     const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
 
     this.engine.saveHistory();
     this.engine.focus.set(duplicateNodeID);
+
+    this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
   }
 
   async updateData(nodeID: string, data: Partial<NodeData<unknown>>, save = true) {
+    this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
+
     await this.engine.realtime.sendUpdate(Realtime.updateNodeData(nodeID, data));
     this.internal.updateData(nodeID, data);
+    this.redraw(nodeID);
 
     if (save) {
       this.engine.saveHistory();
     }
+
+    this.log.info(this.log.success('updated node data'), this.log.slug(nodeID));
   }
 
   isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>) {
@@ -216,6 +268,7 @@ class NodeManager extends EngineConsumer {
         return requiredCommand;
       }
     }
+
     return false;
   }
 
@@ -243,19 +296,26 @@ class NodeManager extends EngineConsumer {
   }
 
   remove(nodeID: string) {
+    this.log.debug(this.log.pending('removing node'), this.log.slug(nodeID));
+
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
       await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
       this.internal.remove(removeNodeID);
-
       this.engine.saveHistory();
+
+      this.log.info(this.log.success('remove node'), this.log.slug(removeNodeID));
     });
   }
 
   removeMany(nodeIDs: string[]) {
+    this.log.debug(this.log.pending('removed multiple nodes'), nodeIDs);
+
     return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
       await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
       this.internal.removeMany(removableNodeIDs);
       this.engine.saveHistory();
+
+      this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
     });
   }
 
@@ -267,10 +327,14 @@ class NodeManager extends EngineConsumer {
     const { node, data } = nodeFactory(type);
     const augmentedNode = { ...node, id: nodeID };
 
+    this.log.debug(this.log.pending('adding nested node'), this.log.slug(nodeID));
+
     await this.engine.realtime.sendUpdate(Realtime.addNestedNode(parentNodeID, augmentedNode, data, mergedNodeID));
     this.internal.addNested(parentNodeID, augmentedNode, data, mergedNodeID);
     this.engine.saveHistory();
     this.engine.focus.set(nodeID);
+
+    this.log.info(this.log.success('added nested node'), this.log.slug(nodeID));
 
     return nodeID;
   }
@@ -300,6 +364,8 @@ class NodeManager extends EngineConsumer {
       ports: { in: [{ id: combinedPortID }], out: [] },
     };
 
+    this.log.debug(this.log.pending('adding nested node'), this.log.slug(childID));
+
     batch(() => {
       this.internal.add(augmentedNode, data, parentNode);
       this.internal.insertNested(parentNodeID, index, nodeID);
@@ -311,13 +377,19 @@ class NodeManager extends EngineConsumer {
     this.engine.saveHistory();
 
     this.engine.focus.set(childID);
+
+    this.log.info(this.log.success('added nested node'), this.log.slug(childID));
   }
 
   async insertNested(parentNodeID: string, index: number, nodeID: string) {
+    this.log.debug(this.log.pending('inserting nested node'), this.log.slug(nodeID));
+
     this.internal.insertNested(parentNodeID, index, nodeID);
     await this.engine.realtime.sendUpdate(Realtime.insertNestedNode(parentNodeID, index, nodeID));
 
     this.engine.saveHistory();
+
+    this.log.info(this.log.success('inserted nested node'), this.log.slug(nodeID));
   }
 
   async unmerge(nodeID: string, position: Point) {
@@ -328,32 +400,39 @@ class NodeManager extends EngineConsumer {
       ports: { in: [{ id: parentPortID }], out: [] },
     };
 
+    this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));
+
     await this.engine.realtime.sendUpdate(Realtime.unmergeNode(nodeID, position, parentNode));
     this.internal.unmerge(nodeID, position, parentNode);
-
     this.engine.saveHistory();
+
+    this.log.info(this.log.success('unmerged node'), this.log.slug(nodeID));
   }
 
   async merge(mergedNodeID: string, sourceNodeID: string, targetNodeID: string, invert?: boolean) {
     const { x, y } = this.engine.getNodeByID(invert ? sourceNodeID : targetNodeID);
 
+    this.log.debug(this.log.pending('merging into node'), this.log.slug(mergedNodeID));
+
     await this.engine.realtime.sendUpdate(Realtime.mergeNodes(mergedNodeID, sourceNodeID, targetNodeID, [x, y]));
     this.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, [x, y]);
     this.engine.saveHistory();
+
+    this.log.info(this.log.success('merged into node'), this.log.slug(mergedNodeID));
   }
 
   // location / rendering methods
 
   async translate(nodeID: string, movement: Pair<number>, volatile = true) {
-    if (this.engine.nodes.has(nodeID)) {
-      const node = this.engine.nodes.get(nodeID)!;
-      const origin: Point = [node.x, node.y];
+    if (!this.engine.nodes.has(nodeID)) return;
 
-      this.internal.translate(nodeID, movement);
+    const node = this.engine.nodes.get(nodeID)!;
+    const origin: Point = [node.x, node.y];
 
-      const action = Realtime.moveNode(nodeID, movement, origin);
-      await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
-    }
+    this.internal.translate(nodeID, movement);
+
+    const action = Realtime.moveNode(nodeID, movement, origin);
+    await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 
   async translateMany(nodeIDs: string[], movement: Pair<number>, volatile = true) {
@@ -376,6 +455,8 @@ class NodeManager extends EngineConsumer {
     const { x, y } = this.engine.nodes.get(nodeID)!;
 
     this.dispatch(Creator.updateNodeLocation(nodeID, [x, y]));
+
+    this.log.debug('location saved', this.log.slug(nodeID));
   }
 
   updateOrigin(nodeID: string, [moveX, moveY]: Pair<number>) {
@@ -391,6 +472,8 @@ class NodeManager extends EngineConsumer {
 
     if (node) {
       this.engine.nodes.set(nodeID, { ...node, x, y });
+
+      this.log.debug('set origin', this.log.slug(nodeID));
     }
   }
 
@@ -418,21 +501,35 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  drag(nodeID: string) {
-    this.api(nodeID)?.drag?.();
+  async drag(nodeID: string, movement: Pair<number>) {
+    if (this.engine.selection.isOneOfManyTargets(nodeID)) {
+      const targets = this.engine.selection.getTargets();
+
+      await this.engine.drag.setGroup(targets);
+      await this.engine.node.translateMany(targets, movement);
+    } else {
+      this.engine.selection.reset();
+
+      await this.engine.drag.setTarget(nodeID);
+      await this.engine.node.translate(nodeID, movement);
+
+      this.engine.merge.updateCandidates();
+    }
   }
 
-  drop(nodeID: string) {
-    this.api(nodeID)?.drop?.();
-  }
+  async drop() {
+    this.engine.saveActiveLocations();
+    this.engine.saveHistory();
 
-  getBlockRect(nodeID: string) {
-    return this.api(nodeID)!.getBlockRect!();
+    await this.engine.drag.reset();
   }
 
   center(nodeID: string) {
-    const [posX, posY] = this.api(nodeID)!.getPosition();
+    const center = this.api(nodeID)?.instance?.getCenterPoint();
 
+    if (!center) return;
+
+    const [centerX, centerY] = center;
     const xOffset = window.innerWidth / 2;
     const yOffset = window.innerHeight / 2;
 
@@ -440,11 +537,13 @@ class NodeManager extends EngineConsumer {
 
     canvasAPI.applyTransition();
     canvasAPI.setZoom(80);
-    canvasAPI.setPosition([(xOffset - posX) * 0.8, (yOffset - posY - 100) * 0.8]);
+    canvasAPI.setPosition([(xOffset - centerX) * 0.8, (yOffset - centerY - 100) * 0.8]);
+
+    this.log.info('centered canvas on node', this.log.slug(nodeID));
   }
 
   rename(nodeID: string) {
-    return this.api(nodeID)?.rename?.();
+    return this.api(nodeID)?.instance?.rename();
   }
 
   redraw(nodeID: string) {
@@ -470,7 +569,7 @@ class NodeManager extends EngineConsumer {
   }
 
   updateBlockColor(nodeID: string, color: BlockVariant) {
-    this.api(nodeID)?.updateBlockColor?.(color);
+    return this.updateData(nodeID, { blockColor: color });
   }
 }
 

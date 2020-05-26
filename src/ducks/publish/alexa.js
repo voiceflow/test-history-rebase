@@ -10,7 +10,7 @@ import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 
-import { createPublishStateSelector, createUploadStep, invNameError } from './utils';
+import { createPublishStateSelector, createUploadStep, invNameError, log } from './utils';
 
 export { invNameError };
 
@@ -205,7 +205,7 @@ export const submitForReview = () =>
       dispatch(updatePublishInfo({ review: true }));
       dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       let errorMessage = 'Certification Error \n';
       if (err?.response?.data?.message) {
         errorMessage += err.response.data.message;
@@ -235,7 +235,7 @@ export const enableSkill = () =>
     try {
       await axios.put(`/interaction_model/${amznID}/enable`);
     } catch (err) {
-      console.error(err);
+      log.error(err);
     }
     dispatch(uploadSuccess());
   });
@@ -272,7 +272,7 @@ export const checkInteractionModel = () =>
         if (success) break;
       }
     } catch (err) {
-      console.error(err);
+      log.error(err);
     }
 
     dispatch(updateAlexa({ locale: success || locales[0] }));
@@ -335,7 +335,7 @@ export const renderProject = () =>
       } = (await axios.post(`/project/${projectID}/render`, { platform: 'alexa' })).data;
       dispatch(submitProject(newVersionId));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING_ERROR));
     }
   });

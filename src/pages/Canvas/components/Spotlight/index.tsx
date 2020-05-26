@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { BlockType, IntegrationType, NO_SPOTLIGHT_BLOCKS } from '@/constants';
+import { BlockType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
 import { useDidUpdateEffect, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import MANAGERS from '@/pages/Canvas/managers';
 
 import { Container, Select } from './components';
+
+export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, ...INTERNAL_NODES, ...MARKUP_NODES];
 
 const BLOCK_TYPES = [
   ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label, labelV2 }) => ({
@@ -34,7 +36,7 @@ export const filterSpotlightOption = (value: { label: string }, input: string) =
 
 const Spotlight = () => {
   // NOTE: extra protection against context being falsy needed for HMR
-  const { isVisible, hide } = React.useContext(SpotlightContext) || {};
+  const spotlight = React.useContext(SpotlightContext);
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
 
@@ -42,23 +44,23 @@ const Spotlight = () => {
     const position = engine.getCanvasMousePosition();
 
     await engine.node.add(blockType, position, factoryData);
-    hide?.();
+    spotlight?.hide();
   };
 
   useDidUpdateEffect(() => {
-    if (isVisible) {
+    if (spotlight?.isVisible) {
       trackingEvents.trackCanvasSpotlightOpened();
     }
-  }, [isVisible]);
+  }, [spotlight?.isVisible]);
 
-  if (!isVisible) {
+  if (!spotlight?.isVisible) {
     return null;
   }
 
   return (
     <Container>
       <Select
-        onBlur={hide}
+        onBlur={spotlight?.hide}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         classNamePrefix="spotlight"

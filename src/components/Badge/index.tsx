@@ -44,7 +44,7 @@ ${({ marginLeft }) =>
             color: #fff;
           `
         : css`
-            background: linear-gradient(180deg, #eff5f6a3 0%, #eef4f6 100%), #ffffff;
+            background: linear-gradient(180deg, #eff5f6a3 0%, #eef4f6 100%), #fff;
             box-shadow: 0px 1px 0px #d4d9e6;
             border: 1px solid #d4d9e6;
             color: #62778c;

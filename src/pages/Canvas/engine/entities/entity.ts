@@ -1,0 +1,117 @@
+import cuid from 'cuid';
+import React from 'react';
+import shallowEqual from 'shallowequal';
+
+import type { State } from '@/ducks/_root';
+import { useTeardown } from '@/hooks';
+import Logger from '@/utils/logger';
+
+import { EntityType } from '../constants';
+import type { Engine } from '..';
+
+export type EntityInstance = {
+  isReady: () => boolean;
+
+  addClass: (className: string) => void;
+  removeClass: (className: string) => void;
+};
+
+const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
+
+export abstract class Entity<T extends EntityInstance = EntityInstance> {
+  instanceID = cuid();
+
+  handlers: ((entity: this) => any)[] = [];
+
+  public instance: T | null = null;
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor(protected type: EntityType, protected engine: Engine, protected log: typeof Logger) {}
+
+  useInstance(instance: T) {
+    React.useEffect(() => {
+      this.instance = instance;
+    }, [instance]);
+
+    useTeardown(() => {
+      this.instance = null;
+    });
+  }
+
+  isReady() {
+    return !!this.instance?.isReady();
+  }
+
+  // eslint-disable-next-line class-methods-use-this, lodash/prefer-constant
+  shouldUpdate() {
+    return true;
+  }
+
+  useState<T extends object>(selector: (entity: this) => T) {
+    const [value, setValue] = React.useState(() => selector(this));
+
+    const handler = React.useMemo(() => {
+      let prevValue = value;
+
+      this.log.debug('selected', this.log.value(value));
+
+      return () => {
+        if (!this.shouldUpdate()) return;
+
+        const nextValue = selector(this);
+
+        if (!shallowEqual(nextValue, prevValue)) {
+          this.log.debug('selection updated', this.log.diff(prevValue, nextValue));
+          setValue(nextValue);
+        }
+
+        prevValue = nextValue;
+      };
+    }, []);
+
+    React.useEffect(() => {
+      this.handlers.push(handler);
+
+      return () => {
+        this.handlers.splice(this.handlers.indexOf(handler), 1);
+      };
+    }, []);
+
+    return value;
+  }
+
+  useConditionalStyle(className: string, isActive: boolean) {
+    React.useEffect(() => {
+      if (isActive) {
+        this.instance?.addClass(className);
+      } else {
+        this.instance?.removeClass(className);
+      }
+    }, [isActive]);
+
+    useTeardown(() => this.instance?.removeClass(className));
+  }
+}
+
+export abstract class ResourceEntity<M, T extends EntityInstance = EntityInstance> extends Entity<T> {
+  useSubscription<T>(id: string, selector: (state: State) => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
+    let prevState: T | null = null;
+
+    return this.engine.dispatcher.useSubscription(this.type, id, (isForced) => {
+      const state = this.engine.select(selector);
+
+      if (isForced || !isEqual(state, prevState)) {
+        this.handlers.forEach((handler) => handler(this));
+        prevState = state;
+      }
+    });
+  }
+
+  shouldUpdate() {
+    return !!this.resolve();
+  }
+
+  abstract resolve(): M;
+}
+
+export default Entity;

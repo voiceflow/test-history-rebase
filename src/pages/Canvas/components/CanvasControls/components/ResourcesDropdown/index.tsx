@@ -7,6 +7,7 @@ import * as Tracking from '@/ducks/tracking';
 import { useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ShortcutModalContext } from '@/pages/Skill/contexts';
+import { Identifier } from '@/styles/constants';
 
 import { STATIC_RESOURCES, StaticResource } from '../../constants';
 import { OptionLabel } from './components';
@@ -53,6 +54,7 @@ const ResourcesDropdown: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     <Select
+      id={Identifier.RESOURCE_MENU}
       open={isOpen}
       onOpen={onOpen}
       onClose={onClose}

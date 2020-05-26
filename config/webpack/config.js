@@ -14,6 +14,8 @@ const {
   debugHttp,
   debugRealtime,
   debugSocket,
+  logLevel,
+  logFilter,
   ff_markup,
   ff_canvasExport,
 } = require('webpack-nano/argv');
@@ -39,6 +41,10 @@ module.exports = {
     NODE_ENV,
     BUILD_ENV: env || process.env.BUILD_ENV || 'local',
 
+    // logging
+    LOG_LEVEL: logLevel || '',
+    LOG_FILTER: logFilter || '',
+
     // analytics
     GA_ENABLED: ga && 'true',
     TRACKING_ENABLED: tracking && 'true',
@@ -59,6 +65,7 @@ module.exports = {
       ? {
           DEBUG_NETWORK: true,
           DEBUG_REALTIME: true,
+          LOG_LEVEL: logLevel === 'trace' ? logLevel : 'debug',
         }
       : {
           DEBUG_NETWORK: debugNet ? true : '',

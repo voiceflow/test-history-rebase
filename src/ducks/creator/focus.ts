@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
+import { NodeData } from '@/models';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { AnyCreatorAction, CreatorAction } from './actions';
-import * as diagram from './diagram';
+import * as Diagram from './diagram';
 import { creatorStateSelector } from './selectors';
 
 export type FocusState = {
@@ -83,14 +84,12 @@ const rootSelector = createKeyedSelector(creatorStateSelector, FOCUS_STATE_KEY);
 
 export { rootSelector as creatorFocusSelector };
 
-export const focusedNodeSelector = createSelector(
-  [diagram.nodeByIDSelector, rootSelector],
-  (getNodeByID, focus) => focus.target && getNodeByID(focus.target)
+export const focusedNodeSelector = createSelector([Diagram.nodeByIDSelector, rootSelector], (getNodeByID, focus) =>
+  focus.target ? getNodeByID(focus.target) : null
 );
 
-export const focusedNodeDataSelector = createSelector(
-  [diagram.dataByNodeIDSelector, rootSelector],
-  (getDataByNodeID, focus) => focus.target && getDataByNodeID(focus.target)
+export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelector, rootSelector], (getDataByNodeID, focus) =>
+  focus.target ? (getDataByNodeID(focus.target) as NodeData<unknown>) : null
 );
 
 // action creators

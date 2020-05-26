@@ -33,7 +33,6 @@ enum IconColor {
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, portID }) => {
   const itemProps = {
-    portColor: '#6e849a',
     placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
   };
 

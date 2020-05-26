@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withContext } from '@/hocs';
 
-import { CanvasAPI } from './types';
+import type { CanvasAPI } from '.';
 
 export const CanvasContext = React.createContext<CanvasAPI | null>(null);
 export const { Provider: CanvasProvider, Consumer: CanvasConsumer } = CanvasContext;

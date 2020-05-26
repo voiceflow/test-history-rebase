@@ -11,7 +11,7 @@ import { ActionPayload, SyncThunk, Thunk } from '@/store/types';
 import { UpdateWorkspaces, updateCurrentWorkspace, updateWorkspace, updateWorkspaces } from './actions';
 import { NoValidTemplateError } from './constants';
 import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector } from './selectors';
-import { extractErrorFromResponseData, extractErrorMessages } from './utils';
+import { extractErrorFromResponseData, extractErrorMessages, log } from './utils';
 
 const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
@@ -288,7 +288,7 @@ export const createProject = (workspaceID: string, project: NewProjectOptions, t
 
     throw new Error('Invalid Response Format');
   } catch (err) {
-    console.error(err);
+    log.error(err);
     throw err;
   }
 };

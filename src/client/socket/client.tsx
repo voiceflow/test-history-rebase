@@ -7,6 +7,7 @@ import { API_ENDPOINT, DEBUG_SOCKET, DEVICE_INFO } from '@/config';
 import { setConfirm } from '@/ducks/modal';
 import { Dispatch } from '@/store/types';
 
+import { clientLogger } from '../utils';
 import { ServerEvent, SocketEvent } from './constants';
 
 declare global {
@@ -15,33 +16,22 @@ declare global {
   }
 }
 
-const BOLD_FONT_STYLE = 'font-weight: bold';
-const NORMAL_FONT_STYLE = 'font-weight: normal';
-
 const SOCKET_INIT_TIMEOUT = 3000;
 const SOCKET_CONNECTION_TIMEOUT = 5000;
 
-/* eslint-disable no-console */
+const log = clientLogger.child('socket');
+
 const createDebugSubscription = moize((event, callback) => (data: any) => {
-  console.warn(`received socket event %c${event}`, BOLD_FONT_STYLE);
-  if (typeof data === 'string') {
-    console.warn(`%cdata: "%c%${data}%c"`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE, BOLD_FONT_STYLE);
-  } else if (data) {
-    console.warn('%cdata:', BOLD_FONT_STYLE, data);
-  }
+  log.debug('received socket event', log.value(event));
+  log.debug('data', log.value(data));
 
   callback(data);
 });
 
 function debugEmit(event: string, data: any) {
-  console.warn(`emitting socket event %c${event}`, BOLD_FONT_STYLE);
-  if (typeof data === 'string') {
-    console.warn(`%cdata: "%c%${data}%c"`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE, BOLD_FONT_STYLE);
-  } else if (data) {
-    console.warn('%cdata:', BOLD_FONT_STYLE, data);
-  }
+  log.debug('emitting socket event', log.value(event));
+  log.debug('data', log.value(data));
 }
-/* eslint-enable no-console */
 
 export enum SocketStatus {
   CONNECTING = 'connecting',
@@ -85,8 +75,7 @@ class SocketClient {
 
   on = <T extends any = void>(event: string, callback: (value: T) => void) => {
     if (DEBUG_SOCKET) {
-      // eslint-disable-next-line no-console
-      console.warn(`adding socket subscription for %c${event}`, BOLD_FONT_STYLE);
+      log.warn('adding socket subscription', log.value(event));
     }
 
     this.socket.on(event, DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback);
@@ -94,8 +83,7 @@ class SocketClient {
 
   once = <T extends any = void>(event: string, callback: (value: T) => void) => {
     if (DEBUG_SOCKET) {
-      // eslint-disable-next-line no-console
-      console.warn(`adding one-time socket subscription for %c${event}`, BOLD_FONT_STYLE);
+      log.warn('adding one-time socket subscription', log.value(event));
     }
 
     this.socket.once(event, DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback);
@@ -103,8 +91,7 @@ class SocketClient {
 
   off = (event: string, callback: ((value?: any) => void) | undefined = undefined) => {
     if (DEBUG_SOCKET) {
-      // eslint-disable-next-line no-console
-      console.warn(`removing socket subscription for %c${event}`, BOLD_FONT_STYLE);
+      log.warn('removing socket subscription', log.value(event));
     }
 
     this.socket.off(event, callback && (DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback));
@@ -155,7 +142,7 @@ class SocketClient {
     };
 
     return new Promise((resolve) => {
-      const timeout = setTimeout(() => console.error('Unable to connect to Voiceflow'), SOCKET_INIT_TIMEOUT);
+      const timeout = setTimeout(() => log.error('Unable to connect to Voiceflow'), SOCKET_INIT_TIMEOUT);
 
       this.once(SocketEvent.INITIALIZE, () => {
         this.handleConnection();
@@ -191,7 +178,7 @@ class SocketClient {
   disconnect = () => this.socket && this.socket.connected && this.socket.disconnect();
 
   handleError = (event: string) => () => {
-    console.error(`socket failure from event "${event}"`);
+    log.error('socket failure from event', log.value(event));
   };
 
   handleMessage = (data: { message?: string; redirect?: string }) => {

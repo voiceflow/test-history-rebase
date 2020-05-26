@@ -1,8 +1,8 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
+import { NODE_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type DraggingNodeProps = {
   position: [number, number];
-  isDragging: boolean;
   isTransform: boolean;
 };
 
@@ -13,11 +13,9 @@ const DraggingNode = styled.div.attrs<DraggingNodeProps>(({ isTransform, positio
   pointer-events: auto;
   will-change: transform;
 
-  ${({ isDragging }) =>
-    isDragging &&
-    css`
-      pointer-events: none;
-    `}
+  &.${NODE_DRAGGING_CLASSNAME} {
+    pointer-events: none;
+  }
 `;
 
 export default DraggingNode;

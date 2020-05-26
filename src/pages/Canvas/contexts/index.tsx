@@ -7,6 +7,7 @@ import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
+import type { Engine } from '@/pages/Canvas/engine';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -15,19 +16,12 @@ import { GroupSelectionProvider } from './GroupSelectionContext';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './EngineContext';
+export * from './EntityContexts';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
 export * from './GroupSelectionContext';
 export * from './SpotlightContext';
-export * from './NodeIDContext';
-export * from './PortIDContext';
-export * from './LinkIDContext';
 export * from './PresentationModeContext';
-
-export type LinkLayerValue = {};
-
-export const LinkLayerContext = React.createContext<LinkLayerValue | null>(null);
-export const { Provider: LinkLayerProvider, Consumer: LinkLayerConsumer } = LinkLayerContext;
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;
@@ -44,9 +38,15 @@ export type ManagerValue = {
 export const ManagerContext = React.createContext<((type: BlockType) => ManagerValue) | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 
+export const withManager = withContext(ManagerContext, 'getManager');
+
+export type CanvasProvidersProps = {
+  engine: Engine;
+};
+
 export const CanvasProviders = connect({
   platform: activePlatformSelector,
-})(({ engine, platform, children }) => (
+})<CanvasProvidersProps>(({ engine, platform, children }) => (
   <PlatformProvider value={platform}>
     <EngineProvider value={engine}>
       <RegisterEngine engine={engine} />
@@ -59,4 +59,4 @@ export const CanvasProviders = connect({
       </ContextMenuProvider>
     </EngineProvider>
   </PlatformProvider>
-));
+)) as React.FC<CanvasProvidersProps>;

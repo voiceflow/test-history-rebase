@@ -1,134 +1,82 @@
-import cn from 'classnames';
-import cuid from 'cuid';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { useSmartReducerV2 } from '@/hooks';
-import { BlockAPI } from '@/pages/Canvas/components/Block';
+import { useSetup } from '@/hooks';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
-import { ContextMenuTarget, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EngineContext, PresentationModeContext, useNode, withNode } from '@/pages/Canvas/contexts';
-import { useNodeDragApi } from '@/pages/Canvas/hooks';
+import { ContextMenuTarget } from '@/pages/Canvas/constants';
+import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
-import NodeBlock from './components/NodeBlock';
-import Container from './components/NodeContainer';
-import NodeStartBlock from './components/NodeStartBlock';
-import { useNodeLifecycle } from './hooks';
+import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
+import { useNodeInstance } from './hooks';
 
-const Node = () => {
-  useNodeLifecycle();
-
-  const { nodeID, node, isHighlighted } = useNode();
-  const engine = React.useContext(EngineContext)!;
-  const editPermission = React.useContext(EditPermissionContext)!;
+const Node: React.FC = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);
+  const engine = React.useContext(EngineContext)!;
+  const nodeEntity = React.useContext(NodeEntityContext)!;
+  const editPermission = React.useContext(EditPermissionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
-  const { api: dragApi, nodeRef, position, isDragging, onMouseDown } = useNodeDragApi<HTMLDivElement>();
+  const instance = useNodeInstance<HTMLDivElement>();
+  const { isFocused } = nodeEntity.useState((e) => ({
+    isFocused: e.isFocused,
+  }));
+  const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
 
-  const instanceID = React.useMemo(() => cuid(), []);
-  const blockRef = React.useRef<{ api: BlockAPI }>(null);
+  const { onMouseDown } = useNodeDrag();
 
-  const isFocused = React.useCallback(() => engine.focus.isTarget(nodeID), []);
-  const isSelected = React.useCallback(() => engine.selection.isTarget(nodeID), []);
+  const onRightClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
 
-  const onRightClick = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (node.type !== BlockType.START && editPermission.canEdit) {
-        contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeID);
-      }
-    },
-    [editPermission.canEdit]
-  );
-
-  const onDoubleClick = React.useCallback(() => engine.node.center(nodeID), []);
-
-  const [state, actions] = useSmartReducerV2({
-    isMergeTarget: false,
-    isBlockHighlighted: false,
-    newSourceNodeIndex: null as null | number,
-  } as { isMergeTarget: boolean; isBlockHighlighted: boolean; newSourceNodeIndex: null | number });
-
-  const apiRef = React.useRef({
-    instanceID,
-
-    rename: () => blockRef.current?.api.rename?.(),
-
-    getBlockRect: () => blockRef.current!.api.getBoundingClientRect(),
-
-    setHighlight: () => actions.isBlockHighlighted.set(true),
-
-    clearHighlight: () => actions.isBlockHighlighted.set(false),
-
-    setMergeTarget: () => actions.isMergeTarget.set(true),
-
-    clearMergeTarget: () => actions.isMergeTarget.set(false),
-
-    updateBlockColor: (blockColor: string) => blockRef.current?.api.updateBlockColor?.(blockColor),
-
-    setNewSourceNodeIndex: (index: number) => actions.newSourceNodeIndex.set(index),
-  });
-
-  React.useEffect(() => {
-    engine.registerNode(nodeID, {
-      ...dragApi,
-      ...apiRef.current,
-    });
-
-    if (isFocused()) {
-      nodeRef.current?.focus();
+    if (nodeEntity.nodeType !== BlockType.START && editPermission.canEdit) {
+      contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
     }
-
-    return () => {
-      engine.expireNode(nodeID, instanceID);
-    };
   }, []);
 
-  const { newSourceNodeIndex, isBlockHighlighted, isMergeTarget } = state;
-  const shouldRender = node.type !== BlockType.COMMAND;
+  const onDoubleClick = React.useCallback(() => engine.node.center(nodeEntity.nodeID), []);
+
+  nodeEntity.useInstance(instance);
+
+  useSetup(() => {
+    if (isFocused) {
+      instance.ref.current?.focus();
+    }
+  });
 
   if (!shouldRender) {
     return null;
   }
 
-  let nodeEl = null;
+  let nodeEl: JSX.Element | null = null;
 
-  if (node.type === BlockType.COMMENT) {
-    nodeEl = <CommentBlock ref={blockRef} />;
-  } else {
-    if (node.type === BlockType.COMBINED) {
-      nodeEl = (
-        <NodeBlock
-          ref={blockRef}
-          canModify={isMergeTarget}
-          isFocused={isFocused()}
-          isSelected={isSelected()}
-          isHighlighted={isBlockHighlighted}
-          newSourceNodeIndex={newSourceNodeIndex}
-        />
-      );
-    } else if (node.type === BlockType.START) {
-      nodeEl = <NodeStartBlock isFocused={isFocused()} isSelected={isSelected()} ref={blockRef} />;
-    }
+  if (nodeEntity.nodeType === BlockType.COMMENT) {
+    nodeEl = <CommentBlock ref={instance.blockRef} />;
+  } else if (nodeEntity.nodeType === BlockType.COMBINED) {
+    nodeEl = <NodeBlock ref={instance.blockRef} />;
+  } else if (nodeEntity.nodeType === BlockType.START) {
+    nodeEl = <NodeStartBlock ref={instance.blockRef} />;
   }
 
   return (
-    <Container
-      ref={nodeRef}
-      tabIndex={-1}
-      position={position}
-      isActive={isHighlighted}
-      isTransform={!isPresentationMode}
-      className={cn(ClassName.CANVAS_NODE, { [MERGE_ACTIVE_NODE_CLASSNAME]: isMergeTarget })}
-      isDragging={isDragging}
-      onMouseDown={onMouseDown}
-      onContextMenu={onRightClick}
-      onDoubleClick={onDoubleClick}
-    >
-      {nodeEl}
-    </Container>
+    <>
+      <Styles />
+      <Lifecycle />
+      <Container
+        className={ClassName.CANVAS_NODE}
+        data-node-id={nodeEntity.nodeID}
+        position={instance.getPosition()}
+        isTransform={!isPresentationMode}
+        onMouseDown={onMouseDown}
+        onContextMenu={onRightClick}
+        onDoubleClick={onDoubleClick}
+        ref={instance.ref}
+        tabIndex={-1}
+      >
+        {nodeEl}
+      </Container>
+    </>
   );
 };
 
-export default withNode(React.memo(Node));
+export default React.memo(Node);

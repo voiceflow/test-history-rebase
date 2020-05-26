@@ -1,65 +1,28 @@
 import { MemberIcon } from '@/components/User';
-import { BlockState, BlockVariant } from '@/constants/canvas';
-import { css, styled, transition } from '@/hocs';
-import { ACTIVE_NODES_CANVAS_CLASSNAME, MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
-import { Theme } from '@/styles/theme';
+import { BlockVariant } from '@/constants/canvas';
+import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
+import {
+  CANVAS_ACTIVATION_CLASSNAME,
+  CANVAS_CREATING_LINK_CLASSNAME,
+  NODE_ACTIVE_CLASSNAME,
+  NODE_DISABLED_CLASSNAME,
+  NODE_FOCUSED_CLASSNAME,
+  NODE_HIGHLIGHTED_CLASSNAME,
+  NODE_HOVERED_CLASSNAME,
+  NODE_MERGE_TARGET_CLASSNAME,
+  NODE_SELECTED_CLASSNAME,
+} from '@/pages/Canvas/constants';
+import { ClassName } from '@/styles/constants';
 
 import { BLOCK_CONTAINER_PADDING } from '../constants';
 
-const ACTIVE_STATES = [BlockState.ACTIVE, BlockState.SELECTED];
-
-const disabledStyles = {
-  opacity: 0.7,
-};
+const disabledStyles = css`
+  opacity: 0.7;
+`;
 
 type BlockContainerProps = {
-  state: BlockState;
   variant: BlockVariant;
   blockColor?: string;
-  hasLinkWarning?: boolean;
-};
-
-const stateStyles = ({ state, variant, theme }: BlockContainerProps & { theme: Theme }) => {
-  const blockVariant = theme.components.block.variants[variant];
-
-  switch (state) {
-    case BlockState.ACTIVE:
-      return css`
-        &::before {
-          box-shadow: 0 12px 32px 0 rgba(17, 49, 96, 0.2);
-          border-color: ${blockVariant.activeBorderColor};
-        }
-      `;
-    case BlockState.SELECTED:
-      return css`
-        border-color: #5d9df5;
-
-        &::before {
-          display: none;
-        }
-      `;
-    case BlockState.HOVERED:
-      return css`
-        border-color: #5d9df5;
-        cursor: copy;
-
-        &::before {
-          display: none;
-        }
-      `;
-    case BlockState.DISABLED:
-      return disabledStyles;
-    case BlockState.REGULAR:
-    default:
-      return css`
-        :hover {
-          &::before {
-            box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
-            border-color: ${blockVariant.activeBorderColor};
-          }
-        }
-      `;
-  }
 };
 
 const BlockContainer = styled.div<BlockContainerProps>`
@@ -69,12 +32,12 @@ const BlockContainer = styled.div<BlockContainerProps>`
   border: solid 2px #fff;
   padding: 0 ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px;
   background-color: #fff;
-  background-image: ${({ variant, theme }) => theme.components.block.variants[variant].backgroundImage};
+  background-image: ${withBlockVariantStyle((variant) => variant.backgroundImage)};
   position: relative;
   opacity: 1;
   border-color: none;
 
-  &:before {
+  ::before {
     display: block;
     border-radius: 8px;
 
@@ -84,7 +47,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     right: -3px;
     bottom: -3px;
 
-    border: 1px solid ${({ variant, theme }) => theme.components.block.variants[variant].borderColor};
+    border: 1px solid ${withBlockVariantStyle((variant) => variant.borderColor)};
 
     content: '';
 
@@ -93,18 +56,43 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   ${transition('opacity')}
 
-  ${stateStyles}
+  .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}) &:hover::before {
+    box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
+    border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
+  }
 
-  .${ACTIVE_NODES_CANVAS_CLASSNAME} & {
-    ${({ state }) =>
-      !ACTIVE_STATES.includes(state) &&
-      css`
-        ${disabledStyles}
+  .${NODE_HIGHLIGHTED_CLASSNAME} &,
+  .${NODE_HOVERED_CLASSNAME} & {
+    cursor: copy;
+  }
 
-        &:not(.${MERGE_ACTIVE_NODE_CLASSNAME}):hover {
-          opacity: 1;
-        }
-      `}
+  .${NODE_FOCUSED_CLASSNAME} &::before {
+    box-shadow: 0 12px 32px 0 rgba(17, 49, 96, 0.2);
+    border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
+  }
+
+  .${NODE_SELECTED_CLASSNAME} &,
+  .${NODE_HIGHLIGHTED_CLASSNAME} &,
+  .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
+    border-color: #5d9df5;
+
+    ::before {
+      display: none;
+    }
+  }
+
+  .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_DISABLED_CLASSNAME} & {
+    ${disabledStyles}
+
+    cursor: not-allowed;
+  }
+
+  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
+    ${disabledStyles}
+
+    :not(.${NODE_MERGE_TARGET_CLASSNAME}):hover {
+      opacity: 1;
+    }
   }
 
   ${MemberIcon} {
@@ -114,13 +102,6 @@ const BlockContainer = styled.div<BlockContainerProps>`
     transform: translate(-50%, -50%);
     z-index: 99;
   }
-
-  ${({ hasLinkWarning }) =>
-    hasLinkWarning &&
-    css`
-      cursor: not-allowed;
-    `}
-
 `;
 
 export default BlockContainer;

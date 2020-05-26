@@ -8,7 +8,7 @@ import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 
-import { createPublishStateSelector, createUploadStep } from './utils';
+import { createPublishStateSelector, createUploadStep, log } from './utils';
 
 export const PLATFORM = PlatformType.GOOGLE;
 
@@ -168,7 +168,7 @@ export const renderProject = () =>
       const newVersionId = data.new_skill.skill_id;
       dispatch(submitProject(newVersionId));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       dispatch(updateGoogleStage(GOOGLE_STAGES.RENDERING_ERROR));
     }
   });
@@ -185,7 +185,7 @@ export const linkDialogflowCredential = (token) =>
       dispatch(updatePublishInfo({ googleID: data.google_id }));
       dispatch(updateGoogle({ credentials: true, error: null }));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       dispatch(updateGoogle({ error: err.response.data.data || err }));
     }
   });

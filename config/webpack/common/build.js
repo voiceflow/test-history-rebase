@@ -14,7 +14,11 @@ module.exports = merge(
   {
     plugins: [
       new CleanWebpackPlugin(),
-      new ForkTSCheckerWebpackPlugin({ checkSyntacticErrors: true, compilerOptions: { skipLibCheck: true } }),
+      new ForkTSCheckerWebpackPlugin({
+        tsconfig: path.resolve(__dirname, '../../../tsconfig.build.json'),
+        checkSyntacticErrors: true,
+        compilerOptions: { skipLibCheck: true },
+      }),
       new HtmlWebpackPlugin({
         inject: true,
         template: paths.indexHTML,
@@ -32,7 +36,7 @@ module.exports = merge(
             removeStyleLinkTypeAttributes: true,
           },
           inlineSource: 'runtime~.+\\.js',
-        })
+        }),
       }),
       new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
 
@@ -117,6 +121,7 @@ module.exports = merge(
         },
       ],
     },
-  }, 
+  },
+  // eslint-disable-next-line import/no-dynamic-require
   require(IS_PRODUCTION ? './prod' : './dev')
 );

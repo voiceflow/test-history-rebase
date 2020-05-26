@@ -19,10 +19,11 @@ export type SearchableListProps = {
   renderItem: (item: any, index: number) => React.ReactNode;
   placeholder: string;
   formatValue?: (value: string) => string;
+  id?: string;
 };
 
 const SearchableList: React.FC<SearchableListProps> = (
-  { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value },
+  { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value, id },
   ref: React.Ref<Scrollbars>
 ) => {
   const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
@@ -81,7 +82,7 @@ const SearchableList: React.FC<SearchableListProps> = (
                   !!height && (
                     <AutoSizer disableHeight={true}>
                       {({ width }) => (
-                        <div ref={registerChild}>
+                        <div id={id} ref={registerChild}>
                           <List
                             width={width}
                             height={height}

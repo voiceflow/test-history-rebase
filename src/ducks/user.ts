@@ -1,14 +1,20 @@
 import update from 'immutability-helper';
+import { createSelector } from 'reselect';
 
 import { Action, Reducer, RootReducer } from '@/store/types';
 
-import { createAction } from './utils';
+import { createAction, createRootSelector } from './utils';
 
 const SUCCESS_ICON = '/green-check.svg';
 const WARNING_ICON = '/yellow-error.svg';
 
+export type ErrorMessage = {
+  icon: string;
+  msg: string;
+};
+
 export type UserState = {
-  canvasError: unknown[];
+  canvasError: ErrorMessage[];
 };
 
 export const STATE_KEY = 'userSetting';
@@ -53,6 +59,12 @@ const userReducer: RootReducer<UserState, AnyUserAction> = (state = INITIAL_STAT
 };
 
 export default userReducer;
+
+// selectors
+
+const rootSelector = createRootSelector(STATE_KEY);
+
+export const canvasErrorSelector = createSelector(rootSelector, ({ canvasError }) => canvasError);
 
 // action creators
 

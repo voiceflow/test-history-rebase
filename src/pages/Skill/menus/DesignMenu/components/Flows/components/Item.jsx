@@ -9,6 +9,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { diagramViewersSelector } from '@/store/selectors';
+import { ClassName } from '@/styles/constants';
 import { withEnterPress } from '@/utils/dom';
 
 import ItemContainer from './ItemContainer';
@@ -50,7 +51,13 @@ const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, 
   return (
     <ContextMenu options={menuOptions}>
       {({ isOpen, onContextMenu }) => (
-        <ItemContainer onClick={isActive ? null : () => goToDiagram(id)} isActive={isActive} onContextMenu={onContextMenu} isContextMenuOpen={isOpen}>
+        <ItemContainer
+          className={ClassName.FLOW_MENU_ITEM}
+          onClick={isActive ? null : () => goToDiagram(id)}
+          isActive={isActive}
+          onContextMenu={onContextMenu}
+          isContextMenuOpen={isOpen}
+        >
           {renameEnabled ? (
             <ItemInput
               value={label}

@@ -1,6 +1,6 @@
 import cuid from 'cuid';
 
-import { CanvasAPI } from '@/components/Canvas/types';
+import { CanvasAPI } from '@/components/Canvas';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Display from '@/ducks/display';
@@ -8,6 +8,7 @@ import { EntityMap, Link, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatch, Dispatchable, Selector } from '@/store/types';
+import { Pair, Point } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { isLinkedeDisplayNode } from '@/utils/node';
 
@@ -20,7 +21,9 @@ export type CloneUtils = {
 
 export class EngineConsumer {
   // eslint-disable-next-line no-useless-constructor
-  constructor(protected engine: Engine) {}
+  constructor(protected engine: Engine) {
+    engine.log.debug(this.engine.log.init('initializing'), this.engine.log.value(Object.getPrototypeOf(this).constructor.name));
+  }
 
   dispatch<T extends Dispatchable>(dispatchable: T) {
     return this.engine.store.dispatch<T>(dispatchable);
@@ -177,7 +180,9 @@ export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap,
   };
 };
 
-export const extractPoints = (canvas: CanvasAPI, start: DOMRect, end: DOMRect) => {
+export const extractPoints = (canvas: CanvasAPI, start: DOMRect | null | undefined, end: DOMRect | null | undefined): Pair<Point> | null => {
+  if (!start || !end) return null;
+
   const startY = start.top + start.height / 2;
   const endY = end.top + start.height / 2;
 

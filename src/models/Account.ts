@@ -6,6 +6,11 @@ export type Account = {
   created: string;
 };
 
+export type LockOwner = Account & {
+  color?: string;
+  tabID?: string;
+};
+
 export namespace Account {
   export type Amazon = {
     token: string;

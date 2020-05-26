@@ -1,20 +1,14 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
-import DraggingNode from '@/pages/Canvas/components/DraggingNode';
-import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
+import DraggingNode, { DraggingNodeProps } from '@/pages/Canvas/components/DraggingNode';
+import { NODE_ACTIVE_CLASSNAME, NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
-export type NodeContainerProps = {
-  isActive: boolean;
+export type NodeContainerProps = DraggingNodeProps & {
+  position: [number, number];
 };
 
 const NodeContainer = styled(DraggingNode)<NodeContainerProps>`
   box-sizing: content-box;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      z-index: 10;
-    `}
 
   &:focus {
     outline: 0;
@@ -25,7 +19,7 @@ const NodeContainer = styled(DraggingNode)<NodeContainerProps>`
     z-index: 20;
   }
 
-  &.${MERGE_ACTIVE_NODE_CLASSNAME} {
+  &.${NODE_MERGE_TARGET_CLASSNAME}, &.${NODE_ACTIVE_CLASSNAME} {
     z-index: 10;
   }
 

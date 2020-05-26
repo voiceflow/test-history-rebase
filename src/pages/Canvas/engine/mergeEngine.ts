@@ -1,6 +1,10 @@
+import _constant from 'lodash/constant';
+
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
+import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
+import { Point } from '@/types';
 import { withoutValue } from '@/utils/array';
 import { isInRange } from '@/utils/number';
 
@@ -9,12 +13,16 @@ import { EngineConsumer } from './utils';
 type MergeCandidate = {
   nodeID: string;
   containsPoint: (point: [number, number]) => boolean;
-  isWithin: (rect: [[number, number], [number, number]]) => boolean;
 };
 
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
 
+const createBoundaryTest = ({ left, right, top, bottom }: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>) => ([x, y]: Point) =>
+  isInRange(x, left, right) && isInRange(y, top, bottom);
+
 class MergeEngine extends EngineConsumer {
+  log = this.engine.log.child('merge');
+
   candidates: MergeCandidate[] = [];
 
   virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null = null;
@@ -42,59 +50,85 @@ class MergeEngine extends EngineConsumer {
     return !!this.targetStep;
   }
 
+  addStyle() {
+    this.engine.canvas?.addClass(CANVAS_MERGING_CLASSNAME);
+  }
+
+  removeStyle() {
+    this.engine.canvas?.removeClass(CANVAS_MERGING_CLASSNAME);
+  }
+
   registerMergeLayer(mergeLayer: MergeLayerAPI | null) {
     this.mergeLayer = mergeLayer;
+
+    this.log.debug(this.log.init(mergeLayer ? 'registered' : 'expired'), this.log.value('<MergeLayer>'));
   }
 
   createBoundaryTest(nodeID: string) {
-    const { left, right, top, bottom } = this.engine.node.getBlockRect(nodeID);
+    const rect = this.engine.node.getRect(nodeID);
 
-    return ([x, y]: [number, number]) => isInRange(x, left, right) && isInRange(y, top, bottom);
+    return rect ? createBoundaryTest(rect) : _constant(false);
   }
 
   initialize(sourceNodeID: string) {
     const sourceNode = this.engine.getNodeByID(sourceNodeID);
 
+    this.log.debug(this.log.pending('attempting initialization'), this.log.slug(sourceNodeID));
+
     if (UNMERGEABLE_NODES.includes(sourceNode.type)) {
+      this.log.debug(this.log.failure('initialization skipped - node cannot be targeted with merge operation'));
+
+      return;
+    }
+
+    if (!this.engine.node.api(sourceNodeID)?.isReady()) {
+      this.log.debug(this.log.failure('initialization skipped - node not ready'));
+
       return;
     }
 
     if (sourceNode.parentNode) {
       const mousePosition = this.engine.getCanvasMousePosition();
-      const { x, y } = this.engine.node.api(sourceNodeID)!.ref!.current!.getBoundingClientRect();
+      const { x, y } = this.engine.node.getRect(sourceNodeID)!;
       const [nodeX, nodeY] = this.engine.canvas!.transformPoint([x, y]);
 
       const offset: [number, number] = [mousePosition[0] - nodeX, mousePosition[1] - nodeY];
 
       this.mergeLayer?.initialize(mousePosition, offset);
+
+      this.log.debug(this.log.init('initializing merge layer'));
     }
 
+    this.addStyle();
     this.sourceNodeID = sourceNodeID;
     this.candidates = withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)
       .reverse()
       .reduce<{ nodeID: string; top: number; left: number; bottom: number; right: number }[]>((acc, nodeID) => {
-        if (nodeID !== sourceNodeID && this.engine.nodes.has(nodeID)) {
-          const node = this.engine.getNodeByID(nodeID);
+        if (nodeID === sourceNodeID) return acc;
 
-          const { left, right, top, bottom } = this.engine.node.getBlockRect(node.id);
+        const rect = this.engine.node.getRect(nodeID);
 
-          acc.push({
-            nodeID: node.id,
-            left,
-            right,
-            top,
-            bottom,
-          });
-        }
+        if (!rect) return acc;
+
+        const { left, right, top, bottom } = rect;
+
+        acc.push({
+          nodeID,
+          left,
+          right,
+          top,
+          bottom,
+        });
 
         return acc;
       }, [])
       .map(({ nodeID, left, right, top, bottom }) => ({
         nodeID,
-        containsPoint: ([x, y]) => isInRange(x, left, right) && isInRange(y, top, bottom),
-        isWithin: ([[x1, y1], [x2, y2]]) =>
-          (isInRange(left, x1, x2) || isInRange(right, x1, x2)) && (isInRange(top, y1, y2) || isInRange(bottom, y1, y2)),
+        containsPoint: createBoundaryTest({ left, right, top, bottom }),
       }));
+
+    this.log.debug('discoverd merge candidates', this.log.value(this.candidates.length));
+    this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 
   updateTargetDetection() {
@@ -104,10 +138,14 @@ class MergeEngine extends EngineConsumer {
   updateCandidates() {
     const mousePosition = this.engine.mousePosition.current!;
 
+    this.log.debug(this.log.pending('updating candidates'));
+
     const mergeTarget = this.candidates.find(({ containsPoint }) => containsPoint(mousePosition));
 
     if (this.isWithinTarget?.(mousePosition)) {
       this.updateTargetDetection();
+      this.log.debug(this.log.failure('no candidates updated - cursor is still within the currect target'));
+
       return;
     }
 
@@ -121,11 +159,16 @@ class MergeEngine extends EngineConsumer {
   async unmerge() {
     const mousePosition = this.engine.getCanvasMousePosition();
 
-    if (!this.candidates.some(({ containsPoint }) => containsPoint(this.engine.mousePosition.current!))) {
-      await this.engine.node.unmerge(this.sourceNodeID!, mousePosition);
+    if (this.candidates.some(({ containsPoint }) => containsPoint(this.engine.mousePosition.current!))) return;
 
-      this.reset();
-    }
+    const sourceNodeID = this.sourceNodeID!;
+
+    this.log.debug(this.log.pending('unmerging node'), this.log.slug(sourceNodeID));
+    await this.engine.node.unmerge(sourceNodeID, mousePosition);
+
+    this.reset();
+
+    this.log.debug(this.log.success('unmerged node'), this.log.slug(sourceNodeID));
   }
 
   setVirtualSource(type: BlockType, factoryData: Partial<NodeData<unknown>>) {
@@ -135,48 +178,70 @@ class MergeEngine extends EngineConsumer {
   setTargetStep(index: number, reset: () => void) {
     if (this.targetStep?.index === index) return;
 
+    this.log.debug(this.log.pending('setting merge target step'), this.log.value(index));
     this.clearTargetStep();
 
     this.targetStep = { index, reset };
+
+    this.log.debug(this.log.success('set merge target step'), this.log.value(index));
   }
 
   setTarget(nodeID: string, isWithinTarget = this.createBoundaryTest(nodeID)) {
     if (nodeID === this.targetNodeID) return;
 
+    this.log.debug(this.log.pending('setting merge target block'), this.log.slug(nodeID));
     this.clearTarget();
 
     this.targetNodeID = nodeID;
     this.isWithinTarget = isWithinTarget;
 
-    this.engine.node.api(nodeID)?.setMergeTarget?.();
+    this.engine.node.redraw(nodeID);
     this.mergeLayer?.setTransparent();
+
+    this.log.debug(this.log.success('set merge target block'), this.log.slug(nodeID));
   }
 
   clearTargetStep() {
-    if (this.targetStep) {
-      this.targetStep.reset();
-      this.targetStep = null;
-    }
+    if (!this.targetStep) return;
+
+    this.log.debug(this.log.pending('clearing merge target step'), this.log.value(this.targetStep.index));
+
+    this.targetStep.reset();
+    this.targetStep = null;
+
+    this.log.debug(this.log.reset('cleared merge target step'));
   }
 
   clearTarget() {
     this.clearTargetStep();
 
-    if (this.targetNodeID) {
-      this.engine.node.api(this.targetNodeID!)?.clearMergeTarget?.();
-      this.mergeLayer?.clearTransparent();
-      this.targetNodeID = null;
-      this.isWithinTarget = null;
-    }
+    if (!this.targetNodeID) return;
+
+    const targetNodeID = this.targetNodeID;
+
+    this.log.debug(this.log.pending('clearing merge target block'), this.log.slug(targetNodeID));
+    this.targetNodeID = null;
+    this.isWithinTarget = null;
+
+    this.mergeLayer?.clearTransparent();
+    this.engine.node.redraw(targetNodeID);
+
+    this.log.debug(this.log.reset('cleared merge target block'), this.log.slug(targetNodeID));
   }
 
   reset() {
+    const candidateCount = this.candidates.length;
+
+    this.log.debug(this.log.pending('resetting merge system'));
     this.mergeLayer?.reset();
     this.clearTarget();
+    this.removeStyle();
 
     this.sourceNodeID = null;
     this.virtualSource = null;
     this.candidates = [];
+
+    this.log.debug(this.log.reset('reset merge system'), this.log.diff(candidateCount, 0));
   }
 }
 

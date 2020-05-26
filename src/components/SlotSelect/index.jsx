@@ -9,8 +9,8 @@ import { activeSlotTypes } from '@/store/selectors';
 import { ALEXA_SLOT_PATTERN, GOOGLE_SLOT_PATTERN } from './constants';
 
 const slotOptionRenderer = (option) => {
-  const isAlexa = ALEXA_SLOT_PATTERN.test(option.value);
-  const isGoogle = GOOGLE_SLOT_PATTERN.test(option.value);
+  const isAlexa = option?.value.match(ALEXA_SLOT_PATTERN);
+  const isGoogle = option?.value.match(GOOGLE_SLOT_PATTERN);
   const isGlobal = !isAlexa && !isGoogle;
 
   return (

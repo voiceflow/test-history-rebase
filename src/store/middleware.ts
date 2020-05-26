@@ -146,12 +146,9 @@ const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) =>
     const state = store.getState();
     const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
     const creatorDiagramID = Creator.creatorDiagramIDSelector(state);
+    const pathnameRegexp = new RegExp(`\\/${RootRoutes.PROJECT}\\/[^\\/]+\\/canvas\\/[^\\/]+`);
 
-    if (
-      !isRealtimeConnected &&
-      creatorDiagramID &&
-      new RegExp(`\\/${RootRoutes.PROJECT}\\/[^\\/]+\\/canvas\\/[^\\/]+`).test(action.payload.location.pathname)
-    ) {
+    if (!isRealtimeConnected && creatorDiagramID && action.payload.location.pathname.match(pathnameRegexp)) {
       store.dispatch(Creator.resetCreator());
     }
   }

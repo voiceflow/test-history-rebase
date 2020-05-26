@@ -99,14 +99,14 @@ class Image extends Component {
         </Dropzone>
       );
     } else if (this.props.image && typeof this.props.image === 'string') {
-      if (VARIABLE_REGEXP.test(this.props.image)) {
+      if (this.props.image.match(VARIABLE_REGEXP)) {
         render = (
           <div className="image-box super-center d-flex">
             <div>{this.props.image}</div>
             <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
           </div>
         );
-      } else if (!HTTPS_URL_REGEX.test(this.props.image)) {
+      } else if (!this.props.image.match(HTTPS_URL_REGEX)) {
         render = (
           <div className="image-box super-center d-flex">
             <div className="rejected-file text-danger text-center super-center h-100">

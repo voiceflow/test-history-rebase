@@ -477,3 +477,10 @@ export enum ExportFormat {
   PDF = 'pdf',
   JSON = 'json',
 }
+
+export enum ShapeType {
+  LINE = 'line',
+  ARROW = 'arrow',
+  CIRCLE = 'circle',
+  RECTANGLE = 'rectangle',
+}

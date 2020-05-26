@@ -155,3 +155,4 @@ export { default as textAlignLeft } from './text-align-left.svg';
 export { default as textAlignRight } from './text-align-right.svg';
 export { default as textAlignCenter } from './text-align-centre.svg';
 export { default as voiceflowV } from './V.svg';
+export { default as angle } from './angle.svg';

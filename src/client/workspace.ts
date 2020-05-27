@@ -43,6 +43,8 @@ const workspaceClient = {
 
   updateName: (workspaceID: string, name: string) => fetch.patch(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/update_name`, { name }),
 
+  updateImage: (workspaceID: string, url: string) => fetch.post(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/picture`, { url }),
+
   validateInvite: (invite: string) => fetch.post<string>(`${WORKSPACES_PATH}/invite/${invite}`),
 
   getInvoice: (workspaceID: string) => fetch.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),

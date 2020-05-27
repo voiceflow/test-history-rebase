@@ -146,6 +146,20 @@ export const updateWorkspaceName = (name: string): Thunk => async (dispatch, get
   }
 };
 
+export const updateWorkspaceImage = (url: string): Thunk => async (dispatch, getState) => {
+  try {
+    const activeWorkspaceID = activeWorkspaceIDSelector(getState())!;
+
+    await client.workspace.updateImage(activeWorkspaceID, url);
+
+    dispatch(updateWorkspace(activeWorkspaceID, { image: url }));
+  } catch (err) {
+    dispatch(Modal.setError('Error updating workspace image'));
+
+    throw err;
+  }
+};
+
 export const validateInvite = (invite: string): Thunk<string | null> => async (dispatch) => {
   try {
     const workspaceID = await client.workspace.validateInvite(invite);

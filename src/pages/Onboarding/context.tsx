@@ -181,6 +181,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   trackInvitationAccepted,
   account,
   currentWorkspaceID,
+
+  updateWorkspaceName,
+  updateWorkspaceImage,
 }) => {
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
@@ -190,6 +193,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const numberOfSteps = getNumberOfSteps(query, flow);
 
   const [state, actions] = useSmartReducer({
+    usedSignupCoupon: false,
     workspaceId: '',
     stepStack: [firstStep],
     createWorkspaceMeta: {},
@@ -208,12 +212,24 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     sendingRequests: false,
   });
 
-  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests } = state;
+  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
   const { setStepStack, setOnboardingComplete, setSendingRequests } = actions;
 
   const cache = React.useRef({ stepStack, state, skipped: false });
 
   cache.current.state = state;
+
+  React.useEffect(() => {
+    fetchWorkspaces();
+  }, []);
+
+  React.useEffect(() => {
+    const usedSignupCoupon = workspaces.length === 1 && workspaces[0].name === 'Personal';
+    actions.setUsedSignupCoupon(usedSignupCoupon);
+    if (usedSignupCoupon) {
+      updateCurrentWorkspace(workspaces[0].id);
+    }
+  }, [workspaces.length]);
 
   const stepBack = () => {
     if (stepStack.length > 1) {
@@ -301,22 +317,19 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     let workspace;
     let userWorkspaces: any;
     try {
-      workspace = await createWorkspace({ name, image: workspaceImage });
+      if (usedSignupCoupon) {
+        workspace = workspaces[0];
+        updateWorkspaceName(name);
+        updateWorkspaceImage(workspaceImage);
+      } else {
+        workspace = await createWorkspace({ name, image: workspaceImage });
+      }
+      updateCurrentWorkspace(workspace.id);
     } catch (e) {
       toastNotif.error('Error creating workspace, please try again later');
       goToDashboard();
       return;
     }
-
-    try {
-      userWorkspaces = await fetchWorkspaces();
-    } catch (e) {
-      toastNotif.error('Error getting workspace, please try again later');
-      goToDashboard();
-      return;
-    }
-
-    updateCurrentWorkspace(workspace.id);
 
     if (hasPaymentStep) {
       try {
@@ -468,6 +481,8 @@ const mapDispatchToProps = {
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
   fetchWorkspaces: Workspace.fetchWorkspaces,
   createProject: Workspace.createProject,
+  updateWorkspaceName: Workspace.updateWorkspaceName,
+  updateWorkspaceImage: Workspace.updateWorkspaceImage,
 };
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

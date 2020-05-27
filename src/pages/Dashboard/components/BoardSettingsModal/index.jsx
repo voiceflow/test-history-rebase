@@ -3,18 +3,17 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
-import Image from '@/components/LegacyUpload/Image';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType, PlanType } from '@/constants';
-import { updateCurrentWorkspaceItem, updateWorkspaceName } from '@/ducks/workspace';
+import { updateWorkspaceImage, updateWorkspaceName } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
-import { swallowEvent } from '@/utils/dom';
 
 import SettingField from './components/SettingField';
 
-export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateCurrentWorkspaceItem }) {
+export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateWorkspaceImage }) {
   const [name, updateName] = React.useState(workspace.name);
-
+  const [image, updateImage] = React.useState(workspace.image);
   const { open: openBillingModal } = useModals(ModalType.BILLING);
   const { toggle, isOpened } = useModals(ModalType.BOARD_SETTINGS);
   const { open: openDeleteModal } = useModals(ModalType.BOARD_DELETE);
@@ -26,6 +25,10 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
       updateName(workspace.name);
     }
   }, [name, updateWorkspaceName, updateName]);
+
+  React.useEffect(() => {
+    updateWorkspaceImage(image);
+  }, [image]);
 
   React.useEffect(() => {
     updateName(workspace.name);
@@ -45,24 +48,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
       <ModalBody className="px-45 pt-0 overflow-hidden">
         <div className="mb-3">
           <SettingField label="Workspace Icon" description={withoutIcon ? 'Upgrade this workspace under billing to add a custom image' : null}>
-            {withoutIcon ? (
-              <img
-                src="/images/icons/vf_logo.png"
-                alt="Voiceflow"
-                width={80}
-                className="mt-2 mb-1 no-select"
-                onDragStart={swallowEvent(null, true)}
-              />
-            ) : (
-              <Image
-                tiny
-                path={`/team/${workspace.id}/picture`}
-                image={workspace.image}
-                update={(url) => updateCurrentWorkspaceItem({ image: url })}
-                replace
-                className="icon-image icon-image-sm icon-image-square mb-3"
-              />
-            )}
+            <UploadJustIcon image={workspace.image} update={updateImage} size="medium" />
           </SettingField>
 
           {withoutIcon && (
@@ -97,7 +83,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
 
 const mapDispatchToProps = {
   updateWorkspaceName,
-  updateCurrentWorkspaceItem,
+  updateWorkspaceImage,
 };
 
 export default connect(null, mapDispatchToProps)(BoardSettingsModal);

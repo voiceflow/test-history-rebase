@@ -33,7 +33,6 @@ export const updateProjectName = (id: string, name: string) => updateProject(id,
 
 export const loadProjectsForTeam = (teamID: string): Thunk<Project[]> => async (dispatch) => {
   const projects = await client.workspace.findProjects(teamID);
-
   dispatch(replaceProjects(projects));
 
   return projects;

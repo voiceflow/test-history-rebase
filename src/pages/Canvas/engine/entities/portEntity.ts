@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
-import { useSetup } from '@/hooks';
+import { useDidUpdateEffect } from '@/hooks';
 import { Port } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
@@ -51,7 +51,7 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
   useLifecycle() {
     const engine = React.useContext(EngineContext)!;
 
-    useSetup(() => engine.port.redrawLinks(this.portID));
+    useDidUpdateEffect(() => engine.port.redrawLinks(this.portID));
   }
 }
 

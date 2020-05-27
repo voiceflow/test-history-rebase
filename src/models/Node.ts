@@ -10,7 +10,6 @@ export type Node = {
   parentNode: string | null;
   combinedNodes: string[];
   ports: { in: string[]; out: string[] };
-  virtual?: boolean;
 };
 
 export type DBNode = {

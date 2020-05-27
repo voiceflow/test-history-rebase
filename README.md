@@ -152,16 +152,17 @@ yarn start --debugRealtime
 
 When running locally the log level will automatically be set to `info`, in production it will be set to `error`.
 You can also override the log level when running locally. You can also filter the logs presented by passing
-a comma-separated list of log namespace globs to allow.
+a comma-separated list of log namespace globs to allow. Any path segment can also be matched with a `*` or
+multiple path segments can be matched with `**`.
 
 ```sh
 yarn start --logLevel info
-yarn start --logFilter 'engine.*,client.fetch'
+yarn start --logFilter 'client.fetch,engine.*,client.adapter.**'
 
 # or
 
 VF_APP_LOG_LEVEL='info'
-VF_APP_LOG_FILTER='engine.*,client.fetch'
+VF_APP_LOG_FILTER='client.fetch,engine.*,client.adapter.**'
 ```
 
 ### LogRocket

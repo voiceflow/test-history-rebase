@@ -1,15 +1,21 @@
 import Flex from '@/components/Flex';
 import { MemberIcon } from '@/components/User';
 import { css, styled } from '@/hocs';
-import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
+import {
+  CANVAS_CREATING_LINK_CLASSNAME,
+  NODE_ACTIVE_CLASSNAME,
+  NODE_DISABLED_CLASSNAME,
+  NODE_HIGHLIGHTED_CLASSNAME,
+  NODE_HOVERED_CLASSNAME,
+  NODE_MERGE_TARGET_CLASSNAME,
+} from '@/pages/Canvas/constants';
+import { ClassName } from '@/styles/constants';
 
 import { stepBoxShadowStyles } from '../styles';
 import Section from './StepSection';
 
 export type StepContainerProps = {
-  isActive?: boolean;
-  isHovered?: boolean;
-  hasLinkWarning?: boolean;
+  canHighlight?: boolean;
 };
 
 const StepContainer = styled(Flex)<StepContainerProps>`
@@ -18,24 +24,7 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   min-height: ${({ theme }) => theme.components.blockStep.minHeight}px;
   border-radius: 5px;
   background-color: #fff;
-  border: 1px solid ${({ isActive, theme }) => (isActive ? theme.components.blockStep.activeBorderColor : '#D3D9E4')};
-
-  ${({ isHovered, theme }) =>
-    isHovered &&
-    css`
-      box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px ${theme.components.blockStep.activeBorderColor};
-      cursor: copy;
-    `}
-
-  &:hover {
-    ${({ hasLinkWarning }) =>
-      hasLinkWarning &&
-      css`
-        opacity: 0.7;
-        cursor: not-allowed;
-        ${stepBoxShadowStyles}
-      `}
-  }
+  border: 1px solid #d3d9e4;
 
   ${Section}:not(:first-of-type) {
     border-top: 1px solid #eaeff4;
@@ -49,7 +38,30 @@ const StepContainer = styled(Flex)<StepContainerProps>`
     z-index: 99;
   }
 
-  .${MERGE_ACTIVE_NODE_CLASSNAME} & {
+  .${ClassName.CANVAS_STEP}.${NODE_ACTIVE_CLASSNAME} &,
+  .${ClassName.CANVAS_STEP}.${NODE_HIGHLIGHTED_CLASSNAME} & {
+    ${({ theme, canHighlight }) =>
+      canHighlight &&
+      css`
+        border: 1px solid ${theme.components.blockStep.activeBorderColor};
+      `}
+  }
+
+  .${CANVAS_CREATING_LINK_CLASSNAME} .${ClassName.CANVAS_STEP}.${NODE_DISABLED_CLASSNAME} &:hover {
+    opacity: 0.7;
+    cursor: not-allowed;
+    ${stepBoxShadowStyles}
+  }
+
+  .${CANVAS_CREATING_LINK_CLASSNAME} .${ClassName.CANVAS_STEP}.${NODE_HOVERED_CLASSNAME} & {
+    ${({ theme }) =>
+      css`
+        box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.06), 0 0 0 1px ${theme.components.blockStep.activeBorderColor};
+        cursor: copy;
+      `}
+  }
+
+  .${ClassName.CANVAS_BLOCK}.${NODE_MERGE_TARGET_CLASSNAME} & {
     z-index: -1;
   }
 `;

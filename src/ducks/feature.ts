@@ -5,7 +5,7 @@ import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
-import { createAction, createRootSelector } from './utils';
+import { createAction, createRootSelector, duckLogger } from './utils';
 
 export type FeatureState = {
   isLoaded: boolean;
@@ -25,6 +25,8 @@ export const INITIAL_STATE: FeatureState = {
 };
 
 const FEATURE_REFRESH_TIMEOUT = 60 * 1000;
+
+const log = duckLogger.child(STATE_KEY);
 
 // actions
 
@@ -100,7 +102,7 @@ export const refreshFeature = (featureID: FeatureFlag): Thunk => async (dispatch
       dispatch(updateFeatureStatus(featureID, isRemoteEnabled));
     }
   } catch (e) {
-    console.error(`failed to synchronize feature flag: ${featureID}`, e);
+    log.error('failed to synchronize feature flag', log.value(featureID), e);
   }
 };
 

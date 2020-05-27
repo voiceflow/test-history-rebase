@@ -49,6 +49,7 @@ module.exports = merge(commonConfig, {
 
               // TODO: remove when markup is deployed
               'components/Slider/**/*',
+              'pages/Canvas/managers/MarkupShape/MarkupShapeNode/components.ts',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',

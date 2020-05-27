@@ -1,31 +1,12 @@
 import EventEmitter from 'eventemitter3';
 import React from 'react';
 
-import { dataByNodeIDSelector, linkByIDSelector, nodeByIDSelector, portByIDSelector } from '@/ducks/creator';
-import * as Realtime from '@/ducks/realtime';
-import { Link, Node, NodeData, Port } from '@/models';
-import { hasActiveLinksSelector } from '@/store/selectors';
-import { Selector } from '@/store/types';
-
-import { EngineConsumer, extractPoints } from './utils';
+import { EntityType } from './constants';
+import { EngineConsumer } from './utils';
 import type { Engine } from '.';
 
-enum DispatchChannel {
-  NODE = 'node',
-  DATA = 'data',
-  PORT = 'port',
-  LINK = 'link',
-}
-
-const CHANNEL_SELECTORS: Record<DispatchChannel, Selector<any>> = {
-  [DispatchChannel.NODE]: nodeByIDSelector,
-  [DispatchChannel.DATA]: dataByNodeIDSelector,
-  [DispatchChannel.PORT]: portByIDSelector,
-  [DispatchChannel.LINK]: linkByIDSelector,
-};
-
 class Dispatcher extends EngineConsumer {
-  prevStates: Record<string, unknown> = {};
+  log = this.engine.log.child('dispatcher');
 
   emitter = new EventEmitter<string>();
 
@@ -37,18 +18,12 @@ class Dispatcher extends EngineConsumer {
     this.unsubscribe = engine.store.subscribe(() => {
       const eventNames = this.emitter.eventNames();
 
-      Object.keys(this.prevStates)
-        .filter((key) => !eventNames.includes(key))
-        .forEach((key) => {
-          this.prevStates[key] = null;
-        });
-
       eventNames.forEach((eventKey) => this.redraw(eventKey));
     });
   }
 
-  subscribe<T>(channel: DispatchChannel, event: string, handler: (value: T) => void) {
-    const eventKey = `${channel}:${event}`;
+  subscribe(type: EntityType, id: string, handler: (isForced: boolean) => void) {
+    const eventKey = `${type}:${id}`;
 
     this.emitter.on(eventKey, handler);
 
@@ -57,84 +32,30 @@ class Dispatcher extends EngineConsumer {
     };
   }
 
-  useSubscription<T>(channel: DispatchChannel, key: string) {
-    const [[value], updateValue] = React.useState<[T, number]>(() => [this.select(CHANNEL_SELECTORS[channel])(key), -1]);
-
-    React.useEffect(
-      () => this.subscribe<T>(channel, key, (nextValue) => updateValue([nextValue, Math.random()])),
-      []
-    );
-
-    return value;
+  useSubscription(type: EntityType, id: string, handler: (isForced: boolean) => void) {
+    React.useEffect(() => this.subscribe(type, id, handler), []);
   }
 
-  useNode(nodeID: string) {
-    const node = this.useSubscription<Node>(DispatchChannel.NODE, nodeID);
-    const lockOwner = this.select(Realtime.editLockOwnerSelector)(nodeID);
-    const isHighlighted = this.engine.isActive(nodeID);
-
-    return { nodeID, node, isHighlighted, lockOwner };
+  redraw(eventKey: string, isForced = false) {
+    this.emitter.emit(eventKey, isForced);
   }
 
-  useNodeData(nodeID: string) {
-    const data = this.useSubscription<NodeData<unknown>>(DispatchChannel.DATA, nodeID);
+  redrawEntity(type: EntityType, id: string) {
+    this.log.debug(`redraw ${type}`, this.log.slug(id));
 
-    return { nodeID, data };
-  }
-
-  usePort(portID: string) {
-    const port = this.useSubscription<Port>(DispatchChannel.PORT, portID);
-    const hasActiveLinks = this.select(hasActiveLinksSelector)(portID);
-
-    return { portID, port, hasActiveLinks };
-  }
-
-  useLink(linkID: string) {
-    const link = this.useSubscription<Link>(DispatchChannel.LINK, linkID);
-
-    const getPortRect = (relationship: 'source' | 'target') => this.engine.port.getRect(link[relationship].portID);
-
-    const sourcePort = this.engine.getPortByID(link.source.portID);
-    const targetPort = this.engine.getPortByID(link.target.portID);
-
-    const hasPorts = sourcePort && targetPort && this.engine.port.api(sourcePort.id)?.isReady() && this.engine.port.api(targetPort.id)?.isReady();
-
-    return {
-      linkID,
-      link,
-      points: hasPorts && extractPoints(this.engine.canvas!, getPortRect('source'), getPortRect('target')),
-      isActive: this.engine.isBranchActive(link.source.nodeID) || this.engine.isBranchActive(link.target.nodeID),
-    };
-  }
-
-  redraw(eventKey: string, shouldRedraw = (nextState: any) => nextState !== this.prevStates[eventKey]) {
-    const state = this.engine.store.getState();
-    const [channel, key] = eventKey.split(':') as [DispatchChannel, string];
-
-    const nextState = CHANNEL_SELECTORS[channel](state)(key);
-
-    if (shouldRedraw(nextState)) {
-      this.emitter.emit(eventKey, nextState);
-    }
-
-    this.prevStates[eventKey] = nextState;
-  }
-
-  forceRedraw(channel: DispatchChannel, key: string) {
-    // eslint-disable-next-line lodash/prefer-constant
-    this.redraw(`${channel}:${key}`, () => true);
+    this.redraw(`${type}:${id}`, true);
   }
 
   redrawNode(nodeID: string) {
-    this.forceRedraw(DispatchChannel.NODE, nodeID);
+    this.redrawEntity(EntityType.NODE, nodeID);
   }
 
   redrawPort(portID: string) {
-    this.forceRedraw(DispatchChannel.PORT, portID);
+    this.redrawEntity(EntityType.PORT, portID);
   }
 
   redrawLink(linkID: string) {
-    this.forceRedraw(DispatchChannel.LINK, linkID);
+    this.redrawEntity(EntityType.LINK, linkID);
   }
 
   reset() {

@@ -1,31 +1,20 @@
-import { ControlScheme } from './constants';
+import { Point } from '@/types';
 
-export type CanvasAPI = {
-  getControlScheme: () => ControlScheme;
-  isPanning: () => boolean;
-  isTrackpadPanning: () => boolean;
-  getZoom: () => number;
-  getPosition: () => [number, number];
-  getRef: () => HTMLElement;
-  getRect: () => DOMRect;
-  getBoundingPosition: () => [number, number];
-  zoomIn: (delta: number, options?: unknown) => void;
-  zoomOut: (delta: number, options?: unknown) => void;
-  reorient: () => void;
+export type TransitionOptions = {
+  delay?: number;
+  duration?: number;
+};
 
-  setZoom: (zoom: number, options?: unknown) => void;
+export type TransformOptions = {
+  relative?: boolean;
+  bounding?: boolean;
+};
 
-  setPosition: (position: [number, number], options?: unknown) => void;
+export type ZoomOptions = {
+  origin?: Point;
+};
 
-  applyStyles: (styles: unknown) => void;
-
-  applyTransition: (options?: unknown) => void;
-
-  transformPoint: (point: [number, number], options?: { relative?: boolean; bounding?: boolean }) => [number, number];
-
-  mapPoint: (point: [number, number]) => [number, number];
-
-  reverseTransformPoint: (point: [number, number], relative?: boolean) => [number, number];
-
-  reverseMapPoint: (point: [number, number]) => [number, number];
+export type StyleOptions = {
+  zoom?: number;
+  position?: Point;
 };

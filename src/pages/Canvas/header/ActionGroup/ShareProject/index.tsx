@@ -9,7 +9,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals } from '@/hooks';
+import { useFeature, useModals, useTrackingEvents } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
@@ -34,6 +34,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
   const [testableLink, setLink] = React.useState<string | boolean>(false);
   const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
+  const [trackingEvents] = useTrackingEvents();
 
   const makeConfig = async () => {
     if (render) {
@@ -65,6 +66,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
               onRedirect={openTestableLinksModal}
               help="https://docs.voiceflow.com/#/quickstart/testable-links"
               link={testableLink}
+              track={trackingEvents.trackActiveProjectTestableLinkShare}
             />
             <MenuItem
               plan={plan}
@@ -73,6 +75,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
               onRedirect={openProjectDownloadModal}
               help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
               link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
+              track={trackingEvents.trackActiveProjectDownloadLinkShare}
             />
 
             {canvasExportFeature.isEnabled && <ExportItem plan={plan} onRedirect={openCanvasExportModal} />}

@@ -2,9 +2,12 @@ import client from '@/client';
 import { Template } from '@/models';
 import { Thunk } from '@/store/types';
 
+import { duckLogger } from './utils';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
 export const STATE_KEY = 'template';
+
+const log = duckLogger.child(STATE_KEY);
 
 const templateReducer = createCRUDReducer<Template>(STATE_KEY);
 
@@ -38,8 +41,7 @@ export const loadTemplates = (): Thunk<Template[] | void> => async (dispatch, ge
 
     throw new Error('Malformed Response');
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(err.response);
+    log.error(err.response);
 
     throw err;
   }

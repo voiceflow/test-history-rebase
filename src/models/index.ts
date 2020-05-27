@@ -17,7 +17,6 @@ export * from './Project';
 export * from './ProjectList';
 export * from './Skill';
 export * from './Template';
-export * from './User';
 export * from './Link';
 export * from './Integration';
 export * from './Intent';

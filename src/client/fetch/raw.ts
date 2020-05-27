@@ -4,10 +4,7 @@ import { API_ENDPOINT, DEBUG_HTTP } from '@/config';
 
 import { DEFAULT_CACHE_TIMEOUT, GLOBAL_HEADERS, MAX_CACHE_SIZE, Method, NetworkError, REQUEST_CACHE, StatusCode } from './constants';
 import { FetchOptions, FetchResult } from './types';
-import { _fetch, buildOptions, debugRequest, parseResponseBody } from './utils';
-
-const BOLD_FONT_STYLE = 'font-weight: bold';
-const NORMAL_FONT_STYLE = 'font-weight: normal';
+import { _fetch, buildOptions, debugRequest, log, parseResponseBody } from './utils';
 
 async function rawFetch<R>(
   url: string,
@@ -33,7 +30,7 @@ async function rawFetch<R>(
   const resBody = parseResponseBody<R>(resText, json);
 
   if (res.status >= StatusCode.BAD_REQUEST) {
-    console.error(`%c${opts.method || Method.GET} %c${finalURL}`, BOLD_FONT_STYLE, NORMAL_FONT_STYLE);
+    log.error(log.bold(opts.method || Method.GET), log.value(finalURL));
     throw new NetworkError<R>(res.status, res.statusText, resBody);
   } else if (DEBUG_HTTP) {
     debugRequest(finalURL, opts, body);

@@ -42,7 +42,7 @@ export const withConnectedPort = withStepContext({ isConnected: true })(render()
 export const withImage = withStepContext()(render({ image: 'https://picsum.photos/seed/picsum/200/300' }));
 export const withUserLock = withStepContext({ lockOwner: true })(render());
 
-export const withMultipleSections = withStepContext({ isConnected: true })(() => (
+export const withMultipleSections = withStepContext()(() => (
   <Block name="Block">
     <Step>
       <Section>

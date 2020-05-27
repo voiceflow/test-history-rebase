@@ -42,6 +42,8 @@ const ClipboardVersion = {
 };
 
 class ClipboardEngine extends EngineConsumer {
+  log = this.engine.log.child('clipboard');
+
   internal = {
     storeData: async (nodeIDs: string[], keyToStore: string, keyToEncrypt: string) => {
       const state = this.engine.store.getState();
@@ -159,6 +161,7 @@ class ClipboardEngine extends EngineConsumer {
 
     if (!nodeIDs.length) return;
 
+    this.log.debug(this.log.pending('copying to buffer'), nodeIDs);
     const [keyToCopy, keyToStore, keyToEncrypt] = synchronousCrypto.generateEncryptedKeys();
 
     const serializedData = Clipboard.serialize(keyToCopy);
@@ -168,6 +171,8 @@ class ClipboardEngine extends EngineConsumer {
 
     // we do no need await here since copying is a background job, .encrypt called here to increase the complexity of debugging
     this.internal.storeData(nodeIDs, keyToStore, keyToEncrypt);
+
+    this.log.info(this.log.success('copied to buffer'), this.log.value(unfilteredNodeIDs.length));
   }
 
   async paste(pastedText: string, mousePosition: Point) {
@@ -177,6 +182,7 @@ class ClipboardEngine extends EngineConsumer {
 
     if (copyBuffer) {
       try {
+        this.log.debug(this.log.pending('pasting to canvas'));
         const result = await this.internal.extractData(copyBuffer);
 
         const isSameSkill = result.skillID === skillID;
@@ -195,10 +201,11 @@ class ClipboardEngine extends EngineConsumer {
         const { ports, links } = result;
 
         await this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, mousePosition);
+
+        this.log.info(this.log.success('pasted to canvas'), this.log.value(nodesWithData.length));
       } catch (err) {
         localStorage.removeItem(CLIPBOARD_DATA_KEY);
-        // eslint-disable-next-line no-console
-        console.warn('error while pasting data:', err);
+        this.log.warn('error while pasting data', err);
       }
     } else {
       localStorage.removeItem(CLIPBOARD_DATA_KEY);

@@ -10,6 +10,8 @@ import { EngineConsumer } from './utils';
 import type { Engine } from '.';
 
 class RealtimeEngine extends EngineConsumer {
+  log = this.engine.log.child('realtime');
+
   overlays: {
     [OverlayType.CURSOR]: RealtimeCursorOverlayAPI | null;
     [OverlayType.LINK]: RealtimeLinkOverlayAPI | null;
@@ -104,10 +106,14 @@ class RealtimeEngine extends EngineConsumer {
 
   registerOverlay<K extends keyof RealtimeEngine['overlays']>(key: K, api: RealtimeEngine['overlays'][K]) {
     this.overlays[key] = api;
+
+    this.log.debug(this.log.init('registered overlay'), this.log.value(key));
   }
 
   expireOverlay(key: keyof RealtimeEngine['overlays']) {
     this.overlays[key] = null;
+
+    this.log.debug(this.log.init('expired overlay'), this.log.value(key));
   }
 
   panViewport(moveX: number, moveY: number) {

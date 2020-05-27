@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ROOT_NODES } from '@/constants';
 import { withContext } from '@/hocs';
 import { Point } from '@/types';
 
@@ -39,13 +40,18 @@ export const GroupSelectionProvider: React.FC = ({ children }) => {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const [key, node] of engine.nodes.entries()) {
-      if (node.api.getRect) {
-        const rect = node.api.getRect();
-        const [x, y] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
+      // eslint-disable-next-line no-continue
+      if (!ROOT_NODES.includes(node.api.nodeType)) continue;
 
-        if (x >= left && x <= right && top <= y && bottom >= y) {
-          nextTargets.push(key);
-        }
+      const rect = node.api.instance!.getRect();
+
+      // eslint-disable-next-line no-continue
+      if (!rect) continue;
+
+      const [x, y] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
+
+      if (x >= left && x <= right && top <= y && bottom >= y) {
+        nextTargets.push(key);
       }
     }
 

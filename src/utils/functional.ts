@@ -30,3 +30,9 @@ export const noop = () => {};
 export const identity = <T>(value: T): T => value;
 
 export const stringify = (value: any): string => (isString(value) ? value : String(value));
+
+export const withEffect = <T>(callback: (value: T) => void) => (value: T) => {
+  callback(value);
+
+  return value;
+};

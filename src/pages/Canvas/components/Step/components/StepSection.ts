@@ -1,9 +1,11 @@
-import Flex from '@/components/Flex';
+import { flexStyles } from '@/components/Flex';
 import { styled, units } from '@/hocs';
 
 import StepItemContainer from './StepItemContainer';
 
-const StepSection = styled(Flex)`
+const StepSection = styled.section`
+  ${flexStyles}
+
   flex-direction: column;
   width: 100%;
 

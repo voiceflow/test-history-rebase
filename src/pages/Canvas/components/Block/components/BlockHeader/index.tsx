@@ -2,45 +2,41 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import { BlockVariant } from '@/constants/canvas';
-import { withTheme } from '@/hocs';
-import { Theme } from '@/styles/theme';
+import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { Icon } from '@/svgs/types';
-import { unhighlightAllText, withEnterPress } from '@/utils/dom';
+import { preventDefault, unhighlightAllText, withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 
 export type BlockHeaderProps = {
   variant: BlockVariant;
-  name: string;
+  name?: string;
   icon?: Icon;
   isEditing?: boolean;
-  disabled?: boolean;
+  isDisabled?: boolean;
   canEditTitle?: boolean;
-  isActivated?: boolean;
   updateName?: (value: string) => void;
   setIsEditing?: (value: boolean) => void;
   titleRef?: React.MutableRefObject<HTMLInputElement | null>;
 };
 
-const NewBlockHeader: React.FC<BlockHeaderProps & { theme: Theme }> = ({
+const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   name,
   canEditTitle,
   isEditing,
   setIsEditing,
   icon,
-  theme,
   updateName,
   variant,
-  disabled,
+  isDisabled,
   titleRef,
-  isActivated,
 }) => {
-  const [blockLabel, setBlockLabel] = React.useState(name);
-  const readOnly = !isEditing || disabled || !canEditTitle;
+  const [blockLabel, setBlockLabel] = React.useState(name ?? '');
+  const readOnly = !isEditing || isDisabled || !canEditTitle;
 
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
-      setBlockLabel(name);
+      setBlockLabel(name ?? '');
     } else {
       updateName?.(blockLabel);
     }
@@ -65,29 +61,20 @@ const NewBlockHeader: React.FC<BlockHeaderProps & { theme: Theme }> = ({
   };
 
   React.useEffect(() => {
-    setBlockLabel(name);
+    setBlockLabel(name ?? '');
   }, [name]);
 
   React.useEffect(() => {
-    if (disabled) {
+    if (isDisabled) {
       saveLabel();
     }
-  }, [disabled]);
+  }, [isDisabled]);
 
   React.useEffect(() => {
     if (readOnly) {
       unhighlightAllText();
     }
   }, [readOnly]);
-
-  React.useEffect(() => {
-    const variantStyles = theme.components.block.variants[variant];
-    const color = variantStyles[isActivated ? 'activeColor' : 'color'];
-
-    if (titleRef?.current) {
-      titleRef.current.style.color = color;
-    }
-  }, [theme, variant, isActivated]);
 
   return (
     <Container hasIcon={!!icon}>
@@ -97,13 +84,16 @@ const NewBlockHeader: React.FC<BlockHeaderProps & { theme: Theme }> = ({
         </IconContainer>
       )}
       <Input
+        className={BLOCK_SECTION_TITLE_CLASSNAME}
         canEdit={canEditTitle}
         onClick={startEditMode}
+        onMouseUp={preventDefault()}
         onBlur={saveLabel}
         readOnly={readOnly}
         onChange={updateLabel}
         value={blockLabel}
         variant={variant}
+        tabIndex={-1}
         onKeyPress={withEnterPress(handleEnterPress)}
         inputRef={(ref: HTMLInputElement | null) => {
           if (titleRef) {
@@ -115,4 +105,4 @@ const NewBlockHeader: React.FC<BlockHeaderProps & { theme: Theme }> = ({
   );
 };
 
-export default withTheme(NewBlockHeader);
+export default NewBlockHeader;

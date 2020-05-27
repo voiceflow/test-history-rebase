@@ -29,7 +29,7 @@ const validate = (acceptedFiles) => {
 };
 
 const validateURL = (value) => {
-  if (!value.match(VARIABLE_STRING_REGEXP) && !HTTPS_URL_REGEX.test(value)) {
+  if (!value.match(VARIABLE_STRING_REGEXP) && !value.match(HTTPS_URL_REGEX)) {
     return LINK_ERROR.INVALID_URL;
   }
 

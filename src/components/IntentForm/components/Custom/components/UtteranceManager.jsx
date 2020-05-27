@@ -3,6 +3,7 @@ import React from 'react';
 
 import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
+import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import ListManager from '@/components/ListManager';
 import { SectionToggleVariant } from '@/components/Section';
 import Utterance from '@/components/Utterance';
@@ -13,7 +14,6 @@ import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import ErrorMessage from '@/pages/Canvas/components/ErrorMessage';
 
 import ListManagerWrapper from '../../ListManagerWrapper';
 import { validateUtterance } from '../utils';

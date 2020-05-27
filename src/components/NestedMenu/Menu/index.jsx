@@ -28,6 +28,7 @@ export const DEFAULT_PATH = [];
  *(e.g. Select component implementation)
  */
 function BaseNestedMenu({
+  id,
   withSearchIcon,
   onHide,
   isRoot = true,
@@ -218,7 +219,7 @@ function BaseNestedMenu({
         return;
       }
 
-      if (e.target !== inputWrapperRef && !inputWrapperRef.contains(e.target) && !menuRef.current.contains(e.target)) {
+      if (e.target !== inputWrapperRef && (!inputWrapperRef || !inputWrapperRef.contains(e.target)) && !menuRef.current.contains(e.target)) {
         e.stopPropagation();
         onHide();
       }
@@ -247,6 +248,7 @@ function BaseNestedMenu({
         {({ ref, style }) => (
           <MenuPopoverContainer ref={ref} style={style} autoWidth={autoWidth} onMouseMove={onMouseMove}>
             <Menu
+              id={id}
               ref={menuRef}
               maxHeight={maxHeight}
               fullWidth

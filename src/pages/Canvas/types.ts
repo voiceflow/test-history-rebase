@@ -1,58 +1,21 @@
 import React from 'react';
 
-import { BlockVariant } from '@/constants/canvas';
-import { LockOwnerType } from '@/models';
+import { LockOwner } from '@/models';
 import { Either, Pair, Point } from '@/types';
 
-export type EntityAPI = {
-  instanceID: string;
-};
-
-export type PortAPI = EntityAPI & {
-  isReady: () => boolean;
-  getRect: () => DOMRect;
-  isHighlighted?: boolean;
-  setHighlight?: () => void;
-  clearHighlight?: () => void;
-};
-
-export type LinkAPI = EntityAPI & {
-  translatePoint: (point: Point, isSource: boolean) => void;
-};
-
-export type NodeAPI<T extends HTMLElement = HTMLElement> = EntityAPI & {
-  getPosition: () => [number, number];
+export type BlockAPI<T extends HTMLElement = HTMLElement> = {
+  ref: React.RefObject<T>;
   rename: () => void;
-  ref?: React.RefObject<T>;
-  isDragging?: boolean;
-  isHighlighted?: boolean;
-  setHighlight?: () => void;
-  clearHighlight?: () => void;
+  getRect: () => DOMRect | null;
+  addEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
+  removeEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
 };
-
-export type BlockNodeAPI = {
-  setMergeTarget: () => void;
-  clearMergeTarget: () => void;
-  translate: (movement: Pair<number>) => void;
-  drag: () => void;
-  drop: () => void;
-  forceDrag: () => void;
-  updateBlockColor: (color: BlockVariant) => void;
-  getRect: () => DOMRect;
-  getBlockRect: () => DOMRect;
-};
-
-export type AnyNodeAPI = NodeAPI & Partial<BlockNodeAPI>;
 
 export type StepAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
-  isActive: boolean;
-  isHovered: boolean;
   isDraggable: boolean;
-  hasLinkWarning: boolean;
   withPorts: boolean;
-  setHovering: (hovering: boolean) => void;
-  lockOwner: LockOwnerType | null;
+  lockOwner: LockOwner | null;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
     onClick: () => void;
@@ -63,6 +26,14 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
     onMouseLeave: (event?: React.MouseEvent) => void;
     onDragStart: (event: React.DragEvent) => void;
   };
+};
+
+export type NewLinkAPI = {
+  show: () => void;
+  hide: () => void;
+  isPinned: () => boolean;
+  pin: (position: [number, number]) => void;
+  unpin: () => void;
 };
 
 export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {

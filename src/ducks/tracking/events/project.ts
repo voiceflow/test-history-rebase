@@ -17,3 +17,11 @@ export const trackActiveProjectPrototypeTestStart = createProjectEventTracker((o
 export const trackActiveProjectSettingsOpened = createProjectEventTracker((options) =>
   client.analytics.track(EventName.PROJECT_SETTINGS_OPENED, createProjectEventPayload(options))
 );
+
+export const trackActiveProjectTestableLinkShare = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_SHARE_TESTABLE_LINK, createProjectEventPayload(options))
+);
+
+export const trackActiveProjectDownloadLinkShare = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_SHARE_DOWNLOAD_LINK, createProjectEventPayload(options))
+);

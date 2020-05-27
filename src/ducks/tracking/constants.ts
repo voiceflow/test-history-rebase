@@ -9,6 +9,8 @@ export enum EventName {
   SESSION_BEGIN = 'Begin New Session',
   SESSION_DURATION = 'Creator Session Duration',
 
+  WORKSPACE_SESSION_BEGIN = 'Begin Workspace Session',
+
   INVITATION_CANCEL = 'Cancel Invitation',
   INVITATION_ACCEPT = 'Accept Invitation',
   INVITATION_SEND_EMAIL = 'Send Invitation Email',
@@ -17,6 +19,8 @@ export enum EventName {
   PROJECT_SETTINGS_OPENED = 'Settings Opened',
   PROJECT_SESSION_DURATION = 'Project Session Duration',
   PROJECT_PROTOTYPE_TEST_START = 'Prototype Test Start',
+  PROJECT_SHARE_TESTABLE_LINK = 'Testable Link Button',
+  PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
 
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',

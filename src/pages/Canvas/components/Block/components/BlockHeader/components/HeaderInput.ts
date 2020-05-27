@@ -3,7 +3,8 @@ import AutosizeInput, { AutosizeInputProps } from 'react-input-autosize';
 import { mapProps } from 'recompose';
 
 import { BlockVariant } from '@/constants/canvas';
-import { styled, transition } from '@/hocs';
+import { styled, transition, withBlockVariantStyle } from '@/hocs';
+import { CANVAS_CREATING_LINK_CLASSNAME, CANVAS_MERGING_CLASSNAME, NODE_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';
 
 type HeaderInputProps = AutosizeInputProps & {
   canEdit?: boolean;
@@ -18,6 +19,12 @@ const HeaderInput = styled(
   // for some reason I NEED to place box sizing inline for the title to not get cropped on first render in chrome}
   .attrs({ style: { boxSizing: 'content-box' } })<HeaderInputProps>`
   max-width: 100%;
+
+  .${CANVAS_MERGING_CLASSNAME} &,
+  .${CANVAS_CREATING_LINK_CLASSNAME} & {
+    pointer-events: none;
+  }
+
   input {
     max-width: 100%;
     box-sizing: content-box !important;
@@ -35,7 +42,7 @@ const HeaderInput = styled(
     cursor: text;
     overflow: hidden;
     user-select: ${({ readOnly }) => readOnly && 'none'};
-    color: ${({ theme, variant }) => theme.components.block.variants[variant].color};
+    color: ${withBlockVariantStyle((variant) => variant.color)};
 
     :hover {
       background: ${({ theme, variant, canEdit }) => canEdit && theme.components.block.variants[variant].editTitleColor};
@@ -48,6 +55,10 @@ const HeaderInput = styled(
     :active {
       background: transparent;
     }
+  }
+
+  .${NODE_ACTIVE_CLASSNAME} input {
+    color: ${withBlockVariantStyle((variant) => variant.activeColor)};
   }
 `;
 

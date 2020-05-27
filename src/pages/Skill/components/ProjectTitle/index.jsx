@@ -3,6 +3,7 @@ import React from 'react';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks/toggle';
+import { Identifier } from '@/styles/constants';
 
 import ProjectTitleContainer from './ProjectTitleContainer';
 
@@ -49,6 +50,7 @@ const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, 
   return (
     <ProjectTitleContainer>
       <input
+        id={Identifier.PROJECT_TITLE}
         onDoubleClick={onDoubleClick}
         className="edit-input"
         readOnly={!isEditing}

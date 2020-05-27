@@ -2,20 +2,15 @@ import React from 'react';
 
 import { UncontrolledSection } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { Either } from '@/types';
 
 import { ContentContainer, IconContainer, Title } from './components';
 
 export type SectionProps = {
   title?: string;
   isLast?: boolean;
-} & Either<
-  {
-    opened: boolean;
-    onAddRemove: () => void;
-  },
-  {}
->;
+  opened?: boolean;
+  onAddRemove?: () => void;
+};
 
 const Section: React.FC<SectionProps> = ({ title, children, opened, isLast, onAddRemove }) => (
   <UncontrolledSection
@@ -29,7 +24,7 @@ const Section: React.FC<SectionProps> = ({ title, children, opened, isLast, onAd
     }
     dividers
     isCollapsed={!onAddRemove ? false : !opened}
-    forceDividers
+    forceDividers={!isLast}
     isDividerNested={!isLast && (opened || !onAddRemove)}
     isDividerBottom
   >

@@ -3,10 +3,11 @@ import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import { Icon } from '@/components/SvgIcon';
-import { BlockState, BlockVariant } from '@/constants/canvas';
+import { BlockVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 import Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
+import { NODE_DISABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME, NODE_SELECTED_CLASSNAME } from '@/pages/Canvas/constants';
 import { StepAPI } from '@/pages/Canvas/types';
 import { identity } from '@/utils/functional';
 
@@ -24,7 +25,7 @@ const getUserProps = () => ({
   image: 'E760D4|FCEFFB',
   creator_id: 4,
   seats: 1,
-  created: null,
+  created: '',
   color: '36B4D2|ECF8FA',
 });
 
@@ -74,7 +75,7 @@ const MOCK_STEPS_LOCKED = (
     <StepAPIProvider value={{ wrapElement: identity } as StepAPI}>
       <Step>Order Pizza</Step>
     </StepAPIProvider>
-    <StepAPIProvider value={{ lockOwner: getUserProps(), wrapElement: identity } as StepAPI}>
+    <StepAPIProvider value={{ lockOwner: getUserProps(), wrapElement: identity } as any}>
       <Step>New Order</Step>
     </StepAPIProvider>
   </>
@@ -113,27 +114,43 @@ export const longName = () => <Block {...getProps()} />;
 
 export const regularState = () => <Block {...getProps()} />;
 
-export const activeState = () => <Block state={BlockState.ACTIVE} {...getProps()} />;
+export const focusedState = () => (
+  <div className={NODE_FOCUSED_CLASSNAME}>
+    <Block {...getProps()} />
+  </div>
+);
 
-export const selectedState = () => <Block state={BlockState.SELECTED} {...getProps()} />;
+export const selectedState = () => (
+  <div className={NODE_SELECTED_CLASSNAME}>
+    <Block {...getProps()} />
+  </div>
+);
 
-export const disabledState = () => <Block state={BlockState.DISABLED} {...getProps()} />;
+export const disabledState = () => (
+  <div className={NODE_DISABLED_CLASSNAME}>
+    <Block {...getProps()} />
+  </div>
+);
 
 export const subSections = () => <Block {...getProps()} {...getMultiSectionProps()} />;
 
 export const stateTransitions = () => {
-  const activeState = select(
+  const activeClassname = select(
     'Active State',
     {
-      Regular: BlockState.REGULAR,
-      Active: BlockState.ACTIVE,
-      Selected: BlockState.SELECTED,
-      Disabled: BlockState.DISABLED,
+      Regular: '',
+      Focused: NODE_FOCUSED_CLASSNAME,
+      Selected: NODE_SELECTED_CLASSNAME,
+      Disabled: NODE_DISABLED_CLASSNAME,
     },
-    BlockState.REGULAR
+    ''
   );
 
-  return <Block name="Block 1" state={activeState} {...getProps()} />;
+  return (
+    <div className={activeClassname}>
+      <Block name="Block 1" {...getProps()} />
+    </div>
+  );
 };
 
 export const blockUserLock = () => (

@@ -1,7 +1,11 @@
+import { hasIdenticalMembers } from '@/utils/array';
+
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
 
 class SelectionEngine extends EngineConsumer {
+  log = this.engine.log.child('selection');
+
   /**
    * should be mutually exclusive with hasFocus
    */
@@ -17,6 +21,13 @@ class SelectionEngine extends EngineConsumer {
   }
 
   /**
+   * check to see if the node is one of multiple selected
+   */
+  isOneOfManyTargets(nodeID: string) {
+    return this.isTarget(nodeID) && this.engine.activation.getTargets().length > 1;
+  }
+
+  /**
    * returns array of all selected targets
    */
   getTargets() {
@@ -24,51 +35,55 @@ class SelectionEngine extends EngineConsumer {
   }
 
   /**
-   * select and highlight the node with the given ID
-   */
-  set(nodeID: string) {
-    this.engine.focus.reset();
-
-    this.engine.activation.activate(nodeID, ActivationMode.SELECTION);
-  }
-
-  /**
-   * deselect and remove highlight of the node with the given ID
-   */
-  unset(nodeID: string) {
-    this.engine.activation.deactivate(nodeID);
-  }
-
-  /**
    * toggle the selection of the node with the given ID
    */
   toggle(nodeID: string) {
+    if (this.engine.isCanvasBusy) return;
+
+    this.log.debug(this.log.pending('toggling selection of node'), this.log.slug(nodeID));
+
     if (this.engine.focus.hasTarget) {
       const focusTarget = this.engine.focus.getTarget()!;
 
       this.engine.focus.reset();
       this.engine.activation.activate(focusTarget, ActivationMode.SELECTION);
+
+      if (nodeID === focusTarget) return;
     }
 
     this.engine.activation.toggle(nodeID, ActivationMode.SELECTION);
+
+    const isSelected = this.isTarget(nodeID);
+    this.log.info(this.log.success('toggled selection of node'), this.log.slug(nodeID), this.log.diff(!isSelected, isSelected));
   }
 
   /**
    * replace the entire set of selected targets
    */
   replace(targets: string[] = []) {
-    this.engine.focus.reset();
+    const currentTargets = this.getTargets();
 
+    if (this.engine.isCanvasBusy || hasIdenticalMembers(targets, currentTargets)) return;
+
+    this.log.debug(this.log.pending('replacing selection'), targets);
+    this.engine.focus.reset();
     this.engine.activation.replace(targets, ActivationMode.SELECTION);
+
+    this.log.info(this.log.success('replaced selection'), this.log.diff(currentTargets.length, targets.length));
   }
 
   /**
    * clears all selected nodes
    */
   reset() {
-    if (this.hasTargets) {
-      this.engine.activation.reset();
-    }
+    if (!this.hasTargets) return;
+
+    const currentTargets = this.getTargets();
+
+    this.log.debug(this.log.pending('resetting selection'), currentTargets);
+    this.engine.activation.reset();
+
+    this.log.info(this.log.reset('reset selection'), this.log.diff(currentTargets.length, 0));
   }
 }
 

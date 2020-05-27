@@ -1,0 +1,243 @@
+import loglevel from 'loglevel';
+
+import { LOG_FILTER, LOG_LEVEL } from '@/config';
+
+const SEPARATOR = '.';
+const SEPARATOR_REGEX = /\\./g;
+const MATCH_MANY_REGEX = /\*\*/g;
+const MATCH_ONE_REGEX = /\*/g;
+const BASE_LOGGER_NAME = 'voiceflow';
+const LOG_WHITELIST = LOG_FILTER
+  ? LOG_FILTER.split(',')
+      .filter(Boolean)
+      .map(
+        (glob) =>
+          `^${BASE_LOGGER_NAME}\\.${
+            glob ? glob.replace(SEPARATOR_REGEX, '\\.').replace(MATCH_MANY_REGEX, '.*?').replace(MATCH_ONE_REGEX, '[^\\.]*') : '.*'
+          }$`
+      )
+      .map((glob) => RegExp(glob))
+  : [];
+
+const LOG_MESSAGE_STYLE = 'color: #cfcfcf;';
+const LOG_SUBTLE_PATH_STYLE = 'color: #7d7d7d;';
+const LOG_BOLD_STYLE = 'font-weight: bold;';
+const LOG_BOLD_PATH_STYLE = `color: #a4a4a4; ${LOG_BOLD_STYLE}`;
+const LOG_FAILURE_STYLE = `color: #b20303; ${LOG_BOLD_STYLE}`;
+const LOG_SUCCESS_STYLE = `color: #059333; ${LOG_BOLD_STYLE}`;
+const LOG_PENDING_STYLE = `color: #f3cf08; ${LOG_BOLD_STYLE}`;
+const LOG_RESET_STYLE = `color: #06b595; ${LOG_BOLD_STYLE}`;
+const LOG_CONFIGURING_STYLE = `${LOG_MESSAGE_STYLE} ${LOG_BOLD_STYLE}`;
+const LOG_CURRENT_STYLE = `color: #0699f3; ${LOG_BOLD_STYLE}`;
+
+const METHOD_STYLES: Record<string, string> = {
+  trace: 'color: #b5b5b5;',
+  debug: 'color: #8b68c3;',
+  info: 'color: #5d9df5;',
+  warn: 'color: #ffab47;',
+  error: 'color: #851452;',
+};
+
+const getToken = (value: any) => {
+  switch (typeof value) {
+    case 'number':
+      return '%d';
+    case 'object':
+      return '%o';
+    default:
+      return '%s';
+  }
+};
+
+abstract class LogEntity {
+  format(): [string, string[]] {
+    const [message, args] = this.formatEntity();
+
+    return [`${message}%c`, [...args, LOG_MESSAGE_STYLE]];
+  }
+
+  abstract formatEntity(): [string, any[]];
+}
+
+class LogDiff<T> extends LogEntity {
+  constructor(private lhs: T, private rhs: T) {
+    super();
+  }
+
+  formatEntity(): [string, any[]] {
+    const isObjectDiff = typeof this.lhs === 'object' || typeof this.rhs === 'object';
+
+    return isObjectDiff
+      ? [
+          `\n\t%cprev: %c${getToken(this.lhs)}\n\t%cnext: %c${getToken(this.rhs)}`,
+          [LOG_FAILURE_STYLE, LOG_MESSAGE_STYLE, this.lhs, LOG_SUCCESS_STYLE, LOG_MESSAGE_STYLE, this.rhs],
+        ]
+      : [
+          `%c(%cprev: %c${getToken(this.lhs)} %c→ %cnext: %c${getToken(this.rhs)}%c)`,
+          [
+            LOG_SUBTLE_PATH_STYLE,
+            LOG_FAILURE_STYLE,
+            LOG_MESSAGE_STYLE,
+            this.lhs,
+            LOG_SUBTLE_PATH_STYLE,
+            LOG_SUCCESS_STYLE,
+            LOG_MESSAGE_STYLE,
+            this.rhs,
+            LOG_SUBTLE_PATH_STYLE,
+          ],
+        ];
+  }
+}
+
+class LogValue<T> extends LogEntity {
+  constructor(private value: T) {
+    super();
+  }
+
+  formatEntity(): [string, any[]] {
+    return [`%c${getToken(this.value)}`, [LOG_CURRENT_STYLE, this.value]];
+  }
+}
+
+class LogBold<T> extends LogEntity {
+  constructor(private value: T) {
+    super();
+  }
+
+  formatEntity(): [string, any[]] {
+    return [`%c${getToken(this.value)}`, [LOG_BOLD_STYLE, this.value]];
+  }
+}
+
+abstract class LogStatus<T> extends LogEntity {
+  constructor(private icon: string, private style: string, protected value: T) {
+    super();
+  }
+
+  formatEntity(): [string, any[]] {
+    return [`%c${this.icon} ${getToken(this.value)}`, [this.style, this.value]];
+  }
+}
+
+class LogSuccess<T> extends LogStatus<T> {
+  constructor(value: T) {
+    super('✅', LOG_SUCCESS_STYLE, value);
+  }
+}
+
+class LogFailure<T> extends LogStatus<T> {
+  constructor(value: T) {
+    super('⛔️', LOG_FAILURE_STYLE, value);
+  }
+}
+
+class LogPending<T> extends LogStatus<T> {
+  constructor(value: T) {
+    super('⏳', LOG_PENDING_STYLE, value);
+  }
+}
+
+class LogInitialize<T> extends LogStatus<T> {
+  constructor(value: T) {
+    super('⚙️', LOG_CONFIGURING_STYLE, value);
+  }
+}
+
+class LogReset<T> extends LogStatus<T> {
+  constructor(value: T) {
+    super('✨', LOG_RESET_STYLE, value);
+  }
+}
+
+const formatPath = (path: string[]): [string, any[]] => {
+  if (path.length === 1) {
+    return [`%c${path[0]}`, [LOG_BOLD_PATH_STYLE]];
+  }
+
+  const [restFormatted, restArgs] = formatPath(path.slice(1));
+
+  return [`%c${path[0][0]}.${restFormatted}`, [LOG_SUBTLE_PATH_STYLE, ...restArgs]];
+};
+
+const inlineArgs = (message: string, args: any[]) => {
+  const remainingArgs = [...args];
+  const injectedArgs = [];
+  let formattedMessage = message;
+
+  while (remainingArgs[0] instanceof LogEntity) {
+    const entity = remainingArgs.shift() as LogEntity;
+    const [entityMessage, entityArgs] = entity.format();
+
+    formattedMessage += ` ${entityMessage}`;
+    injectedArgs.push(...entityArgs);
+  }
+
+  return [formattedMessage, [...injectedArgs, ...remainingArgs]];
+};
+
+const customizeLogger = (logger: loglevel.Logger, path: string[]) => {
+  const logFactory = logger.methodFactory;
+  const loggerName = path.join(SEPARATOR);
+
+  logger.methodFactory = (method, level, name) => {
+    const logMethod = logFactory(method, level, name);
+
+    return (...args) => {
+      if (LOG_WHITELIST.length && !LOG_WHITELIST.some((regex) => loggerName.match(regex))) {
+        return;
+      }
+
+      const [namespace, injectedArgs] = formatPath(path);
+
+      let prefix = `${namespace} %c:`;
+      injectedArgs.push(LOG_SUBTLE_PATH_STYLE);
+
+      prefix = `%c${method.toUpperCase()} ${prefix}`;
+      injectedArgs.unshift(`font-weight: bold; ${METHOD_STYLES[method] || ''}`);
+
+      if (!args.length) {
+        logMethod(prefix, ...injectedArgs);
+
+        return;
+      }
+
+      // eslint-disable-next-line lodash/prefer-lodash-typecheck
+      if (typeof args[0] === 'string') {
+        const [message, messageArgs] = inlineArgs(args[0], args.slice(1));
+
+        logMethod(`${prefix} %c${message}`, ...injectedArgs, LOG_MESSAGE_STYLE, ...messageArgs);
+
+        return;
+      }
+
+      const [message, messageArgs] = inlineArgs(prefix, args);
+
+      logMethod(message, ...injectedArgs, ...messageArgs);
+    };
+  };
+
+  // NOTE: calling setLevel() is required "apply" factory change
+  logger.setLevel(LOG_LEVEL);
+};
+
+export const createLogger = (path: string[]) => {
+  const loggerName = path.join(SEPARATOR);
+  const logger = loglevel.getLogger(loggerName);
+
+  customizeLogger(logger, path);
+
+  return Object.assign(logger, {
+    child: (childName: string) => createLogger([...path, childName]),
+    diff: <T>(lhs: T, rhs: T) => new LogDiff(lhs, rhs),
+    value: <T>(value: T) => new LogValue(value),
+    bold: <T>(value: T) => new LogBold(value),
+    slug: (value: string) => new LogValue(value.slice(-6)),
+    success: <T>(value: T) => new LogSuccess(value),
+    failure: <T>(value: T) => new LogFailure(value),
+    pending: <T>(value: T) => new LogPending(value),
+    init: <T>(value: T) => new LogInitialize(value),
+    reset: <T>(value: T) => new LogReset(value),
+  });
+};
+
+export default createLogger([BASE_LOGGER_NAME]);

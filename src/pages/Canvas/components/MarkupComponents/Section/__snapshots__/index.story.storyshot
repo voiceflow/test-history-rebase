@@ -249,7 +249,7 @@ exports[`Storyshots Creator/Markup Components/Section Last 1`] = `
   background-color: #fff;
 }
 
-.c0::before {
+.c0:not(:last-child)::before {
   position: absolute;
   left: 0px;
   right: 0;

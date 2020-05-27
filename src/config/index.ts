@@ -1,5 +1,6 @@
 /* eslint-disable prefer-destructuring, no-process-env */
 import Bowser from 'bowser';
+import loglevel from 'loglevel';
 
 const { browser, os } = Bowser.parse(window.navigator.userAgent);
 
@@ -51,7 +52,13 @@ export const API_ENDPOINT = `https://${API_HOST}${IS_DEVELOPMENT ? ':8080' : ''}
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_PRODUCTION ? 'voiceflow.com' : window.location.hostname);
 export const VERSION = process.env.VERSION!;
 
+// logging
+
+export const LOG_LEVEL = (IS_PRODUCTION ? 'error' : process.env.LOG_LEVEL || 'info') as loglevel.LogLevelDesc;
+export const LOG_FILTER = process.env.LOG_FILTER || '';
+
 // debugging
+
 export const DEBUG_NETWORK = !IS_PRODUCTION && !!process.env.DEBUG_NETWORK;
 export const DEBUG_HTTP = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DEBUG_HTTP);
 export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DEBUG_SOCKET);

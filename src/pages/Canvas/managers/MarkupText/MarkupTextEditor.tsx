@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { Color } from '@/components/ColorPicker';
 import { FlexAround } from '@/components/Flex';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import { connect } from '@/hocs';
 import { useDebouncedCallback } from '@/hooks';
+import { Markup } from '@/models';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import { ColorSelect, FormGroup, Section, SliderInputGroup } from '@/pages/Canvas/components/MarkupComponents';
 
@@ -14,12 +14,12 @@ import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, 
 
 const PartialSelect = Select as React.ComponentType<Partial<React.ComponentProps<typeof Select>>>;
 
-type BlockData = {
+export type BlockData = {
   textAlign?: TextAlign;
 };
 
-type TextData = {
-  color: Color;
+export type TextData = {
+  color: Markup.Color;
   fontSize: number;
   isItalic?: boolean;
   hyperlink?: string;
@@ -44,9 +44,11 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ textData, bl
   const onUpdateTextData = (data: Partial<TextData>) => onChangeTextData({ ...textData, ...data });
   const onUpdateBlockData = (data: Partial<BlockData>) => onChangeBlockData({ ...blockData, ...data });
 
-  const onUpdateTextDataDebounced = useDebouncedCallback(UPDATE_DATA_TIMEOUT, (data: Partial<TextData>) => onUpdateTextData(data), [
-    onUpdateTextData,
-  ]);
+  const onUpdateTextDataRef = React.useRef(onUpdateTextData);
+
+  onUpdateTextDataRef.current = onUpdateTextData;
+
+  const onUpdateTextDataDebounced = useDebouncedCallback(UPDATE_DATA_TIMEOUT, (data: Partial<TextData>) => onUpdateTextDataRef.current(data), []);
 
   const onChangeFontFamily = (value: Font) => {
     onUpdateTextData({
@@ -75,7 +77,7 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ textData, bl
     onUpdateTextDataDebounced({ hyperlink: value });
   };
 
-  const onChangeColor = (nextColor: Color) => {
+  const onChangeColor = (nextColor: Markup.Color) => {
     setColor(nextColor);
     setInputOpacity(`${nextColor.a * 100}`);
     onUpdateTextData({ color: nextColor });
@@ -94,7 +96,7 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ textData, bl
       setColor((prevColor) => ({ ...prevColor, a: 0 }));
       setInputOpacity(value);
     } else if (value.match(/^\d+$/)) {
-      const opacity = Math.min(+value / 100, 1);
+      const opacity = Math.min(+value / 100, 0);
 
       setColor((prevColor) => ({ ...prevColor, a: opacity }));
       setInputOpacity(`${opacity * 100}`);
@@ -162,7 +164,7 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ textData, bl
         </FlexAround>
       </Section>
 
-      <Section>
+      <Section isLast>
         <SliderInputGroup
           inputValue={inputOpacity}
           inputProps={{ placeholder: '100', onBlur: onBlurOpacityInput }}

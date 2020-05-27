@@ -1,4 +1,5 @@
 import * as ReactRedux from 'react-redux';
+import { getDisplayName } from 'recompose';
 import { createStructuredSelector } from 'reselect';
 
 import { IS_PRODUCTION } from '@/config';
@@ -14,6 +15,7 @@ import {
   MergeArguments,
   SelectorLookup,
 } from '@/types';
+import Logger from '@/utils/logger';
 
 type MergePropsType<T extends AnyFunction> = T extends (...args: MergeArguments<any, any, infer R>) => any ? R : {};
 
@@ -45,6 +47,7 @@ export const connect: Connect = (
 ) => (component: React.FC<any>) => {
   const isDebug = !IS_PRODUCTION && options.debug;
   const removeDispatch = options.removeDispatch;
+  const log = Logger.child(`connect(${getDisplayName(component)})`);
 
   return ReactRedux.connect(
     (typeof mapStateToProps === 'function' ? mapStateToProps : mapStateToProps && createStructuredSelector<State, any>(mapStateToProps)) || null,
@@ -57,8 +60,7 @@ export const connect: Connect = (
           { dispatch, ...dispatchProps }: MappedDispatchProps<any> & { dispatch: Dispatch },
           props: MergePropsType<any>
         ) =>
-          // eslint-disable-next-line no-console
-          (isDebug && console.log('connect() was called', { stateProps, dispatchProps, props })) || {
+          (isDebug && log.debug('connect() was called', { stateProps, dispatchProps, props })) || {
             ...stateProps,
             ...dispatchProps,
             ...(removeDispatch ? { dispatch } : null),

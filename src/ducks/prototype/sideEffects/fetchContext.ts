@@ -7,6 +7,7 @@ import { Thunk } from '@/store/types';
 import { updatePrototypeContext } from '../actions';
 import { prototypeContextSelector } from '../selectors';
 import { Context } from '../types';
+import { log } from '../utils';
 
 const fetchContext = (request?: any): Thunk<Context | null> => async (dispatch, getState) => {
   const state = getState();
@@ -23,7 +24,7 @@ const fetchContext = (request?: any): Thunk<Context | null> => async (dispatch, 
       trace: newContext.trace?.map((trace) => ({ id: cuid(), ...trace })) ?? [],
     };
   } catch (err) {
-    console.error(err);
+    log.error(err);
 
     return null;
   }

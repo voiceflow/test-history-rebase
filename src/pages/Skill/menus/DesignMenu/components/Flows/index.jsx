@@ -7,6 +7,7 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
+import { Identifier } from '@/styles/constants';
 
 import { Container, Item } from './components';
 
@@ -28,7 +29,7 @@ const FlowList = ({ isOpen, diagrams, rootDiagramID, activeDiagramID }) => {
 
   return (
     <Container>
-      <SearchableList items={sortedDiagrams} renderItem={renderItem} getLabel={getLabel} placeholder="Search Flows" />
+      <SearchableList id={Identifier.FLOW_MENU} items={sortedDiagrams} renderItem={renderItem} getLabel={getLabel} placeholder="Search Flows" />
 
       <LockedResourceOverlay key={activeDiagramID} type={Realtime.ResourceType.FLOWS} disabled={!isOpen} />
     </Container>

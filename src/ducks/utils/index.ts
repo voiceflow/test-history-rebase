@@ -2,6 +2,9 @@ import moize from 'moize';
 
 import type { State } from '@/ducks/_root';
 import { Action, AnyAction, Reducer, RootReducer, Selector } from '@/store/types';
+import { storeLogger } from '@/store/utils';
+
+export const duckLogger = storeLogger.child('duck');
 
 export const createAction = <T extends string, P, M extends object | void>(type: T, payload?: P, meta?: M) =>
   ({

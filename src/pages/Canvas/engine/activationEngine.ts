@@ -1,9 +1,11 @@
-import { ACTIVE_NODES_CANVAS_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_ACTIVATION_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
 
 class ActivationEngine extends EngineConsumer {
+  log = this.engine.log.child('activation');
+
   targets = new Set<string>();
 
   mode: ActivationMode | null = null;
@@ -40,16 +42,14 @@ class ActivationEngine extends EngineConsumer {
     }
   }
 
-  addActiveStyle() {
-    this.engine.canvas?.getRef().classList.add(ACTIVE_NODES_CANVAS_CLASSNAME);
+  addStyle() {
+    this.engine.canvas?.addClass(CANVAS_ACTIVATION_CLASSNAME);
+    this.log.debug('added canvas activation style');
   }
 
-  removeActiveStyle() {
-    this.engine.canvas?.getRef().classList.remove(ACTIVE_NODES_CANVAS_CLASSNAME);
-  }
-
-  redrawNode(nodeID: string) {
-    this.engine.node.redraw(nodeID);
+  removeStyle() {
+    this.engine.canvas?.removeClass(CANVAS_ACTIVATION_CLASSNAME);
+    this.log.debug('removed canvas activation style');
   }
 
   /**
@@ -58,10 +58,12 @@ class ActivationEngine extends EngineConsumer {
   activate(nodeID: string, mode = this.mode) {
     this.setMode(mode);
     this.targets.add(nodeID);
-    this.redrawNode(nodeID);
+
+    this.log.debug('activated node', this.log.slug(nodeID));
+    this.engine.node.redraw(nodeID);
 
     if (this.engine.isRootNode(nodeID)) {
-      this.addActiveStyle();
+      this.addStyle();
     }
   }
 
@@ -70,11 +72,13 @@ class ActivationEngine extends EngineConsumer {
    */
   deactivate(nodeID: string) {
     this.targets.delete(nodeID);
-    this.redrawNode(nodeID);
+
+    this.log.debug('deactivated node', this.log.slug(nodeID));
+    this.engine.node.redraw(nodeID);
 
     if (!this.hasTargets) {
       this.mode = null;
-      this.removeActiveStyle();
+      this.removeStyle();
     }
   }
 
@@ -108,10 +112,8 @@ class ActivationEngine extends EngineConsumer {
 
     unused.forEach((nodeID) => this.deactivate(nodeID));
 
-    if (targets.length === 0) {
-      this.removeActiveStyle();
-    } else if (targets.some((nodeID) => this.engine.isRootNode(nodeID))) {
-      this.addActiveStyle();
+    if (targets.some((nodeID) => this.engine.isRootNode(nodeID))) {
+      this.addStyle();
     }
   }
 
@@ -124,7 +126,8 @@ class ActivationEngine extends EngineConsumer {
     if (this.hasTargets) {
       this.targets.forEach((nodeID) => this.deactivate(nodeID));
       this.targets.clear();
-      this.removeActiveStyle();
+
+      this.log.debug('reset activation');
     }
   }
 }

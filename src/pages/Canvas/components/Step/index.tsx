@@ -10,30 +10,20 @@ import { StepAPIContext } from './contexts';
 export * from './components';
 export * from './types';
 
-// TODO: remove this once User component is converted into TS
-// declaring the type for component otherwise, TS implies its of RefAttribute and gives error that user prop does not exist on the component
-const LockOwner: any = User;
-
 export type BaseStepProps = {
   image?: string | null;
   disableHighlightStyle?: boolean;
 };
 
-export type StepProps = BaseStepProps & { children: React.ReactNode | React.ReactNode[] };
+export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, children }) => {
+const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
-  const el = (
-    <HoverContainer {...stepAPI?.handlers} ref={stepAPI?.ref} onMouseDown={stopPropagation(null, true)}>
-      <Container
-        className={ClassName.CANVAS_STEP}
-        isActive={stepAPI?.isActive && !disableHighlightStyle}
-        isHovered={stepAPI?.isHovered}
-        hasLinkWarning={stepAPI?.hasLinkWarning}
-        draggable={stepAPI?.isDraggable}
-      >
-        {stepAPI?.lockOwner && <LockOwner user={stepAPI.lockOwner} />}
+  const element = (
+    <HoverContainer className={ClassName.CANVAS_STEP} {...stepAPI?.handlers} ref={stepAPI?.ref} onMouseDown={stopPropagation(null, true)}>
+      <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable}>
+        {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}
         {children}
         {image && (
           <ImageContainer>
@@ -44,7 +34,7 @@ const Step: React.FC<StepProps> = ({ image, disableHighlightStyle = false, child
     </HoverContainer>
   );
 
-  return stepAPI?.wrapElement(el) ?? el;
+  return stepAPI?.wrapElement(element) ?? element;
 };
 
 export default Step;

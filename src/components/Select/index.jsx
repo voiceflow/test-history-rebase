@@ -35,6 +35,7 @@ export default function Select({
   autoFocus,
   maxHeight,
   creatable,
+  id,
   className,
   borderLess,
   searchable,
@@ -294,6 +295,7 @@ export default function Select({
 
       {opened && (
         <AdvancedMenu
+          id={id}
           withSearchIcon={withSearchIcon}
           onHide={onHideMenu}
           grouped={grouped}

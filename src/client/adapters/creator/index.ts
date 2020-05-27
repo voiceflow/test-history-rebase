@@ -98,7 +98,7 @@ const creatorAdapter = createSimpleAdapter<
       if (nodeType === BlockType.COMBINED) {
         _node = {
           ..._node,
-          ports: [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
+          ports: _node.ports.length ? _node.ports : [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
         };
       } else if (!ROOT_NODES.includes(nodeType)) {
         const { virtualExtras, ...extras } = node.extras || {};

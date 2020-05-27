@@ -1,8 +1,6 @@
 import React from 'react';
 
-import LinkHeadMarker from '@/pages/Canvas/components/Link/components/LinkHeadMarker';
-import LinkPath from '@/pages/Canvas/components/Link/components/LinkPath';
-import { buildPath } from '@/pages/Canvas/components/Link/utils';
+import { HeadMarker, Path, buildHeadMarker, buildPath } from '@/pages/Canvas/components/Link';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
@@ -10,18 +8,12 @@ import { Pair, Point } from '@/types';
 import AbstractOverlay, { ConnectedRealtimeOverlayProps, RealtimeViewer, connectOverlay } from './AbstractOverlay';
 import LinkOverlaySvg from './RealtimeOverlayLinkPathSvg';
 
+const DEFAULT_STROKE_COLOR = '#f8758f';
 class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
   linkLocations: Record<string, Pair<Point> | null> = {};
 
   api: RealtimeLinkOverlayAPI = {
     moveLink: (tabID, linkData) => {
-      /**
-       * linkData:
-       * {
-       *   points: [[startX, startY], [endX, endY]],
-       *   reset: bool,
-       * }
-       */
       const { engine } = this.props;
 
       if (linkData.reset) {
@@ -58,15 +50,15 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
 
     if (!linkLocation) return null;
 
-    const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : '#f8758f';
+    const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : DEFAULT_STROKE_COLOR;
     const path = buildPath(linkLocation);
 
     return (
       <LinkOverlaySvg key={tabID}>
         <defs>
-          <LinkHeadMarker id={tabID} color={strokeColor} />
+          <HeadMarker id={tabID} color={strokeColor} />
         </defs>
-        <LinkPath ref={ref} strokeColor={strokeColor} d={path} isHovering markerEnd={`url(#head-${tabID})`} />
+        <Path ref={ref} strokeColor={strokeColor} d={path} markerEnd={buildHeadMarker(tabID)} />
       </LinkOverlaySvg>
     );
   }

@@ -78,7 +78,7 @@ export const ProjectListItem = styled(({ isActive, ...props }) => <Link {...prop
   }
 
   &:hover ${AvatarContainer} {
-    display: none;
+    ${({ hasOptions }) => hasOptions && 'display: none'}
   }
 
   &:hover ${ProjectListItemActions} {

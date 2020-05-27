@@ -26,7 +26,7 @@ function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType }) 
           ) : (
             valuePart
               ?.split('\n')
-              .filter((line) => line && !BLANK_SPACE_PATTERN.test(line))
+              .filter((line) => line && !line.match(BLANK_SPACE_PATTERN))
               .join(', ')
           )
         )}

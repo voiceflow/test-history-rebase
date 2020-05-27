@@ -1,6 +1,10 @@
 import { constants } from '@voiceflow/common';
 
+import { duckLogger } from '../utils';
+
 const { validLatinChars, validSpokenCharacters, validCharacters } = constants.regex;
+
+export const log = duckLogger.child('publish');
 
 // the publish id changes midway through an async step do not allow any further dispatches
 export const createUploadStep = (platform) => (callback) => (dispatch, getState) => {

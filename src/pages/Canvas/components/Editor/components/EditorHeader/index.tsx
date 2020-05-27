@@ -1,11 +1,13 @@
+import cn from 'classnames';
 import React from 'react';
 
 import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonRef, IconButtonVariant } from '@/components/IconButton';
+import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import type { NodeData } from '@/models';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
+import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
 
@@ -31,9 +33,9 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, 
   let fullPath = '';
 
   return (
-    <Container withTitle={!hideTitle && (path.length <= 1 || !!headerActions.length)} className={className}>
+    <Container withTitle={!hideTitle && (path.length <= 1 || !!headerActions.length)} className={cn(EDITOR_HEADER_CLASSNAME, className)}>
       {!!path.length && (
-        <Breadcrumbs>
+        <Breadcrumbs className={EDITOR_BREADCRUMBS_CLASSNAME}>
           {path.map(({ label }, index) => {
             fullPath += `${label}-${index}/`;
             return (
@@ -59,7 +61,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, 
               placement="bottom-end"
               options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data, engine }) }))}
             >
-              {(ref: React.Ref<IconButtonRef>, onOpen: () => void, isOpened: boolean) => (
+              {(ref: React.Ref<HTMLButtonElement>, onOpen: () => void, isOpened: boolean) => (
                 <IconButton ref={ref} icon="elipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />
               )}
             </AnyDropdown>

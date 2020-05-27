@@ -17,6 +17,8 @@ import { replaceVariableSetDiagram, saveVariableSet } from '@/ducks/variableSet'
 import { rehydrateViewport } from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 
+import { storeLogger } from './utils';
+
 export const resetDiagram = () => async (dispatch, getState) => {
   const rootDiagramID = Skill.rootDiagramIDSelector(getState());
 
@@ -85,8 +87,7 @@ export const loadSkill = (skillID, diagramID) => async (dispatch) => {
   try {
     await dispatch(fetchIntegrationUsers());
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn('Unable to fetch integration users');
+    storeLogger.warn('Unable to fetch integration users');
   }
 
   dispatch(replaceIntents(intents));

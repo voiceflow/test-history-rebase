@@ -4,6 +4,7 @@ import { SyncThunk } from '@/store/types';
 
 import { updatePrototypeContext, updatePrototypeStatus } from '../actions';
 import { PrototypeStatus, Store } from '../types';
+import { log } from '../utils';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
@@ -32,7 +33,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
         if (name in variables) variables[name] = savedVariables[name];
       });
     } catch (err) {
-      console.error(err);
+      log.error(err);
     }
   }
 

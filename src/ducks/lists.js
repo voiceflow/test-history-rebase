@@ -10,6 +10,9 @@ import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { withoutValue } from '@/utils/array';
 
 import { deleteProject, loadProjectsForTeam, projectsKeySelector } from './project';
+import { duckLogger } from './utils';
+
+const log = duckLogger.child('list');
 
 const initialState = {
   byId: {},
@@ -121,7 +124,7 @@ export const fetchLists = (workspaceId) => async (dispatch, getState) => {
       payload: JSON.stringify(unnormalize(getState().list)),
     });
   } catch (err) {
-    console.error(err);
+    log.error(err);
     dispatch(setError('Unable to retrieve lists'));
   }
 };
@@ -143,7 +146,7 @@ export const updateLists = (workspaceId) => async (dispatch, getState) => {
       payload: JSON.stringify(lists_array),
     });
   } catch (err) {
-    console.error(err);
+    log.error(err);
     // dispatch(setError("Unable to update lists"));
     return Promise.reject();
   }
@@ -167,7 +170,7 @@ export const addList = (workspaceId) => {
       );
       dispatch(updateLists(workspaceId));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       dispatch(setError('Unable to add list'));
       return Promise.reject();
     }
@@ -214,7 +217,7 @@ export const addProjectToList = (listID, project_id) => {
       );
       if (activeWorkspaceID) dispatch(updateLists(activeWorkspaceID));
     } catch (err) {
-      console.error(err);
+      log.error(err);
       dispatch(setError('Unable to add project to list'));
     }
   };
@@ -242,7 +245,7 @@ export const renameList = (listID, new_name) => async (dispatch, getState) => {
       if (activeWorkspaceID) dispatch(updateLists(activeWorkspaceID));
     }
   } catch (err) {
-    console.error(err);
+    log.error(err);
     dispatch(setError('Error renaming list'));
   }
 };
@@ -333,7 +336,7 @@ export const changeProjectPosition = (drag, hover) => (dispatch, getState) => {
       })
     );
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 };
 
@@ -362,7 +365,7 @@ export const changeListPosition = (drag, hover) => (dispatch, getState) => {
       })
     );
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 };
 

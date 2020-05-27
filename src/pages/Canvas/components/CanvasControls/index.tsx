@@ -10,6 +10,7 @@ import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
@@ -69,7 +70,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     <Container>
       <ControlContainer>
         <Tooltip distance={6} title="Home" position="top" hotkey="H">
-          <IconButton icon="home" onClick={onFocusHome} />
+          <IconButton id={Identifier.CANVAS_HOME_BUTTON} icon="home" onClick={onFocusHome} />
         </Tooltip>
       </ControlContainer>
 

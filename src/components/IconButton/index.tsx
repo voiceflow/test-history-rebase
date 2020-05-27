@@ -15,9 +15,8 @@ export type IconButtonProps = Pick<IconProps, 'icon' | 'size'> &
     variant?: IconButtonVariant;
     onClick?: React.ReactEventHandler;
     iconProps?: Omit<IconProps, 'icon' | 'size'>;
+    id?: string;
   };
-
-export type IconButtonRef = HTMLButtonElement;
 
 const ICON_BUTTON_CONTAINERS = {
   [IconButtonVariant.FLAT]: Container,
@@ -28,7 +27,7 @@ const ICON_BUTTON_CONTAINERS = {
 };
 
 // eslint-disable-next-line react/display-name
-const IconButton = React.forwardRef<IconButtonRef, IconButtonProps>(({ icon, size, iconProps, ...props }, ref) => {
+const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({ icon, size, iconProps, ...props }, ref) => {
   const IconButtonContainer = (props.variant && ICON_BUTTON_CONTAINERS[props.variant]) || Container;
 
   return (

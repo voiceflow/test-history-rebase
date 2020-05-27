@@ -105,11 +105,6 @@ export enum BlockType {
   MARKUP_SHAPE = 'markup_shape',
 }
 
-export const INTERNAL_BLOCKS = [BlockType.START, BlockType.COMBINED, BlockType.COMMAND, BlockType.COMMENT];
-export const MARKUP_BLOCKS = [BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE, BlockType.MARKUP_TEXT];
-export const NO_EDITOR_BLOCKS = [...INTERNAL_BLOCKS, BlockType.DEPRECATED];
-export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, ...NO_EDITOR_BLOCKS, ...MARKUP_BLOCKS];
-
 export enum PermissionType {
   USER_EMAIL = 'alexa::profile:email:read',
   USER_NAME = 'alexa::profile:name:read',
@@ -385,6 +380,7 @@ export const FEATURE_IDS = {
   WORKSPACE_SETTINGS: 'WORKSPACE_SETTINGS',
   UPGRADE_WORKSPACE: 'UPGRADE_WORKSPACE',
   EDIT_CANVAS: 'EDIT_CANVAS',
+  PROJECT_COPY_DELETE: 'PROJECT_COPY_DELETE',
 };
 
 export const FEATURE_PERMISSIONS = {
@@ -392,6 +388,7 @@ export const FEATURE_PERMISSIONS = {
   WORKSPACE_SETTINGS: [UserRole.ADMIN],
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
+  PROJECT_COPY_DELETE: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
@@ -469,6 +466,7 @@ export enum MarkupModeType {
 }
 
 export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
 
 export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
 
@@ -476,4 +474,11 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
+}
+
+export enum ShapeType {
+  LINE = 'line',
+  ARROW = 'arrow',
+  CIRCLE = 'circle',
+  RECTANGLE = 'rectangle',
 }

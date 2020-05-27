@@ -7,6 +7,7 @@ import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useDragPreview } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
@@ -32,7 +33,7 @@ function Steps({ platform, toggleSection, expandedSections }) {
   return (
     <ScrollbarsContainer>
       <CustomScrollbars>
-        <Container>
+        <Container id={Identifier.STEP_MENU}>
           {sections.map(({ type, label, steps }) => (
             <UncontrolledCollapse
               key={type}

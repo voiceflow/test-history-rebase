@@ -1,6 +1,6 @@
 import { BlockVariant } from '@/constants/canvas';
-import { css, styled, transition } from '@/hocs';
-import { MERGE_ACTIVE_NODE_CLASSNAME } from '@/pages/Canvas/constants';
+import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
+import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import CaptureZone from './StepReorderCaptureZone';
 
@@ -33,7 +33,7 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
   display: none;
   width: 100%;
   height: 0;
-  background-color: ${({ theme, variant }) => theme.components.block.variants[variant].color}22;
+  background-color: ${withBlockVariantStyle((variant) => variant.color)}22;
   border-radius: 5px;
 
   &&& {
@@ -46,7 +46,7 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
     right: 1px;
     left: 1px;
     height: 2px;
-    background-color: ${({ theme, variant }) => theme.components.block.variants[variant].color}AA;
+    background-color: ${withBlockVariantStyle((variant) => variant.color)}AA;
     border-radius: 2px;
     content: '';
   }
@@ -54,8 +54,8 @@ const StepReorderIndicatorContainer = styled.span<StepReorderIndicatorContainerP
   ${({ isActive, isHovered }) =>
     isActive &&
     css`
-      .${MERGE_ACTIVE_NODE_CLASSNAME} &&&,
-      &&&.${MERGE_ACTIVE_NODE_CLASSNAME} {
+      .${NODE_MERGE_TARGET_CLASSNAME} &&&,
+      &&&.${NODE_MERGE_TARGET_CLASSNAME} {
         display: block;
 
         :hover {

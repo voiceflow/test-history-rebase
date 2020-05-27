@@ -10,7 +10,7 @@ export function validateUtterance(utterance, intents, intentId) {
     return 'Utterances must contain text';
   }
 
-  if (NUMERIC_UTTERANCE_REGEXP.test(utteranceWithoutSlots)) {
+  if (utteranceWithoutSlots.match(NUMERIC_UTTERANCE_REGEXP)) {
     return 'Utterances cannot contain numbers, replace them with words or a slot that accepts numbers as a value.';
   }
   intents.some(({ inputs, id, name }) =>

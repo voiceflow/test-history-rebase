@@ -8,6 +8,8 @@ import { Tooltip } from 'react-tippy';
 import Avatar from '@/components/Avatar';
 import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
+import { FEATURE_IDS } from '@/constants';
+import { usePermissions } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
@@ -45,44 +47,55 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
+  const [canDeleteAndCopy] = usePermissions(FEATURE_IDS.PROJECT_COPY_DELETE);
 
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
-  const options = [
-    {
-      value: 'duplicate',
-      label: 'Copy Project',
-      onClick: onDuplicate,
-    },
-    {
-      value: 'remove',
-      label: 'Remove Project',
-      onClick: onRemove,
-    },
-  ];
+  const options = canDeleteAndCopy
+    ? [
+        {
+          value: 'duplicate',
+          label: 'Copy Project',
+          onClick: onDuplicate,
+        },
+        {
+          value: 'remove',
+          label: 'Remove Project',
+          onClick: onRemove,
+        },
+      ]
+    : [];
+
+  const hasOptions = !!options.length;
 
   const item = (
     <div>
-      <ProjectListItem to={pathTo} hidden={isDragging} isActive={isDropdownOpened} tabIndex={0} onBlur={toggleDropdownOpened}>
+      <ProjectListItem hasOptions={hasOptions} to={pathTo} hidden={isDragging} isActive={isDropdownOpened} tabIndex={0} onBlur={toggleDropdownOpened}>
         <Dropdown options={options}>
-          {(ref, onToggle) => (
-            <DropdownIconWrapper
-              onClick={stopPropagation(() => {
-                toggleDropdownOpened();
-                onToggle();
-              })}
-              ref={ref}
-            >
-              <Avatar url={avatarUrl} name={name} color={color} />
-              <ProjectListItemActions>
-                <SvgIcon icon="elipsis" />
-              </ProjectListItemActions>
-            </DropdownIconWrapper>
-          )}
+          {(ref, onToggle) =>
+            hasOptions ? (
+              <DropdownIconWrapper
+                onClick={stopPropagation(() => {
+                  toggleDropdownOpened();
+                  onToggle();
+                })}
+                ref={ref}
+              >
+                <Avatar url={avatarUrl} name={name} color={color} />
+                <ProjectListItemActions>
+                  <SvgIcon icon="elipsis" />
+                </ProjectListItemActions>
+              </DropdownIconWrapper>
+            ) : (
+              <DropdownIconWrapper>
+                <Avatar noHover url={avatarUrl} name={name} color={color} />
+              </DropdownIconWrapper>
+            )
+          }
         </Dropdown>
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <ProjectTitle>{name}</ProjectTitle>
+            <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
             <ProjectTitleCaption>{map(language, (l) => getHumanLanguageName(l)).join(', ')}</ProjectTitleCaption>
           </ProjectTitleDetails>
 

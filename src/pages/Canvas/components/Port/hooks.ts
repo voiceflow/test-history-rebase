@@ -1,62 +1,50 @@
-import cuid from 'cuid';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
-import { useEnableDisable, useTeardown } from '@/hooks';
-import { EngineContext, useNode } from '@/pages/Canvas/contexts';
-import { PortAPI } from '@/pages/Canvas/types';
+import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
+import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { swallowEvent } from '@/utils/dom';
 
-export const useLinkTerminal = (portID: string): Record<'onStart' | 'onEnd', (event: React.MouseEvent) => void> => {
+import { InternalPortInstance } from './types';
+
+export const usePortInstance = <T extends HTMLElement>() => {
+  const ref = React.useRef<T | null>(null);
+  const elementInstance = useElementInstance(ref);
+
+  return React.useMemo<InternalPortInstance<T>>(
+    () => ({
+      ...elementInstance,
+
+      ref,
+      getRect: () => ref.current!.getBoundingClientRect(),
+    }),
+    [elementInstance]
+  );
+};
+
+export const useHandlers = () => {
+  const portEntity = React.useContext(PortEntityContext)!;
   const engine = React.useContext(EngineContext)!;
   const editPermission = React.useContext(EditPermissionContext);
-  const { nodeID } = useNode();
 
-  const onStart = React.useCallback(
+  const onMouseDown = React.useCallback(
     swallowEvent((event: React.MouseEvent) => {
-      const canCreateLink = editPermission?.canEdit && !engine.isNodeMovementLocked(nodeID);
-
-      if (canCreateLink) {
-        engine.linkCreation.start(portID, mouseEventOffset(event, engine.canvas!.getRef()));
+      if (editPermission?.canEdit && !engine.isCanvasBusy) {
+        engine.linkCreation.start(portEntity.portID, mouseEventOffset(event, engine.canvas!.getRef()));
       }
     }),
     [editPermission?.canEdit]
   );
 
-  const onEnd = React.useCallback((event) => {
-    if (engine.linkCreation?.isDrawing) {
-      event.stopPropagation();
-      engine.linkCreation.complete(portID);
+  const onMouseUp = React.useCallback((event: React.MouseEvent) => {
+    if (engine.linkCreation.isSourcePort(portEntity.portID)) {
+      event.nativeEvent.stopImmediatePropagation();
     }
   }, []);
 
-  return { onStart, onEnd };
-};
-
-export const usePortAPI = <T extends HTMLElement>(ref: React.RefObject<T>) => {
-  const instanceID = React.useMemo(() => cuid(), []);
-  const [isHighlighted, setHighlight, clearHighlight] = useEnableDisable();
-
-  return React.useMemo<Required<PortAPI>>(
-    () => ({
-      instanceID,
-      isReady: () => !!ref.current,
-      getRect: () => ref.current!.getBoundingClientRect(),
-      isHighlighted,
-      setHighlight,
-      clearHighlight,
-    }),
-    [isHighlighted]
-  );
-};
-
-export const usePortSubscription = (portID: string, api: PortAPI) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => {
-    engine.registerPort(portID, api);
-  }, [api]);
-
-  useTeardown(() => engine.expirePort(portID, api.instanceID));
+  return {
+    onMouseDown,
+    onMouseUp,
+  };
 };

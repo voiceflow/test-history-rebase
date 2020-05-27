@@ -2,6 +2,7 @@ import React from 'react';
 import { getDisplayName, setDisplayName, wrapDisplayName } from 'recompose';
 
 import { IS_PRODUCTION } from '@/config';
+import Logger from '@/utils/logger';
 
 // eslint-disable-next-line import/prefer-default-export
 export const withDebug = (Component) => {
@@ -9,11 +10,13 @@ export const withDebug = (Component) => {
     return Component;
   }
 
+  const componentName = getDisplayName(Component);
+  const log = Logger.child(`debug(${getDisplayName(Component)})`);
+
   return setDisplayName(wrapDisplayName(Component, 'withDebug'))((props) => {
     const [hasRendered, updateRendered] = React.useState(false);
 
-    // eslint-disable-next-line no-console
-    console.log(hasRendered ? 're-rendering' : 'rendering', `<${getDisplayName(Component)} />`, props);
+    log.debug(hasRendered ? 're-rendering' : 'rendering', `<${componentName} />`, props);
 
     React.useEffect(() => {
       if (!hasRendered) {

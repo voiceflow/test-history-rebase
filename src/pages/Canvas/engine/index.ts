@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
 import { RealtimeSubscription } from '@/client/socket/types';
-import { CanvasAPI } from '@/components/Canvas/types';
+import { CanvasAPI } from '@/components/Canvas';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
@@ -12,20 +12,23 @@ import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
-import * as User from '@/ducks/user';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { useTeardown } from '@/hooks';
-import { Node, NodeData } from '@/models';
-import { AnyNodeAPI, LinkAPI, PortAPI } from '@/pages/Canvas/types';
+import { NodeData } from '@/models';
 import { Selector, Store } from '@/store/types';
-import { Pair, Point } from '@/types';
+import { Point } from '@/types';
+import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
+import LinkEntity from './entities/linkEntity';
+import NodeEntity from './entities/nodeEntity';
+import PortEntity from './entities/portEntity';
 import FocusEngine from './focusEngine';
+import HighlightEngine from './highlightEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
 import MergeEngine from './mergeEngine';
@@ -34,7 +37,15 @@ import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 
+const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, entityID: string, instanceID: string) => {
+  if (entities.has(entityID) && entities.get(entityID)!.api.instanceID === instanceID) {
+    entities.delete(entityID);
+  }
+};
+
 export class Engine {
+  log = logger.child('engine');
+
   drag = new DragEngine(this);
 
   activation = new ActivationEngine(this);
@@ -42,6 +53,8 @@ export class Engine {
   focus = new FocusEngine(this);
 
   selection = new SelectionEngine(this);
+
+  highlight = new HighlightEngine(this);
 
   linkCreation = new LinkCreationEngine(this);
 
@@ -57,11 +70,11 @@ export class Engine {
 
   node = new NodeManager(this);
 
-  nodes = new Map<string, { type: BlockType; x: number; y: number; api: AnyNodeAPI }>();
+  nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 
-  ports = new Map<string, { api: PortAPI }>();
+  ports = new Map<string, { api: PortEntity }>();
 
-  links = new Map<string, { api: LinkAPI }>();
+  links = new Map<string, { api: LinkEntity }>();
 
   supportedLinks: string[] = [];
 
@@ -71,18 +84,31 @@ export class Engine {
 
   dispatcher: Dispatcher;
 
-  linkIDs: string[];
-
   get services() {
-    return [this.drag, this.activation, this.focus, this.selection, this.clipboard, this.diagram, this.merge, this.link, this.port, this.node];
+    return [
+      this.drag,
+      this.activation,
+      this.focus,
+      this.selection,
+      this.highlight,
+      this.linkCreation,
+      this.clipboard,
+      this.diagram,
+      this.merge,
+      this.link,
+      this.port,
+      this.node,
+      this.realtime,
+      this.dispatcher,
+    ];
   }
 
   constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscription) {
-    this.linkIDs = Creator.allLinkIDsSelector(store.getState());
-
     // do not change these to property declarations, they depend on this.store being set
     this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
+
+    this.log.info(this.log.init('initialized canvas engine'), this.log.value(this.select(Skill.activeSkillIDSelector)));
   }
 
   // store accessors
@@ -94,6 +120,8 @@ export class Engine {
   getDataByNodeID = <T>(nodeID: string): NodeData<T> => this.select(Creator.dataByNodeIDSelector)(nodeID);
 
   isNodeMovementLocked = (nodeID: string) => this.select(Realtime.isNodeMovementLockedSelector)(nodeID);
+
+  getLockOwner = (nodeID: string) => this.select(Realtime.editLockOwnerSelector)(nodeID);
 
   getDeleteLockedNodes = () => this.select(Realtime.deletionLockedNodesSelector);
 
@@ -123,47 +151,42 @@ export class Engine {
 
   registerCanvas(canvas: CanvasAPI | null) {
     this.canvas = canvas;
+
+    this.log.debug(this.log.init(canvas ? 'registered' : 'expired'), this.log.value('<Canvas>'));
   }
 
-  registerNode(nodeID: string, api: AnyNodeAPI) {
+  registerNode(nodeID: string, api: NodeEntity) {
     const { id, x, y, type } = this.getNodeByID(nodeID);
 
     this.nodes.set(id, { x, y, api, type });
   }
 
   expireNode(nodeID: string, instanceID: string) {
-    if (this.nodes.has(nodeID) && this.nodes.get(nodeID)!.api.instanceID === instanceID) {
-      this.nodes.delete(nodeID);
-    }
+    expireInstance(this.nodes, nodeID, instanceID);
   }
 
-  registerPort(portID: string, api: PortAPI) {
+  registerPort(portID: string, api: PortEntity) {
     this.ports.set(portID, { api });
 
     this.addSupportedLinks(portID);
   }
 
   expirePort(portID: string, instanceID: string) {
-    if (this.ports.has(portID) && this.ports.get(portID)!.api.instanceID === instanceID) {
-      this.ports.delete(portID);
-    }
+    expireInstance(this.ports, portID, instanceID);
   }
 
-  registerLink(linkID: string, api: LinkAPI) {
+  registerLink(linkID: string, api: LinkEntity) {
     this.links.set(linkID, { api });
   }
 
-  expireLink(linkID: string) {
-    this.links.delete(linkID);
+  expireLink(linkID: string, instanceID: string) {
+    expireInstance(this.links, linkID, instanceID);
   }
 
   // canvas orchestration methods
 
-  /**
-   * check if node has any links which are not ready to render yet
-   */
-  hasMissingLinks(node: Node) {
-    return this.getLinkIDsByNodeID(node.id).some((linkID) => !this.supportedLinks.includes(linkID));
+  get isCanvasBusy() {
+    return this.linkCreation.isDrawing || this.drag.hasTarget;
   }
 
   /**
@@ -187,67 +210,6 @@ export class Engine {
     this.store.dispatch(Creator.updateViewport({ x, y, zoom }));
   }
 
-  async dragNode(nodeID: string, movement: Pair<number>) {
-    const hasMultipleActivationTargets = this.activation.targets.size > 1;
-
-    if (this.selection.isTarget(nodeID) && hasMultipleActivationTargets) {
-      const targets = this.selection.getTargets();
-
-      await this.drag.setGroup(targets);
-      await this.node.translateMany(targets, movement);
-    } else {
-      if (hasMultipleActivationTargets) {
-        this.selection.reset();
-      }
-
-      await this.drag.set(nodeID);
-      await this.node.translate(nodeID, movement);
-
-      this.merge.updateCandidates();
-    }
-  }
-
-  async dropNode() {
-    this.saveActiveLocations();
-    this.saveHistory();
-
-    await this.drag.reset();
-  }
-
-  async transitionNested(nodeID: string, [x, y]: Point) {
-    // TODO: position is always the top-middle of the block, it should be center of mass
-    // the -20 is a hard coded value meant to make it feel a little more natural
-    await this.node.unmerge(nodeID, [x, y - 20]);
-    this.selection.replace([nodeID]);
-    this.node.api(nodeID)?.forceDrag?.();
-  }
-
-  /**
-   * check to see if a node is active
-   */
-  isActive(nodeID: string) {
-    return this.focus.isTarget(nodeID) || this.selection.isTarget(nodeID);
-  }
-
-  /**
-   * check to see if a node or its parent parent is active
-
-   */
-  isBranchActive(nodeID: string) {
-    const node = this.getNodeByID(nodeID);
-
-    return this.isActive(node?.parentNode ? node.parentNode : nodeID);
-  }
-
-  /**
-   * check to see if any of the nested nodes are active
-   */
-  isNestedNodeActive(parentNodeID: string) {
-    const { combinedNodes } = this.getNodeByID(parentNodeID);
-
-    return combinedNodes.some((combinedNodeId) => this.isActive(combinedNodeId));
-  }
-
   saveActiveLocations() {
     if (this.selection.hasTargets) {
       this.selection.getTargets().forEach((nodeID) => this.node.saveLocation(nodeID));
@@ -257,12 +219,14 @@ export class Engine {
     }
   }
 
-  setActivation(nodeID: string, isSelection?: boolean) {
-    if (isSelection) {
-      this.selection.toggle(nodeID);
-    } else {
-      this.focus.set(nodeID);
-    }
+  /**
+   * clear activation state of all nodes
+   */
+  clearActivation() {
+    this.saveActiveLocations();
+
+    this.focus.reset();
+    this.selection.reset();
   }
 
   /**
@@ -298,16 +262,6 @@ export class Engine {
     this.saveHistory();
   }
 
-  /**
-   * clear all active nodes
-   */
-  clearActivation() {
-    this.saveActiveLocations();
-
-    this.focus.reset();
-    this.selection.reset();
-  }
-
   focusHome() {
     const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
 
@@ -316,15 +270,13 @@ export class Engine {
 
       this.node.center(nodeID);
       this.selection.replace([nodeID]);
+      this.log.info(this.log.success('focused on the home block'));
     }
-  }
-
-  showMergeWarning() {
-    this.store.dispatch(User.setCanvasError('Cannot combine blocks'));
   }
 
   saveHistory() {
     this.store.dispatch(Creator.saveHistory());
+    this.log.debug(this.log.success('history saved'));
   }
 
   getCanvasMousePosition() {
@@ -332,12 +284,20 @@ export class Engine {
   }
 
   async reset() {
+    this.log.debug(this.log.pending('resetting engine'));
+
     await Promise.all(this.services.map((service) => service.reset()));
+
+    this.log.info(this.log.reset('reset engine'));
   }
 
   async teardown() {
+    this.log.debug(this.log.pending('shutting down engine'));
+
     await this.reset();
     await Promise.all(this.services.map((service) => service.teardown()));
+
+    this.log.info(this.log.reset('engine shut down'));
   }
 }
 

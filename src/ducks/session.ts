@@ -22,7 +22,7 @@ import * as Userflow from '@/vendors/userflow';
 
 import * as Account from './account';
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
-import { compositeReducer, createAction, createRootSelector } from './utils';
+import { compositeReducer, createAction, createRootSelector, duckLogger } from './utils';
 
 export const STATE_KEY = 'session';
 const COOKIE_OPTIONS = { path: '/', domain: ROOT_DOMAIN };
@@ -44,6 +44,8 @@ const TAB_ID_PERSIST_CONFIG = {
   storage: storageSession,
   whitelist: ['value'],
 };
+
+const log = duckLogger.child(STATE_KEY);
 
 export type SessionState = {
   websocketsEnabled: boolean;
@@ -146,7 +148,7 @@ export const logout = (): Thunk => async (dispatch) => {
   try {
     await client.session.delete();
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 
   localStorage.clear();

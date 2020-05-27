@@ -1,15 +1,7 @@
-export namespace Markup {
-  export type Color = {
-    hex: string;
-    opacity: number;
-  };
+import { ShapeType } from '@/constants';
 
-  export enum ShapeType {
-    LINE = 'line',
-    ARROW = 'arrow',
-    CIRCLE = 'circle',
-    RECTANGLE = 'rectangle',
-  }
+export namespace Markup {
+  export type Color = { r: number; g: number; b: number; a: number };
 
   export type TextNodeData = {
     text: string;
@@ -23,34 +15,34 @@ export namespace Markup {
   };
 
   export type LineShapeNodeData = {
-    type: ShapeType.LINE;
     width: number;
     color: Color;
     rotate: number;
+    shapeType: ShapeType.LINE;
   };
 
   export type ArrowShapeNodeData = {
-    type: ShapeType.ARROW;
     width: number;
     color: Color;
     rotate: number;
+    shapeType: ShapeType.ARROW;
   };
 
   export type CircleShapeNodeData = {
-    type: ShapeType.CIRCLE;
     width: number;
     height: number;
-    borderColor: Color;
-    backgroundColor: Color;
+    shapeType: ShapeType.CIRCLE;
+    borderColor: Color | null;
+    backgroundColor: Color | null;
   };
 
   export type RectangleShapeNodeData = {
-    type: ShapeType.RECTANGLE;
     width: number;
     height: number;
-    borderColor: Color;
+    shapeType: ShapeType.RECTANGLE;
+    borderColor: Color | null;
     borderRadius: number;
-    backgroundColor: Color;
+    backgroundColor: Color | null;
   };
 
   export type ShapeNodeData = ArrowShapeNodeData | LineShapeNodeData | CircleShapeNodeData | RectangleShapeNodeData;

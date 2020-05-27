@@ -4,6 +4,8 @@ import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
 
 class FocusEngine extends EngineConsumer {
+  log = this.engine.log.child('focus');
+
   /**
    * should be mutually exclusive with hasSelection
    */
@@ -26,16 +28,29 @@ class FocusEngine extends EngineConsumer {
    * focus the node with the given ID
    */
   set(nodeID: string, { renameActiveRevision }: { renameActiveRevision?: string } = {}) {
+    if (this.engine.isCanvasBusy || this.isTarget(nodeID)) return;
+
+    this.log.debug(this.log.pending('focusing node'), this.log.slug(nodeID));
     this.engine.activation.reset();
+
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
     this.dispatch(setFocus(nodeID, renameActiveRevision));
+    this.engine.node.redrawLinks(nodeID);
+
+    this.log.info(this.log.success('focused node'), this.log.slug(nodeID));
   }
 
   reset() {
-    if (this.hasTarget) {
-      this.dispatch(clearFocus());
-      this.engine.activation.reset();
-    }
+    if (!this.hasTarget) return;
+
+    const target = this.getTarget()!;
+
+    this.log.debug(this.log.pending('resetting focus'), this.log.slug(target));
+    this.dispatch(clearFocus());
+    this.engine.activation.reset();
+    this.engine.node.redrawLinks(target);
+
+    this.log.debug(this.log.reset('reset focus'), this.log.slug(target));
   }
 }
 

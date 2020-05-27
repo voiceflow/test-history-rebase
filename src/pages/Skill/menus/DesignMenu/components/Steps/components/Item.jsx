@@ -6,6 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { DragItem } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useSetup } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import ItemContainer from './ItemContainer';
 import ItemDotsIconContainer from './ItemDotsIconContainer';
@@ -29,7 +30,7 @@ const Item = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) 
   });
 
   return (
-    <ItemContainer ref={connectDrag} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
+    <ItemContainer className={ClassName.STEP_MENU_ITEM} ref={connectDrag} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
       {!isDragging && (
         <>
           <SvgIcon icon={icon} size={16} color={iconColor} />

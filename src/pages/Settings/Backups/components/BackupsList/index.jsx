@@ -51,7 +51,7 @@ function BackupsList({ loading, versions, live_version, live_version_id, confirm
             <tr key={i}>
               <td>{moment(version.created).fromNow()}</td>
               <td>
-                <SvgIcon icon={version.published_platform === 'google' ? 'google' : 'amazon'} />
+                <SvgIcon icon={version.platform === 'google' ? 'google' : 'amazon'} />
               </td>
               <td className="text-right">
                 <Button isPrimarySmall onClick={() => confirmRestore(version.skill_id)}>

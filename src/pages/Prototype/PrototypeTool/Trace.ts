@@ -136,7 +136,6 @@ class TraceController {
     if (this.stopped) {
       return;
     }
-
     const [topTrace, ...tailTrace] = trace;
 
     if (!topTrace) {

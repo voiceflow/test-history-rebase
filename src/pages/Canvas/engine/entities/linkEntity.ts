@@ -1,6 +1,5 @@
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
 import { useSetup, useTeardown } from '@/hooks';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
@@ -36,7 +35,9 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
   }
 
   constructor(engine: Engine, public linkID: string) {
-    super(EntityType.LINK, engine, engine.log.child(`link(${linkID.slice(-6)})`));
+    super(EntityType.LINK, engine, engine.log.child(`link<${linkID.slice(-6)}>`));
+
+    this.log.debug(this.log.init('constructed link'), this.log.slug(linkID));
   }
 
   getPoints() {
@@ -51,7 +52,7 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.linkID, (state) => Creator.linkByIDSelector(state)(this.linkID));
+    this.useSubscription(this.linkID, () => this.resolve());
 
     React.useEffect(() => {
       engine.registerLink(this.linkID, this);

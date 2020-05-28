@@ -89,6 +89,8 @@ export const withContext = (Context, value) => (story) => () => <Context.Provide
 const mockLogger = {
   child: () => mockLogger,
   debug: noop,
+  init: noop,
+  slug: noop,
   value: noop,
 };
 

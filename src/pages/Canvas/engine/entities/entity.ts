@@ -2,7 +2,6 @@ import cuid from 'cuid';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 
-import type { State } from '@/ducks/_root';
 import { useTeardown } from '@/hooks';
 import Logger from '@/utils/logger';
 
@@ -60,8 +59,10 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 
         const nextValue = selector(this);
 
+        this.log.debug(this.log.pending('reselecting'), nextValue);
+
         if (!shallowEqual(nextValue, prevValue)) {
-          this.log.debug('selection updated', this.log.diff(prevValue, nextValue));
+          this.log.debug(this.log.success('selection updated'), this.log.diff(prevValue, nextValue));
           setValue(nextValue);
         }
 
@@ -94,15 +95,21 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 }
 
 export abstract class ResourceEntity<M, T extends EntityInstance = EntityInstance> extends Entity<T> {
-  useSubscription<T>(id: string, selector: (state: State) => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
+  useSubscription<T>(id: string, selector: () => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
     let prevState: T | null = null;
 
     return this.engine.dispatcher.useSubscription(this.type, id, (isForced) => {
-      const state = this.engine.select(selector);
+      const state = selector();
 
-      if (isForced || !isEqual(state, prevState)) {
+      this.log.debug(this.log.pending('redrawing'));
+
+      if (isForced || !this.instance?.isReady() || !isEqual(state, prevState)) {
         this.handlers.forEach((handler) => handler(this));
         prevState = state;
+
+        this.log.debug(this.log.success('redraw complete'), this.log.value(this.handlers.length));
+      } else {
+        this.log.debug(this.log.failure('redraw skipped'));
       }
     });
   }

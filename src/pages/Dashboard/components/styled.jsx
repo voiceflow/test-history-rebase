@@ -56,7 +56,7 @@ export const ProjectListItemActions = styled.div`
   }
 `;
 
-export const ProjectListItem = styled(({ isActive, ...props }) => <Link {...props} />)`
+export const ProjectListItem = styled(({ isActive, hasOptions, ...props }) => <Link {...props} />)`
   display: flex;
   min-width: 0;
   padding: 15px 23px;

@@ -4,13 +4,11 @@ import { DBNode, NodeData } from '@/models';
 
 import { createSimpleAdapter } from '../utils';
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
-import { creatorLogger } from './utils';
+import { creatorLogger, isSupportedBlockType } from './utils';
 
 const log = creatorLogger.child('node-data');
 
-const isSupportedBlockType = (type: BlockType) => Object.values(BlockType).includes(type);
-
-const nodeDataAdapter = createSimpleAdapter<DBNode['extras'], NodeData<unknown>, [DBNode]>(
+const nodeDataAdapter = createSimpleAdapter<DBNode.Extras, NodeData<unknown>, [DBNode], [string | null]>(
   (dbData, node) => {
     let type = APP_BLOCK_TYPE_FROM_DB[dbData.type] || dbData.type;
 
@@ -60,10 +58,11 @@ const nodeDataAdapter = createSimpleAdapter<DBNode['extras'], NodeData<unknown>,
       blockColor: dbData.color || BlockVariant.STANDARD,
     };
   },
-  ({ path, name, ...appData }) => ({
+  ({ path, name, ...appData }, nextID) => ({
     ...blockAdapter[appData.type].toDB(appData),
     type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
     color: appData.blockColor || null,
+    nextID: nextID || undefined,
   })
 );
 

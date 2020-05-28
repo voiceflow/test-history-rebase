@@ -4,7 +4,7 @@ import shallowEqual from 'shallowequal';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { useDidUpdateEffect, useTeardown } from '@/hooks';
+import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Pair, Point } from '@/types';
@@ -75,12 +75,14 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   inPortID: string | null;
 
   constructor(engine: Engine, public nodeID: string) {
-    super(EntityType.NODE, engine, engine.log.child(`node(${nodeID.slice(-6)})`));
+    super(EntityType.NODE, engine, engine.log.child(`node<${nodeID.slice(-6)}>`));
 
     const { node } = this.resolve();
 
     this.nodeType = node.type;
     this.inPortID = node.ports.in.length ? node.ports.in[0] : null;
+
+    this.log.debug(this.log.init('constructed node'), this.log.slug(nodeID));
   }
 
   resolve() {
@@ -95,7 +97,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.nodeID, (state) => nodeEntitySelector(state)(this.nodeID), shallowEqual);
+    this.useSubscription(this.nodeID, () => this.resolve(), shallowEqual);
 
     React.useEffect(() => {
       engine.registerNode(this.nodeID, this);
@@ -117,8 +119,6 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
         y: node.y,
       };
     });
-
-    useDidUpdateEffect(() => engine.node.redrawLinks(this.nodeID));
 
     React.useEffect(() => engine.node.setOrigin(this.nodeID, [x, y]), [x, y]);
 

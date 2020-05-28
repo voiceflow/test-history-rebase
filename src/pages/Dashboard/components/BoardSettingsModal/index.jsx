@@ -7,7 +7,7 @@ import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType, PlanType } from '@/constants';
 import { updateWorkspaceImage, updateWorkspaceName } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useDidUpdateEffect, useModals } from '@/hooks';
 
 import SettingField from './components/SettingField';
 
@@ -26,7 +26,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
     }
   }, [name, updateWorkspaceName, updateName]);
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     updateWorkspaceImage(image);
   }, [image]);
 

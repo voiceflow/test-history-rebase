@@ -6,57 +6,20 @@ import { createAdapter } from '../utils';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
 
-// eslint-disable-next-line max-params
-function convertNodeForDB(
-  appNode: Node,
-  ports: Normalized<Port>,
-  data: Record<string, NodeData<unknown>>,
-  linksByPortID: Record<string, string[]>,
-  platform: PlatformType,
-  nextID?: string | null
-): DBNode {
-  const { id, type, x, y, parentNode } = appNode;
-  const appData = data[id];
+const sortStreamPorts = (ports: Port[]) => {
+  const { alexa, google } = ports.reduce<Record<PlatformType, Port[]>>(
+    (acc, port) => {
+      if (port.platform) {
+        acc[port.platform]?.push(port);
+      }
 
-  let outPorts = getAllNormalizedByKeys(ports, appNode.ports.out);
-  if (type === BlockType.STREAM) {
-    const { alexa, google } = outPorts.reduce<Record<PlatformType, Port[]>>(
-      (acc, port) => {
-        if (port.platform) {
-          acc[port.platform]?.push(port);
-        }
+      return acc;
+    },
+    { alexa: [], google: [] }
+  );
 
-        return acc;
-      },
-      { alexa: [], google: [] }
-    );
-    outPorts = [...google, ...alexa];
-  }
-
-  const node = {
-    id,
-    name: appData.name,
-    ...(parentNode
-      ? {
-          parentNode,
-          combines: undefined,
-        }
-      : { x, y }),
-    extras: nodeDataAdapter.toDB(appData),
-    ports: [
-      ...outPorts.map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
-      ...getAllNormalizedByKeys(ports, appNode.ports.in).map((port) => portAdapter.toDB(port, true, linksByPortID, platform)),
-    ],
-  };
-
-  if (nextID) {
-    node.extras.nextID = nextID;
-  } else {
-    delete node.extras.nextID;
-  }
-
-  return node;
-}
+  return [...google, ...alexa];
+};
 
 const nodeAdapter = createAdapter<
   DBNode,
@@ -88,23 +51,39 @@ const nodeAdapter = createAdapter<
       { in: [], out: [] }
     ),
   }),
-  (appNode, { nodes, ports, data, linksByPortID, platform }) => ({
-    ...convertNodeForDB(appNode, ports, data, linksByPortID, platform),
-    ...(appNode.combinedNodes.length && {
-      combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
-        ...convertNodeForDB(
-          childNode,
-          ports,
-          data,
-          linksByPortID,
-          platform,
-          index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id
-        ),
-        parentNode: appNode.id,
-        combines: null,
-      })),
-    }),
-  })
+  (appNode, { nodes, ports, data, linksByPortID, platform }) => {
+    const convertNodeForDB = (rawNode: Node, nextID: string | null = null): DBNode => {
+      const { id, type, x, y, parentNode } = rawNode;
+      const appData = data[id];
+
+      let outPorts = getAllNormalizedByKeys(ports, rawNode.ports.out);
+      if (type === BlockType.STREAM) {
+        outPorts = sortStreamPorts(outPorts);
+      }
+
+      return {
+        id,
+        name: appData.name,
+        extras: nodeDataAdapter.toDB(appData, nextID),
+        ports: [
+          ...outPorts.map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
+          ...getAllNormalizedByKeys(ports, rawNode.ports.in).map((port) => portAdapter.toDB(port, true, linksByPortID, platform)),
+        ],
+        ...(parentNode ? { parentNode, combines: undefined } : { x, y }),
+      };
+    };
+
+    return {
+      ...convertNodeForDB(appNode),
+      ...(appNode.combinedNodes.length && {
+        combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
+          ...convertNodeForDB(childNode, index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id),
+          parentNode: appNode.id,
+          combines: null,
+        })),
+      }),
+    };
+  }
 );
 
 export default nodeAdapter;

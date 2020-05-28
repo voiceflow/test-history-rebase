@@ -1,31 +1,8 @@
 import { BlockType, PlatformType } from '@/constants';
 import { DBPort, Port } from '@/models';
-import PortLabels from '@/pages/Canvas/managers/labels';
 
 import { createAdapter } from '../utils';
-
-const getAlternativePlatform = (platform: PlatformType) => (platform === PlatformType.ALEXA ? PlatformType.GOOGLE : PlatformType.ALEXA);
-
-const getPortLabel = (port: Port, type: BlockType | undefined, index: number | undefined, platform: PlatformType) => {
-  if (type !== BlockType.STREAM) {
-    return PortLabels[type!]?.(port, index!, platform);
-  }
-
-  if (port.platform !== PlatformType.ALEXA) {
-    return null;
-  }
-
-  switch (index) {
-    case 1:
-      return 'next';
-    case 2:
-      return 'previous';
-    case 3:
-      return 'pause';
-    default:
-      return null;
-  }
-};
+import { getAlternativePlatform, getPortLabel } from './utils';
 
 const portAdapter = createAdapter<DBPort, Port, [BlockType, PlatformType], [boolean, Record<string, string[]>, PlatformType, BlockType?, number?]>(
   (dbPort, nodeType, platform) => ({

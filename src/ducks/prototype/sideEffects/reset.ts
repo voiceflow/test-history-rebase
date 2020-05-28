@@ -19,6 +19,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
 
   variables = {
     ...variables,
+    timestamp: 0,
     sessions: 1,
     user_id: 'TEST_USER',
     platform,

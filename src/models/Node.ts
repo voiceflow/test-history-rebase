@@ -20,14 +20,23 @@ export type DBNode = {
   ports: DBPort[];
   combines?: DBNode[] | null;
   parentNode?: string;
-  extras: {
+  extras: DBNode.Extras;
+};
+
+export namespace DBNode {
+  export type WithCoords = WithRequired<DBNode, 'x' | 'y'>;
+
+  export type Extras = {
     type: string;
-    virtualExtras?: {
-      color?: string;
-      name?: string;
-      id?: string;
-      inPortID?: string;
-    };
+    virtualExtras?: VirtualExtras;
     [key: string]: any;
   };
-};
+
+  export type VirtualExtras = {
+    color?: string;
+    name?: string;
+    id?: string;
+    inPortID?: string;
+    reusePorts?: boolean;
+  };
+}

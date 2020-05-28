@@ -1,7 +1,6 @@
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
-import { useDidUpdateEffect, useSetup } from '@/hooks';
+import { useSetup } from '@/hooks';
 import { Port } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
@@ -26,7 +25,9 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
   }
 
   constructor(engine: Engine, public portID: string) {
-    super(EntityType.PORT, engine, engine.log.child(`port(${portID.slice(-6)})`));
+    super(EntityType.PORT, engine, engine.log.child(`port<${portID.slice(-6)}>`));
+
+    this.log.debug(this.log.init('constructed port'), this.log.slug(portID));
   }
 
   resolve() {
@@ -37,7 +38,7 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.portID, (state) => Creator.portByIDSelector(state)(this.portID));
+    this.useSubscription(this.portID, () => this.resolve());
 
     React.useEffect(() => {
       engine.registerPort(this.portID, this);
@@ -52,8 +53,6 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
     const engine = React.useContext(EngineContext)!;
 
     useSetup(() => engine.port.redrawLinks(this.portID));
-
-    useDidUpdateEffect(() => engine.port.redrawLinks(this.portID));
   }
 }
 

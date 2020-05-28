@@ -3,37 +3,40 @@ import _isNumber from 'lodash/isNumber';
 import { BlockType, MARKUP_NODES, PlatformType, ROOT_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { CreatorDiagram, DBCreatorDiagram, DBNode, Node, NodeData, Port } from '@/models';
-import { Point } from '@/types';
 import { Normalized, getAllNormalizedByKeys } from '@/utils/normalized';
 
 import { createSimpleAdapter } from '../utils';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
-import { NODE_HEIGHT_DIFFERENCE, NODE_WIDTH_DIFFERENCE, VIRTUAL_NODE_ID_PREFIX, VIRTUAL_PORT_ID_PREFIX } from './constants';
 import linkAdapter from './link';
 import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
+import { findDiagramCenter, getVirtualNodeID, getVirtualPortID, spreadOutNodes } from './utils';
 
-type DBNodeWithCoords = WithRequired<DBNode, 'x' | 'y'>;
+const buildVirtualExtras = (node: DBNode, childNode: DBNode) => {
+  const { color } = node.extras;
+  const inPortID = node.ports?.[0].id;
 
-const findDiagramCenter = (nodes: DBNodeWithCoords[]): Point => {
-  const xValues = nodes.map((node) => node.x);
-  const yValues = nodes.map((node) => node.y);
-
-  const maxX = Math.max(...xValues);
-  const minX = Math.min(...xValues);
-  const maxY = Math.max(...yValues);
-  const minY = Math.min(...yValues);
-
-  return [(maxX - minX) / 2, (maxY - minY) / 2];
+  // TODO: extra convolution can hopefully be removed once database size constraints are removed / altered
+  return {
+    // ignore the default value
+    color: color === BlockVariant.STANDARD ? undefined : color,
+    // ignore redundant value
+    name: node.name === childNode.name ? undefined : node.name,
+    // ignore reproducable values
+    id: node.id === getVirtualNodeID(childNode.id) ? undefined : node.id,
+    inPortID: inPortID === getVirtualPortID(childNode.id) ? undefined : inPortID,
+  };
 };
 
-const spreadOutNodes = (nodes: DBNodeWithCoords[], [centerX, centerY]: Point) =>
-  nodes.map((node) => ({
-    ...node,
-    x: centerX + (node.x - centerX) * NODE_WIDTH_DIFFERENCE,
-    y: centerY + (node.y - centerY) * NODE_HEIGHT_DIFFERENCE,
-  }));
+const buildExtras = (node: DBNode, virtualExtras: DBNode.VirtualExtras) => {
+  const hasVirtualExtras = (Object.keys(virtualExtras) as (keyof typeof virtualExtras)[]).some((key) => virtualExtras[key]);
+
+  return {
+    ...node.extras,
+    virtualExtras: hasVirtualExtras ? virtualExtras : undefined,
+  };
+};
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
@@ -75,17 +78,14 @@ const creatorAdapter = createSimpleAdapter<
 
     // apply an offset to space out blocks from the old layout
     if (!diagram.blockRedesignOffset) {
-      const nodesWithCoordinates = diagram.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y)) as DBNodeWithCoords[];
+      const nodesWithCoordinates = diagram.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y)) as DBNode.WithCoords[];
       const center = findDiagramCenter(nodesWithCoordinates);
 
       diagramNodes = spreadOutNodes(nodesWithCoordinates, center);
     }
 
     diagramNodes.forEach((node) => {
-      let _node = node; // eslint-disable-line no-underscore-dangle
-
       const nodeType = APP_BLOCK_TYPE_FROM_DB[node.extras.type] || node.extras.type;
-      const virtualPortID = `${VIRTUAL_PORT_ID_PREFIX}${node.id}`;
 
       if (MARKUP_NODES.includes(nodeType)) {
         markupNodeIDs.push(node.id);
@@ -95,15 +95,17 @@ const creatorAdapter = createSimpleAdapter<
         return;
       }
 
+      const { virtualExtras, ...extras } = node.extras || {};
+      const virtualPortID = virtualExtras?.inPortID || getVirtualPortID(node.id);
+      const virtualNodeID = virtualExtras?.id || getVirtualNodeID(node.id);
+      let _node = node; // eslint-disable-line no-underscore-dangle
+
       if (nodeType === BlockType.COMBINED) {
         _node = {
-          ..._node,
-          ports: [{ id: virtualPortID, parentNode: _node.id, in: true, virtual: true }],
+          ...node,
+          ports: virtualExtras?.reusePorts ? node.ports : [{ id: virtualPortID, parentNode: node.id, in: true, virtual: true }],
         };
       } else if (!ROOT_NODES.includes(nodeType)) {
-        const { virtualExtras, ...extras } = node.extras || {};
-        const virtualNodeID = virtualExtras?.id || `${VIRTUAL_NODE_ID_PREFIX}${node.id}`;
-
         _node = {
           x: node.x,
           y: node.y,
@@ -165,23 +167,20 @@ const creatorAdapter = createSimpleAdapter<
       zoom: viewport.zoom,
       links: linkAdapter.mapToDB(links, { nodes }),
       nodes: nodeAdapter.mapToDB([...rootNodes, ...markupNodes], { nodes, ports, data, linksByPortID, platform }).map((node) => {
-        if (data[node.id].type !== BlockType.COMBINED || node.combines?.length !== 1) {
+        if (data[node.id].type !== BlockType.COMBINED || !node.combines?.length) {
           return node;
         }
 
-        // TODO: extra convolution can hopefully be removed once database size constraints are removed / altered
-        const { color } = node.extras;
-        const childNode = node.combines[0];
-        const inPortID = node.ports?.[0].id;
-        const virtualExtras = {
-          // ignore the default value
-          color: color === BlockVariant.STANDARD ? undefined : color,
-          // ignore redundant value
-          name: node.name === childNode.name ? undefined : node.name,
-          // ignore reproducable values
-          id: node.id === `${VIRTUAL_NODE_ID_PREFIX}${childNode.id}` ? undefined : node.id,
-          inPortID: inPortID === `${VIRTUAL_PORT_ID_PREFIX}${childNode.id}` ? undefined : inPortID,
-        };
+        const childNode = node.combines![0];
+
+        if (node.combines?.length > 1) {
+          return {
+            ...node,
+            extras: buildExtras(node, { reusePorts: true }),
+          };
+        }
+
+        const virtualExtras = buildVirtualExtras(node, childNode);
 
         return {
           ...childNode,
@@ -189,12 +188,7 @@ const creatorAdapter = createSimpleAdapter<
           parentNode: undefined,
           x: node.x,
           y: node.y,
-          extras: {
-            ...childNode.extras,
-            virtualExtras: (Object.keys(virtualExtras) as (keyof typeof virtualExtras)[]).some((key) => virtualExtras[key])
-              ? virtualExtras
-              : undefined,
-          },
+          extras: buildExtras(childNode, virtualExtras),
         };
       }),
       blockRedesignOffset: true,

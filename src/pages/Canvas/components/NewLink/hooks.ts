@@ -2,8 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import * as Realtime from '@/ducks/realtime';
-import { buildPath } from '@/pages/Canvas/components/Link/utils';
-import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
+import { buildPath, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/engine/linkCreationEngine';
 import { Pair, Point } from '@/types';
@@ -14,22 +13,6 @@ type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   removeEventListeners: React.RefObject<() => void>;
   getPoints: () => Pair<Point> | null;
   isVisible: boolean;
-};
-
-export const getVirtualPoints: {
-  (points: Pair<Point>): Pair<Point>;
-  (points: null): null;
-} = (points: any) => {
-  if (!points) {
-    return points;
-  }
-
-  const [[x1, y1], [x2, y2]] = points as Pair<Point>;
-
-  return [
-    [x1 + LINK_WIDTH, y1],
-    [x2, y2],
-  ];
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -62,7 +45,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
     const linkEl = ref.current!;
 
-    window.requestAnimationFrame(() => linkEl.setAttribute('d', buildPath(virtualPoints)));
+    window.requestAnimationFrame(() => linkEl.setAttribute('d', buildPath(virtualPoints)!));
   }, []);
 
   const onMouseUp = React.useCallback((event) => {
@@ -88,7 +71,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         if (!nextPoints) return;
 
         points.current = nextPoints;
-        moveLink({ points: getVirtualPoints(points.current) });
+        moveLink({ points: getVirtualPoints(points.current)! });
 
         setVisible(true);
 
@@ -117,7 +100,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
         const linkEl = ref.current!;
 
-        window.requestAnimationFrame(() => linkEl.setAttribute('d', buildPath(virtualPoints)));
+        window.requestAnimationFrame(() => linkEl.setAttribute('d', buildPath(virtualPoints)!));
       },
       unpin: () => {
         isPinned.current = false;

@@ -28,7 +28,7 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
       this.animateElement(tabID, (linkEl) => {
         if (!linkEl) return;
 
-        linkEl.setAttribute('d', buildPath(nextPoint));
+        linkEl.setAttribute('d', buildPath(nextPoint)!);
       });
     },
 
@@ -51,7 +51,7 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
     if (!linkLocation) return null;
 
     const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : DEFAULT_STROKE_COLOR;
-    const path = buildPath(linkLocation);
+    const path = buildPath(linkLocation)!;
 
     return (
       <LinkOverlaySvg key={tabID}>

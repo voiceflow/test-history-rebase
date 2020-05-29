@@ -84,6 +84,7 @@ module.exports = {
       'TextEncoder',
       'window.performance',
       'performance',
+      'ResizeObserver',
     ],
     'import/resolver': {
       webpack: {

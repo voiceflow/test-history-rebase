@@ -17,7 +17,6 @@ import { buildVirtualDOMRect } from '@/utils/dom';
 import NodePort from '../NodePort';
 import NodeStep from '../NodeStep';
 import { ReorderIndicator, SourceReorderIndicator, Styles, TerminalReorderIndicator } from './components';
-import { useResizeAnimation } from './hooks';
 
 const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
   const blockRef = React.useRef<BlockAPI>(null);
@@ -34,6 +33,7 @@ const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
       lockOwner: e.lockOwner,
     };
   });
+  const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
 
   const getAnchorPoint = React.useCallback(() => {
     const rect = blockRef.current!.getRect();
@@ -114,11 +114,17 @@ const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
     [nodeEntity.nodeID]
   );
 
-  useResizeAnimation(blockRef);
-
   React.useEffect(() => {
     engine.node.redrawNestedLinks(nodeEntity.nodeID);
   }, [isMergeTarget]);
+
+  React.useEffect(() => {
+    const blockEl = blockRef.current!.ref.current!;
+
+    observer.observe(blockEl);
+
+    return () => observer.unobserve(blockEl);
+  }, []);
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,

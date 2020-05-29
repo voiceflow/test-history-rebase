@@ -11,6 +11,7 @@ import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelect
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
+import { arrayStringReplace } from '@/utils/string';
 
 import ErrorMessage from './components/ErrorMessage';
 import {
@@ -25,6 +26,7 @@ import {
 function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
   const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta } = meta;
   const { name: nameSkill } = skill;
+  const initialInvocationName = React.useMemo(() => invNameMeta);
 
   const [state, actions] = useSyncedSmartReducer({
     invName: invNameMeta,
@@ -109,13 +111,24 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
 
   useTeardown(() => {
     const { invName, name, repeat, restart, resumePrompt, hasFollowUp } = state;
+    let newInvName = invName;
+    if (!newInvName.trim()) {
+      newInvName = initialInvocationName;
+    }
+
     const settingsObject = {
-      invName,
+      invName: newInvName,
       name,
       repeat,
       restart,
       resumePrompt,
     };
+
+    if (newInvName !== initialInvocationName) {
+      const newPhrases = arrayStringReplace(initialInvocationName, newInvName, meta.invocations.value || meta.invocations);
+      settingsObject.invocations = newPhrases;
+    }
+
     if (!hasFollowUp) {
       delete settingsObject.resumePrompt.follow_content;
       delete settingsObject.resumePrompt.follow_voice;

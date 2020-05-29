@@ -78,7 +78,7 @@ const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state,
 
   const nextCombinedIDs = insertAll(parentNode.combinedNodes, index, targetNode.combinedNodes);
   const isFirst = index === 0;
-  const isLast = index === nextCombinedIDs.length - 1;
+  const isLast = index === parentNode.combinedNodes.length;
 
   const oldLinks = [];
   if (isFirst) {

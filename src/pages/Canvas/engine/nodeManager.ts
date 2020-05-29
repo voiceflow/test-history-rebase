@@ -50,13 +50,6 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedLinks(node.parentNode!);
     },
 
-    merge: (mergedNodeID: string, sourceNodeID: string, targetNodeID: string, position: Point) => {
-      this.dispatch(Creator.mergeNodes(sourceNodeID, targetNodeID, position, mergedNodeID));
-
-      this.redrawLinks(sourceNodeID);
-      this.redrawLinks(targetNodeID);
-    },
-
     updateData: (nodeID: string, data: Partial<NodeData<unknown>>) => {
       this.dispatch(Creator.updateNodeData(nodeID, data));
     },
@@ -407,18 +400,6 @@ class NodeManager extends EngineConsumer {
     this.engine.saveHistory();
 
     this.log.info(this.log.success('unmerged node'), this.log.slug(nodeID));
-  }
-
-  async merge(mergedNodeID: string, sourceNodeID: string, targetNodeID: string, invert?: boolean) {
-    const { x, y } = this.engine.getNodeByID(invert ? sourceNodeID : targetNodeID);
-
-    this.log.debug(this.log.pending('merging into node'), this.log.slug(mergedNodeID));
-
-    await this.engine.realtime.sendUpdate(Realtime.mergeNodes(mergedNodeID, sourceNodeID, targetNodeID, [x, y]));
-    this.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, [x, y]);
-    this.engine.saveHistory();
-
-    this.log.info(this.log.success('merged into node'), this.log.slug(mergedNodeID));
   }
 
   // location / rendering methods

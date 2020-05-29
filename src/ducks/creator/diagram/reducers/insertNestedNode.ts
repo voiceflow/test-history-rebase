@@ -48,7 +48,9 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Node, inde
   const recipientCombinedIDs = insert(recipientNode.combinedNodes, index, targetNode.id);
   const isLast = index === recipientCombinedIDs.length - 1;
 
-  const oldLinks = isLast ? getJoiningLinkIDs(state)(targetNode.id, recipientNodeID) : getOutgoingLinkIDs(state, targetNode);
+  const oldLinks = isLast
+    ? [...getJoiningLinkIDs(state)(targetNode.id, recipientNodeID), ...getNestedOutgoingLinkIDs(state, recipientNode)]
+    : getOutgoingLinkIDs(state, targetNode);
 
   return compose(
     removeAllLinksFromState(oldLinks),

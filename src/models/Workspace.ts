@@ -15,6 +15,7 @@ export type Workspace = {
   members: DBWorkspace.Member[];
   state: Workspace.ActivationState | null;
   betaFlag: number;
+  templates: boolean;
 };
 
 export namespace Workspace {
@@ -36,6 +37,7 @@ export type DBWorkspace = {
   plan: PlanType | null;
   members: DBWorkspace.Member[];
   beta_flag: number;
+  templates: boolean;
 };
 
 export namespace DBWorkspace {

@@ -7,6 +7,7 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
+import * as Skill from '@/ducks/skill';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { isCommandNode } from '@/utils/node';
@@ -292,6 +293,9 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('removing node'), this.log.slug(nodeID));
 
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
+      // if intent block is deleted disable canfulfillment
+      await this.dispatch(Skill.disableCanFulfillment(nodeID));
+
       await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
       this.internal.remove(removeNodeID);
       this.engine.saveHistory();
@@ -304,6 +308,9 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('removed multiple nodes'), nodeIDs);
 
     return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
+      // if intent blocks are deleted disable canfulfillment
+      await this.dispatch(Skill.disableManyCanFulfillment(nodeIDs));
+
       await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
       this.internal.removeMany(removableNodeIDs);
       this.engine.saveHistory();

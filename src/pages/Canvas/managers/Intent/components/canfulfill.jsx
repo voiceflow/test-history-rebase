@@ -15,6 +15,7 @@ function CanFulfillForm({ isRoot, intentID, platform, fulfillment, toggleFulfill
     isRoot &&
     platform === PlatformType.ALEXA &&
     !ALEXA_BUILT_INS.some(({ id }) => id === intentID) &&
+    locales.length <= CAN_FULFILL_LOCALES.length &&
     locales.some((locale) => CAN_FULFILL_LOCALES.includes(locale));
 
   if (!validForCanfulfill) {

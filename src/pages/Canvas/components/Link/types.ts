@@ -11,10 +11,10 @@ export type InternalLinkInstance = LinkInstance & {
   /**
    * get the link's SVG path string
    */
-  getPath: () => string;
+  getPath: () => string | null;
 
   /**
    * get the center point of the rendered link
    */
-  getCenter: () => Point;
+  getCenter: () => Point | null;
 };

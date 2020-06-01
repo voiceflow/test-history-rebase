@@ -21,7 +21,7 @@ const linkAdapter = createAdapter<DBLink, Link, [], [{ nodes: Normalized<Node> }
     let appLink: Link & { virtual?: Link['target'] } = rawAppLink;
 
     // only apply this transformation to links that terminate at a virtual node
-    if (targetNode.type === BlockType.COMBINED && targetNode.combinedNodes.length === 1) {
+    if (targetNode.type === BlockType.COMBINED) {
       const actualTargetNode = getNormalizedByKey(nodes, targetNode.combinedNodes[0]);
 
       appLink = {

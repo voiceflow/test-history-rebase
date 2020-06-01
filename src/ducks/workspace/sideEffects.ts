@@ -56,7 +56,7 @@ export const fetchWorkspaces = (): SyncThunk => async (dispatch, getState) => {
     // NORMALIZE TEAMS
     const normalizedWorkspaces = normalize(
       'id',
-      workspaces.map((workspace) => ({ ...workspace }))
+      workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }))
     ) as ActionPayload<UpdateWorkspaces>;
 
     // If the current team doesn't exist, default it to something else

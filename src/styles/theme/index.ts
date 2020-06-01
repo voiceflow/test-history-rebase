@@ -51,8 +51,11 @@ const THEME = {
     menuItem: {
       height: 42,
     },
-    editSidebar: {
+    blockSidebar: {
       width: 480,
+    },
+    markupSidebar: {
+      width: 360,
     },
     menuBar: {
       width: 40,
@@ -86,9 +89,6 @@ const THEME = {
       get contentWidth() {
         return this.width - this.hiddenWidth;
       },
-    },
-    markupSidebar: {
-      width: 360,
     },
   },
   transition(...propertyWhitelist: string[]): string {

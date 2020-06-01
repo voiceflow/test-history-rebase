@@ -5,7 +5,7 @@ const path = require('path');
 
 const paths = require('../../paths');
 
-module.exports = (port = 3000, buildDirectory = paths.buildDir) => ({
+module.exports = (port, buildDirectory = paths.buildDir) => ({
   entry: {
     app: ['webpack-plugin-serve/client'],
   },

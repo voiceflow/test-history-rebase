@@ -1,7 +1,8 @@
 import { text } from '@storybook/addon-knobs';
 import React from 'react';
 
-import Message, { Audio, Debug, Loading, Speak, User } from '.';
+import { Debug } from './variants/Debug';
+import Message, { Audio, Loading, Speak, User } from '.';
 
 export default {
   title: 'Prototype/Message',
@@ -23,6 +24,6 @@ const getVoice = () => text('Voice', 'Justin');
 export const speak = () => <Speak voice={getVoice()} message={getText()} />;
 
 const getDebug = () => text('Debug Markdown', '**this** is in `markdown` so *you* can ~~format~~ it');
-export const debug = () => <Debug message={getDebug()} startTime="10" />;
+export const debug = () => <Debug message={getDebug()} startTime="10" getDiagram={() => ({ name: 'diagramName' })} />;
 
 export const loading = () => <Loading />;

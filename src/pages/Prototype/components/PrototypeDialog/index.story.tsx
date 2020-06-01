@@ -1,6 +1,8 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
+import { composeDecorators, withRedux } from '@/../.storybook';
+
 import { Message, MessageType } from '../../types';
 import Dialog from '.';
 
@@ -8,6 +10,8 @@ export default {
   title: 'Prototype/Dialog',
   component: Dialog,
 };
+
+const withDecorators = composeDecorators(withRedux({}));
 
 const messages: Message[] = [
   {
@@ -63,9 +67,9 @@ const interactions = [{ name: 'left' }, { name: 'right' }, { name: 'up' }, { nam
 
 export const basic = () => <Dialog messages={messages} onPlay={action('action')} onInteraction={action('interaction')} interactions={interactions} />;
 
-export const debug = () => (
+export const debug = withDecorators(() => (
   <Dialog debug messages={messages} onPlay={action('action')} onInteraction={action('interaction')} interactions={interactions} />
-);
+));
 
 export const loading = () => (
   <Dialog messages={messages} onPlay={action('action')} onInteraction={action('interaction')} interactions={interactions} isLoading />

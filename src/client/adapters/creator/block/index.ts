@@ -19,6 +19,7 @@ import integrationBlockAdapter from './integration';
 import intentBlockAdapter from './intent';
 import interactionBlockAdapter from './interaction';
 import markupImageBlockAdapter from './markupImage';
+import markupTextBlockAdapter from './markupText';
 import paymentBlockAdapter from './payment';
 import permissionBlockAdapter from './permission';
 import randomBlockAdapter from './random';
@@ -57,8 +58,6 @@ const blockAdapter = {
   [BlockType.COMMAND]: commandBlockAdapter,
   [BlockType.COMBINED]: emptyAdapter,
   [BlockType.COMMENT]: emptyAdapter,
-  [BlockType.MARKUP_TEXT]: emptyAdapter,
-  [BlockType.MARKUP_IMAGE]: emptyAdapter,
   [BlockType.MARKUP_SHAPE]: emptyAdapter,
   // user defined
   [BlockType.CANCEL_PAYMENT]: cancelPaymentBlockAdapter,
@@ -82,6 +81,7 @@ const blockAdapter = {
   [BlockType.SPEAK]: speakBlockAdapter,
   [BlockType.STREAM]: streamBlockAdapter,
   [BlockType.USER_INFO]: userInfoBlockAdapter,
+  [BlockType.MARKUP_TEXT]: markupTextBlockAdapter,
   [BlockType.MARKUP_IMAGE]: markupImageBlockAdapter,
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { useTeardown } from '@/hooks';
-import { HeadMarker, Path, buildHeadMarker, buildPath } from '@/pages/Canvas/components/Link';
+import { HeadMarker, Path, buildHeadMarker, buildPath, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { Container } from './components';
-import { getVirtualPoints, useNewLinkAPI } from './hooks';
+import { useNewLinkAPI } from './hooks';
 
 const NEW_LINK_ID = 'newLink';
 const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
@@ -29,7 +29,7 @@ const NewLink: React.FC = () => {
     return null;
   }
 
-  const path = buildPath(getVirtualPoints(points));
+  const path = buildPath(getVirtualPoints(points))!;
 
   return (
     <Container>

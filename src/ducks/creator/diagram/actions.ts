@@ -8,7 +8,6 @@ import { DataDescriptor, NodeDescriptor, ParentNodeDescriptor } from './types';
 export enum DiagramAction {
   UPDATE_NODE_DATA = 'CREATOR:NODE:UPDATE_DATA',
   UPDATE_NODE_LOCATION = 'CREATOR:NODE:UPDATE_LOCATION',
-  MERGE_NODES = 'CREATOR:NODE:MERGE',
   UNMERGE_NODE = 'CREATOR:NODE:UNMERGE',
   INSERT_NESTED_NODE = 'CREATOR:NODE:INSERT_NESTED',
   ADD_NODE = 'CREATOR:NODE:ADD',
@@ -37,8 +36,6 @@ export type UpdateNodeData = Action<
 >;
 
 export type UpdateNodeLocation = Action<DiagramAction.UPDATE_NODE_LOCATION, { nodeID: string; x: number; y: number }>;
-
-export type MergeNodes = Action<DiagramAction.MERGE_NODES, { sourceNodeID: string; targetNodeID: string; position: Point; mergedNodeID: string }>;
 
 export type UnmergeNode = Action<DiagramAction.UNMERGE_NODE, { nodeID: string; position: Point; parentNode: ParentNodeDescriptor }>;
 
@@ -85,7 +82,6 @@ export type SetSectionState = Action<DiagramAction.SET_SECTION_STATE, { key: str
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
-  | MergeNodes
   | UnmergeNode
   | InsertNestedNode
   | AddNode
@@ -113,12 +109,6 @@ export const updateNodeData: {
 
 export const updateNodeLocation = (nodeID: string, [x, y]: Point): UpdateNodeLocation =>
   createAction(DiagramAction.UPDATE_NODE_LOCATION, { nodeID, x, y });
-
-/**
- * merge two nodes together
- */
-export const mergeNodes = (sourceNodeID: string, targetNodeID: string, position: Point, mergedNodeID: string): MergeNodes =>
-  createAction(DiagramAction.MERGE_NODES, { sourceNodeID, targetNodeID, position, mergedNodeID });
 
 export const unmergeNode = (nodeID: string, position: Point, parentNode: ParentNodeDescriptor): UnmergeNode =>
   createAction(DiagramAction.UNMERGE_NODE, { nodeID, position, parentNode });

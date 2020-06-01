@@ -1,3 +1,6 @@
+import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
+import { EditorState, Modifier } from 'draft-js';
+import utils from 'draft-js-plugins-utils';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
@@ -6,21 +9,110 @@ import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
+import { DraftBuiltInStyle, InlineStylePrefix } from '../../constants';
+import { togglePrefixedInlineStyle } from '../../utils';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
-export type HyperlinkProps = {
-  link: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+export type HyperlinkProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
+  saveEditorState: (editorState: EditorState) => void;
+  applyFakeSelection: (state: EditorState) => EditorState;
+  removeFakeSelection: (state: EditorState) => EditorState;
+  createLinkAtSelection: (editorState: EditorState, url: string) => EditorState;
+  removeLinkAtSelection: (editorState: EditorState) => EditorState;
 };
 
-const Hyperlink: React.FC<HyperlinkProps> = ({ link, onChange }) => {
+const DEFAULT_LINK_COLOR = 'rgba(93,157,245,1)';
+
+const Hyperlink: React.FC<HyperlinkProps> = ({
+  getEditorState,
+  setEditorState,
+  saveEditorState,
+  applyFakeSelection,
+  removeFakeSelection,
+  createLinkAtSelection,
+  removeLinkAtSelection,
+}) => {
+  const editorState = getEditorState();
+
+  const [entityKey, link] = React.useMemo(() => {
+    if (!editorState) {
+      return [null, ''] as const;
+    }
+
+    const key = utils.getCurrentEntityKey(editorState);
+
+    if (key === null) {
+      return [null, ''] as const;
+    }
+
+    const contentState = editorState.getCurrentContent();
+
+    const entity = contentState.getEntity(key);
+
+    return [key, (entity.getData()?.url || '') as string];
+  }, [editorState]);
+
+  const [localLink, setLocalLink] = React.useState(link);
+
   const popperRef = React.useRef<HTMLElement>(null);
-  const [open, toggleOpen] = useDismissable(false, null, false, popperRef);
+
+  const onClose = () => {
+    setTimeout(() => {
+      setEditorState(removeFakeSelection(getEditorState()));
+    }, 100);
+  };
+
+  const [open, toggleOpen] = useDismissable(false, onClose, false, popperRef);
+
+  const onShow = () => {
+    setEditorState(applyFakeSelection(getEditorState()));
+    toggleOpen();
+  };
+
+  const onChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalLink(target.value);
+  };
+
+  const onBlur = () => {
+    let state = getEditorState();
+
+    if (!link) {
+      state = createLinkAtSelection(state, localLink);
+      state = EditorState.push(
+        state,
+        Modifier.applyInlineStyle(state.getCurrentContent(), state.getSelection(), DraftBuiltInStyle.UNDERLINE),
+        'change-inline-style'
+      );
+      state = togglePrefixedInlineStyle(state, InlineStylePrefix.COLOR, DEFAULT_LINK_COLOR);
+    } else if (!localLink) {
+      state = removeLinkAtSelection(state);
+    } else if (entityKey) {
+      const content = state.getCurrentContent().mergeEntityData(entityKey, { url: localLink });
+
+      state = EditorState.forceSelection(EditorState.push(editorState, content, 'apply-entity'), editorState.getSelection());
+    }
+
+    setEditorState(state);
+    saveEditorState(state);
+  };
+
+  const onKeyPress = () => {
+    onBlur();
+    toggleOpen();
+  };
+
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    if (editorState?.getSelection().hasFocus) {
+      setLocalLink(link);
+    }
+  }, [link]);
 
   return (
     <Manager>
-      <Reference>{({ ref }) => <IconButton ref={ref} icon="hyperlink" active={!!link || open} onClick={toggleOpen} />}</Reference>
+      <Reference>{({ ref }) => <IconButton ref={ref} icon="hyperlink" active={!!link || open} onClick={onShow} />}</Reference>
 
       {open && (
         <Portal portalNode={document.body}>
@@ -37,10 +129,11 @@ const Hyperlink: React.FC<HyperlinkProps> = ({ link, onChange }) => {
               <PopoverContainer ref={ref} style={style}>
                 <Title>Hyplerlink</Title>
                 <Input
-                  value={link}
+                  value={localLink}
+                  onBlur={onBlur}
                   autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                   onChange={onChange}
-                  onKeyPress={withEnterPress(preventDefault(() => toggleOpen()))}
+                  onKeyPress={withEnterPress(preventDefault(onKeyPress))}
                   placeholder="Enter URL"
                 />
               </PopoverContainer>

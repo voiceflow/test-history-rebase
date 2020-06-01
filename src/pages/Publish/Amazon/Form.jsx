@@ -24,6 +24,7 @@ import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
 import amazonFormAdapter from '@/pages/Publish/Amazon/amazonAdaptor';
+import { arrayStringReplace } from '@/utils/string';
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories';
 import LOCALE_MAP from '../../../services/LocaleMap';
@@ -49,7 +50,6 @@ class Skill extends Component {
       .get(`/skill/${skillID}?verbose=1`)
       .then((res) => {
         const skill = amazonFormAdapter.fromDB(res.data);
-
         this.setState(
           {
             loaded: true,
@@ -57,6 +57,8 @@ class Skill extends Component {
           },
           this.updateTerms
         );
+
+        this.invNameCache = skill.invName;
 
         this.props.initialize({
           name: skill.name,
@@ -398,7 +400,21 @@ class Skill extends Component {
         <>
           <FormGroup className="mb-4">
             <Label className="publish-label">Invocation Name</Label>
-            <FormTextInput type="text" name="inv_name" placeholder="Enter an invocation name" />
+            <FormTextInput
+              type="text"
+              name="inv_name"
+              placeholder="Enter an invocation name"
+              onBlur={(e) => {
+                const newValue = e.target.value;
+                if (!this.invNameCache.trim() && !!newValue) {
+                  this.setState({ invocations: [`open ${newValue}`, `start ${newValue}`, `launch ${newValue}`] });
+                } else {
+                  const newInvocations = arrayStringReplace(this.invNameCache, newValue, this.state.invocations);
+                  this.setState({ invocations: newInvocations });
+                }
+                this.invNameCache = newValue;
+              }}
+            />
           </FormGroup>
 
           <FormGroup className="mb-4">

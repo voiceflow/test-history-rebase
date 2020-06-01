@@ -3,8 +3,8 @@ import React from 'react';
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
-import { ModalType } from '@/constants';
-import { EventualEngineContext } from '@/contexts';
+import { FEATURE_IDS, ModalType } from '@/constants';
+import { EventualEngineContext, usePermissions } from '@/contexts';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
@@ -14,12 +14,15 @@ import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
-import { Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
+import { CanvasControlButton, Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
+import { CanvasControl, CanvasControlMeta } from './constants';
 
 const ZOOM_DELTA = 15;
 
 const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
+  const [canUseInteractionModal] = usePermissions(FEATURE_IDS.INTERACTION_MODAL);
+
   const { open } = useModals(ModalType.INTERACTION_MODEL);
   const markupTool = React.useContext(MarkupModeContext);
   const { isPrototyping } = React.useContext(EditPermissionContext)!;
@@ -49,7 +52,15 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   }, [goToDesign, markupTool?.openTool, isPrototyping]);
 
   // this callback is needed to do not store event object in the modals context
-  const onOpenCMS = React.useCallback(() => trackingEventsWrapper(open, 'trackCanvasControlInteractionModel')(), []);
+  const onOpenCMS = React.useCallback(
+    () =>
+      trackingEventsWrapper(() => {
+        if (canUseInteractionModal) {
+          open();
+        }
+      }, 'trackCanvasControlInteractionModel')(),
+    []
+  );
 
   const toggleMarkup = React.useCallback(() => {
     if (markupTool?.isOpen) {
@@ -68,29 +79,18 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
 
   return (
     <Container>
-      <ControlContainer>
-        <Tooltip distance={6} title="Home" position="top" hotkey="H">
-          <IconButton id={Identifier.CANVAS_HOME_BUTTON} icon="home" onClick={onFocusHome} />
-        </Tooltip>
-      </ControlContainer>
-
-      <ControlContainer>
-        <Tooltip distance={6} title="Model" position="top" hotkey="M">
-          <IconButton icon="code" onClick={onOpenCMS} />
-        </Tooltip>
-      </ControlContainer>
-
+      <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
+      <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
       {markupFeature.isEnabled && (
-        <ControlContainer>
-          <Tooltip distance={6} title="Markup" position="top" hotkey="A">
-            <IconButton
-              active={markupTool?.isOpen}
-              icon={markupTool?.isOpen ? 'close' : 'editName'}
-              onClick={toggleMarkup}
-              size={markupTool?.isOpen ? 14 : 16}
-            />
-          </Tooltip>
-        </ControlContainer>
+        <CanvasControlButton
+          {...CanvasControlMeta[CanvasControl.MARKUP]}
+          iconProps={{
+            active: markupTool?.isOpen,
+            icon: markupTool?.isOpen ? 'close' : 'editName',
+            size: markupTool?.isOpen ? 14 : 16,
+          }}
+          onClick={toggleMarkup}
+        />
       )}
 
       <ControlContainer>

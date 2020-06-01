@@ -1,6 +1,7 @@
 export const UPDATE_DATA_TIMEOUT = 300;
 
 export enum Font {
+  OPEN_SANS = 'Open Sans',
   ARIAL = 'Arial',
   ARIAL_BLACK = 'Arial Black',
   TREBUCHET_MS = 'Trebuchet MS',
@@ -14,13 +15,8 @@ export enum FontWeight {
   BOLD = '700',
 }
 
-export enum TextAlign {
-  LEFT = 'left',
-  RIGHT = 'right',
-  CENTER = 'center',
-}
-
-export const FONTS_LABELS = {
+export const FONTS_LABELS: Record<Font, string> = {
+  [Font.OPEN_SANS]: 'Open Sans',
   [Font.ARIAL]: 'Arial',
   [Font.ARIAL_BLACK]: 'Arial Black',
   [Font.TREBUCHET_MS]: 'Trebuchet MS',
@@ -34,7 +30,8 @@ export const FONT_WEIGHTS_LABELS = {
   [FontWeight.BOLD]: 'Bold',
 };
 
-export const FONT_WEIGHTS_PER_FONT_FAMILY = {
+export const FONT_WEIGHTS_PER_FONT_FAMILY: Record<Font, FontWeight[]> = {
+  [Font.OPEN_SANS]: [FontWeight.REGULAR, FontWeight.BOLD],
   [Font.ARIAL]: [FontWeight.REGULAR, FontWeight.BOLD],
   [Font.ARIAL_BLACK]: [FontWeight.REGULAR],
   [Font.TREBUCHET_MS]: [FontWeight.REGULAR, FontWeight.BOLD],
@@ -42,3 +39,15 @@ export const FONT_WEIGHTS_PER_FONT_FAMILY = {
   [Font.GEORGIA]: [FontWeight.REGULAR, FontWeight.BOLD],
   [Font.COURIER_NEW]: [FontWeight.REGULAR, FontWeight.BOLD],
 };
+
+export enum DraftBuiltInStyle {
+  ITALIC = 'ITALIC',
+  UNDERLINE = 'UNDERLINE',
+}
+
+export enum InlineStylePrefix {
+  COLOR = 'COLOR',
+  FONT_SIZE = 'FONT_SIZE',
+  FONT_WEIGHT = 'FONT_WEIGHT',
+  FONT_FAMILY = 'FONT_FAMILY',
+}

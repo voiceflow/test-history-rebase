@@ -31,9 +31,7 @@ export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {
     const keys = HOTKEY_MAPPING[key];
 
     const instance = new Mousetrap();
-
     instance.bind(keys, memoisedCallback, action);
-
     return () => {
       instance.reset();
     };

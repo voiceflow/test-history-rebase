@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
-import { PORT_HIGHLIGHTED_CLASSNAME } from '../../constants';
 import { Container, Lifecycle, Link, LinkPath } from './components';
 import { LINK_WIDTH } from './constants';
 import { useHandlers, usePortInstance } from './hooks';

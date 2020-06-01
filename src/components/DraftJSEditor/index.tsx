@@ -1,16 +1,20 @@
 import 'draft-js/dist/Draft.css';
-import 'draft-js-mention-plugin/lib/plugin.css';
 
-import BaseDraftJSEditor from 'draft-js-plugins-editor';
+import BaseDraftJSEditor, { PluginEditorProps } from 'draft-js-plugins-editor';
 import React from 'react';
 
 import Container from './components/DraftJSEditorContainer';
 
 export { Container as DraftJSEditorContainer };
 
-const DraftJSEditor = ({ wordBreak, ...props }, ref) => (
+export type DraftJSEditorProps = PluginEditorProps & {
+  wordBreak?: string;
+};
+
+const DraftJSEditor: React.RefForwardingComponent<BaseDraftJSEditor, DraftJSEditorProps> = ({ wordBreak, ...props }, ref) => (
   <Container wordBreak={wordBreak}>
     <BaseDraftJSEditor {...props} ref={ref} />
   </Container>
 );
+
 export default React.forwardRef(DraftJSEditor);

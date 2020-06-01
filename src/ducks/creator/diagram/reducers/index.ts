@@ -36,7 +36,6 @@ import {
 import addLinkReducer from './addLink';
 import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
 import insertNestedNodeReducer from './insertNestedNode';
-import mergeNodesReducer from './mergeNodes';
 import removeNodeReducer, { removeManyNodesReducer } from './removeNode';
 import unmergeNodeReducer from './unmergeNode';
 
@@ -116,8 +115,6 @@ const creatorDiagramReducer: RootReducer<DiagramState, AnyDiagramAction | AnyCre
       return updateNodeDataReducer(state, action);
     case DiagramAction.UPDATE_NODE_LOCATION:
       return updateNodeLocationReducer(state, action);
-    case DiagramAction.MERGE_NODES:
-      return mergeNodesReducer(state, action);
     case DiagramAction.UNMERGE_NODE:
       return unmergeNodeReducer(state, action);
     case DiagramAction.INSERT_NESTED_NODE:

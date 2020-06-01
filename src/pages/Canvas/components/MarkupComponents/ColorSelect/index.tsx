@@ -7,16 +7,28 @@ import { useDismissable } from '@/hooks/dismiss';
 
 import { ColorPreview } from './components';
 
-export type ColorSelectProps = React.ComponentProps<typeof ColorPicker>;
+export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
+  onShow?: () => void;
+  onClose?: () => void;
+};
 
-const ColorSelect: React.FC<ColorSelectProps> = ({ color, onChange }) => {
+const ColorSelect: React.FC<ColorSelectProps> = ({ color, onChange, onClose, onShow }) => {
   const popperRef = React.useRef<HTMLElement>(null);
-  const [open, toggleOpen] = useDismissable(false, null, false, popperRef);
+
+  const [open, toggleOpen] = useDismissable(false, onClose, false, popperRef);
+
+  const onOpen = () => {
+    if (!open) {
+      onShow?.();
+    }
+
+    toggleOpen();
+  };
 
   return (
     <Manager>
       <Reference>
-        {({ ref }) => <ColorPreview ref={ref} style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} onClick={toggleOpen} />}
+        {({ ref }) => <ColorPreview ref={ref} style={{ color: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} onClick={onOpen} />}
       </Reference>
 
       {open && (

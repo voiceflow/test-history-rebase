@@ -373,15 +373,17 @@ export enum UserRole {
   ADMIN = 'admin',
   EDITOR = 'editor',
   VIEWER = 'viewer',
+  LIBRARY = 'library',
 }
 
-export const FEATURE_IDS = {
-  ADD_COLLABORATORS: 'ADD_COLLABORATORS',
-  WORKSPACE_SETTINGS: 'WORKSPACE_SETTINGS',
-  UPGRADE_WORKSPACE: 'UPGRADE_WORKSPACE',
-  EDIT_CANVAS: 'EDIT_CANVAS',
-  PROJECT_COPY_DELETE: 'PROJECT_COPY_DELETE',
-};
+export enum FEATURE_IDS {
+  ADD_COLLABORATORS = 'ADD_COLLABORATORS',
+  WORKSPACE_SETTINGS = 'WORKSPACE_SETTINGS',
+  UPGRADE_WORKSPACE = 'UPGRADE_WORKSPACE',
+  EDIT_CANVAS = 'EDIT_CANVAS',
+  PROJECT_COPY_DELETE = 'PROJECT_COPY_DELETE',
+  INTERACTION_MODAL = 'INTERACTION_MODAL',
+}
 
 export const FEATURE_PERMISSIONS = {
   ADD_COLLABORATORS: [UserRole.ADMIN],
@@ -389,6 +391,7 @@ export const FEATURE_PERMISSIONS = {
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
   PROJECT_COPY_DELETE: [UserRole.ADMIN, UserRole.EDITOR],
+  INTERACTION_MODAL: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
@@ -481,4 +484,10 @@ export enum ShapeType {
   ARROW = 'arrow',
   CIRCLE = 'circle',
   RECTANGLE = 'rectangle',
+}
+
+export enum TextAlignment {
+  LEFT = 'left',
+  RIGHT = 'right',
+  CENTER = 'center',
 }

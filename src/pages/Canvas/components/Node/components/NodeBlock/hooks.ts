@@ -4,55 +4,8 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { BlockAPI } from '@/pages/Canvas/types';
 import { isInRange } from '@/utils/number';
-
-export const useResizeAnimation = (ref: React.RefObject<BlockAPI>) => {
-  const isTransitioning = React.useRef(false);
-  const engine = React.useContext(EngineContext)!;
-  const nodeEntity = React.useContext(NodeEntityContext)!;
-
-  React.useEffect(() => {
-    let redrawTimer: number | null = null;
-    const isTarget = (event: TransitionEvent) =>
-      event.propertyName === 'height' && (event.target! as HTMLElement).classList.contains(REORDER_INDICATOR_CLASSNAME);
-    const onTransitionStart = (event: TransitionEvent) => {
-      if (isTarget(event)) {
-        isTransitioning.current = true;
-        clearInterval(redrawTimer!);
-        redrawTimer = setInterval(() => {
-          if (!isTransitioning.current) {
-            clearInterval(redrawTimer!);
-          }
-
-          engine.node.redrawNestedLinks(nodeEntity.nodeID);
-        }, 1);
-      }
-    };
-    const onTransitionEnd = (event: TransitionEvent) => {
-      if (isTransitioning.current) {
-        clearInterval(redrawTimer!);
-        isTransitioning.current = false;
-      }
-
-      if (isTarget(event)) {
-        engine.node.redrawNestedLinks(nodeEntity.nodeID);
-      }
-    };
-
-    ref.current?.addEventListener('transitionstart', onTransitionStart);
-    ref.current?.addEventListener('transitionend', onTransitionEnd);
-    ref.current?.addEventListener('transitioncancel', onTransitionEnd);
-
-    return () => {
-      ref.current?.removeEventListener('transitionstart', onTransitionStart);
-      ref.current?.removeEventListener('transitionend', onTransitionEnd);
-      ref.current?.removeEventListener('transitioncancel', onTransitionEnd);
-    };
-  }, []);
-};
 
 export const useMergeInfo = (index: number) => {
   const getManager = React.useContext(ManagerContext)!;

@@ -57,8 +57,6 @@ class RealtimeEngine extends EngineConsumer {
       this.engine.node.internal.insertNested(parentNodeID, index, nodeID),
     [Realtime.SocketAction.UNMERGE_NODE]: ({ nodeID, position, parentNode }: ActionPayload<Realtime.UnmergeNode>) =>
       this.engine.node.internal.unmerge(nodeID, position, parentNode),
-    [Realtime.SocketAction.MERGE_NODES]: ({ mergedNodeID, sourceNodeID, targetNodeID, position }: ActionPayload<Realtime.MergeNodes>) =>
-      this.engine.node.internal.merge(mergedNodeID, sourceNodeID, targetNodeID, position),
     [Realtime.SocketAction.REMOVE_NODE]: (nodeID: ActionPayload<Realtime.RemoveNode>) => this.engine.node.internal.remove(nodeID),
     [Realtime.SocketAction.REMOVE_MANY_NODES]: (nodeIDs: ActionPayload<Realtime.RemoveManyNodes>) => this.engine.node.internal.removeMany(nodeIDs),
     [Realtime.SocketAction.UPDATE_NODE_DATA]: ({ nodeID, data }: ActionPayload<Realtime.UpdateNodeData>) =>

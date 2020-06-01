@@ -5,14 +5,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import client from '@/client';
 import Avatar from '@/components/Avatar';
 import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
-import { FEATURE_IDS } from '@/constants';
+import { toast } from '@/components/Toast';
+import { FeatureFlag } from '@/config/features';
+import { FEATURE_IDS, UserRole } from '@/constants';
 import { usePermissions } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
+import { useFeature } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
+import { copy } from '@/utils/clipboard';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { RootRoutes } from '@/utils/routes';
@@ -47,7 +52,8 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const [canDeleteAndCopy] = usePermissions(FEATURE_IDS.PROJECT_COPY_DELETE);
+  const [canDeleteAndCopy, userRole] = usePermissions(FEATURE_IDS.PROJECT_COPY_DELETE);
+  const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
 
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
@@ -65,6 +71,30 @@ export function Item(props) {
         },
       ]
     : [];
+
+  const onCopyLink = React.useCallback(async () => {
+    let importToken;
+    try {
+      importToken = await client.project.getImportToken(id);
+    } catch {
+      toast.error('Error getting import link');
+      return;
+    }
+    const importLink = `${window.location.origin}/dashboard?import=${importToken}`;
+    copy(importLink);
+    toast.success('Copied link to clipboard');
+  }, [id]);
+
+  if (userRole === UserRole.LIBRARY && templatesFeature.isEnabled) {
+    const cloneOption = {
+      value: 'clone',
+      label: 'Clone Project',
+      onClick: async () => {
+        await onCopyLink();
+      },
+    };
+    options.push(cloneOption);
+  }
 
   const hasOptions = !!options.length;
 

@@ -1,187 +1,86 @@
+import { EditorState } from 'draft-js';
 import React from 'react';
 
 import { FlexAround } from '@/components/Flex';
-import Input from '@/components/Input';
-import Select from '@/components/Select';
-import { connect } from '@/hocs';
-import { useDebouncedCallback } from '@/hooks';
+import { TextAlignment } from '@/constants';
+import { EventualEngineContext } from '@/contexts';
 import { Markup } from '@/models';
-import { Content, FormControl } from '@/pages/Canvas/components/Editor';
-import { ColorSelect, FormGroup, Section, SliderInputGroup } from '@/pages/Canvas/components/MarkupComponents';
+import { Content } from '@/pages/Canvas/components/Editor';
+import { Section } from '@/pages/Canvas/components/MarkupComponents';
 
-import { Hyperlink, IconButton, IconButtonSeparator } from './components';
-import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, TextAlign, UPDATE_DATA_TIMEOUT } from './constants';
-
-const PartialSelect = Select as React.ComponentType<Partial<React.ComponentProps<typeof Select>>>;
-
-export type BlockData = {
-  textAlign?: TextAlign;
-};
-
-export type TextData = {
-  color: Markup.Color;
-  fontSize: number;
-  isItalic?: boolean;
-  hyperlink?: string;
-  fontFamily: Font;
-  fontWeight: FontWeight;
-  isUnderlined?: boolean;
-};
+import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
+import { getRawContent } from './utils';
 
 export type MarkupTextEditorProps = {
-  textData: TextData;
-  blockData: BlockData;
-  onChangeTextData: (Data: TextData) => void;
-  onChangeBlockData: (Data: BlockData) => void;
+  data: Markup.TextNodeData;
+  nodeID: string;
+  onChange: (data: Partial<Markup.TextNodeData>) => void;
 };
 
-export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ textData, blockData, onChangeTextData, onChangeBlockData }) => {
-  const [link, setLink] = React.useState(textData.hyperlink ?? '');
-  const [color, setColor] = React.useState(textData.color);
-  const [fontSize, setFontSize] = React.useState(`${textData.fontSize}`);
-  const [inputOpacity, setInputOpacity] = React.useState(`${textData.color.a * 100}`);
+export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID, onChange }) => {
+  const eventualEngine = React.useContext(EventualEngineContext)!;
+  const { toolbarPlugin, fakeSelectionPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
 
-  const onUpdateTextData = (data: Partial<TextData>) => onChangeTextData({ ...textData, ...data });
-  const onUpdateBlockData = (data: Partial<BlockData>) => onChangeBlockData({ ...blockData, ...data });
+  const onSetAlignment = (textAlignment: TextAlignment) => onChange({ textAlignment });
 
-  const onUpdateTextDataRef = React.useRef(onUpdateTextData);
-
-  onUpdateTextDataRef.current = onUpdateTextData;
-
-  const onUpdateTextDataDebounced = useDebouncedCallback(UPDATE_DATA_TIMEOUT, (data: Partial<TextData>) => onUpdateTextDataRef.current(data), []);
-
-  const onChangeFontFamily = (value: Font) => {
-    onUpdateTextData({
-      fontFamily: value,
-      fontWeight: FONT_WEIGHTS_PER_FONT_FAMILY[value].includes(textData.fontWeight) ? textData.fontWeight : FONT_WEIGHTS_PER_FONT_FAMILY[value][0],
-    });
+  const saveEditorState = (state: EditorState) => {
+    onChange({ content: getRawContent(state) });
   };
 
-  const onBlurFontSize = () => {
-    if (fontSize === '') {
-      setFontSize(`${textData.fontSize}`);
-    }
-  };
-
-  const onChangeFontSize = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    if (value === '') {
-      setFontSize(value);
-    } else if (value.match(/^\d+$/)) {
-      setFontSize(value);
-      onUpdateTextDataDebounced({ fontSize: +value });
-    }
-  };
-
-  const onChangeLink = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setLink(value);
-    onUpdateTextDataDebounced({ hyperlink: value });
-  };
-
-  const onChangeColor = (nextColor: Markup.Color) => {
-    setColor(nextColor);
-    setInputOpacity(`${nextColor.a * 100}`);
-    onUpdateTextData({ color: nextColor });
-  };
-
-  const onChangeOpacitySlider = (value: number) => {
-    const opacity = value / 100;
-
-    setColor((prevColor) => ({ ...prevColor, a: opacity }));
-    setInputOpacity(`${value}`);
-    onUpdateTextDataDebounced({ color: { ...textData.color, a: opacity } });
-  };
-
-  const onChangeOpacityInput = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    if (value === '') {
-      setColor((prevColor) => ({ ...prevColor, a: 0 }));
-      setInputOpacity(value);
-    } else if (value.match(/^\d+$/)) {
-      const opacity = Math.min(+value / 100, 0);
-
-      setColor((prevColor) => ({ ...prevColor, a: opacity }));
-      setInputOpacity(`${opacity * 100}`);
-      onUpdateTextDataDebounced({ color: { ...textData.color, a: opacity } });
-    }
-  };
-
-  const onBlurOpacityInput = () => {
-    if (inputOpacity === '') {
-      setInputOpacity(`${color.a * 100}`);
-    }
+  const wrapSetEditorStateToSave = (setEditorState: (state: EditorState) => void) => (state: EditorState) => {
+    setEditorState(state);
+    onChange({ content: getRawContent(state) });
   };
 
   return (
-    <Content>
-      <Section>
-        <FormControl>
-          <PartialSelect
-            value={textData.fontFamily}
-            options={Object.values(Font)}
-            onSelect={onChangeFontFamily}
-            getOptionLabel={(value: Font) => FONTS_LABELS[value]}
-          />
-        </FormControl>
-
-        <FormGroup
-          leftColumn={
-            <PartialSelect
-              value={textData.fontWeight}
-              options={FONT_WEIGHTS_PER_FONT_FAMILY[textData.fontFamily]}
-              onSelect={(value: FontWeight) => onUpdateTextData({ fontWeight: value })}
-              getOptionLabel={(value: FontWeight) => FONT_WEIGHTS_LABELS[value]}
+    <toolbarPlugin.Toolbar>
+      {({ getEditorState, setEditorState }) => (
+        <Content>
+          <Section>
+            <FontStyles
+              setEditorState={setEditorState}
+              getEditorState={getEditorState}
+              saveEditorState={saveEditorState}
+              applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
+              removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
             />
-          }
-          rightColumn={<Input value={fontSize} type="number" placeholder="16" onChange={onChangeFontSize} onBlur={onBlurFontSize} />}
-        />
-      </Section>
+          </Section>
 
-      <Section>
-        <FlexAround>
-          <IconButton
-            icon="textAlignLeft"
-            active={!blockData.textAlign || blockData.textAlign === TextAlign.LEFT}
-            onClick={() => onUpdateBlockData({ textAlign: TextAlign.LEFT })}
-          />
-          <IconButton
-            icon="textAlignCenter"
-            active={blockData.textAlign === TextAlign.CENTER}
-            onClick={() => onUpdateBlockData({ textAlign: TextAlign.CENTER })}
-          />
-          <IconButton
-            icon="textAlignRight"
-            active={blockData.textAlign === TextAlign.RIGHT}
-            onClick={() => onUpdateBlockData({ textAlign: TextAlign.RIGHT })}
-          />
+          <Section>
+            <FlexAround>
+              <TextAligns alignment={data.textAlignment} setAlignment={onSetAlignment} />
 
-          <IconButtonSeparator />
+              <IconButtonSeparator />
 
-          <IconButton icon="italic" active={textData.isItalic} onClick={() => onUpdateTextData({ isItalic: !textData.isItalic })} />
-          <IconButton icon="underline" active={textData.isUnderlined} onClick={() => onUpdateTextData({ isUnderlined: !textData.isUnderlined })} />
+              <TextStyles setEditorState={wrapSetEditorStateToSave(setEditorState)} getEditorState={getEditorState} />
 
-          <IconButtonSeparator />
+              <IconButtonSeparator />
 
-          <Hyperlink link={link} onChange={onChangeLink} />
-        </FlexAround>
-      </Section>
+              <Hyperlink
+                setEditorState={wrapSetEditorStateToSave(setEditorState)}
+                getEditorState={getEditorState}
+                saveEditorState={saveEditorState}
+                applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
+                removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
+                createLinkAtSelection={anchorPlugin.createLinkAtSelection}
+                removeLinkAtSelection={anchorPlugin.removeLinkAtSelection}
+              />
+            </FlexAround>
+          </Section>
 
-      <Section isLast>
-        <SliderInputGroup
-          inputValue={inputOpacity}
-          inputProps={{ placeholder: '100', onBlur: onBlurOpacityInput }}
-          sliderValue={+inputOpacity}
-          inputAction="%"
-          sliderProps={{ min: 0 }}
-          sliderPrefix={<ColorSelect color={color} onChange={onChangeColor} />}
-          onChangeInput={onChangeOpacityInput}
-          onChangeSlider={onChangeOpacitySlider}
-        />
-      </Section>
-    </Content>
+          <Section>
+            <TextColor
+              setEditorState={setEditorState}
+              getEditorState={getEditorState}
+              saveEditorState={saveEditorState}
+              applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
+              removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
+            />
+          </Section>
+        </Content>
+      )}
+    </toolbarPlugin.Toolbar>
   );
 };
 
-const mapStateToProps = {};
-const mapDispatchToProps = {};
-
-// TODO: connect with the node
-export default connect(mapStateToProps, mapDispatchToProps)(MarkupTextEditor);
+export default MarkupTextEditor;

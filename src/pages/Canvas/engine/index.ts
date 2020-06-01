@@ -31,6 +31,7 @@ import FocusEngine from './focusEngine';
 import HighlightEngine from './highlightEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
+import MarkupEngine from './markupEngine';
 import MergeEngine from './mergeEngine';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
@@ -69,6 +70,8 @@ export class Engine {
   port = new PortManager(this);
 
   node = new NodeManager(this);
+
+  markup = new MarkupEngine(this);
 
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 

@@ -2,13 +2,12 @@ import moize from 'moize';
 import React from 'react';
 
 import { useLinkedRef } from '@/hooks';
-import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { Pair, Point } from '@/types';
 
 import { InternalLinkInstance } from './types';
-import { buildCenter, buildPath } from './utils';
+import { buildCenter, buildPath, getVirtualPoints } from './utils';
 
 export const useLinkInstance = () => {
   const containerRef = React.useRef<SVGGElement | null>(null);
@@ -23,25 +22,16 @@ export const useLinkInstance = () => {
   const elementInstance = useElementInstance(containerRef);
 
   return React.useMemo<InternalLinkInstance>(() => {
-    const getVirtualPoints = moize.simple((rawPoints: Pair<Point> | null): Pair<Point> | null => {
-      if (!rawPoints) {
-        return rawPoints!;
-      }
+    const getMemoizedVirtualPoints = moize.simple(getVirtualPoints);
 
-      const [[x1, y1], [x2, y2]] = rawPoints;
+    const drawFromPoints = (nextPoints: Pair<Point> | null) => {
+      if (!nextPoints) return;
 
-      return [
-        [x1 + LINK_WIDTH, y1],
-        [x2, y2],
-      ];
-    });
-
-    const drawFromPoints = (nextPoints: Pair<Point>) => {
       const pathEl = pathRef.current!;
       const hiddenPathEl = hiddenPathRef.current!;
 
       window.requestAnimationFrame(() => {
-        const nextPath = buildPath(nextPoints);
+        const nextPath = buildPath(nextPoints)!;
 
         pathEl.setAttribute('d', nextPath);
         hiddenPathEl.setAttribute('d', nextPath);
@@ -70,14 +60,14 @@ export const useLinkInstance = () => {
 
         points.current = nextPoints;
 
-        drawFromPoints(getVirtualPoints(nextPoints)!);
+        drawFromPoints(getMemoizedVirtualPoints(nextPoints));
       },
 
       containsElement: (el) => !!containerRef.current?.contains(el),
 
-      getPath: () => buildPath(getVirtualPoints(points.current)!),
+      getPath: () => buildPath(getMemoizedVirtualPoints(points.current)),
 
-      getCenter: () => buildCenter(getVirtualPoints(points.current)!),
+      getCenter: () => buildCenter(getMemoizedVirtualPoints(points.current)),
     };
   }, [elementInstance]);
 };

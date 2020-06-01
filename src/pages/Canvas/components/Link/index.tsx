@@ -30,7 +30,11 @@ const Link = () => {
   if (!isSupported) return null;
 
   const path = instance.getPath();
-  const [centerX, centerY] = instance.getCenter();
+  const center = instance.getCenter();
+
+  if (!path || !center) return null;
+
+  const [centerX, centerY] = center;
   const isVisible = engine.link.isVisible(linkEntity.linkID, platform);
 
   return (

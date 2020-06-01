@@ -14,6 +14,7 @@ export { defaultOptionsFilter, searchableOptionsFilter, defaultLabelRenderer };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function Select({
+  id,
   open,
   label = '',
   value,
@@ -35,7 +36,6 @@ export default function Select({
   autoFocus,
   maxHeight,
   creatable,
-  id,
   className,
   borderLess,
   searchable,
@@ -83,6 +83,7 @@ export default function Select({
     creatable,
     searchable,
     optionLabel,
+
     searchLabel,
     optionsFilter,
     getOptionLabel,

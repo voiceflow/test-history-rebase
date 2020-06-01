@@ -1,3 +1,4 @@
+import { FEATURE_IDS } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { Icon } from '@/svgs/types';
 
@@ -35,3 +36,46 @@ export const STATIC_RESOURCES: StaticResource[] = [
     resourceName: Tracking.CanvasControlHelpMenuResource.COMMUNITY,
   },
 ];
+
+export enum CanvasControl {
+  HOME = 'home',
+  MODEL = 'model',
+  MARKUP = 'markup',
+  RESOURCES = 'resources',
+  ZOOM_IN = 'zoom_in',
+  ZOOM_OUT = 'zoom_out',
+}
+
+export type CanvasControlMetaProps = { title: string; icon?: Icon; hotkey: string; featureID?: FEATURE_IDS };
+
+export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = {
+  [CanvasControl.HOME]: {
+    title: 'Home',
+    icon: 'home',
+    hotkey: 'H',
+  },
+  [CanvasControl.MODEL]: {
+    title: 'Model',
+    icon: 'code',
+    hotkey: 'M',
+    featureID: FEATURE_IDS.INTERACTION_MODAL,
+  },
+  [CanvasControl.MARKUP]: {
+    title: 'Markup',
+    hotkey: 'A',
+  },
+  [CanvasControl.RESOURCES]: {
+    title: 'Home',
+    hotkey: 'I',
+  },
+  [CanvasControl.ZOOM_IN]: {
+    title: 'Zoom In',
+    icon: 'zoomIn',
+    hotkey: '-',
+  },
+  [CanvasControl.ZOOM_OUT]: {
+    title: 'Zoom Out',
+    icon: 'zoomOut',
+    hotkey: '+',
+  },
+};

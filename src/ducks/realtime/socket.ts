@@ -17,7 +17,6 @@ export enum SocketAction {
   ADD_NESTED_NODE = 'REALTIME:SOCKET:NODE:ADD_NESTED',
   INSERT_NESTED_NODE = 'REALTIME:SOCKET:NODE:INSERT_NESTED',
   UNMERGE_NODE = 'REALTIME:SOCKET:NODE:UNMERGE',
-  MERGE_NODES = 'REALTIME:SOCKET:NODE:MERGE',
   REMOVE_NODE = 'REALTIME:SOCKET:NODE:REMOVE',
   REMOVE_MANY_NODES = 'REALTIME:SOCKET:NODE:REMOVE_MANY',
   UPDATE_NODE_DATA = 'REALTIME:SOCKET:NODE:UPDATE_DATA',
@@ -67,8 +66,6 @@ export type InsertNestedNode = Action<SocketAction.INSERT_NESTED_NODE, ActionPay
 
 export type UnmergeNode = Action<SocketAction.UNMERGE_NODE, ActionPayload<Creator.UnmergeNode>>;
 
-export type MergeNodes = Action<SocketAction.MERGE_NODES, ActionPayload<Creator.MergeNodes>>;
-
 export type RemoveNode = Action<SocketAction.REMOVE_NODE, ActionPayload<Creator.RemoveNode>>;
 
 export type RemoveManyNodes = Action<SocketAction.REMOVE_MANY_NODES, ActionPayload<Creator.RemoveManyNodes>>;
@@ -108,7 +105,6 @@ export type AnySocketAction =
   | AddNestedNode
   | InsertNestedNode
   | UnmergeNode
-  | MergeNodes
   | RemoveNode
   | RemoveManyNodes
   | UpdateNodeData
@@ -158,9 +154,6 @@ export const insertNestedNode = (parentNodeID: string, index: number, nodeID: st
 
 export const unmergeNode = (nodeID: string, position: Point, parentNode: Creator.ParentNodeDescriptor): UnmergeNode =>
   createAction(SocketAction.UNMERGE_NODE, { nodeID, position, parentNode });
-
-export const mergeNodes = (mergedNodeID: string, sourceNodeID: string, targetNodeID: string, position: Point): MergeNodes =>
-  createAction(SocketAction.MERGE_NODES, { mergedNodeID, sourceNodeID, targetNodeID, position });
 
 export const removeNode = (nodeID: string): RemoveNode => createAction(SocketAction.REMOVE_NODE, nodeID);
 

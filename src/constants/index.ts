@@ -373,6 +373,7 @@ export enum UserRole {
   ADMIN = 'admin',
   EDITOR = 'editor',
   VIEWER = 'viewer',
+  LIBRARY = 'library',
 }
 
 export enum FEATURE_IDS {

@@ -100,6 +100,10 @@ export enum BlockType {
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
 
+  // event
+  DIRECTIVE = 'directive',
+  EVENT = 'event',
+
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',
   MARKUP_SHAPE = 'markup_shape',

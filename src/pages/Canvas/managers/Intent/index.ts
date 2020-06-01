@@ -24,6 +24,8 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
   editor: IntentEditor,
   editorsByPath: EDITORS_BY_PATH,
 
+  mergeInitializer: true,
+
   factory: () => ({
     node: {
       ports: {

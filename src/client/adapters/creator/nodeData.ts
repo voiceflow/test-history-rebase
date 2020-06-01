@@ -59,8 +59,8 @@ const nodeDataAdapter = createSimpleAdapter<DBNode.Extras, NodeData<unknown>, [D
     };
   },
   ({ path, name, ...appData }, nextID) => ({
-    ...blockAdapter[appData.type].toDB(appData),
     type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
+    ...blockAdapter[appData.type].toDB(appData),
     color: appData.blockColor || null,
     nextID: nextID || undefined,
   })

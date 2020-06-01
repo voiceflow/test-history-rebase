@@ -32,6 +32,7 @@ export type ManagerValue = {
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
   label?: string;
   markupNode?: React.RefForwardingComponent<HTMLElement, ConnectedMarkupNodeProps>;
+  mergeInitializer?: boolean;
   mergeTerminator?: boolean;
 };
 

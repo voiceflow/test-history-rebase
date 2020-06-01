@@ -169,7 +169,12 @@ exports[`Storyshots Prototype/Dialog Basic 1`] = `
 }
 
 .c18 .c7 {
+  white-space: pre;
   background: #eef4f6;
+}
+
+.c18 .c7 p {
+  margin-bottom: 0;
 }
 
 .c9 {
@@ -599,7 +604,12 @@ exports[`Storyshots Prototype/Dialog Debug 1`] = `
 }
 
 .c13 .c7 {
+  white-space: pre;
   background: #eef4f6;
+}
+
+.c13 .c7 p {
+  margin-bottom: 0;
 }
 
 .c9 {
@@ -1087,7 +1097,12 @@ exports[`Storyshots Prototype/Dialog Loading 1`] = `
 }
 
 .c19 .c7 {
+  white-space: pre;
   background: #eef4f6;
+}
+
+.c19 .c7 p {
+  margin-bottom: 0;
 }
 
 .c9 {

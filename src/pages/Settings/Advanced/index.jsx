@@ -1,21 +1,23 @@
 import React from 'react';
 
-import AceEditor from '@/components/AceEditor';
+import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
 import SSML from '@/components/SSML';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
-import { activeProjectIDSelector, saveMetaSettings, skillMetaSelector } from '@/ducks/skill';
+import { FeatureFlag } from '@/config/features';
+import { activeProjectIDSelector, saveMeta, skillMetaSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useTeardown } from '@/hooks';
+import { useDebouncedCallback, useFeature, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-import { SkillEventsErrorMessage } from './components';
+import { Settings, SkillEventsErrorMessage } from './components';
 import { ERROR_PROMPT_OPTIONS, SAVE_SETTINGS_DEBOUNCE_DELAY } from './constants';
 
-function Advanced({ meta, saveMetaSettings }) {
+function Advanced({ meta, saveMeta }) {
   const { errorPrompt: propErrorPrompt, alexaEvents: propAlexaEvents } = meta;
+  const gadgets = useFeature(FeatureFlag.GADGETS);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
   const [alexaEventError, setAlexaEventError] = React.useState(null);
@@ -38,7 +40,7 @@ function Advanced({ meta, saveMetaSettings }) {
     [errorPrompt]
   );
 
-  const saveSettings = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, saveMetaSettings);
+  const saveSettings = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, saveMeta);
 
   const updateData = React.useCallback((settingsObject) => {
     try {
@@ -105,6 +107,7 @@ function Advanced({ meta, saveMetaSettings }) {
           </>
         )}
       </Section>
+      {gadgets && <Settings />}
       <Section header="Skill Events" variant="secondary" isDividerNested opened>
         {alexaEventError && (
           <SkillEventsErrorMessage>
@@ -123,14 +126,7 @@ function Advanced({ meta, saveMetaSettings }) {
             highlightActiveLine={true}
             value={alexaEvents}
             editorProps={{ $blockScrolling: true }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
+            setOptions={ACE_EDITOR_OPTIONS}
           />
         </FormControl>
       </Section>
@@ -144,7 +140,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveMetaSettings,
+  saveMeta,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advanced);

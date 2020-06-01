@@ -19,6 +19,7 @@ const {
   ff_markup,
   ff_canvasExport,
   ff_templates,
+  ff_gadgets,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -59,6 +60,7 @@ module.exports = {
     FF_MARKUP: ff_markup && 'true',
     FF_CANVAS_EXPORT: ff_canvasExport && 'true',
     FF_TEMPLATES: ff_templates && 'true',
+    FF_GADGETS: ff_gadgets && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

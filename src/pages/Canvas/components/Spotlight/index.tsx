@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
-import { useDidUpdateEffect, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import MANAGERS from '@/pages/Canvas/managers';
@@ -53,6 +54,12 @@ const Spotlight = () => {
     }
   }, [spotlight?.isVisible]);
 
+  const gadgets = useFeature(FeatureFlag.GADGETS);
+  const GADGET_BLOCKS = React.useMemo(
+    () => (gadgets.isEnabled ? BLOCK_TYPES : BLOCK_TYPES.filter(({ value }) => ![BlockType.DIRECTIVE, BlockType.EVENT].includes(value))),
+    []
+  );
+
   if (!spotlight?.isVisible) {
     return null;
   }
@@ -65,7 +72,7 @@ const Spotlight = () => {
         autoFocus
         classNamePrefix="spotlight"
         onChange={(selected: { value: BlockType; factoryData?: Partial<NodeData<unknown>> }) => addBlock(selected.value, selected.factoryData)}
-        options={BLOCK_TYPES}
+        options={GADGET_BLOCKS}
         maxMenuHeight={124}
         value={null}
         placeholder="Add Block"

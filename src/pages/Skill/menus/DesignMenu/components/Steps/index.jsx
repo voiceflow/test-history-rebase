@@ -2,11 +2,12 @@ import React from 'react';
 
 import { UncontrolledCollapse } from '@/components/Collapsable';
 import CustomScrollbars from '@/components/CustomScrollbars';
-import { DragItem } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { BlockType, DragItem } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useDragPreview } from '@/hooks';
+import { useDragPreview, useFeature } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
@@ -14,12 +15,15 @@ import { Container, Item } from './components';
 import { PLATFORM_SECTION, ROOT_SECTIONS } from './constants';
 
 function Steps({ platform, toggleSection, expandedSections }) {
+  const gadgets = useFeature(FeatureFlag.GADGETS);
+
   const sections = React.useMemo(() => {
     const sections = [...ROOT_SECTIONS];
     const platformSteps = PLATFORM_SECTION.steps[platform];
 
     if (platformSteps?.length) {
-      sections.push({ ...PLATFORM_SECTION, steps: platformSteps });
+      const steps = gadgets.isEnabled ? platformSteps : platformSteps.filter(({ type }) => ![BlockType.EVENT, BlockType.DIRECTIVE].includes(type));
+      sections.push({ ...PLATFORM_SECTION, steps });
     }
 
     return sections;

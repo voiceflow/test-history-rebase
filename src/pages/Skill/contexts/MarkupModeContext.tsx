@@ -1,7 +1,8 @@
+import { EditorState, convertToRaw } from 'draft-js';
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { BlockType, MarkupModeType } from '@/constants';
+import { BlockType, MarkupModeType, TextAlignment } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useEnableDisable, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
@@ -13,6 +14,7 @@ export type MarkupModeContextType = {
   modeType: MarkupModeType | null;
   closeTool: () => void;
   onAddImage: () => void;
+  onAddText: () => void;
   setModeType: (value: MarkupModeType | null) => void;
   isUploadingImage: boolean;
 };
@@ -87,6 +89,17 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     input.click();
   };
 
+  const onAddText = () => {
+    const engine = eventualEngine.get()!;
+
+    // TODO: get position from mouse click event
+    const [x, y] = engine.canvas!.getPosition();
+
+    const nodeData: Markup.TextNodeData = { content: convertToRaw(EditorState.createEmpty().getCurrentContent()), textAlignment: TextAlignment.LEFT };
+
+    engine.node.add(BlockType.MARKUP_TEXT, [x, y], nodeData as NodeData<Markup.TextNodeData>);
+  };
+
   const trackMarkupTime = React.useCallback(() => {
     if (startTimeCache.current) {
       trackEvents.trackMarkupSessionDuration({ duration: Date.now() - startTimeCache.current });
@@ -125,7 +138,16 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   return (
     <MarkupModeContext.Provider
-      value={{ isOpen, openTool: onEnableMarkup, closeTool: onDisableMarkup, modeType, setModeType, onAddImage, isUploadingImage }}
+      value={{
+        isOpen,
+        modeType,
+        openTool: onEnableMarkup,
+        closeTool: onDisableMarkup,
+        onAddText,
+        onAddImage,
+        setModeType,
+        isUploadingImage,
+      }}
     >
       {children}
     </MarkupModeContext.Provider>

@@ -1,6 +1,8 @@
 import { styled } from '@/hocs';
 
-const DraftJSEditorContainer = styled.div`
+export type DraftJSEditorContainerProps = { wordBreak?: string };
+
+const DraftJSEditorContainer = styled.div<DraftJSEditorContainerProps>`
   word-break: ${({ wordBreak = 'normal' }) => wordBreak};
 
   & .public-DraftEditorPlaceholder-hasFocus,

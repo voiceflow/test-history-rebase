@@ -192,7 +192,7 @@ class NodeManager extends EngineConsumer {
     this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
   }
 
-  async updateData(nodeID: string, data: Partial<NodeData<unknown>>, save = true) {
+  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true) {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
     await this.engine.realtime.sendUpdate(Realtime.updateNodeData(nodeID, data));

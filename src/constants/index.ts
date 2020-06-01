@@ -482,3 +482,9 @@ export enum ShapeType {
   CIRCLE = 'circle',
   RECTANGLE = 'rectangle',
 }
+
+export enum TextAlignment {
+  LEFT = 'left',
+  RIGHT = 'right',
+  CENTER = 'center',
+}

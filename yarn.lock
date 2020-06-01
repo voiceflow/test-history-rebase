@@ -4132,6 +4132,24 @@
     moment "^2.24.0"
     randomstring "^1.1.5"
 
+"@voiceflow/draft-js-anchor-plugin@3.3.15":
+  version "3.3.15"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-anchor-plugin/-/draft-js-anchor-plugin-3.3.15.tgz#d32fd6f6decac5d0e66337d53517cbef21fdffd3"
+  integrity sha512-wk/6f6MFPRi3C6qgEv02E2tVPf4tw9l6mhxvEqU10yhTrLln0fzT7qcKSQ1byYNOoQ7DcHmo0jtYEhqCk+hCvQ==
+  dependencies:
+    draft-js "^0.10.1 || ^0.11.0"
+    draft-js-plugins-utils "2.0.2"
+
+"@voiceflow/draft-js-buttons@^3.3.16":
+  version "3.3.16"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-buttons/-/draft-js-buttons-3.3.16.tgz#cfeb808f92b999ab6837b1c6aa1cdee60dc1d161"
+  integrity sha512-vCXSa/lkGDIMjx+H0chOcB3SUquTdokAX0Sl71LX4XXvDdscsDQJEx8Y4zE6U9P/A9GvmywI+4TlMMp0di7ljw==
+
+"@voiceflow/draft-js-fake-selection@3.3.34":
+  version "3.3.34"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-fake-selection/-/draft-js-fake-selection-3.3.34.tgz#40d458e258ee672fd2c514a51316318665226b13"
+  integrity sha512-/5lrqiyeMmcgimcJT9JYOXDOHd6xAkDkAEVHetRgPGR35c6rIMVLeDLw8bRfbAFdc2jtG/UhJLfgErM3qhAJYg==
+
 "@voiceflow/draft-js-mention-plugin@3.3.15":
   version "3.3.15"
   resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-mention-plugin/-/draft-js-mention-plugin-3.3.15.tgz#bcdbfed2887ba0b03507d320c1d4b053546fa124"
@@ -4142,6 +4160,11 @@
     lodash "^4.17.14"
     lodash-es "^4.17.15"
     prop-types "^15.5.8"
+
+"@voiceflow/draft-js-static-toolbar-plugin@3.3.19":
+  version "3.3.19"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-static-toolbar-plugin/-/draft-js-static-toolbar-plugin-3.3.19.tgz#58eb4bcd7f995d480456177baa2cf738b646ace4"
+  integrity sha512-ieOGEPbLVBZo8o21EVGcScDQvjMOfNj13ONIcjTXSIeomI3Mg1CyoAh0m3FnGfgI9QltiAQxn9EKQ0Cv/HTvZg==
 
 "@voiceflow/eslint-config@2.0.1":
   version "2.0.1"
@@ -8326,11 +8349,6 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
-decorate-component-with-props@^1.0.2:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/decorate-component-with-props/-/decorate-component-with-props-1.1.0.tgz#b496c814c6a2aba0cf2ad26e44cbedb8ead42f15"
-  integrity sha512-tTYQojixN64yK3/WBODMfvss/zbmyUx9HQXhzSxZiSiofeekVeRyyuToy9BCiTMrVEIKWxTcla2t3y5qdaUF7Q==
-
 dedent@0.7.0, dedent@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
@@ -8816,17 +8834,6 @@ dotenv@^8.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.0.0.tgz#ed310c165b4e8a97bb745b0a9d99c31bda566440"
   integrity sha512-30xVGqjLjiUOArT4+M5q9sYdvuR4riM6yK9wMcas9Vbp6zZa+ocC9dp6QoftuhTPhFAiLK/0C5Ni2nou/Bk8lg==
 
-"draft-js-mention-plugin@github:DecathectZero/draft-js-mention":
-  version "3.1.3"
-  resolved "https://codeload.github.com/DecathectZero/draft-js-mention/tar.gz/71f4eb17f7831dd4a6eeec1bcf9e385389743da7"
-  dependencies:
-    decorate-component-with-props "^1.0.2"
-    find-with-regex "^1.1.3"
-    immutable "~3.7.4"
-    lodash.escaperegexp "^4.1.2"
-    prop-types "^15.5.8"
-    union-class-names "^1.0.0"
-
 draft-js-plugins-editor@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-3.0.0.tgz#196d1e065e2c29faebaab4ec081b734fdef294a2"
@@ -8834,6 +8841,25 @@ draft-js-plugins-editor@3.0.0:
   dependencies:
     immutable "~3.7.4"
     prop-types "^15.5.8"
+
+draft-js-plugins-utils@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/draft-js-plugins-utils/-/draft-js-plugins-utils-2.0.2.tgz#b2f8572808a2b921e079ff44d03ac7e74fb2c598"
+  integrity sha512-PXbNnMDYzu7CS72+Sx1vnwqE7lcW7q9+4LiZryOjYRbv0iwdf1pj9Wgcj52JGhBK1kkUtaKR8pH1x7DkaYbHoQ==
+
+draft-js-plugins-utils@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/draft-js-plugins-utils/-/draft-js-plugins-utils-2.0.3.tgz#ba76c780bd097e05c4a4a02dfb2f72d1e238ab07"
+  integrity sha512-MjSIRjaCbSANjE0Fmg3wh4NsVF5y89AkrGxsJLOkMrPS0ZGymK1YHaqIelrBJt+6Kr46ALtHQieaOFxEbqbrdg==
+
+"draft-js@^0.10.1 || ^0.11.0":
+  version "0.11.5"
+  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.11.5.tgz#b5dd30c30c9316801ab9766d45a8f88b1cd43b2c"
+  integrity sha512-RlHcoDtblwCD6Bw2ay3D0dTLA6lH8862OcdJrHGnYrY5JjlitzSzGvGQwqqumVvbGUNDSZLD3FyNpSs4z5WIUg==
+  dependencies:
+    fbjs "^1.0.0"
+    immutable "~3.7.4"
+    object-assign "^4.1.1"
 
 draft-js@^0.11.2:
   version "0.11.2"
@@ -10395,11 +10421,6 @@ find-up@^4.0.0, find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
-
-find-with-regex@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/find-with-regex/-/find-with-regex-1.1.3.tgz#d6c6f2debee898d36b6a77e05709b13dd5dc8a26"
-  integrity sha512-zkEVQ1H3PIQL/19ADKt1lCQU4QGM3OneiderUcFgn5EgTm/TnoUh7HxPAwP8w/vXxWSLC6KtpbDQpypJ5+majw==
 
 find-yarn-workspace-root@^1.2.1:
   version "1.2.1"
@@ -13878,11 +13899,6 @@ lodash.escape@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-4.0.1.tgz#c9044690c21e04294beaa517712fded1fa88de98"
   integrity sha1-yQRGkMIeBClL6qUXcS/e0fqI3pg=
-
-lodash.escaperegexp@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
-  integrity sha1-ZHYsSGGAglGKw99Mz11YhtriA0c=
 
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
@@ -21832,11 +21848,6 @@ unified@^7.0.0:
     trough "^1.0.0"
     vfile "^3.0.0"
     x-is-string "^0.1.0"
-
-union-class-names@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/union-class-names/-/union-class-names-1.0.0.tgz#9259608adacc39094a2b0cfe16c78e6200617847"
-  integrity sha1-kllgitrMOQlKKwz+FseOYgBheEc=
 
 union-value@^1.0.0:
   version "1.0.1"

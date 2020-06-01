@@ -35,6 +35,8 @@ function EditSidebar({ focus, node, parent, theme }) {
   const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
+  const isMarkup = MARKUP_NODES.includes(node?.type);
+
   let editor = null;
 
   if (shouldRender) {
@@ -60,7 +62,7 @@ function EditSidebar({ focus, node, parent, theme }) {
       />
     );
 
-    if (MARKUP_NODES.includes(node.type)) {
+    if (isMarkup) {
       editor = (
         <NamespaceProvider value={['editor', node.type, node.id]}>
           <MarkupEditor key={`${node.id}-${path.length}`} animationDistance={prevAnimationDistance.current}>
@@ -102,7 +104,7 @@ function EditSidebar({ focus, node, parent, theme }) {
         key={focus.target} // required to fix layout issue
         style={{ overflow: 'hidden' }}
         open={isOpen}
-        width={theme.components.editSidebar.width}
+        width={isMarkup ? theme.components.markupSidebar.width : theme.components.blockSidebar.width}
         onPaste={stopImmediatePropagation()}
         direction="left"
         disableAnimation={!shouldRender}

@@ -1,11 +1,13 @@
-import { ShapeType } from '@/constants';
+import { RawDraftContentState } from 'draft-js';
+
+import { ShapeType, TextAlignment } from '@/constants';
 
 export namespace Markup {
   export type Color = { r: number; g: number; b: number; a: number };
 
   export type TextNodeData = {
-    text: string;
-    color: Color;
+    content: RawDraftContentState;
+    textAlignment: TextAlignment;
   };
 
   export type ImageNodeData = {

@@ -11,7 +11,9 @@ import CombinedManager from './Combined';
 import CommandManager from './Command';
 import CommentManager from './Comment';
 import DeprecatedManager from './Deprecated';
+import DirectiveManager from './Directive';
 import DisplayManager from './Display';
+import EventManager from './Event';
 import ExitManager from './Exit';
 import FlowManager from './Flow';
 import IfManager from './If';
@@ -56,6 +58,8 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.PAYMENT]: PaymentManager,
   [BlockType.CANCEL_PAYMENT]: CancelPaymentManager,
   [BlockType.REMINDER]: ReminderManager,
+  [BlockType.EVENT]: EventManager,
+  [BlockType.DIRECTIVE]: DirectiveManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,

@@ -11,7 +11,9 @@ import choiceBlockAdapter from './choice';
 import codeBlockAdapter from './code';
 import commandBlockAdapter from './command';
 import deprecatedBlockAdapter from './deprecated';
+import directiveBlockAdapter from './directive';
 import displayBlockAdapter from './display';
+import eventBlockAdapter from './event';
 import exitBlockAdapter from './exit';
 import flowBlockAdapter from './flow';
 import ifBlockAdapter from './if';
@@ -84,6 +86,8 @@ const blockAdapter = {
   [BlockType.MARKUP_TEXT]: markupTextBlockAdapter,
   [BlockType.MARKUP_IMAGE]: markupImageBlockAdapter,
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
+  [BlockType.DIRECTIVE]: directiveBlockAdapter,
+  [BlockType.EVENT]: eventBlockAdapter,
 };
 
 export default blockAdapter;

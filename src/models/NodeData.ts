@@ -125,6 +125,10 @@ export namespace NodeData {
     }[];
   };
 
+  export type Directive = {
+    directive: any;
+  };
+
   export type Stream = {
     audio: string;
     iconImage: string | null;
@@ -143,6 +147,14 @@ export namespace NodeData {
   };
 
   export type Intent = Record<PlatformType, { intent: string | null; mappings: unknown[] }>;
+
+  export type Event = {
+    requestName: string;
+    mappings: {
+      path: string;
+      var: string | null;
+    }[];
+  };
 
   export type Payment = {
     productID: string | null;

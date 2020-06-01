@@ -9,6 +9,15 @@ import 'brace/mode/json_custom';
 import 'brace/theme/chrome';
 /* eslint-enable simple-import-sort/sort */
 
+export const ACE_EDITOR_OPTIONS = {
+  enableBasicAutocompletion: true,
+  enableLiveAutocompletion: true,
+  enableSnippets: false,
+  showLineNumbers: true,
+  tabSize: 2,
+  useWorker: false,
+};
+
 export default styled(AceEditor).attrs({
   fontSize: 13,
   showGutter: true,

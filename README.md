@@ -242,7 +242,8 @@ yarn start --ff_someFeature
 #### Available Flags and Environment Variables
 
 - `ff_canvasExport` / `VF_APP_CANVAS_EXPORT`: enable canvas export feature
-- `ff_markup` / `VF_APP_FF_MARKUP`:           enable canvas markup feature
+- `ff_markup` / `VF_APP_FF_MARKUP`: enable canvas markup feature
+- `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
 
 ## Previewing in an ephmeral environment
 

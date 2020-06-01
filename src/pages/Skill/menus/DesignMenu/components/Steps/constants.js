@@ -175,6 +175,18 @@ export const PLATFORM_SECTION = {
         label: 'Account Linking',
         iconColor: getManager(BlockType.ACCOUNT_LINKING).iconColor,
       },
+      {
+        type: BlockType.EVENT,
+        icon: getManager(BlockType.EVENT).icon,
+        label: getManager(BlockType.EVENT).label,
+        iconColor: getManager(BlockType.EVENT).iconColor,
+      },
+      {
+        type: BlockType.DIRECTIVE,
+        icon: getManager(BlockType.DIRECTIVE).icon,
+        label: getManager(BlockType.DIRECTIVE).label,
+        iconColor: getManager(BlockType.DIRECTIVE).iconColor,
+      },
     ],
     [PlatformType.GOOGLE]: [SHARED_PLATFORM_STEPS.STREAM, SHARED_PLATFORM_STEPS.CARD, SHARED_PLATFORM_STEPS.CODE],
   },

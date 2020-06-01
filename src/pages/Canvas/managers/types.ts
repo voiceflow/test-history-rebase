@@ -20,6 +20,7 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   addable?: boolean;
   reprompt?: boolean;
   chips?: boolean;
+  mergeInitializer?: boolean;
   mergeTerminator?: boolean;
   platformDependent?: boolean;
   platforms?: PlatformType[];

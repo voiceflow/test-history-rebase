@@ -2,7 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType } from '@/constants';
+import { FEATURE_IDS, ModalType, UserRole } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -11,10 +11,10 @@ import { activeDiagramViewersSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 
 const CanvasViewers = ({ viewers }) => {
-  const [canAddCollaborators] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
+  const [canAddCollaborators, userRole] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
 
-  return (
+  return userRole === UserRole.LIBRARY ? null : (
     <Flex>
       <Members members={viewers} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
     </Flex>

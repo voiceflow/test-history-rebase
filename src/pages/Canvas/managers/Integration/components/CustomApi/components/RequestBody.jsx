@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AceEditor from '@/components/AceEditor';
+import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { useManager } from '@/hooks';
@@ -29,15 +29,6 @@ const BODY_OPTIONS = [
     label: 'Raw',
   },
 ];
-
-const ACE_EDITOR_OPTIONS = {
-  enableBasicAutocompletion: true,
-  enableLiveAutocompletion: true,
-  enableSnippets: false,
-  showLineNumbers: true,
-  tabSize: 2,
-  useWorker: false,
-};
 
 function RequestBody({ body, content, bodyInputType, onChange, factory }) {
   const { items, onAdd, mapManaged } = useManager(body, (body) => onChange({ body }), { factory });

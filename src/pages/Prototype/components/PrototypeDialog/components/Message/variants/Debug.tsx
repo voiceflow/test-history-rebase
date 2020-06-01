@@ -9,7 +9,12 @@ import { MessageProps } from '../components/Message';
 
 const DebugMessage = styled(Message)`
   ${Bubble} {
+    white-space: pre;
     background: #eef4f6;
+
+    p {
+      margin-bottom: 0;
+    }
   }
 `;
 

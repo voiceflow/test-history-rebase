@@ -7,7 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType, PlanType, WORKSPACES_LIMIT } from '@/constants';
+import { FEATURE_IDS, ModalType, PlanType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -32,7 +32,7 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
-  const [canUseWorkspaceSettings] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
+  const [canUseWorkspaceSettings, userRole] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
   const [canAddCollaborators] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
 
   const tabsOptions = React.useMemo(() => {
@@ -62,16 +62,16 @@ function SecondaryNav({ leaveWorkspace, workspaces, workspaceID: selectedWorkspa
       <FlexCenter>
         {selectedWorkspace && (
           <>
-            {selectedWorkspace.members.length > 1 ? (
-              <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
-            ) : (
-              canAddCollaborators && (
-                <AddCollaborators onClick={toggleCollaborators}>
-                  <SvgIcon icon="power" color="inherit" />
-                  Add Collaborators
-                </AddCollaborators>
-              )
-            )}
+            {selectedWorkspace.members.length > 1
+              ? userRole !== UserRole.LIBRARY && (
+                  <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
+                )
+              : canAddCollaborators && (
+                  <AddCollaborators onClick={toggleCollaborators}>
+                    <SvgIcon icon="power" color="inherit" />
+                    Add Collaborators
+                  </AddCollaborators>
+                )}
 
             <>
               <NavChildItem>

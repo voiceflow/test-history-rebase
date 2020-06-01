@@ -32,7 +32,7 @@ const EventManager: NodeConfig<NodeData.Event> = {
       mappings: [
         {
           path: '',
-          variable: '',
+          var: '',
         },
       ],
     },

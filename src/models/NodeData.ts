@@ -152,7 +152,7 @@ export namespace NodeData {
     requestName: string;
     mappings: {
       path: string;
-      variable: string;
+      var: string | null;
     }[];
   };
 

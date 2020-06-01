@@ -211,33 +211,6 @@ exports[`Storyshots Creator/Canvas Controls Base 1`] = `
         }
       }
     >
-      <button
-        className="c2 c3"
-        onClick={[Function]}
-      >
-        <span
-          className="c4 c5"
-          color="currentColor"
-          size={16}
-        >
-          <svg
-            data-file-name="SvgCode"
-          />
-        </span>
-      </button>
-    </div>
-  </div>
-  <div
-    className="c1"
-  >
-    <div
-      className=""
-      style={
-        Object {
-          "display": "inline",
-        }
-      }
-    >
       <div
         className="c6"
         onClick={[Function]}

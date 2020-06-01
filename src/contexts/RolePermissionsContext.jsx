@@ -19,7 +19,7 @@ const PermissionsProvider = ({ userId, activeWorkspaceMembers, children }) => {
 export const usePermissions = (featureId) => {
   const { userRole } = React.useContext(RolePermissionsContext) || {};
 
-  const canUse = React.useMemo(() => FEATURE_PERMISSIONS[featureId].includes(userRole), [userRole, featureId]);
+  const canUse = React.useMemo(() => FEATURE_PERMISSIONS[featureId]?.includes(userRole), [userRole, featureId]);
 
   return [canUse, userRole];
 };

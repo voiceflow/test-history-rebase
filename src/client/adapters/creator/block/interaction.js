@@ -1,5 +1,7 @@
 import cuid from 'cuid';
 
+import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import { ChoiceElseType, DialogType } from '@/constants';
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { createBlockAdapter, repromptAdapter, slotMappingAdapter } from './utils';
@@ -9,6 +11,30 @@ const getChoiceByIndex = (choices, index) => ({
   intent: choices[index]?.intent?.key || choices[index]?.intent?.value || null,
   mappings: slotMappingAdapter.fromDB(choices[index]?.mappings),
 });
+
+// For backwards compatibility with old Choice block
+const createElseDataDefaults = () => ({
+  type: ChoiceElseType.PATH,
+  randomize: false,
+  reprompts: [],
+});
+
+const elseAdapter = {
+  fromDB: ({ type, reprompts, randomize }) => ({
+    type,
+    randomize,
+    reprompts: reprompts.map((dbData) =>
+      dbData.type === DialogType.AUDIO ? dbData : { ...dbData, content: textEditorContentAdapter.fromDB(dbData.content) }
+    ),
+  }),
+  toDB: ({ type, reprompts, randomize }) => ({
+    type,
+    randomize,
+    reprompts: reprompts.map((uiData) =>
+      uiData.type === DialogType.AUDIO ? uiData : { ...uiData, content: textEditorContentAdapter.toDB(uiData.content) }
+    ),
+  }),
+};
 
 const mapChoiceToDB = ({ intent, mappings }) => ({
   intent: intent
@@ -22,19 +48,21 @@ const mapChoiceToDB = ({ intent, mappings }) => ({
 });
 
 const interactionBlockAdapter = createBlockAdapter(
-  ({ name, alexa, google, reprompt }) => ({
+  ({ name, alexa, google, reprompt, else: elseData }) => ({
     name,
     choices: Array.from({ length: Math.max(alexa.choices.length, google.choices.length) }, (_, i) => ({
       alexa: getChoiceByIndex(alexa.choices, i),
       google: getChoiceByIndex(google.choices, i),
     })),
     reprompt: repromptAdapter.fromDB(reprompt),
+    else: elseAdapter.fromDB(elseData || createElseDataDefaults()),
   }),
-  ({ name, choices, reprompt }) => ({
+  ({ name, choices, reprompt, else: elseData }) => ({
     name,
     alexa: { choices: choices.map(({ alexa }) => mapChoiceToDB(alexa)) },
     google: { choices: choices.map(({ google }) => mapChoiceToDB(google)) },
     reprompt: repromptAdapter.toDB(reprompt),
+    else: elseAdapter.toDB(elseData),
   })
 );
 

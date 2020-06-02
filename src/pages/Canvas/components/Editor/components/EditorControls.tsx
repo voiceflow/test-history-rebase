@@ -10,24 +10,24 @@ import ControlsContainer from './ControlsContainer';
 import EditorTutorial from './EditorTutorial';
 
 export type ControlOptions = {
-  icon?: Icon;
+  icon?: React.ReactNode | Icon;
   label: string;
   onClick: React.MouseEventHandler;
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   disabled?: boolean;
 };
 
 export type EditorControlsProps = {
-  tutorial: {
+  tutorial?: {
     content: React.ReactNode;
     blockType: BlockType;
     helpTitle: React.ReactNode;
     helpMessage: React.ReactNode;
   };
   menu: React.ReactNode;
-  anchor: React.ReactNode;
+  anchor?: React.ReactNode;
   options: ControlOptions[];
-  tutorialTitle: React.ReactNode;
+  tutorialTitle?: React.ReactNode;
 };
 
 const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
@@ -38,10 +38,10 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       {tutorial && (
         <EditorTutorial
           anchor={anchor}
+          tutorialTitle={tutorialTitle}
           title={getManager(tutorial.blockType)?.label || 'Block'}
           helpTitle={tutorial.helpTitle}
           helpMessage={tutorial.helpMessage}
-          tutorialTitle={tutorialTitle}
         >
           {tutorial.content}
         </EditorTutorial>

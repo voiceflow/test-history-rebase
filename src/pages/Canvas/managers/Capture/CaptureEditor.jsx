@@ -19,8 +19,11 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
   const updateSlot = React.useCallback((slot) => onChange({ slot }), [onChange]);
   const onSelectVariable = React.useCallback((variable) => onChange({ variable }), [onChange]);
 
-  const hasReprompt = !!data.reprompt;
-  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
+  const hasNoReplyResponse = !!data.reprompt;
+  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasNoReplyResponse ? null : repromptFactory() }), [
+    hasNoReplyResponse,
+    onChange,
+  ]);
 
   const optionsFilter = React.useCallback((slotType) => slotType?.value !== SEARCH_QUERY_SLOT, []);
 
@@ -33,7 +36,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
               placement="top-end"
               options={[
                 {
-                  label: hasReprompt ? 'Remove No Reply Response' : 'Add  No Reply Response',
+                  label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
                   onClick: toggleReprompt,
                 },
               ]}
@@ -88,7 +91,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
           <VariableSelect value={data.variable} onChange={onSelectVariable} />
         </FormControl>
       </Section>
-      {hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
+      {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
     </Content>
   );
 }

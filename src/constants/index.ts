@@ -220,6 +220,15 @@ export enum DialogType {
   VOICE = 'voice',
 }
 
+export enum ChoiceElseType {
+  PATH = 'path',
+  REPROMPT = 'reprompt',
+}
+
+export enum VoiceType {
+  ALEXA = 'Alexa',
+}
+
 export const KeyCodes = {
   ENTER: 13,
 };

@@ -18,6 +18,7 @@ const {
   logFilter,
   ff_markup,
   ff_canvasExport,
+  ff_repromptEditor,
   ff_templates,
   ff_gadgets,
 } = require('webpack-nano/argv');
@@ -59,6 +60,7 @@ module.exports = {
     // feature flags
     FF_MARKUP: ff_markup && 'true',
     FF_CANVAS_EXPORT: ff_canvasExport && 'true',
+    FF_REPROMPT_EDITOR: ff_repromptEditor && 'true',
     FF_TEMPLATES: ff_templates && 'true',
     FF_GADGETS: ff_gadgets && 'true',
 

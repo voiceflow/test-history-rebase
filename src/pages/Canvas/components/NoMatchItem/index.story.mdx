@@ -1,0 +1,20 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+import { NoMatchItem } from '.';
+
+<Meta title="No Match Item" component={NoMatchItem} includeStories={[]} />
+
+# NoMatchItem
+
+An SSML and Audio input for a No Matches List
+
+### Basic
+
+<Preview>
+  <Story name="SSML">{stories.ssml()}</Story>
+</Preview>
+
+<Preview>
+  <Story name="Audio">{stories.audio()}</Story>
+</Preview>

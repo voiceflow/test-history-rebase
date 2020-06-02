@@ -36,8 +36,11 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
     [focusedNode.id, data.choices.length, onAdd]
   );
 
-  const hasReprompt = !!data.reprompt;
-  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
+  const hasNoReplyResponse = !!data.reprompt;
+  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasNoReplyResponse ? null : repromptFactory() }), [
+    hasNoReplyResponse,
+    onChange,
+  ]);
 
   return (
     <Content
@@ -48,7 +51,7 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
               placement="top-end"
               options={[
                 {
-                  label: hasReprompt ? 'Remove No Reply Response' : 'Add  No Reply Response',
+                  label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
                   onClick: toggleReprompt,
                 },
               ]}
@@ -66,7 +69,7 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
       {mapManaged((choice, { key, index, onUpdate, onRemove }) => (
         <ChoiceItem key={key} index={index} choice={choice} onChange={onUpdate} onRemove={onRemove} />
       ))}
-      {hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
+      {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
     </Content>
   );
 }

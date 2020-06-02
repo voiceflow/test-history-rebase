@@ -4,15 +4,17 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useManager, useToggle } from '@/hooks';
+import { useFeature, useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
 
 import DraggableItem from './DraggableItem';
 
@@ -29,9 +31,13 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
 
   const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
   const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [engine.port, focusedNode.ports.out]);
+  const usingRepromptEditor = useFeature(FeatureFlag.REPROMPT_EDITOR);
 
-  const hasReprompt = !!data.reprompt;
-  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
+  const hasNoReplyResponse = !!data.reprompt;
+  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasNoReplyResponse ? null : repromptFactory() }), [
+    hasNoReplyResponse,
+    onChange,
+  ]);
 
   const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey, items } = useManager(choices, updateChoices, {
     factory: choiceFactory,
@@ -67,7 +73,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
                 placement="top-end"
                 options={[
                   {
-                    label: hasReprompt ? 'Remove No Reply Response' : 'Add  No Reply Response',
+                    label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
                     onClick: toggleReprompt,
                   },
                 ]}
@@ -94,7 +100,12 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
       <DraggableList
         type="interaction-editor"
         items={items}
-        footer={hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
+        footer={
+          <>
+            {usingRepromptEditor.isEnabled && <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />}
+            {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
+          </>
+        }
         onDelete={onRemove}
         onReorder={reorderChoice}
         onEndDrag={toggleDragging}

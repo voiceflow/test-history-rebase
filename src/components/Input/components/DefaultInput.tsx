@@ -17,7 +17,7 @@ const PlainInput = styled.input<StyledInputProps>`
 
 export type NestedInputProps = Omit<React.ComponentProps<'input'>, 'ref'> & {
   className?: string;
-  icon?: Icon;
+  icon?: Icon | React.ComponentType;
   error?: boolean;
   disabled?: boolean;
   leftAction?: React.ReactNode;

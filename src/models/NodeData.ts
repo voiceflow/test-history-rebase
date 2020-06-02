@@ -1,6 +1,7 @@
 import {
   BlockType,
   CardType,
+  ChoiceElseType,
   DialogType,
   DisplayType,
   ExpressionType,
@@ -11,6 +12,7 @@ import {
 } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { UserType } from '@/models/Integration';
+import { SpeakData } from '@/models/Speak';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -44,6 +46,11 @@ export namespace NodeData {
         mappings: { variable: string | null; slot: string | null }[];
       }
     >[];
+    else: {
+      type: ChoiceElseType;
+      randomize: boolean;
+      reprompts: SpeakData[];
+    };
   };
 
   export type Choice = {

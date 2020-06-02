@@ -7,30 +7,45 @@ import SvgIcon from '@/components/SvgIcon';
 
 import Container from './components/OverflowMenuContainer';
 
-function OverflowMenu({ options, onSelect, disabled, placement }) {
+const DropdownAny = Dropdown as any;
+const MenuAny = Menu as any;
+
+export type OverflowMenuItem = {
+  onClick: (e: React.MouseEvent) => any;
+  label: string | React.ReactNode;
+};
+
+export type OverflowMenuProps = {
+  options: OverflowMenuItem[];
+  disabled?: boolean;
+  onSelect?: (value: any) => void;
+  placement: string;
+};
+
+function OverflowMenu({ options, onSelect, disabled, placement }: OverflowMenuProps) {
   return (
-    <Dropdown
+    <DropdownAny
       {...(onSelect
         ? { onSelect, options }
         : {
             menu: (
-              <Menu>
+              <MenuAny>
                 {options.map(({ onClick, label }, index) => (
                   <MenuItem key={index} onClick={onClick}>
                     {label}
                   </MenuItem>
                 ))}
-              </Menu>
+              </MenuAny>
             ),
           })}
       placement={placement}
     >
-      {(ref, onToggle) => (
+      {(ref: React.Ref<any>, onToggle: (e: React.MouseEvent) => any) => (
         <Container disabled={disabled} onClick={onToggle} ref={ref}>
           <SvgIcon icon="elipsis" />
         </Container>
       )}
-    </Dropdown>
+    </DropdownAny>
   );
 }
 

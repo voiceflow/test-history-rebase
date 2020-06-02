@@ -1,2 +1,7 @@
 import 'core-js/stable';
-import 'resize-observer-polyfill';
+
+import ResizeObserver from 'resize-observer-polyfill';
+
+if (window) {
+  window.ResizeObserver = window.ResizeObserver || ResizeObserver;
+}

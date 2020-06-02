@@ -1,6 +1,10 @@
 import { styled, units } from '@/hocs';
 
-const Section = styled.section`
+export type SectionProps = {
+  marginBottomUnits: number;
+};
+
+const Section = styled.section<SectionProps>`
   &:not(:last-child) {
     margin-bottom: ${({ marginBottomUnits }) => units(marginBottomUnits)}px;
   }

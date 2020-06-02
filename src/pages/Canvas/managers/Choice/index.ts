@@ -1,18 +1,12 @@
 import cuid from 'cuid';
 
-import IntentSlotForm from '@/components/IntentSlotForm';
-import { BlockType } from '@/constants';
+import { BlockType, ChoiceElseType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
-import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 
 import { NodeConfig } from '../types';
 import ChoiceEditor from './ChoiceEditor';
 import ChoiceStep from './ChoiceStep';
-
-const EDITORS_BY_PATH = {
-  slot: IntentSlotForm,
-  noReplyResponse: NoReplyResponseForm,
-};
+import { EDITORS_BY_PATH } from './subeditors';
 
 const ChoiceManager: NodeConfig<NodeData.Interaction> = {
   type: BlockType.CHOICE,
@@ -54,6 +48,18 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
         },
       ],
       reprompt: null,
+      else: {
+        type: ChoiceElseType.PATH,
+        randomize: false,
+        reprompts: [
+          {
+            id: cuid.slug(),
+            type: DialogType.VOICE,
+            voice: 'Alexa',
+            content: '',
+          },
+        ],
+      },
     },
   }),
 };

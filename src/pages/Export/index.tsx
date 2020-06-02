@@ -12,6 +12,7 @@ import * as Skill from '@/ducks/skill';
 import { ProjectLoadingGate } from '@/gates';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { connect, styled, withBatchLoadingGate } from '@/hocs';
+import removeIntercom from '@/hocs/removeIntercom';
 import { useFeature } from '@/hooks';
 import { Node } from '@/models';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
@@ -135,6 +136,7 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
 };
 
 export default compose(
+  removeIntercom,
   React.memo,
   connect(null, { initialize }),
   withBatchLoadingGate(

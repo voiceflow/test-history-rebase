@@ -5,7 +5,7 @@ import Flex from '@/components/Flex';
 import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
 import Portal from '@/components/Portal';
 
-import { InlineInputValue, SearchInput, SearchInputIcon, SelectWrapper } from './components';
+import { InlineInputValue, PrefixContainer, SearchInput, SearchInputIcon, SelectWrapper } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 
 const defaultGetter = (option) => option;
@@ -30,6 +30,7 @@ export default function Select({
   withIcon = false,
   withSearchIcon,
   onCreate,
+  prefix,
   placement = 'bottom-start',
   autoWidth = true,
   fullWidth,
@@ -246,6 +247,10 @@ export default function Select({
     opened,
     rightAction,
   };
+
+  if (prefix) {
+    inputProps.leftAction = <PrefixContainer>{prefix}</PrefixContainer>;
+  }
 
   React.useEffect(() => {
     if (inline && inputWrapperRef) {

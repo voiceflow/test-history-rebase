@@ -103,6 +103,12 @@ export const creatableAndSearchable = () => (
   </div>
 );
 
+export const prefixed = () => (
+  <div style={{ width: '300px' }}>
+    <Select {...getProps()} creatable searchable createInputPlaceholder="create placeholder" prefix="PREFIX" />
+  </div>
+);
+
 export const customLabel = () => {
   const [value, setValue] = React.useState();
   const [options, setOptions] = React.useState(DEFAULT_OPTIONS_WITH_ICONS);

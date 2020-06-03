@@ -4,6 +4,7 @@ import { EDITOR_SEAT_ROLES, PlanType } from '@/constants';
 import { createRootSelector } from '@/ducks/utils';
 import { getAlternativeColor } from '@/utils/colors';
 
+import { userIDSelector } from '../account';
 import { STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
@@ -53,4 +54,9 @@ export const distinctWorkspaceMemberSelector = createSelector(
 
     return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
   }
+);
+
+export const userRoleSelector = createSelector(
+  [workspaceMemberSelector, userIDSelector],
+  (getMember, creatorID) => getMember(String(creatorID))?.role
 );

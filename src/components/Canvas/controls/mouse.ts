@@ -31,21 +31,21 @@ class MouseControls extends BaseControls {
     this.panDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
   };
 
-  mouseup = () => {
+  mouseup = (event: MouseEvent) => {
     this.mouseMovement.clear();
 
     if (this.isPanning) {
       this.isPanning = false;
 
       if (this.panDistance < MAX_CLICK_TRAVEL) {
-        this.handle({ type: ControlType.CLICK });
+        this.handle({ type: ControlType.CLICK, event });
       } else {
         this.handle({ type: ControlType.END });
       }
 
       this.panDistance = 0;
     } else {
-      this.handle({ type: ControlType.CLICK });
+      this.handle({ type: ControlType.CLICK, event });
     }
 
     document.removeEventListener('mouseup', this.mouseup);

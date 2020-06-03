@@ -152,9 +152,7 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  // eslint-disable-next-line max-params
-  async add(type: BlockType, [x, y]: Point, factoryData?: Partial<NodeData<unknown>>) {
-    const nodeID = cuid();
+  async add(type: BlockType, [x, y]: Point, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid()) {
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };

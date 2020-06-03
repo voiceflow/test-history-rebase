@@ -19,13 +19,14 @@ export const MARKUP_MODE_CURSORS: Record<MarkupModeType, string> = {
   [MarkupModeType.IMAGE]: 'default',
 };
 
-const Wrapper = styled.div<{ markupMode?: MarkupModeType | null }>`
+const Wrapper = styled.div<{ markupMode: MarkupModeType | null; isMarkupCreating: boolean }>`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
 
-  ${({ markupMode }) =>
+  ${({ markupMode, isMarkupCreating }) =>
     markupMode &&
+    isMarkupCreating &&
     css`
       cursor: ${MARKUP_MODE_CURSORS[markupMode]};
     `}
@@ -36,7 +37,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
-  const markupTool = React.useContext(MarkupModeContext);
+  const { isCreating: isMarkupCreating, modeType: markupModeType } = React.useContext(MarkupModeContext)!;
 
   const showSpotlight = React.useCallback(() => canEdit && spotlight.toggle(), [canEdit]);
   const deleteActive = React.useCallback<Callback>(() => canEdit && engine.removeActive(), [canEdit]);
@@ -53,7 +54,11 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.COMMENT, addComment, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
 
-  return <Wrapper markupMode={markupTool?.modeType}>{children}</Wrapper>;
+  return (
+    <Wrapper markupMode={markupModeType} isMarkupCreating={isMarkupCreating}>
+      {children}
+    </Wrapper>
+  );
 };
 
 const mapDispatchToProps = {

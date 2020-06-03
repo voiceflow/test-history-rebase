@@ -265,6 +265,10 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -723,6 +727,10 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -1167,6 +1175,10 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -1622,6 +1634,10 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -2067,6 +2083,10 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2505,6 +2525,10 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2901,6 +2925,10 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c17 {

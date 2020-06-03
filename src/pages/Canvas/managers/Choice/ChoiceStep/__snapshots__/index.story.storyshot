@@ -328,6 +328,10 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -926,6 +930,10 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -1474,6 +1482,10 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -1974,6 +1986,10 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c21 {
@@ -2553,6 +2569,10 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c21 {

@@ -11,7 +11,7 @@ import { ShapesContainer, ShapesWrapper } from './components';
 const Dropdown: any = BaseDropdown;
 
 const AddShapesMenu: React.FC = () => {
-  const { modeType, setModeType } = React.useContext(MarkupModeContext)!;
+  const { modeType, setModeType, setCreatingModeType } = React.useContext(MarkupModeContext)!;
 
   const onClick = (mode: MarkupModeType) => () => (modeType && mode === modeType ? setModeType(null) : setModeType(mode));
 
@@ -41,8 +41,8 @@ const AddShapesMenu: React.FC = () => {
           large
           icon="frame"
           onClick={stopImmediatePropagation(() => {
-            setModeType(null);
             onToggle();
+            setCreatingModeType(null);
           })}
           active={isOpen}
         />

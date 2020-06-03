@@ -292,6 +292,10 @@ exports[`Storyshots Creator/Steps/Stream Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -828,6 +832,10 @@ exports[`Storyshots Creator/Steps/Stream Step Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c23 {
   position: absolute;
   top: 6px;
@@ -1360,6 +1368,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Alexa 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c21 {
   position: absolute;
   top: 6px;
@@ -1853,6 +1865,10 @@ exports[`Storyshots Creator/Steps/Stream Step Empty Google 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -2316,6 +2332,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Audio Added 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c21 {
@@ -2832,6 +2852,10 @@ exports[`Storyshots Creator/Steps/Stream Step With Custom Pause 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c21 {

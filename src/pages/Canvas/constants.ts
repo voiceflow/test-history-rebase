@@ -4,6 +4,8 @@ export const CANVAS_ACTIVATION_CLASSNAME = `${Identifier.CANVAS}--activation`;
 export const CANVAS_DRAGGING_CLASSNAME = `${Identifier.CANVAS}--dragging`;
 export const CANVAS_MERGING_CLASSNAME = `${Identifier.CANVAS}--merging`;
 export const CANVAS_CREATING_LINK_CLASSNAME = `${Identifier.CANVAS}--creating-link`;
+export const CANVAS_MARKUP_ENABLED = `${Identifier.CANVAS}--markup`;
+export const CANVAS_MARKUP_CREATING = `${Identifier.CANVAS}--markup-creating`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;

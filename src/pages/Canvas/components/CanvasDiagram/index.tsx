@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
 import { FeatureFlag } from '@/config/features';
-import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import GroupSelection from '@/pages/Canvas/components/GroupSelection';
@@ -13,7 +13,7 @@ import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { ContextMenuContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
 
@@ -37,16 +37,33 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const groupSelection = React.useContext(GroupSelectionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { canEdit } = React.useContext(EditPermissionContext)!;
+  const { isOpen: isMarkupOpen, modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(
+    MarkupModeContext
+  )!;
 
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onClickCanvas = React.useCallback(() => engine.clearActivation(), []);
+  const onClickCanvas = React.useCallback(
+    ({ clientX, clientY }: MouseEvent) => {
+      if (isMarkupOpen && isMarkupCreating) {
+        if (markupModeType === MarkupModeType.TEXT) {
+          engine.markup.addTextNode([clientX, clientY]);
+        }
+
+        finishMarkupCreating();
+      } else {
+        engine.clearActivation();
+      }
+    },
+    [isMarkupOpen, MarkupModeType, isMarkupCreating]
+  );
+
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
-  const startGroupSelection = React.useCallback(({ clientX, clientY }) => canEdit && groupSelection.onStart([clientX, clientY]), [
-    canEdit,
-    groupSelection.onStart,
-  ]);
+  const startGroupSelection = React.useCallback<React.MouseEventHandler>(
+    ({ clientX, clientY }) => canEdit && groupSelection.onStart([clientX, clientY]),
+    [canEdit, groupSelection.onStart]
+  );
 
   const [, connectBlockDrop] = useDrop({
     accept: DragItem.BLOCK_MENU,

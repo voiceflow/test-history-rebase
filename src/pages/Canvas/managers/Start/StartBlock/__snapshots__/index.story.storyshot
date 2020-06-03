@@ -353,6 +353,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -1088,6 +1092,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c24 {
   position: absolute;
   top: 6px;
@@ -1688,6 +1696,10 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c19 {
   position: absolute;
   top: 6px;
@@ -2217,6 +2229,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c22 {
@@ -2898,6 +2914,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c24 {

@@ -29,7 +29,7 @@ export type CanvasProps = {
   onChange?: (viewport: Viewport) => void;
   onPan?: (offsetX: number, offsetY: number) => void;
   onZoom?: (translateZoom: (mousePosition: Point) => Point) => number;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent) => void;
   onRightClick?: () => void;
   onShiftClick?: (event: React.MouseEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
@@ -237,7 +237,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         break;
       case ControlType.CLICK:
         this.props.overlay.dismiss();
-        this.props.onClick && this.props.onClick();
+        this.props.onClick && this.props.onClick(control.event);
         break;
       case ControlType.END:
         this.onChange();

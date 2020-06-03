@@ -19,6 +19,7 @@ import BlockContainer from '@/pages/Canvas/components/Block/components/BlockCont
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
+import { ChildContainer as MarkupChildNodeContainer, Container as MarkupNodeContainer } from '@/pages/Canvas/components/MarkupNode/components';
 import NodeContainer from '@/pages/Canvas/components/Node/components/NodeContainer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
@@ -60,6 +61,15 @@ const ExportCanvasDiagram = styled(Canvas as any)`
       margin-right: ${EXPORT_MARGIN}px;
       position: relative;
       transform: none;
+    }
+  }
+
+  ${MarkupNodeContainer} {
+    margin-bottom: ${EXPORT_MARGIN}px;
+
+    ${MarkupChildNodeContainer} {
+      margin-right: ${EXPORT_MARGIN}px;
+      position: relative;
     }
   }
 `;

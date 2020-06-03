@@ -30,7 +30,7 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   tip?: string;
 
   step: React.FC<ConnectedStepProps<T>>;
-  editor: React.FC<{ data: T; nodeID: string; onChange: (data: Partial<T>) => void; focusedNode: NodeDescriptor }>;
+  editor: React.FC<{ data: T; nodeID: string; onChange: (data: Partial<T>) => void; isOpen: boolean; focusedNode: NodeDescriptor }>;
   markupNode?: T extends Markup.NodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
   editorsByPath?: Record<string, React.FC<any>>;
 

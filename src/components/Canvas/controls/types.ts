@@ -28,6 +28,7 @@ export type EndAction = {
 
 export type ClickAction = {
   type: ControlType.CLICK;
+  event: MouseEvent;
 };
 
 export type ShiftMousedownAction = {

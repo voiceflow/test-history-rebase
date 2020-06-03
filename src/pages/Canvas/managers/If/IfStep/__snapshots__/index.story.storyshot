@@ -354,6 +354,10 @@ exports[`Storyshots Creator/Steps/If Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c25 {
   position: absolute;
   top: 6px;
@@ -1061,6 +1065,10 @@ exports[`Storyshots Creator/Steps/If Step Empty 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -1617,6 +1625,10 @@ exports[`Storyshots Creator/Steps/If Step Multiple 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c25 {
@@ -2390,6 +2402,10 @@ exports[`Storyshots Creator/Steps/If Step Single 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c25 {

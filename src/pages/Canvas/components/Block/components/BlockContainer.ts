@@ -4,6 +4,7 @@ import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
+  CANVAS_MARKUP_ENABLED,
   NODE_ACTIVE_CLASSNAME,
   NODE_DISABLED_CLASSNAME,
   NODE_FOCUSED_CLASSNAME,
@@ -93,6 +94,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
     :not(.${NODE_MERGE_TARGET_CLASSNAME}):hover {
       opacity: 1;
     }
+  }
+
+  .${CANVAS_MARKUP_ENABLED} & {
+    pointer-events: none !important
   }
 
   ${MemberIcon} {

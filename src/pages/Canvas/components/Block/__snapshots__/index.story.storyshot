@@ -136,6 +136,10 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c1 {
   position: absolute;
   top: 6px;
@@ -608,6 +612,10 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -847,6 +855,10 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c5 {
@@ -1094,6 +1106,10 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -1339,6 +1355,10 @@ exports[`Storyshots Creator/Block Green 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -1578,6 +1598,10 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c5 {
@@ -1821,6 +1845,10 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -2060,6 +2088,10 @@ exports[`Storyshots Creator/Block Red 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c5 {
@@ -2303,6 +2335,10 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -2542,6 +2578,10 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c5 {
@@ -2789,6 +2829,10 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c5 {
   position: absolute;
   top: 6px;
@@ -3028,6 +3072,10 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c5 {
@@ -3396,6 +3444,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c11 {
@@ -3886,6 +3938,10 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c11 {

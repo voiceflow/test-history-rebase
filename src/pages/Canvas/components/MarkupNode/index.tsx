@@ -3,15 +3,15 @@ import React from 'react';
 
 import { useSetup } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
-import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import { ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
 
+import { ChildContainer, Container, NodeStyles } from './components';
+
 const MarkupNode = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);
-  const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const instance = useNodeInstance<HTMLDivElement>();
   const getManager = React.useContext(ManagerContext)!;
@@ -31,8 +31,6 @@ const MarkupNode = () => {
   // TODO: implement context menu
   const onRightClick = React.useCallback(_noop, []);
 
-  const onDoubleClick = React.useCallback(() => engine.node.center(nodeEntity.nodeID), []);
-
   nodeEntity.useInstance(instance);
 
   useSetup(() => {
@@ -42,18 +40,25 @@ const MarkupNode = () => {
   });
 
   return (
-    <DraggingNode
-      className={ClassName.CANVAS_NODE}
-      position={instance.getPosition()}
-      isTransform={!isPresentationMode}
-      onMouseDown={onMouseDown}
-      onContextMenu={onRightClick}
-      onDoubleClick={onDoubleClick}
-      ref={instance.ref}
-      tabIndex={-1}
-    >
-      {NodeComponent && <NodeComponent node={node} data={data as NodeData<Markup.NodeData>} />}
-    </DraggingNode>
+    <>
+      <NodeStyles />
+
+      <Container
+        className={ClassName.CANVAS_NODE}
+        position={instance.getPosition()}
+        isTransform={!isPresentationMode}
+        onMouseDown={onMouseDown}
+        onContextMenu={onRightClick}
+        ref={instance.ref}
+        tabIndex={-1}
+      >
+        {NodeComponent && (
+          <ChildContainer>
+            <NodeComponent node={node} data={data as NodeData<Markup.NodeData>} />
+          </ChildContainer>
+        )}
+      </Container>
+    </>
   );
 };
 

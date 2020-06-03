@@ -265,6 +265,10 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -723,6 +727,10 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -1169,6 +1177,10 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -1607,6 +1619,10 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -2003,6 +2019,10 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c17 {

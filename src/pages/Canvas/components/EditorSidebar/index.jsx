@@ -65,7 +65,7 @@ function EditSidebar({ focus, node, parent, theme }) {
     if (isMarkup) {
       editor = (
         <NamespaceProvider value={['editor', node.type, node.id]}>
-          <MarkupEditor key={`${node.id}-${path.length}`} animationDistance={prevAnimationDistance.current}>
+          <MarkupEditor key={node.id} animationDistance={prevAnimationDistance.current}>
             {managerElm}
           </MarkupEditor>
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />

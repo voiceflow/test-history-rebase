@@ -11,6 +11,7 @@ export const Container = styled.div<ContainerProps>`
   height: ${({ height }) => height}px;
   background-size: cover;
   background-image: ${({ url }) => `url(${url})`};
+  z-index: -1;
 `;
 
 export default Container;

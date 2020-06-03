@@ -225,6 +225,10 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c17 {
   position: absolute;
   top: 6px;

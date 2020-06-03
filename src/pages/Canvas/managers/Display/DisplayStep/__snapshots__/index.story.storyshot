@@ -280,6 +280,10 @@ exports[`Storyshots Creator/Steps/Display Step Active 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -723,6 +727,10 @@ exports[`Storyshots Creator/Steps/Display Step Advanced Display Type 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -1199,6 +1207,10 @@ exports[`Storyshots Creator/Steps/Display Step Connected 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c22 {
   position: absolute;
   top: 6px;
@@ -1650,6 +1662,10 @@ exports[`Storyshots Creator/Steps/Display Step Empty 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -2104,6 +2120,10 @@ exports[`Storyshots Creator/Steps/Display Step Long Label 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c20 {
@@ -2566,6 +2586,10 @@ exports[`Storyshots Creator/Steps/Display Step With Image 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c20 {
   position: absolute;
   top: 6px;
@@ -3011,6 +3035,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Image 1`] = `
   opacity: 1;
 }
 
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
 .c0 .c18 {
   position: absolute;
   top: 6px;
@@ -3423,6 +3451,10 @@ exports[`Storyshots Creator/Steps/Display Step Without Port 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c19 {

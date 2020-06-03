@@ -9,17 +9,18 @@ import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
 import { PlatformContext } from '@/pages/Canvas/contexts';
 
-import { RepromptTooltip } from './components/RepromptTooltip';
+import RadiobuttonText from './components/RadiobuttonText';
+import RepromptTooltip from './components/RepromptTooltip';
 import useCachedUpdate from './hooks/useCachedUpdate';
 
 const ELSE_OPTIONS = [
   {
     id: ChoiceElseType.PATH,
-    label: 'Path',
+    label: <RadiobuttonText label="Path" />,
   },
   {
     id: ChoiceElseType.REPROMPT,
-    label: 'Reprompts',
+    label: <RadiobuttonText label="Reprompts" />,
   },
 ];
 

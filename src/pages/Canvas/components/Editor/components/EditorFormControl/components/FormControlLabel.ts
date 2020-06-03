@@ -8,7 +8,7 @@ const FormControlLabel = styled.label`
   margin-bottom: 11px;
 
   ${IconContainer} {
-    margin-left: ${units(2)}px;
+    margin-left: ${units(1)}px;
   }
 `;
 

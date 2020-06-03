@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Section from '@/components/Section';
+import { Text } from '@/components/Text';
 import { RepromptType } from '@/constants';
 
 import { InfoTooltip } from './components';
@@ -24,7 +25,7 @@ const NoReplyResponse = ({ pushToPath }) => {
 
   return (
     <Section
-      header="No Reply Response"
+      header={<Text fontWeight="normal">No Reply Response</Text>}
       tooltip={<InfoTooltip />}
       tooltipProps={{ helpTitle: null, helpMessage: null }}
       status="Empty"

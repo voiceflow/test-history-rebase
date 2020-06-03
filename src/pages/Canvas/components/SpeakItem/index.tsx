@@ -28,6 +28,9 @@ export type SpeakItemProps = {
   isDraggingPreview: boolean;
   isContextMenuOpen: boolean;
   header: React.ReactNode;
+  formControlProps?: {
+    contentBottomUnits?: number;
+  };
 };
 
 function isVoice(item: SpeakData): item is SSMLData {
@@ -52,6 +55,7 @@ const SpeakItem: React.RefForwardingComponent<HTMLDivElement, SpeakItemProps> = 
     isDraggingPreview,
     isContextMenuOpen,
     header,
+    formControlProps,
   },
   ref
 ) => {
@@ -84,7 +88,7 @@ const SpeakItem: React.RefForwardingComponent<HTMLDivElement, SpeakItemProps> = 
       isContextMenuOpen={isContextMenuOpen}
     >
       {isDragging || isDraggingPreview ? null : (
-        <FormControl>
+        <FormControl {...formControlProps}>
           {isVoice(item) ? (
             <AnySSML
               icon={null}

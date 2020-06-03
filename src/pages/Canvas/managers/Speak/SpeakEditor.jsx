@@ -3,8 +3,9 @@ import React from 'react';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import SpeakItem from '@/pages/Canvas/components/SpeakItem';
 import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
+
+import StyledSpeakItem from './StyledSpeakItem';
 
 const MAX_EXPRESSIONS = 22;
 
@@ -25,7 +26,7 @@ const SpeakEditor = ({ data, platform, onChange }) => {
       platform={platform}
       changeRandomize={changeRandomize}
       changeSpeakItems={updateDialogs}
-      itemComponent={SpeakItem}
+      itemComponent={StyledSpeakItem}
       maxItems={MAX_EXPRESSIONS}
       speakItems={dialogs}
       randomize={randomize}

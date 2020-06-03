@@ -7,6 +7,7 @@ export const CANVAS_EXPORT_ENABLED = process.env.FF_CANVAS_EXPORT === 'true';
 export const REPROMPT_EDITOR_ENABLED = process.env.FF_REPROMPT_EDITOR === 'true';
 export const TEMPLATES_ENABLED = process.env.FF_TEMPLATES === 'true';
 export const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
+export const PROMPT_EDITOR_ENABLED = process.env.FF_PROMPT_EDITOR === 'true';
 
 export enum FeatureFlag {
   MARKUP = 'markup',
@@ -14,6 +15,7 @@ export enum FeatureFlag {
   REPROMPT_EDITOR = 'reprompt_editor',
   TEMPLATES = 'templates',
   GADGETS = 'gadgets',
+  PROMPT_EDITOR = 'prompt_editor',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -25,6 +27,7 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.REPROMPT_EDITOR]: REPROMPT_EDITOR_ENABLED,
   [FeatureFlag.TEMPLATES]: TEMPLATES_ENABLED,
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
+  [FeatureFlag.PROMPT_EDITOR]: PROMPT_EDITOR_ENABLED,
 
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
 };

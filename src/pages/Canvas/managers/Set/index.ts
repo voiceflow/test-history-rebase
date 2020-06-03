@@ -11,7 +11,6 @@ const SetManager: NodeConfig<NodeData.Set> = {
   type: BlockType.SET,
   icon: 'code',
   iconColor: '#5590b5',
-  addable: true,
 
   label: 'Set',
   tip: 'Set the value of a variable, or many variables at once',

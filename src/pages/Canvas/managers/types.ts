@@ -3,7 +3,7 @@ import { Overwrite } from 'utility-types';
 
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { Markup, Node, Port } from '@/models';
+import { Markup, Node, NodeData, Port } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 
@@ -11,13 +11,18 @@ export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
+export type NodeEditorPropsType<T> = React.FC<{
+  data: NodeData<T>;
+  onChange: (value: any, save?: any) => Promise<void>;
+  pushToPath?: ({ type, label }: { type: string; label: string }) => void;
+}>;
+
 export type NodeConfig<T extends object | Markup.NodeData> = {
   type: BlockType;
   icon?: string | React.FC;
   iconColor?: string;
   getIcon?: (data: T) => string | React.FC;
   getIconColor?: (data: T) => string;
-  addable?: boolean;
   reprompt?: boolean;
   chips?: boolean;
   mergeInitializer?: boolean;
@@ -30,7 +35,7 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   tip?: string;
 
   step: React.FC<ConnectedStepProps<T>>;
-  editor: React.FC<{ data: T; nodeID: string; onChange: (data: Partial<T>) => void; isOpen: boolean; focusedNode: NodeDescriptor }>;
+  editor: NodeEditorPropsType<T>;
   markupNode?: T extends Markup.NodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
   editorsByPath?: Record<string, React.FC<any>>;
 

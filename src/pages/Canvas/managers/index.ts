@@ -24,6 +24,7 @@ import MarkupShapeManager from './MarkupShape';
 import MarkupTextManager from './MarkupText';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
+import PromptManager from './Prompt';
 import RandomManager from './Random';
 import ReminderManager from './Reminder';
 import SetManager from './Set';
@@ -60,6 +61,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.REMINDER]: ReminderManager,
   [BlockType.EVENT]: EventManager,
   [BlockType.DIRECTIVE]: DirectiveManager,
+  [BlockType.PROMPT]: PromptManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,

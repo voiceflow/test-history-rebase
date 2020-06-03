@@ -9,7 +9,6 @@ const CancelPaymentManager: NodeConfig<NodeData.Payment> = {
   type: BlockType.CANCEL_PAYMENT,
   icon: 'trash',
   iconColor: '#d94c4c',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'Cancel Payment',

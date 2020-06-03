@@ -1,6 +1,7 @@
 import cuid from 'cuid';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import { createAdapter } from '@/client/adapters/utils';
 import { ChoiceElseType, DialogType } from '@/constants';
 import { isBuiltInIntent } from '@/utils/intent';
 
@@ -19,22 +20,32 @@ const createElseDataDefaults = () => ({
   reprompts: [],
 });
 
-const elseAdapter = {
-  fromDB: ({ type, reprompts, randomize }) => ({
-    type,
+export const noMatchAdapter = createAdapter(
+  ({ randomize, reprompts }) => ({
     randomize,
     reprompts: reprompts.map((dbData) =>
       dbData.type === DialogType.AUDIO ? dbData : { ...dbData, content: textEditorContentAdapter.fromDB(dbData.content) }
     ),
   }),
-  toDB: ({ type, reprompts, randomize }) => ({
-    type,
+  ({ randomize, reprompts }) => ({
     randomize,
     reprompts: reprompts.map((uiData) =>
       uiData.type === DialogType.AUDIO ? uiData : { ...uiData, content: textEditorContentAdapter.toDB(uiData.content) }
     ),
+  })
+);
+
+export const elseAdapter = createAdapter(
+  ({ type, ...props }) => ({
+    type,
+    ...noMatchAdapter.fromDB(props),
   }),
-};
+
+  ({ type, ...props }) => ({
+    type,
+    ...noMatchAdapter.toDB(props),
+  })
+);
 
 const mapChoiceToDB = ({ intent, mappings }) => ({
   intent: intent

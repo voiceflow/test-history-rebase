@@ -9,7 +9,6 @@ const PaymentManager: NodeConfig<NodeData.Payment> = {
   type: BlockType.PAYMENT,
   icon: 'purchase',
   iconColor: '#558B2F',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'Payment',

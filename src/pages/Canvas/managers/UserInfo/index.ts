@@ -11,7 +11,6 @@ const UserInfoManager: NodeConfig<NodeData.UserInfo> = {
   type: BlockType.USER_INFO,
   icon: 'barGraph',
   iconColor: '#3C6997',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'User Info',

@@ -9,7 +9,7 @@ import MarkupTextNode from './MarkupTextNode';
 const MarkupText: BasicNodeConfig<Markup.TextNodeData> = {
   type: BlockType.MARKUP_IMAGE,
 
-  editor: MarkupTextEditor,
+  editor: MarkupTextEditor as React.FC,
   markupNode: MarkupTextNode,
 
   factory: (data) => ({

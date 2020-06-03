@@ -11,7 +11,6 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
   platforms: [PlatformType.ALEXA],
   icon: 'blocks',
   iconColor: '#3c6997',
-  addable: true,
 
   label: 'Display',
   tip: 'Show a Multimodal Display on the screen using APL',

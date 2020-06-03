@@ -9,7 +9,6 @@ const FlowManager: NodeConfig<NodeData.Flow> = {
   type: BlockType.FLOW,
   icon: 'flow',
   iconColor: '#3c6997',
-  addable: true,
 
   label: 'Flow',
   tip: 'Organize your project into manageable sections or perform computations',

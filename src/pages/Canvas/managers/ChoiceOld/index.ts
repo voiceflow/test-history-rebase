@@ -37,7 +37,6 @@ const ChoiceOldManager: NodeConfig<NodeData.Choice> = {
       choices: [
         {
           synonyms: [],
-          open: true,
         },
       ],
       reprompt: null,

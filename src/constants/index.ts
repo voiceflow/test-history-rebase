@@ -88,6 +88,7 @@ export enum BlockType {
   FLOW = 'flow',
   CODE = 'code',
   EXIT = 'exit',
+  PROMPT = 'prompt',
   // visuals
   CARD = 'card',
   DISPLAY = 'display',

@@ -58,6 +58,14 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   };
 
+  export type Prompt = {
+    noMatchReprompt: {
+      randomize: boolean;
+      reprompts: SpeakData[];
+    };
+    reprompt: Reprompt | null;
+  };
+
   export type Command = Record<
     PlatformType,
     {
@@ -84,7 +92,6 @@ export namespace NodeData {
     dialogs: {
       content?: string;
       id: string;
-      open: boolean;
       type: DialogType;
       voice?: string;
       url?: string;
@@ -222,5 +229,21 @@ export namespace NodeData {
     [IntegrationType.ZAPIER]: Zapier;
     [IntegrationType.CUSTOM_API]: CustomApi;
     [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
+  };
+}
+
+export namespace DBNodeData {
+  export type Reprompt = {
+    type: string;
+    voice?: string;
+    content?: string;
+  };
+
+  export type Prompt = {
+    noMatchReprompt: {
+      randomize: boolean;
+      reprompts: SpeakData[];
+    };
+    reprompt: Reprompt | null;
   };
 }

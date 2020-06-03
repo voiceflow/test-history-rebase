@@ -9,7 +9,6 @@ const PermissionManager: NodeConfig<NodeData.Permission> = {
   type: BlockType.PERMISSION,
   icon: 'openLock',
   iconColor: '#6e849a',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'Permission',

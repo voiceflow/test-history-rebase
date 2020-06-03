@@ -11,7 +11,6 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import ChoiceItem from './components/ChoiceOldItem';
 
 const choiceFactory = () => ({
-  open: true,
   synonyms: [],
 });
 

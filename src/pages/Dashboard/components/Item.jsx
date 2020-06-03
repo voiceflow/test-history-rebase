@@ -52,12 +52,12 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const [canDeleteAndCopy, userRole] = usePermissions(FEATURE_IDS.PROJECT_COPY_DELETE);
+  const [canModifyProject, userRole] = usePermissions(FEATURE_IDS.DASHBOARD_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
 
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
-  const options = canDeleteAndCopy
+  const options = canModifyProject
     ? [
         {
           value: 'duplicate',
@@ -100,7 +100,14 @@ export function Item(props) {
 
   const item = (
     <div>
-      <ProjectListItem hasOptions={hasOptions} to={pathTo} hidden={isDragging} isActive={isDropdownOpened} tabIndex={0} onBlur={toggleDropdownOpened}>
+      <ProjectListItem
+        hasOptions={hasOptions}
+        to={pathTo}
+        hidden={isDragging}
+        isActive={isDropdownOpened}
+        tabIndex={0}
+        onBlur={() => toggleDropdownOpened(false)}
+      >
         <Dropdown options={options}>
           {(ref, onToggle) =>
             hasOptions ? (
@@ -143,7 +150,7 @@ export function Item(props) {
     </div>
   );
 
-  return connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
+  return canModifyProject && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
 }
 
 export default withDraggable({

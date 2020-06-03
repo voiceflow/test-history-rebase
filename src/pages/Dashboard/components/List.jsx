@@ -8,7 +8,8 @@ import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import Form from '@/components/LegacyForm';
-import { ScrollContextProvider } from '@/contexts';
+import { FEATURE_IDS } from '@/constants';
+import { ScrollContextProvider, usePermissions } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
@@ -48,6 +49,9 @@ export function List(props) {
   const listRef = useRef(null);
   const inputRef = useRef(null);
 
+  const [canModifyList] = usePermissions(FEATURE_IDS.DASHBOARD_LIST);
+  const [canModifyProject] = usePermissions(FEATURE_IDS.DASHBOARD_PROJECT);
+
   const [isCreatingSkill] = useToggle(false);
 
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
@@ -67,6 +71,7 @@ export function List(props) {
 
   const list = (
     <div
+      style={{ cursor: !canModifyList ? 'default' : undefined }}
       className={cn('main-list', {
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
@@ -111,6 +116,7 @@ export function List(props) {
                     value={values.name}
                     onBlur={onInputNameBlur}
                     selected
+                    disabled={!canModifyList}
                     onChange={({ target }) => handleChange('name', target.value)}
                     onKeyPress={({ charCode }) => charCode === 13 && onInputNameBlur()}
                     maxLength={32}
@@ -118,21 +124,23 @@ export function List(props) {
                   />
                 </div>
 
-                <div className="main-list-header__aside">
-                  <Dropdown
-                    options={[
-                      {
-                        label: 'Remove List',
-                        onClick: () => onRemove({ id, name, projects }),
-                      },
-                    ]}
-                    placement="bottom-end"
-                  >
-                    {(ref, onToggle, isOpen) => (
-                      <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
-                    )}
-                  </Dropdown>
-                </div>
+                {canModifyList && (
+                  <div className="main-list-header__aside">
+                    <Dropdown
+                      options={[
+                        {
+                          label: 'Remove List',
+                          onClick: () => onRemove({ id, name, projects }),
+                        },
+                      ]}
+                      placement="bottom-end"
+                    >
+                      {(ref, onToggle, isOpen) => (
+                        <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                      )}
+                    </Dropdown>
+                  </div>
+                )}
               </DropContainer>
 
               {!isEmpty && (
@@ -183,18 +191,20 @@ export function List(props) {
                   </div>
                 </div>
               )}
-              <div
-                className={cn('main-list-footer', {
-                  'h-o-0': isDragging,
-                  __scrolling: isFooterShadowShown,
-                })}
-              >
-                <div className="main-list-footer-center">
-                  <Button isFlat isBtn onClick={() => createSkill(id)}>
-                    Create Project
-                  </Button>
+              {canModifyProject && (
+                <div
+                  className={cn('main-list-footer', {
+                    'h-o-0': isDragging,
+                    __scrolling: isFooterShadowShown,
+                  })}
+                >
+                  <div className="main-list-footer-center">
+                    <Button isFlat isBtn onClick={() => createSkill(id)}>
+                      Create Project
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </ScrollContextProvider>
           );
         }}
@@ -203,7 +213,7 @@ export function List(props) {
     </div>
   );
 
-  return connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
+  return canModifyList && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
 }
 
 export default withDraggable({

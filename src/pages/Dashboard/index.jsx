@@ -16,8 +16,8 @@ import Button from '@/components/LegacyButton';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
-import { ModalType } from '@/constants';
-import { ScrollContextProvider } from '@/contexts';
+import { FEATURE_IDS, ModalType } from '@/constants';
+import { ScrollContextProvider, usePermissions } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import * as Account from '@/ducks/account';
 import * as Lists from '@/ducks/lists';
@@ -85,6 +85,8 @@ export const DashBoard = (props) => {
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
+
+  const [canModifyList] = usePermissions(FEATURE_IDS.DASHBOARD_LIST);
 
   const closeImport = () => {
     toggleImport(false);
@@ -310,18 +312,20 @@ export const DashBoard = (props) => {
                           }}
                         </DragLayer>
 
-                        <div className="main-list-add">
-                          <Tooltip distance={10} title="Add new list" position="bottom">
-                            <IconButton
-                              large
-                              icon="addStep"
-                              onClick={() => {
-                                props.addList(props.workspaceID);
-                              }}
-                              size={13}
-                            />
-                          </Tooltip>
-                        </div>
+                        {canModifyList && (
+                          <div className="main-list-add">
+                            <Tooltip distance={10} title="Add new list" position="bottom">
+                              <IconButton
+                                large
+                                icon="addStep"
+                                onClick={() => {
+                                  props.addList(props.workspaceID);
+                                }}
+                                size={13}
+                              />
+                            </Tooltip>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </ScrollContextProvider>

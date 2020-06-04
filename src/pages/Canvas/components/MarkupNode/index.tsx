@@ -4,6 +4,7 @@ import React from 'react';
 import { useSetup } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
+import { CANVAS_MARKUP_ENABLED } from '@/pages/Canvas/constants';
 import { ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
@@ -26,7 +27,10 @@ const MarkupNode = () => {
   });
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
 
-  const { onMouseDown } = useNodeDrag();
+  // for optimization reason using query selector to filter click events if markup is not opened
+  const skipClick = React.useCallback(() => !document.getElementsByClassName(CANVAS_MARKUP_ENABLED).length, []);
+
+  const { onMouseDown } = useNodeDrag({ skipClick });
 
   // TODO: implement context menu
   const onRightClick = React.useCallback(_noop, []);

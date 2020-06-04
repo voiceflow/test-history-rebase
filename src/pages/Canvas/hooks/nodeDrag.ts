@@ -8,7 +8,7 @@ import { noop } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useNodeDrag = () => {
+export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const editPermission = React.useContext(EditPermissionContext)!;
@@ -18,17 +18,20 @@ export const useNodeDrag = () => {
   const dragDistance = React.useRef(0);
   const mouseMovement = React.useMemo(() => new MouseMovement(), []);
 
-  const onClick = React.useCallback((event: MouseEvent) => {
-    if (event.defaultPrevented) {
-      return;
-    }
+  const onClick = React.useCallback(
+    (event: MouseEvent) => {
+      if (event.defaultPrevented || skipClick?.()) {
+        return;
+      }
 
-    if (isHoldingShift.current) {
-      engine.selection.toggle(nodeEntity.nodeID);
-    } else {
-      engine.focus.set(nodeEntity.nodeID);
-    }
-  }, []);
+      if (isHoldingShift.current) {
+        engine.selection.toggle(nodeEntity.nodeID);
+      } else {
+        engine.focus.set(nodeEntity.nodeID);
+      }
+    },
+    [skipClick]
+  );
 
   const onDrag = React.useCallback(async (event: MouseEvent) => {
     if (engine.isNodeMovementLocked(nodeEntity.nodeID)) {

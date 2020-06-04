@@ -24,13 +24,9 @@ export const Container = styled.div`
   }
 
   .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
-    border: solid 1px rgba(98, 119, 140, 0.5);
+    border: solid 1px transparent;
 
     pointer-events: auto;
-  }
-
-  .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer}:focus-within {
-    border: solid 1px transparent;
   }
 `;
 

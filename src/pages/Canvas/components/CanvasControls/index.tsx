@@ -22,6 +22,7 @@ const ZOOM_DELTA = 15;
 const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
   const [canUseInteractionModal] = usePermissions(FEATURE_IDS.INTERACTION_MODAL);
+  const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
 
   const { open } = useModals(ModalType.INTERACTION_MODEL);
   const markupTool = React.useContext(MarkupModeContext);
@@ -44,12 +45,16 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   }, [eventualEngine]);
 
   const onOpenMarkup = React.useCallback(() => {
+    if (!canUseMarkup) {
+      return;
+    }
+
     if (isPrototyping) {
       goToDesign();
     }
 
     markupTool?.openTool();
-  }, [goToDesign, markupTool?.openTool, isPrototyping]);
+  }, [goToDesign, markupTool?.openTool, isPrototyping, canUseMarkup]);
 
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(
@@ -81,7 +86,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {markupFeature.isEnabled && (
+      {markupFeature.isEnabled && canUseMarkup && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.MARKUP]}
           iconProps={{

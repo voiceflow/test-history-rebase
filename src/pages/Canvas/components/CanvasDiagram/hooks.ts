@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DEBUG_REALTIME } from '@/config';
+import { REALTIME_CURSOR_ENABLED } from '@/config';
 import * as Realtime from '@/ducks/realtime';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
@@ -10,7 +10,7 @@ export const useCursorControls = () => {
   const engine = React.useContext(EngineContext)!;
 
   const moveMouse = React.useCallback((location) => {
-    if (!DEBUG_REALTIME) return;
+    if (!REALTIME_CURSOR_ENABLED) return;
 
     engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
   }, []);

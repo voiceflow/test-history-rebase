@@ -65,6 +65,9 @@ export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DE
 
 export const DEBUG_REALTIME = !IS_PRODUCTION && !!process.env.DEBUG_REALTIME;
 
+// realtime
+export const REALTIME_CURSOR_ENABLED = IS_PRODUCTION || DEBUG_REALTIME;
+
 export const ADMIN_HOST =
   // eslint-disable-next-line no-nested-ternary
   !API_HOST || API_HOST.includes('localhost')

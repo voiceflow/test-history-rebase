@@ -1,13 +1,16 @@
 import React from 'react';
 
+import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
-import Step, { ConnectedStepProps, Section } from '@/pages/Canvas/components/Step';
+import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 export type PromptStepProps = {};
 
 export const PromptStep: React.FC<PromptStepProps> = () => (
   <Step>
-    <Section>Prompt Step</Section>
+    <Section>
+      <Item label="Listening for an intent…" portID={null} labelVariant={StepLabelVariant.SECONDARY} icon="prompt" iconColor="#4D5CAD" />
+    </Section>
   </Step>
 );
 

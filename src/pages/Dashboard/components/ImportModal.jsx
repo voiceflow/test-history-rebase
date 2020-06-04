@@ -1,5 +1,6 @@
 import './ImportModal.css';
 
+import jwt from 'jsonwebtoken';
 import React, { useMemo, useState } from 'react';
 
 import { StatusCode } from '@/client/fetch';
@@ -34,6 +35,7 @@ function ImportModal(props) {
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { importToken, cloning = false } = data;
+  const { projectName } = React.useMemo(() => (importToken ? jwt.decode(importToken) : { projectName: 'Project' }), [importToken]);
 
   React.useEffect(() => {
     setTargetWorkspace(workspaceOptions[0]);
@@ -80,7 +82,7 @@ function ImportModal(props) {
   };
   return (
     <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
-      <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
+      <ModalHeader toggle={toggle} header={cloning ? `Clone ${projectName}` : `Copy ${projectName}`}></ModalHeader>
       <ModalBody padding="0 32px 32px 32px">
         <ImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}

@@ -142,14 +142,6 @@ jobs:
             echo "no env-related labels detected! No actions taken..."
           fi
 
-      # - name: Send Slack notification
-      #   if: steps.parseNotification.outputs.channelName != ''
-      #   uses: archive/github-actions-slack@master
-      #   with:
-      #     slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-      #     slack-channel: ${{steps.parseNotification.outputs.channelName}}
-      #     slack-text: ${{steps.parseNotification.outputs.message}}
-
       - name: Remove notification label
         uses: buildsville/add-remove-label@v1
         if: steps.parseNotification.outputs.channelName != ''

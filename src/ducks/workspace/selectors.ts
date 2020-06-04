@@ -27,6 +27,8 @@ export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSel
 
 export const seatLimitsSelector = createSelector([activeWorkspaceSelector], ({ seatLimits }) => seatLimits);
 
+export const isTemplateWorkspaceSelector = createSelector([activeWorkspaceSelector], ({ templates }) => templates);
+
 export const usedEditorSeatsSelector = createSelector(
   [activeWorkspaceMembersSelector],
   (members) => members.filter((member) => EDITOR_SEAT_ROLES.includes(member.role)).length || 1

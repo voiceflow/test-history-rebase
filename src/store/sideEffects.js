@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
 import { toast } from '@/components/Toast';
@@ -6,7 +8,7 @@ import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
 import { fetchIntegrationUsers } from '@/ducks/integration';
 import { replaceIntents } from '@/ducks/intent';
-import { addProjectToList } from '@/ducks/lists';
+import { addProjectToList, pushToTargetWorkspaceList } from '@/ducks/lists';
 import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
@@ -43,13 +45,17 @@ export const copyProject = (projectID, workspaceID, boardID) => async (dispatch,
   }
 };
 
-export const importProject = (workspaceID, importToken) => async (dispatch, getState) => {
+export const importProject = (workspaceID, importToken, putTopOfList = false) => async (dispatch, getState) => {
   const importedProject = await client.project.import(importToken, workspaceID);
   const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
   if (activeWorkspaceID === workspaceID) {
     dispatch(addProject(importedProject.id, importedProject));
-    await dispatch(addProjectToList(null, importedProject.id));
+    await dispatch(addProjectToList(null, importedProject.id, putTopOfList));
+  } else {
+    const lists = (await axios.get(workspaceID !== -1 ? `/team/${workspaceID}/boards` : '/boards')).data.boards;
+    dispatch(pushToTargetWorkspaceList(workspaceID, lists, importedProject.id));
   }
+  return importedProject;
 };
 
 export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getState) => {

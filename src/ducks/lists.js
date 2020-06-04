@@ -153,6 +153,20 @@ export const updateLists = (workspaceId) => async (dispatch, getState) => {
   return Promise.resolve();
 };
 
+export const pushToTargetWorkspaceList = (workspaceId, lists, projectId) => async () => {
+  try {
+    const listsArray = lists;
+    listsArray[0].projects.unshift(projectId);
+    const payload = {
+      boards: listsArray,
+    };
+    await client.list.update(workspaceId, payload);
+  } catch (err) {
+    log.error(err);
+    throw err;
+  }
+};
+
 export const addList = (workspaceId) => {
   return async (dispatch) => {
     const newListId = randomstring.generate(10);
@@ -178,7 +192,7 @@ export const addList = (workspaceId) => {
   };
 };
 
-export const addProjectToList = (listID, project_id) => {
+export const addProjectToList = (listID, project_id, clone) => {
   return async (dispatch, getState) => {
     try {
       const lists = getState().list;
@@ -205,10 +219,9 @@ export const addProjectToList = (listID, project_id) => {
       }
 
       list = update(list, {
-        projects: {
-          $push: [project_id],
-        },
+        projects: clone ? { $unshift: [project_id] } : { $push: [project_id] },
       });
+
       dispatch(
         Lists.update({
           id: list.board_id,

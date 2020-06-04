@@ -12,6 +12,8 @@ export const goToHome = () => goTo('');
 
 export const goToLogin = () => goTo('login');
 
+export const goToWorkspace = (workspaceId: string) => goTo(`workspace/${workspaceId}`);
+
 export const goToDashboard = () => goTo('dashboard');
 
 export const goToDashboardWithSearch = (search: string) => goTo(`dashboard${search}`);

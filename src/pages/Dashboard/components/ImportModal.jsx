@@ -1,15 +1,19 @@
 import './ImportModal.css';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
+import { StatusCode } from '@/client/fetch';
 import Button from '@/components/Button';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
-import { UserRole } from '@/constants';
+import { ModalType, UserRole } from '@/constants';
 import { userIDSelector } from '@/ducks/account';
+import { goToWorkspace } from '@/ducks/router';
 import { allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspace';
 import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
+import { useModals, useTrackingEvents } from '@/hooks';
+import { importProject } from '@/store/sideEffects';
 
 import { ImportSelect } from './ModalComponents';
 
@@ -21,16 +25,53 @@ const allowedToClone = (workspace, creatorId) => {
   return false;
 };
 function ImportModal(props) {
-  const { toggle, open, importProject, creatorId, workspaces, workspaceByIDSelector } = props;
-  const [boards] = useState(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })));
-  const [board, setBoard] = useState(boards[0]);
+  const [trackEvents] = useTrackingEvents();
 
-  const updateBoard = React.useCallback((boardID) => setBoard(boards.find(({ value }) => value === boardID)), [boards, setBoard]);
+  const { importProject, creatorId, workspaces, workspaceByIDSelector, goToWorkspace } = props;
+  const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
+  const [targetWorkspace, setTargetWorkspace] = useState(workspaceOptions[0]);
+  const { close, toggle, data, isOpened } = useModals(ModalType.IMPORT_PROJECT);
+  const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
+  const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+  const { importToken, cloning = false } = data;
 
-  const cloneProject = (workspaceId) => {
+  React.useEffect(() => {
+    setTargetWorkspace(workspaceOptions[0]);
+  }, [workspaceOptions]);
+
+  const chooseWorkspace = React.useCallback((workspaceID) => setTargetWorkspace(workspaceOptions.find(({ value }) => value === workspaceID)), [
+    workspaceOptions,
+    setTargetWorkspace,
+  ]);
+
+  const cloneProject = async (workspaceId) => {
     const workspace = workspaceByIDSelector(workspaceId);
     if (allowedToClone(workspace, creatorId)) {
-      importProject(workspaceId);
+      try {
+        close();
+        openLoadingModal();
+        const importedProject = await importProject(workspaceId, importToken, true);
+        if (cloning) {
+          trackEvents.trackProjectClone({
+            template_id: importedProject.id,
+            template_name: importedProject.name,
+            workspace_id: workspaceId,
+          });
+        }
+      } catch (e) {
+        closeLoadingModal();
+        if (e.statusCode === StatusCode.FORBIDDEN) {
+          goToWorkspace(workspaceId);
+          openProjectLimitModal({ message: 'Project limitations is reached' });
+        } else {
+          toast.error(e);
+        }
+
+        return;
+      }
+      goToWorkspace(workspaceId);
+      toast.success('Cloned project successfully!');
+      closeLoadingModal();
     } else {
       toast.error(
         `You are a viewer on the workspace ${workspace.name}, and therefore don’t have the permissions to clone projects to this workspace`
@@ -38,24 +79,26 @@ function ImportModal(props) {
     }
   };
   return (
-    <Modal isOpen={open} toggle={toggle} className="import-modal">
-      <ModalHeader toggle={toggle} header="Copy Project"></ModalHeader>
+    <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
+      <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
       <ModalBody padding="0 32px 32px 32px">
         <ImportSelect
-          prefix="CLONE TO"
-          value={board?.label}
-          onSelect={updateBoard}
-          disabled={boards.length === 1}
-          options={boards}
+          prefix={cloning ? 'CLONE TO' : 'COPY TO'}
+          value={targetWorkspace?.label}
+          onSelect={chooseWorkspace}
+          disabled={workspaceOptions.length === 1}
+          options={workspaceOptions}
           getOptionValue={(option) => option.value}
           renderOptionLabel={(option) => option.label}
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="tertiary" onClick={toggle}>
-          Cancel
-        </Button>
-        <Button onClick={() => cloneProject(board.value)}>Copy Project</Button>
+        {!cloning && (
+          <Button variant="tertiary" onClick={toggle}>
+            Cancel
+          </Button>
+        )}
+        <Button onClick={() => cloneProject(targetWorkspace.value)}>{cloning ? 'Clone' : 'Copy Project'}</Button>
       </ModalFooter>
     </Modal>
   );
@@ -67,4 +110,9 @@ const mapStateToProps = {
   workspaceByIDSelector,
 };
 
-export default connect(mapStateToProps)(ImportModal);
+const mapDispatchToProps = {
+  importProject,
+  goToWorkspace,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImportModal);

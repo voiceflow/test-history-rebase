@@ -381,6 +381,9 @@ export enum ModalType {
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
   SHARE_MENU = 'share-menu',
+
+  IMPORT_PROJECT = 'import-project',
+  LOADING = 'loading',
 }
 
 export enum UserRole {

@@ -17,7 +17,6 @@ import { SubTitleGroup } from './styled';
 function ActionGroup(props) {
   const { platform } = props;
   const { isViewer } = React.useContext(EditPermissionContext);
-
   const renderPlatform = () => {
     if (platform === PlatformType.ALEXA) return <Alexa />;
     return <Google />;

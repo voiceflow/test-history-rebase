@@ -13,7 +13,6 @@ import { Alert } from 'reactstrap';
 import DragLayer from '@/components/DragLayer';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
-import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import { FEATURE_IDS, ModalType } from '@/constants';
@@ -32,7 +31,6 @@ import { copyProject, importProject } from '@/store/sideEffects';
 import DashboardHeader from './Header';
 import BoardDeleteModal from './components/BoardDeleteModal';
 import BoardSettingsModal from './components/BoardSettingsModal';
-import ImportModal from './components/ImportModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
@@ -53,64 +51,46 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
 export const DashBoard = (props) => {
   const [team_setting, setTeamSetting] = React.useState(null);
   const query = props.location?.search && queryString.parse(props.location.search);
+
+  const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
+
   let importToken = null;
 
-  if (query) {
-    importToken = query.import;
+  React.useEffect(() => {
+    if (query) {
+      importToken = query.import;
 
-    if (importToken) {
-      try {
-        const result = jwt.decode(importToken);
-        if (!result.projectId || !result.projectName) {
-          throw new Error('Unexpected JWT content');
+      if (importToken) {
+        try {
+          const result = jwt.decode(importToken);
+          if (!result.projectId || !result.projectName) {
+            throw new Error('Unexpected JWT content');
+          }
+          openImportModal({ importToken });
+          props.history.replace({ search: '' });
+        } catch (e) {
+          importToken = null;
+          props.history.replace({ search: '' });
+          props.setError('Bad Import Link');
         }
-      } catch (e) {
-        importToken = null;
+      }
+      if (query.plan) {
         props.history.replace({ search: '' });
-        props.setError('Bad Import Link');
+        setTimeout(() => setTeamSetting('PLAN'), 100);
       }
     }
-    if (query.plan) {
-      props.history.replace({ search: '' });
-      setTimeout(() => setTeamSetting('PLAN'), 100);
-    }
-  }
+  }, []);
 
   const [loading, toggleLoading] = React.useState(true);
-  const [importOpen, toggleImport] = React.useState(!!importToken);
   const [filter_text, handleFilterText] = React.useState('');
   const [showInfo, setShowInfo] = React.useState(false);
-  const [loading_modal, toggleLoadingModal] = React.useState(false);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
+  const { toggle: toggleLoadingModal } = useModals(ModalType.LOADING);
 
   const [canModifyList] = usePermissions(FEATURE_IDS.DASHBOARD_LIST);
-
-  const closeImport = () => {
-    toggleImport(false);
-    props.history.replace({ search: '' });
-  };
-
-  const importProject = (workspaceID) => {
-    closeImport();
-    toggleLoadingModal(true);
-    props
-      .importProject(workspaceID, importToken)
-      .then(() => {
-        toggleLoadingModal(false);
-      })
-      .catch((e) => {
-        toggleLoadingModal(false);
-
-        if (e.message === 'Forbidden') {
-          openProjectLimitModal({ message: 'Project limitations is reached' });
-        } else {
-          props.setError(e);
-        }
-      });
-  };
 
   const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {
@@ -199,10 +179,6 @@ export const DashBoard = (props) => {
 
   return (
     <>
-      <LoadingModal open={loading_modal} />
-
-      {importToken && <ImportModal open={importOpen} toggle={closeImport} importProject={importProject} token={importToken} />}
-
       <BoardDeleteModal workspace={props.workspace} />
       <BoardSettingsModal user={props.user} workspace={props.workspace} />
 

@@ -11,13 +11,12 @@ import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { FEATURE_IDS, UserRole } from '@/constants';
+import { FEATURE_IDS, ModalType, UserRole } from '@/constants';
 import { usePermissions } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
-import { useFeature } from '@/hooks';
+import { useFeature, useModals } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
-import { copy } from '@/utils/clipboard';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { RootRoutes } from '@/utils/routes';
@@ -54,7 +53,7 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const [canModifyProject, userRole] = usePermissions(FEATURE_IDS.DASHBOARD_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
-
+  const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
   const options = canModifyProject
@@ -72,25 +71,19 @@ export function Item(props) {
       ]
     : [];
 
-  const onCopyLink = React.useCallback(async () => {
-    let importToken;
-    try {
-      importToken = await client.project.getImportToken(id);
-    } catch {
-      toast.error('Error getting import link');
-      return;
-    }
-    const importLink = `${window.location.origin}/dashboard?import=${importToken}`;
-    copy(importLink);
-    toast.success('Copied link to clipboard');
-  }, [id]);
-
   if (userRole === UserRole.LIBRARY && templatesFeature.isEnabled) {
     const cloneOption = {
       value: 'clone',
       label: 'Clone Project',
       onClick: async () => {
-        await onCopyLink();
+        let importToken;
+        try {
+          importToken = await client.project.getImportToken(id);
+        } catch {
+          toast.error('Error getting import link');
+          return;
+        }
+        openCloneModal({ cloning: true, importToken });
       },
     };
     options.push(cloneOption);

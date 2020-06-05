@@ -8,32 +8,26 @@ import * as Intent from '@/ducks/intent';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useDidUpdateEffect } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { withHeaderActions } from '@/pages/Canvas/components/EditorSidebar/hocs';
 import { compose } from '@/utils/functional';
-import { prettifyIntentName } from '@/utils/intent';
 
 import { Flow, HelpTooltip as FlowTooltip } from '../Flow/components';
 import { HelpMessage, HelpTooltip } from './components';
 
-function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange, pushToPath, getIntentByID }) {
+function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange, pushToPath, diagramByID }) {
   const onChangeData = React.useCallback((payload) => onChange({ [platform]: { ...data[platform], ...payload } }), [onChange, platform, data]);
-  const selectedIntent = data[platform].intent;
+  const selectedFlowID = data[platform].diagramID;
 
-  const updateBlockName = React.useCallback(
-    (intent) => {
-      const intentData = getIntentByID(intent);
-      const intentName = intentData.builtIn ? prettifyIntentName(intentData.name) : intentData.name;
-      onChange({ name: intentName });
-    },
-    [getIntentByID, onChange]
-  );
-
-  React.useEffect(() => {
-    if (selectedIntent) {
-      updateBlockName(selectedIntent);
+  useDidUpdateEffect(() => {
+    if (selectedFlowID) {
+      const selectedFlow = diagramByID(selectedFlowID);
+      if (selectedFlow.name) {
+        onChange({ name: selectedFlow.name });
+      }
     }
-  }, [selectedIntent]);
+  }, [selectedFlowID]);
 
   return (
     <Content
@@ -58,7 +52,7 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
       }
     >
       <Section variant="tertiary" header="Flow" tooltip={<FlowTooltip />}>
-        <Flow data={{ ...data, ...data[platform] }} diagram={diagram} onChange={onChangeData} isCommand />
+        <Flow data={{ ...data, ...data[platform] }} diagram={diagram} onChange={onChangeData} isCommand enterOnCreate={false} />
       </Section>
 
       <Section variant="tertiary" header="Intent" tooltip={<IntentTooltip />}>
@@ -88,7 +82,7 @@ const mergeProps = ({ platform, getIntentByID, diagramByID }, { goToDiagram }, {
     intent: platformData.intent && getIntentByID(platformData.intent),
     diagram: platformData.diagramID && diagramByID(platformData.diagramID),
     goToDiagram: () => goToDiagram(platformData.diagramID),
-    getIntentByID,
+    diagramByID,
   };
 };
 

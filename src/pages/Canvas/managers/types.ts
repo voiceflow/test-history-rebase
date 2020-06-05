@@ -7,13 +7,15 @@ import { Markup, Node, NodeData, Port } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 
+import { NodeDataUpdater } from '../components/EditorSidebar/hooks';
+
 export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
 export type NodeEditorPropsType<T> = React.FC<{
   data: NodeData<T>;
-  onChange: (value: any, save?: any) => Promise<void>;
+  onChange: NodeDataUpdater<T>;
   pushToPath?: ({ type, label }: { type: string; label: string }) => void;
 }>;
 

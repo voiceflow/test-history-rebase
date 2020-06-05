@@ -8,6 +8,7 @@ import { withContext } from '@/hocs/withContext';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
 import type { Engine } from '@/pages/Canvas/engine';
+import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -29,14 +30,18 @@ export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = Platfo
 export const withPlatform = withContext(PlatformContext, 'platform');
 
 export type ManagerValue = {
+  nodeID: string;
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
   label?: string;
   markupNode?: React.RefForwardingComponent<HTMLElement, ConnectedMarkupNodeProps>;
   mergeInitializer?: boolean;
   mergeTerminator?: boolean;
+  editorsByPath: Record<string, NodeEditorPropsType<any>>;
+  editor: NodeEditorPropsType<any>;
 };
 
-export const ManagerContext = React.createContext<((type: BlockType) => ManagerValue) | null>(null);
+export type ManagerGetter = (type: BlockType) => ManagerValue;
+export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 
 export const withManager = withContext(ManagerContext, 'getManager');

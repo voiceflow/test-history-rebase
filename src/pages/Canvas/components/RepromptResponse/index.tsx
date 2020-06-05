@@ -5,6 +5,7 @@ import Section from '@/components/Section';
 import { ChoiceElseType } from '@/constants';
 import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
+import { NodeDataUpdater } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
 import { PlatformContext } from '@/pages/Canvas/contexts';
@@ -28,7 +29,7 @@ const MAX_REPROMPTS = 3;
 
 export type RepromptResponseFormProps = {
   data: NodeData.Interaction;
-  onChange: (newState: Partial<NodeData.Interaction>) => void;
+  onChange: NodeDataUpdater<NodeData.Interaction>;
 };
 
 export const RepromptResponseForm = ({ data, onChange }: RepromptResponseFormProps) => {

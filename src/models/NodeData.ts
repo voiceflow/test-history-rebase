@@ -78,8 +78,8 @@ export namespace NodeData {
   export type Reprompt = {
     type: RepromptType;
     content: string;
-    audio: string | null;
-    voice: string | null;
+    audio?: string | null;
+    voice?: string | null;
   };
 
   export type Capture = {

@@ -96,7 +96,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -572,7 +572,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #A2C1DC;
 }
@@ -817,7 +817,7 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1066,7 +1066,7 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1315,7 +1315,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #BECDC3;
 }
@@ -1560,7 +1560,7 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1805,7 +1805,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #CDCAD5;
 }
@@ -2050,7 +2050,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #D8CBD1;
 }
@@ -2295,7 +2295,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2540,7 +2540,7 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2789,7 +2789,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -3034,7 +3034,7 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -3406,7 +3406,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -3900,7 +3900,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }

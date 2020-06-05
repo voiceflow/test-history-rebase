@@ -185,7 +185,7 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }

@@ -1,10 +1,11 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
 import { RealtimeSubscription } from '@/client/socket/types';
+import { MovementCalculator } from '@/components/Canvas/types';
 import * as Realtime from '@/ducks/realtime';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { ActionPayload } from '@/store/types';
-import { Pair, Point } from '@/types';
+import { Pair } from '@/types';
 
 import { EngineConsumer } from './utils';
 import type { Engine } from '.';
@@ -114,11 +115,11 @@ class RealtimeEngine extends EngineConsumer {
     this.log.debug(this.log.init('expired overlay'), this.log.value(key));
   }
 
-  panViewport(moveX: number, moveY: number) {
-    this.overlays[OverlayType.CURSOR]?.panViewport(moveX, moveY);
+  panViewport(movement: Pair<number>) {
+    this.overlays[OverlayType.CURSOR]?.panViewport(movement);
   }
 
-  zoomViewport(calculateMovement: (mouseLocation: Point) => Pair<number>) {
+  zoomViewport(calculateMovement: MovementCalculator) {
     this.overlays[OverlayType.CURSOR]?.zoomViewport(calculateMovement);
   }
 

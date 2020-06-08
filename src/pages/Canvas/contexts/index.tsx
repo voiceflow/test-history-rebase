@@ -33,7 +33,7 @@ export type ManagerValue = {
   nodeID: string;
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
   label?: string;
-  markupNode?: React.RefForwardingComponent<HTMLElement, ConnectedMarkupNodeProps>;
+  markupNode?: React.FC<ConnectedMarkupNodeProps & { ref: React.Ref<HTMLElement> }>;
   mergeInitializer?: boolean;
   mergeTerminator?: boolean;
   editorsByPath: Record<string, NodeEditorPropsType<any>>;

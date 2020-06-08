@@ -12,6 +12,7 @@ import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
+import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
@@ -28,8 +29,6 @@ const withInitialViewport = connect({ viewport: activeDiagramViewportSelector },
 type ConnectedCanvasDiagramProps = {
   viewport: Viewport;
 };
-
-const DiagramCanvas: React.FC<any> = Canvas;
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const markup = useFeature(FeatureFlag.MARKUP);
@@ -92,23 +91,26 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   });
 
   return (
-    <DiagramCanvas
-      viewport={viewport}
-      onClick={onClickCanvas}
-      onChange={updateViewport}
-      onPan={panViewport}
-      onZoom={zoomViewport}
-      onRegister={registerCanvas}
-      onRightClick={contextMenu.onOpen}
-      onShiftClick={startGroupSelection}
-      innerRef={connectBlockDrop}
-    >
-      <LinkLayer />
-      <NodeLayer />
-      {markup.isEnabled && <MarkupLayer />}
-      <MergeLayer />
-      <GroupSelection />
-    </DiagramCanvas>
+    <>
+      <Canvas
+        viewport={viewport}
+        onClick={onClickCanvas}
+        onChange={updateViewport}
+        onPan={panViewport}
+        onZoom={zoomViewport}
+        onRegister={registerCanvas}
+        onRightClick={contextMenu.onOpen}
+        onShiftClick={startGroupSelection}
+        innerRef={connectBlockDrop}
+      >
+        <LinkLayer />
+        <NodeLayer />
+        {markup.isEnabled && <MarkupLayer />}
+        <MergeLayer />
+        <GroupSelection />
+      </Canvas>
+      <TransformOverlay />
+    </>
   );
 };
 

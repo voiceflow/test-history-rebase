@@ -6,7 +6,7 @@ import { isMac, isSafari } from '@/config';
 import { OverlayValue, withOverlay } from '@/contexts';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
-import { Point, Viewport } from '@/types';
+import { Pair, Point, Viewport } from '@/types';
 
 import { Container, RenderLayer } from './components';
 import { ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
@@ -14,7 +14,7 @@ import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
 import { calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
-import { StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
+import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
 
 export const ORIGIN: Point = [0, 0];
 
@@ -27,10 +27,10 @@ export type CanvasProps = {
   className?: string;
   disableClick?: boolean;
   onChange?: (viewport: Viewport) => void;
-  onPan?: (offsetX: number, offsetY: number) => void;
-  onZoom?: (translateZoom: (mousePosition: Point) => Point) => number;
+  onPan?: (movement: Pair<number>) => void;
   onClick?: (event: MouseEvent) => void;
-  onRightClick?: () => void;
+  onZoom?: (translateZoom: MovementCalculator) => void;
+  onRightClick?: (event: React.MouseEvent) => void;
   onShiftClick?: (event: React.MouseEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
 };
@@ -90,7 +90,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       return [(x - posX) / zoom, (y - posY) / zoom];
     },
 
-    mapPoint([x, y]: Point) {
+    mapPoint([x, y]: Point): Point {
       const rect = this.getRect();
 
       return [x - rect.left, y - rect.top];
@@ -104,7 +104,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       return [x * zoom + posX, y * zoom + posY];
     },
 
-    reverseMapPoint([x, y]: Point) {
+    reverseMapPoint([x, y]: Point): Point {
       const rect = this.getRect();
 
       return [x + rect.left, y + rect.top];
@@ -127,7 +127,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     this.styleRenderLayer({ position: nextPosition });
 
-    this.props.onPan?.(offsetX, offsetY);
+    this.props.onPan?.([offsetX, offsetY]);
   };
 
   onZoom = (control: ZoomAction) => {
@@ -184,8 +184,8 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     });
   }
 
-  getScrollTranslation = ([originX, originY]: Point, prevZoom: number, nextZoom: number) =>
-    calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current!.getBoundingClientRect());
+  getScrollTranslation = ([originX, originY]: Point, prevZoom: number, nextZoom: number, zoomDiffFactor: number) =>
+    calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor);
 
   serialize = () => ({
     zoom: this.zoom,
@@ -198,23 +198,22 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   setZoom = (newZoom: number, { origin = [this.rootRef.current!.clientWidth / 2, this.rootRef.current!.clientHeight / 2] }: ZoomOptions = {}) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
     const nextZoom = normalizeZoom(newZoom);
+    const zoomDiffFactor = newZoom / this.zoom;
 
     if (nextZoom === this.zoom) return;
 
     this.zoom = nextZoom;
 
     const [x, y] = this.position;
-    const [moveX, moveY] = this.getScrollTranslation(origin, prevZoom, nextZoom);
+    const [moveX, moveY] = this.getScrollTranslation(origin, prevZoom, nextZoom, zoomDiffFactor);
     const nextPosition: Point = [x + moveX, y + moveY];
     this.position = nextPosition;
 
     this.styleRenderLayer({ zoom: nextZoom, position: nextPosition });
 
-    if (this.props.onZoom) {
-      this.props.onZoom((position) =>
-        calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect())
-      );
-    }
+    this.props.onZoom?.((position) =>
+      calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor)
+    );
   };
 
   resetPosition = () => {

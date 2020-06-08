@@ -104,7 +104,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
       hasLinkWarning,
       wrapElement,
       handlers: {
-        onClick: () => engine.focus.set(nodeEntity.nodeID),
+        onClick: () => engine.setActive(nodeEntity.nodeID),
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
           if (nodeEntity.nodeType === BlockType.START || !editPermission.canEdit) return;

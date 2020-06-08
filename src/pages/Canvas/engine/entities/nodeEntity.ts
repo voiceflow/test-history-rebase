@@ -34,6 +34,35 @@ export type NodeInstance = EntityInstance & {
    * only Block nodes can be translated
    */
   translate?: (movement: Pair<number>) => void;
+
+  /**
+   * only Markup nodes expose a rect for transformation
+   */
+  getTransformRect?: () => DOMRect | null;
+
+  /**
+   * only Markup nodes can be rotated
+   */
+  rotate?: (angle: number) => void;
+
+  /**
+   * only Markup nodes can be scaled
+   */
+  scale?: (delta: Pair<number>, offset: Pair<number>) => void;
+
+  /**
+   * create a snapshot of the current DOMRect to use for calculating transformations
+   *
+   * only Markup nodes can be snapshotted
+   */
+  snapshot?: () => void;
+
+  /**
+   * apply any outstanding transformations
+   *
+   * only Markup nodes can be transformed
+   */
+  applyTransformations?: () => void;
 };
 
 const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => (nodeID: string) => ({
@@ -66,6 +95,10 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     return this.engine.merge.targetNodeID === this.nodeID;
   }
 
+  get isTransformTarget() {
+    return this.engine.transformation.isTarget(this.nodeID);
+  }
+
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
   }
@@ -85,8 +118,8 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     this.log.debug(this.log.init('constructed node'), this.log.slug(nodeID));
   }
 
-  resolve() {
-    return this.engine.select(nodeEntitySelector)(this.nodeID);
+  resolve<T = unknown>(): { node: Node; data: NodeData<T> } {
+    return this.engine.select(nodeEntitySelector)(this.nodeID) as any;
   }
 
   shouldUpdate() {

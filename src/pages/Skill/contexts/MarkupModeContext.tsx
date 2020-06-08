@@ -62,6 +62,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     }
   };
 
+  // TODO: we should probably move these to the markup engine / manager
   const onAddImage = () => {
     setCreatingModeType(null);
 
@@ -94,7 +95,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        const nodeData: Markup.ImageNodeData = { url: imageURL, width: imageSize.width, height: imageSize.height };
+        const nodeData: Markup.ImageNodeData = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
 
         engine.node.add(BlockType.MARKUP_IMAGE, [offsetX, offsetY], nodeData as NodeData<Markup.ImageNodeData>);
       } catch {

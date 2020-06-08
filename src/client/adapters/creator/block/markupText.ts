@@ -4,7 +4,7 @@ import { Markup } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const markupImage = createBlockAdapter<Markup.TextNodeData, Markup.TextNodeData>(
+const markupText = createBlockAdapter<Markup.TextNodeData, Markup.TextNodeData>(
   (data) => data,
   (data) => {
     const { content } = data;
@@ -35,4 +35,4 @@ const markupImage = createBlockAdapter<Markup.TextNodeData, Markup.TextNodeData>
   }
 );
 
-export default markupImage;
+export default markupText;

@@ -12,7 +12,7 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn } from './utils';
 
-const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = ({ node, data }) => {
+const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.TextNodeData>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
 
   const cachedContent = React.useRef(data.content);
@@ -52,7 +52,7 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = 
   });
 
   return (
-    <Container>
+    <Container scale={data.scale} ref={ref}>
       <DraftJSEditor
         ref={editorRef}
         onBlur={onBlur}
@@ -68,4 +68,4 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = 
   );
 };
 
-export default MarkupTextNode;
+export default React.forwardRef(MarkupTextNode);

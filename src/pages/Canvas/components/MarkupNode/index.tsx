@@ -3,19 +3,21 @@ import React from 'react';
 
 import { useSetup } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_ENABLED } from '@/pages/Canvas/constants';
-import { ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { ChildContainer, Container, NodeStyles } from './components';
+import { useMarkupInstance } from './hooks';
 
 const MarkupNode = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const instance = useNodeInstance<HTMLDivElement>();
+  const instance = useMarkupInstance<HTMLDivElement>();
   const getManager = React.useContext(ManagerContext)!;
+  const engine = React.useContext(EngineContext)!;
+  const observer = React.useMemo(() => new ResizeObserver(() => engine.transformation.reinitialize()), []);
   const { node, data, isFocused } = nodeEntity.useState((e) => {
     const resolved = e.resolve();
 
@@ -40,8 +42,16 @@ const MarkupNode = () => {
   useSetup(() => {
     if (isFocused) {
       instance.ref.current?.focus();
+      engine.transformation.initialize(nodeEntity.nodeID);
     }
   });
+
+  React.useEffect(() => {
+    const transformEl = instance.transformRef.current!;
+    observer.observe(transformEl);
+
+    return () => observer.unobserve(transformEl);
+  }, []);
 
   return (
     <>
@@ -58,7 +68,7 @@ const MarkupNode = () => {
       >
         {NodeComponent && (
           <ChildContainer>
-            <NodeComponent node={node} data={data as NodeData<Markup.NodeData>} />
+            <NodeComponent node={node} data={data as NodeData<Markup.NodeData>} ref={instance.transformRef} />
           </ChildContainer>
         )}
       </Container>
@@ -66,4 +76,4 @@ const MarkupNode = () => {
   );
 };
 
-export default MarkupNode;
+export default React.memo(MarkupNode);

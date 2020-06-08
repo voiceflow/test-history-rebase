@@ -61,6 +61,7 @@ class MarkupEngine extends EngineConsumer {
     const nodeData: Markup.TextNodeData = {
       content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
       textAlignment: TextAlignment.LEFT,
+      scale: 1,
     };
 
     const nodeID = cuid();

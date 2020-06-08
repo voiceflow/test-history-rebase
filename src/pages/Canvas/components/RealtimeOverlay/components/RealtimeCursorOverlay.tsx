@@ -3,7 +3,7 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
+import { Pair, Point } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../constants';
@@ -48,10 +48,10 @@ class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
       this.state.items.forEach((tabID) => {
         const [moveX, moveY] = calculateMovement(this.cursorLocations[tabID]!);
 
-        this.translateCursor(tabID, moveX, moveY);
+        this.translateCursor(tabID, [moveX, moveY]);
       }),
 
-    panViewport: (moveX, moveY) => this.state.items.forEach((tabID) => this.translateCursor(tabID, moveX, moveY)),
+    panViewport: (movement) => this.state.items.forEach((tabID) => this.translateCursor(tabID, movement)),
 
     removeUser: (tabID) => this.removeCursor(tabID),
   };
@@ -65,7 +65,7 @@ class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
     clearTimer(this.cursorAnimationTimers, tabID);
   }
 
-  translateCursor(tabID: string, moveX: number, moveY: number) {
+  translateCursor(tabID: string, [moveX, moveY]: Pair<number>) {
     const [x, y] = this.cursorLocations[tabID]!;
     const cursorEl = this.getElement(tabID);
 

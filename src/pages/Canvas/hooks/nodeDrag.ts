@@ -24,11 +24,7 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
         return;
       }
 
-      if (isHoldingShift.current) {
-        engine.selection.toggle(nodeEntity.nodeID);
-      } else {
-        engine.focus.set(nodeEntity.nodeID);
-      }
+      engine.setActive(nodeEntity.nodeID, isHoldingShift.current);
     },
     [skipClick]
   );

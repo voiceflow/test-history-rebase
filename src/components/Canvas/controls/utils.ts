@@ -27,13 +27,15 @@ export function normalizeZoom(zoom: number) {
   return Math.min(Math.max(zoom, MIN_ZOOM), MAX_ZOOM);
 }
 
+// eslint-disable-next-line max-params
 export function calculateScrollTranslation(
   [originX, originY]: Point,
   prevZoom: number,
   nextZoom: number,
   [canvasX, canvasY]: Point,
-  { width: canvasWidth, height: canvasHeight }: DOMRect
-): Point {
+  { width: canvasWidth, height: canvasHeight }: DOMRect,
+  zoomDiffFactor: number
+): [number, number, number] {
   const zoomDelta = nextZoom / ZOOM_FACTOR - prevZoom;
 
   // compute width and height increment factor
@@ -44,5 +46,5 @@ export function calculateScrollTranslation(
   const deltaX = canvasWidth * zoomDelta * xFactor;
   const deltaY = canvasHeight * zoomDelta * yFactor;
 
-  return [-deltaX, -deltaY];
+  return [-deltaX, -deltaY, zoomDiffFactor];
 }

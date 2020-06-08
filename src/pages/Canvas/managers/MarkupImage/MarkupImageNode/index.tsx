@@ -5,8 +5,8 @@ import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/t
 
 import { Container } from './components';
 
-const MarkupImageNode: React.FC<ConnectedMarkupNodeProps<Markup.ImageNodeData>> = ({ data }) => (
-  <Container url={data.url} width={data.width} height={data.height} />
+const MarkupImageNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.ImageNodeData>> = ({ data }, ref) => (
+  <Container url={data.url} width={data.width} height={data.height} ref={ref} />
 );
 
-export default MarkupImageNode;
+export default React.forwardRef(MarkupImageNode);

@@ -39,4 +39,17 @@ export enum ContextMenuTarget {
   CANVAS = 'canvas',
 }
 
+export enum CanvasAction {
+  ZOOM = 'zoom',
+  PAN = 'pan',
+  IDLE = 'idle',
+}
+
+export enum CanvasTransformation {
+  STRETCH_HORIZONTAL = 'stretchHorizontal',
+  STRETCH_VERTICAL = 'stretchVertical',
+  SCALE = 'scale',
+  ROTATE = 'rotate',
+}
+
 export const MAX_ITEMS_PER_EDITOR = 22;

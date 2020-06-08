@@ -96,7 +96,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
   }
 
   return (
-    <Popper referenceElement={buildVirtualElement(contextMenu.position)} placement="right-start" positionFixed>
+    <Popper referenceElement={buildVirtualElement(contextMenu.position!)} placement="right-start" positionFixed>
       {({ ref, style, placement }) => (
         <div ref={ref} style={style} data-placement={placement} className={className}>
           <NestedContextMenu options={options} onSelect={onSelect} getOptionValue={getOptionValue} getOptionLabel={getOptionLabel} />

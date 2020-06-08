@@ -163,7 +163,7 @@ class NodeManager extends EngineConsumer {
     this.internal.add(augmentedNode, data, parentNode);
 
     this.engine.saveHistory();
-    this.engine.focus.set(nodeID);
+    this.engine.setActive(nodeID);
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 
@@ -186,7 +186,7 @@ class NodeManager extends EngineConsumer {
     const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
 
     this.engine.saveHistory();
-    this.engine.focus.set(duplicateNodeID);
+    this.engine.setActive(duplicateNodeID);
 
     this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
   }
@@ -330,7 +330,7 @@ class NodeManager extends EngineConsumer {
     await this.engine.realtime.sendUpdate(Realtime.addNestedNode(parentNodeID, augmentedNode, data, mergedNodeID));
     this.internal.addNested(parentNodeID, augmentedNode, data, mergedNodeID);
     this.engine.saveHistory();
-    this.engine.focus.set(nodeID);
+    this.engine.setActive(nodeID);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(nodeID));
 
@@ -374,7 +374,7 @@ class NodeManager extends EngineConsumer {
 
     this.engine.saveHistory();
 
-    this.engine.focus.set(childID);
+    this.engine.setActive(childID);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(childID));
   }
@@ -493,11 +493,14 @@ class NodeManager extends EngineConsumer {
 
       await this.engine.drag.setGroup(targets);
       await this.engine.node.translateMany(targets, movement);
+    } else if (this.engine.transformation.isActive && !this.engine.focus.isTarget(nodeID)) {
+      this.engine.focus.reset();
     } else {
       this.engine.selection.reset();
 
       await this.engine.drag.setTarget(nodeID);
       await this.engine.node.translate(nodeID, movement);
+      this.engine.transformation.transformOverlay?.translate(movement);
 
       this.engine.merge.updateCandidates();
     }
@@ -508,12 +511,14 @@ class NodeManager extends EngineConsumer {
     this.engine.saveHistory();
 
     await this.engine.drag.reset();
+    this.engine.transformation.reinitialize();
   }
 
   center(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
     const center = this.api(nodeID)?.instance?.getCenterPoint();
 
-    if (!center) return;
+    if (!center || MARKUP_NODES.includes(node.type)) return;
 
     const [centerX, centerY] = center;
     const xOffset = window.innerWidth / 2;

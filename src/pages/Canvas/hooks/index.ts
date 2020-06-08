@@ -1,3 +1,4 @@
+export * from './canvasAction';
 export * from './nodeDrag';
 export * from './locking';
 export * from './selection';

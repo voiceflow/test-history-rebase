@@ -3,21 +3,28 @@ import loglevel from 'loglevel';
 import { LOG_FILTER, LOG_LEVEL } from '@/config';
 
 const SEPARATOR = '.';
+const NEGATION = '!';
 const SEPARATOR_REGEX = /\\./g;
 const MATCH_MANY_REGEX = /\*\*/g;
 const MATCH_ONE_REGEX = /\*/g;
 const BASE_LOGGER_NAME = 'voiceflow';
-const LOG_WHITELIST = LOG_FILTER
-  ? LOG_FILTER.split(',')
-      .filter(Boolean)
-      .map(
-        (glob) =>
-          `^${BASE_LOGGER_NAME}\\.${
-            glob ? glob.replace(SEPARATOR_REGEX, '\\.').replace(MATCH_MANY_REGEX, '.*?').replace(MATCH_ONE_REGEX, '[^\\.]*') : '.*'
-          }$`
-      )
-      .map((glob) => RegExp(glob))
-  : [];
+const [LOG_WHITELIST, LOG_BLACKLIST] = (LOG_FILTER || '')
+  .split(',')
+  .filter(Boolean)
+  .reduce<[RegExp[], RegExp[]]>(
+    ([whitelist, blacklist], glob) => {
+      const pattern = `^${BASE_LOGGER_NAME}\\.${
+        glob ? glob.replace(SEPARATOR_REGEX, '\\.').replace(MATCH_MANY_REGEX, '.*?').replace(MATCH_ONE_REGEX, '[^\\.]*') : '.*'
+      }$`;
+
+      if (glob.startsWith(NEGATION)) {
+        return [whitelist, [...blacklist, RegExp(pattern)]];
+      }
+
+      return [[...whitelist, RegExp(pattern)], blacklist];
+    },
+    [[], []]
+  );
 
 const LOG_MESSAGE_STYLE = 'color: #cfcfcf;';
 const LOG_SUBTLE_PATH_STYLE = 'color: #7d7d7d;';
@@ -183,6 +190,10 @@ const customizeLogger = (logger: loglevel.Logger, path: string[]) => {
     const logMethod = logFactory(method, level, name);
 
     return (...args) => {
+      if (LOG_BLACKLIST.length && LOG_BLACKLIST.some((regex) => loggerName.match(regex))) {
+        return;
+      }
+
       if (LOG_WHITELIST.length && !LOG_WHITELIST.some((regex) => loggerName.match(regex))) {
         return;
       }

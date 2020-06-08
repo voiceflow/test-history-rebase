@@ -2,9 +2,16 @@ import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
 import { styled, transition } from '@/hocs';
 import { NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
 
-export const Container = styled.div`
-  ${transition('border-color')}
+export type ContainerProps = {
+  scale: number;
+};
 
+export const Container = styled.div.attrs<ContainerProps>(({ scale }) => ({
+  style: {
+    transform: `scale(${scale})`,
+  },
+}))<ContainerProps>`
+  ${transition('border-color')}
   min-width: 160px;
   min-height: 30px;
 

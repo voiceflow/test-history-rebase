@@ -1,11 +1,13 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
+import { Node, NodeData } from '@/models';
+import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
+import { Engine } from '@/pages/Canvas/engine/';
 
-import { SidebarContext } from './contexts';
+import { SidebarContext, SidebarHeaderAction } from './contexts';
 
-const DEFAULT_SIDEBAR_HEADER_ACTIONS = [
+const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   {
     value: 'duplicate_block',
     label: 'Duplicate',
@@ -18,7 +20,13 @@ const DEFAULT_SIDEBAR_HEADER_ACTIONS = [
   },
 ];
 
-const generatePath = (node, parent, engine) => (getManager) => {
+export type PathEntry = {
+  label: string;
+  focus?: () => void;
+  type?: string;
+};
+
+const generatePath = (node: Node | null, parent: NodeData<any> | null, engine: Engine) => (getManager: ManagerGetter): PathEntry[] => {
   if (!node) {
     return [];
   }
@@ -37,9 +45,9 @@ const generatePath = (node, parent, engine) => (getManager) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const useEditorPath = (node, parent) => {
-  const getManager = React.useContext(ManagerContext);
-  const engine = React.useContext(EngineContext);
+export const useEditorPath = (node: Node | null, parent: NodeData<any> | null) => {
+  const getManager = React.useContext(ManagerContext)!;
+  const engine = React.useContext(EngineContext)!;
   const originalPath = React.useMemo(() => generatePath(node, parent, engine)(getManager), [node, parent, engine, getManager]);
   const [path, updatePath] = React.useState(originalPath);
 
@@ -65,16 +73,18 @@ export const useEditorPath = (node, parent) => {
 };
 
 export const useHeaderActions = (headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS) => {
-  const sidebar = React.useContext(SidebarContext);
+  const sidebar = React.useContext(SidebarContext)!;
 
   React.useEffect(() => {
     sidebar.updateState({ headerActions });
   }, [sidebar.updateState, headerActions]);
 };
 
-export const useUpdateData = (nodeID) => {
+export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
+
+export const useUpdateData = (nodeID?: string): NodeDataUpdater<any> => {
   // We've removed useSelector hook because it sometimes has stale redux values which was causing some insane bugs, now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
-  const engine = React.useContext(EngineContext);
+  const engine = React.useContext(EngineContext)!;
 
   return React.useCallback((value, save = true) => nodeID && engine.node.updateData(nodeID, value, save), [engine.node, nodeID]);
 };

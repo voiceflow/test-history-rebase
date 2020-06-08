@@ -1,3 +1,4 @@
+import CSS from 'csstype';
 import React from 'react';
 
 import Flex from '@/components/Flex';
@@ -11,6 +12,7 @@ export type ModalHeaderProps = {
   header?: React.ReactNode;
   tooltip?: React.ReactNode;
   toggle?: () => void;
+  style?: CSS.Properties;
 };
 
 const ModalHeader: React.FC<ModalHeaderProps> = ({ header, toggle, children, className, tooltip }) => {

@@ -13,7 +13,7 @@ export const CenterGroup = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
+  width: 250px;
 `;
 
 export const PrimaryHeader = styled.div`
@@ -35,7 +35,7 @@ export const HeaderNavigation = styled.div`
 
 export const HeaderActions = styled.div`
   display: flex;
-  flex-basis: calc(50% + 100px);
+  flex-basis: calc(50% + 260px);
   align-items: center;
   justify-content: flex-end;
   height: inherit;

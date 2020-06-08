@@ -2,15 +2,11 @@ import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
 import { EditorState } from 'draft-js';
 import React from 'react';
 
-import Input from '@/components/Input';
 import Select from '@/components/Select';
-import { useDidUpdateEffect } from '@/hooks';
-import { FormControl } from '@/pages/Canvas/components/Editor';
-import { FormGroup } from '@/pages/Canvas/components/MarkupComponents';
-import { withEnterPress } from '@/utils/dom';
 
-import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, InlineStylePrefix } from '../constants';
-import { getInlineStylePrefixAndValue, togglePrefixedInlineStyle } from '../utils';
+import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, InlineStylePrefix } from '../../constants';
+import { getInlineStylePrefixAndValue, togglePrefixedInlineStyle } from '../../utils';
+import { FormGroup } from './components';
 
 const PartialSelect = Select as React.ComponentType<Partial<React.ComponentProps<typeof Select>>>;
 
@@ -21,18 +17,14 @@ type FontStylesProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
 };
 
 const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState, saveEditorState, applyFakeSelection, removeFakeSelection }) => {
-  const inputRef = React.useRef<HTMLInputElement>();
-
-  const { fontSize, fontWeight, fontFamily } = React.useMemo(() => {
+  const { fontWeight, fontFamily } = React.useMemo(() => {
     const editorState = getEditorState?.();
 
-    let fontSizeValue = '20';
     let fontWeightValue = FontWeight.REGULAR;
     let fontFamilyValue = Font.OPEN_SANS;
 
     if (!editorState) {
       return {
-        fontSize: fontSizeValue,
         fontWeight: fontWeightValue,
         fontFamily: fontFamilyValue,
       };
@@ -52,10 +44,6 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
           fontWeightValue = value! as FontWeight;
           break;
         }
-        case InlineStylePrefix.FONT_SIZE: {
-          fontSizeValue = value!;
-          break;
-        }
         default: {
           // empty
         }
@@ -63,13 +51,10 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
     });
 
     return {
-      fontSize: fontSizeValue,
       fontWeight: fontWeightValue,
       fontFamily: fontFamilyValue,
     };
   }, [getEditorState?.()]);
-
-  const [localFontSize, setLocalFontSize] = React.useState(fontSize);
 
   const onShowFakeSelection = () => {
     setEditorState(applyFakeSelection(getEditorState()));
@@ -103,69 +88,31 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
     saveEditorState(state);
   };
 
-  const onChangeFontSize = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    if (value === '' || value.match(/^\d+$/)) {
-      setLocalFontSize(value);
-    }
-  };
-
-  const onBlurEnterFontSize = () => {
-    inputRef.current?.blur();
-
-    const value = localFontSize === '' ? fontSize : localFontSize;
-
-    let state = getEditorState();
-
-    state = togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_SIZE, value);
-
-    state = removeFakeSelection(state);
-
-    setEditorState(state);
-    saveEditorState(state);
-  };
-
-  useDidUpdateEffect(() => {
-    setLocalFontSize(fontSize);
-  }, [fontSize]);
-
   return (
-    <>
-      <FormControl>
+    <FormGroup
+      leftColumn={
         <PartialSelect
           value={fontFamily}
           onOpen={onShowFakeSelection}
           onClose={onHideFakeSelection}
           options={Object.values(Font)}
           onSelect={onChangeFontFamily}
+          minWidth={false}
           getOptionLabel={(value: Font) => FONTS_LABELS[value]}
         />
-      </FormControl>
-
-      <FormGroup
-        leftColumn={
-          <PartialSelect
-            value={fontWeight}
-            onOpen={onShowFakeSelection}
-            onClose={onHideFakeSelection}
-            options={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily]}
-            onSelect={onChangeFontWeight}
-            getOptionLabel={(value: FontWeight) => FONT_WEIGHTS_LABELS[value]}
-          />
-        }
-        rightColumn={
-          <Input
-            ref={inputRef}
-            type="number"
-            value={localFontSize}
-            onBlur={onBlurEnterFontSize}
-            onFocus={onShowFakeSelection}
-            onChange={onChangeFontSize}
-            onKeyPress={withEnterPress(onBlurEnterFontSize)}
-            placeholder="20"
-          />
-        }
-      />
-    </>
+      }
+      rightColumn={
+        <PartialSelect
+          value={fontWeight}
+          onOpen={onShowFakeSelection}
+          onClose={onHideFakeSelection}
+          options={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily]}
+          onSelect={onChangeFontWeight}
+          minWidth={false}
+          getOptionLabel={(value: FontWeight) => FONT_WEIGHTS_LABELS[value]}
+        />
+      }
+    />
   );
 };
 

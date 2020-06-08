@@ -225,7 +225,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -263,6 +263,10 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -683,7 +687,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -721,6 +725,10 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c20 {
@@ -1129,7 +1137,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1167,6 +1175,10 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -1582,7 +1594,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1620,6 +1632,10 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c20 {
@@ -2027,7 +2043,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2065,6 +2081,10 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -2465,7 +2485,7 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2503,6 +2523,10 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c18 {
@@ -2863,7 +2887,7 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled) .c0:hover::before {
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2901,6 +2925,10 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
 
 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
   opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
 }
 
 .c0 .c17 {

@@ -1,4 +1,5 @@
 import { styled } from '@/hocs';
+import { CANVAS_MARKUP_ENABLED } from '@/pages/Canvas/constants';
 
 const LinkLayerSvg = styled.svg`
   overflow: visible;
@@ -7,6 +8,10 @@ const LinkLayerSvg = styled.svg`
   height: 100%;
   width: 100%;
   position: absolute;
+
+  .${CANVAS_MARKUP_ENABLED} & {
+    pointer-events: none !important;
+  }
 `;
 
 export default LinkLayerSvg;

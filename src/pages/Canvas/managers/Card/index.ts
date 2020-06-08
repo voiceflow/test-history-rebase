@@ -15,8 +15,6 @@ const CardManager: NodeConfig<NodeData.Card> = {
   label: 'Card',
   tip: 'Tell Alexa to show a card',
 
-  addable: true,
-
   factory: () => ({
     node: {
       ports: {

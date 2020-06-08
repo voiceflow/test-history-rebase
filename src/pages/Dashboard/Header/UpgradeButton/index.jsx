@@ -18,7 +18,7 @@ function UpgradeButton({ isOnPaidPlan }) {
         {!isOnPaidPlan ? (
           <Container onClick={openPaymentsModal}>
             <UpgradeIcon variant="flat" large icon="upgrade" />
-            <UpgradeText>UPGRADE</UpgradeText>
+            <UpgradeText>UPGRADE WORKSPACE</UpgradeText>
           </Container>
         ) : null}
       </>

@@ -6,44 +6,57 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType, MARKUP_NODES } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
+import { FocusState } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
+import { Node, NodeData } from '@/models';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { Theme } from '@/styles/theme';
+import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
+import { MergeArguments } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
 import EditorModal from './components/EditorModal';
 import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
-import { useEditorPath, useUpdateData } from './hooks';
+import { NodeDataUpdater, useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
-function EditSidebar({ focus, node, parent, theme }) {
-  const { canEdit: isVisible } = React.useContext(EditPermissionContext);
+type EditSidebarProps = {
+  focus: FocusState;
+  node: Node | null;
+  parent: NodeData<any>;
+  theme: Theme;
+};
+
+const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme }) => {
+  const { canEdit: isVisible } = React.useContext(EditPermissionContext)!;
   const { path, goToPath, pushToPath, popFromPath } = useEditorPath(node, parent);
-  const getManager = React.useContext(ManagerContext);
+  const getManager = React.useContext(ManagerContext)!;
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
-  const shouldRender = node && !UNEDITABLE_BLOCKS.includes(node.type);
+  const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
-  const updateData = useUpdateData(node?.id);
+  const updateData: NodeDataUpdater<any> = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
-  const isMarkup = MARKUP_NODES.includes(node?.type);
+  const isMarkup = !!node && MARKUP_NODES.includes(node?.type);
 
   let editor = null;
 
-  if (shouldRender) {
+  if (node !== null && shouldRender) {
     const { editorsByPath, editor: rootEditor } = getManager(node.type);
     const activePath = path[path.length - 1] || {};
 
-    const Manager = withManagerProps(editorsByPath?.[activePath.type] || rootEditor);
+    const subManager = activePath.type && editorsByPath?.[activePath.type];
+    const Manager: any = withManagerProps(subManager || rootEditor);
     prevAnimationDistance.current =
       // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
@@ -65,7 +78,7 @@ function EditSidebar({ focus, node, parent, theme }) {
     if (isMarkup) {
       editor = (
         <NamespaceProvider value={['editor', node.type, node.id]}>
-          <MarkupEditor key={`${node.id}-${path.length}`} animationDistance={prevAnimationDistance.current}>
+          <MarkupEditor key={node.id} animationDistance={prevAnimationDistance.current}>
             {managerElm}
           </MarkupEditor>
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
@@ -101,12 +114,12 @@ function EditSidebar({ focus, node, parent, theme }) {
     <SidebarProvider>
       <Drawer
         as="section"
-        key={focus.target} // required to fix layout issue
+        key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is
         style={{ overflow: 'hidden' }}
         open={isOpen}
         width={isMarkup ? theme.components.markupSidebar.width : theme.components.blockSidebar.width}
         onPaste={stopImmediatePropagation()}
-        direction="left"
+        direction={SlideOutDirection.LEFT}
         disableAnimation={!shouldRender}
       >
         {!isModal && !!path.length && editor}
@@ -115,7 +128,7 @@ function EditSidebar({ focus, node, parent, theme }) {
       {isModal && <EditorModal disableModalMode={disableModalMode} editor={editor} />}
     </SidebarProvider>
   );
-}
+};
 
 const mapStateToProps = {
   node: Creator.focusedNodeSelector,
@@ -123,10 +136,12 @@ const mapStateToProps = {
   focus: Creator.creatorFocusSelector,
 };
 
-const mergeProps = ({ node, parent: getParentData }) => {
+const mergeProps = (...[{ node, parent: getParentData }]: MergeArguments<typeof mapStateToProps, {}>) => {
   const parent = node?.parentNode && getParentData(node.parentNode);
 
   return { parent };
 };
 
-export default compose(connect(mapStateToProps, null, mergeProps), withTheme, React.memo)(EditSidebar);
+export type ConnectedEditSidebarProps = Omit<EditSidebarProps, keyof typeof mapStateToProps | 'theme'>;
+
+export default compose(connect(mapStateToProps, null, mergeProps), withTheme, React.memo)(EditSidebar) as React.FC<ConnectedEditSidebarProps>;

@@ -13,6 +13,7 @@ import { hot } from 'react-hot-loader/root';
 
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
+import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import Modal from '@/components/LegacyModal/Modal';
 import { ToastContainer } from '@/components/Toast';
 import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
@@ -26,6 +27,7 @@ import {
   RealtimeDeniedModal,
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
+import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
@@ -50,6 +52,9 @@ const App = () => {
       <Routes />
       <IntercomChat />
       <CollaboratorsModal />
+      <ImportModal />
+      <LoadingModal />
+
       <ProjectDownloadModal />
       <TestableLinkModal />
       <CanvasExportModal />

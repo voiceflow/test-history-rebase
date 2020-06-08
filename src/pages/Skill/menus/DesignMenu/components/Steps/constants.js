@@ -31,6 +31,12 @@ export const ROOT_SECTIONS = [
         label: 'Intent',
         iconColor: getManager(BlockType.INTENT).iconColor,
       },
+      {
+        type: BlockType.PROMPT,
+        icon: 'prompt',
+        label: 'Prompt',
+        iconColor: getManager(BlockType.PROMPT).iconColor,
+      },
     ],
   },
   {

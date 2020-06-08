@@ -21,6 +21,7 @@ export enum EventName {
   PROJECT_PROTOTYPE_TEST_START = 'Prototype Test Start',
   PROJECT_SHARE_TESTABLE_LINK = 'Testable Link Button',
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
+  CLONE_PROJECT = 'Clone Project',
 
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',

@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { DEBUG_REALTIME } from '@/config';
+import { MovementCalculator } from '@/components/Canvas/types';
+import { REALTIME_CURSOR_ENABLED } from '@/config';
 import * as Realtime from '@/ducks/realtime';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { Pair, Viewport } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useCursorControls = () => {
@@ -10,17 +12,18 @@ export const useCursorControls = () => {
   const engine = React.useContext(EngineContext)!;
 
   const moveMouse = React.useCallback((location) => {
-    if (!DEBUG_REALTIME) return;
+    if (!REALTIME_CURSOR_ENABLED) return;
 
     engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
   }, []);
 
   const panViewport = React.useCallback(
-    (moveX, moveY) => {
-      engine.realtime.panViewport(moveX, moveY);
+    (movement: Pair<number>) => {
+      engine.panViewport(movement);
 
       if (mousePosition.current !== null && engine.canvas!.isTrackpadPanning()) {
         const zoom = engine.canvas!.getZoom();
+        const [moveX, moveY] = movement;
         const [currX, currY] = mousePosition.current;
         const nextMousePosition: [number, number] = [currX - moveX / zoom, currY - moveY / zoom];
 
@@ -39,9 +42,9 @@ export const useCursorControls = () => {
     [moveMouse]
   );
 
-  const zoomViewport = React.useCallback((calculateMovement) => engine.realtime.zoomViewport(calculateMovement), []);
+  const zoomViewport = React.useCallback((calculateMovement: MovementCalculator) => engine.zoomViewport(calculateMovement), []);
 
-  const updateViewport = React.useCallback(({ x, y, zoom }) => engine.updateViewport(x, y, zoom), []);
+  const updateViewport = React.useCallback(({ x, y, zoom }: Viewport) => engine.updateViewport(x, y, zoom), []);
 
   React.useEffect(() => {
     if (engine.canvas) {

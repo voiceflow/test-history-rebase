@@ -1,11 +1,11 @@
-import { EditorState, convertToRaw } from 'draft-js';
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { BlockType, MarkupModeType, TextAlignment } from '@/constants';
+import { BlockType, MarkupModeType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useEnableDisable, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import { CANVAS_MARKUP_CREATING } from '@/pages/Canvas/constants';
 import { imageSizeFromUrl } from '@/utils/file';
 
 export type MarkupModeContextType = {
@@ -13,10 +13,12 @@ export type MarkupModeContextType = {
   openTool: () => void;
   modeType: MarkupModeType | null;
   closeTool: () => void;
+  isCreating: boolean;
   onAddImage: () => void;
-  onAddText: () => void;
   setModeType: (value: MarkupModeType | null) => void;
+  finishCreating: () => void;
   isUploadingImage: boolean;
+  setCreatingModeType: (value: MarkupModeType | null) => void;
 };
 
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
@@ -26,6 +28,7 @@ const FILE_LIMIT = 2 ** 20 * 10; // 2 ** 20 === 1 mb
 
 export const MarkupModeProvider: React.FC = ({ children }) => {
   const [modeType, setModeType] = React.useState<MarkupModeType | null>(null);
+  const [isCreating, setCreating] = React.useState(false);
   const [isOpen, openTool, closeTool] = useEnableDisable(false);
   const eventualEngine = React.useContext(EventualEngineContext)!;
 
@@ -41,7 +44,28 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   isOpenCache.current = isOpen;
 
+  const finishCreating = () => {
+    setCreating(false);
+    eventualEngine.get()!.canvas?.removeClass(CANVAS_MARKUP_CREATING);
+  };
+
+  const setCreatingModeType = (type: null | MarkupModeType) => {
+    setModeType(type);
+    setCreating(!!type);
+
+    eventualEngine.get()!.focus.reset();
+
+    if (type) {
+      eventualEngine.get()!.canvas?.addClass(CANVAS_MARKUP_CREATING);
+    } else {
+      eventualEngine.get()!.canvas?.removeClass(CANVAS_MARKUP_CREATING);
+    }
+  };
+
+  // TODO: we should probably move these to the markup engine / manager
   const onAddImage = () => {
+    setCreatingModeType(null);
+
     const input = document.createElement('input');
 
     const listener = async (e: Event) => {
@@ -71,7 +95,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        const nodeData: Markup.ImageNodeData = { url: imageURL, width: imageSize.width, height: imageSize.height };
+        const nodeData: Markup.ImageNodeData = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
 
         engine.node.add(BlockType.MARKUP_IMAGE, [offsetX, offsetY], nodeData as NodeData<Markup.ImageNodeData>);
       } catch {
@@ -89,17 +113,6 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     input.click();
   };
 
-  const onAddText = () => {
-    const engine = eventualEngine.get()!;
-
-    // TODO: get position from mouse click event
-    const [x, y] = engine.canvas!.getPosition();
-
-    const nodeData: Markup.TextNodeData = { content: convertToRaw(EditorState.createEmpty().getCurrentContent()), textAlignment: TextAlignment.LEFT };
-
-    engine.node.add(BlockType.MARKUP_TEXT, [x, y], nodeData as NodeData<Markup.TextNodeData>);
-  };
-
   const trackMarkupTime = React.useCallback(() => {
     if (startTimeCache.current) {
       trackEvents.trackMarkupSessionDuration({ duration: Date.now() - startTimeCache.current });
@@ -112,7 +125,11 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       return;
     }
 
+    eventualEngine.get()!.focus.reset();
+    eventualEngine.get()!.markup.enable();
+
     openTool();
+
     trackEvents.trackMarkupOpen();
 
     startTimeCache.current = Date.now();
@@ -123,6 +140,11 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       return;
     }
 
+    setCreatingModeType(null);
+
+    eventualEngine.get()!.markup.disable();
+
+    setCreating(false);
     trackMarkupTime();
     closeTool();
   }, []);
@@ -143,10 +165,12 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         modeType,
         openTool: onEnableMarkup,
         closeTool: onDisableMarkup,
-        onAddText,
         onAddImage,
+        isCreating,
         setModeType,
+        finishCreating,
         isUploadingImage,
+        setCreatingModeType,
       }}
     >
       {children}

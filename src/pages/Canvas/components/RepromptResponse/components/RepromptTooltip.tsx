@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Section as TooltipSection, Title } from '@/components/Tooltip';
 
-export const RepromptTooltip = () => (
+const RepromptTooltip = () => (
   <>
     <Title>Path</Title>
     <TooltipSection marginBottomUnits={2}>
@@ -17,8 +17,8 @@ export const RepromptTooltip = () => (
       </p>
       <p>
         We can use multiple reprompts to further guide the user. No Match One is what the user will hear the first time there’s a ‘no match’. No Match
-        2 is what the user will hear the second time there is a ‘no match’, and so on. Each choice can have a max of 3 reprompts as mandated by both
-        Alexa and Google.
+        Two is what the user will hear the second time there is a ‘no match’, and so on. Each choice can have a max of three reprompts as mandated by
+        both Alexa and Google.
       </p>
     </TooltipSection>
   </>

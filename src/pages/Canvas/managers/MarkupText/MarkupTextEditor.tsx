@@ -2,11 +2,13 @@ import { EditorState } from 'draft-js';
 import React from 'react';
 
 import { FlexAround } from '@/components/Flex';
-import { TextAlignment } from '@/constants';
+import { MarkupModeType, TextAlignment } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
+import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { Section } from '@/pages/Canvas/components/MarkupComponents';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 
 import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
 import { getRawContent } from './utils';
@@ -14,11 +16,13 @@ import { getRawContent } from './utils';
 export type MarkupTextEditorProps = {
   data: Markup.TextNodeData;
   nodeID: string;
+  isOpen: boolean;
   onChange: (data: Partial<Markup.TextNodeData>) => void;
 };
 
-export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID, onChange }) => {
+export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID, onChange, isOpen }) => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
+  const { setModeType } = React.useContext(MarkupModeContext)!;
   const { toolbarPlugin, fakeSelectionPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
 
   const onSetAlignment = (textAlignment: TextAlignment) => onChange({ textAlignment });
@@ -31,6 +35,32 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID
     setEditorState(state);
     onChange({ content: getRawContent(state) });
   };
+
+  useSetup(() => {
+    setModeType(MarkupModeType.TEXT);
+  });
+
+  useTeardown(() => {
+    const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
+
+    if (state?.getCurrentContent().getPlainText().trim() === '' && eventualEngine.get()?.getNodeByID(nodeID)) {
+      eventualEngine.get()?.node.remove(nodeID);
+    }
+  });
+
+  useDidUpdateEffect(() => {
+    const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
+
+    if (!isOpen && state?.getCurrentContent().getPlainText().trim() === '') {
+      eventualEngine.get()?.node.remove(nodeID);
+    }
+
+    if (!isOpen) {
+      setModeType(null);
+    } else {
+      setModeType(MarkupModeType.TEXT);
+    }
+  }, [isOpen]);
 
   return (
     <toolbarPlugin.Toolbar>

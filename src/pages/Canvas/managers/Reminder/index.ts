@@ -9,7 +9,6 @@ const ReminderManager: NodeConfig<NodeData.Reminder> = {
   type: BlockType.REMINDER,
   icon: 'reminder',
   iconColor: '#c998a4',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'Reminder',

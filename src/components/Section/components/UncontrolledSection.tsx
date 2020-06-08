@@ -13,7 +13,7 @@ import ContentContainer from './ContentContainer';
 import DropdownContainer from './DropdownContainer';
 import FixNode from './FixNode';
 import HeaderContent from './HeaderContent';
-import HeaderLabel from './HeaderLabel';
+import HeaderLabel, { HeaderVariant } from './HeaderLabel';
 import NumberContainer from './NumberContainer';
 import Container, { SectionContainerProps } from './SectionContainer';
 import Header from './SectionHeader';
@@ -47,6 +47,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isDividerNested?: boolean;
   isDraggingPreview?: boolean;
   customContentStyling?: CSSProperties;
+  headerVariant?: HeaderVariant;
 };
 
 // eslint-disable-next-line react/display-name
@@ -78,6 +79,7 @@ const UncontrolledSection: React.FC<UncontrolledSectionProps> = (
     isDividerNested = false,
     isDraggingPreview = false,
     customContentStyling,
+    headerVariant,
     ...props
   },
   ref: React.Ref<HTMLDivElement>
@@ -104,7 +106,11 @@ const UncontrolledSection: React.FC<UncontrolledSectionProps> = (
           {(prefix || header || tooltip || dropdown) && (
             <HeaderContent>
               {prefix && <FixNode fixNode={prefix} color="#787878" />}
-              {header && <HeaderLabel disabled={disabled}>{header}</HeaderLabel>}
+              {header && (
+                <HeaderLabel disabled={disabled} variant={headerVariant}>
+                  {header}
+                </HeaderLabel>
+              )}
               {tooltip && <InfoIcon tooltipProps={tooltipProps}>{tooltip}</InfoIcon>}
               {dropdown && (
                 <DropdownContainer isCollapsed={isCollapsed} onClick={swallowEvent()}>

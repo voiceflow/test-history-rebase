@@ -103,9 +103,7 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
   };
 
   React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    if (editorState?.getSelection().hasFocus) {
+    if (editorState?.getSelection().getHasFocus()) {
       setLocalLink(link);
     }
   }, [link]);

@@ -8,7 +8,6 @@ const AccountLinkingManager: NodeConfig<{}> = {
   type: BlockType.ACCOUNT_LINKING,
   icon: 'accountLinking',
   iconColor: '#645f5f',
-  addable: true,
   platforms: [PlatformType.ALEXA],
 
   label: 'Account Linking',

@@ -3,6 +3,7 @@ import type BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
+import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -11,7 +12,7 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn } from './utils';
 
-const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = ({ node, data }) => {
+const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.TextNodeData>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
 
   const cachedContent = React.useRef(data.content);
@@ -22,30 +23,42 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = 
   const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
   const plugins = React.useMemo(() => Object.values(pluginsObj), [pluginsObj]);
 
-  const onBlur = () => {
+  const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);
 
     cachedContent.current = content;
 
     engine.node.updateData(node.id, { content });
-  };
+  }, [editorState]);
 
-  const onEscape = () => {
-    editorRef.current!.blur();
-  };
+  const keyBindingFn = React.useCallback(({ keyCode }: React.KeyboardEvent) => {
+    // esc
+    if (keyCode === 27) {
+      editorRef.current?.blur();
+    }
+
+    return null;
+  }, []);
 
   const onChange = React.useCallback((state: EditorState) => {
     setEditorState(state);
   }, []);
 
+  useSetup(() => {
+    if (engine.markup.getLastCreatedNodeID() === node.id) {
+      engine.markup.resetLastCreatedNodeID();
+      editorRef.current?.focus();
+    }
+  });
+
   return (
-    <Container>
+    <Container scale={data.scale} ref={ref}>
       <DraftJSEditor
         ref={editorRef}
         onBlur={onBlur}
         plugins={plugins}
         onChange={onChange}
-        onEscape={onEscape}
+        keyBindingFn={keyBindingFn}
         editorState={editorState}
         placeholder="Type something"
         customStyleFn={customStyleFn}
@@ -55,4 +68,4 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.TextNodeData>> = 
   );
 };
 
-export default MarkupTextNode;
+export default React.forwardRef(MarkupTextNode);

@@ -244,6 +244,7 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   min-width: 0;
   margin-right: 12px;
   opacity: 1;
+  font-weight: 600;
 }
 
 .c33 {

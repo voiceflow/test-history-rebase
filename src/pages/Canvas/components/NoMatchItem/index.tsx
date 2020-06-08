@@ -11,7 +11,7 @@ const NO_MATCH_NUMBERS = ['One', 'Two', 'Three'];
 const NoMatchItem: React.RefForwardingComponent<HTMLDivElement, NoMatchItemProps> = (props, ref) => {
   const number = NO_MATCH_NUMBERS[props.index] ?? '';
 
-  return <SpeakItem {...props} header={`No Match ${number}`} ref={ref} />;
+  return <SpeakItem {...props} header={`No Match ${number}`} ref={ref} formControlProps={{ contentBottomUnits: 2.5 }} />;
 };
 
 export default React.forwardRef(NoMatchItem);

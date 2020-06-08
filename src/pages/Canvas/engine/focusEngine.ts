@@ -32,8 +32,10 @@ class FocusEngine extends EngineConsumer {
 
     this.log.debug(this.log.pending('focusing node'), this.log.slug(nodeID));
     this.engine.activation.reset();
+    this.engine.transformation.reset();
 
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
+    this.engine.transformation.initialize(nodeID);
     this.dispatch(setFocus(nodeID, renameActiveRevision));
     this.engine.node.redrawLinks(nodeID);
 
@@ -48,6 +50,7 @@ class FocusEngine extends EngineConsumer {
     this.log.debug(this.log.pending('resetting focus'), this.log.slug(target));
     this.dispatch(clearFocus());
     this.engine.activation.reset();
+    this.engine.transformation.reset();
     this.engine.node.redrawLinks(target);
 
     this.log.debug(this.log.reset('reset focus'), this.log.slug(target));

@@ -37,6 +37,7 @@ export const rectangle = withDecorators(() => {
     shapeType: ShapeType.RECTANGLE,
     borderColor: null,
     borderRadius: 0,
+    rotate: 0,
     backgroundColor: { r: 0, g: 0, b: 50, a: 0.7 },
   });
 

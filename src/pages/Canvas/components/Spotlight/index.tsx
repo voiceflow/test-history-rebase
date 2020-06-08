@@ -40,6 +40,8 @@ const Spotlight = () => {
   const spotlight = React.useContext(SpotlightContext);
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
+  const gadgets = useFeature(FeatureFlag.GADGETS);
+  const promptFeature = useFeature(FeatureFlag.PROMPT_EDITOR);
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
     const position = engine.getCanvasMousePosition();
@@ -48,17 +50,23 @@ const Spotlight = () => {
     spotlight?.hide();
   };
 
+  const options = React.useMemo(
+    () =>
+      BLOCK_TYPES.filter((option) => {
+        if (!promptFeature.isEnabled && option.value === BlockType.PROMPT) return false;
+
+        if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.value)) return false;
+
+        return true;
+      }),
+    []
+  );
+
   useDidUpdateEffect(() => {
     if (spotlight?.isVisible) {
       trackingEvents.trackCanvasSpotlightOpened();
     }
   }, [spotlight?.isVisible]);
-
-  const gadgets = useFeature(FeatureFlag.GADGETS);
-  const GADGET_BLOCKS = React.useMemo(
-    () => (gadgets.isEnabled ? BLOCK_TYPES : BLOCK_TYPES.filter(({ value }) => ![BlockType.DIRECTIVE, BlockType.EVENT].includes(value))),
-    []
-  );
 
   if (!spotlight?.isVisible) {
     return null;
@@ -72,7 +80,7 @@ const Spotlight = () => {
         autoFocus
         classNamePrefix="spotlight"
         onChange={(selected: { value: BlockType; factoryData?: Partial<NodeData<unknown>> }) => addBlock(selected.value, selected.factoryData)}
-        options={GADGET_BLOCKS}
+        options={options}
         maxMenuHeight={124}
         value={null}
         placeholder="Add Block"

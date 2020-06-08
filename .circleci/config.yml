@@ -281,53 +281,6 @@ jobs:
             - app.dockerfile
             - config
 
-  build-app-ephemeral:
-    executor: node-executor
-    steps:
-      - checkout
-      - install_dependencies
-      - run:
-          name: Build app
-          command: |
-            ENV_NAME=${CIRCLE_BRANCH##*-}
-            export VF_APP_BUILD_ENV=staging
-            export VF_APP_API_HOST=api-$ENV_NAME.development.voiceflow.com
-            export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
-            yarn build
-      - persist_to_workspace:
-          root: ~/voiceflow
-          paths:
-            - build
-            - app.dockerfile
-            - config
-
-  deploy-app-ephemeral:
-    executor: image_builder
-    environment:
-      IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
-    steps:
-      - checkout # special step to check out source code to working directory
-      - add_ssh_keys: # To enable write access to repository for removing ephemeral branches
-          fingerprints:
-            - "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
-      - attach_workspace:
-          at: /tmp/vf-build
-      - setup_remote_docker
-      - run:
-          name: "Build and deploy ephemeral image"
-          command: |
-            IMAGE_TAG="k8s-$CIRCLE_SHA1"
-            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-            ENV_NAME=${CIRCLE_BRANCH##*-}
-            docker build \
-              -f app.dockerfile \
-              -t $IMAGE_NAME .
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker push $IMAGE_NAME
-            git push origin --delete $CIRCLE_BRANCH --no-verify
-            aws eks --region us-east-1 update-kubeconfig --name development
-            kubectl set image --namespace ephemeral-$ENV_NAME statefulset/creator-app-$ENV_NAME app=$IMAGE_NAME
-
   deploy-app-dev-environment:
     executor: image_builder
     environment:
@@ -373,16 +326,25 @@ jobs:
             ENV_NAME="${CIRCLE_BRANCH%%_*}"
             aws eks --region us-east-1 update-kubeconfig --name development
             NON_INTERACTIVE=true ./envcli edit component creatorapp creatorapp -n $ENV_NAME -i $IMAGE_NAME
+      - run:
+          name: "Notify Slack (if applicable)"
+          command: |
+            set +e
+            aws s3 cp s3://com.voiceflow.ci.states/github-actions/dev-env/creator-app-notify-$CIRCLE_SHA1.json state.json
+            CHANNEL=$(cat state.json | jq -r '.channel')
+            set -e
+            if [[ $CHANNEL != "" ]]; then
+              echo "Notifying slack..."
+              MESSAGE=$(cat state.json | jq -r '.message')
+              curl -O https://raw.githubusercontent.com/rockymadden/slack-cli/master/src/slack
+              chmod +x ./slack
+              ./slack chat send "$MESSAGE" "#${CHANNEL}"
+              aws s3 rm s3://com.voiceflow.ci.states/github-actions/dev-env/creator-app-notify-$CIRCLE_SHA1.json 
+            fi
 
 workflows:
   dev-environment:
     jobs:
-      - build-app-ephemeral:
-          context: dev-test
-          filters:
-            branches:
-              only:
-                - /ephemeral.*/
       - build-app-dev-environment:
           context: dev-test
           filters:
@@ -397,14 +359,6 @@ workflows:
             branches:
               only:
                 - /env-.*/
-      - deploy-app-ephemeral:
-          context: dev-test
-          requires:
-            - build-app-ephemeral
-          filters:
-            branches:
-              only:
-                - /ephemeral.*/
 
   admin:
     jobs:
@@ -432,7 +386,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - /ephemeral.*/
                 - /env-.*/
                 - production
       - build-deploy-storybook-image:
@@ -452,7 +405,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - /ephemeral.*/
                 - /env-.*/
                 - staging
       - test:
@@ -460,7 +412,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - /ephemeral.*/
                 - /env-.*/
                 - staging
       - build-app:
@@ -468,7 +419,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - /ephemeral.*/
                 - /env-.*/
                 - staging
       - build-deploy-app-image:

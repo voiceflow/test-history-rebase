@@ -14,7 +14,6 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
   type: BlockType.INTENT,
   icon: 'user',
   iconColor: '#5589eb',
-  addable: true,
   platformDependent: true,
 
   label: 'Intent',

@@ -6,11 +6,16 @@ type ContainerProps = {
   height: number;
 };
 
-export const Container = styled.div<ContainerProps>`
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  background-size: cover;
+export const Container = styled.div.attrs<ContainerProps>(({ width, height }) => ({
+  style: {
+    width: `${width}px`,
+    height: `${height}px`,
+  },
+}))<ContainerProps>`
+  background-size: 100% 100%;
+  background-position: center;
   background-image: ${({ url }) => `url(${url})`};
+  z-index: -1;
 `;
 
 export default Container;

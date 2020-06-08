@@ -23,8 +23,6 @@ import Spotlight from './components/Spotlight';
 import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
-const EditSidebarComponent = EditSidebar as React.FC;
-
 const Canvas: React.FC = () => {
   const engine = useEngine();
 
@@ -40,7 +38,7 @@ const Canvas: React.FC = () => {
         <ContextMenu />
         <CanvasDiagram />
         <RealtimeOverlay />
-        <EditSidebarComponent />
+        <EditSidebar />
         <Spotlight />
       </Container>
 

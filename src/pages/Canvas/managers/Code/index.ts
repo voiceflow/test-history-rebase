@@ -9,7 +9,6 @@ const CodeManager: NodeConfig<NodeData.Code> = {
   type: BlockType.CODE,
   icon: 'power',
   iconColor: '#cdad32',
-  addable: true,
 
   label: 'Code',
   labelV2: 'Custom Code',

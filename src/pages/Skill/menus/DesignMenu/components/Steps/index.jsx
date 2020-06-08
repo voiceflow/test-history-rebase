@@ -16,6 +16,7 @@ import { PLATFORM_SECTION, ROOT_SECTIONS } from './constants';
 
 function Steps({ platform, toggleSection, expandedSections }) {
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const promptEditorFeature = useFeature(FeatureFlag.PROMPT_EDITOR);
 
   const sections = React.useMemo(() => {
     const sections = [...ROOT_SECTIONS];
@@ -46,9 +47,11 @@ function Steps({ platform, toggleSection, expandedSections }) {
               onToggle={() => toggleSection(type)}
               iconProps={{ size: 9 }}
             >
-              {steps.map((step) => (
-                <Item key={`${step.type}-${step.label}`} {...step} />
-              ))}
+              {steps.map((step) => {
+                if (!promptEditorFeature.isEnabled && step.type === BlockType.PROMPT) return;
+
+                return <Item key={`${step.type}-${step.label}`} {...step} />;
+              })}
             </UncontrolledCollapse>
           ))}
         </Container>

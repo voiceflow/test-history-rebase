@@ -4,6 +4,7 @@ import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
+  CANVAS_MARKUP_ENABLED,
   NODE_ACTIVE_CLASSNAME,
   NODE_DISABLED_CLASSNAME,
   NODE_FOCUSED_CLASSNAME,
@@ -56,7 +57,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   ${transition('opacity')}
 
-  .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}) &:hover::before {
+  .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
     border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
@@ -93,6 +94,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
     :not(.${NODE_MERGE_TARGET_CLASSNAME}):hover {
       opacity: 1;
     }
+  }
+
+  .${CANVAS_MARKUP_ENABLED} & {
+    pointer-events: none !important
   }
 
   ${MemberIcon} {

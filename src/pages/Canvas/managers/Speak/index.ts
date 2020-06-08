@@ -11,7 +11,6 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
   type: BlockType.SPEAK,
   icon: 'speak',
   iconColor: '#8f8e94',
-  addable: true,
 
   label: 'Speak',
   tip: 'Tell Alexa what to say, or play audio clips',
@@ -35,7 +34,6 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
           type: DialogType.VOICE,
           voice: 'Alexa',
           content: '',
-          open: true,
         },
       ],
     },

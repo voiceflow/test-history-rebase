@@ -1,11 +1,13 @@
+import EventEmitter from 'eventemitter3';
 import moize from 'moize';
 import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
 import { RealtimeSubscription } from '@/client/socket/types';
 import { CanvasAPI } from '@/components/Canvas';
+import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
-import { BlockType } from '@/constants';
+import { BlockType, MARKUP_NODES } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -15,8 +17,9 @@ import * as Skill from '@/ducks/skill';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { useTeardown } from '@/hooks';
 import { NodeData } from '@/models';
+import { CanvasAction } from '@/pages/Canvas/constants';
 import { Selector, Store } from '@/store/types';
-import { Point } from '@/types';
+import { Pair, Point } from '@/types';
 import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
@@ -37,6 +40,7 @@ import NodeManager from './nodeManager';
 import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
+import TransformationEngine from './transformationEngine';
 
 const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, entityID: string, instanceID: string) => {
   if (entities.has(entityID) && entities.get(entityID)!.api.instanceID === instanceID) {
@@ -46,6 +50,8 @@ const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, 
 
 export class Engine {
   log = logger.child('engine');
+
+  emitter = new EventEmitter<string>();
 
   drag = new DragEngine(this);
 
@@ -58,6 +64,8 @@ export class Engine {
   highlight = new HighlightEngine(this);
 
   linkCreation = new LinkCreationEngine(this);
+
+  transformation = new TransformationEngine(this);
 
   clipboard = new ClipboardEngine(this);
 
@@ -210,7 +218,18 @@ export class Engine {
    * update the store entry for the viewport
    */
   updateViewport(x: number, y: number, zoom: number) {
+    this.emitter.emit(CanvasAction.IDLE);
     this.store.dispatch(Creator.updateViewport({ x, y, zoom }));
+  }
+
+  panViewport(movement: Pair<number>) {
+    this.emitter.emit(CanvasAction.PAN, movement);
+    this.realtime.panViewport(movement);
+  }
+
+  zoomViewport(calculateMovement: MovementCalculator) {
+    this.emitter.emit(CanvasAction.ZOOM, calculateMovement);
+    this.realtime.zoomViewport(calculateMovement);
   }
 
   saveActiveLocations() {
@@ -222,6 +241,16 @@ export class Engine {
     }
   }
 
+  setActive(nodeID: string, isSelection?: boolean) {
+    const node = this.getNodeByID(nodeID);
+
+    if (!MARKUP_NODES.includes(node.type) && isSelection) {
+      this.selection.toggle(nodeID);
+    } else {
+      this.focus.set(nodeID);
+    }
+  }
+
   /**
    * clear activation state of all nodes
    */
@@ -230,6 +259,7 @@ export class Engine {
 
     this.focus.reset();
     this.selection.reset();
+    this.transformation.reset();
   }
 
   /**

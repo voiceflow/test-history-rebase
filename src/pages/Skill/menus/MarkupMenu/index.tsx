@@ -8,12 +8,14 @@ import { AddShapesMenu, MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext)!;
-  const { isOpen, modeType, onAddImage, onAddText } = React.useContext(MarkupModeContext)!;
+  const { isOpen, modeType, onAddImage, setCreatingModeType } = React.useContext(MarkupModeContext)!;
+
+  const isTextActive = modeType === MarkupModeType.TEXT;
 
   return (
     <>
       <MenuContainer isOpen={isOpen} column>
-        <MenuIcon large icon="textAutoResize" onClick={onAddText} active={modeType === MarkupModeType.TEXT} />
+        <MenuIcon large icon="textAutoResize" onClick={() => setCreatingModeType(isTextActive ? null : MarkupModeType.TEXT)} active={isTextActive} />
         <AddShapesMenu />
         <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
       </MenuContainer>

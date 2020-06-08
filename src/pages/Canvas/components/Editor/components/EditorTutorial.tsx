@@ -5,8 +5,8 @@ import TutorialTooltip from '@/components/TutorialTooltip';
 export type EditorTutorialProps = {
   title: React.ReactNode;
   anchor: React.ReactNode;
-  helpTitle: React.ReactNode;
-  helpMessage: React.ReactNode;
+  helpTitle?: React.ReactNode;
+  helpMessage?: React.ReactNode;
   tutorialTitle: React.ReactNode;
 };
 

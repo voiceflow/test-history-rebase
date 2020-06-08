@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MovementCalculator } from '@/components/Canvas/types';
 import { LockOwner } from '@/models';
 import { Either, Pair, Point } from '@/types';
 
@@ -19,7 +20,7 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
     onClick: () => void;
-    onDoubleClick: () => void;
+    onDoubleClick: (event: React.MouseEvent) => void;
     onMouseUp: (event: React.MouseEvent) => void;
     onContextMenu: (event: React.MouseEvent) => void;
     onMouseEnter: (event: React.MouseEvent) => void;
@@ -48,12 +49,19 @@ export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {
 
 export type RealtimeCursorOverlayAPI = {
   moveMouse: (tabID: string, location: Point) => void;
-  zoomViewport: (calculateMovement: (mouseLocation: Point) => Pair<number>) => void;
-  panViewport: (moveX: number, moveY: number) => void;
+  zoomViewport: (calculateMovement: MovementCalculator) => void;
+  panViewport: (movement: Pair<number>) => void;
   removeUser: (tabID: string) => void;
 };
 
 export type RealtimeLinkOverlayAPI = {
   moveLink: (tabID: string, linkData: Either<{ reset: true }, { points: Pair<Point> }>) => void;
   removeUser: (tabID: string) => void;
+};
+
+export type TransformOverlayAPI = {
+  initialize: (rect: DOMRect) => void;
+  translate: (movement: Pair<number>) => void;
+  clearTransformations: () => void;
+  reset: () => void;
 };

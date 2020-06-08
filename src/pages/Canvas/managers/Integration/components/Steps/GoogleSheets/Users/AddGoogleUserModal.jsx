@@ -62,6 +62,7 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
           onFailure={onGoogleFailure}
           responseType="code"
           accessType="offline"
+          prompt="consent"
           scope="profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"
         />
       </div>

@@ -8,12 +8,14 @@ export namespace Markup {
   export type TextNodeData = {
     content: RawDraftContentState;
     textAlignment: TextAlignment;
+    scale: number;
   };
 
   export type ImageNodeData = {
     url: string;
     width: number;
     height: number;
+    rotate: number;
   };
 
   export type LineShapeNodeData = {
@@ -41,6 +43,7 @@ export namespace Markup {
   export type RectangleShapeNodeData = {
     width: number;
     height: number;
+    rotate: number;
     shapeType: ShapeType.RECTANGLE;
     borderColor: Color | null;
     borderRadius: number;

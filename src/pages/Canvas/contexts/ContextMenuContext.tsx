@@ -12,7 +12,7 @@ export type MenuContext = {
 
 export type ContextMenuValue = Partial<MenuContext> & {
   isOpen: boolean;
-  onOpen: (event: React.MouseEvent, type: ContextMenuTarget, target: string | null) => void;
+  onOpen: (event: React.MouseEvent, type?: ContextMenuTarget, target?: string | null) => void;
   onHide: () => void;
 };
 

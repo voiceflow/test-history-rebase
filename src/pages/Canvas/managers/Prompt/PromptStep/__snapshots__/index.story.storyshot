@@ -1,0 +1,398 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
+.c12 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #4D5CAD;
+}
+
+.c12 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c15 .c11 {
+  color: #fff;
+}
+
+.c16 .c11 {
+  color: #6e849a;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-right: 16px;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+  padding: 16px 16px 16px 22px;
+  width: 100%;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+}
+
+.c7 .c8:not(:first-of-type)::before {
+  position: absolute;
+  top: -1px;
+  height: 1px;
+  left: 52px;
+  right: 0;
+  content: '';
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 54px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #d3d9e4;
+}
+
+.c5 .c6:not(:first-of-type) {
+  border-top: 1px solid #eaeff4;
+}
+
+.c5 .c17 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.vf-canvas__step.vf-canvas__node--active .c5,
+.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+  border: 1px solid #5D9DF5;
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
+}
+
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+  box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
+  cursor: copy;
+}
+
+.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+  z-index: -1;
+}
+
+.c13 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #62778c;
+}
+
+.c14 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.c4:not(:last-of-type) {
+  padding-bottom: 6px;
+}
+
+.c0 {
+  width: 330px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: solid 2px #fff;
+  padding: 0 10px 10px 10px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom,#EBEFF4,#e7eaf1);
+  position: relative;
+  opacity: 1;
+  border-color: none;
+  -webkit-transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
+}
+
+.c0::before {
+  display: block;
+  border-radius: 8px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid #D4D9E0;
+  content: '';
+  -webkit-transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
+}
+
+.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+  box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered .c0 {
+  cursor: copy;
+}
+
+.vf-canvas__node--focused .c0::before {
+  box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
+  border-color: #C5CBD6;
+}
+
+.vf-canvas__node--selected .c0,
+.vf-canvas__node--highlighted .c0,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+  border-color: #5d9df5;
+}
+
+.vf-canvas__node--selected .c0::before,
+.vf-canvas__node--highlighted .c0::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+  display: none;
+}
+
+.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+  opacity: 0.7;
+}
+
+.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+  opacity: 1;
+}
+
+.vf-canvas--markup .c0 {
+  pointer-events: none !important;
+}
+
+.c0 .c17 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 99;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  text-overflow: ellipsis;
+}
+
+.c3 {
+  max-width: 100%;
+}
+
+.vf-canvas--merging .c3,
+.vf-canvas--creating-link .c3 {
+  pointer-events: none;
+}
+
+.c3 input {
+  max-width: 100%;
+  box-sizing: content-box !important;
+  -webkit-transition: background 0.15s ease;
+  transition: background 0.15s ease;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+  background: transparent;
+  border-radius: 3px;
+  outline: none;
+  text-overflow: ellipsis;
+  cursor: text;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #62778c;
+}
+
+.c3 input:active {
+  background: transparent;
+}
+
+.c3 .vf-canvas__node--active input {
+  color: #132144;
+}
+
+.c1 {
+  position: relative;
+}
+
+<div
+  className="c0 vf-canvas__block"
+>
+  <div
+    className="c1 vf-canvas__block__section"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3 vf-canvas__block__section__title"
+        style={
+          Object {
+            "boxSizing": "content-box",
+            "display": "inline-block",
+          }
+        }
+      >
+        <input
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          onMouseUp={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "boxSizing": "content-box",
+              "width": "1px",
+            }
+          }
+          tabIndex={-1}
+          value="Prompt Block"
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "left": 0,
+              "overflow": "scroll",
+              "position": "absolute",
+              "top": 0,
+              "visibility": "hidden",
+              "whiteSpace": "pre",
+            }
+          }
+        >
+          Prompt Block
+        </div>
+      </div>
+    </div>
+    <section>
+      <div
+        className="c4 vf-canvas__step"
+        onMouseDown={[Function]}
+      >
+        <div
+          className="c5"
+        >
+          <section
+            className="c6 c7"
+          >
+            <div
+              className="c8 c9"
+            >
+              <div
+                className="c10"
+              >
+                <span
+                  className="c11 c12"
+                  color="#4D5CAD"
+                  size={16}
+                >
+                  <svg
+                    data-file-name="SvgPrompt"
+                  />
+                </span>
+              </div>
+              <span
+                className="c13"
+              >
+                <div
+                  className="c14"
+                >
+                  Listening for an intent…
+                </div>
+              </span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;

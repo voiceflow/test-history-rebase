@@ -3,6 +3,8 @@ import RCSlider from 'rc-slider';
 import { styled } from '@/hocs';
 
 const StyledSlider = styled(RCSlider)`
+  margin-right: 8px;
+
   .rc-slider-track {
     background-image: linear-gradient(to bottom, rgba(93, 157, 245, 0.85), #2c85ff), linear-gradient(to bottom, #fff, #fff);
   }

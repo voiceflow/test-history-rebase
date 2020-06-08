@@ -1,5 +1,7 @@
 import { Point } from '@/types';
 
+export type MovementCalculator = (mouseLocation: Point) => [number, number, number];
+
 export type TransitionOptions = {
   delay?: number;
   duration?: number;

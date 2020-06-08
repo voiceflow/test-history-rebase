@@ -25,3 +25,21 @@ export const trackActiveProjectTestableLinkShare = createProjectEventTracker((op
 export const trackActiveProjectDownloadLinkShare = createProjectEventTracker((options) =>
   client.analytics.track(EventName.PROJECT_SHARE_DOWNLOAD_LINK, createProjectEventPayload(options))
 );
+
+export const trackProjectClone = ({
+  template_id,
+  template_name,
+  workspace_id,
+}: {
+  template_id: string;
+  template_name: string;
+  workspace_id: string;
+}) => () =>
+  client.analytics.track(EventName.CLONE_PROJECT, {
+    teamhashed: ['workspace_id', 'template_id'],
+    properties: {
+      template_id,
+      template_name,
+      workspace_id,
+    },
+  });

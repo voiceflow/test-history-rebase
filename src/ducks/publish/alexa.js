@@ -403,7 +403,7 @@ export const syncVendors = () => async (dispatch, getState) => {
   const vendors = Account.amazonVendorsSelector(state);
   const skillVendor = vendorIdSelector(state);
 
-  if (skillVendor && vendors.length && !vendors.includes(skillVendor)) {
+  if (skillVendor && vendors.length && !vendors.find((vendor) => vendor?.id === skillVendor)) {
     await dispatch(updateVendor(vendors[0]?.id));
   }
 };

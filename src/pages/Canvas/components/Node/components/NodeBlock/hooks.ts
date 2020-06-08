@@ -3,7 +3,7 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { isInRange } from '@/utils/number';
 
@@ -32,7 +32,7 @@ export const useMergeInfo = (index: number) => {
 
   const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID!);
 
-  if (!mergeSource) {
+  if (!mergeSource || MARKUP_NODES.includes(mergeSource.type)) {
     return {
       mustNotBe: true,
     };

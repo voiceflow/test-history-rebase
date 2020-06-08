@@ -24,6 +24,7 @@ import markupImageBlockAdapter from './markupImage';
 import markupTextBlockAdapter from './markupText';
 import paymentBlockAdapter from './payment';
 import permissionBlockAdapter from './permission';
+import promptBlockAdapter from './prompt';
 import randomBlockAdapter from './random';
 import reminderBlockAdapter from './reminder';
 import setBlockAdapter from './set';
@@ -88,6 +89,7 @@ const blockAdapter = {
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
   [BlockType.DIRECTIVE]: directiveBlockAdapter,
   [BlockType.EVENT]: eventBlockAdapter,
+  [BlockType.PROMPT]: promptBlockAdapter,
 };
 
 export default blockAdapter;

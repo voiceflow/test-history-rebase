@@ -29,7 +29,6 @@ const IntegrationManager: NodeConfig<NodeData.Integration> = {
   // for block redesign
   getIcon: (data) => ICON[data.selectedIntegration],
   getIconColor: (data) => ICON_COLOR[data.selectedIntegration],
-  addable: true,
 
   label: 'Integrations',
   tip: 'Integrate external services into your skill',

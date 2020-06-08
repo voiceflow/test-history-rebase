@@ -4,6 +4,7 @@ import { Manager, Reference } from 'react-popper';
 import Flex from '@/components/Flex';
 import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
 import Portal from '@/components/Portal';
+import { useDidUpdateEffect } from '@/hooks';
 
 import { InlineInputValue, PrefixContainer, SearchInput, SearchInputIcon, SelectWrapper } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
@@ -216,7 +217,7 @@ export default function Select({
     updateSearchLabel(optionLabel);
   }, [optionLabel, onUpdateOptionsToRender]);
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     open ? onOpenMenu() : onHideMenu();
   }, [onHideMenu, onOpenMenu, open]);
 

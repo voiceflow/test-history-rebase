@@ -135,6 +135,7 @@ module.exports = {
         'import/export': 'off',
         'no-use-before-define': 'off',
         '@typescript-eslint/no-namespace': 'off',
+        'no-useless-constructor': 'off',
       },
     },
   ],

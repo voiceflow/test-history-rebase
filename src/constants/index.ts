@@ -88,6 +88,7 @@ export enum BlockType {
   FLOW = 'flow',
   CODE = 'code',
   EXIT = 'exit',
+  PROMPT = 'prompt',
   // visuals
   CARD = 'card',
   DISPLAY = 'display',
@@ -380,6 +381,9 @@ export enum ModalType {
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
   SHARE_MENU = 'share-menu',
+
+  IMPORT_PROJECT = 'import-project',
+  LOADING = 'loading',
 }
 
 export enum UserRole {
@@ -394,8 +398,10 @@ export enum FEATURE_IDS {
   WORKSPACE_SETTINGS = 'WORKSPACE_SETTINGS',
   UPGRADE_WORKSPACE = 'UPGRADE_WORKSPACE',
   EDIT_CANVAS = 'EDIT_CANVAS',
-  PROJECT_COPY_DELETE = 'PROJECT_COPY_DELETE',
   INTERACTION_MODAL = 'INTERACTION_MODAL',
+  DASHBOARD_LIST = 'DASHBOARD_LIST',
+  DASHBOARD_PROJECT = 'DASHBOARD_PROJECT',
+  MARKUP = 'MARKUP',
 }
 
 export const FEATURE_PERMISSIONS = {
@@ -403,8 +409,10 @@ export const FEATURE_PERMISSIONS = {
   WORKSPACE_SETTINGS: [UserRole.ADMIN],
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
   EDIT_CANVAS: [UserRole.ADMIN, UserRole.EDITOR],
-  PROJECT_COPY_DELETE: [UserRole.ADMIN, UserRole.EDITOR],
   INTERACTION_MODAL: [UserRole.ADMIN, UserRole.EDITOR],
+  DASHBOARD_LIST: [UserRole.ADMIN, UserRole.EDITOR],
+  DASHBOARD_PROJECT: [UserRole.ADMIN, UserRole.EDITOR],
+  MARKUP: [UserRole.ADMIN, UserRole.EDITOR],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];

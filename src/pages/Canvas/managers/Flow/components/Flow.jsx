@@ -19,7 +19,7 @@ const buildOptions = (diagrams) =>
       label: diagram.name,
     }));
 
-function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, diagramID, goToDiagram, saveActiveDiagram }) {
+function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, diagramID, goToDiagram, saveActiveDiagram, enterOnCreate = true }) {
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
   const [options, setOptions] = React.useState(() => buildOptions(diagrams));
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
@@ -57,7 +57,9 @@ function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, d
       setOptions([...options, { value: optionValue, label }]);
       setValue(optionValue);
       setSelectedDiagram(diagramID);
-      goToDiagram(diagramID);
+      if (enterOnCreate) {
+        goToDiagram(diagramID);
+      }
     },
     [createDiagram, updateSubDiagrams, saveActiveDiagram, options, setSelectedDiagram, goToDiagram]
   );

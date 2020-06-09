@@ -8,7 +8,7 @@ import { withContext } from '@/hocs/withContext';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
 import type { Engine } from '@/pages/Canvas/engine';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -36,8 +36,8 @@ export type ManagerValue = {
   markupNode?: React.FC<ConnectedMarkupNodeProps & { ref: React.Ref<HTMLElement> }>;
   mergeInitializer?: boolean;
   mergeTerminator?: boolean;
-  editorsByPath: Record<string, NodeEditorPropsType<any>>;
-  editor: NodeEditorPropsType<any>;
+  editorsByPath: Record<string, NodeEditor<any>>;
+  editor: NodeEditor<any>;
 };
 
 export type ManagerGetter = (type: BlockType) => ManagerValue;

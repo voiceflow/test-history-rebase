@@ -6,13 +6,13 @@ import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
 const OverflowMenuAny: any = OverflowMenu;
 
-const PromptEditor: NodeEditorPropsType<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
+const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
   const hasReprompt = !!data.reprompt;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
   const onRepromptClick = React.useCallback(() => pushToPath?.({ type: 'reprompts', label: 'Reprompts' }), [pushToPath]);

@@ -13,11 +13,13 @@ export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
-export type NodeEditorPropsType<T> = React.FC<{
+export type NodeEditorPropsType<T> = {
   data: NodeData<T>;
   onChange: NodeDataUpdater<T>;
   pushToPath?: ({ type, label }: { type: string; label: string }) => void;
-}>;
+};
+
+export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;
 
 export type NodeConfig<T extends object | Markup.NodeData> = {
   type: BlockType;
@@ -37,7 +39,7 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   tip?: string;
 
   step: React.FC<ConnectedStepProps<T>>;
-  editor: NodeEditorPropsType<T>;
+  editor: NodeEditor<T>;
   markupNode?: T extends Markup.NodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
   editorsByPath?: Record<string, React.FC<any>>;
 

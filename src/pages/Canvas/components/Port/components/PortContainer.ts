@@ -1,5 +1,5 @@
 import { css, styled, units } from '@/hocs';
-import { CANVAS_MERGING_CLASSNAME, NODE_DISABLED_CLASSNAME, PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_COMMENTING_ENABLED, CANVAS_MERGING_CLASSNAME, NODE_DISABLED_CLASSNAME, PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { PORT_SIZE } from '../constants';
 
@@ -24,6 +24,10 @@ const PortContainer = styled.div<PortContainerProps>`
   padding-left: ${PORT_LEFT_PADDING}px;
   align-self: center;
   cursor: copy;
+
+  .${CANVAS_COMMENTING_ENABLED} & {
+    cursor: crosshair;
+  }
 
   .${CANVAS_MERGING_CLASSNAME} &,
   .${NODE_DISABLED_CLASSNAME} & {

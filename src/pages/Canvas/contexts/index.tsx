@@ -23,6 +23,7 @@ export * from './ContextMenuContext';
 export * from './GroupSelectionContext';
 export * from './SpotlightContext';
 export * from './PresentationModeContext';
+export * from '@/pages/Skill/contexts/CommentingContext';
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;

@@ -6,6 +6,7 @@ import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
+import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
@@ -35,6 +36,8 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping }) => {
           <ShortcutModalProvider>
             <SettingsModalProvider>
               <CanvasHeader />
+
+              <TopPrompt />
 
               {markupFeature.isEnabled && markupTool?.isOpen ? <MarkupMenu /> : <DesignMenu />}
 

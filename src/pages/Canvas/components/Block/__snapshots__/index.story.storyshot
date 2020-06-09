@@ -82,6 +82,10 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -260,6 +264,10 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
 
 .c5 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c5 input {
+  cursor: crosshair;
 }
 
 .c5 .vf-canvas__node--active input {
@@ -558,6 +566,10 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -678,6 +690,10 @@ exports[`Storyshots Creator/Block Blue 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -803,6 +819,10 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -923,6 +943,10 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1052,6 +1076,10 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -1172,6 +1200,10 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1301,6 +1333,10 @@ exports[`Storyshots Creator/Block Green 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -1421,6 +1457,10 @@ exports[`Storyshots Creator/Block Green 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1546,6 +1586,10 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -1666,6 +1710,10 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1791,6 +1839,10 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -1911,6 +1963,10 @@ exports[`Storyshots Creator/Block Purple 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -2036,6 +2092,10 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2156,6 +2216,10 @@ exports[`Storyshots Creator/Block Red 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -2281,6 +2345,10 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2401,6 +2469,10 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -2526,6 +2598,10 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2646,6 +2722,10 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -2775,6 +2855,10 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2895,6 +2979,10 @@ exports[`Storyshots Creator/Block Standard 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -3020,6 +3108,10 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -3140,6 +3232,10 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -3392,6 +3488,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -3570,6 +3670,10 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -3886,6 +3990,10 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -4024,6 +4132,10 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {

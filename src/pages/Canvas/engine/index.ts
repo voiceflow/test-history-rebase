@@ -24,6 +24,7 @@ import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
+import CommentEngine from './commentEngine';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
@@ -80,6 +81,8 @@ export class Engine {
   node = new NodeManager(this);
 
   markup = new MarkupEngine(this);
+
+  comment = new CommentEngine(this);
 
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 

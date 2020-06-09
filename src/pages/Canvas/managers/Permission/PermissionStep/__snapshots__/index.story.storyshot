@@ -164,6 +164,10 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c16 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c16,
 .vf-canvas__node--disabled .c16 {
   cursor: inherit;
@@ -213,6 +217,10 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -335,6 +343,10 @@ exports[`Storyshots Creator/Steps/Permission Step Active 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -615,6 +627,10 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c16 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c16,
 .vf-canvas__node--disabled .c16 {
   cursor: inherit;
@@ -684,6 +700,10 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -806,6 +826,10 @@ exports[`Storyshots Creator/Steps/Permission Step Connected 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1094,6 +1118,10 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -1139,6 +1167,10 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -1261,6 +1293,10 @@ exports[`Storyshots Creator/Steps/Permission Step Empty 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1536,6 +1572,10 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c16 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c16,
 .vf-canvas__node--disabled .c16 {
   cursor: inherit;
@@ -1585,6 +1625,10 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -1707,6 +1751,10 @@ exports[`Storyshots Creator/Steps/Permission Step With Permissions 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1998,6 +2046,10 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2118,6 +2170,10 @@ exports[`Storyshots Creator/Steps/Permission Step Without Port 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {

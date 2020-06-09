@@ -164,6 +164,10 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -209,6 +213,10 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -331,6 +339,10 @@ exports[`Storyshots Creator/Steps/Intent Step Active 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -606,6 +618,10 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -671,6 +687,10 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -793,6 +813,10 @@ exports[`Storyshots Creator/Steps/Intent Step Connected 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1076,6 +1100,10 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -1121,6 +1149,10 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -1243,6 +1275,10 @@ exports[`Storyshots Creator/Steps/Intent Step Empty 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1518,6 +1554,10 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -1563,6 +1603,10 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -1685,6 +1729,10 @@ exports[`Storyshots Creator/Steps/Intent Step With Label 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1967,6 +2015,10 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
   transition: opacity 0.15s ease;
 }
 
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
+}
+
 .c0::before {
   display: block;
   border-radius: 8px;
@@ -2087,6 +2139,10 @@ exports[`Storyshots Creator/Steps/Intent Step Without Port 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {

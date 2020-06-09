@@ -22,6 +22,7 @@ const {
   ff_templates,
   ff_gadgets,
   ff_promptEditor,
+  ff_commenting,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -65,6 +66,7 @@ module.exports = {
     FF_TEMPLATES: ff_templates && 'true',
     FF_GADGETS: ff_gadgets && 'true',
     FF_PROMPT_EDITOR: ff_promptEditor && 'true',
+    FF_COMMENTING: ff_commenting && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

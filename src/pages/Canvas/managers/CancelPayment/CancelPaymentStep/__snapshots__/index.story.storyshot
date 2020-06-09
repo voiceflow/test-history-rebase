@@ -187,6 +187,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c18 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c18,
 .vf-canvas__node--disabled .c18 {
   cursor: inherit;
@@ -225,6 +229,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c17 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c17,
@@ -272,6 +280,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -394,6 +406,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step Empty 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -755,6 +771,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c18 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c18,
 .vf-canvas__node--disabled .c18 {
   cursor: inherit;
@@ -793,6 +813,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c17 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c17,
@@ -840,6 +864,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -962,6 +990,10 @@ exports[`Storyshots Creator/Steps/Cancel Payment Step With Product 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {

@@ -7,6 +7,8 @@ export const CANVAS_CREATING_LINK_CLASSNAME = `${Identifier.CANVAS}--creating-li
 export const CANVAS_MARKUP_ENABLED = `${Identifier.CANVAS}--markup`;
 export const CANVAS_MARKUP_CREATING = `${Identifier.CANVAS}--markup-creating`;
 
+export const CANVAS_COMMENTING_ENABLED = `${Identifier.CANVAS}--commenting`;
+
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;
 export const NODE_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_NODE}--highlighted`;

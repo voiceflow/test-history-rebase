@@ -42,6 +42,7 @@ export enum CanvasControl {
   MODEL = 'model',
   MARKUP = 'markup',
   RESOURCES = 'resources',
+  COMMENTING = 'commenting',
   ZOOM_IN = 'zoom_in',
   ZOOM_OUT = 'zoom_out',
 }
@@ -59,6 +60,10 @@ export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = 
     icon: 'code',
     hotkey: 'M',
     featureID: FEATURE_IDS.INTERACTION_MODAL,
+  },
+  [CanvasControl.COMMENTING]: {
+    title: 'Commenting',
+    hotkey: 'C',
   },
   [CanvasControl.MARKUP]: {
     title: 'Markup',

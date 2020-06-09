@@ -6,7 +6,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { CommentModeContext, MarkupModeContext } from '@/pages/Skill/contexts';
 
 import CanvasViewers from './CanvasViewers';
 
@@ -27,6 +27,7 @@ const TABS = [
 
 const SkillSubHeader = ({ showPublish, activePage, goToDesign, goToPrototype, goToPublish }) => {
   const markupTool = React.useContext(MarkupModeContext);
+  const { close: closeCommentingMode } = React.useContext(CommentModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
   const closeMarkupTool = React.useCallback(() => {
@@ -35,34 +36,37 @@ const SkillSubHeader = ({ showPublish, activePage, goToDesign, goToPrototype, go
     }
   }, [markupTool?.isOpen, markupTool?.closeTool]);
 
+  const disableAllModes = () => {
+    closeMarkupTool();
+    closeCommentingMode();
+  };
+
   const onChange = React.useCallback(
     (value) => {
       switch (value) {
         case 'prototype':
-          closeMarkupTool();
+          disableAllModes();
           return goToPrototype();
         case 'publish':
-          closeMarkupTool();
+          disableAllModes();
           return goToPublish();
         case 'canvas':
         default:
-          closeMarkupTool();
           return goToDesign();
       }
     },
-    [goToDesign, goToPrototype, goToPublish, closeMarkupTool]
+    [goToDesign, goToPrototype, goToPublish]
   );
 
   useHotKeys(Hotkey.PROTOTYPE_PAGE, () => {
-    closeMarkupTool();
+    disableAllModes();
     goToPrototype();
   });
   useHotKeys(Hotkey.DESIGN_PAGE, () => {
-    closeMarkupTool();
     goToDesign();
   });
   useHotKeys(Hotkey.BUILD_PAGE, () => {
-    closeMarkupTool();
+    disableAllModes();
     goToPublish();
   });
 

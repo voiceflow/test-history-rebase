@@ -10,9 +10,9 @@ import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { noop } from '@/utils/functional';
 
 import { CanvasControlButton, Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
 import { CanvasControl, CanvasControlMeta } from './constants';
@@ -23,13 +23,16 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   const [, trackingEventsWrapper] = useTrackingEvents();
   const [canUseInteractionModal] = usePermissions(FEATURE_IDS.INTERACTION_MODAL);
   const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
+  const [canUseCommenting] = usePermissions(FEATURE_IDS.COMMENTING);
 
   const { open } = useModals(ModalType.INTERACTION_MODEL);
   const markupTool = React.useContext(MarkupModeContext);
+  const commenting = React.useContext(CommentModeContext);
+
   const { isPrototyping } = React.useContext(EditPermissionContext)!;
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const markupFeature = useFeature(FeatureFlag.MARKUP);
-
+  const commentingFeature = useFeature(FeatureFlag.COMMENTING);
   const onZoomIn = React.useCallback(() => {
     eventualEngine.get()?.canvas?.applyTransition();
     eventualEngine.get()?.canvas?.zoomIn(ZOOM_DELTA);
@@ -44,17 +47,27 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     eventualEngine.get()?.focusHome();
   }, [eventualEngine]);
 
-  const onOpenMarkup = React.useCallback(() => {
+  // Disable all modes before turning on any mode
+  const openMode = (openCb?: () => void) => {
+    if (markupTool?.isOpen) {
+      markupTool.closeTool();
+    } else if (commenting.isOpen) {
+      commenting.close();
+    }
+    if (openCb) {
+      openCb();
+    }
+  };
+
+  const onOpenMarkup = () => {
     if (!canUseMarkup) {
       return;
     }
-
     if (isPrototyping) {
       goToDesign();
     }
-
-    markupTool?.openTool();
-  }, [goToDesign, markupTool?.openTool, isPrototyping, canUseMarkup]);
+    openMode(markupTool?.openTool);
+  };
 
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(
@@ -67,25 +80,48 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     []
   );
 
-  const toggleMarkup = React.useCallback(() => {
-    if (markupTool?.isOpen) {
-      markupTool?.closeTool();
-    } else {
-      onOpenMarkup();
-    }
-  }, [onOpenMarkup, markupTool?.closeTool, markupTool?.isOpen]);
+  const toggleCommenting = React.useCallback(() => (commenting.isOpen ? commenting.close() : openMode(commenting.open)), [
+    commenting.isOpen,
+    commenting.close,
+    openMode,
+  ]);
+
+  const toggleMarkup = React.useCallback(() => (markupTool?.isOpen ? markupTool.closeTool() : onOpenMarkup()), [
+    onOpenMarkup,
+    markupTool?.closeTool,
+    markupTool?.isOpen,
+  ]);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
   useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_MARKUP, onOpenMarkup, { preventDefault: true });
-  useHotKeys(Hotkey.CLOSE_MARKUP, markupTool?.closeTool || noop, { preventDefault: true });
+  useHotKeys(Hotkey.OPEN_COMMENTING, () => openMode(commenting.open), { preventDefault: true });
+  useHotKeys(
+    Hotkey.CLOSE_CANVAS_MODE,
+    () => {
+      markupTool?.closeTool();
+      commenting.close();
+    },
+    { preventDefault: true }
+  );
 
   return (
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
+      {commentingFeature.isEnabled && canUseCommenting && (
+        <CanvasControlButton
+          {...CanvasControlMeta[CanvasControl.COMMENTING]}
+          iconProps={{
+            active: commenting.isOpen,
+            icon: 'comment',
+            size: commenting.isOpen ? 14 : 16,
+          }}
+          onClick={toggleCommenting}
+        />
+      )}
       {markupFeature.isEnabled && canUseMarkup && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.MARKUP]}

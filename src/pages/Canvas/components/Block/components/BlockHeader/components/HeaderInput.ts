@@ -4,7 +4,7 @@ import { mapProps } from 'recompose';
 
 import { BlockVariant } from '@/constants/canvas';
 import { styled, transition, withBlockVariantStyle } from '@/hocs';
-import { CANVAS_CREATING_LINK_CLASSNAME, CANVAS_MERGING_CLASSNAME, NODE_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_COMMENTING_ENABLED, CANVAS_CREATING_LINK_CLASSNAME, CANVAS_MERGING_CLASSNAME, NODE_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';
 
 type HeaderInputProps = AutosizeInputProps & {
   canEdit?: boolean;
@@ -54,6 +54,9 @@ const HeaderInput = styled(
 
     :active {
       background: transparent;
+    }
+    .${CANVAS_COMMENTING_ENABLED} & {
+      cursor: crosshair;
     }
   }
 

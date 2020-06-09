@@ -26,7 +26,7 @@ import { getActivePageAndMatch } from '@/utils/routes';
 import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
-import { MarkupModeProvider } from './contexts';
+import { CommentModeProvider, MarkupModeProvider } from './contexts';
 
 const PAGES_MATCHES = {
   prototype: ['/prototype/:diagramID?'],
@@ -70,37 +70,38 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
       <Helmet>
         <title>{activeSkill.name || 'Voiceflow Creator'}</title>
       </Helmet>
-
       {!isOnlyViewer && (
         <>
           <IdleTimer ref={idleTimer} element={document} onIdle={setIdle} debounce={250} timeout={TIMEOUT_COUNT} />
           <InactivityModal open={isIdle} onActive={setActive} />
         </>
       )}
-      <Page
-        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
-        userMenu={false}
-        canScroll={false}
-        subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-        onNavigateBack={goToDashboard}
-      >
-        <Switch>
-          <PrivateRoute
-            path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
-            component={Diagram}
-            diagramID={diagramID}
-            isPrototyping={isPrototyping}
-          />
+      <CommentModeProvider isPrototyping={isPrototyping}>
+        <Page
+          header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
+          userMenu={false}
+          canScroll={false}
+          subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+          onNavigateBack={goToDashboard}
+        >
+          <Switch>
+            <PrivateRoute
+              path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+              component={Diagram}
+              diagramID={diagramID}
+              isPrototyping={isPrototyping}
+            />
 
-          <PrivateRoute path={`${match.path}/tools`} component={Business} />
+            <PrivateRoute path={`${match.path}/tools`} component={Business} />
 
-          <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
+            <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
 
-          <PrivateRoute path={`${match.path}/publish`} component={Publish} />
+            <PrivateRoute path={`${match.path}/publish`} component={Publish} />
 
-          <Redirect to={`${match.path}/canvas`} />
-        </Switch>
-      </Page>
+            <Redirect to={`${match.path}/canvas`} />
+          </Switch>
+        </Page>
+      </CommentModeProvider>
     </MarkupModeProvider>
   );
 }

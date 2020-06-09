@@ -3,6 +3,7 @@ import { BlockVariant } from '@/constants/canvas';
 import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
+  CANVAS_COMMENTING_ENABLED,
   CANVAS_CREATING_LINK_CLASSNAME,
   CANVAS_MARKUP_ENABLED,
   NODE_ACTIVE_CLASSNAME,
@@ -37,6 +38,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
   position: relative;
   opacity: 1;
   border-color: none;
+
+  .${CANVAS_COMMENTING_ENABLED} & {
+   cursor: crosshair;
+  }
 
   ::before {
     display: block;

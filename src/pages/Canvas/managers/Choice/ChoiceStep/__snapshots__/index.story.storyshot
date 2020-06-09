@@ -187,6 +187,10 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -225,6 +229,10 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c18 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c18,
@@ -272,6 +280,10 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -394,6 +406,10 @@ exports[`Storyshots Creator/Steps/Choice Step Active 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -770,6 +786,10 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -807,6 +827,10 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c20 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c20,
@@ -874,6 +898,10 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -996,6 +1024,10 @@ exports[`Storyshots Creator/Steps/Choice Step Connected 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1381,6 +1413,10 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -1426,6 +1462,10 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -1548,6 +1588,10 @@ exports[`Storyshots Creator/Steps/Choice Step Empty 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -1847,6 +1891,10 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -1885,6 +1933,10 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c18 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c18,
@@ -1932,6 +1984,10 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -2054,6 +2110,10 @@ exports[`Storyshots Creator/Steps/Choice Step Multiple 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {
@@ -2430,6 +2490,10 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   cursor: copy;
 }
 
+.vf-canvas--commenting .c15 {
+  cursor: crosshair;
+}
+
 .vf-canvas--merging .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
@@ -2468,6 +2532,10 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   cursor: copy;
+}
+
+.vf-canvas--commenting .c18 {
+  cursor: crosshair;
 }
 
 .vf-canvas--merging .c18,
@@ -2515,6 +2583,10 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
   border-color: none;
   -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
+}
+
+.vf-canvas--commenting .c0 {
+  cursor: crosshair;
 }
 
 .c0::before {
@@ -2637,6 +2709,10 @@ exports[`Storyshots Creator/Steps/Choice Step Single 1`] = `
 
 .c3 input:active {
   background: transparent;
+}
+
+.vf-canvas--commenting .c3 input {
+  cursor: crosshair;
 }
 
 .c3 .vf-canvas__node--active input {

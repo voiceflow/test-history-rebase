@@ -322,7 +322,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         updateWorkspaceName(name);
         updateWorkspaceImage(workspaceImage);
       } else {
-        workspace = await createWorkspace({ name, image: workspaceImage });
+        workspace = await createWorkspace({ name, image: workspaceImage || undefined });
       }
       updateCurrentWorkspace(workspace.id);
     } catch (e) {

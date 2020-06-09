@@ -18,7 +18,7 @@ const MemberIcon = styled.div<MemberIconProps>`
   background-position: center center;
   background-size: contain;
   border-radius: 100%;
-  box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgba(17, 49, 96, 0.16);
   cursor: default;
   font-weight: 600;
   text-transform: uppercase;
@@ -51,14 +51,6 @@ const MemberIcon = styled.div<MemberIconProps>`
       line-height: 42px;
     `}
 
-  ${({ solid }) =>
-    solid &&
-    css`
-      &:before {
-        border: 1px solid #f6f6f6;
-      }
-    `}
-  
   & > * {
     display: inline-block;
   }

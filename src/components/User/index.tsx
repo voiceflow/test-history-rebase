@@ -47,7 +47,7 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pen
   }
 
   return (
-    <MemberIcon className={className} style={style} ref={ref} solid={!!style.backgroundImage} {...props}>
+    <MemberIcon className={className} style={style} ref={ref} {...props}>
       {letter}
     </MemberIcon>
   );

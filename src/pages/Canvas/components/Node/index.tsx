@@ -24,7 +24,7 @@ const Node: React.FC = () => {
   }));
   const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
 
-  const { onMouseDown } = useNodeDrag();
+  const { onClick, onDragStart } = useNodeDrag();
 
   const onRightClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
@@ -63,11 +63,13 @@ const Node: React.FC = () => {
       <Styles />
       <Lifecycle />
       <Container
+        draggable
         className={ClassName.CANVAS_NODE}
         data-node-id={nodeEntity.nodeID}
         position={instance.getPosition()}
         isTransform={!isPresentationMode}
-        onMouseDown={onMouseDown}
+        onDragStart={onDragStart}
+        onClick={onClick}
         onContextMenu={onRightClick}
         onDoubleClick={onDoubleClick}
         ref={instance.ref}

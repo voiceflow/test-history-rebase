@@ -16,16 +16,17 @@ import removeIntercom from '@/hocs/removeIntercom';
 import { useFeature } from '@/hooks';
 import { Node } from '@/models';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
+import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
-import { ChildContainer as MarkupChildNodeContainer, Container as MarkupNodeContainer } from '@/pages/Canvas/components/MarkupNode/components';
+import { Container as MarkupChildNodeContainer } from '@/pages/Canvas/components/MarkupNode/components';
 import NodeContainer from '@/pages/Canvas/components/Node/components/NodeContainer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { EditPermissionProvider } from '@/pages/Skill/contexts';
+import { EditPermissionProvider, MarkupModeProvider } from '@/pages/Skill/contexts';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
 
@@ -64,7 +65,7 @@ const ExportCanvasDiagram = styled(Canvas as any)`
     }
   }
 
-  ${MarkupNodeContainer} {
+  ${DraggingNode} {
     margin-bottom: ${EXPORT_MARGIN}px;
 
     ${MarkupChildNodeContainer} {
@@ -94,18 +95,20 @@ const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string
 
   return (
     <PresentationModeProvider>
-      <ManagerProvider value={getManager as any}>
-        <EditPermissionProvider isPrototyping={false}>
-          <AnyCanvasProviders engine={engine}>
-            <ExportStyle />
-            <ExportCanvasDiagram onRegister={registerCanvas}>
-              {markup.isEnabled && <MarkupLayer />}
-              <LinkLayer />
-              <NodeLayer />
-            </ExportCanvasDiagram>
-          </AnyCanvasProviders>
-        </EditPermissionProvider>
-      </ManagerProvider>
+      <MarkupModeProvider>
+        <ManagerProvider value={getManager as any}>
+          <EditPermissionProvider isPrototyping={false}>
+            <AnyCanvasProviders engine={engine}>
+              <ExportStyle />
+              <ExportCanvasDiagram onRegister={registerCanvas}>
+                {markup.isEnabled && <MarkupLayer />}
+                <LinkLayer />
+                <NodeLayer />
+              </ExportCanvasDiagram>
+            </AnyCanvasProviders>
+          </EditPermissionProvider>
+        </ManagerProvider>
+      </MarkupModeProvider>
     </PresentationModeProvider>
   );
 };

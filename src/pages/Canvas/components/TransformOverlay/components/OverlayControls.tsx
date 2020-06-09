@@ -9,6 +9,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ConnectedProps, Pair, Point } from '@/types';
 import { buildVirtualDOMRect } from '@/utils/dom';
+import { getRotation } from '@/utils/math';
 
 import { HandlePosition } from '../constants';
 import { useCurried } from '../hooks';
@@ -115,8 +116,7 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
     const centerY = rect.top + rect.height / 2;
     const deltaX = mouseX - centerX;
     const deltaY = centerY - mouseY;
-    const angle = Math.atan(deltaX / deltaY);
-    const rotate = deltaY > 0 ? angle : Math.PI + angle;
+    const rotate = getRotation(deltaX, deltaY);
 
     engine.transformation.rotateTarget(rotate);
     window.requestAnimationFrame(() => {

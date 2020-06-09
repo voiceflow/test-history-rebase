@@ -1,26 +1,39 @@
 import React from 'react';
 
-import type { Color } from '@/components/ColorPicker';
+import ColorSelect from '@/components/ColorSelect';
+import SliderInputGroup from '@/components/SliderInputGroup';
 import { useDebouncedCallback } from '@/hooks';
-import { ColorSelect, Section, SliderInputGroup } from '@/pages/Canvas/components/MarkupComponents';
+import Section from '@/pages/Canvas/components/MarkupSection';
+import { Color } from '@/types';
 
 import { UPDATE_DATA_TIMEOUT } from '../constants';
 
-type ColorSectionProps = {
+const NUMBER_REGEXP = /^\d+$/;
+const DEFAULT_COLOR = { r: 93, g: 157, b: 245, a: 0.2 };
+
+export type ColorSectionProps = {
   max?: number;
   color: Color | null;
   title?: string;
   isLast?: boolean;
   onChange: (color: Color | null) => void;
+  initialColor?: Color;
   removable?: boolean;
   inputAction?: React.ReactNode;
 };
 
-const DEFAULT_COLOR = { r: 93, g: 157, b: 245, a: 0.2 };
-
-const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, isLast, onChange, removable = true, inputAction = '%' }) => {
+const ColorSection: React.FC<ColorSectionProps> = ({
+  max = 100,
+  color,
+  title,
+  isLast,
+  onChange,
+  initialColor = DEFAULT_COLOR,
+  removable = true,
+  inputAction = '%',
+}) => {
   const [localColor, setLocalColor] = React.useState(color);
-  const [inputOpacity, setInputOpacity] = React.useState(color ? `${color.a * 100}` : '');
+  const [inputOpacity, setInputOpacity] = React.useState(color ? String(color.a * 100) : '');
 
   const onChangeRef = React.useRef(onChange);
 
@@ -30,7 +43,7 @@ const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, is
 
   const onChangeColor = (nextColor: Color | null) => {
     setLocalColor(nextColor);
-    setInputOpacity(nextColor ? `${nextColor.a * 100}` : '');
+    setInputOpacity(nextColor ? String(nextColor.a * 100) : '');
     onChange(nextColor);
   };
 
@@ -38,7 +51,7 @@ const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, is
     const opacity = value / 100;
 
     setLocalColor((prevColor) => ({ ...prevColor!, a: opacity }));
-    setInputOpacity(`${value}`);
+    setInputOpacity(String(value));
     onChangeDebounced({ ...color!, a: opacity });
   };
 
@@ -46,18 +59,18 @@ const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, is
     if (value === '') {
       setLocalColor((prevColor) => ({ ...prevColor!, a: 0 }));
       setInputOpacity(value);
-    } else if (value.match(/^\d+$/)) {
+    } else if (value.match(NUMBER_REGEXP)) {
       const opacity = Math.min(+value / 100, 1);
 
       setLocalColor((prevColor) => ({ ...prevColor!, a: opacity }));
-      setInputOpacity(`${opacity * 100}`);
+      setInputOpacity(String(opacity * 100));
       onChangeDebounced({ ...color!, a: opacity });
     }
   };
 
   const onBlurOpacityInput = () => {
     if (inputOpacity === '') {
-      setInputOpacity(`${color!.a * 100}`);
+      setInputOpacity(String(color!.a * 100));
     }
   };
 
@@ -66,7 +79,7 @@ const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, is
       title={title}
       isLast={isLast}
       opened={removable && !!localColor}
-      onAddRemove={removable ? () => onChangeColor(localColor ? null : DEFAULT_COLOR) : undefined}
+      onAddRemove={removable ? () => onChangeColor(localColor ? null : initialColor) : undefined}
     >
       <SliderInputGroup
         inputValue={inputOpacity}
@@ -74,7 +87,7 @@ const ColorSection: React.FC<ColorSectionProps> = ({ max = 100, color, title, is
         sliderValue={+inputOpacity}
         inputAction={inputAction}
         sliderProps={{ min: 0, max }}
-        sliderPrefix={<ColorSelect color={localColor ?? DEFAULT_COLOR} onChange={onChangeColor} />}
+        sliderPrefix={<ColorSelect color={localColor ?? initialColor} onChange={onChangeColor} />}
         onChangeInput={onChangeOpacityInput}
         onChangeSlider={onChangeOpacitySlider}
       />

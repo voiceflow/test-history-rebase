@@ -1,13 +1,15 @@
 import { preventDefault } from '@/utils/dom';
 import MouseMovement from '@/utils/mouseMovement';
 
-import { ControlType, MAX_CLICK_TRAVEL } from '../constants';
+import { ControlType } from '../constants';
 import { BaseControls, getScrollDelta } from './utils';
 
 class MouseControls extends BaseControls {
   isPanning = false;
 
-  panDistance = 0;
+  isDragging = false;
+
+  ignoreNextClick = false;
 
   scrollComplete = null;
 
@@ -23,45 +25,56 @@ class MouseControls extends BaseControls {
     this.mouseMovement.track(event);
 
     const [deltaX, deltaY] = this.mouseMovement.getBoundedMovement();
-    const [movementX, movementY] = this.mouseMovement.getMovement();
 
     this.handle({ type: ControlType.PAN, deltaX, deltaY });
-
-    this.isPanning = true;
-    this.panDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
   };
 
-  mouseup = (event: MouseEvent) => {
+  dragstart = (event: React.DragEvent) => {
+    if (event.defaultPrevented) return;
+
+    if (event.shiftKey) {
+      this.isDragging = true;
+
+      this.handle({ type: ControlType.SHIFT_DRAG_START, event });
+    } else {
+      this.isPanning = true;
+
+      document.addEventListener('mousemove', this.mousemove);
+    }
+
+    document.addEventListener('mouseup', this.mouseup, { once: true });
+  };
+
+  mouseup = () => {
     this.mouseMovement.clear();
 
     if (this.isPanning) {
       this.isPanning = false;
 
-      if (this.panDistance < MAX_CLICK_TRAVEL) {
-        this.handle({ type: ControlType.CLICK, event });
-      } else {
-        this.handle({ type: ControlType.END });
-      }
+      this.handle({ type: ControlType.END });
+    } else if (this.isDragging) {
+      this.isDragging = false;
+      this.ignoreNextClick = true;
 
-      this.panDistance = 0;
-    } else {
-      this.handle({ type: ControlType.CLICK, event });
+      this.handle({ type: ControlType.END });
     }
 
-    document.removeEventListener('mouseup', this.mouseup);
     document.removeEventListener('mousemove', this.mousemove);
   };
 
-  mousedown = (event: React.MouseEvent) => {
+  click = (event: React.MouseEvent) => {
+    if (event.defaultPrevented) return;
+
+    if (this.ignoreNextClick) {
+      this.ignoreNextClick = true;
+
+      return;
+    }
+
     if (event.button !== 2) {
       event.stopPropagation();
 
-      if (event.shiftKey) {
-        this.handle({ type: ControlType.SHIFT_MOUSEDOWN, event });
-      } else {
-        document.addEventListener('mousemove', this.mousemove);
-        document.addEventListener('mouseup', this.mouseup);
-      }
+      this.handle({ type: ControlType.CLICK, event });
     }
   };
 }

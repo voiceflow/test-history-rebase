@@ -6,7 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import SliderInputGroup from '.';
 
 export default {
-  title: 'Creator/Markup Components/Slider Input Group',
+  title: 'Slider Input Group',
   component: SliderInputGroup,
 };
 

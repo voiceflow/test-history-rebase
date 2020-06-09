@@ -1,9 +1,12 @@
 import React from 'react';
+import { RGBColor } from 'react-color';
 import { Overwrite } from 'utility-types';
 
 import type { State } from '@/ducks/_root';
 
 import { AnyThunk, Dispatchable, ThunkResult } from './store/types';
+
+export type Color = Required<RGBColor>;
 
 export type Either<T extends object, R extends object> =
   | (T & { [K in Exclude<keyof R, keyof T>]?: never })

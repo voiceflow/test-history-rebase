@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ROOT_NODES } from '@/constants';
 import { withContext } from '@/hocs';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { Point } from '@/types';
 
 import { EngineContext } from './EngineContext';
@@ -20,8 +21,12 @@ export const { Consumer: GroupSelectionConsumer } = GroupSelectionContext;
 export const GroupSelectionProvider: React.FC = ({ children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
+  const { isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
   const [origin, setOrigin] = React.useState<Point | null>(null);
+
   const onStart = (nextOrigin: Point) => {
+    if (markupOpen) return;
+
     engine.clearActivation();
     setOrigin(nextOrigin);
   };

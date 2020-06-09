@@ -3,7 +3,7 @@ import { NODE_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type DraggingNodeProps = {
   position: [number, number];
-  isTransform: boolean;
+  isTransform?: boolean;
 };
 
 const DraggingNode = styled.div.attrs<DraggingNodeProps>(({ isTransform, position: [left, top] }) => ({

@@ -7,20 +7,14 @@ import { EventualEngineContext } from '@/contexts';
 import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
-import { Section } from '@/pages/Canvas/components/MarkupComponents';
+import Section from '@/pages/Canvas/components/MarkupSection';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 
 import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
 import { getRawContent } from './utils';
 
-export type MarkupTextEditorProps = {
-  data: Markup.TextNodeData;
-  nodeID: string;
-  isOpen: boolean;
-  onChange: (data: Partial<Markup.TextNodeData>) => void;
-};
-
-export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID, onChange, isOpen }) => {
+export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeID, onChange, isOpen }) => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const { setModeType } = React.useContext(MarkupModeContext)!;
   const { toolbarPlugin, fakeSelectionPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
@@ -36,9 +30,7 @@ export const MarkupTextEditor: React.FC<MarkupTextEditorProps> = ({ data, nodeID
     onChange({ content: getRawContent(state) });
   };
 
-  useSetup(() => {
-    setModeType(MarkupModeType.TEXT);
-  });
+  useSetup(() => setModeType(MarkupModeType.TEXT));
 
   useTeardown(() => {
     const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();

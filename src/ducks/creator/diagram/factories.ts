@@ -1,7 +1,7 @@
 import { Overwrite } from 'utility-types';
 
 import { BlockVariant } from '@/constants/canvas';
-import { Link, Node, NodeData, Port } from '@/models';
+import { BlockNodeData, Link, Node, NodeData, Port } from '@/models';
 
 export const linkFactory = (sourcePort: Port, targetPort: Port, linkID: string): Link => ({
   id: linkID,
@@ -33,8 +33,12 @@ export const nodeFactory = <T extends string | null>(nodeID: T, node: WithRequir
 
 export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<NodeData<unknown>>, 'type'>): NodeData<unknown> => ({
   name: 'Block',
-  blockColor: BlockVariant.STANDARD,
   ...data,
   path: [],
   nodeID,
+});
+
+export const blockNodeDataFactory = (nodeID: string, data: WithRequired<Partial<BlockNodeData<unknown>>, 'type'>): BlockNodeData<unknown> => ({
+  blockColor: BlockVariant.STANDARD,
+  ...nodeDataFactory(nodeID, data),
 });

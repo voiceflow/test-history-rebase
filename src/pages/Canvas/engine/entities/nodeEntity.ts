@@ -51,13 +51,6 @@ export type NodeInstance = EntityInstance & {
   scale?: (delta: Pair<number>, offset: Pair<number>) => void;
 
   /**
-   * create a snapshot of the current DOMRect to use for calculating transformations
-   *
-   * only Markup nodes can be snapshotted
-   */
-  snapshot?: () => void;
-
-  /**
    * apply any outstanding transformations
    *
    * only Markup nodes can be transformed
@@ -65,9 +58,9 @@ export type NodeInstance = EntityInstance & {
   applyTransformations?: () => void;
 };
 
-const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => (nodeID: string) => ({
+const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => <T>(nodeID: string) => ({
   node: getNode(nodeID),
-  data: getData(nodeID),
+  data: getData(nodeID) as NodeData<T>,
 }));
 
 class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> }, NodeInstance> {
@@ -119,7 +112,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   }
 
   resolve<T = unknown>(): { node: Node; data: NodeData<T> } {
-    return this.engine.select(nodeEntitySelector)(this.nodeID) as any;
+    return this.engine.select(nodeEntitySelector)(this.nodeID);
   }
 
   shouldUpdate() {
@@ -141,9 +134,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     }, []);
   }
 
-  useLifecycle() {
-    const engine = React.useContext(EngineContext)!;
-    const parentNode = React.useMemo(() => this.resolve().node.parentNode, []);
+  useCoordinates() {
     const { x, y } = this.useState((e) => {
       const { node } = e.resolve();
 
@@ -153,10 +144,23 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
       };
     });
 
+    return { x, y };
+  }
+
+  useLifecycle() {
+    const engine = React.useContext(EngineContext)!;
+    const { x, y } = this.useCoordinates();
+
     React.useEffect(() => engine.node.setOrigin(this.nodeID, [x, y]), [x, y]);
 
     // redraw links in parent block when unmounting
-    useTeardown(() => parentNode && engine.node.redrawNestedLinks(parentNode));
+    useTeardown(() => {
+      const { parentNode } = this.resolve().node;
+
+      if (parentNode) {
+        engine.node.redrawNestedLinks(parentNode);
+      }
+    });
   }
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import ColorSelect from '.';
 
 export default {
-  title: 'Creator/Markup Components/Color Select',
+  title: 'Color Select',
   component: ColorSelect,
 };
 

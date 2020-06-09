@@ -1,6 +1,9 @@
 import { styled } from '@/hocs';
 
-// eslint-disable-next-line no-secrets/no-secrets
+const BACKGROUND_IMAGE =
+  // eslint-disable-next-line no-secrets/no-secrets
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==';
+
 const ColorPreview = styled.div`
   width: 24px;
   height: 24px;
@@ -23,7 +26,7 @@ const ColorPreview = styled.div`
   }
 
   &:before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==');
+    background-image: url('${BACKGROUND_IMAGE}');
     background-position: center center;
     background-size: 50%;
     border-radius: 12px;

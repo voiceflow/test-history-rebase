@@ -3,7 +3,8 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import { Node, NodeData } from '@/models';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
-import { Engine } from '@/pages/Canvas/engine/';
+import type { Engine } from '@/pages/Canvas/engine/';
+import { NodeDataUpdater } from '@/pages/Canvas/types';
 
 import { SidebarContext, SidebarHeaderAction } from './contexts';
 
@@ -80,10 +81,9 @@ export const useHeaderActions = (headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS)
   }, [sidebar.updateState, headerActions]);
 };
 
-export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
-
 export const useUpdateData = (nodeID?: string): NodeDataUpdater<any> => {
-  // We've removed useSelector hook because it sometimes has stale redux values which was causing some insane bugs, now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
+  // We've removed useSelector hook because it sometimes has stale redux values which was causing some insane bugs
+  // now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
   const engine = React.useContext(EngineContext)!;
 
   return React.useCallback((value, save = true) => nodeID && engine.node.updateData(nodeID, value, save), [engine.node, nodeID]);

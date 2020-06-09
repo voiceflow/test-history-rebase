@@ -482,14 +482,19 @@ export enum PlanType {
   ENTERPRISE = 'enterprise',
 }
 
-export enum MarkupModeType {
-  TEXT = 'text',
-  SQUARE = 'square',
+export enum MarkupShapeType {
+  RECTANGLE = 'rectangle',
   CIRCLE = 'circle',
   LINE = 'line',
   ARROW = 'arrow',
+}
+
+export enum MarkupModeType {
+  TEXT = 'text',
   IMAGE = 'image',
 }
+
+export const MARKUP_SHAPES = [MarkupShapeType.RECTANGLE, MarkupShapeType.CIRCLE, MarkupShapeType.LINE, MarkupShapeType.ARROW];
 
 export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
@@ -500,13 +505,6 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
-}
-
-export enum ShapeType {
-  LINE = 'line',
-  ARROW = 'arrow',
-  CIRCLE = 'circle',
-  RECTANGLE = 'rectangle',
 }
 
 export enum TextAlignment {

@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
+import MarkupShape from '@/pages/Canvas/components/MarkupShape';
 
-const MarkupShapeNode = <T extends Markup.ShapeNodeData>({ data }: ConnectedMarkupNodeProps<T>, ref: React.Ref<HTMLDivElement>) => (
-  <div ref={ref}>{data.name}</div>
-);
+const MarkupShapeNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Shape>> = ({ data }) => <MarkupShape id={data.nodeID} data={data} />;
 
 export default React.forwardRef<HTMLDivElement, ConnectedMarkupNodeProps<any>>(MarkupShapeNode);

@@ -1,16 +1,22 @@
-import { styled } from '@/hocs';
-import DraggingNode, { DraggingNodeProps } from '@/pages/Canvas/components/DraggingNode';
+import { css, styled } from '@/hocs';
+import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
-import ChildContainer from './ChildContainer';
-
-export type NodeContainerProps = DraggingNodeProps & {
-  position: [number, number];
+export type ContainerProps = {
+  isShape: boolean;
 };
 
-const NodeContainer = styled(DraggingNode)<NodeContainerProps>`
-  ${ChildContainer} {
-    position: absolute;
+const Container = styled.div<ContainerProps>`
+  position: absolute;
+
+  ${({ isShape }) =>
+    isShape &&
+    css`
+      border: 1px solid transparent;
+    `}
+
+  .${CANVAS_MARKUP_CREATING_CLASSNAME} & {
+    pointer-events: none;
   }
 `;
 
-export default NodeContainer;
+export default Container;

@@ -4,6 +4,8 @@ import Flex from '@/components/Flex';
 
 import { Container, LeftColumn } from './components';
 
+export * from './components';
+
 export type FormGroupProps = {
   className?: string;
   leftColumn: React.ReactNode;

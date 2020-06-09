@@ -1,5 +1,5 @@
 import { styled } from '@/hocs';
-import { CANVAS_MARKUP_ENABLED } from '@/pages/Canvas/constants';
+import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
 const LinkLayerSvg = styled.svg`
   overflow: visible;
@@ -9,7 +9,7 @@ const LinkLayerSvg = styled.svg`
   width: 100%;
   position: absolute;
 
-  .${CANVAS_MARKUP_ENABLED} & {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME} & {
     pointer-events: none !important;
   }
 `;

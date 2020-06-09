@@ -1,22 +1,24 @@
 import React from 'react';
 
+import SliderInputGroup from '@/components/SliderInputGroup';
 import SvgIcon from '@/components/SvgIcon';
 import { useDebouncedCallback } from '@/hooks';
 import { Markup } from '@/models';
-import { Section, SliderInputGroup } from '@/pages/Canvas/components/MarkupComponents';
+import Section from '@/pages/Canvas/components/MarkupSection';
+import { DEFAULT_MARKUP_BACKGROUND_COLOR, DEFAULT_MARKUP_BORDER_COLOR } from '@/pages/Canvas/constants';
 
 import { EditorProps } from '../types';
 import { ColorSection } from './components';
 import { UPDATE_DATA_TIMEOUT } from './constants';
 
-const RectangleEditor: React.FC<EditorProps<Markup.RectangleShapeNodeData>> = ({ onChange, data }) => {
+const RectangleEditor: React.FC<EditorProps<Markup.NodeData.Rectangle>> = ({ onChange, data }) => {
   const { width, height, borderColor, borderRadius, backgroundColor } = data;
 
   const [inputBorderRadius, setInputBorderRadius] = React.useState(`${borderRadius}`);
 
   const maxBorderRadius = React.useMemo(() => Math.floor(Math.max(width, height)) / 2, [width, height]);
 
-  const onPartialChange = (partialData: Partial<Markup.RectangleShapeNodeData>) => onChange({ ...data, ...partialData });
+  const onPartialChange = (partialData: Partial<Markup.NodeData.Rectangle>) => onChange({ ...data, ...partialData });
 
   const onPartialChangeRef = React.useRef(onPartialChange);
 
@@ -52,9 +54,19 @@ const RectangleEditor: React.FC<EditorProps<Markup.RectangleShapeNodeData>> = ({
 
   return (
     <>
-      <ColorSection title="Border" color={borderColor} onChange={(color) => onChange({ ...data, borderColor: color })} />
+      <ColorSection
+        title="Border"
+        color={borderColor}
+        initialColor={DEFAULT_MARKUP_BORDER_COLOR}
+        onChange={(color) => onChange({ ...data, borderColor: color })}
+      />
 
-      <ColorSection title="Fill" color={backgroundColor} onChange={(color) => onChange({ ...data, backgroundColor: color })} />
+      <ColorSection
+        title="Fill"
+        color={backgroundColor}
+        initialColor={DEFAULT_MARKUP_BACKGROUND_COLOR}
+        onChange={(color) => onChange({ ...data, backgroundColor: color })}
+      />
 
       <Section isLast>
         <SliderInputGroup

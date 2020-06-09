@@ -17,7 +17,8 @@ const generateControls = (scheme: ControlScheme, handle: (action: ControlAction)
       return false;
     },
     scheme: scheme || null,
-    mousedown: mouse.mousedown,
+    click: mouse.click,
+    dragstart: mouse.dragstart,
     wheel: mouse.wheel,
     gesturestart: _.noop,
     gesturechange: _.noop,

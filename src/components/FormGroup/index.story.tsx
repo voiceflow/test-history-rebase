@@ -4,7 +4,7 @@ import React from 'react';
 import FormGroup from '.';
 
 export default {
-  title: 'Creator/Markup Components/Slider Input Group',
+  title: 'Form Group',
   component: FormGroup,
 };
 

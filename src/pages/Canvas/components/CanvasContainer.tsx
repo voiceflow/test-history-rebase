@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { isSafari } from '@/config';
-import { BlockType, MarkupModeType } from '@/constants';
+import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect, css, styled } from '@/hocs';
 import { useHotKeys } from '@/hooks';
@@ -10,16 +10,16 @@ import { ClipboardContext, CommentModeContext, EngineContext, SpotlightContext }
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { Callback, ConnectedProps } from '@/types';
 
-export const MARKUP_MODE_CURSORS: Record<MarkupModeType, string> = {
+export const MARKUP_MODE_CURSORS: Record<MarkupModeType | MarkupShapeType, string> = {
   [MarkupModeType.TEXT]: 'text',
-  [MarkupModeType.SQUARE]: 'crosshair',
-  [MarkupModeType.CIRCLE]: 'crosshair',
-  [MarkupModeType.LINE]: 'crosshair',
-  [MarkupModeType.ARROW]: 'crosshair',
+  [MarkupShapeType.RECTANGLE]: 'crosshair',
+  [MarkupShapeType.CIRCLE]: 'crosshair',
+  [MarkupShapeType.LINE]: 'crosshair',
+  [MarkupShapeType.ARROW]: 'crosshair',
   [MarkupModeType.IMAGE]: 'default',
 };
 
-const Wrapper = styled.div<{ markupMode: MarkupModeType | null; isMarkupCreating: boolean; commentingEnabled: boolean }>`
+const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null; isMarkupCreating: boolean; commentingEnabled: boolean }>`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;

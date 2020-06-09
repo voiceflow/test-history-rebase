@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Creator/Markup Components/Slider Input Group Normal 1`] = `
+exports[`Storyshots Slider Input Group Normal 1`] = `
 .c4 {
   box-sizing: content-box;
   width: 16px;
@@ -114,23 +114,6 @@ exports[`Storyshots Creator/Markup Components/Slider Input Group Normal 1`] = `
   color: #6e849a;
 }
 
-.c5 {
-  margin-right: 8px;
-}
-
-.c5 .rc-slider-track {
-  background-image: linear-gradient(to bottom,rgba(93,157,245,0.85),#2c85ff),linear-gradient(to bottom,#fff,#fff);
-}
-
-.c5 .rc-slider-handle {
-  border: solid 5px white !important;
-  width: 16px;
-  height: 16px;
-  margin-top: -6px;
-  background-image: linear-gradient(to bottom,rgba(93,157,245,0.85),#2c85ff),linear-gradient(to bottom,#fff,#fff);
-  box-shadow: 0 2px 3px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.08) !important;
-}
-
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -155,6 +138,23 @@ exports[`Storyshots Creator/Markup Components/Slider Input Group Normal 1`] = `
   min-width: 202px;
   max-width: 202px;
   margin-right: 16px;
+}
+
+.c5 {
+  margin-right: 8px;
+}
+
+.c5 .rc-slider-track {
+  background-image: linear-gradient(to bottom,rgba(93,157,245,0.85),#2c85ff),linear-gradient(to bottom,#fff,#fff);
+}
+
+.c5 .rc-slider-handle {
+  border: solid 5px white !important;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  background-image: linear-gradient(to bottom,rgba(93,157,245,0.85),#2c85ff),linear-gradient(to bottom,#fff,#fff);
+  box-shadow: 0 2px 3px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.08) !important;
 }
 
 .c8 {

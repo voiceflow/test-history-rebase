@@ -11,11 +11,8 @@ import { InternalNodeInstance } from './types';
 export const useNodePosition = () => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const { x, y } = nodeEntity.useState((e) => {
-    const { node } = e.resolve();
+  const { x, y } = nodeEntity.useCoordinates();
 
-    return { x: node.x, y: node.y };
-  });
   const nodePosition = React.useMemo<Point>(() => [x, y], [x, y]);
 
   React.useEffect(() => {

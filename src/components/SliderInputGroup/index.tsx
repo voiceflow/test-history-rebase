@@ -1,8 +1,8 @@
 import React from 'react';
 
+import FormGroup from '@/components/FormGroup';
 import Slider, { SliderProps } from '@/components/Slider';
 
-import FormGroup from '../FormGroup';
 import { Input, InputAction, SliderPrefixContainer } from './components';
 
 export type SliderInputGroupProps = {

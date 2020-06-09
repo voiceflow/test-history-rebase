@@ -19,8 +19,11 @@ export type NodeData<T> = T & {
   name: string;
   type: BlockType;
   path: unknown[];
-  blockColor: BlockVariant;
   deprecatedType?: string;
+};
+
+export type BlockNodeData<T> = NodeData<T> & {
+  blockColor: BlockVariant;
 };
 
 export namespace NodeData {

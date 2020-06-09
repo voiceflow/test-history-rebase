@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
 import { FeatureFlag } from '@/config/features';
-import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import GroupSelection from '@/pages/Canvas/components/GroupSelection';
@@ -36,31 +36,38 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const groupSelection = React.useContext(GroupSelectionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { canEdit } = React.useContext(EditPermissionContext)!;
-  const { isOpen: isMarkupOpen, modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(
-    MarkupModeContext
-  )!;
+  const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onClickCanvas = React.useCallback(
-    ({ clientX, clientY }: MouseEvent) => {
-      if (isMarkupOpen && isMarkupCreating) {
-        if (markupModeType === MarkupModeType.TEXT) {
-          engine.markup.addTextNode([clientX, clientY]);
-        }
-
-        finishMarkupCreating();
-      } else {
+  const onDragStart = React.useCallback(
+    (event: React.DragEvent) => {
+      if (isMarkupCreating && MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
+        event.preventDefault();
         engine.clearActivation();
+
+        engine.markup.createShapeNode();
       }
     },
-    [isMarkupOpen, MarkupModeType, isMarkupCreating]
+    [isMarkupCreating, markupModeType]
   );
+
+  const onClickCanvas = React.useCallback(() => {
+    if (isMarkupCreating) {
+      if (markupModeType === MarkupModeType.TEXT) {
+        engine.markup.addTextNode();
+      }
+
+      finishMarkupCreating();
+    } else {
+      engine.clearActivation();
+    }
+  }, [isMarkupCreating, markupModeType]);
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   const startGroupSelection = React.useCallback<React.MouseEventHandler>(
-    ({ clientX, clientY }) => canEdit && groupSelection.onStart([clientX, clientY]),
+    (event) => canEdit && groupSelection.onStart([event.clientX, event.clientY]),
     [canEdit, groupSelection.onStart]
   );
 
@@ -100,8 +107,9 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         onZoom={zoomViewport}
         onRegister={registerCanvas}
         onRightClick={contextMenu.onOpen}
-        onShiftClick={startGroupSelection}
+        onShiftDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
+        onDragStart={onDragStart}
       >
         <LinkLayer />
         <NodeLayer />

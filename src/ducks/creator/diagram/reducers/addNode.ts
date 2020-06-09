@@ -4,7 +4,7 @@ import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 
 import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
-import { nodeDataFactory, nodeFactory } from '../factories';
+import { blockNodeDataFactory, nodeFactory } from '../factories';
 import { DiagramState } from '../types';
 import {
   addAllLinksToState,
@@ -61,7 +61,7 @@ export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state
     y: parentNode.y,
     combinedNodes: [parentNode.id, node.id],
   });
-  const mergedData = nodeDataFactory(mergedNodeID, {
+  const mergedData = blockNodeDataFactory(mergedNodeID, {
     type: BlockType.COMBINED,
   });
 

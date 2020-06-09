@@ -1,56 +1,67 @@
 import { RawDraftContentState } from 'draft-js';
+import { Diff, Intersection } from 'utility-types';
 
-import { ShapeType, TextAlignment } from '@/constants';
+import { MarkupShapeType, TextAlignment } from '@/constants';
 
 export namespace Markup {
   export type Color = { r: number; g: number; b: number; a: number };
 
-  export type TextNodeData = {
-    content: RawDraftContentState;
-    textAlignment: TextAlignment;
-    scale: number;
-  };
+  export namespace NodeData {
+    export type Text = {
+      content: RawDraftContentState;
+      textAlignment: TextAlignment;
+      scale: number;
+    };
 
-  export type ImageNodeData = {
-    url: string;
-    width: number;
-    height: number;
-    rotate: number;
-  };
+    export type Image = {
+      url: string;
+      width: number;
+      height: number;
+      rotate: number;
+    };
 
-  export type LineShapeNodeData = {
-    width: number;
-    color: Color;
-    rotate: number;
-    shapeType: ShapeType.LINE;
-  };
+    export type Line = {
+      shapeType: MarkupShapeType.LINE;
 
-  export type ArrowShapeNodeData = {
-    width: number;
-    color: Color;
-    rotate: number;
-    shapeType: ShapeType.ARROW;
-  };
+      offsetX: number;
+      offsetY: number;
+      strokeColor: Color;
+    };
 
-  export type CircleShapeNodeData = {
-    width: number;
-    height: number;
-    shapeType: ShapeType.CIRCLE;
-    borderColor: Color | null;
-    backgroundColor: Color | null;
-  };
+    export type Arrow = {
+      shapeType: MarkupShapeType.ARROW;
 
-  export type RectangleShapeNodeData = {
-    width: number;
-    height: number;
-    rotate: number;
-    shapeType: ShapeType.RECTANGLE;
-    borderColor: Color | null;
-    borderRadius: number;
-    backgroundColor: Color | null;
-  };
+      offsetX: number;
+      offsetY: number;
+      strokeColor: Color;
+    };
 
-  export type ShapeNodeData = ArrowShapeNodeData | LineShapeNodeData | CircleShapeNodeData | RectangleShapeNodeData;
+    export type Circle = {
+      shapeType: MarkupShapeType.CIRCLE;
 
-  export type NodeData = TextNodeData | ImageNodeData | ShapeNodeData;
+      width: number;
+      height: number;
+      rotate: number;
+      borderColor: Color | null;
+      backgroundColor: Color | null;
+    };
+
+    export type Rectangle = {
+      shapeType: MarkupShapeType.RECTANGLE;
+
+      width: number;
+      height: number;
+      rotate: number;
+      borderColor: Color | null;
+      backgroundColor: Color | null;
+      borderRadius: number;
+    };
+
+    export type Shape = {
+      shapeType: MarkupShapeType;
+    } & Omit<Intersection<Intersection<Intersection<Line, Arrow>, Circle>, Rectangle>, 'shapeType'> &
+      Partial<Diff<Diff<Diff<Line, Arrow>, Circle>, Rectangle>>;
+  }
+
+  export type AnyNodeData = NodeData.Text | NodeData.Image | NodeData.Shape;
 }

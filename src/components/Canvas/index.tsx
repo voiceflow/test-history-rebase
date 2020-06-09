@@ -9,7 +9,7 @@ import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
 
 import { Container, RenderLayer } from './components';
-import { ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
+import { CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
 import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
@@ -28,11 +28,12 @@ export type CanvasProps = {
   disableClick?: boolean;
   onChange?: (viewport: Viewport) => void;
   onPan?: (movement: Pair<number>) => void;
-  onClick?: (event: MouseEvent) => void;
   onZoom?: (translateZoom: MovementCalculator) => void;
+  onClick?: (event: React.MouseEvent) => void;
   onRightClick?: (event: React.MouseEvent) => void;
-  onShiftClick?: (event: React.MouseEvent) => void;
+  onShiftDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
+  onDragStart?: (event: React.DragEvent) => void;
 };
 
 class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { overlay: OverlayValue }> {
@@ -108,6 +109,14 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       const rect = this.getRect();
 
       return [x + rect.left, y + rect.top];
+    },
+
+    setBusy(isBusy: boolean) {
+      if (isBusy) {
+        this.addClass(CANVAS_BUSY_CLASSNAME);
+      } else {
+        this.removeClass(CANVAS_BUSY_CLASSNAME);
+      }
     },
   };
 
@@ -236,19 +245,35 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         break;
       case ControlType.CLICK:
         this.props.overlay.dismiss();
-        this.props.onClick && this.props.onClick(control.event);
+        this.props.onClick?.(control.event);
         break;
       case ControlType.END:
         this.onChange();
         break;
-      case ControlType.SHIFT_MOUSEDOWN:
-        this.props.onShiftClick?.(control.event);
+      case ControlType.SHIFT_DRAG_START:
+        this.props.onShiftDragStart?.(control.event);
         break;
       default:
     }
   };
 
   controls = generateControls(this.props.controlScheme, this.handleControl);
+
+  onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { disableClick } = this.props;
+
+    if (disableClick) return;
+
+    this.controls.click(event);
+  };
+
+  onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    const { onDragStart } = this.props;
+
+    onDragStart?.(event);
+
+    this.controls.dragstart(event);
+  };
 
   componentDidMount() {
     this.props.onRegister?.(this.api);
@@ -282,15 +307,17 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   }
 
   render() {
-    const { onRightClick, innerRef, children, disableClick, className } = this.props;
+    const { onRightClick, innerRef, children, className } = this.props;
 
     return (
       <CanvasProvider value={this.api}>
         <Container
+          draggable
           id={Identifier.CANVAS}
           className={className}
           onContextMenu={onRightClick}
-          onMouseDown={disableClick ? undefined : this.controls.mousedown}
+          onClick={this.onClick}
+          onDragStart={this.onDragStart}
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >

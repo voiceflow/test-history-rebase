@@ -1,6 +1,6 @@
-import { BlockType } from '@/constants';
+import { BlockType, MARKUP_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
-import { DBNode, NodeData } from '@/models';
+import { BlockNodeData, DBNode, NodeData } from '@/models';
 
 import { createSimpleAdapter } from '../utils';
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
@@ -61,7 +61,7 @@ const nodeDataAdapter = createSimpleAdapter<DBNode.Extras, NodeData<unknown>, [D
   ({ path, name, ...appData }, nextID) => ({
     type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
     ...blockAdapter[appData.type].toDB(appData),
-    color: appData.blockColor || null,
+    color: (!MARKUP_NODES.includes(appData.type) && (appData as BlockNodeData<unknown>).blockColor) || undefined,
     nextID: nextID || undefined,
   })
 );

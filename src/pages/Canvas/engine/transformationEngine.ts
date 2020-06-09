@@ -52,7 +52,6 @@ class TransformationEngine extends EngineConsumer {
 
   start() {
     this.isTransforming = true;
-    this.engine.node.api(this.getTarget()!)?.instance?.snapshot?.();
   }
 
   scaleTarget(scale: Pair<number>, offset: Pair<number>) {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { composeDecorators } from '@/../.storybook';
-import { ShapeType } from '@/constants';
+import { MarkupShapeType } from '@/constants';
 import { Markup } from '@/models';
 
 import { MarkupShapeEditor } from './MarkupShapeEditor';
@@ -19,49 +19,50 @@ export default {
 };
 
 export const circle = withDecorators(() => {
-  const [data, setData] = React.useState<Markup.CircleShapeNodeData>({
+  const [data, setData] = React.useState<Markup.NodeData.Circle>({
     width: 100,
     height: 100,
-    shapeType: ShapeType.CIRCLE,
+    rotate: 0,
+    shapeType: MarkupShapeType.CIRCLE,
     borderColor: { r: 0, g: 0, b: 50, a: 0.7 },
-    backgroundColor: null,
+    backgroundColor: { r: 0, g: 0, b: 50, a: 0.7 },
   });
 
-  return <MarkupShapeEditor data={data} onChange={setData} />;
+  return <MarkupShapeEditor data={data} onChange={setData as any} />;
 });
 
 export const rectangle = withDecorators(() => {
-  const [data, setData] = React.useState<Markup.RectangleShapeNodeData>({
+  const [data, setData] = React.useState<Markup.NodeData.Rectangle>({
     width: 100,
     height: 100,
-    shapeType: ShapeType.RECTANGLE,
-    borderColor: null,
+    shapeType: MarkupShapeType.RECTANGLE,
+    borderColor: { r: 0, g: 0, b: 50, a: 0.7 },
     borderRadius: 0,
     rotate: 0,
     backgroundColor: { r: 0, g: 0, b: 50, a: 0.7 },
   });
 
-  return <MarkupShapeEditor data={data} onChange={setData} />;
+  return <MarkupShapeEditor data={data} onChange={setData as any} />;
 });
 
 export const arrow = withDecorators(() => {
-  const [data, setData] = React.useState<Markup.ArrowShapeNodeData>({
-    width: 100,
-    color: { r: 0, g: 0, b: 50, a: 0.7 },
-    rotate: 0,
-    shapeType: ShapeType.ARROW,
+  const [data, setData] = React.useState<Markup.NodeData.Arrow>({
+    offsetX: 100,
+    offsetY: 0,
+    strokeColor: { r: 0, g: 0, b: 50, a: 0.7 },
+    shapeType: MarkupShapeType.ARROW,
   });
 
-  return <MarkupShapeEditor data={data} onChange={setData} />;
+  return <MarkupShapeEditor data={data} onChange={setData as any} />;
 });
 
 export const line = withDecorators(() => {
-  const [data, setData] = React.useState<Markup.LineShapeNodeData>({
-    width: 100,
-    color: { r: 0, g: 0, b: 50, a: 0.7 },
-    rotate: 0,
-    shapeType: ShapeType.LINE,
+  const [data, setData] = React.useState<Markup.NodeData.Line>({
+    offsetX: 100,
+    offsetY: 0,
+    strokeColor: { r: 0, g: 0, b: 50, a: 0.7 },
+    shapeType: MarkupShapeType.LINE,
   });
 
-  return <MarkupShapeEditor data={data} onChange={setData} />;
+  return <MarkupShapeEditor data={data} onChange={setData as any} />;
 });

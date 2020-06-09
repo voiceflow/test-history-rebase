@@ -18,6 +18,7 @@ import RadiobuttonText from './components/RadiobuttonText';
 import RepromptTooltip from './components/RepromptTooltip';
 import useCachedUpdate from './hooks/useCachedUpdate';
 
+const MAX_REPROMPTS = 3;
 const ELSE_OPTIONS = [
   {
     id: ChoiceElseType.PATH,
@@ -28,8 +29,6 @@ const ELSE_OPTIONS = [
     label: <RadiobuttonText label="Reprompts" />,
   },
 ];
-
-const MAX_REPROMPTS = 3;
 
 const RepromptResponseForm: React.FC<NodeEditorPropsType<NodeData.Interaction> & ConnectedRepromptResponseFormProps> = ({
   data,

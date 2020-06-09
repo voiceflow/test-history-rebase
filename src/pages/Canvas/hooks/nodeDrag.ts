@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { MAX_CLICK_TRAVEL } from '@/components/Canvas/constants';
 import { useTeardown } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
@@ -13,87 +12,65 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const editPermission = React.useContext(EditPermissionContext)!;
 
-  const isHoldingShift = React.useRef(false);
+  const isDragging = React.useRef(false);
   const teardownMouseListeners = React.useRef(noop);
-  const dragDistance = React.useRef(0);
   const mouseMovement = React.useMemo(() => new MouseMovement(), []);
 
   const onClick = React.useCallback(
-    (event: MouseEvent) => {
-      if (event.defaultPrevented || skipClick?.()) {
-        return;
-      }
+    (event: React.MouseEvent) => {
+      if (event.defaultPrevented || skipClick?.()) return;
 
-      engine.setActive(nodeEntity.nodeID, isHoldingShift.current);
+      event.preventDefault();
+
+      engine.setActive(nodeEntity.nodeID, event.shiftKey);
     },
     [skipClick]
   );
 
   const onDrag = React.useCallback(async (event: MouseEvent) => {
-    if (engine.isNodeMovementLocked(nodeEntity.nodeID)) {
-      // abort drag if node is locked
-      document.removeEventListener('mousemove', onDrag);
-      return;
-    }
-
     mouseMovement.track(event);
 
     const [movementX, movementY] = mouseMovement.getBoundedMovement();
 
     const zoom = engine.canvas!.getZoom();
 
-    dragDistance.current += Math.max(Math.abs(movementX), Math.abs(movementY));
-
     await engine.node.drag(nodeEntity.nodeID, [movementX / zoom, movementY / zoom]);
   }, []);
 
-  const onDrop = React.useCallback(() => engine.node.drop(), []);
-
-  const onMouseUp = React.useCallback(
-    async (event: MouseEvent) => {
-      teardownMouseListeners.current();
-
-      // do not click in case double click event
-      if (dragDistance.current < MAX_CLICK_TRAVEL && event.detail !== 2) {
-        onClick(event);
-      } else if (engine.drag.isSoleTarget(nodeEntity.nodeID)) {
-        await onDrop();
-      }
-
-      dragDistance.current = 0;
-      isHoldingShift.current = false;
-
-      await engine.drag.reset();
-    },
-    [onClick, onDrop]
-  );
-
   const addMouseListeners = React.useCallback(() => {
-    if (!isHoldingShift.current) {
-      document.addEventListener('mousemove', onDrag);
-    }
-
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onDrag);
 
     teardownMouseListeners.current = () => {
       mouseMovement.clear();
 
       document.removeEventListener('mousemove', onDrag);
-      document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [onDrag, onMouseUp]);
+  }, [onDrag]);
 
-  const onMouseDown = React.useCallback(
-    (event: React.MouseEvent) => {
-      // don't capture right-click events
-      if (event.button !== 2) {
-        event.stopPropagation();
+  const onDragStart = React.useCallback(
+    (event: React.DragEvent) => {
+      if (!editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID)) return;
 
-        if (editPermission.canEdit) {
-          isHoldingShift.current = event.shiftKey;
-          addMouseListeners();
-        }
-      }
+      event.preventDefault();
+
+      isDragging.current = true;
+
+      addMouseListeners();
+
+      document.addEventListener(
+        'mouseup',
+        async () => {
+          isDragging.current = false;
+          teardownMouseListeners.current();
+
+          if (engine.drag.isSoleTarget(nodeEntity.nodeID)) {
+            await engine.node.drop();
+          }
+
+          await engine.drag.reset();
+        },
+        { once: true }
+      );
     },
     [editPermission.canEdit, addMouseListeners]
   );
@@ -101,6 +78,7 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
   useTeardown(() => teardownMouseListeners.current());
 
   return {
-    onMouseDown,
+    onClick,
+    onDragStart,
   };
 };

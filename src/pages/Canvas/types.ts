@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { LockOwner } from '@/models';
+import { LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
+
+export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
 
 export type BlockAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
@@ -64,4 +66,9 @@ export type TransformOverlayAPI = {
   translate: (movement: Pair<number>) => void;
   clearTransformations: () => void;
   reset: () => void;
+};
+
+export type NewShapeAPI = {
+  show: (origin: Point) => void;
+  hide: () => void;
 };

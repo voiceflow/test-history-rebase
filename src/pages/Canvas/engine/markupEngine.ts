@@ -11,7 +11,8 @@ import React from 'react';
 import { BlockType, TextAlignment } from '@/constants';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { CANVAS_MARKUP_ENABLED } from '@/pages/Canvas/constants';
+import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { NewShapeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 
 import { EngineConsumer } from './utils';
@@ -25,40 +26,32 @@ type Plugins = {
 class MarkupEngine extends EngineConsumer {
   log = this.engine.log.child('markup');
 
-  private pluginsByNodeID: Record<string, Plugins> = {};
+  pluginsByNodeID: Record<string, Plugins> = {};
 
-  private lastCreatedNodeID: string | null = null;
+  isEnabled = false;
 
-  private isEnabled = false;
+  newShape: NewShapeAPI | null = null;
 
   enable() {
-    this.engine.canvas?.addClass(CANVAS_MARKUP_ENABLED);
+    this.engine.canvas?.addClass(CANVAS_MARKUP_ENABLED_CLASSNAME);
     this.log.debug('enable markup tool');
 
     this.isEnabled = true;
   }
 
   disable() {
-    this.engine.canvas?.removeClass(CANVAS_MARKUP_ENABLED);
+    this.engine.canvas?.removeClass(CANVAS_MARKUP_ENABLED_CLASSNAME);
     this.log.debug('disable markup tool');
 
     this.isEnabled = false;
   }
 
-  getIsOpened() {
-    return this.isEnabled;
+  registerNewShape(newShape: NewShapeAPI | null) {
+    this.newShape = newShape;
   }
 
-  getLastCreatedNodeID() {
-    return this.lastCreatedNodeID;
-  }
-
-  resetLastCreatedNodeID() {
-    this.lastCreatedNodeID = null;
-  }
-
-  async addTextNode(point: Point) {
-    const nodeData: Markup.TextNodeData = {
+  async addTextNode() {
+    const nodeData: Markup.NodeData.Text = {
       content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
       textAlignment: TextAlignment.LEFT,
       scale: 1,
@@ -66,9 +59,16 @@ class MarkupEngine extends EngineConsumer {
 
     const nodeID = cuid();
 
-    this.lastCreatedNodeID = nodeID;
+    this.engine.node.add(BlockType.MARKUP_TEXT, this.engine.getCanvasMousePosition(), nodeData as NodeData<Markup.NodeData.Text>, nodeID);
+  }
 
-    this.engine.node.add(BlockType.MARKUP_TEXT, this.engine.canvas!.transformPoint(point), nodeData as NodeData<Markup.TextNodeData>, nodeID);
+  async createShapeNode() {
+    this.newShape?.show(this.engine.getCanvasMousePosition());
+  }
+
+  async addShapeNode(point: Point, nodeData: NodeData<Markup.NodeData.Shape>) {
+    this.engine.node.add(BlockType.MARKUP_SHAPE, point, nodeData, cuid());
+    this.newShape?.hide();
   }
 
   useSetupPlugins(nodeID: string, { anchorOptions }: { anchorOptions: AnchorPluginConfig }) {
@@ -94,6 +94,14 @@ class MarkupEngine extends EngineConsumer {
 
   getPluginsByNodeID(nodeID: string) {
     return this.pluginsByNodeID[nodeID];
+  }
+
+  reset() {
+    if (!this.isEnabled) return;
+
+    this.newShape?.hide();
+
+    this.isEnabled = false;
   }
 }
 

@@ -3,11 +3,14 @@ import { History } from 'history';
 
 import { GLOBAL_HEADERS } from './client/fetch';
 import { API_ENDPOINT, VERSION } from './config';
+import { clearPersistedLogs } from './utils/logger';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as LogRocket from './vendors/logRocket';
 import * as Userflow from './vendors/userflow';
 
 const setupApp = (history: History, browserID: string, tabID: string) => {
+  clearPersistedLogs();
+
   axios.defaults.baseURL = API_ENDPOINT;
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common.browserid = browserID;

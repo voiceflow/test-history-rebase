@@ -34,7 +34,7 @@ const MarkupNode = () => {
   // for optimization reason using query selector to filter click events if markup is not opened
   const skipClick = React.useCallback(() => !document.getElementsByClassName(CANVAS_MARKUP_ENABLED_CLASSNAME).length, []);
 
-  const { onClick, onDragStart } = useNodeDrag({ skipClick });
+  const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipClick });
 
   // TODO: implement context menu
   const onRightClick = React.useCallback(_noop, []);
@@ -64,8 +64,9 @@ const MarkupNode = () => {
         className={ClassName.CANVAS_NODE}
         position={instance.getPosition()}
         isTransform={!isPresentationMode}
-        onClick={onClick}
+        onMouseDown={onMouseDown}
         onDragStart={onDragStart}
+        onClick={onClick}
         onContextMenu={onRightClick}
         ref={instance.ref}
         tabIndex={-1}

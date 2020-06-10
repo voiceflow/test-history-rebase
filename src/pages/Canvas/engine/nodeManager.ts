@@ -496,7 +496,9 @@ class NodeManager extends EngineConsumer {
     } else if (this.engine.transformation.isActive && !this.engine.focus.isTarget(nodeID)) {
       this.engine.focus.reset();
     } else {
-      this.engine.selection.reset();
+      if (!this.engine.selection.isTarget(nodeID)) {
+        this.engine.selection.reset();
+      }
 
       await this.engine.drag.setTarget(nodeID);
       await this.engine.node.translate(nodeID, movement);

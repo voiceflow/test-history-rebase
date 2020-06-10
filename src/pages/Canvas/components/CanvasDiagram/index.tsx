@@ -7,13 +7,13 @@ import { FeatureFlag } from '@/config/features';
 import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import GroupSelection from '@/pages/Canvas/components/GroupSelection';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
+import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
-import { ContextMenuContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
@@ -33,7 +33,6 @@ type ConnectedCanvasDiagramProps = {
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const markup = useFeature(FeatureFlag.MARKUP);
   const engine = React.useContext(EngineContext)!;
-  const groupSelection = React.useContext(GroupSelectionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { canEdit } = React.useContext(EditPermissionContext)!;
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
@@ -52,23 +51,27 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     [isMarkupCreating, markupModeType]
   );
 
-  const onClickCanvas = React.useCallback(() => {
-    if (isMarkupCreating) {
-      if (markupModeType === MarkupModeType.TEXT) {
-        engine.markup.addTextNode();
-      }
+  const onMouseUp = React.useCallback((event: MouseEvent) => {
+    if (event.defaultPrevented || engine.isCanvasBusy) return;
 
-      finishMarkupCreating();
-    } else {
-      engine.clearActivation();
+    engine.clearActivation();
+  }, []);
+
+  const onClickCanvas = React.useCallback(() => {
+    if (!isMarkupCreating) return;
+
+    if (markupModeType === MarkupModeType.TEXT) {
+      engine.markup.addTextNode();
     }
+
+    finishMarkupCreating();
   }, [isMarkupCreating, markupModeType]);
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   const startGroupSelection = React.useCallback<React.MouseEventHandler>(
-    (event) => canEdit && groupSelection.onStart([event.clientX, event.clientY]),
-    [canEdit, groupSelection.onStart]
+    (event) => canEdit && engine.groupSelection.start([event.clientX, event.clientY]),
+    [canEdit]
   );
 
   const [, connectBlockDrop] = useDrop({
@@ -102,6 +105,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
       <Canvas
         viewport={viewport}
         onClick={onClickCanvas}
+        onMouseUp={onMouseUp}
         onChange={updateViewport}
         onPan={panViewport}
         onZoom={zoomViewport}
@@ -115,7 +119,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         <NodeLayer />
         {markup.isEnabled && <MarkupLayer />}
         <MergeLayer />
-        <GroupSelection />
+        <SelectionMarquee />
       </Canvas>
       <TransformOverlay />
     </>

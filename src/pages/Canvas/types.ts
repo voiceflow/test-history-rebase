@@ -21,7 +21,7 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
   lockOwner: LockOwner | null;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
-    onClick: () => void;
+    onClick: (event: React.MouseEvent) => void;
     onDoubleClick: (event: React.MouseEvent) => void;
     onMouseUp: (event: React.MouseEvent) => void;
     onContextMenu: (event: React.MouseEvent) => void;
@@ -71,4 +71,8 @@ export type TransformOverlayAPI = {
 export type NewShapeAPI = {
   show: (origin: Point) => void;
   hide: () => void;
+};
+
+export type SelectionMarqueeAPI = {
+  show: () => void;
 };

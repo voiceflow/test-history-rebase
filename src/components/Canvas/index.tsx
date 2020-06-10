@@ -30,6 +30,7 @@ export type CanvasProps = {
   onPan?: (movement: Pair<number>) => void;
   onZoom?: (translateZoom: MovementCalculator) => void;
   onClick?: (event: React.MouseEvent) => void;
+  onMouseUp?: (event: MouseEvent) => void;
   onRightClick?: (event: React.MouseEvent) => void;
   onShiftDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
@@ -247,6 +248,9 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         this.props.overlay.dismiss();
         this.props.onClick?.(control.event);
         break;
+      case ControlType.MOUSE_UP:
+        this.props.onMouseUp?.(control.event);
+        break;
       case ControlType.END:
         this.onChange();
         break;
@@ -318,6 +322,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
           onContextMenu={onRightClick}
           onClick={this.onClick}
           onDragStart={this.onDragStart}
+          onMouseDown={this.controls.mousedown}
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >

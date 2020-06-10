@@ -24,7 +24,7 @@ const Node: React.FC = () => {
   }));
   const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
 
-  const { onClick, onDragStart } = useNodeDrag();
+  const { onMouseDown, onClick, onDragStart } = useNodeDrag();
 
   const onRightClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
@@ -68,6 +68,7 @@ const Node: React.FC = () => {
         data-node-id={nodeEntity.nodeID}
         position={instance.getPosition()}
         isTransform={!isPresentationMode}
+        onMouseDown={onMouseDown}
         onDragStart={onDragStart}
         onClick={onClick}
         onContextMenu={onRightClick}

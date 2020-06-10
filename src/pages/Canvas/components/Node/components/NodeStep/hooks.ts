@@ -11,7 +11,7 @@ import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
-import { stopPropagation } from '@/utils/dom';
+import { preventDefault, stopPropagation } from '@/utils/dom';
 
 export type InternalNodeInstance = NodeInstance & {
   ref: React.RefObject<HTMLElement>;
@@ -104,7 +104,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
       hasLinkWarning,
       wrapElement,
       handlers: {
-        onClick: () => engine.setActive(nodeEntity.nodeID),
+        onClick: preventDefault(() => engine.setActive(nodeEntity.nodeID)),
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
           if (nodeEntity.nodeType === BlockType.START || !editPermission.canEdit) return;
@@ -118,8 +118,10 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
           event.nativeEvent.stopImmediatePropagation();
           engine.linkCreation.complete(nodeEntity.inPortID);
         },
-        onDragStart: async () => {
+        onDragStart: async (dragEvent: React.DragEvent) => {
           if (!editPermission.canEdit) return;
+
+          dragEvent.preventDefault();
 
           const handleMouseUp = async (event: MouseEvent) => {
             if (!event.defaultPrevented) {

@@ -31,6 +31,11 @@ export type ClickAction = {
   event: React.MouseEvent;
 };
 
+export type MouseUpAction = {
+  type: ControlType.MOUSE_UP;
+  event: MouseEvent;
+};
+
 export type ShiftDragStartAction = {
   type: ControlType.SHIFT_DRAG_START;
   event: React.DragEvent;
@@ -42,4 +47,4 @@ export type PanAction = {
   deltaY: number;
 };
 
-export type ControlAction = ZoomAction | EndAction | PanAction | ClickAction | ShiftDragStartAction;
+export type ControlAction = ZoomAction | EndAction | PanAction | ClickAction | MouseUpAction | ShiftDragStartAction;

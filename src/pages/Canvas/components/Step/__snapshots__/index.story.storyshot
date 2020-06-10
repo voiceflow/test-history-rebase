@@ -148,6 +148,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -212,7 +213,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -220,6 +221,10 @@ exports[`Storyshots Creator/Step Active 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -288,6 +293,7 @@ exports[`Storyshots Creator/Step Active 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -571,6 +577,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -635,7 +642,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -643,6 +650,10 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -711,6 +722,7 @@ exports[`Storyshots Creator/Step Primary 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -994,6 +1006,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -1058,7 +1071,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1066,6 +1079,10 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -1134,6 +1151,7 @@ exports[`Storyshots Creator/Step Secondary 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -1417,6 +1435,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -1501,7 +1520,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -1509,6 +1528,10 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -1577,6 +1600,7 @@ exports[`Storyshots Creator/Step With Connected Port 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -1902,6 +1926,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -1945,6 +1970,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c18,
+.vf-canvas--selecting-group .c18,
 .vf-canvas__node--disabled .c18 {
   cursor: inherit;
 }
@@ -1988,6 +2014,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c20,
+.vf-canvas--selecting-group .c20,
 .vf-canvas__node--disabled .c20 {
   cursor: inherit;
 }
@@ -2072,7 +2099,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2080,6 +2107,10 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -2148,6 +2179,7 @@ exports[`Storyshots Creator/Step With Custom Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -2567,6 +2599,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 .vf-canvas--merging .c15,
+.vf-canvas--selecting-group .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
 }
@@ -2631,7 +2664,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -2639,6 +2672,10 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -2707,6 +2744,7 @@ exports[`Storyshots Creator/Step With Else 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -3051,6 +3089,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 }
 
 .vf-canvas--merging .c15,
+.vf-canvas--selecting-group .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
 }
@@ -3115,7 +3154,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -3123,6 +3162,10 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -3191,6 +3234,7 @@ exports[`Storyshots Creator/Step With Icon 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -3499,6 +3543,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -3563,7 +3608,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -3571,6 +3616,10 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -3639,6 +3688,7 @@ exports[`Storyshots Creator/Step With Image 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -3929,6 +3979,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -3993,7 +4044,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -4001,6 +4052,10 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -4069,6 +4124,7 @@ exports[`Storyshots Creator/Step With Long Label 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -4372,7 +4428,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -4380,6 +4436,10 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -4448,6 +4508,7 @@ exports[`Storyshots Creator/Step With Long Label And No Port 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -4747,6 +4808,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 }
 
 .vf-canvas--merging .c15,
+.vf-canvas--selecting-group .c15,
 .vf-canvas__node--disabled .c15 {
   cursor: inherit;
 }
@@ -4811,7 +4873,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -4819,6 +4881,10 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -4887,6 +4953,7 @@ exports[`Storyshots Creator/Step With Multiple Sections 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -5251,6 +5318,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -5315,7 +5383,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -5323,6 +5391,10 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -5391,6 +5463,7 @@ exports[`Storyshots Creator/Step With Placeholder 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -5708,6 +5781,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -5752,6 +5826,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c16,
+.vf-canvas--selecting-group .c16,
 .vf-canvas__node--disabled .c16 {
   cursor: inherit;
 }
@@ -5796,6 +5871,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c18,
+.vf-canvas--selecting-group .c18,
 .vf-canvas__node--disabled .c18 {
   cursor: inherit;
 }
@@ -5860,7 +5936,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -5868,6 +5944,10 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -5936,6 +6016,7 @@ exports[`Storyshots Creator/Step With Success Fail 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -6287,6 +6368,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 }
 
 .vf-canvas--merging .c13,
+.vf-canvas--selecting-group .c13,
 .vf-canvas__node--disabled .c13 {
   cursor: inherit;
 }
@@ -6351,7 +6433,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -6359,6 +6441,10 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -6427,6 +6513,7 @@ exports[`Storyshots Creator/Step With User Lock 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }
@@ -6730,7 +6817,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-.vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
@@ -6738,6 +6825,10 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 .vf-canvas__node--highlighted .c0,
 .vf-canvas__node--hovered .c0 {
   cursor: copy;
+}
+
+#vf-canvas.vf-canvas--selecting-group .c0 {
+  cursor: inherit;
 }
 
 .vf-canvas__node--focused .c0::before {
@@ -6806,6 +6897,7 @@ exports[`Storyshots Creator/Step Without Port 1`] = `
 }
 
 .vf-canvas--merging .c3,
+.vf-canvas--selecting-group .c3,
 .vf-canvas--creating-link .c3 {
   pointer-events: none;
 }

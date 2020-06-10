@@ -3,6 +3,7 @@ import React from 'react';
 import { useTeardown } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { stopPropagation } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
@@ -48,10 +49,10 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
   }, [onDrag]);
 
   const onDragStart = React.useCallback(
-    (event: React.DragEvent) => {
-      if (!editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID)) return;
+    (dragEvent: React.DragEvent) => {
+      if (dragEvent.defaultPrevented || !editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID)) return;
 
-      event.preventDefault();
+      dragEvent.preventDefault();
 
       isDragging.current = true;
 
@@ -59,7 +60,9 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
 
       document.addEventListener(
         'mouseup',
-        async () => {
+        async (event) => {
+          event.preventDefault();
+
           isDragging.current = false;
           teardownMouseListeners.current();
 
@@ -80,5 +83,6 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
   return {
     onClick,
     onDragStart,
+    onMouseDown: stopPropagation(null, true),
   };
 };

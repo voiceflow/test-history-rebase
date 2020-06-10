@@ -11,8 +11,15 @@ import { Dispatch, Dispatchable, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { isLinkedeDisplayNode } from '@/utils/node';
+import { isInRange } from '@/utils/number';
 
 import type { Engine } from '.';
+
+export type NodeCandidate = {
+  nodeID: string;
+  containsPoint: (point: [number, number]) => boolean;
+  isWithin: (rect: DOMRect) => boolean;
+};
 
 export type CloneUtils = {
   getNodeID: (nodeID: string) => string;
@@ -188,3 +195,33 @@ export const extractPoints = (canvas: CanvasAPI, start: DOMRect | null | undefin
 
   return [canvas.transformPoint([start.right, startY]), canvas.transformPoint([end.left, endY])];
 };
+
+export const createBoundaryTest = ({ left, right, top, bottom }: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>) => ([x, y]: Point) =>
+  isInRange(x, left, right) && isInRange(y, top, bottom);
+
+export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[] =>
+  nodeIDs
+    .reduce<{ nodeID: string; top: number; left: number; bottom: number; right: number }[]>((acc, nodeID) => {
+      const rect = engine.node.getRect(nodeID);
+
+      if (!rect) return acc;
+
+      const { left, right, top, bottom } = rect;
+
+      acc.push({
+        nodeID,
+        left,
+        right,
+        top,
+        bottom,
+      });
+
+      return acc;
+    }, [])
+    .map(({ nodeID, left, right, top, bottom }) => ({
+      nodeID,
+      containsPoint: createBoundaryTest({ left, right, top, bottom }),
+      isWithin: (rect) =>
+        (isInRange(left, rect.left, rect.right) || isInRange(right, rect.left, rect.right)) &&
+        (isInRange(top, rect.top, rect.bottom) || isInRange(bottom, rect.top, rect.bottom)),
+    }));

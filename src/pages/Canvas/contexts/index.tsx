@@ -13,14 +13,12 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
-import { GroupSelectionProvider } from './GroupSelectionContext';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './EngineContext';
 export * from './EntityContexts';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
-export * from './GroupSelectionContext';
 export * from './SpotlightContext';
 export * from './PresentationModeContext';
 export * from '@/pages/Skill/contexts/CommentingContext';
@@ -58,11 +56,9 @@ export const CanvasProviders = connect({
     <EngineProvider value={engine}>
       <RegisterEngine engine={engine} />
       <ContextMenuProvider>
-        <GroupSelectionProvider>
-          <ClipboardProvider>
-            <SpotlightProvider>{children}</SpotlightProvider>
-          </ClipboardProvider>
-        </GroupSelectionProvider>
+        <ClipboardProvider>
+          <SpotlightProvider>{children}</SpotlightProvider>
+        </ClipboardProvider>
       </ContextMenuProvider>
     </EngineProvider>
   </PlatformProvider>

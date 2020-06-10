@@ -22,5 +22,6 @@ export enum ControlType {
   PAN = 'PAN',
   CLICK = 'CLICK',
   END = 'END',
+  MOUSE_UP = 'MOUSE_UP',
   SHIFT_DRAG_START = 'SHIFT_DRAG_START',
 }

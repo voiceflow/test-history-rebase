@@ -9,8 +9,6 @@ class MouseControls extends BaseControls {
 
   isDragging = false;
 
-  ignoreNextClick = false;
-
   scrollComplete = null;
 
   mouseMovement = new MouseMovement();
@@ -41,35 +39,38 @@ class MouseControls extends BaseControls {
 
       document.addEventListener('mousemove', this.mousemove);
     }
+  };
+
+  mousedown = (event: React.MouseEvent) => {
+    if (event.defaultPrevented) return;
 
     document.addEventListener('mouseup', this.mouseup, { once: true });
   };
 
-  mouseup = () => {
+  mouseup = (event: MouseEvent) => {
+    if (event.defaultPrevented) return;
+
     this.mouseMovement.clear();
 
+    this.handle({ type: ControlType.MOUSE_UP, event });
+
+    document.removeEventListener('mousemove', this.mousemove);
+  };
+
+  click = (event: React.MouseEvent) => {
     if (this.isPanning) {
       this.isPanning = false;
 
       this.handle({ type: ControlType.END });
     } else if (this.isDragging) {
       this.isDragging = false;
-      this.ignoreNextClick = true;
 
       this.handle({ type: ControlType.END });
-    }
-
-    document.removeEventListener('mousemove', this.mousemove);
-  };
-
-  click = (event: React.MouseEvent) => {
-    if (event.defaultPrevented) return;
-
-    if (this.ignoreNextClick) {
-      this.ignoreNextClick = true;
 
       return;
     }
+
+    if (event.defaultPrevented) return;
 
     if (event.button !== 2) {
       event.stopPropagation();

@@ -48,7 +48,10 @@ class SelectionEngine extends EngineConsumer {
       this.engine.focus.reset();
       this.engine.activation.activate(focusTarget, ActivationMode.SELECTION);
 
-      if (nodeID === focusTarget) return;
+      if (nodeID === focusTarget) {
+        this.log.info(this.log.success('switched node focus to selection'), this.log.slug(nodeID));
+        return;
+      }
     }
 
     this.engine.activation.toggle(nodeID, ActivationMode.SELECTION);
@@ -60,10 +63,10 @@ class SelectionEngine extends EngineConsumer {
   /**
    * replace the entire set of selected targets
    */
-  replace(targets: string[] = []) {
+  replace(targets: string[] = [], force = false) {
     const currentTargets = this.getTargets();
 
-    if (this.engine.isCanvasBusy || hasIdenticalMembers(targets, currentTargets)) return;
+    if ((!force && this.engine.isCanvasBusy) || hasIdenticalMembers(targets, currentTargets)) return;
 
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();

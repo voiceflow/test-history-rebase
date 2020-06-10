@@ -150,17 +150,18 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   useLifecycle() {
     const engine = React.useContext(EngineContext)!;
     const { x, y } = this.useCoordinates();
+    const { parentNode } = this.useState((e) => ({
+      parentNode: e.resolve().node.parentNode,
+    }));
 
     React.useEffect(() => engine.node.setOrigin(this.nodeID, [x, y]), [x, y]);
 
     // redraw links in parent block when unmounting
     useTeardown(() => {
-      const { parentNode } = this.resolve().node;
-
       if (parentNode) {
         engine.node.redrawNestedLinks(parentNode);
       }
-    });
+    }, [parentNode]);
   }
 }
 

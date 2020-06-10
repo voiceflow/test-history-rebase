@@ -32,6 +32,7 @@ import LinkEntity from './entities/linkEntity';
 import NodeEntity from './entities/nodeEntity';
 import PortEntity from './entities/portEntity';
 import FocusEngine from './focusEngine';
+import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
@@ -61,6 +62,8 @@ export class Engine {
   focus = new FocusEngine(this);
 
   selection = new SelectionEngine(this);
+
+  groupSelection = new GroupSelectionEngine(this);
 
   highlight = new HighlightEngine(this);
 
@@ -104,6 +107,7 @@ export class Engine {
       this.activation,
       this.focus,
       this.selection,
+      this.groupSelection,
       this.highlight,
       this.linkCreation,
       this.clipboard,
@@ -114,6 +118,8 @@ export class Engine {
       this.node,
       this.realtime,
       this.dispatcher,
+      this.markup,
+      this.transformation,
     ];
   }
 
@@ -200,7 +206,7 @@ export class Engine {
   // canvas orchestration methods
 
   get isCanvasBusy() {
-    return this.linkCreation.isDrawing || this.drag.hasTarget;
+    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget;
   }
 
   /**

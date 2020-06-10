@@ -33,6 +33,9 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const markupFeature = useFeature(FeatureFlag.MARKUP);
   const commentingFeature = useFeature(FeatureFlag.COMMENTING);
+
+  const allowCommenting = commentingFeature.isEnabled && canUseCommenting;
+
   const onZoomIn = React.useCallback(() => {
     eventualEngine.get()?.canvas?.applyTransition();
     eventualEngine.get()?.canvas?.zoomIn(ZOOM_DELTA);
@@ -97,7 +100,15 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
   useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_MARKUP, onOpenMarkup, { preventDefault: true });
-  useHotKeys(Hotkey.OPEN_COMMENTING, () => openMode(commenting.open), { preventDefault: true });
+  useHotKeys(
+    Hotkey.OPEN_COMMENTING,
+    () => {
+      if (allowCommenting) {
+        openMode(commenting.open);
+      }
+    },
+    { preventDefault: true }
+  );
   useHotKeys(
     Hotkey.CLOSE_CANVAS_MODE,
     () => {
@@ -111,7 +122,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {commentingFeature.isEnabled && canUseCommenting && (
+      {allowCommenting && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.COMMENTING]}
           iconProps={{

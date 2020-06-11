@@ -331,6 +331,15 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       return;
     }
 
+    // This is so we can invite users and update redux, targeting the just created ^ workspace
+    try {
+      await fetchWorkspaces();
+    } catch (e) {
+      toastNotif.error('Error getting workspace, please try again later');
+      goToDashboard();
+      return;
+    }
+
     if (hasPaymentStep) {
       try {
         await handlePayment(workspace.id, source);

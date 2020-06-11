@@ -36,12 +36,12 @@ const Provider: React.FC<CommentProviderProps> = ({ children, isPrototyping, goT
       goToDesign();
     }
     openTool();
-    eventualEngine.get()!.comment.enable();
+    eventualEngine.get()?.comment?.enable();
   };
 
   const close = () => {
     closeTool();
-    eventualEngine.get()!.comment.disable();
+    eventualEngine.get()?.comment?.disable();
   };
 
   const toggle = () => {

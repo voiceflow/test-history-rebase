@@ -8,7 +8,7 @@ const fadeInKeyframes = keyframes`
     opacity: 0;
   }
   to {
-    transform: translate3d(16px, 0, 0);
+    transform: translate3d(22px, 0, 0);
     opacity: 1;
   }
 `;
@@ -27,8 +27,7 @@ const fadeOutKeyframes = keyframes`
 const MarkupMenuContainer = styled(Flex as any)<{ isOpen: boolean }>`
   position: absolute;
   z-index: 20;
-  left: 0;
-  top: 50px;
+  top: 40px;
 
   animation: ${fadeOutKeyframes} ${({ length = 0.35 }) => length}s ease-in-out;
   animation-fill-mode: both;

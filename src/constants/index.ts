@@ -393,6 +393,18 @@ export enum UserRole {
   LIBRARY = 'library',
 }
 
+export enum PlanType {
+  OLD_STARTER = 'old_starter',
+  OLD_PRO = 'old_pro',
+  OLD_TEAM = 'old_team',
+  OLD_ENTERPRISE = 'old_enterprise',
+
+  STARTER = 'starter',
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
+}
+
 export enum FEATURE_IDS {
   ADD_COLLABORATORS = 'ADD_COLLABORATORS',
   WORKSPACE_SETTINGS = 'WORKSPACE_SETTINGS',
@@ -403,9 +415,10 @@ export enum FEATURE_IDS {
   DASHBOARD_PROJECT = 'DASHBOARD_PROJECT',
   MARKUP = 'MARKUP',
   COMMENTING = 'COMMENTING',
+  EXPORT = 'EXPORT',
 }
 
-export const FEATURE_PERMISSIONS = {
+export const FEATURE_ROLE_PERMISSIONS = {
   ADD_COLLABORATORS: [UserRole.ADMIN],
   WORKSPACE_SETTINGS: [UserRole.ADMIN],
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
@@ -415,6 +428,11 @@ export const FEATURE_PERMISSIONS = {
   DASHBOARD_PROJECT: [UserRole.ADMIN, UserRole.EDITOR],
   MARKUP: [UserRole.ADMIN, UserRole.EDITOR],
   COMMENTING: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+};
+
+export const FEATURE_PLAN_PERMISSIONS = {
+  [FEATURE_IDS.MARKUP]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.EXPORT]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
@@ -470,18 +488,6 @@ export enum KeyCode {
 export enum DisplayType {
   SPLASH = 'splash',
   ADVANCED = 'advanced',
-}
-
-export enum PlanType {
-  OLD_STARTER = 'old_starter',
-  OLD_PRO = 'old_pro',
-  OLD_TEAM = 'old_team',
-  OLD_ENTERPRISE = 'old_enterprise',
-
-  STARTER = 'starter',
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
 }
 
 export enum MarkupShapeType {

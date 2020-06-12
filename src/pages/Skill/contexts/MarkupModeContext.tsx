@@ -8,7 +8,7 @@ import { Markup, NodeData } from '@/models';
 import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { imageSizeFromUrl } from '@/utils/file';
 
-const FILE_LIMIT = 2 ** 20 * 10; // 2 ** 20 === 1 mb
+const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'].join(', ');
 
 export type MarkupModeContextType = {
@@ -75,7 +75,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       if (!file) return;
 
       if (file.size > FILE_LIMIT) {
-        toast.error('The file must be less then 10MB');
+        toast.error('The file must be less then 4MB');
         return;
       }
 

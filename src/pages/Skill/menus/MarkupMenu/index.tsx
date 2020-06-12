@@ -4,7 +4,7 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import { MarkupModeType } from '@/constants';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 
-import { AddShapesMenu, MenuContainer, MenuIcon } from './components';
+import { AddShapesMenu, MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
   const { canEdit: isVisible } = React.useContext(EditPermissionContext)!;
@@ -15,9 +15,20 @@ const MarkupMenu: React.FC = () => {
   return (
     <>
       <MenuContainer isOpen={isOpen} column>
-        <MenuIcon large icon="textAutoResize" onClick={() => setCreatingModeType(isTextActive ? null : MarkupModeType.TEXT)} active={isTextActive} />
-        <AddShapesMenu />
-        <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
+        <MarkupButtonContainer title="Text">
+          <MenuIcon
+            large
+            icon="textAutoResize"
+            onClick={() => setCreatingModeType(isTextActive ? null : MarkupModeType.TEXT)}
+            active={isTextActive}
+          />
+        </MarkupButtonContainer>
+        <MarkupButtonContainer title="Shapes">
+          <AddShapesMenu />
+        </MarkupButtonContainer>
+        <MarkupButtonContainer title="Image">
+          <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
+        </MarkupButtonContainer>
       </MenuContainer>
 
       {isOpen && isVisible && <RemoveIntercom />}

@@ -150,13 +150,11 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
           <ResourcesDropdown />
         </Tooltip>
       </ControlContainer>
-
       <ControlContainer>
         <ZoomContainer>
           <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">
             <IconButton icon="zoomOut" size={14} onClick={onZoomOut} />
           </Tooltip>
-
           <Tooltip distance={6} title="Zoom In" position="top" hotkey="+">
             <IconButton icon="zoomIn" size={14} onClick={onZoomIn} />
           </Tooltip>

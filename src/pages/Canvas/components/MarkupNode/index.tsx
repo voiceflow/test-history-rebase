@@ -1,13 +1,15 @@
 import _noop from 'lodash/noop';
 import React from 'react';
 
-import { BlockType } from '@/constants';
+import { BlockType, FEATURE_IDS } from '@/constants';
+import { usePermissions } from '@/contexts';
 import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useNodeDrag } from '@/pages/Canvas/hooks';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { Container, NodeStyles } from './components';
@@ -20,6 +22,9 @@ const MarkupNode = () => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const observer = React.useMemo(() => new ResizeObserver(() => engine.transformation.reinitialize()), []);
+  const markup = React.useContext(MarkupModeContext);
+  const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
+
   const { node, data, isFocused } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Markup.AnyNodeData>();
 
@@ -29,6 +34,14 @@ const MarkupNode = () => {
       isFocused: e.isFocused,
     };
   });
+
+  const doubleClickHandler = () => {
+    if (canUseMarkup && !markup?.isOpen) {
+      markup?.openTool();
+      engine.setActive(node.id);
+    }
+  };
+
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
 
   // for optimization reason using query selector to filter click events if markup is not opened
@@ -72,7 +85,7 @@ const MarkupNode = () => {
         tabIndex={-1}
       >
         {NodeComponent && (
-          <Container isShape={nodeEntity.nodeType === BlockType.MARKUP_SHAPE} ref={instance.transformRef}>
+          <Container onDoubleClick={doubleClickHandler} isShape={nodeEntity.nodeType === BlockType.MARKUP_SHAPE} ref={instance.transformRef}>
             <NodeComponent node={node} data={data} />
           </Container>
         )}

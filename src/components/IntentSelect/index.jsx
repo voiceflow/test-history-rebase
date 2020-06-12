@@ -1,6 +1,9 @@
+import _shuffle from 'lodash/shuffle';
+import _toLower from 'lodash/toLower';
 import React from 'react';
 
 import Select from '@/components/Select';
+import { SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
@@ -11,6 +14,36 @@ const getOptionValue = (option) => option.id;
 const labelRenderer = (option, searchLabel, getOptionLabel, getOptionValue, options) => (
   <Option option={option} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} options={options} />
 );
+
+const optionsFilter = (options, searchLabel, { maxSize = options.length, getOptionLabel, getOptionValue } = {}) => {
+  const [matchedOptions, notMatchedOptions] = options.reduce(
+    ([matched, notMatched], option) => {
+      if (
+        !searchLabel ||
+        _toLower(getOptionLabel(getOptionValue(option)))
+          .replace(SPACE_REGEXP, '_')
+          .includes(_toLower(searchLabel))
+      ) {
+        matched.push(option);
+      } else {
+        notMatched.push(option);
+      }
+
+      return [matched, notMatched];
+    },
+    [[], []]
+  );
+
+  let filteredOptions = matchedOptions;
+
+  if (matchedOptions.length > maxSize) {
+    filteredOptions = matchedOptions.slice(0, maxSize);
+  } else if (matchedOptions.length < maxSize) {
+    filteredOptions = [...matchedOptions, ...(searchLabel ? _shuffle(notMatchedOptions) : notMatchedOptions)].slice(0, maxSize);
+  }
+
+  return { filteredOptions, matchedOptions, notMatchedOptions };
+};
 
 function IntentSelect({ intent, intents, onChange, newIntent }) {
   const intentID = intent?.id;
@@ -28,7 +61,10 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
   const intentMissing = intent?.id && !intentLookup[intent?.id] && !intent?.builtIn;
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
-  const isButtonDisabled = React.useCallback((newName) => filteredIntents.find(({ name }) => name === newName), [filteredIntents]);
+  const isButtonDisabled = React.useCallback(
+    (newName) => filteredIntents.find(({ name }) => _toLower(name).replace(SPACE_REGEXP, '_') === _toLower(newName)),
+    [filteredIntents]
+  );
 
   const onSelectIntent = React.useCallback((value) => onChange({ intent: value }), [onChange]);
 
@@ -51,6 +87,7 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
         creatable
         searchable
         placeholder="Name new intent or select existing intent"
+        optionsFilter={optionsFilter}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         isButtonDisabled={isButtonDisabled}

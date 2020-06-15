@@ -58,7 +58,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   }, []);
 
   const onClickCanvas = React.useCallback(() => {
-    if (!isMarkupCreating) return;
+    if (!isMarkupCreating || MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) return;
 
     if (markupModeType === MarkupModeType.TEXT) {
       engine.markup.addTextNode();

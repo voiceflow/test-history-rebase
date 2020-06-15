@@ -2,7 +2,6 @@ import React from 'react';
 
 import { MarkupShapeType } from '@/constants';
 import { Markup } from '@/models';
-import { DEFAULT_MARKUP_BACKGROUND_COLOR, DEFAULT_MARKUP_BORDER_COLOR } from '@/pages/Canvas/constants';
 import { PresentationModeContext } from '@/pages/Canvas/contexts';
 import { rgbaToHex } from '@/utils/colors';
 
@@ -20,6 +19,8 @@ export type MarkupShapeProps<T> = {
   data: Markup.NodeData.Shape;
   pathRef?: React.RefObject<T>;
 };
+
+const TRANSPARENT_COLOR = 'rgba(255,255,255,0)';
 
 const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapeProps<T>) => {
   const isPresentationMode = React.useContext(PresentationModeContext);
@@ -39,8 +40,8 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
         width={data.width}
         height={data.height}
         borderRadius={data.borderRadius || null}
-        backgroundColor={rgbaToHex(data.backgroundColor || DEFAULT_MARKUP_BACKGROUND_COLOR)}
-        borderColor={rgbaToHex(data.borderColor || DEFAULT_MARKUP_BORDER_COLOR)}
+        backgroundColor={data.backgroundColor ? rgbaToHex(data.backgroundColor) : TRANSPARENT_COLOR}
+        borderColor={data.borderColor ? rgbaToHex(data.borderColor) : TRANSPARENT_COLOR}
         isCircle={data.shapeType === MarkupShapeType.CIRCLE}
       />
     );

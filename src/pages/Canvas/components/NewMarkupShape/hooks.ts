@@ -3,7 +3,12 @@ import React from 'react';
 import { MarkupShapeType } from '@/constants';
 import { useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { DEFAULT_MARKUP_BORDER_RADIUS, DEFAULT_MARKUP_LINE_COLOR } from '@/pages/Canvas/constants';
+import {
+  DEFAULT_MARKUP_BACKGROUND_COLOR,
+  DEFAULT_MARKUP_BORDER_COLOR,
+  DEFAULT_MARKUP_BORDER_RADIUS,
+  DEFAULT_MARKUP_LINE_COLOR,
+} from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewShapeAPI } from '@/pages/Canvas/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
@@ -13,14 +18,14 @@ import { getRotation } from '@/utils/math';
 
 const DEFAULT_SHAPE_DATA: Record<MarkupShapeType, any> = {
   [MarkupShapeType.RECTANGLE]: {
-    borderColor: null,
-    backgroundColor: null,
+    borderColor: DEFAULT_MARKUP_BORDER_COLOR,
+    backgroundColor: DEFAULT_MARKUP_BACKGROUND_COLOR,
     borderRadius: DEFAULT_MARKUP_BORDER_RADIUS,
     shapeType: MarkupShapeType.RECTANGLE,
   },
   [MarkupShapeType.CIRCLE]: {
-    borderColor: null,
-    backgroundColor: null,
+    borderColor: DEFAULT_MARKUP_BORDER_COLOR,
+    backgroundColor: DEFAULT_MARKUP_BACKGROUND_COLOR,
     shapeType: MarkupShapeType.CIRCLE,
   },
   [MarkupShapeType.LINE]: {
@@ -52,7 +57,7 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
   const onMouseMove = React.useCallback(() => {
     const [startX, startY] = start.current!;
     const [endX, endY] = engine.getCanvasMousePosition();
-    const pathEl = ref.current!;
+    const pathEl = ref.current;
     const isRectangle = shapeType === MarkupShapeType.RECTANGLE;
     const isCircle = shapeType === MarkupShapeType.CIRCLE;
     const isLine = shapeType === MarkupShapeType.LINE;
@@ -70,6 +75,10 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
       const ry = isCircle ? height : DEFAULT_MARKUP_BORDER_RADIUS;
 
       window.requestAnimationFrame(() => {
+        if (!pathEl) {
+          return;
+        }
+
         pathEl.setAttribute('x', String(originX));
         pathEl.setAttribute('y', String(originY));
         pathEl.setAttribute('width', String(width));
@@ -81,6 +90,10 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
       const headEl = headRef.current;
 
       window.requestAnimationFrame(() => {
+        if (!pathEl) {
+          return;
+        }
+
         headEl?.setAttribute('orient', `${getRotation(deltaY, deltaX)}rad`);
         pathEl.setAttribute('x2', String(deltaX));
         pathEl.setAttribute('y2', String(deltaY));
@@ -89,7 +102,7 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
   }, [shapeType]);
 
   const onMouseUp = React.useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
 
       const [startX, startY] = start.current!;
@@ -111,7 +124,7 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
           height,
         };
 
-        engine.markup.addShapeNode([Math.min(startX, endX), Math.min(startY, endY)], data);
+        await engine.markup.addShapeNode([Math.min(startX, endX), Math.min(startY, endY)], data);
       } else if (isArrow || isLine) {
         const data: NodeData<Markup.NodeData.Line | Markup.NodeData.Arrow> = {
           ...DEFAULT_SHAPE_DATA[shapeType as MarkupShapeType],
@@ -119,10 +132,10 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
           offsetY: deltaY,
         };
 
-        engine.markup.addShapeNode([startX, startY], data);
+        await engine.markup.addShapeNode([startX, startY], data);
       }
 
-      finishCreating();
+      finishCreating(true);
     },
     [shapeType]
   );

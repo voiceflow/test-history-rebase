@@ -67,7 +67,8 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async addShapeNode(point: Point, nodeData: NodeData<Markup.NodeData.Shape>) {
-    this.engine.node.add(BlockType.MARKUP_SHAPE, point, nodeData, cuid());
+    await this.engine.node.add(BlockType.MARKUP_SHAPE, point, nodeData, cuid());
+
     this.newShape?.hide();
   }
 

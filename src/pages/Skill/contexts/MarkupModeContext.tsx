@@ -19,7 +19,7 @@ export type MarkupModeContextType = {
   isCreating: boolean;
   onAddImage: () => void;
   setModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
-  finishCreating: () => void;
+  finishCreating: (keepOpen?: boolean) => void;
   isUploadingImage: boolean;
   setCreatingModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
 };
@@ -45,11 +45,13 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   isOpenCache.current = isOpen;
 
-  const setCreatingModeType = (type: null | MarkupModeType | MarkupShapeType) => {
+  const setCreatingModeType = (type: null | MarkupModeType | MarkupShapeType, keepOpen?: boolean) => {
     setModeType(type);
     setCreating(!!type);
 
-    eventualEngine.get()?.focus.reset();
+    if (!keepOpen) {
+      eventualEngine.get()?.focus.reset();
+    }
 
     if (type) {
       eventualEngine.get()?.canvas?.addClass(CANVAS_MARKUP_CREATING_CLASSNAME);
@@ -60,7 +62,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     }
   };
 
-  const finishCreating = () => setCreatingModeType(null);
+  const finishCreating = (keepOpen?: boolean) => setCreatingModeType(null, keepOpen);
 
   // TODO: we should probably move these to the markup engine / manager
   const onAddImage = () => {

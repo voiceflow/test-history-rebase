@@ -89,26 +89,20 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     openMode,
   ]);
 
-  const toggleMarkup = React.useCallback(() => (markupTool?.isOpen ? markupTool.closeTool() : onOpenMarkup()), [
-    onOpenMarkup,
-    markupTool?.closeTool,
-    markupTool?.isOpen,
-  ]);
+  const toggleMarkup = React.useCallback(() => {
+    if (markupTool?.isOpen) {
+      markupTool.closeTool();
+    } else {
+      onOpenMarkup();
+    }
+  }, [onOpenMarkup, markupTool?.closeTool, markupTool?.isOpen]);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
   useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
-  useHotKeys(Hotkey.OPEN_MARKUP, onOpenMarkup, { preventDefault: true });
-  useHotKeys(
-    Hotkey.OPEN_COMMENTING,
-    () => {
-      if (allowCommenting) {
-        openMode(commenting.open);
-      }
-    },
-    { preventDefault: true }
-  );
+  useHotKeys(Hotkey.OPEN_MARKUP, toggleMarkup, { preventDefault: true }, [toggleMarkup]);
+  useHotKeys(Hotkey.OPEN_COMMENTING, toggleCommenting, { preventDefault: true }, [toggleCommenting]);
   useHotKeys(
     Hotkey.CLOSE_CANVAS_MODE,
     () => {

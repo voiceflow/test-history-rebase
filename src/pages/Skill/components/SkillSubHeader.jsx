@@ -30,14 +30,8 @@ const SkillSubHeader = ({ showPublish, activePage, goToDesign, goToPrototype, go
   const { close: closeCommentingMode } = React.useContext(CommentModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
-  const closeMarkupTool = React.useCallback(() => {
-    if (markupTool?.isOpen) {
-      markupTool?.closeTool();
-    }
-  }, [markupTool?.isOpen, markupTool?.closeTool]);
-
   const disableAllModes = () => {
-    closeMarkupTool();
+    markupTool?.closeTool();
     closeCommentingMode();
   };
 

@@ -59,7 +59,18 @@ class MarkupEngine extends EngineConsumer {
 
     const nodeID = cuid();
 
-    this.engine.node.add(BlockType.MARKUP_TEXT, this.engine.getCanvasMousePosition(), nodeData as NodeData<Markup.NodeData.Text>, nodeID);
+    await this.engine.node.add(BlockType.MARKUP_TEXT, this.engine.getCanvasMousePosition(), nodeData as NodeData<Markup.NodeData.Text>, nodeID);
+
+    let editorState = this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<() => EditorState>('getEditorState')();
+
+    editorState = EditorState.forceSelection(
+      EditorState.push(editorState, editorState.getCurrentContent(), 'apply-entity'),
+      editorState.getSelection()
+    );
+
+    this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState')(editorState);
+
+    this.engine.transformation.reset();
   }
 
   async createShapeNode() {

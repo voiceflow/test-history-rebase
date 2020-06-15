@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import _noop from 'lodash/noop';
 import React from 'react';
 
@@ -74,7 +75,7 @@ const MarkupNode = () => {
 
       <DraggingNode
         draggable
-        className={ClassName.CANVAS_NODE}
+        className={cn(ClassName.CANVAS_NODE, `${ClassName.CANVAS_NODE}--${nodeEntity.nodeType}`)}
         position={instance.getPosition()}
         isTransform={!isPresentationMode}
         onMouseDown={onMouseDown}

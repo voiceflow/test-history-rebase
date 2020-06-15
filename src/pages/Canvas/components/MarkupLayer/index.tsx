@@ -17,8 +17,9 @@ const MarkupLayer: React.FC<ConnectedMarkupLayerProps> = ({ markupNodeIDs }) => 
           <MarkupNode />
         </NodeEntityProvider>
       ))}
+
+      <NewMarkupShape />
     </Container>
-    <NewMarkupShape />
   </>
 );
 

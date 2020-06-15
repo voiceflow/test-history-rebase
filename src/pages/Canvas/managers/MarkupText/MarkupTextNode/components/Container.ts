@@ -12,6 +12,7 @@ export const Container = styled.div.attrs<ContainerProps>(({ scale }) => ({
   },
 }))<ContainerProps>`
   ${transition('border-color')}
+
   min-width: 160px;
   min-height: 30px;
 
@@ -31,7 +32,7 @@ export const Container = styled.div.attrs<ContainerProps>(({ scale }) => ({
   }
 
   .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
-    border: solid 1px transparent;
+    border: solid 1px transparent !important;
 
     pointer-events: auto;
   }

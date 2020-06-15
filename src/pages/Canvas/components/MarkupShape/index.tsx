@@ -3,6 +3,7 @@ import React from 'react';
 import { MarkupShapeType } from '@/constants';
 import { Markup } from '@/models';
 import { DEFAULT_MARKUP_BACKGROUND_COLOR, DEFAULT_MARKUP_BORDER_COLOR } from '@/pages/Canvas/constants';
+import { PresentationModeContext } from '@/pages/Canvas/contexts';
 import { rgbaToHex } from '@/utils/colors';
 
 import { Line, RectanglePath, SvgContainer } from './components';
@@ -21,9 +22,17 @@ export type MarkupShapeProps<T> = {
 };
 
 const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapeProps<T>) => {
+  const isPresentationMode = React.useContext(PresentationModeContext);
   let path;
 
+  let containerSize = {};
+
   if (isRectangleOrCircle(data)) {
+    containerSize = {
+      width: data.width,
+      height: data.height,
+    };
+
     path = (
       <RectanglePath
         ref={pathRef as React.RefObject<any>}
@@ -36,6 +45,11 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
       />
     );
   } else if (isLineOrArrow(data)) {
+    containerSize = {
+      width: data.offsetX,
+      height: data.offsetY,
+    };
+
     path = (
       <Line
         id={id}
@@ -49,7 +63,11 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
 
   if (!path) return null;
 
-  return <SvgContainer shapeRendering="geometricPrecision">{path}</SvgContainer>;
+  return (
+    <SvgContainer {...(!isPresentationMode ? {} : containerSize)} shapeRendering="geometricPrecision" isPresentationMode={isPresentationMode}>
+      {path}
+    </SvgContainer>
+  );
 };
 
 export default React.memo(MarkupShape);

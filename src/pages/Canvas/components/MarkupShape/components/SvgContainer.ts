@@ -1,8 +1,12 @@
 import { styled } from '@/hocs';
 
-const SvgContainer = styled.svg`
+export type SvgContainerProps = {
+  isPresentationMode?: boolean;
+};
+
+const SvgContainer = styled.svg<SvgContainerProps>`
   overflow: visible;
-  position: absolute;
+  position: ${({ isPresentationMode }) => (isPresentationMode ? 'relative' : 'absolute')};
 `;
 
 export default SvgContainer;

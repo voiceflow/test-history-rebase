@@ -1,21 +1,25 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { Markup } from '@/models';
+import { Markup, NodeData } from '@/models';
 import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
+
+type ResizableMarkupNodeData = Markup.NodeData.Image | Markup.NodeData.Rectangle | Markup.NodeData.Circle;
+
+const isResizableShape = (data: NodeData<any>): data is NodeData<ResizableMarkupNodeData> =>
+  [BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE].includes(data.type);
 
 export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance<T> & {
   transformRef: React.RefObject<T>;
 };
 
 export const useMarkupInstance = <T extends HTMLElement>() => {
-  const snapshot = React.useRef<DOMRect | null>(null);
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { width, height } = nodeEntity.useState((e) => {
-    const data: Markup.RectangleShapeNodeData = e.resolve().data as any;
+    const { data } = e.resolve<Markup.NodeData.Rectangle>();
 
     return {
       width: data.width,
@@ -61,39 +65,22 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
       ...nodeInstance,
       transformRef,
       getTransformRect,
-      snapshot: () => {
-        snapshot.current = getTransformRect()!;
-      },
       applyTransformations: () => {
-        const nodeType = nodeEntity.nodeType;
-
         const data = engine.getDataByNodeID<any>(nodeEntity.nodeID);
         const [scaleX, scaleY] = scale.current!;
         const angle = rotation.current;
 
-        snapshot.current = null;
         scale.current = [1, 1];
         rotation.current = 0;
 
-        switch (nodeType) {
-          case BlockType.MARKUP_IMAGE:
-            engine.node.updateData<Markup.ImageNodeData>(nodeEntity.nodeID, {
-              width: (data as Markup.ImageNodeData).width * scaleX,
-              height: (data as Markup.ImageNodeData).height * scaleY,
-              rotate: ((data as Markup.ImageNodeData).rotate + angle) % (2 * Math.PI),
-            });
-            break;
-          case BlockType.MARKUP_SHAPE:
-            engine.node.updateData<Markup.RectangleShapeNodeData>(nodeEntity.nodeID, {
-              width: (data as Markup.RectangleShapeNodeData).width * scaleX,
-              height: (data as Markup.RectangleShapeNodeData).height * scaleY,
-              rotate: ((data as Markup.ImageNodeData).rotate + angle) % (2 * Math.PI),
-            });
-            break;
-          case BlockType.MARKUP_TEXT:
-            engine.node.updateData<Markup.TextNodeData>(nodeEntity.nodeID, { scale: scaleX });
-            break;
-          default:
+        if (isResizableShape(data)) {
+          engine.node.updateData<ResizableMarkupNodeData>(nodeEntity.nodeID, {
+            width: data.width * scaleX,
+            height: data.height * scaleY,
+            rotate: (data.rotate + angle) % (2 * Math.PI),
+          });
+        } else if (data.type === BlockType.MARKUP_TEXT) {
+          engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, { scale: scaleX });
         }
       },
       rotate: (angle) => {

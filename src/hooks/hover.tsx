@@ -11,10 +11,12 @@ export const useHover = (
   {
     onStart,
     onEnd,
+    onMove,
     cleanupOnOverride = true,
   }: {
     onStart?: () => boolean | void;
     onEnd?: () => boolean | void;
+    onMove?: () => boolean | void;
     cleanupOnOverride?: boolean;
   },
   dependencies: any[] = []
@@ -42,6 +44,11 @@ export const useHover = (
       onHoverEnd.current = null;
     }
   }, [parentHover?.clearOverride]);
+  const onMouseMove = React.useCallback(() => {
+    if (onMove && !onMove()) {
+      onMouseLeave();
+    }
+  }, [onMove, onMouseLeave]);
   const setOverride = React.useCallback(() => {
     enableOverride();
 
@@ -62,7 +69,11 @@ export const useHover = (
   const value = React.useMemo(() => ({ isHovered, setOverride, clearOverride }), [isHovered, setOverride, clearOverride]);
   const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={value}>{el}</HoverProvider>, [value]);
 
-  const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave }), [onMouseEnter, onMouseLeave]);
+  const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave, onMouseMove: onMove ? onMouseMove : undefined }), [
+    onMouseEnter,
+    onMouseLeave,
+    onMouseMove,
+  ]);
 
   return [!isOverridden && isHovered, wrapElement, hoverHandlers, setHovering];
 };

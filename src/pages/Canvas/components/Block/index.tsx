@@ -26,13 +26,26 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   isDisabled?: boolean;
   showMergeOverlay?: boolean;
   updateName?: (name: string) => void;
+  onMouseMove?: (event: React.MouseEvent) => void;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
   className?: string;
 };
 
 const Block: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<BlockProps>> = (
-  { variant = BlockVariant.STANDARD, sections = [], lockOwner, children, blockColor, onMouseEnter, onMouseLeave, isDisabled, className, ...props },
+  {
+    variant = BlockVariant.STANDARD,
+    sections = [],
+    lockOwner,
+    children,
+    blockColor,
+    onMouseEnter,
+    onMouseLeave,
+    onMouseMove,
+    isDisabled,
+    className,
+    ...props
+  },
   ref
 ) => {
   const blockAPI = useBlockAPI();
@@ -43,6 +56,7 @@ const Block: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<Bloc
     <Container
       className={cn(ClassName.CANVAS_BLOCK, className)}
       variant={variant}
+      onMouseMove={onMouseMove}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       ref={blockAPI.ref}

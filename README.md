@@ -244,7 +244,8 @@ yarn start --ff_someFeature
 - `ff_canvasExport` / `VF_APP_CANVAS_EXPORT`: enable canvas export feature
 - `ff_markup` / `VF_APP_FF_MARKUP`: enable canvas markup feature
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
-- `ff_repromptEditor` /  `VF_APP_FF_REPROMPT_EDITOR`: enable reprompt editor
+- `ff_repromptEditor` / `VF_APP_FF_REPROMPT_EDITOR`: enable reprompt editor
+- `ff_commenting` / `VF_APP_FF_COMMENTING`: commenting
 
 ## Previewing in an ephmeral environment
 

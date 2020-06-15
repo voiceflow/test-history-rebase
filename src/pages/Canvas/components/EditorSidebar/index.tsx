@@ -24,7 +24,7 @@ import { compose } from '@/utils/functional';
 import EditorModal from './components/EditorModal';
 import { SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
-import { NodeDataUpdater, useEditorPath, useUpdateData } from './hooks';
+import { useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
@@ -44,7 +44,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
   const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
-  const updateData: NodeDataUpdater<any> = useUpdateData(node?.id);
+  const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
   const isMarkup = !!node && MARKUP_NODES.includes(node?.type);

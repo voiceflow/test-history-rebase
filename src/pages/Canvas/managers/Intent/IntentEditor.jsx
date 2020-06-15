@@ -10,8 +10,6 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
-import CanFulfillForm from './components/canfulfill';
-
 const DEFAULT_INTENT = {
   id: '',
   inputs: [],
@@ -51,7 +49,6 @@ function IntentEditor({ intent, data, platform, onChange, pushToPath }) {
         <IntentForm intent={intent} pushToPath={pushToPath} />
       </NamespaceProvider>
       <LegacyMappings intent={intent} mappings={data[platform].mappings} onDelete={() => updatePlatform({ mappings: [] })} />
-      <CanFulfillForm intentID={intent?.id} />
     </Content>
   );
 }

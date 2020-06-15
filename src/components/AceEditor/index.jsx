@@ -1,13 +1,17 @@
 /* eslint-disable simple-import-sort/sort */
 import AceEditor from 'react-ace';
-import { styled, css } from '@/hocs';
 
 import 'brace/ext/language_tools';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import 'brace/mode/json_custom';
 import 'brace/theme/chrome';
+
+import './modes/slot';
+import './modes/utterance';
 /* eslint-enable simple-import-sort/sort */
+
+import { styled, css } from '@/hocs';
 
 export const ACE_EDITOR_OPTIONS = {
   enableBasicAutocompletion: true,
@@ -54,6 +58,14 @@ export default styled(AceEditor).attrs({
     background: #fdfdfd !important;
     color: #8da2b5 !important;
     border-right: 1px solid #eaeff4;
+  }
+
+  .ace_utterance {
+    color: #5d9df5;
+  }
+
+  .ace_slot {
+    font-weight: 600;
   }
 
   ${({ variant }) => {

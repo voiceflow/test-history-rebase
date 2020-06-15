@@ -42,14 +42,8 @@ module.exports = merge(commonConfig, {
               'utils/number.js',
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
-              'pages/Canvas/editors/MarkupEditor/**/*',
-              'pages/Canvas/menus/MarkupMenu/**/*',
               '**/types.ts',
               'models/**/*',
-
-              // TODO: remove when markup is deployed
-              'components/Slider/**/*',
-              'pages/Canvas/managers/MarkupShape/MarkupShapeNode/components.ts',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',

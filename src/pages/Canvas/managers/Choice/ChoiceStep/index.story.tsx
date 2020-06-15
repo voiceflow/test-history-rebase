@@ -27,7 +27,7 @@ const getProps = () => ({
 
 const render = (props?: Partial<ChoiceStepProps>) => () => (
   <Block name="Choice Block">
-    <ChoiceStep {...getProps()} {...props} />
+    <ChoiceStep {...getProps()} {...props} isPath />
   </Block>
 );
 

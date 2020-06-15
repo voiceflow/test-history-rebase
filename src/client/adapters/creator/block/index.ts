@@ -21,6 +21,7 @@ import integrationBlockAdapter from './integration';
 import intentBlockAdapter from './intent';
 import interactionBlockAdapter from './interaction';
 import markupImageBlockAdapter from './markupImage';
+import markupShapeBlockAdapter from './markupShape';
 import markupTextBlockAdapter from './markupText';
 import paymentBlockAdapter from './payment';
 import permissionBlockAdapter from './permission';
@@ -86,6 +87,7 @@ const blockAdapter = {
   [BlockType.USER_INFO]: userInfoBlockAdapter,
   [BlockType.MARKUP_TEXT]: markupTextBlockAdapter,
   [BlockType.MARKUP_IMAGE]: markupImageBlockAdapter,
+  [BlockType.MARKUP_SHAPE]: markupShapeBlockAdapter,
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
   [BlockType.DIRECTIVE]: directiveBlockAdapter,
   [BlockType.EVENT]: eventBlockAdapter,

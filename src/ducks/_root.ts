@@ -1,6 +1,6 @@
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
-import { combineReducers } from 'redux';
+import { AnyAction, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
@@ -26,18 +26,18 @@ import slot, * as Slot from '@/ducks/slot';
 import template, * as Template from '@/ducks/template';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
-import userSetting, * as UsertSetting from '@/ducks/user';
+import userSetting, * as UserSetting from '@/ducks/user';
 import variableSet, * as VariableSet from '@/ducks/variableSet';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
 
-const createReducer = (history: History) =>
+const getCombinedReducer = (history: History) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(history),
     form: formReducer,
     list,
     publish,
-    [UsertSetting.STATE_KEY]: userSetting,
+    [UserSetting.STATE_KEY]: userSetting,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
     [Account.STATE_KEY]: account,
@@ -63,6 +63,24 @@ const createReducer = (history: History) =>
     [Feature.STATE_KEY]: feature,
   });
 
+const createReducer = (history: History) => {
+  const rootReducer = getCombinedReducer(history);
+
+  return (state: State | undefined, action: AnyAction) => {
+    let nextState: Partial<State | undefined> = state;
+
+    if (action.type === Account.AccountAction.RESET_ACCOUNT) {
+      nextState = {
+        viewport: nextState?.viewport,
+        ui: nextState?.ui,
+        recent: nextState?.recent,
+      };
+    }
+
+    return rootReducer(nextState as State | undefined, action);
+  };
+};
+
 export default createReducer;
 
-export type State = ReturnType<ReturnType<typeof createReducer>>;
+export type State = ReturnType<ReturnType<typeof getCombinedReducer>>;

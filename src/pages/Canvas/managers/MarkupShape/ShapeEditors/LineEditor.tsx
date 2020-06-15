@@ -5,8 +5,8 @@ import { Markup } from '@/models';
 import { EditorProps } from '../types';
 import { ColorSection } from './components';
 
-const LineEditor: React.FC<EditorProps<Markup.LineShapeNodeData>> = ({ onChange, data }) => (
-  <ColorSection title="Style" isLast color={data.color} onChange={(color) => onChange({ ...data, color: color! })} removable={false} />
+const LineEditor: React.FC<EditorProps<Markup.NodeData.Line>> = ({ onChange, data }) => (
+  <ColorSection title="Style" isLast color={data.strokeColor} onChange={(color) => onChange({ ...data, strokeColor: color! })} removable={false} />
 );
 
 export default LineEditor;

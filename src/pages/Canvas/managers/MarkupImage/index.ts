@@ -5,7 +5,7 @@ import { Markup } from '@/models';
 import { BasicNodeConfig } from '../types';
 import MarkupImageNode from './MarkupImageNode';
 
-const MarkupImage: BasicNodeConfig<Markup.ImageNodeData> = {
+const MarkupImage: BasicNodeConfig<Markup.NodeData.Image> = {
   type: BlockType.MARKUP_IMAGE,
 
   markupNode: MarkupImageNode,
@@ -14,7 +14,7 @@ const MarkupImage: BasicNodeConfig<Markup.ImageNodeData> = {
     node: {
       ports: {},
     },
-    data: data as Creator.DataDescriptor<Markup.ImageNodeData>,
+    data: data as Creator.DataDescriptor<Markup.NodeData.Image>,
   }),
 };
 

@@ -3,8 +3,10 @@ import { BlockVariant } from '@/constants/canvas';
 import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
+  CANVAS_COMMENTING_ENABLED,
   CANVAS_CREATING_LINK_CLASSNAME,
-  CANVAS_MARKUP_ENABLED,
+  CANVAS_MARKUP_ENABLED_CLASSNAME,
+  CANVAS_SELECTING_GROUP_CLASSNAME,
   NODE_ACTIVE_CLASSNAME,
   NODE_DISABLED_CLASSNAME,
   NODE_FOCUSED_CLASSNAME,
@@ -13,7 +15,7 @@ import {
   NODE_MERGE_TARGET_CLASSNAME,
   NODE_SELECTED_CLASSNAME,
 } from '@/pages/Canvas/constants';
-import { ClassName } from '@/styles/constants';
+import { ClassName, Identifier } from '@/styles/constants';
 
 import { BLOCK_CONTAINER_PADDING } from '../constants';
 
@@ -38,6 +40,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
   opacity: 1;
   border-color: none;
 
+  .${CANVAS_COMMENTING_ENABLED} & {
+   cursor: crosshair;
+  }
+
   ::before {
     display: block;
     border-radius: 8px;
@@ -57,7 +63,9 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   ${transition('opacity')}
 
-  .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
+  #${Identifier.CANVAS}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${
+  ClassName.CANVAS_NODE
+}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
     border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
@@ -65,6 +73,10 @@ const BlockContainer = styled.div<BlockContainerProps>`
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_HOVERED_CLASSNAME} & {
     cursor: copy;
+  }
+
+  #${Identifier.CANVAS}.${CANVAS_SELECTING_GROUP_CLASSNAME} & {
+    cursor: inherit;
   }
 
   .${NODE_FOCUSED_CLASSNAME} &::before {
@@ -96,7 +108,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     }
   }
 
-  .${CANVAS_MARKUP_ENABLED} & {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME} & {
     pointer-events: none !important
   }
 

@@ -1,4 +1,4 @@
-import Cookies, { CookieGetOptions } from 'universal-cookie';
+import Cookies, { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
 
 import { CREATOR_URL, LEGACY_URL, ROOT_DOMAIN } from '@/config';
 
@@ -11,17 +11,21 @@ const cookies = new Cookies();
 
 export const getByName = <R extends any = string>(name: string, options?: CookieGetOptions): R => cookies.get(name, options);
 
-export const removeAuthCookie = () => cookies.remove(AUTH_COOKIE, COOKIE_OPTIONS);
+export const getAll = () => cookies.getAll();
+
+export const remove = (key: string, options?: CookieSetOptions) => cookies.remove(key, options);
+
+export const removeAuthCookie = () => remove(AUTH_COOKIE, COOKIE_OPTIONS);
 
 export const setAuthCookie = (token: string) => cookies.set(AUTH_COOKIE, token, COOKIE_OPTIONS);
 
 export const getAuthCookie = () => {
   switch (window.location.host) {
     case CREATOR_URL:
-      cookies.remove(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
+      remove(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
       break;
     case LEGACY_URL:
-      cookies.remove(AUTH_COOKIE, COOKIE_OPTIONS);
+      remove(AUTH_COOKIE, COOKIE_OPTIONS);
       break;
     // no default
   }
@@ -30,7 +34,7 @@ export const getAuthCookie = () => {
 };
 
 // TODO: is this still needed?
-export const removeLastSessionCookie = () => cookies.remove('last_session');
+export const removeLastSessionCookie = () => remove('last_session');
 
 export function getMaintenanceCookie() {
   return getByName<string | undefined>(MAINTENANCE_COOKIE);

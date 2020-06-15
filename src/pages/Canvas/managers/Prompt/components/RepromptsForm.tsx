@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { NodeData } from '@/models';
-import { NodeDataUpdater } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
 import { PlatformContext } from '@/pages/Canvas/contexts';
+import { NodeDataUpdater } from '@/pages/Canvas/types';
+
+const MAX_REPROMPTS = 3;
 
 export type RepromptsFormProps = {
   data: NodeData.Prompt;
   onChange: NodeDataUpdater<NodeData.Prompt>;
 };
-
-const MAX_REPROMPTS = 3;
 
 const RepromptsForm: React.FC<RepromptsFormProps> = ({ data, onChange }) => {
   const {

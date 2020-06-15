@@ -5,9 +5,10 @@ import { RgbaColor } from 'polished/lib/types/color';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
+import ColorSelect from '@/components/ColorSelect';
+import SliderInputGroup from '@/components/SliderInputGroup';
 import { useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
-import { ColorSelect, SliderInputGroup } from '@/pages/Canvas/components/MarkupComponents';
 
 import { InlineStylePrefix } from '../constants';
 import { getInlineStylePrefixAndValue, togglePrefixedInlineStyle } from '../utils';

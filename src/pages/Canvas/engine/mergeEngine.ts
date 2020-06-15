@@ -4,26 +4,16 @@ import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
 import { withoutValue } from '@/utils/array';
-import { isInRange } from '@/utils/number';
 
-import { EngineConsumer } from './utils';
-
-type MergeCandidate = {
-  nodeID: string;
-  containsPoint: (point: [number, number]) => boolean;
-};
+import { EngineConsumer, NodeCandidate, createBoundaryTest, getCandidates } from './utils';
 
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
-
-const createBoundaryTest = ({ left, right, top, bottom }: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>) => ([x, y]: Point) =>
-  isInRange(x, left, right) && isInRange(y, top, bottom);
 
 class MergeEngine extends EngineConsumer {
   log = this.engine.log.child('merge');
 
-  candidates: MergeCandidate[] = [];
+  candidates: NodeCandidate[] = [];
 
   virtualSource: { type: BlockType; factoryData: Partial<NodeData<unknown>> } | null = null;
 
@@ -101,31 +91,7 @@ class MergeEngine extends EngineConsumer {
 
     this.addStyle();
     this.sourceNodeID = sourceNodeID;
-    this.candidates = withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)
-      .reverse()
-      .reduce<{ nodeID: string; top: number; left: number; bottom: number; right: number }[]>((acc, nodeID) => {
-        if (nodeID === sourceNodeID) return acc;
-
-        const rect = this.engine.node.getRect(nodeID);
-
-        if (!rect) return acc;
-
-        const { left, right, top, bottom } = rect;
-
-        acc.push({
-          nodeID,
-          left,
-          right,
-          top,
-          bottom,
-        });
-
-        return acc;
-      }, [])
-      .map(({ nodeID, left, right, top, bottom }) => ({
-        nodeID,
-        containsPoint: createBoundaryTest({ left, right, top, bottom }),
-      }));
+    this.candidates = getCandidates(withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
 
     this.log.debug('discoverd merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));

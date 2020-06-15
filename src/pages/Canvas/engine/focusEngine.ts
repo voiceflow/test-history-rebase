@@ -53,7 +53,7 @@ class FocusEngine extends EngineConsumer {
     this.engine.transformation.reset();
     this.engine.node.redrawLinks(target);
 
-    this.log.debug(this.log.reset('reset focus'), this.log.slug(target));
+    this.log.info(this.log.reset('reset focus'), this.log.slug(target));
   }
 }
 

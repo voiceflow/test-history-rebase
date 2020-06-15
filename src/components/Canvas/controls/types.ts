@@ -28,12 +28,17 @@ export type EndAction = {
 
 export type ClickAction = {
   type: ControlType.CLICK;
+  event: React.MouseEvent;
+};
+
+export type MouseUpAction = {
+  type: ControlType.MOUSE_UP;
   event: MouseEvent;
 };
 
-export type ShiftMousedownAction = {
-  type: ControlType.SHIFT_MOUSEDOWN;
-  event: React.MouseEvent;
+export type ShiftDragStartAction = {
+  type: ControlType.SHIFT_DRAG_START;
+  event: React.DragEvent;
 };
 
 export type PanAction = {
@@ -42,4 +47,4 @@ export type PanAction = {
   deltaY: number;
 };
 
-export type ControlAction = ZoomAction | EndAction | PanAction | ClickAction | ShiftMousedownAction;
+export type ControlAction = ZoomAction | EndAction | PanAction | ClickAction | MouseUpAction | ShiftDragStartAction;

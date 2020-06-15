@@ -1,6 +1,6 @@
 import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
 import { styled, transition } from '@/hocs';
-import { NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type ContainerProps = {
   scale: number;
@@ -26,7 +26,7 @@ export const Container = styled.div.attrs<ContainerProps>(({ scale }) => ({
     pointer-events: none;
   }
 
-  &:hover ${DraftJSEditorContainer} {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:hover ${DraftJSEditorContainer} {
     border: solid 1px #5d9df5;
   }
 

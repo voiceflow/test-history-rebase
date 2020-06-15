@@ -8,21 +8,20 @@ import { withContext } from '@/hocs/withContext';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
 import type { Engine } from '@/pages/Canvas/engine';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
-import { GroupSelectionProvider } from './GroupSelectionContext';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './EngineContext';
 export * from './EntityContexts';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
-export * from './GroupSelectionContext';
 export * from './SpotlightContext';
 export * from './PresentationModeContext';
+export * from '@/pages/Skill/contexts/CommentingContext';
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;
@@ -33,11 +32,11 @@ export type ManagerValue = {
   nodeID: string;
   step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
   label?: string;
-  markupNode?: React.FC<ConnectedMarkupNodeProps & { ref: React.Ref<HTMLElement> }>;
+  markupNode?: React.FC<ConnectedMarkupNodeProps>;
   mergeInitializer?: boolean;
   mergeTerminator?: boolean;
-  editorsByPath: Record<string, NodeEditorPropsType<any>>;
-  editor: NodeEditorPropsType<any>;
+  editorsByPath: Record<string, NodeEditor<any>>;
+  editor: NodeEditor<any>;
 };
 
 export type ManagerGetter = (type: BlockType) => ManagerValue;
@@ -57,11 +56,9 @@ export const CanvasProviders = connect({
     <EngineProvider value={engine}>
       <RegisterEngine engine={engine} />
       <ContextMenuProvider>
-        <GroupSelectionProvider>
-          <ClipboardProvider>
-            <SpotlightProvider>{children}</SpotlightProvider>
-          </ClipboardProvider>
-        </GroupSelectionProvider>
+        <ClipboardProvider>
+          <SpotlightProvider>{children}</SpotlightProvider>
+        </ClipboardProvider>
       </ContextMenuProvider>
     </EngineProvider>
   </PlatformProvider>

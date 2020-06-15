@@ -1,3 +1,7 @@
+import { Identifier } from '@/styles/constants';
+
+export const CANVAS_BUSY_CLASSNAME = `${Identifier.CANVAS}--busy`;
+
 export const ZOOM_FACTOR = 100;
 export const MIN_ZOOM = 10;
 export const MAX_ZOOM = 200;
@@ -18,5 +22,6 @@ export enum ControlType {
   PAN = 'PAN',
   CLICK = 'CLICK',
   END = 'END',
-  SHIFT_MOUSEDOWN = 'SHIFT_MOUSEDOWN',
+  MOUSE_UP = 'MOUSE_UP',
+  SHIFT_DRAG_START = 'SHIFT_DRAG_START',
 }

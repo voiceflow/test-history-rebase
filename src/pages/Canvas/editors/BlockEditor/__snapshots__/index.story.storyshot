@@ -213,6 +213,10 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
+.c46:hover:not(.c10:active) {
+  color: rgba(110,132,154,1);
+}
+
 .c8 {
   outline: none !important;
   background-color: inherit;
@@ -221,11 +225,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   border-radius: 0;
 }
 
-.c46 .c12 {
+.c47 .c12 {
   color: #fff;
 }
 
-.c47 .c12 {
+.c48 .c12 {
   color: #6e849a;
 }
 
@@ -305,15 +309,15 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   margin-right: 16px;
 }
 
-.c48 .c22 {
+.c49 .c22 {
   font-weight: 600;
 }
 
-.c49 .c22 {
+.c50 .c22 {
   font-weight: normal;
 }
 
-.c50 .c22 {
+.c51 .c22 {
   font-weight: 600;
 }
 
@@ -648,16 +652,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   color: rgba(110,132,154,0.85);
 }
 
-.c51 .c10:not(:active) {
+.c52 .c10:not(:active) {
   box-shadow: none;
 }
 
-.c51 > div:not(:last-of-type) .c10 {
+.c52 > div:not(:last-of-type) .c10 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c51 > div:not(:first-of-type) .c10 {
+.c52 > div:not(:first-of-type) .c10 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;

@@ -1,13 +1,13 @@
 import { preventDefault } from '@/utils/dom';
 import MouseMovement from '@/utils/mouseMovement';
 
-import { ControlType, MAX_CLICK_TRAVEL } from '../constants';
+import { ControlType } from '../constants';
 import { BaseControls, getScrollDelta } from './utils';
 
 class MouseControls extends BaseControls {
   isPanning = false;
 
-  panDistance = 0;
+  isDragging = false;
 
   scrollComplete = null;
 
@@ -23,45 +23,59 @@ class MouseControls extends BaseControls {
     this.mouseMovement.track(event);
 
     const [deltaX, deltaY] = this.mouseMovement.getBoundedMovement();
-    const [movementX, movementY] = this.mouseMovement.getMovement();
 
     this.handle({ type: ControlType.PAN, deltaX, deltaY });
-
-    this.isPanning = true;
-    this.panDistance += Math.max(Math.abs(movementX), Math.abs(movementY));
   };
 
-  mouseup = (event: MouseEvent) => {
-    this.mouseMovement.clear();
+  dragstart = (event: React.DragEvent) => {
+    if (event.defaultPrevented) return;
 
-    if (this.isPanning) {
-      this.isPanning = false;
+    if (event.shiftKey) {
+      this.isDragging = true;
 
-      if (this.panDistance < MAX_CLICK_TRAVEL) {
-        this.handle({ type: ControlType.CLICK, event });
-      } else {
-        this.handle({ type: ControlType.END });
-      }
-
-      this.panDistance = 0;
+      this.handle({ type: ControlType.SHIFT_DRAG_START, event });
     } else {
-      this.handle({ type: ControlType.CLICK, event });
-    }
+      this.isPanning = true;
 
-    document.removeEventListener('mouseup', this.mouseup);
-    document.removeEventListener('mousemove', this.mousemove);
+      document.addEventListener('mousemove', this.mousemove);
+    }
   };
 
   mousedown = (event: React.MouseEvent) => {
+    if (event.defaultPrevented) return;
+
+    document.addEventListener('mouseup', this.mouseup, { once: true });
+  };
+
+  mouseup = (event: MouseEvent) => {
+    if (event.defaultPrevented) return;
+
+    this.mouseMovement.clear();
+
+    this.handle({ type: ControlType.MOUSE_UP, event });
+
+    document.removeEventListener('mousemove', this.mousemove);
+  };
+
+  click = (event: React.MouseEvent) => {
+    if (this.isPanning) {
+      this.isPanning = false;
+
+      this.handle({ type: ControlType.END });
+    } else if (this.isDragging) {
+      this.isDragging = false;
+
+      this.handle({ type: ControlType.END });
+
+      return;
+    }
+
+    if (event.defaultPrevented) return;
+
     if (event.button !== 2) {
       event.stopPropagation();
 
-      if (event.shiftKey) {
-        this.handle({ type: ControlType.SHIFT_MOUSEDOWN, event });
-      } else {
-        document.addEventListener('mousemove', this.mousemove);
-        document.addEventListener('mouseup', this.mouseup);
-      }
+      this.handle({ type: ControlType.CLICK, event });
     }
   };
 }

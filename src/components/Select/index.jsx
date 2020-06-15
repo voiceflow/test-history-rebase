@@ -70,9 +70,9 @@ export default function Select({
   const [inputWrapperRef, setInputWrapperRef] = React.useState(null);
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
 
-  const menuSearchable = !!label && searchable;
+  const isDropdown = !!label;
   const labelSearchable = !label && searchable;
-  const isDropDownOpened = !!label && opened;
+  const isDropDownOpened = isDropdown && opened;
 
   cachedRef.current = {
     ...cachedRef.current,
@@ -92,7 +92,7 @@ export default function Select({
     optionsMaxSize,
     getOptionValue,
     inputWrapperRef,
-    firstOptionIndex: menuSearchable || creatable ? 1 : 0,
+    firstOptionIndex: (isDropdown && searchable) || creatable ? 1 : 0,
     multiLevelDropdown,
     showNotMatchedOptions,
   };
@@ -313,11 +313,12 @@ export default function Select({
           autoWidth={autoWidth}
           creatable={creatable}
           placement={placement}
+          searchable={searchable}
+          isDropdown={isDropdown}
           formatValue={formatValue}
           searchLabel={searchLabel}
-          onFocusOption={onFocusOption}
-          menuSearchable={menuSearchable}
           getOptionKey={getOptionKey}
+          onFocusOption={onFocusOption}
           getOptionValue={getOptionValue}
           getOptionLabel={getOptionLabel}
           inputWrapperRef={inputWrapperRef}

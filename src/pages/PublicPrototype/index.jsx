@@ -69,9 +69,6 @@ class PublicPrototype extends React.Component {
     const { skill, intents, slots, testVariableValues } = await client.prototype.getInfo(this.props.match.params.versionID);
 
     skill.globalVariables = [...new Set(['sessions', 'user_id', 'timestamp', 'platform', 'locale', ...skill.globalVariables])];
-    if (!skill.fulfillment) {
-      skill.fulfillment = {};
-    }
     skill.platform = skill.platform === 'google' ? 'google' : 'alexa';
 
     setActiveSkill(skill);

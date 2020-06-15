@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ShapeType } from '@/constants';
+import { MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
@@ -8,30 +8,26 @@ import { Content } from '@/pages/Canvas/components/Editor';
 import { ArrowEditor, CircleEditor, LineEditor, RectangleEditor } from './ShapeEditors';
 import { EditorProps } from './types';
 
-type MarkupShapeEditorProps =
-  | EditorProps<Markup.CircleShapeNodeData>
-  | EditorProps<Markup.RectangleShapeNodeData>
-  | EditorProps<Markup.ArrowShapeNodeData>
-  | EditorProps<Markup.LineShapeNodeData>;
+type MarkupShapeEditorProps = EditorProps<Markup.NodeData.Circle | Markup.NodeData.Rectangle | Markup.NodeData.Arrow | Markup.NodeData.Line>;
 
 export const MarkupShapeEditor: React.FC<MarkupShapeEditorProps> = (props) => {
   let editor;
 
   switch (props.data.shapeType) {
-    case ShapeType.CIRCLE: {
-      editor = <CircleEditor {...(props as EditorProps<Markup.CircleShapeNodeData>)} />;
+    case MarkupShapeType.CIRCLE: {
+      editor = <CircleEditor {...(props as EditorProps<Markup.NodeData.Circle>)} />;
       break;
     }
-    case ShapeType.RECTANGLE: {
-      editor = <RectangleEditor {...(props as EditorProps<Markup.RectangleShapeNodeData>)} />;
+    case MarkupShapeType.RECTANGLE: {
+      editor = <RectangleEditor {...(props as EditorProps<Markup.NodeData.Rectangle>)} />;
       break;
     }
-    case ShapeType.ARROW: {
-      editor = <ArrowEditor {...(props as EditorProps<Markup.ArrowShapeNodeData>)} />;
+    case MarkupShapeType.ARROW: {
+      editor = <ArrowEditor {...(props as EditorProps<Markup.NodeData.Arrow>)} />;
       break;
     }
     default: {
-      editor = <LineEditor {...(props as EditorProps<Markup.LineShapeNodeData>)} />;
+      editor = <LineEditor {...(props as EditorProps<Markup.NodeData.Line>)} />;
       break;
     }
   }

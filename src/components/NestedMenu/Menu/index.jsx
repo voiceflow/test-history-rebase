@@ -40,13 +40,14 @@ function BaseNestedMenu({
   creatable,
   autoWidth,
   placement,
+  searchable,
+  isDropdown,
   optionsPath = DEFAULT_PATH,
   searchLabel,
   formatValue,
   getOptionKey,
   onFocusOption,
   getOptionValue,
-  menuSearchable,
   getOptionLabel,
   inputWrapperRef,
   isButtonDisabled = _constant(false),
@@ -135,6 +136,8 @@ function BaseNestedMenu({
     onCreate,
     onSelect,
     creatable,
+    searchable,
+    searchLabel,
     onFocusItem,
     focusedIndex: focusedOptionIndex,
     newOptionLabel,
@@ -157,8 +160,11 @@ function BaseNestedMenu({
         onCreate,
         onSelect,
         creatable,
+        searchable,
+        searchLabel,
         onFocusItem,
         focusedIndex,
+        newOptionLabel,
         inputWrapperRef,
         childFocusIndex,
         firstOptionIndex,
@@ -187,10 +193,12 @@ function BaseNestedMenu({
       const flatOptions = grouped ? options.flatMap((option) => option.options) : options;
 
       if (e.key === KeyCodes.ENTER || e.key === KeyCodes.TAB) {
-        if (creatable && focusedIndex === 0 && cachedRef.current.newOptionLabel && !isButtonDisabled(cachedRef.current.newOptionLabel)) {
+        const nextValue = searchable && creatable ? searchLabel : newOptionLabel;
+
+        if (creatable && focusedIndex === 0 && nextValue && !isButtonDisabled(nextValue)) {
           swallowEvent(null, true)(e);
-          onCreate(cachedRef.current.newOptionLabel);
-        } else if ((!isInput || inputWrapperRef.contains(e.target)) && (!creatable || focusedIndex > 0)) {
+          onCreate(nextValue);
+        } else if ((!isInput || inputWrapperRef.contains(e.target) || (creatable && searchable)) && (!creatable || focusedIndex > 0)) {
           swallowEvent(null, true)(e);
           onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]));
         }
@@ -253,14 +261,15 @@ function BaseNestedMenu({
               maxHeight={maxHeight}
               fullWidth
               searchable={
-                (creatable || menuSearchable) && (
+                (creatable || (searchable && isDropdown)) && (
                   <MenuHeader
                     withSearchIcon={withSearchIcon}
                     onFocus={() => !cachedRef.current.blockOptionHover && onFocusItem(0)}
                     onCreate={onCreate}
+                    isDropdown={isDropdown}
+                    searchable={searchable}
                     searchLabel={searchLabel}
                     createInputRef={createInputRef}
-                    menuSearchable={menuSearchable}
                     newOptionLabel={newOptionLabel}
                     focusedOptionRef={focusedOptionRef}
                     isButtonDisabled={isButtonDisabled}

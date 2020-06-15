@@ -6,19 +6,20 @@ import DraftJSEditor from '@/components/DraftJSEditor';
 import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 
 import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn } from './utils';
 
-const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.TextNodeData>> = ({ node, data }, ref) => {
+const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
 
   const cachedContent = React.useRef(data.content);
   const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
 
   const engine = React.useContext(EngineContext)!;
+  const nodeEntity = React.useContext(NodeEntityContext)!;
 
   const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
   const plugins = React.useMemo(() => Object.values(pluginsObj), [pluginsObj]);
@@ -45,14 +46,13 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
   }, []);
 
   useSetup(() => {
-    if (engine.markup.getLastCreatedNodeID() === node.id) {
-      engine.markup.resetLastCreatedNodeID();
+    if (nodeEntity.isFocused) {
       editorRef.current?.focus();
     }
   });
 
   return (
-    <Container scale={data.scale} ref={ref}>
+    <Container scale={data.scale}>
       <DraftJSEditor
         ref={editorRef}
         onBlur={onBlur}
@@ -68,4 +68,4 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
   );
 };
 
-export default React.forwardRef(MarkupTextNode);
+export default MarkupTextNode;

@@ -393,6 +393,18 @@ export enum UserRole {
   LIBRARY = 'library',
 }
 
+export enum PlanType {
+  OLD_STARTER = 'old_starter',
+  OLD_PRO = 'old_pro',
+  OLD_TEAM = 'old_team',
+  OLD_ENTERPRISE = 'old_enterprise',
+
+  STARTER = 'starter',
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
+}
+
 export enum FEATURE_IDS {
   ADD_COLLABORATORS = 'ADD_COLLABORATORS',
   WORKSPACE_SETTINGS = 'WORKSPACE_SETTINGS',
@@ -402,9 +414,11 @@ export enum FEATURE_IDS {
   DASHBOARD_LIST = 'DASHBOARD_LIST',
   DASHBOARD_PROJECT = 'DASHBOARD_PROJECT',
   MARKUP = 'MARKUP',
+  COMMENTING = 'COMMENTING',
+  EXPORT = 'EXPORT',
 }
 
-export const FEATURE_PERMISSIONS = {
+export const FEATURE_ROLE_PERMISSIONS = {
   ADD_COLLABORATORS: [UserRole.ADMIN],
   WORKSPACE_SETTINGS: [UserRole.ADMIN],
   UPGRADE_WORKSPACE: [UserRole.ADMIN],
@@ -413,6 +427,12 @@ export const FEATURE_PERMISSIONS = {
   DASHBOARD_LIST: [UserRole.ADMIN, UserRole.EDITOR],
   DASHBOARD_PROJECT: [UserRole.ADMIN, UserRole.EDITOR],
   MARKUP: [UserRole.ADMIN, UserRole.EDITOR],
+  COMMENTING: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+};
+
+export const FEATURE_PLAN_PERMISSIONS = {
+  [FEATURE_IDS.MARKUP]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.EXPORT]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
@@ -431,6 +451,8 @@ export const SLOT_COLORS = [
   '#BF9677',
   '#4C4C4C',
 ];
+
+export const SPACE_REGEXP = / /g;
 
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 
@@ -468,26 +490,19 @@ export enum DisplayType {
   ADVANCED = 'advanced',
 }
 
-export enum PlanType {
-  OLD_STARTER = 'old_starter',
-  OLD_PRO = 'old_pro',
-  OLD_TEAM = 'old_team',
-  OLD_ENTERPRISE = 'old_enterprise',
-
-  STARTER = 'starter',
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
+export enum MarkupShapeType {
+  RECTANGLE = 'rectangle',
+  CIRCLE = 'circle',
+  LINE = 'line',
+  ARROW = 'arrow',
 }
 
 export enum MarkupModeType {
   TEXT = 'text',
-  SQUARE = 'square',
-  CIRCLE = 'circle',
-  LINE = 'line',
-  ARROW = 'arrow',
   IMAGE = 'image',
 }
+
+export const MARKUP_SHAPES = [MarkupShapeType.RECTANGLE, MarkupShapeType.CIRCLE, MarkupShapeType.LINE, MarkupShapeType.ARROW];
 
 export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
@@ -498,13 +513,6 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
-}
-
-export enum ShapeType {
-  LINE = 'line',
-  ARROW = 'arrow',
-  CIRCLE = 'circle',
-  RECTANGLE = 'rectangle',
 }
 
 export enum TextAlignment {

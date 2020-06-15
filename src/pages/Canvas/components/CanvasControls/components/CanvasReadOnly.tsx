@@ -2,7 +2,7 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import { styled } from '@/hocs';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { CommentModeContext, EditPermissionContext } from '@/pages/Skill/contexts';
 
 const CanvasReadOnlyContainer = styled(Flex)`
   position: absolute;
@@ -26,8 +26,9 @@ const CanvasReadOnlyContainer = styled(Flex)`
 
 const CanvasReadOnly = () => {
   const { canEdit } = React.useContext(EditPermissionContext)!;
+  const { isOpen: commentingEnabled } = React.useContext(CommentModeContext);
 
-  if (canEdit) {
+  if (canEdit || commentingEnabled) {
     return null;
   }
 

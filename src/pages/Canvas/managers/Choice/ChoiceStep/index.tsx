@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ChoiceElseType } from '@/constants';
+import { StepLabelVariant } from '@/constants/canvas';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { useSyncedLookup } from '@/hooks';
@@ -10,11 +12,12 @@ import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 
 export type ChoiceStepProps = {
+  isPath: boolean;
   choices: { label: string | null; portID: string }[];
   elsePortID: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID }) => {
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, elsePortID }) => {
   return (
     <Step>
       {!!choices.length && (
@@ -31,7 +34,12 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID }) =
           ))}
         </Section>
       )}
-      <ElseItem portID={elsePortID} />
+      {isPath && <ElseItem portID={elsePortID} />}
+      {!isPath && choices.length === 0 && (
+        <Section>
+          <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
+        </Section>
+      )}
     </Step>
   );
 };
@@ -39,6 +47,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ choices, elsePortID }) =
 const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
+  const isPath = data.else.type === ChoiceElseType.PATH;
 
   const choices = React.useMemo(
     () =>
@@ -57,7 +66,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & C
     [platform, choicesByPortID, nodeOutPorts, intentsMap]
   );
 
-  return <ChoiceStep choices={choices} elsePortID={elsePortID} />;
+  return <ChoiceStep choices={choices} elsePortID={elsePortID} isPath={isPath} />;
 };
 
 const mapStateToProps = {

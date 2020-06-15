@@ -6,7 +6,7 @@ import { BasicNodeConfig } from '../types';
 import MarkupShapeEditor from './MarkupShapeEditor';
 import MarkupShapeNode from './MarkupShapeNode';
 
-const MarkupShape: BasicNodeConfig<Markup.ShapeNodeData> = {
+const MarkupShape: BasicNodeConfig<Markup.NodeData.Shape> = {
   type: BlockType.MARKUP_SHAPE,
 
   markupNode: MarkupShapeNode,
@@ -16,7 +16,7 @@ const MarkupShape: BasicNodeConfig<Markup.ShapeNodeData> = {
     node: {
       ports: {},
     },
-    data: data as Creator.DataDescriptor<Markup.ShapeNodeData>,
+    data: data as Creator.DataDescriptor<Markup.NodeData.Shape>,
   }),
 };
 

@@ -8,9 +8,10 @@ function MenuHeader({
   withSearchIcon = true,
   onFocus,
   onCreate,
+  searchable,
+  isDropdown,
   searchLabel,
   createInputRef,
-  menuSearchable,
   newOptionLabel,
   focusedOptionRef,
   isButtonDisabled,
@@ -19,32 +20,23 @@ function MenuHeader({
   onChangeSearchLabel,
   createInputPlaceholder,
 }) {
+  const value = searchable && !isDropdown ? searchLabel : newOptionLabel;
+
   return (
     <>
-      <MenuHeaderWrapper
-        ref={focusedOptionIndex === 0 ? focusedOptionRef : null}
-        isFocused={focusedOptionIndex === 0}
-        searchable={menuSearchable}
-        onMouseEnter={onFocus}
-      >
+      <MenuHeaderWrapper ref={focusedOptionIndex === 0 ? focusedOptionRef : null} isFocused={focusedOptionIndex === 0} onMouseEnter={onFocus}>
         {withSearchIcon && <MenuSearchIcon icon="search" color="#6E849A" />}
 
         <MenuInput
           ref={createInputRef}
-          value={menuSearchable ? searchLabel : newOptionLabel}
+          value={searchable ? searchLabel : newOptionLabel}
           variant="inline"
-          onChange={menuSearchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
+          onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
           placeholder={createInputPlaceholder}
         />
 
-        {!menuSearchable && (
-          <Button
-            isBtn
-            onClick={() => onCreate(newOptionLabel)}
-            disabled={!newOptionLabel || isButtonDisabled(newOptionLabel)}
-            className="pointer"
-            isLinkLarge
-          >
+        {!isDropdown && (
+          <Button isBtn onClick={() => onCreate(value)} disabled={!value || isButtonDisabled(value)} className="pointer" isLinkLarge>
             Create
           </Button>
         )}

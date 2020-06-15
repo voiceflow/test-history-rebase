@@ -24,6 +24,7 @@ import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
+import CommentEngine from './commentEngine';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
@@ -31,6 +32,7 @@ import LinkEntity from './entities/linkEntity';
 import NodeEntity from './entities/nodeEntity';
 import PortEntity from './entities/portEntity';
 import FocusEngine from './focusEngine';
+import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
@@ -61,6 +63,8 @@ export class Engine {
 
   selection = new SelectionEngine(this);
 
+  groupSelection = new GroupSelectionEngine(this);
+
   highlight = new HighlightEngine(this);
 
   linkCreation = new LinkCreationEngine(this);
@@ -80,6 +84,8 @@ export class Engine {
   node = new NodeManager(this);
 
   markup = new MarkupEngine(this);
+
+  comment = new CommentEngine(this);
 
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 
@@ -101,6 +107,7 @@ export class Engine {
       this.activation,
       this.focus,
       this.selection,
+      this.groupSelection,
       this.highlight,
       this.linkCreation,
       this.clipboard,
@@ -111,6 +118,8 @@ export class Engine {
       this.node,
       this.realtime,
       this.dispatcher,
+      this.markup,
+      this.transformation,
     ];
   }
 
@@ -197,7 +206,7 @@ export class Engine {
   // canvas orchestration methods
 
   get isCanvasBusy() {
-    return this.linkCreation.isDrawing || this.drag.hasTarget;
+    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget;
   }
 
   /**

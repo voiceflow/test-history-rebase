@@ -1,7 +1,9 @@
 import loglevel from 'loglevel';
 
 import { LOG_FILTER, LOG_LEVEL } from '@/config';
+import * as Cookies from '@/utils/cookies';
 
+const LOG_LEVEL_PREFIX = 'loglevel';
 const SEPARATOR = '.';
 const NEGATION = '!';
 const SEPARATOR_REGEX = /\\./g;
@@ -228,7 +230,7 @@ const customizeLogger = (logger: loglevel.Logger, path: string[]) => {
   };
 
   // NOTE: calling setLevel() is required "apply" factory change
-  logger.setLevel(LOG_LEVEL);
+  logger.setLevel(LOG_LEVEL, false);
 };
 
 export const createLogger = (path: string[]) => {
@@ -248,6 +250,27 @@ export const createLogger = (path: string[]) => {
     pending: <T>(value: T) => new LogPending(value),
     init: <T>(value: T) => new LogInitialize(value),
     reset: <T>(value: T) => new LogReset(value),
+  });
+};
+
+// remove persisted logs from localStorage and cookies
+export const clearPersistedLogs = () => {
+  const lsKeys = Object.keys(localStorage || {});
+
+  if (lsKeys.some((key) => key.startsWith(LOG_LEVEL_PREFIX))) {
+    lsKeys.forEach((key) => {
+      if (key.startsWith(LOG_LEVEL_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+
+  const cookies = Cookies.getAll();
+
+  Object.keys(cookies).forEach((key) => {
+    if (key.startsWith(LOG_LEVEL_PREFIX)) {
+      Cookies.remove(key);
+    }
   });
 };
 

@@ -85,6 +85,9 @@ const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
 
         return false;
       },
+      onMove: () => {
+        return engine.linkCreation.isDrawing;
+      },
       onEnd: () => {
         if (!hasNestedInPort) {
           clearLinkWarning();

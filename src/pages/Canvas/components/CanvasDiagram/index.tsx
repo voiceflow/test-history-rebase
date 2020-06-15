@@ -4,16 +4,16 @@ import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
 import { FeatureFlag } from '@/config/features';
-import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import GroupSelection from '@/pages/Canvas/components/GroupSelection';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
+import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
-import { ContextMenuContext, EngineContext, GroupSelectionContext } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
@@ -33,35 +33,45 @@ type ConnectedCanvasDiagramProps = {
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const markup = useFeature(FeatureFlag.MARKUP);
   const engine = React.useContext(EngineContext)!;
-  const groupSelection = React.useContext(GroupSelectionContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { canEdit } = React.useContext(EditPermissionContext)!;
-  const { isOpen: isMarkupOpen, modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(
-    MarkupModeContext
-  )!;
+  const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onClickCanvas = React.useCallback(
-    ({ clientX, clientY }: MouseEvent) => {
-      if (isMarkupOpen && isMarkupCreating) {
-        if (markupModeType === MarkupModeType.TEXT) {
-          engine.markup.addTextNode([clientX, clientY]);
-        }
-
-        finishMarkupCreating();
-      } else {
+  const onDragStart = React.useCallback(
+    (event: React.DragEvent) => {
+      if (isMarkupCreating && MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
+        event.preventDefault();
         engine.clearActivation();
+
+        engine.markup.createShapeNode();
       }
     },
-    [isMarkupOpen, MarkupModeType, isMarkupCreating]
+    [isMarkupCreating, markupModeType]
   );
+
+  const onMouseUp = React.useCallback((event: MouseEvent) => {
+    if (event.defaultPrevented || engine.isCanvasBusy) return;
+
+    engine.clearActivation();
+  }, []);
+
+  const onClickCanvas = React.useCallback(() => {
+    if (!isMarkupCreating || MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) return;
+
+    if (markupModeType === MarkupModeType.TEXT) {
+      engine.markup.addTextNode();
+    }
+
+    finishMarkupCreating();
+  }, [isMarkupCreating, markupModeType]);
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   const startGroupSelection = React.useCallback<React.MouseEventHandler>(
-    ({ clientX, clientY }) => canEdit && groupSelection.onStart([clientX, clientY]),
-    [canEdit, groupSelection.onStart]
+    (event) => canEdit && engine.groupSelection.start([event.clientX, event.clientY]),
+    [canEdit]
   );
 
   const [, connectBlockDrop] = useDrop({
@@ -95,19 +105,21 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
       <Canvas
         viewport={viewport}
         onClick={onClickCanvas}
+        onMouseUp={onMouseUp}
         onChange={updateViewport}
         onPan={panViewport}
         onZoom={zoomViewport}
         onRegister={registerCanvas}
         onRightClick={contextMenu.onOpen}
-        onShiftClick={startGroupSelection}
+        onShiftDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
+        onDragStart={onDragStart}
       >
         <LinkLayer />
         <NodeLayer />
         {markup.isEnabled && <MarkupLayer />}
         <MergeLayer />
-        <GroupSelection />
+        <SelectionMarquee />
       </Canvas>
       <TransformOverlay />
     </>

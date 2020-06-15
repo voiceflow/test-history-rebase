@@ -7,19 +7,24 @@ import { Markup, Node, NodeData, Port } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 
-import { NodeDataUpdater } from '../components/EditorSidebar/hooks';
+import { NodeDataUpdater } from '../types';
 
 export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
-export type NodeEditorPropsType<T> = React.FC<{
+export type NodeEditorPropsType<T> = {
+  nodeID: string;
   data: NodeData<T>;
   onChange: NodeDataUpdater<T>;
   pushToPath?: ({ type, label }: { type: string; label: string }) => void;
-}>;
+  focusedNode?: NodeDescriptor;
+  isOpen?: boolean;
+};
 
-export type NodeConfig<T extends object | Markup.NodeData> = {
+export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;
+
+export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   type: BlockType;
   icon?: string | React.FC;
   iconColor?: string;
@@ -37,8 +42,8 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   tip?: string;
 
   step: React.FC<ConnectedStepProps<T>>;
-  editor: NodeEditorPropsType<T>;
-  markupNode?: T extends Markup.NodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
+  editor: NodeEditor<T>;
+  markupNode?: T extends Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
   editorsByPath?: Record<string, React.FC<any>>;
 
   factory: (
@@ -49,4 +54,4 @@ export type NodeConfig<T extends object | Markup.NodeData> = {
   };
 };
 
-export type BasicNodeConfig<T extends object | Markup.NodeData = {}> = WithRequired<Partial<NodeConfig<T>>, 'type'>;
+export type BasicNodeConfig<T extends object | Markup.AnyNodeData = {}> = WithRequired<Partial<NodeConfig<T>>, 'type'>;

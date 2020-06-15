@@ -1,11 +1,15 @@
 import { ClassName, Identifier } from '@/styles/constants';
+import { hexToRGBA } from '@/utils/colors';
 
 export const CANVAS_ACTIVATION_CLASSNAME = `${Identifier.CANVAS}--activation`;
 export const CANVAS_DRAGGING_CLASSNAME = `${Identifier.CANVAS}--dragging`;
 export const CANVAS_MERGING_CLASSNAME = `${Identifier.CANVAS}--merging`;
 export const CANVAS_CREATING_LINK_CLASSNAME = `${Identifier.CANVAS}--creating-link`;
-export const CANVAS_MARKUP_ENABLED = `${Identifier.CANVAS}--markup`;
-export const CANVAS_MARKUP_CREATING = `${Identifier.CANVAS}--markup-creating`;
+export const CANVAS_SELECTING_GROUP_CLASSNAME = `${Identifier.CANVAS}--selecting-group`;
+export const CANVAS_MARKUP_ENABLED_CLASSNAME = `${Identifier.CANVAS}--markup`;
+export const CANVAS_MARKUP_CREATING_CLASSNAME = `${Identifier.CANVAS}--markup-creating`;
+
+export const CANVAS_COMMENTING_ENABLED = `${Identifier.CANVAS}--commenting`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;
@@ -28,6 +32,11 @@ export const HOME_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--home`;
 export const FLOW_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--flow`;
 export const BLOCK_SECTION_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section`;
 export const BLOCK_SECTION_TITLE_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section__title`;
+
+export const DEFAULT_MARKUP_BORDER_RADIUS = 5;
+export const DEFAULT_MARKUP_LINE_COLOR = hexToRGBA('#62778cff');
+export const DEFAULT_MARKUP_BORDER_COLOR = hexToRGBA('#5d9df5ff');
+export const DEFAULT_MARKUP_BACKGROUND_COLOR = hexToRGBA('#5d9df533');
 
 export enum OverlayType {
   LINK = 'link',

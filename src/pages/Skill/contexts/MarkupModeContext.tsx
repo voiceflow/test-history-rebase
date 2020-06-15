@@ -1,33 +1,34 @@
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { BlockType, MarkupModeType } from '@/constants';
+import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useEnableDisable, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { CANVAS_MARKUP_CREATING } from '@/pages/Canvas/constants';
+import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { imageSizeFromUrl } from '@/utils/file';
+
+const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
+const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'].join(', ');
 
 export type MarkupModeContextType = {
   isOpen: boolean;
   openTool: () => void;
-  modeType: MarkupModeType | null;
+  modeType: MarkupModeType | MarkupShapeType | null;
   closeTool: () => void;
   isCreating: boolean;
   onAddImage: () => void;
-  setModeType: (value: MarkupModeType | null) => void;
-  finishCreating: () => void;
+  setModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
+  finishCreating: (keepOpen?: boolean) => void;
   isUploadingImage: boolean;
-  setCreatingModeType: (value: MarkupModeType | null) => void;
+  setCreatingModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
 };
 
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
 export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
-const FILE_LIMIT = 2 ** 20 * 10; // 2 ** 20 === 1 mb
-
 export const MarkupModeProvider: React.FC = ({ children }) => {
-  const [modeType, setModeType] = React.useState<MarkupModeType | null>(null);
+  const [modeType, setModeType] = React.useState<MarkupModeType | MarkupShapeType | null>(null);
   const [isCreating, setCreating] = React.useState(false);
   const [isOpen, openTool, closeTool] = useEnableDisable(false);
   const eventualEngine = React.useContext(EventualEngineContext)!;
@@ -44,23 +45,24 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   isOpenCache.current = isOpen;
 
-  const finishCreating = () => {
-    setCreating(false);
-    eventualEngine.get()!.canvas?.removeClass(CANVAS_MARKUP_CREATING);
-  };
-
-  const setCreatingModeType = (type: null | MarkupModeType) => {
+  const setCreatingModeType = (type: null | MarkupModeType | MarkupShapeType, keepOpen?: boolean) => {
     setModeType(type);
     setCreating(!!type);
 
-    eventualEngine.get()!.focus.reset();
+    if (!keepOpen) {
+      eventualEngine.get()?.focus.reset();
+    }
 
     if (type) {
-      eventualEngine.get()!.canvas?.addClass(CANVAS_MARKUP_CREATING);
+      eventualEngine.get()?.canvas?.addClass(CANVAS_MARKUP_CREATING_CLASSNAME);
+      eventualEngine.get()?.canvas?.setBusy(true);
     } else {
-      eventualEngine.get()!.canvas?.removeClass(CANVAS_MARKUP_CREATING);
+      eventualEngine.get()?.canvas?.removeClass(CANVAS_MARKUP_CREATING_CLASSNAME);
+      eventualEngine.get()?.canvas?.setBusy(false);
     }
   };
+
+  const finishCreating = (keepOpen?: boolean) => setCreatingModeType(null, keepOpen);
 
   // TODO: we should probably move these to the markup engine / manager
   const onAddImage = () => {
@@ -68,16 +70,14 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
     const input = document.createElement('input');
 
-    const listener = async (e: Event) => {
+    const listener = async (event: Event) => {
       // eslint-disable-next-line xss/no-mixed-html
-      const file = (e.currentTarget as HTMLInputElement).files?.[0];
+      const file = (event.currentTarget as HTMLInputElement).files?.[0];
 
-      if (!file) {
-        return;
-      }
+      if (!file) return;
 
       if (file.size > FILE_LIMIT) {
-        toast.error('The file must be less then 10MB');
+        toast.error('The file must be less then 4MB');
         return;
       }
 
@@ -95,9 +95,9 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
         const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
 
-        const nodeData: Markup.ImageNodeData = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
+        const nodeData: Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
 
-        engine.node.add(BlockType.MARKUP_IMAGE, [offsetX, offsetY], nodeData as NodeData<Markup.ImageNodeData>);
+        engine.node.add(BlockType.MARKUP_IMAGE, [offsetX, offsetY], nodeData as NodeData<Markup.NodeData.Image>);
       } catch {
         toast.error('There was an error');
       }
@@ -106,7 +106,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     };
 
     input.type = 'file';
-    input.accept = '.jpg, .jpeg, .png';
+    input.accept = ALLOWED_IMAGE_TYPES;
 
     input.addEventListener('change', listener, { once: true });
 
@@ -125,8 +125,8 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       return;
     }
 
-    eventualEngine.get()!.focus.reset();
-    eventualEngine.get()!.markup.enable();
+    eventualEngine.get()?.clearActivation();
+    eventualEngine.get()?.markup.enable();
 
     openTool();
 
@@ -136,13 +136,11 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
   }, []);
 
   const onDisableMarkup = React.useCallback(() => {
-    if (!isOpenCache.current) {
-      return;
-    }
+    if (!isOpenCache.current) return;
 
     setCreatingModeType(null);
 
-    eventualEngine.get()!.markup.disable();
+    eventualEngine.get()?.markup.disable();
 
     setCreating(false);
     trackMarkupTime();

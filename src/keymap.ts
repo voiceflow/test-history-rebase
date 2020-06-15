@@ -21,7 +21,8 @@ export enum Hotkey {
   OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
   OPEN_LEFT_SIDEBAR_FLOWS_TAB = 'OPEN_LEFT_SIDEBAR_FLOWS_TAB',
   OPEN_MARKUP = 'OPEN_MARKUP',
-  CLOSE_MARKUP = 'CLOSE_MARKUP',
+  OPEN_COMMENTING = 'OPEN_COMMENTING',
+  CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
 }
 
 /**
@@ -51,7 +52,8 @@ const HOTKEY_MAPPING = {
   [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: ['shift+,', ','],
   [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['shift+.', '.'],
   [Hotkey.OPEN_MARKUP]: ['a'],
-  [Hotkey.CLOSE_MARKUP]: ['esc'],
+  [Hotkey.OPEN_COMMENTING]: ['c'],
+  [Hotkey.CLOSE_CANVAS_MODE]: ['esc'],
 };
 
 export default HOTKEY_MAPPING;

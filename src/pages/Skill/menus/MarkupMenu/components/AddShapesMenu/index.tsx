@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BaseDropdown from '@/components/Dropdown';
-import { MarkupModeType } from '@/constants';
+import { MarkupShapeType } from '@/constants';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { stopImmediatePropagation } from '@/utils/dom';
 
@@ -11,27 +11,19 @@ import { ShapesContainer, ShapesWrapper } from './components';
 const Dropdown: any = BaseDropdown;
 
 const AddShapesMenu: React.FC = () => {
-  const { modeType, setModeType, setCreatingModeType } = React.useContext(MarkupModeContext)!;
+  const { modeType, setCreatingModeType } = React.useContext(MarkupModeContext)!;
 
-  const onClick = (mode: MarkupModeType) => () => (modeType && mode === modeType ? setModeType(null) : setModeType(mode));
+  const onClick = (type: MarkupShapeType) => stopImmediatePropagation(() => setCreatingModeType(modeType && type === modeType ? null : type));
 
   return (
     <Dropdown
       placement="right"
       menu={
         <ShapesContainer column>
-          <ShapesWrapper
-            icon="rectangle"
-            onClick={stopImmediatePropagation(onClick(MarkupModeType.SQUARE))}
-            active={modeType === MarkupModeType.SQUARE}
-          />
-          <ShapesWrapper
-            icon="circle"
-            onClick={stopImmediatePropagation(onClick(MarkupModeType.CIRCLE))}
-            active={modeType === MarkupModeType.CIRCLE}
-          />
-          <ShapesWrapper icon="line" onClick={stopImmediatePropagation(onClick(MarkupModeType.LINE))} active={modeType === MarkupModeType.LINE} />
-          <ShapesWrapper icon="arrow" onClick={stopImmediatePropagation(onClick(MarkupModeType.ARROW))} active={modeType === MarkupModeType.ARROW} />
+          <ShapesWrapper icon="rectangle" onClick={onClick(MarkupShapeType.RECTANGLE)} active={modeType === MarkupShapeType.RECTANGLE} />
+          <ShapesWrapper icon="circle" onClick={onClick(MarkupShapeType.CIRCLE)} active={modeType === MarkupShapeType.CIRCLE} />
+          <ShapesWrapper icon="line" onClick={onClick(MarkupShapeType.LINE)} active={modeType === MarkupShapeType.LINE} />
+          <ShapesWrapper icon="arrow" onClick={onClick(MarkupShapeType.ARROW)} active={modeType === MarkupShapeType.ARROW} />
         </ShapesContainer>
       }
     >

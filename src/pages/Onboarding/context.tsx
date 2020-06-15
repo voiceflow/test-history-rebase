@@ -181,7 +181,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   trackInvitationAccepted,
   account,
   currentWorkspaceID,
-
   updateWorkspaceName,
   updateWorkspaceImage,
 }) => {
@@ -191,6 +190,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow);
   const numberOfSteps = getNumberOfSteps(query, flow);
+  const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
 
   const [state, actions] = useSmartReducer({
     usedSignupCoupon: false,
@@ -224,10 +224,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   }, []);
 
   React.useEffect(() => {
-    const usedSignupCoupon = workspaces.length === 1 && workspaces[0].name === 'Personal';
+    const usedSignupCoupon = nonTemplateWorkspaces.length === 1 && nonTemplateWorkspaces[0].name === 'Personal';
     actions.setUsedSignupCoupon(usedSignupCoupon);
     if (usedSignupCoupon) {
-      updateCurrentWorkspace(workspaces[0].id);
+      updateCurrentWorkspace(nonTemplateWorkspaces[0].id);
     }
   }, [workspaces.length]);
 
@@ -318,7 +318,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     let userWorkspaces: any;
     try {
       if (usedSignupCoupon) {
-        workspace = workspaces[0];
+        workspace = nonTemplateWorkspaces[0];
         updateWorkspaceName(name);
         updateWorkspaceImage(workspaceImage);
       } else {
@@ -327,6 +327,15 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       updateCurrentWorkspace(workspace.id);
     } catch (e) {
       toastNotif.error('Error creating workspace, please try again later');
+      goToDashboard();
+      return;
+    }
+
+    // This is so we can invite users and update redux, targeting the just created ^ workspace
+    try {
+      await fetchWorkspaces();
+    } catch (e) {
+      toastNotif.error('Error getting workspace, please try again later');
       goToDashboard();
       return;
     }

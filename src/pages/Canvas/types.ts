@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { LockOwner } from '@/models';
+import { LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
+
+export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
 
 export type BlockAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
@@ -19,7 +21,7 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
   lockOwner: LockOwner | null;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
-    onClick: () => void;
+    onClick: (event: React.MouseEvent) => void;
     onDoubleClick: (event: React.MouseEvent) => void;
     onMouseUp: (event: React.MouseEvent) => void;
     onContextMenu: (event: React.MouseEvent) => void;
@@ -64,4 +66,13 @@ export type TransformOverlayAPI = {
   translate: (movement: Pair<number>) => void;
   clearTransformations: () => void;
   reset: () => void;
+};
+
+export type NewShapeAPI = {
+  show: (origin: Point) => void;
+  hide: () => void;
+};
+
+export type SelectionMarqueeAPI = {
+  show: () => void;
 };

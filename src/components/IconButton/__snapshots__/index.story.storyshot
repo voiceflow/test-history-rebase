@@ -1,20 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Icon Button Action 1`] = `
-.c2 {
+.c4 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c2 > svg {
+.c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0 {
+.c5:hover:not(.c0:active) {
+  color: rgba(110,132,154,1);
+}
+
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -51,46 +55,46 @@ exports[`Storyshots Icon Button Action 1`] = `
   box-shadow: 0 0 0 1px #fff,0 1px 2px 1px rgba(17,49,96,0.16);
 }
 
-.c0:focus,
-.c0:active {
+.c2:focus,
+.c2:active {
   outline: 0;
 }
 
-.c0:hover {
+.c2:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c0:hover {
+.c2:hover:not(.c1:active) {
   color: rgba(110,132,154,1);
 }
 
-.c0:active {
+.c2:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c0:hover {
+.c2:hover {
   box-shadow: 0 0 0 1px #fff,0 2px 4px 1px rgba(17,49,96,0.16);
   color: #5d9df5;
 }
 
-.c3 .c1 {
+.c6 .c3 {
   color: #fff;
 }
 
-.c4 .c1 {
+.c7 .c3 {
   color: #6e849a;
 }
 
 <button
-  className="c0"
+  className="c0 c1 c2"
   disabled={false}
   onClick={[Function]}
 >
   <span
-    className="c1 c2"
+    className="c3 c4"
     color="currentColor"
     size={16}
   >
@@ -102,20 +106,20 @@ exports[`Storyshots Icon Button Action 1`] = `
 `;
 
 exports[`Storyshots Icon Button Flat 1`] = `
-.c2 {
+.c3 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c2 > svg {
+.c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0 {
+.c1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -148,37 +152,41 @@ exports[`Storyshots Icon Button Flat 1`] = `
   background: inherit;
 }
 
-.c0:focus,
-.c0:active {
+.c1:focus,
+.c1:active {
   outline: 0;
 }
 
-.c0:hover {
+.c1:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c0:active {
+.c1:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c3 .c1 {
+.c4:hover:not(.c0:active) {
+  color: rgba(110,132,154,1);
+}
+
+.c5 .c2 {
   color: #fff;
 }
 
-.c4 .c1 {
+.c6 .c2 {
   color: #6e849a;
 }
 
 <button
-  className="c0"
+  className="c0 c1"
   disabled={false}
   onClick={[Function]}
 >
   <span
-    className="c1 c2"
+    className="c2 c3"
     color="currentColor"
     size={16}
   >
@@ -190,20 +198,20 @@ exports[`Storyshots Icon Button Flat 1`] = `
 `;
 
 exports[`Storyshots Icon Button Normal 1`] = `
-.c2 {
+.c3 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c2 > svg {
+.c3 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c0 {
+.c1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -236,41 +244,41 @@ exports[`Storyshots Icon Button Normal 1`] = `
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 4px 0 rgba(17,49,96,0.16);
 }
 
-.c0:focus,
-.c0:active {
+.c1:focus,
+.c1:active {
   outline: 0;
 }
 
-.c0:hover {
+.c1:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c0:hover {
+.c1:hover:not(.c0:active) {
   color: rgba(110,132,154,1);
 }
 
-.c0:active {
+.c1:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c3 .c1 {
+.c4 .c2 {
   color: #fff;
 }
 
-.c4 .c1 {
+.c5 .c2 {
   color: #6e849a;
 }
 
 <button
-  className="c0"
+  className="c0 c1"
   disabled={false}
   onClick={[Function]}
 >
   <span
-    className="c1 c2"
+    className="c2 c3"
     color="currentColor"
     size={16}
   >

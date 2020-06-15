@@ -53,7 +53,7 @@ const Container = styled(ButtonContainer)<ContainerProps>`
           color: rgba(110, 132, 154, 0.75);
           box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
-          &:hover {
+          &:hover:not(&:active) {
             color: rgba(110, 132, 154, 1);
           }
         `}

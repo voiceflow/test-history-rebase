@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Remove Dropdown Base 1`] = `
-.c3 {
+.c4 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: currentColor;
 }
 
-.c3 > svg {
+.c4 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -47,27 +47,31 @@ exports[`Storyshots Remove Dropdown Base 1`] = `
   background: inherit;
 }
 
-.c1:focus,
-.c1:active {
+.c2:focus,
+.c2:active {
   outline: 0;
 }
 
-.c1:hover {
+.c2:hover {
   box-shadow: 0 0 0 1px rgba(17,49,96,0.04),0 2px 6px 0 rgba(17,49,96,0.24);
 }
 
-.c1:active {
+.c2:active {
   background: linear-gradient(180deg,rgba(93,157,245,0.14) 0%,rgba(44,133,255,0.205899) 97.03%),#ffffff;
   border: 1px solid #fff;
   color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 }
 
-.c4 .c2 {
+.c5:hover:not(.c1:active) {
+  color: rgba(110,132,154,1);
+}
+
+.c6 .c3 {
   color: #fff;
 }
 
-.c5 .c2 {
+.c7 .c3 {
   color: #6e849a;
 }
 
@@ -79,11 +83,11 @@ exports[`Storyshots Remove Dropdown Base 1`] = `
   className="c0"
 >
   <button
-    className="c1"
+    className="c1 c2"
     onClick={[Function]}
   >
     <span
-      className="c2 c3"
+      className="c3 c4"
       color="currentColor"
       size={16}
     >

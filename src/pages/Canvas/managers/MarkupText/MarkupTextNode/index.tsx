@@ -3,7 +3,6 @@ import type BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -30,7 +29,11 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
     cachedContent.current = content;
 
     engine.node.updateData(node.id, { content });
-  }, [editorState]);
+
+    if (nodeEntity.isFocused) {
+      engine.transformation.initialize(nodeEntity.nodeID);
+    }
+  }, [editorState, nodeEntity.isFocused]);
 
   const keyBindingFn = React.useCallback(({ keyCode }: React.KeyboardEvent) => {
     // esc
@@ -45,11 +48,11 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
     setEditorState(state);
   }, []);
 
-  useSetup(() => {
+  const onFocus = React.useCallback(() => {
     if (nodeEntity.isFocused) {
-      editorRef.current?.focus();
+      engine.transformation.reset();
     }
-  });
+  }, [nodeEntity.isFocused]);
 
   return (
     <Container scale={data.scale}>
@@ -57,6 +60,7 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
         ref={editorRef}
         onBlur={onBlur}
         plugins={plugins}
+        onFocus={onFocus}
         onChange={onChange}
         keyBindingFn={keyBindingFn}
         editorState={editorState}

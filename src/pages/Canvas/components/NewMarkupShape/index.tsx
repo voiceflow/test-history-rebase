@@ -1,6 +1,7 @@
+import cn from 'classnames';
 import React from 'react';
 
-import { MarkupShapeType } from '@/constants';
+import { BlockType, MarkupShapeType } from '@/constants';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { Line, RectanglePath, SvgContainer } from '@/pages/Canvas/components/MarkupShape';
 import {
@@ -10,6 +11,7 @@ import {
   DEFAULT_MARKUP_LINE_COLOR,
 } from '@/pages/Canvas/constants';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { ClassName } from '@/styles/constants';
 import { rgbaToHex } from '@/utils/colors';
 
 import { useNewMarkupShapeSubscription, useNewShapeInstance } from './hooks';
@@ -55,7 +57,7 @@ const NewMarkupShape: React.FC = () => {
   if (!newShape) return null;
 
   return (
-    <DraggingNode position={origin}>
+    <DraggingNode className={cn(ClassName.CANVAS_NODE, `${ClassName.CANVAS_NODE}--${BlockType.MARKUP_SHAPE}`)} position={origin}>
       <SvgContainer shapeRendering="geometricPrecision">{newShape}</SvgContainer>
     </DraggingNode>
   );

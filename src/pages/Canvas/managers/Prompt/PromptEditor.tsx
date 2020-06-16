@@ -36,7 +36,7 @@ const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath 
         />
       )}
     >
-      <Section customContentStyling={{ color: '#62778c' }}>Prompts will stop & listen to the user to match an intent.</Section>
+      <Section customContentStyling={{ color: '#62778c' }}>Prompts will stop & listen for the user to match an intent.</Section>
       <Section header="Reprompt" headerVariant={HeaderVariant.LINK} isLink onClick={onRepromptClick}></Section>
       {hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
     </Content>

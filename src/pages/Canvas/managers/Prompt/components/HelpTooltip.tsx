@@ -4,7 +4,7 @@ import { Paragraph } from '@/components/Tooltip';
 
 const HelpTooltip: React.FC = () => (
   <>
-    <Paragraph marginBottomUnits={3}>We think of the prompt step as a stop and listen inside our project.</Paragraph>
+    <Paragraph marginBottomUnits={3}>We can think of the prompt step as a stop and listen inside our project.</Paragraph>
 
     <Paragraph marginBottomUnits={3}>
       The prompt step is listening to the user to trigger an intent inside your project. When an intent is matched, the conversation will jump to that

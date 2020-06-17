@@ -11,7 +11,7 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn } from './utils';
 
-const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }) => {
+const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
 
   const cachedContent = React.useRef(data.content);
@@ -29,10 +29,6 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
     cachedContent.current = content;
 
     engine.node.updateData(node.id, { content });
-
-    if (nodeEntity.isFocused) {
-      engine.transformation.initialize(nodeEntity.nodeID);
-    }
   }, [editorState, nodeEntity.isFocused]);
 
   const keyBindingFn = React.useCallback(({ keyCode }: React.KeyboardEvent) => {
@@ -52,16 +48,27 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
     if (nodeEntity.isFocused) {
       engine.transformation.reset();
     }
-  }, [nodeEntity.isFocused]);
+  }, []);
+
+  const onDragStart = React.useCallback(
+    (event: React.DragEvent) => {
+      const hasFocus = editorState.getSelection().getHasFocus();
+
+      if (hasFocus) {
+        event.preventDefault();
+      }
+    },
+    [editorState]
+  );
 
   return (
-    <Container scale={data.scale}>
+    <Container draggable onDragStart={onDragStart} ref={ref}>
       <DraftJSEditor
         ref={editorRef}
-        onBlur={onBlur}
         plugins={plugins}
         onFocus={onFocus}
         onChange={onChange}
+        onBlur={onBlur}
         keyBindingFn={keyBindingFn}
         editorState={editorState}
         placeholder="Type something"
@@ -72,4 +79,4 @@ const MarkupTextNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Text>> =
   );
 };
 
-export default MarkupTextNode;
+export default React.forwardRef(MarkupTextNode);

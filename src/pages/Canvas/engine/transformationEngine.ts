@@ -1,4 +1,5 @@
-import { MARKUP_NODES } from '@/constants';
+import { BlockType, MARKUP_NODES } from '@/constants';
+import { CANVAS_MARKUP_TRANSFORMING_CLASSNAME } from '@/pages/Canvas/constants';
 import { TransformOverlayAPI } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
 
@@ -12,6 +13,14 @@ class TransformationEngine extends EngineConsumer {
   isActive = false;
 
   isTransforming = false;
+
+  addStyle() {
+    this.engine.canvas?.addClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
+  }
+
+  removeStyle() {
+    this.engine.canvas?.removeClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
+  }
 
   getTarget() {
     const nodeID = this.engine.focus.getTarget();
@@ -33,37 +42,52 @@ class TransformationEngine extends EngineConsumer {
   initialize(nodeID: string) {
     if (this.isTarget(nodeID)) return;
 
-    const rect = this.engine.node.api(nodeID)?.instance?.getTransformRect?.();
-    if (!rect) return;
+    const node = this.engine.getNodeByID(nodeID);
+    if (node.type !== BlockType.MARKUP_TEXT) return;
+
+    const transform = this.engine.node.api(nodeID)?.instance?.getTransform?.();
+    if (!transform) return;
 
     this.log.debug(this.log.pending('setting tranformation target'), this.log.slug(nodeID));
     this.isActive = true;
-    this.transformOverlay?.initialize(rect);
+    this.transformOverlay?.initialize(transform);
+    this.addStyle();
 
     this.log.info(this.log.success('set transformation target'), this.log.slug(nodeID));
   }
 
   reinitialize() {
-    const rect = this.engine.node.api(this.getTarget()!)?.instance?.getTransformRect?.();
-    if (!rect) return;
+    const transform = this.engine.node.api(this.getTarget()!)?.instance?.getTransform?.();
+    if (!transform) return;
 
-    this.transformOverlay?.initialize(rect);
+    this.transformOverlay?.initialize(transform);
   }
 
   start() {
     this.isTransforming = true;
+
+    this.engine.node.api(this.getTarget()!)?.instance?.snapshot?.();
   }
 
-  scaleTarget(scale: Pair<number>, offset: Pair<number>) {
-    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, offset);
+  scaleTarget(scale: Pair<number>, shift: Pair<number>) {
+    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift);
+  }
+
+  scaleTextTarget(maxWidth: number) {
+    this.engine.node.api(this.getTarget()!)?.instance?.scaleText?.(maxWidth);
   }
 
   rotateTarget(angle: number) {
     this.engine.node.api(this.getTarget()!)?.instance?.rotate?.(angle);
   }
 
+  moveVertices(offset: Pair<number>, shift: Pair<number>) {
+    this.engine.node.api(this.getTarget()!)?.instance?.moveVertices?.(offset, shift);
+  }
+
   complete() {
     this.isTransforming = false;
+
     this.engine.node.api(this.getTarget()!)?.instance?.applyTransformations?.();
 
     this.transformOverlay?.clearTransformations();
@@ -76,6 +100,7 @@ class TransformationEngine extends EngineConsumer {
     this.isActive = false;
     this.isTransforming = false;
     this.transformOverlay?.reset();
+    this.removeStyle();
 
     this.log.info(this.log.reset('reset transformation'));
   }

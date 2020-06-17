@@ -1,17 +1,21 @@
 import React from 'react';
 
 import { MarkupShapeType } from '@/constants';
+import { compose } from '@/hocs';
 import { Markup } from '@/models';
+import { MarkupLineInstance, MarkupShapeInstance } from '@/pages/Canvas/components/MarkupNode/types';
+import { DEFAULT_MARKUP_BACKGROUND_COLOR, DEFAULT_MARKUP_BORDER_COLOR } from '@/pages/Canvas/constants';
 import { PresentationModeContext } from '@/pages/Canvas/contexts';
+import { Either } from '@/types';
 import { rgbaToHex } from '@/utils/colors';
 
 import { Line, RectanglePath, SvgContainer } from './components';
 
 export * from './components';
 
-const isRectangleOrCircle = (data: Markup.NodeData.Shape): data is Markup.NodeData.Rectangle & Markup.NodeData.Circle =>
+const isRectangleOrCircle = (data: Markup.NodeData.Shape): data is Either<Markup.NodeData.Rectangle, Markup.NodeData.Circle> =>
   [MarkupShapeType.CIRCLE, MarkupShapeType.RECTANGLE].includes(data.shapeType);
-const isLineOrArrow = (data: Markup.NodeData.Shape): data is Markup.NodeData.Line | Markup.NodeData.Arrow =>
+const isLineOrArrow = (data: Markup.NodeData.Shape): data is Either<Markup.NodeData.Line, Markup.NodeData.Arrow> =>
   [MarkupShapeType.LINE, MarkupShapeType.ARROW].includes(data.shapeType);
 
 export type MarkupShapeProps<T> = {
@@ -20,9 +24,7 @@ export type MarkupShapeProps<T> = {
   pathRef?: React.RefObject<T>;
 };
 
-const TRANSPARENT_COLOR = 'rgba(255,255,255,0)';
-
-const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapeProps<T>) => {
+const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapeProps<T>, ref: React.RefObject<MarkupShapeInstance>) => {
   const isPresentationMode = React.useContext(PresentationModeContext);
   let path;
 
@@ -40,8 +42,8 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
         width={data.width}
         height={data.height}
         borderRadius={data.borderRadius || null}
-        backgroundColor={data.backgroundColor ? rgbaToHex(data.backgroundColor) : TRANSPARENT_COLOR}
-        borderColor={data.borderColor ? rgbaToHex(data.borderColor) : TRANSPARENT_COLOR}
+        backgroundColor={rgbaToHex(data.backgroundColor || DEFAULT_MARKUP_BACKGROUND_COLOR)}
+        borderColor={rgbaToHex(data.borderColor || DEFAULT_MARKUP_BORDER_COLOR)}
         isCircle={data.shapeType === MarkupShapeType.CIRCLE}
       />
     );
@@ -58,6 +60,7 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
         offsetX={data.offsetX}
         offsetY={data.offsetY}
         isArrow={data.shapeType === MarkupShapeType.ARROW}
+        ref={ref as React.RefObject<MarkupLineInstance>}
       />
     );
   }
@@ -71,4 +74,4 @@ const MarkupShape = <T extends SVGElement>({ id, data, pathRef }: MarkupShapePro
   );
 };
 
-export default React.memo(MarkupShape);
+export default compose(React.memo, React.forwardRef)(MarkupShape);

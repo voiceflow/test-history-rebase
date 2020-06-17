@@ -57,11 +57,11 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     engine.clearActivation();
   }, []);
 
-  const onClickCanvas = React.useCallback(() => {
+  const onClickCanvas = React.useCallback(async () => {
     if (!isMarkupCreating || MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) return;
 
     if (markupModeType === MarkupModeType.TEXT) {
-      engine.markup.addTextNode();
+      await engine.markup.addTextNode();
     }
 
     finishMarkupCreating();

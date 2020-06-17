@@ -11,6 +11,8 @@ export namespace Markup {
       content: RawDraftContentState;
       textAlignment: TextAlignment;
       scale: number;
+      rotate: number;
+      width: number | null;
     };
 
     export type Image = {

@@ -4,7 +4,6 @@ import React from 'react';
 
 import { BlockType, FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts';
-import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
@@ -15,6 +14,7 @@ import { ClassName } from '@/styles/constants';
 
 import { Container, NodeStyles } from './components';
 import { useMarkupInstance } from './hooks';
+import { ResizableMarkupNodeData } from './types';
 
 const MarkupNode = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);
@@ -26,13 +26,12 @@ const MarkupNode = () => {
   const markup = React.useContext(MarkupModeContext);
   const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
 
-  const { node, data, isFocused } = nodeEntity.useState((e) => {
+  const { node, data } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Markup.AnyNodeData>();
 
     return {
       node: resolved.node,
       data: resolved.data,
-      isFocused: e.isFocused,
     };
   });
 
@@ -54,13 +53,6 @@ const MarkupNode = () => {
   const onRightClick = React.useCallback(_noop, []);
 
   nodeEntity.useInstance(instance);
-
-  useSetup(() => {
-    if (isFocused) {
-      instance.ref.current?.focus();
-      engine.transformation.initialize(nodeEntity.nodeID);
-    }
-  });
 
   React.useEffect(() => {
     const transformEl = instance.transformRef.current!;
@@ -86,8 +78,16 @@ const MarkupNode = () => {
         tabIndex={-1}
       >
         {NodeComponent && (
-          <Container onDoubleClick={doubleClickHandler} isShape={nodeEntity.nodeType === BlockType.MARKUP_SHAPE} ref={instance.transformRef}>
-            <NodeComponent node={node} data={data} />
+          <Container
+            onDoubleClick={doubleClickHandler}
+            isShape={nodeEntity.nodeType === BlockType.MARKUP_SHAPE}
+            isText={nodeEntity.nodeType === BlockType.MARKUP_TEXT}
+            rotate={(data as ResizableMarkupNodeData).rotate || 0}
+            scale={(data as Markup.NodeData.Text).scale ?? 1}
+            maxWidth={(data as Markup.NodeData.Text).width ?? null}
+            ref={instance.transformRef}
+          >
+            <NodeComponent node={node} data={data as any} />
           </Container>
         )}
       </DraggingNode>

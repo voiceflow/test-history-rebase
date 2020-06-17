@@ -151,7 +151,7 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(type: BlockType, [x, y]: Point, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid()) {
+  async add(type: BlockType, [x, y]: Point, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid(), autoFocus = true) {
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };
@@ -162,7 +162,10 @@ class NodeManager extends EngineConsumer {
     this.internal.add(augmentedNode, data, parentNode);
 
     this.engine.saveHistory();
-    this.engine.setActive(nodeID);
+
+    if (autoFocus) {
+      this.engine.setActive(nodeID);
+    }
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 

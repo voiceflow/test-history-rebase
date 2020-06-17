@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4D5CAD;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c15 .c11 {
+.c16 .c12 {
   color: #fff;
 }
 
-.c16 .c11 {
+.c17 .c12 {
   color: #6e849a;
 }
 
-.c10 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43,7 +43,7 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   align-self: start;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -58,7 +58,7 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   width: 100%;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -73,7 +73,7 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   width: 100%;
 }
 
-.c7 .c8:not(:first-of-type)::before {
+.c8 .c9:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -83,7 +83,7 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -102,11 +102,11 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c5 .c6:not(:first-of-type) {
+.c6 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c17 {
+.c6 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -116,27 +116,27 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c5,
-.vf-canvas__step.vf-canvas__node--highlighted .c5 {
+.vf-canvas__step.vf-canvas__node--active .c6,
+.vf-canvas__step.vf-canvas__node--highlighted .c6 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c6:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c6 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+.vf-canvas__block.vf-canvas__node--merge-target .c6 {
   z-index: -1;
 }
 
-.c13 {
+.c14 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -146,17 +146,17 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c4:not(:last-of-type) {
+.c5:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -171,11 +171,11 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -189,55 +189,55 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c17 {
+.c1 .c22 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -247,7 +247,23 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -264,17 +280,17 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -298,33 +314,33 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -367,23 +383,23 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onMouseDown={[Function]}
       >
         <div
-          className="c5"
+          className="c6"
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c12"
+                  className="c12 c13"
                   color="#4D5CAD"
                   size={16}
                 >
@@ -393,10 +409,10 @@ exports[`Storyshots Creator/Steps/Prompt Step Empty 1`] = `
                 </span>
               </div>
               <span
-                className="c13"
+                className="c14"
               >
                 <div
-                  className="c14"
+                  className="c15"
                 >
                   Listening for an intent…
                 </div>

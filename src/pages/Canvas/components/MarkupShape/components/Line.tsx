@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MarkupLineInstance } from '@/pages/Canvas/components/MarkupNode/types';
 import { getRotation } from '@/utils/math';
 
 import ArrowHead from './ArrowHead';
@@ -11,17 +12,34 @@ export type LineProps = {
   color: string;
   offsetX: number;
   offsetY: number;
-  headRef?: React.RefObject<SVGMarkerElement>;
 };
 
-const Line: React.RefForwardingComponent<SVGLineElement, LineProps> = ({ id, isArrow, color, offsetX, offsetY, headRef }, ref) => {
+const Line: React.RefForwardingComponent<MarkupLineInstance, LineProps> = ({ id, isArrow, color, offsetX, offsetY }, ref) => {
+  const headRef = React.useRef<SVGMarkerElement>(null);
+  const lineRef = React.useRef<SVGLineElement>(null);
   const rotate = getRotation(offsetY, offsetX);
 
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      setLineAttribute: (key, value) => lineRef.current?.setAttribute(key, value),
+      setHeadAttribute: (key, value) => headRef.current?.setAttribute(key, value),
+    }),
+    []
+  );
+
   return (
-    <g>
-      {isArrow && <ArrowHead id={id} color={color} rotate={rotate} ref={headRef} />}
-      <LinePath ref={ref} markerEnd={`url(#head-${id})`} color={color} endX={offsetX} endY={offsetY} />
-    </g>
+    <>
+      <defs>
+        {isArrow && <ArrowHead id={id} color={color} rotate={rotate} ref={headRef} />}
+        <LinePath id={`path-${id}`} ref={lineRef} markerEnd={`url(#head-${id})`} endX={offsetX} endY={offsetY} />
+        <g id={`line-${id}`}>
+          <use xlinkHref={`#path-${id}`} stroke="transparent" strokeWidth="20" />
+          <use xlinkHref={`#path-${id}`} />
+        </g>
+      </defs>
+      <use xlinkHref={`#line-${id}`} strokeWidth="1" stroke={color} />
+    </>
   );
 };
 

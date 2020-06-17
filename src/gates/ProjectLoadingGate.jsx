@@ -8,7 +8,9 @@ import { connect } from '@/hocs';
 import { loadSkill } from '@/store/sideEffects';
 
 const ProjectLoadingGate = ({ isProjectLoaded, loadProject, setupProjectConnection, projectID, children }) => {
-  React.useEffect(() => setupProjectConnection(), [projectID, setupProjectConnection]);
+  React.useEffect(() => {
+    setupProjectConnection();
+  }, [projectID, setupProjectConnection]);
 
   return (
     <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProject}>

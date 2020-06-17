@@ -433,6 +433,7 @@ export const FEATURE_ROLE_PERMISSIONS = {
 export const FEATURE_PLAN_PERMISSIONS = {
   [FEATURE_IDS.MARKUP]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [FEATURE_IDS.EXPORT]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.COMMENTING]: [PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];

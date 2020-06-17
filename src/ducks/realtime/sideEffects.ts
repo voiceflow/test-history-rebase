@@ -105,7 +105,8 @@ export const handleSessionCancelled = (data: { workspaceName: string; workspaceI
 };
 
 export const setupRealtimeConnection = (skillID: string, diagramID: string): Thunk => async (dispatch, getState) => {
-  const tabID = Session.tabIDSelector(getState());
+  const state = getState();
+  const tabID = Session.tabIDSelector(state);
 
   try {
     const locks = await client.socket!.realtime.initialize(skillID, diagramID);

@@ -42,3 +42,7 @@ export const deleteProject = (projectID: string): Thunk => async (dispatch) => {
   await client.project.delete(projectID);
   await dispatch(removeProject(projectID));
 };
+
+export const setupProjectSocketConnection = (projectID: string) => async () => {
+  await client.socket?.project.initialize(projectID);
+};

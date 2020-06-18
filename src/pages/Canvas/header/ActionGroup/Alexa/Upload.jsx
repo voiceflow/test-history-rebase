@@ -22,7 +22,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVen
   const action = () => (state.end ? publish() : setPopup((open) => !open));
   const needsLogin = !amazon;
   const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
-  let text = state.end ? 'Upload to Alexa' : 'Uploading';
+  let text = 'Upload to Alexa';
   if (needsLogin) {
     text = 'Connect to Alexa';
   }

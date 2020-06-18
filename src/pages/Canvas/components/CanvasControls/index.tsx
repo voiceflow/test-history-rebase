@@ -51,7 +51,10 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   }, [eventualEngine]);
 
   // Disable all modes before turning on any mode
-  const openMode = (openCb?: () => void) => {
+  const openMode = (openCb?: () => void, allowedToUse = true) => {
+    if (!allowedToUse) {
+      return;
+    }
     if (markupTool?.isOpen) {
       markupTool.closeTool();
     } else if (commenting.isOpen) {
@@ -83,7 +86,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     []
   );
 
-  const toggleCommenting = React.useCallback(() => (commenting.isOpen ? commenting.close() : openMode(commenting.open)), [
+  const toggleCommenting = React.useCallback(() => (commenting.isOpen ? commenting.close() : openMode(commenting.open, allowCommenting)), [
+    allowCommenting,
     commenting.isOpen,
     commenting.close,
     openMode,

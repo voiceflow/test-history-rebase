@@ -14,13 +14,19 @@ export const PLATFORM_LABELS = {
 function PlatformToggle({ platform, onToggle, disabled }) {
   return (
     <DropdownWithCaret
+      padding="10px 0px"
       disabled={disabled}
       text={PLATFORM_LABELS[platform]}
       menu={
         <Menu>
           {PLATFORMS.map((platformType) => {
             return (
-              <MenuItem onClick={onToggle} key={platformType}>
+              <MenuItem
+                onClick={() => {
+                  if (platform !== platformType) onToggle();
+                }}
+                key={platformType}
+              >
                 <FlexApart style={{ width: '100%' }}>
                   {PLATFORM_LABELS[platformType]}
                   {platformType === platform && <SvgIcon style={{ marginLeft: '25px' }} icon="blocks" color="#becedc" />}

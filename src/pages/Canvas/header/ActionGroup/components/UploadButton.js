@@ -4,7 +4,7 @@ import * as SvgIcon from '@/components/SvgIcon';
 import { css, styled } from '@/hocs';
 import { Spin } from '@/styles/animations';
 
-const UploadButton = styled(Button).attrs({ speed: 2000, icon: 'publishSpin' })`
+const UploadButton = styled(Button).attrs({ speed: 2000 })`
   ${({ isUploading }) =>
     isUploading &&
     css`
@@ -24,7 +24,7 @@ const UploadButton = styled(Button).attrs({ speed: 2000, icon: 'publishSpin' })`
   }
 
   ${Label} {
-    width: 156px;
+    width: 170px;
     padding-right: 0;
     text-align: left;
   }

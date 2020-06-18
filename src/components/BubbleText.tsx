@@ -9,7 +9,7 @@ const BubbleText = styled.span`
   background: white;
   letter-spacing: 0.7px;
   font-weight: bold;
-  border-radius: 11px;
+  border-radius: 20px;
   text-transform: uppercase;
   box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
 `;

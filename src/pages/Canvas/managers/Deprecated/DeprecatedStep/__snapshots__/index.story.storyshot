@@ -22,6 +22,11 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   color: #6e849a;
 }
 
+.c18 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -106,7 +111,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c22 {
+.c6 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -237,7 +242,7 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c22 {
+.c1 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -245,10 +250,6 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -260,6 +261,10 @@ exports[`Storyshots Creator/Steps/Deprecated Step Normal 1`] = `
 }
 
 .c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 

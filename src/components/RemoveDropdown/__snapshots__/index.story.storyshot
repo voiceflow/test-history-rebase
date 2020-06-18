@@ -75,6 +75,11 @@ exports[`Storyshots Remove Dropdown Base 1`] = `
   color: #6e849a;
 }
 
+.c8 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c0 {
   margin-left: 10px;
 }

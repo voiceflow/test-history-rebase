@@ -7,6 +7,13 @@ export type OutlineContainerProps = {
   preventFocusStyle?: boolean;
 };
 
+const activeStyle = css`
+  background: #eef4f6cc;
+  color: rgba(19, 33, 68, 0.85);
+  box-shadow: none !important;
+  border: 1px solid #dfe3ed;
+`;
+
 const OutlineContainer = styled(Container)<OutlineContainerProps>`
   border: 1px solid #eaeff4;
   box-shadow: none !important;
@@ -26,10 +33,7 @@ const OutlineContainer = styled(Container)<OutlineContainerProps>`
   }
 
   &:active {
-    background: #eef4f6cc;
-    color: rgba(19, 33, 68, 0.85);
-    box-shadow: none !important;
-    border: 1px solid #dfe3ed;
+    ${activeStyle}
   }
 
   ${({ preventFocusStyle }) =>
@@ -42,6 +46,8 @@ const OutlineContainer = styled(Container)<OutlineContainerProps>`
         border: 1px solid #dfe3ed;
       }
     `}
+
+  ${({ active }) => active && activeStyle}
 `;
 
 export default OutlineContainer;

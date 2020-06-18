@@ -276,7 +276,7 @@ export default function Select({
             clearable={clearable}
           >
             {triggerRenderer ? (
-              triggerRenderer({ ...inputProps, value: searchLabel, ref: inputRef })
+              triggerRenderer({ ...inputProps, value: searchLabel, ref: inputRef, isOpen: opened })
             ) : (
               <Flex>
                 <SearchInput {...inputProps} value={label || searchLabel} ref={inputRef} type="search" autoComplete="off" clearable={clearable} />

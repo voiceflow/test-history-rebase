@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Modal, { ModalHeader } from '@/components/LegacyModal';
 import * as Account from '@/ducks/account';
 import * as GooglePublish from '@/ducks/publish/google';
+import { GOOGLE_STATES } from '@/ducks/publish/google';
 import { connect } from '@/hocs';
 import UploadGoogle from '@/pages/Publish/Upload/Google';
 
@@ -11,8 +12,10 @@ import { Close, PopupContainer, PopupTransition } from '../styled';
 import Upload from './Upload';
 
 const GoogleActionGroup = (props) => {
-  const { googlePublish, google, checkGoogleAccount, resetGoogleUpload } = props;
+  const { googlePublish, google, checkGoogleAccount, resetGoogleUpload, updateGoogleStage } = props;
   const [open, setOpen] = useState(false);
+
+  if (!google) updateGoogleStage(GOOGLE_STATES.GOOGLE_LOGIN);
 
   useEffect(() => {
     if (googlePublish.stage === GooglePublish.GOOGLE_STAGES.IDLE) {
@@ -62,6 +65,7 @@ const mapStatToProps = {
 const mapDispatchToProps = {
   resetGoogleUpload: GooglePublish.resetGoogleUpload,
   checkGoogleAccount: Account.checkGoogleAccount,
+  updateGoogleStage: GooglePublish.updateGoogleStage,
 };
 
 export default connect(mapStatToProps, mapDispatchToProps)(GoogleActionGroup);

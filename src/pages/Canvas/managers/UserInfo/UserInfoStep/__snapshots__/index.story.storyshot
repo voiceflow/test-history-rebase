@@ -48,6 +48,11 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   color: #6e849a;
 }
 
+.c24 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -132,7 +137,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c29 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -162,7 +167,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   z-index: -1;
 }
 
-.c24 .c7:not(:first-of-type) {
+.c25 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -371,7 +376,7 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -379,10 +384,6 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -394,6 +395,10 @@ exports[`Storyshots Creator/Steps/User Info Step Active 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -681,6 +686,11 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   color: #6e849a;
 }
 
+.c26 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -765,7 +775,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c31 {
+.c6 .c32 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -795,7 +805,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   z-index: -1;
 }
 
-.c26 .c7:not(:first-of-type) {
+.c27 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1023,7 +1033,7 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c31 {
+.c1 .c32 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1031,10 +1041,6 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1046,6 +1052,10 @@ exports[`Storyshots Creator/Steps/User Info Step Connected 1`] = `
 }
 
 .c30 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c31 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1349,6 +1359,11 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   color: #6e849a;
 }
 
+.c23 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1433,7 +1448,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c28 {
+.c6 .c29 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1463,7 +1478,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   z-index: -1;
 }
 
-.c23 .c7:not(:first-of-type) {
+.c24 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1668,7 +1683,7 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c28 {
+.c1 .c29 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1676,10 +1691,6 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1691,6 +1702,10 @@ exports[`Storyshots Creator/Steps/User Info Step Empty 1`] = `
 }
 
 .c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1973,6 +1988,11 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   color: #6e849a;
 }
 
+.c24 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2057,7 +2077,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c29 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2087,7 +2107,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   z-index: -1;
 }
 
-.c24 .c7:not(:first-of-type) {
+.c25 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2296,7 +2316,7 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2304,10 +2324,6 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2319,6 +2335,10 @@ exports[`Storyshots Creator/Steps/User Info Step With Permissions 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -2580,6 +2600,11 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2664,7 +2689,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c24 {
+.c6 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2694,7 +2719,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   z-index: -1;
 }
 
-.c19 .c7:not(:first-of-type) {
+.c20 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -2803,7 +2828,7 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c24 {
+.c1 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2811,10 +2836,6 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2826,6 +2847,10 @@ exports[`Storyshots Creator/Steps/User Info Step Without Ports 1`] = `
 }
 
 .c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 

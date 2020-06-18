@@ -97,6 +97,11 @@ exports[`Storyshots Variable Select Normal 1`] = `
   right: 32px;
 }
 
+.c11 .c4 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 <div
   className="c0"
   onClick={null}

@@ -88,6 +88,11 @@ exports[`Storyshots Icon Button Action 1`] = `
   color: #6e849a;
 }
 
+.c8 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 <button
   className="c0 c1 c2"
   disabled={false}
@@ -180,6 +185,11 @@ exports[`Storyshots Icon Button Flat 1`] = `
   color: #6e849a;
 }
 
+.c7 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 <button
   className="c0 c1"
   disabled={false}
@@ -270,6 +280,11 @@ exports[`Storyshots Icon Button Normal 1`] = `
 
 .c5 .c2 {
   color: #6e849a;
+}
+
+.c6 .c2 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 <button

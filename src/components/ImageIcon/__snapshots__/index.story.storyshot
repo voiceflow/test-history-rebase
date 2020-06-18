@@ -50,6 +50,11 @@ exports[`Storyshots Image Icon Normal 1`] = `
   color: #6e849a;
 }
 
+.c5 .c1 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;

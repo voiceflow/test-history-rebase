@@ -83,7 +83,7 @@ exports[`Storyshots Slider Input Group Normal 1`] = `
   margin-right: 0;
 }
 
-.c7 > .c14:last-child {
+.c7 > .c15:last-child {
   margin-right: -6px;
 }
 
@@ -138,6 +138,11 @@ exports[`Storyshots Slider Input Group Normal 1`] = `
   min-width: 202px;
   max-width: 202px;
   margin-right: 16px;
+}
+
+.c14 .c3 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .c5 {

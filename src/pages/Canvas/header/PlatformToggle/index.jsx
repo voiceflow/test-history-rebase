@@ -1,54 +1,36 @@
-import cn from 'classnames';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
-import { PlatformType } from '@/constants';
+import DropdownWithCaret from '@/components/DropdownWithCaret';
+import { FlexApart } from '@/components/Flex';
+import Menu, { MenuItem } from '@/components/Menu';
+import SvgIcon from '@/components/SvgIcon';
+import { PLATFORMS, PlatformType } from '@/constants';
 
-import PlatformToggleContainer from './PlatformToggleContainer';
+export const PLATFORM_LABELS = {
+  [PlatformType.ALEXA]: 'Amazon Alexa',
+  [PlatformType.GOOGLE]: 'Google Assistant',
+};
 
 function PlatformToggle({ platform, onToggle, disabled }) {
-  const toggle = (
-    <>
-      <input
-        onClick={() => platform !== PlatformType.ALEXA && onToggle()}
-        type="radio"
-        className={cn('switch-input', { checked: platform === PlatformType.ALEXA })}
-        value="alexa_toggle"
-        id="alexa_toggle"
-      />
-      <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">
-        Alexa
-      </label>
-      <input
-        onClick={() => platform !== PlatformType.GOOGLE && onToggle()}
-        type="radio"
-        className={cn('switch-input', { checked: platform === PlatformType.GOOGLE })}
-        value="google_toggle"
-        id="google_toggle"
-      />
-      <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">
-        Google
-      </label>
-      <span className="switch-selection" />
-    </>
-  );
-
   return (
-    <PlatformToggleContainer disabled={disabled}>
-      {disabled ? (
-        <div className="switch switch-blue">{toggle}</div>
-      ) : (
-        <Tooltip
-          distance={16}
-          title={platform === PlatformType.GOOGLE ? 'Switch to Amazon View' : 'Switch to Google View'}
-          position="bottom"
-          className="switch switch-blue"
-          tag="div"
-        >
-          {toggle}
-        </Tooltip>
-      )}
-    </PlatformToggleContainer>
+    <DropdownWithCaret
+      disabled={disabled}
+      text={PLATFORM_LABELS[platform]}
+      menu={
+        <Menu>
+          {PLATFORMS.map((platformType) => {
+            return (
+              <MenuItem onClick={onToggle} key={platformType}>
+                <FlexApart style={{ width: '100%' }}>
+                  {PLATFORM_LABELS[platformType]}
+                  {platformType === platform && <SvgIcon style={{ marginLeft: '25px' }} icon="blocks" color="#becedc" />}
+                </FlexApart>
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      }
+    />
   );
 }
 

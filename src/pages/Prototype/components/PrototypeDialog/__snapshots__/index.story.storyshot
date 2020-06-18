@@ -96,6 +96,11 @@ exports[`Storyshots Prototype/Dialog Basic 1`] = `
   color: #6e849a;
 }
 
+.c18 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c12 {
   position: relative;
   max-width: 100%;
@@ -168,12 +173,12 @@ exports[`Storyshots Prototype/Dialog Basic 1`] = `
   border-bottom-right-radius: 5px;
 }
 
-.c18 .c7 {
+.c19 .c7 {
   white-space: pre;
   background: #eef4f6;
 }
 
-.c18 .c7 p {
+.c19 .c7 p {
   margin-bottom: 0;
 }
 
@@ -529,6 +534,11 @@ exports[`Storyshots Prototype/Dialog Debug 1`] = `
 
 .c18 .c5 {
   color: #6e849a;
+}
+
+.c19 .c5 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .c12 {
@@ -1024,6 +1034,11 @@ exports[`Storyshots Prototype/Dialog Loading 1`] = `
   color: #6e849a;
 }
 
+.c19 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c12 {
   position: relative;
   max-width: 100%;
@@ -1096,12 +1111,12 @@ exports[`Storyshots Prototype/Dialog Loading 1`] = `
   border-bottom-right-radius: 5px;
 }
 
-.c19 .c7 {
+.c20 .c7 {
   white-space: pre;
   background: #eef4f6;
 }
 
-.c19 .c7 p {
+.c20 .c7 p {
   margin-bottom: 0;
 }
 

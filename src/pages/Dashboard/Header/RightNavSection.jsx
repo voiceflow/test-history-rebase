@@ -1,21 +1,23 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
-import { AIRTABLE_ID, YOUTUBE_CHANNEL_ID } from '@/config';
+import ClickableText from '@/components/Text/components/ClickableText';
+import { FEATURE_IDS, ModalType, PLAN_NAMES, PlanType } from '@/constants';
+import { usePermissions } from '@/contexts';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
+import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
+import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
 import { stopPropagation } from '@/utils/dom';
 
 import UpdatesPopover from '../UpdatesPopover';
 import { Numbered, SubHeaderItem, UpdateBubble } from './components';
 
-const YOUTUBE_CHANNEL = `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
-const AIRTABLE_LINK = `https://airtable.com/${AIRTABLE_ID}?blocks=hide`;
 const DEFAULT_MESSAGE = [
   {
     details: 'There are no new updates available.',
@@ -24,17 +26,67 @@ const DEFAULT_MESSAGE = [
   },
 ];
 
-function RightNavSection({ notifications, readNotifications }) {
+function RightNavSection({ notifications, readNotifications, plan, leaveWorkspace }) {
   const [onHover, toggleUpdatesHover] = useToggle(false);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
-
+  const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
+  const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
+  const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
+  const [canUseWorkspaceSettings] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
+  const { open: openUpgrade } = useModals(ModalType.PAYMENT);
   return (
     <>
+      <SubHeaderItem>
+        <Dropdown
+          menu={
+            <Menu noBottomPadding>
+              {canUseWorkspaceSettings ? (
+                <>
+                  <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
+                  <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
+                  <MenuItem divider />
+                  {plan ? (
+                    <MenuItem disabled capitalize teamItem>
+                      {PLAN_NAMES[plan].label} Plan
+                      {(plan === PlanType.STARTER || plan === PlanType.OLD_STARTER) && (
+                        <>
+                          &nbsp;-&nbsp; <ClickableText onClick={openUpgrade}>Upgrade</ClickableText>
+                        </>
+                      )}
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>
+                      Upgrade Workspace
+                    </MenuItem>
+                  )}
+                </>
+              ) : (
+                <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+              )}
+            </Menu>
+          }
+          placement="bottom-end"
+        >
+          {(ref, onToggle, isOpen) => (
+            <IconButton
+              ref={ref}
+              variant="outline"
+              active={isOpen}
+              icon="cog"
+              onClick={() => {
+                onToggle();
+              }}
+              iconProps={{ width: 16, height: 15 }}
+              large
+            />
+          )}
+        </Dropdown>
+      </SubHeaderItem>
       <SubHeaderItem>
         {/* notifications component */}
         <Dropdown
           menu={
-            <Menu>
+            <Menu maxHeight={350}>
               <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />
             </Menu>
           }
@@ -83,41 +135,7 @@ function RightNavSection({ notifications, readNotifications }) {
       </SubHeaderItem>
 
       <SubHeaderItem>
-        <Dropdown
-          menu={
-            <Menu>
-              <a href="https://learn.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                <MenuItem>University</MenuItem>
-              </a>
-              <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-                <MenuItem>Youtube</MenuItem>
-              </a>
-              <a href="https://www.facebook.com/groups/voiceflowgroup/" target="_blank" rel="noopener noreferrer">
-                <MenuItem>Community</MenuItem>
-              </a>
-              <a href="https://forum.voiceflow.com/" target="_blank" rel="noopener noreferrer">
-                <MenuItem>Forums</MenuItem>
-              </a>
-              <a href={AIRTABLE_LINK} target="_blank" rel="noopener noreferrer">
-                <MenuItem>Marketplace</MenuItem>
-              </a>
-            </Menu>
-          }
-        >
-          {(ref, onToggle, isOpen) => (
-            <Tooltip distance={19} title="Resources" position="bottom">
-              <IconButton
-                active={isOpen}
-                variant="outline"
-                icon="information"
-                iconProps={{ width: 16, height: 15 }}
-                onClick={onToggle}
-                ref={ref}
-                large
-              />
-            </Tooltip>
-          )}
-        </Dropdown>
+        <ResourcesHeaderButton />
       </SubHeaderItem>
     </>
   );
@@ -125,10 +143,12 @@ function RightNavSection({ notifications, readNotifications }) {
 
 const mapStateToProps = {
   notifications: notificationsSelector,
+  plan: planTypeSelector,
 };
 
 const mapDispatchToProps = {
   readNotifications,
+  leaveWorkspace,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightNavSection);

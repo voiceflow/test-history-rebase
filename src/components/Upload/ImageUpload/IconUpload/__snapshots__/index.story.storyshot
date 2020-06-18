@@ -22,6 +22,11 @@ exports[`Storyshots Upload/Icon Can Remove 1`] = `
   color: #6e849a;
 }
 
+.c9 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -180,6 +185,11 @@ exports[`Storyshots Upload/Icon Large 1`] = `
   color: #6e849a;
 }
 
+.c7 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   display: none;
 }
@@ -228,7 +238,7 @@ exports[`Storyshots Upload/Icon Large 1`] = `
   pointer-events: none;
 }
 
-.c0:not(:hover) .c7 {
+.c0:not(:hover) .c8 {
   display: none;
 }
 
@@ -308,6 +318,11 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
   color: #6e849a;
 }
 
+.c7 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   display: none;
 }
@@ -356,7 +371,7 @@ exports[`Storyshots Upload/Icon Medium 1`] = `
   pointer-events: none;
 }
 
-.c0:not(:hover) .c7 {
+.c0:not(:hover) .c8 {
   display: none;
 }
 
@@ -436,6 +451,11 @@ exports[`Storyshots Upload/Icon Small 1`] = `
   color: #6e849a;
 }
 
+.c7 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   display: none;
 }
@@ -484,7 +504,7 @@ exports[`Storyshots Upload/Icon Small 1`] = `
   pointer-events: none;
 }
 
-.c0:not(:hover) .c7 {
+.c0:not(:hover) .c8 {
   display: none;
 }
 
@@ -564,6 +584,11 @@ exports[`Storyshots Upload/Icon Xlarge 1`] = `
   color: #6e849a;
 }
 
+.c7 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   display: none;
 }
@@ -612,7 +637,7 @@ exports[`Storyshots Upload/Icon Xlarge 1`] = `
   pointer-events: none;
 }
 
-.c0:not(:hover) .c7 {
+.c0:not(:hover) .c8 {
   display: none;
 }
 

@@ -251,6 +251,11 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   color: #6e849a;
 }
 
+.c43 .c9 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -410,12 +415,12 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   bottom: 0;
 }
 
-.c43 > .c9 {
+.c44 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c44 > .c9 {
+.c45 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -1492,6 +1497,11 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   color: #6e849a;
 }
 
+.c43 .c9 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1651,12 +1661,12 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   bottom: 0;
 }
 
-.c43 > .c9 {
+.c44 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c44 > .c9 {
+.c45 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -2567,7 +2577,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   margin-right: 0;
 }
 
-.c19 > .c28:last-child {
+.c19 > .c29:last-child {
   margin-right: -6px;
 }
 
@@ -2596,6 +2606,11 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
 
 .c25 .c9 {
   color: #6e849a;
+}
+
+.c26 .c9 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .c6 {
@@ -2824,12 +2839,12 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   overflow-x: hidden;
 }
 
-.c26 > .c9 {
+.c27 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c27 > .c9 {
+.c28 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -3493,6 +3508,11 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   color: #6e849a;
 }
 
+.c50 .c9 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3652,12 +3672,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   bottom: 0;
 }
 
-.c50 > .c9 {
+.c51 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c51 > .c9 {
+.c52 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -5100,6 +5120,11 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   color: #6e849a;
 }
 
+.c45 .c9 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5259,12 +5284,12 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   bottom: 0;
 }
 
-.c45 > .c9 {
+.c46 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c46 > .c9 {
+.c47 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }

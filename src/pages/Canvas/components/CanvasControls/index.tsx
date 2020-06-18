@@ -14,7 +14,7 @@ import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import { CanvasControlButton, Container, ControlContainer, ResourcesDropdown, ZoomContainer } from './components';
+import { CanvasControlButton, Container, ControlContainer, ZoomContainer } from './components';
 import { CanvasControl, CanvasControlMeta } from './constants';
 
 const ZOOM_DELTA = 15;
@@ -139,11 +139,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
         />
       )}
 
-      <ControlContainer>
-        <Tooltip distance={6} title="Resources" position="top" hotkey="I">
-          <ResourcesDropdown />
-        </Tooltip>
-      </ControlContainer>
       <ControlContainer>
         <ZoomContainer>
           <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">

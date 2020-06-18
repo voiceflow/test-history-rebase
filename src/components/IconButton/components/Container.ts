@@ -8,6 +8,7 @@ export type ContainerProps = {
   large?: boolean;
   active?: boolean;
   variant?: IconButtonVariant;
+  preventFocusStyle?: boolean;
 };
 
 const SIZE = {

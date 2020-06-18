@@ -46,6 +46,11 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
   color: #6e849a;
 }
 
+.c15 .c3 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c2 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -161,7 +166,7 @@ exports[`Storyshots Upload/Image Group Normal 1`] = `
   pointer-events: none;
 }
 
-.c8:not(:hover) .c15 {
+.c8:not(:hover) .c16 {
   display: none;
 }
 

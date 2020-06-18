@@ -22,6 +22,11 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -106,7 +111,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c23 {
+.c6 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -282,7 +287,7 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c23 {
+.c1 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -290,10 +295,6 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -305,6 +306,10 @@ exports[`Storyshots Creator/Steps/Card Step Active 1`] = `
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -498,6 +503,11 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   color: #6e849a;
 }
 
+.c21 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -582,7 +592,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c25 {
+.c6 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -778,7 +788,7 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c25 {
+.c1 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -786,10 +796,6 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -801,6 +807,10 @@ exports[`Storyshots Creator/Steps/Card Step Connected 1`] = `
 }
 
 .c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1002,6 +1012,11 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1086,7 +1101,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c23 {
+.c6 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1262,7 +1277,7 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c23 {
+.c1 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1270,10 +1285,6 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1285,6 +1296,10 @@ exports[`Storyshots Creator/Steps/Card Step Empty 1`] = `
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1478,6 +1493,11 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   color: #6e849a;
 }
 
+.c21 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1577,7 +1597,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c25 {
+.c6 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1753,7 +1773,7 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c25 {
+.c1 .c26 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1761,10 +1781,6 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1776,6 +1792,10 @@ exports[`Storyshots Creator/Steps/Card Step With Image 1`] = `
 }
 
 .c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1976,6 +1996,11 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2060,7 +2085,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c23 {
+.c6 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2236,7 +2261,7 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c23 {
+.c1 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2244,10 +2269,6 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2259,6 +2280,10 @@ exports[`Storyshots Creator/Steps/Card Step With Label 1`] = `
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -2452,6 +2477,11 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2536,7 +2566,7 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c23 {
+.c6 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2712,7 +2742,7 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c23 {
+.c1 .c24 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2720,10 +2750,6 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2735,6 +2761,10 @@ exports[`Storyshots Creator/Steps/Card Step With Long Label 1`] = `
 }
 
 .c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -2928,6 +2958,11 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   color: #6e849a;
 }
 
+.c18 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3012,7 +3047,7 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c22 {
+.c6 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3143,7 +3178,7 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c22 {
+.c1 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3151,10 +3186,6 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -3166,6 +3197,10 @@ exports[`Storyshots Creator/Steps/Card Step Without Port 1`] = `
 }
 
 .c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 

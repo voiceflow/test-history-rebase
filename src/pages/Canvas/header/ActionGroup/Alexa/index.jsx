@@ -13,9 +13,11 @@ const AlexaActionGroup = (props) => {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
+    const stageState = AlexaPublish.ALEXA_STATES[alexaPublish.stage];
+
     if (alexaPublish.stage === AlexaPublish.ALEXA_STAGES.IDLE) {
       setOpen(false);
-    } else if (AlexaPublish.ALEXA_STATES[alexaPublish.stage].end) {
+    } else if (stageState.end) {
       setOpen(true);
     }
   }, [alexaPublish.stage, alexaPublish.id]);

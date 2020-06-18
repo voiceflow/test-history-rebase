@@ -48,6 +48,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #6e849a;
 }
 
+.c25 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c14 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -132,7 +137,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c20 .c29 {
+.c20 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -185,7 +190,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c9 .c29 {
+.c9 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -370,7 +375,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -378,10 +383,6 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -393,6 +394,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -791,6 +796,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   color: #6e849a;
 }
 
+.c25 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -875,7 +885,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c29 {
+.c19 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -928,7 +938,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c29 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1143,7 +1153,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1151,10 +1161,6 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1166,6 +1172,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1522,6 +1532,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   color: #6e849a;
 }
 
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1583,7 +1598,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c7:not(:first-of-type) {
+.c20 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
@@ -1610,7 +1625,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c24 {
+.c6 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1781,7 +1796,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c24 {
+.c1 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1789,10 +1804,6 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1804,6 +1815,10 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 }
 
 .c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -2018,6 +2033,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   color: #6e849a;
 }
 
+.c23 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2102,7 +2122,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c17 .c27 {
+.c17 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2155,7 +2175,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c27 {
+.c6 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2350,7 +2370,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c27 {
+.c1 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2358,10 +2378,6 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2373,6 +2389,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -2747,6 +2767,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #6e849a;
 }
 
+.c25 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c14 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2831,7 +2856,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c20 .c29 {
+.c20 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2884,7 +2909,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c9 .c29 {
+.c9 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3069,7 +3094,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3077,10 +3102,6 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -3092,6 +3113,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 

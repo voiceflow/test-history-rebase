@@ -12,7 +12,7 @@ import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
-function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
+function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVendor }) {
   const { isViewer } = React.useContext(EditPermissionContext);
   const state = AlexaPublish.ALEXA_STATES[stage];
 
@@ -20,8 +20,12 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
   const multiVendor = vendors.length > 1 && state.end;
 
   const action = () => (state.end ? publish() : setPopup((open) => !open));
-
-  const text = state.end ? 'Upload to Alexa' : 'Uploading';
+  const needsLogin = !amazon;
+  const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
+  let text = state.end ? 'Upload to Alexa' : 'Uploading';
+  if (needsLogin) {
+    text = 'Connect to Alexa';
+  }
 
   return (
     <Tooltip
@@ -53,7 +57,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, updateVendor }) {
           {text}
         </DropdownButton>
       ) : (
-        <UploadButton id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
+        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
           {text}
         </UploadButton>
       )}
@@ -65,6 +69,7 @@ const mapStateToProps = {
   stage: AlexaPublish.publishStageSelector,
   vendors: Account.amazonVendorsSelector,
   vendorID: AlexaPublish.vendorIdSelector,
+  amazon: Account.amazonAccountSelector,
 };
 
 const mapDispatchToProps = {

@@ -12,7 +12,7 @@ import { Identifier } from '@/styles/constants';
 import { STATIC_RESOURCES, StaticResource } from '../../constants';
 import { OptionLabel } from './components';
 
-type Resource = Omit<StaticResource, 'link'> & {
+export type Resource = Omit<StaticResource, 'link'> & {
   link?: string;
   onClick?: () => void;
 };

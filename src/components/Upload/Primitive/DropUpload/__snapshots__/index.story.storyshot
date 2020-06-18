@@ -22,6 +22,11 @@ exports[`Storyshots Upload/Primitive/Drop Normal 1`] = `
   color: #6e849a;
 }
 
+.c9 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   display: -webkit-box;
   display: -webkit-flex;

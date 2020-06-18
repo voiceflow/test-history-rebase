@@ -61,6 +61,11 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   color: #6e849a;
 }
 
+.c25 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -145,7 +150,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c29 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -380,7 +385,7 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -388,10 +393,6 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -403,6 +404,10 @@ exports[`Storyshots Creator/Steps/Payment Step Active 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -738,6 +743,11 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   color: #6e849a;
 }
 
+.c27 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -822,7 +832,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c31 {
+.c6 .c32 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1076,7 +1086,7 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c31 {
+.c1 .c32 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1084,10 +1094,6 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1099,6 +1105,10 @@ exports[`Storyshots Creator/Steps/Payment Step Connected 1`] = `
 }
 
 .c30 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c31 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1411,6 +1421,11 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   color: #6e849a;
 }
 
+.c18 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1495,7 +1510,7 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c22 {
+.c6 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1626,7 +1641,7 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c22 {
+.c1 .c23 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1634,10 +1649,6 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -1649,6 +1660,10 @@ exports[`Storyshots Creator/Steps/Payment Step Empty 1`] = `
 }
 
 .c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
@@ -1877,6 +1892,11 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   color: #6e849a;
 }
 
+.c25 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1961,7 +1981,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c6 .c29 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2196,7 +2216,7 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   pointer-events: none !important;
 }
 
-.c1 .c29 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2204,10 +2224,6 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   z-index: 99;
-}
-
-.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
-  opacity: 1;
 }
 
 .c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
@@ -2219,6 +2235,10 @@ exports[`Storyshots Creator/Steps/Payment Step Filled Product 1`] = `
 }
 
 .c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 

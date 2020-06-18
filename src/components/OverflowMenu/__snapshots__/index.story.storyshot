@@ -68,6 +68,11 @@ exports[`Storyshots Overflow Menu Different Actions For Menu Item 1`] = `
   color: #6e849a;
 }
 
+.c6 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c1 {
   color: rgba(110,132,154,0.85);
 }
@@ -154,6 +159,11 @@ exports[`Storyshots Overflow Menu Same Actions For Menu Item 1`] = `
 
 .c5 .c2 {
   color: #6e849a;
+}
+
+.c6 .c2 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .c1 {

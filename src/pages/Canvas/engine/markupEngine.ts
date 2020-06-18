@@ -40,6 +40,7 @@ class MarkupEngine extends EngineConsumer {
   }
 
   disable() {
+    this.engine.clearActivation();
     this.engine.canvas?.removeClass(CANVAS_MARKUP_ENABLED_CLASSNAME);
     this.log.debug('disable markup tool');
 

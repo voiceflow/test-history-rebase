@@ -8,7 +8,7 @@ import { SubHeaderItem } from '@/pages/Dashboard/Header/components';
 import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
 
 import CanvasSettingsButton from '../ActionGroup/components/CanvasSettingsButton';
-import { SubTitleGroup } from '../ActionGroup/styled';
+import { GroupContainer } from '../ActionGroup/styled';
 import PrototypeTimer from './PrototypeTimer';
 import { SeparatorDot } from './styled';
 
@@ -30,15 +30,15 @@ function PrototypeHeader({ status }: { status: PrototypeStatus }) {
         )}
         <PrototypeTimer />
       </TimerContainer>
-      <SubTitleGroup>
+      <GroupContainer>
         <ResourcesHeaderButton hasShortcuts />
         <SubHeaderItem>
           <CanvasSettingsButton />
         </SubHeaderItem>
-      </SubTitleGroup>
-      <SubTitleGroup>
+      </GroupContainer>
+      <GroupContainer>
         <ShareProject render={false} />
-      </SubTitleGroup>
+      </GroupContainer>
       <UploadProjectButton />
     </>
   );

@@ -564,3 +564,10 @@ export enum TextAlignment {
   RIGHT = 'right',
   CENTER = 'center',
 }
+
+export enum DiagramState {
+  IDLE = 'IDLE',
+  CHANGED = 'CHANGED',
+  SAVING = 'SAVING',
+  SAVED = 'SAVED',
+}

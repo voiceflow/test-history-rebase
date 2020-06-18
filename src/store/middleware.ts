@@ -8,7 +8,7 @@ import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED } from '@/config';
-import { BlockType, NEW_PRODUCT_ID } from '@/constants';
+import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Display from '@/ducks/display';
@@ -26,7 +26,7 @@ import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
-import { AnyAction, Dispatchable, Selector, StoreMiddleware } from './types';
+import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from './types';
 import { storeLogger } from './utils';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
@@ -42,7 +42,17 @@ const createAutosaveMiddleware = <T>(
   blacklist: ActionBlacklist = []
 ): StoreMiddleware => {
   let prevState: T | null = null;
-  const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, (store) => store.dispatch(createSaveAction()));
+  const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, async (store: StoreMiddlewareAPI) => {
+    try {
+      store.dispatch(Creator.setDiagramState(DiagramState.SAVING));
+
+      await store.dispatch(createSaveAction());
+
+      store.dispatch(Creator.setDiagramState(DiagramState.SAVED));
+    } catch {
+      store.dispatch(Creator.setDiagramState(DiagramState.CHANGED));
+    }
+  });
 
   return (store) => (next) => (action) => {
     // eslint-disable-next-line callback-return
@@ -52,7 +62,15 @@ const createAutosaveMiddleware = <T>(
     const currentState = selector(state);
     const activeSkill = Skill.activeSkillSelector(state);
 
-    if (activeSkill && !blacklist.includes(action.type) && !shallowequal(prevState, currentState) && prevState !== null) {
+    if (
+      activeSkill &&
+      !blacklist.includes(action.type) &&
+      !shallowequal(prevState, currentState) &&
+      prevState !== null &&
+      action.type !== Creator.DiagramAction.SET_DIAGRAM_STATE
+    ) {
+      store.dispatch(Creator.setDiagramState(DiagramState.CHANGED));
+
       debouncedSave(store);
     }
 
@@ -95,7 +113,19 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
   const viewers = activeDiagramViewersSelector(store.getState());
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
-  const saveDiagram = () => store.dispatch(Diagram.saveActiveDiagram()).catch((e) => log.warn('failed to save diagram', e));
+
+  const saveDiagram = async () => {
+    try {
+      store.dispatch(Creator.setDiagramState(DiagramState.SAVING));
+
+      await store.dispatch(Diagram.saveActiveDiagram());
+
+      store.dispatch(Creator.setDiagramState(DiagramState.SAVED));
+    } catch (err) {
+      store.dispatch(Creator.setDiagramState(DiagramState.CHANGED));
+      log.warn('failed to save diagram', err);
+    }
+  };
 
   if (action.type === Creator.DiagramAction.SAVE_HISTORY && !action?.meta?.preventUpdate) {
     saveDiagram();

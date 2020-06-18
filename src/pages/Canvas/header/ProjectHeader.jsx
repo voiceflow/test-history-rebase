@@ -4,18 +4,32 @@ import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
 import Button from '@/components/Button';
-import { ModalType, PlatformType } from '@/constants';
-import { activePlatformSelector, activeProjectIDSelector, setActivePlatform } from '@/ducks/skill';
-import { isTemplateWorkspaceSelector } from '@/ducks/workspace';
+import Text from '@/components/Text';
+import { DiagramState, ModalType, PlatformType } from '@/constants';
+import * as Creator from '@/ducks/creator';
+import * as Skill from '@/ducks/skill';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { projectViewerCountSelector } from '@/store/selectors';
 
-import ActionGroup from './ActionGroup';
+import ActionGroup, { GroupContainer } from './ActionGroup';
 import PlatformToggle from './PlatformToggle';
 
-const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplateWorkspace, projectId }) => {
+const getStateLabel = (state) => {
+  switch (state) {
+    case DiagramState.CHANGED:
+    case DiagramState.SAVING:
+      return 'Saving...';
+    case DiagramState.SAVED:
+      return 'Saved';
+    default:
+      return '';
+  }
+};
+
+const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplateWorkspace, projectId, diagramState }) => {
   const hasViewers = projectViewerCount > 1;
   const { isViewer } = React.useContext(EditPermissionContext);
   const toggle = <PlatformToggle platform={platform} onToggle={togglePlatform} disabled={hasViewers || isViewer} />;
@@ -26,31 +40,43 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
     openImportModal({ importToken, cloning: true });
   };
 
+  const ContentContainer = diagramState === DiagramState.IDLE ? React.Fragment : GroupContainer;
+
   return isTemplateWorkspace ? (
     <Button onClick={openCloneModal}>Clone Project</Button>
   ) : (
     <>
-      {hasViewers ? (
-        <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
-          {toggle}
-        </Tooltip>
-      ) : (
-        toggle
-      )}
+      {diagramState === DiagramState.IDLE}
+
+      <Text fontSize={13} color="#8da2b5" mr={24}>
+        {getStateLabel(diagramState)}
+      </Text>
+
+      <ContentContainer>
+        {hasViewers ? (
+          <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
+            {toggle}
+          </Tooltip>
+        ) : (
+          toggle
+        )}
+      </ContentContainer>
+
       <ActionGroup />
     </>
   );
 };
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
+  platform: Skill.activePlatformSelector,
   projectViewerCount: projectViewerCountSelector,
-  isTemplateWorkspace: isTemplateWorkspaceSelector,
-  projectId: activeProjectIDSelector,
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+  projectId: Skill.activeProjectIDSelector,
+  diagramState: Creator.diagramStateSelector,
 };
 
 const mapDispatchToProps = {
-  togglePlatform: setActivePlatform,
+  togglePlatform: Skill.setActivePlatform,
   clearHistory: ActionCreators.clearHistory,
 };
 

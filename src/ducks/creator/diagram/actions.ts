@@ -1,3 +1,4 @@
+import { DiagramState } from '@/constants';
 import { createAction } from '@/ducks/utils';
 import { EntityMap, NodeData, PartialModel, Port } from '@/models';
 import { Action } from '@/store/types';
@@ -26,6 +27,7 @@ export enum DiagramAction {
   REDO_HISTORY = 'CREATOR:HISTORY:REDO',
   SAVE_HISTORY = 'CREATOR:HISTORY:SAVE',
   SET_SECTION_STATE = 'CREATOR:SECTION_STATE:SET',
+  SET_DIAGRAM_STATE = 'CREATOR:DIAGRAM_STATE:SET',
 }
 
 // action types
@@ -79,6 +81,8 @@ export type SaveHistory = Action<DiagramAction.SAVE_HISTORY, null, { force?: boo
 
 export type SetSectionState = Action<DiagramAction.SET_SECTION_STATE, { key: string; value: unknown }>;
 
+export type SetDiagramState = Action<DiagramAction.SET_DIAGRAM_STATE, DiagramState>;
+
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
@@ -98,7 +102,8 @@ export type AnyDiagramAction =
   | UndoHistory
   | RedoHistory
   | SaveHistory
-  | SetSectionState;
+  | SetSectionState
+  | SetDiagramState;
 
 // action creators
 
@@ -156,3 +161,5 @@ export const saveHistory = ({ force, preventUpdate }: { force?: boolean; prevent
   createAction(DiagramAction.SAVE_HISTORY, null, { force, preventUpdate });
 
 export const setSectionState = (key: string, value: unknown): SetSectionState => createAction(DiagramAction.SET_SECTION_STATE, { key, value });
+
+export const setDiagramState = (state: DiagramState): SetDiagramState => createAction(DiagramAction.SET_DIAGRAM_STATE, state);

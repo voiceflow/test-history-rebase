@@ -6,20 +6,22 @@ import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/Resources
 
 import ShareProject from './ShareProject';
 import CanvasSettingsButton from './components/CanvasSettingsButton';
-import { SubTitleGroup } from './styled';
+import { GroupContainer } from './styled';
+
+export { GroupContainer } from './styled';
 
 function ActionGroup() {
   return (
     <>
-      <SubTitleGroup>
+      <GroupContainer>
         <ResourcesHeaderButton hasShortcuts />
         <SubHeaderItem>
           <CanvasSettingsButton />
         </SubHeaderItem>{' '}
-      </SubTitleGroup>
-      <SubTitleGroup>
+      </GroupContainer>
+      <GroupContainer>
         <ShareProject render />
-      </SubTitleGroup>
+      </GroupContainer>
       <UploadProjectButton />
     </>
   );

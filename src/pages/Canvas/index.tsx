@@ -1,16 +1,15 @@
 import React from 'react';
 
-import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import ShortCuts from '@/components/ShortCuts';
 import { DiagramLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
+import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import IntentsModal from '@/pages/Canvas/components/IntentsModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
+import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
 import SettingsModal from '@/pages/Settings';
 import { SettingsModalConsumer } from '@/pages/Settings/contexts';
-import { ShortcutModalConsumer } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -42,15 +41,14 @@ const Canvas: React.FC = () => {
         <Spotlight />
       </Container>
 
-      <ShortcutModalConsumer>
-        {(modal) => <DefaultModal open={modal?.isEnabled} header="Keyboard Shortcuts" toggle={modal?.toggle} content={<ShortCuts />} />}
-      </ShortcutModalConsumer>
-
+      <ShortcutsModal />
       <DisplayPreviewModal />
-
       <SlotEditModal />
       <IntentsModal />
+      <BulkImportSlots />
+      <BulkImportUtterances />
       <InteractionModelModal />
+
       <SettingsModalConsumer>
         {(modal) => <SettingsModal open={modal?.isEnabled} type={modal?.type} toggle={modal?.toggle} setType={modal?.setType} />}
       </SettingsModalConsumer>

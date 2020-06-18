@@ -394,7 +394,13 @@ export enum ModalType {
   CANVAS_EXPORT = 'canvas-export',
   SHARE_MENU = 'share-menu',
 
+  SHORTCUTS = 'shortcuts',
+
+  IMPORT_SLOTS = 'import-slots',
   IMPORT_PROJECT = 'import-project',
+  IMPORT_UTTERANCES = 'import-utterances',
+  IMPORT_BULK_DENIED = 'import-bulk-denied',
+
   LOADING = 'loading',
 }
 
@@ -416,6 +422,7 @@ export enum FEATURE_IDS {
   MARKUP = 'MARKUP',
   COMMENTING = 'COMMENTING',
   EXPORT = 'EXPORT',
+  BULK_UPLOAD = 'BULK_UPLOAD',
 }
 
 export const FEATURE_ROLE_PERMISSIONS = {
@@ -434,6 +441,7 @@ export const FEATURE_PLAN_PERMISSIONS = {
   [FEATURE_IDS.MARKUP]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [FEATURE_IDS.EXPORT]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [FEATURE_IDS.COMMENTING]: [PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.BULK_UPLOAD]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];

@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/sort */
-import AceEditor from 'react-ace';
+import AceEditor, { AceEditorProps as AceEditorBaseProps } from 'react-ace';
 
 import 'brace/ext/language_tools';
 import 'brace/mode/javascript';
@@ -22,13 +22,19 @@ export const ACE_EDITOR_OPTIONS = {
   useWorker: false,
 };
 
+export type AceEditorProps = AceEditorBaseProps & {
+  variant?: string;
+  fullHeight?: boolean;
+  placeholder?: string;
+};
+
 export default styled(AceEditor).attrs({
   fontSize: 13,
   showGutter: true,
   showPrintMargin: false,
   highlightActiveLine: true,
   editorProps: { $blockScrolling: true },
-})`
+})<AceEditorProps>`
   ${({ fullHeight }) =>
     fullHeight &&
     css`
@@ -45,11 +51,13 @@ export default styled(AceEditor).attrs({
 
     border-radius: 7px;
   }
+
   .ace_scroller {
     &.ace_scroll-left {
       box-shadow: none;
     }
   }
+
   .ace_gutter-active-line {
     margin-top: 0;
   }

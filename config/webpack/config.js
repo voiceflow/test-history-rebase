@@ -23,6 +23,7 @@ const {
   ff_gadgets,
   ff_promptEditor,
   ff_commenting,
+  ff_bulkUpload,
 } = require('webpack-nano/argv');
 
 const { NODE_ENV } = process.env;
@@ -67,6 +68,7 @@ module.exports = {
     FF_GADGETS: ff_gadgets && 'true',
     FF_PROMPT_EDITOR: ff_promptEditor && 'true',
     FF_COMMENTING: ff_commenting && 'true',
+    FF_BULK_UPLOAD: ff_bulkUpload && 'true',
 
     API_HOST: 'localhost',
     ...ENV,

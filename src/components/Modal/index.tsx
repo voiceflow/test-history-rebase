@@ -7,6 +7,8 @@ import { useModals } from '@/hooks';
 
 import { Container, Content, Header, Root } from './components';
 
+export { Body as ModalBody, Footer as ModalFooter } from './components';
+
 export type ModalProps = {
   id: ModalType;
   title: React.ReactNode;

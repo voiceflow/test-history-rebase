@@ -6,17 +6,22 @@ import ChatWithUsLink from '@/components/ChatLink';
 import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import ListManager from '@/components/ListManager';
 import { SectionToggleVariant } from '@/components/Section';
+import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 import Utterance from '@/components/Utterance';
-import { ModalType } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { FEATURE_IDS, ModalType } from '@/constants';
+import { usePermissions } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable, useModals } from '@/hooks';
+import { useEnableDisable, useFeature, useModals } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { stopPropagation } from '@/utils/dom';
+import { validateUtterance } from '@/utils/intent';
 
 import ListManagerWrapper from '../../ListManagerWrapper';
-import { validateUtterance } from '../utils';
 import UtterancesTooltip from './UtterancesTooltip';
 
 function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNested }) {
@@ -24,15 +29,19 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
 
   const utteranceRef = React.useRef();
 
+  const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
+  const [canBulkUpload] = usePermissions(FEATURE_IDS.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
-  const { toggle: toggleSlotEdit, close: closeSlotEdit } = useModals(ModalType.SLOT_EDIT);
+  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
+  const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
 
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
 
   const onAddSlot = React.useCallback(
-    (name) => {
-      return new Promise((resolve) => {
+    (name) =>
+      new Promise((resolve) => {
         toggleSlotEdit(
           {
             name,
@@ -49,14 +58,14 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
           },
           () => resolve()
         );
-      });
-    },
-    [toggleSlotEdit, closeSlotEdit, addSlot]
+      }),
+    []
   );
 
   const addValidation = React.useCallback(
     ({ text }) => {
-      const error = validateUtterance(text, intents, intentID);
+      const error = validateUtterance(text, intentID, intents);
+
       if (error) {
         setInvalidUtterance();
       } else {
@@ -67,11 +76,30 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
     [intentID, intents, setInvalidUtterance, setValidUtterance]
   );
 
+  const onBulkUploadClick = () => {
+    if (canBulkUpload) {
+      openUtterancesBulkUploadModal({
+        intentID,
+        onUpload: (utterances) => onUpdateUtterances([...intent.inputs, ...utterances]),
+      });
+    } else {
+      openImportBulkDeniedModal();
+    }
+  };
+
   return (
     <EditorSection
+      skipRerender={slotEditOpen}
       namespace="utterances"
       header="Utterances"
       initialOpen={intent.inputs.length === 0}
+      infix={
+        bulkUploadFeature.isEnabled ? (
+          <TippyTooltip title="Bulk Import">
+            <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+          </TippyTooltip>
+        ) : null
+      }
       count={intent.inputs.length}
       tooltip={<UtterancesTooltip />}
       headerToggle

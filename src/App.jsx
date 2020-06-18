@@ -22,6 +22,7 @@ import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import {
   CanvasExportModal,
+  ImportBulkDeniedModal,
   ProjectDownloadModal,
   ProjectLimitModal,
   RealtimeDeniedModal,
@@ -60,6 +61,7 @@ const App = () => {
       <CanvasExportModal />
       <ProjectLimitModal />
       <RealtimeDeniedModal />
+      <ImportBulkDeniedModal />
       <BillingModal />
       <PaymentModal />
     </>

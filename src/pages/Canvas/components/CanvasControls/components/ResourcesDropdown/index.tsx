@@ -3,10 +3,10 @@ import React from 'react';
 import IconButton from '@/components/IconButton';
 import Select from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
+import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
+import { useEnableDisable, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { ShortcutModalContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 
 import { STATIC_RESOURCES, StaticResource } from '../../constants';
@@ -19,8 +19,8 @@ export type Resource = Omit<StaticResource, 'link'> & {
 
 const ResourcesDropdown: React.FC = () => {
   const [trackEvents] = useTrackingEvents();
+  const { open: openShortcutModal } = useModals(ModalType.SHORTCUTS);
   const [isOpen, onOpen, onClose] = useEnableDisable(false);
-  const shortcutModal = React.useContext(ShortcutModalContext)!;
 
   const resources: Resource[] = React.useMemo(
     () => [
@@ -28,11 +28,11 @@ const ResourcesDropdown: React.FC = () => {
       {
         icon: 'shortcuts',
         label: 'Shortcuts',
-        onClick: shortcutModal.toggle,
+        onClick: openShortcutModal,
         resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,
       } as Resource,
     ],
-    [shortcutModal.toggle]
+    [openShortcutModal]
   );
 
   const onSelect = React.useCallback(

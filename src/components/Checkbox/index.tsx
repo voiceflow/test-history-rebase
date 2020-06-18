@@ -13,6 +13,7 @@ export type CheckboxProps = Assign<
   {
     type?: CheckboxType;
     error?: boolean;
+    isFlat?: boolean;
   }
 >;
 
@@ -24,6 +25,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   disabled,
   className,
   color = CheckboxColor.DEFAULT,
+  isFlat,
   ...props
 }) => {
   // eslint-disable-next-line no-nested-ternary
@@ -32,7 +34,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   const icon = type === CheckboxType.CHECKBOX ? (checked ? 'checked' : 'emptyCheckbox') : checked ? 'onRadioButton' : 'offRadioButton';
 
   return (
-    <Container disabled={disabled} className={className}>
+    <Container isFlat={isFlat} disabled={disabled} className={className}>
       <ButtonContainer>
         <Button type={type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
         <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />

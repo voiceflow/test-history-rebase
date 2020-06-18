@@ -1,6 +1,7 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 type CheckBoxContainerProps = {
+  isFlat?: boolean;
   disabled?: boolean;
 };
 
@@ -13,6 +14,13 @@ const CheckBoxContainer = styled.label<CheckBoxContainerProps>`
   text-align: left;
   user-select: none;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+
+  ${({ isFlat }) =>
+    isFlat &&
+    css`
+      color: #132144 !important;
+      font-weight: normal !important;
+    `}
 `;
 
 export default CheckBoxContainer;

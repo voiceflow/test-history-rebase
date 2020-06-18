@@ -246,6 +246,7 @@ yarn start --ff_someFeature
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
 - `ff_repromptEditor` / `VF_APP_FF_REPROMPT_EDITOR`: enable reprompt editor
 - `ff_commenting` / `VF_APP_FF_COMMENTING`: commenting
+- `ff_bulkUpload` / `VF_APP_FF_BULK_UPLOAD`: slots and utterances bulk upload
 
 ## Previewing in an ephmeral environment
 

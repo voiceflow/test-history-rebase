@@ -3,10 +3,11 @@ import React from 'react';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import Select from '@/components/Select';
 import SvgIcon, { Icon } from '@/components/SvgIcon';
+import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
+import { useModals } from '@/hooks';
 import { OptionLabel } from '@/pages/Canvas/components/CanvasControls/components/ResourcesDropdown/components';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
-import { ShortcutModalContext } from '@/pages/Skill/contexts';
 
 const SelectComponent: React.FC<any> = Select;
 
@@ -24,7 +25,7 @@ export type Resource = Omit<StaticResource, 'link'> & {
 };
 
 const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
-  const shortcutModal = React.useContext(ShortcutModalContext)!;
+  const shortcutModal = useModals(ModalType.SHORTCUTS);
   const dropdownOptions = hasShortcuts
     ? [
         ...STATIC_RESOURCES,

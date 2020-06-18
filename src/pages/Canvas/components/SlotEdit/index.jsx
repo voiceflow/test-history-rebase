@@ -11,13 +11,17 @@ import Section from '@/components/Section';
 import Select from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
+import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
-import { CUSTOM_SLOT_TYPE, SLOT_COLORS } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
 import * as Slot from '@/ducks/slot';
+import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks/lifecycle';
+import { useDidUpdateEffect, useFeature, useModals } from '@/hooks';
 import { activeSlotTypes } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
+import { stopPropagation } from '@/utils/dom';
 import { formatIntentName } from '@/utils/intent';
 
 import { ColorSelector, SlotTag } from './components';
@@ -29,15 +33,16 @@ const FlexModalFooter = styled(ModalFooter)`
   flex-direction: row-reverse;
 `;
 
-const generateEmptyLineItem = () => ({
+const generateLineItem = (value = '', synonyms = '') => ({
   id: cuid.slug(),
-  value: '',
-  synonyms: '',
+  value,
+  synonyms,
 });
 
 function SlotEdit({
   id,
   name = '',
+  plan,
   type,
   color = _sample(SLOT_COLORS),
   inputs = [],
@@ -50,6 +55,11 @@ function SlotEdit({
   intentsUsingSlot,
 }) {
   const isDeleteable = !isCreate && !!onDelete;
+
+  const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
+  const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
+
+  const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(type);
   const [slotName, setSlotName] = React.useState(name);
@@ -91,7 +101,7 @@ function SlotEdit({
   };
 
   const addCustomLine = () => {
-    setCustomLines([...customLines, generateEmptyLineItem()]);
+    setCustomLines([...customLines, generateLineItem()]);
   };
 
   const removeCustomLine = (index) => {
@@ -108,6 +118,18 @@ function SlotEdit({
     }
     if (type !== CUSTOM_SLOT_TYPE && !notEmptyValues) {
       setCustomLines([]);
+    }
+  };
+
+  const onBulkUploadClick = () => {
+    if ([PlanType.OLD_STARTER, PlanType.STARTER].includes(plan)) {
+      openImportBulkDeniedModal();
+    } else {
+      openSlotsBulkUploadModal({
+        values: customLines.map(({ value }) => value),
+        onUpload: (slots) =>
+          setCustomLines((prevLines) => [...prevLines, ...slots.map(([slot, ...synonyms]) => generateLineItem(slot, synonyms.join(', ')))]),
+      });
     }
   };
 
@@ -152,7 +174,18 @@ function SlotEdit({
         </FlexApart>
       </Section>
 
-      <Section dividers={false} variant="tertiary" header="Slot Type">
+      <Section
+        dividers={false}
+        variant="tertiary"
+        header="Slot Type"
+        infix={
+          bulkUploadFeature.isEnabled ? (
+            <TippyTooltip title="Bulk Import">
+              <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+            </TippyTooltip>
+          ) : null
+        }
+      >
         <Select
           value={slotType}
           onBlur={isInteraction && updateSlot}
@@ -202,6 +235,7 @@ function SlotEdit({
   );
 }
 const mapStateToProps = {
+  plan: Workspace.planTypeSelector,
   slotTypes: activeSlotTypes,
   intentsUsingSlot: Slot.intentsUsingSlotSelector,
 };

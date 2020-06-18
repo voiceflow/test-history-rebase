@@ -43,10 +43,12 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
-  const { isCreating: isMarkupCreating, modeType: markupModeType } = React.useContext(MarkupModeContext)!;
+  const { isCreating: isMarkupCreating, modeType: markupModeType, isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
   const { isOpen: commentingEnabled } = React.useContext(CommentModeContext);
 
-  const showSpotlight = React.useCallback(() => canEdit && spotlight.toggle(), [canEdit]);
+  const disableSpotlight = !canEdit || markupOpen;
+
+  const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
   const deleteActive = React.useCallback<Callback>(() => canEdit && engine.removeActive(), [canEdit]);
   const addComment = React.useCallback<Callback>(async () => {
     const position = engine.getCanvasMousePosition();

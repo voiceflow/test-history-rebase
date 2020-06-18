@@ -1,54 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Start Block Alexa 1`] = `
-.c5 {
+.c6 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c5 > svg {
+.c6 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5589eb;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c22 .c4 {
+.c23 .c5 {
   color: #fff;
 }
 
-.c23 .c4 {
+.c24 .c5 {
   color: #6e849a;
 }
 
-.c13 {
+.c25 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,7 +74,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   align-self: start;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -84,7 +89,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   width: 100%;
 }
 
-.c10 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -99,7 +104,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   width: 100%;
 }
 
-.c10 .c11:not(:first-of-type)::before {
+.c11 .c12:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -109,7 +114,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,11 +133,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c19 .c9:not(:first-of-type) {
+.c20 .c10:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c24 {
+.c20 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -142,27 +147,27 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c19,
-.vf-canvas__step.vf-canvas__node--highlighted .c19 {
+.vf-canvas__step.vf-canvas__node--active .c20,
+.vf-canvas__step.vf-canvas__node--highlighted .c20 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c19:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c20:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c19 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c20 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c19 {
+.vf-canvas__block.vf-canvas__node--merge-target .c20 {
   z-index: -1;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -181,11 +186,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c8 .c9:not(:first-of-type) {
+.c9 .c10:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c8 .c24 {
+.c9 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -195,22 +200,22 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c8:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c9:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c8 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c9 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c8 {
+.vf-canvas__block.vf-canvas__node--merge-target .c9 {
   z-index: -1;
 }
 
-.c15 {
+.c16 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -220,13 +225,13 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #132144;
 }
 
-.c16 {
+.c17 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c21 {
+.c22 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -236,11 +241,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   display: inline-flex;
 }
 
-.c21:hover {
+.c22:hover {
   color: #4d8de6;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -252,17 +257,17 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   cursor: copy;
 }
 
-.vf-canvas--commenting .c17 {
+.vf-canvas--commenting .c18 {
   cursor: crosshair;
 }
 
-.vf-canvas--merging .c17,
-.vf-canvas--selecting-group .c17,
-.vf-canvas__node--disabled .c17 {
+.vf-canvas--merging .c18,
+.vf-canvas--selecting-group .c18,
+.vf-canvas__node--disabled .c18 {
   cursor: inherit;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -280,16 +285,16 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   border: 4px solid white;
 }
 
-.c17.vf-canvas__port--highlighted::before {
+.c18.vf-canvas__port--highlighted::before {
   box-shadow: 0 0 0 1px #5d9df5;
   background-color: #5d9df5;
 }
 
-.c7:not(:last-of-type) {
+.c8:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -304,11 +309,11 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -322,55 +327,55 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c24 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -380,7 +385,23 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   z-index: 99;
 }
 
-.c18 {
+.c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -397,7 +418,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   text-overflow: ellipsis;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -415,17 +436,17 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   padding: 0 42px;
 }
 
-.c6 {
+.c7 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c6,
-.vf-canvas--selecting-group .c6,
-.vf-canvas--creating-link .c6 {
+.vf-canvas--merging .c7,
+.vf-canvas--selecting-group .c7,
+.vf-canvas--creating-link .c7 {
   pointer-events: none;
 }
 
-.c6 input {
+.c7 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -449,42 +470,42 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
   color: #62778c;
 }
 
-.c6 input:active {
+.c7 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c6 input {
+.vf-canvas--commenting .c7 input {
   cursor: crosshair;
 }
 
-.c6 .vf-canvas__node--active input {
+.c7 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c3 {
+.c4 {
   position: absolute;
   left: 0;
   padding: 0 5px;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block vf-canvas__block--home"
+  className="c0 c1 vf-canvas__block vf-canvas__block--home"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3"
+        className="c4"
       >
         <span
-          className="c4 c5"
+          className="c5 c6"
           color="#6e849a"
           size={16}
         >
@@ -494,7 +515,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         </span>
       </div>
       <div
-        className="c6 vf-canvas__block__section__title"
+        className="c7 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -537,7 +558,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     </div>
     <section>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -548,20 +569,20 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c8"
+          className="c9"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c14"
+                  className="c5 c15"
                   color="#5589eb"
                   size={16}
                 >
@@ -571,16 +592,16 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c16"
+                  className="c17"
                 >
                   Alexa, open Headspace
                 </div>
               </span>
               <div
-                className="c17 vf-canvas__port"
+                className="c18 vf-canvas__port"
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
               />
@@ -591,13 +612,13 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c18"
+      className="c19"
     >
       <div
-        className="c6 vf-canvas__block__section__title"
+        className="c7 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -640,7 +661,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
     </div>
     <section>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -651,20 +672,20 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c20"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c20"
+                  className="c5 c21"
                   color="#3c6997"
                   size={16}
                 >
@@ -674,10 +695,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Help
@@ -688,7 +709,7 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         </div>
       </div>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -699,20 +720,20 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c20"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c20"
+                  className="c5 c21"
                   color="#3c6997"
                   size={16}
                 >
@@ -722,10 +743,10 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Stop
@@ -741,41 +762,46 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c19 {
+.c20 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c19 > svg {
+.c20 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c22 .c11 {
+.c23 .c12 {
   color: #fff;
 }
 
-.c23 .c11 {
+.c24 .c12 {
   color: #6e849a;
 }
 
-.c10 {
+.c25 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -796,7 +822,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   align-self: start;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -811,7 +837,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   width: 100%;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -826,7 +852,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   width: 100%;
 }
 
-.c7 .c8:not(:first-of-type)::before {
+.c8 .c9:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -836,7 +862,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -855,11 +881,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c19 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c24 {
+.c19 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -869,27 +895,27 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c18,
-.vf-canvas__step.vf-canvas__node--highlighted .c18 {
+.vf-canvas__step.vf-canvas__node--active .c19,
+.vf-canvas__step.vf-canvas__node--highlighted .c19 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c18:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c19:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c18 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c19 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c18 {
+.vf-canvas__block.vf-canvas__node--merge-target .c19 {
   z-index: -1;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -908,11 +934,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c5 .c6:not(:first-of-type) {
+.c6 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c24 {
+.c6 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -922,22 +948,22 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c6:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c6 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+.vf-canvas__block.vf-canvas__node--merge-target .c6 {
   z-index: -1;
 }
 
-.c20 {
+.c21 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -947,7 +973,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   color: #132144;
 }
 
-.c13 {
+.c14 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -957,13 +983,13 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c21 {
+.c22 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -973,11 +999,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   display: inline-flex;
 }
 
-.c21:hover {
+.c22:hover {
   color: #4d8de6;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -989,17 +1015,17 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   cursor: copy;
 }
 
-.vf-canvas--commenting .c15 {
+.vf-canvas--commenting .c16 {
   cursor: crosshair;
 }
 
-.vf-canvas--merging .c15,
-.vf-canvas--selecting-group .c15,
-.vf-canvas__node--disabled .c15 {
+.vf-canvas--merging .c16,
+.vf-canvas--selecting-group .c16,
+.vf-canvas__node--disabled .c16 {
   cursor: inherit;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1016,19 +1042,19 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   background: linear-gradient(to bottom,#62778c1f,#62778c3d 100%);
 }
 
-.c15.vf-canvas__port--highlighted::before {
+.c16.vf-canvas__port--highlighted::before {
   box-shadow: 0 0 0 1px #5d9df5;
   background: linear-gradient(to bottom,#5d9df51f,#5d9df53d 100%);
 }
 
-.c16 {
+.c17 {
   position: absolute;
   right: -14px;
   width: 13px;
   height: 4px;
 }
 
-.c17 {
+.c18 {
   stroke: rgb(141,162,181);
   stroke-width: 1.5px;
   fill: transparent;
@@ -1038,15 +1064,15 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   transform: translateY(-2px);
 }
 
-.vf-canvas__link--highlighted .c17 {
+.vf-canvas__link--highlighted .c18 {
   stroke: #2c85ff;
 }
 
-.c4:not(:last-of-type) {
+.c5:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1061,11 +1087,11 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1079,55 +1105,55 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c24 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1137,7 +1163,23 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1154,17 +1196,17 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1188,33 +1230,33 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block vf-canvas__block--flow"
+  className="c0 c1 vf-canvas__block vf-canvas__block--flow"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1257,7 +1299,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1268,20 +1310,20 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c6"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c12"
+                  className="c12 c13"
                   color="#279745"
                   size={16}
                 >
@@ -1291,24 +1333,24 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
                 </span>
               </div>
               <span
-                className="c13"
+                className="c14"
               >
                 <div
-                  className="c14"
+                  className="c15"
                 >
                   Conversation continues here
                 </div>
               </span>
               <div
-                className="c15 vf-canvas__port"
+                className="c16 vf-canvas__port"
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
               />
               <svg
-                className="c16"
+                className="c17"
               >
                 <path
-                  className="c17"
+                  className="c18"
                   d="M 0 4 L 13 4"
                 />
               </svg>
@@ -1319,13 +1361,13 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1368,7 +1410,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1379,20 +1421,20 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c18"
+          className="c19"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c19"
+                  className="c12 c20"
                   color="#3c6997"
                   size={16}
                 >
@@ -1402,10 +1444,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
                 </span>
               </div>
               <span
-                className="c20"
+                className="c21"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Help
@@ -1416,7 +1458,7 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         </div>
       </div>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1427,20 +1469,20 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c18"
+          className="c19"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c19"
+                  className="c12 c20"
                   color="#3c6997"
                   size={16}
                 >
@@ -1450,10 +1492,10 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
                 </span>
               </div>
               <span
-                className="c20"
+                className="c21"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Stop
@@ -1469,28 +1511,33 @@ exports[`Storyshots Creator/Start Block Flow Connected 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c16 .c11 {
+.c17 .c12 {
   color: #fff;
 }
 
-.c17 .c11 {
+.c18 .c12 {
   color: #6e849a;
 }
 
-.c10 {
+.c19 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1511,7 +1558,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   align-self: start;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1526,7 +1573,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   width: 100%;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1541,7 +1588,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   width: 100%;
 }
 
-.c7 .c8:not(:first-of-type)::before {
+.c8 .c9:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -1551,11 +1598,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c18 .c6:not(:first-of-type) {
+.c20 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1574,11 +1621,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c5 .c6:not(:first-of-type) {
+.c6 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c19 {
+.c6 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1588,22 +1635,22 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   z-index: 99;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c6:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c6 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+.vf-canvas__block.vf-canvas__node--merge-target .c6 {
   z-index: -1;
 }
 
-.c13 {
+.c14 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1613,13 +1660,13 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -1631,17 +1678,17 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   cursor: copy;
 }
 
-.vf-canvas--commenting .c15 {
+.vf-canvas--commenting .c16 {
   cursor: crosshair;
 }
 
-.vf-canvas--merging .c15,
-.vf-canvas--selecting-group .c15,
-.vf-canvas__node--disabled .c15 {
+.vf-canvas--merging .c16,
+.vf-canvas--selecting-group .c16,
+.vf-canvas__node--disabled .c16 {
   cursor: inherit;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -1659,16 +1706,16 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   border: 4px solid white;
 }
 
-.c15.vf-canvas__port--highlighted::before {
+.c16.vf-canvas__port--highlighted::before {
   box-shadow: 0 0 0 1px #5d9df5;
   background-color: #5d9df5;
 }
 
-.c4:not(:last-of-type) {
+.c5:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1683,11 +1730,11 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1701,55 +1748,55 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c19 {
+.c1 .c25 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1759,7 +1806,23 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c21 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c22 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c23 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1776,17 +1839,17 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1810,33 +1873,33 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block vf-canvas__block--flow"
+  className="c0 c1 vf-canvas__block vf-canvas__block--flow"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1879,7 +1942,7 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -1890,20 +1953,20 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c6"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c12"
+                  className="c12 c13"
                   color="#279745"
                   size={16}
                 >
@@ -1913,16 +1976,16 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
                 </span>
               </div>
               <span
-                className="c13"
+                className="c14"
               >
                 <div
-                  className="c14"
+                  className="c15"
                 >
                   Conversation continues here
                 </div>
               </span>
               <div
-                className="c15 vf-canvas__port"
+                className="c16 vf-canvas__port"
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
               />
@@ -1936,41 +1999,46 @@ exports[`Storyshots Creator/Start Block Flow Start Block 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
-.c12 {
+.c13 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c12 > svg {
+.c13 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c17 {
+.c18 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c17 > svg {
+.c18 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 .c11 {
+.c21 .c12 {
   color: #fff;
 }
 
-.c21 .c11 {
+.c22 .c12 {
   color: #6e849a;
 }
 
-.c10 {
+.c23 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1991,7 +2059,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   align-self: start;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2006,7 +2074,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   width: 100%;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2021,7 +2089,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   width: 100%;
 }
 
-.c7 .c8:not(:first-of-type)::before {
+.c8 .c9:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2031,7 +2099,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c16 {
+.c17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2050,11 +2118,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c16 .c6:not(:first-of-type) {
+.c17 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c16 .c22 {
+.c17 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2064,27 +2132,27 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c16,
-.vf-canvas__step.vf-canvas__node--highlighted .c16 {
+.vf-canvas__step.vf-canvas__node--active .c17,
+.vf-canvas__step.vf-canvas__node--highlighted .c17 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c16:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c17:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c16 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c17 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c16 {
+.vf-canvas__block.vf-canvas__node--merge-target .c17 {
   z-index: -1;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2103,11 +2171,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c5 .c6:not(:first-of-type) {
+.c6 .c7:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c5 .c22 {
+.c6 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2117,22 +2185,22 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c5:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c6:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c5 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c6 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c5 {
+.vf-canvas__block.vf-canvas__node--merge-target .c6 {
   z-index: -1;
 }
 
-.c18 {
+.c19 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2142,7 +2210,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   color: #132144;
 }
 
-.c13 {
+.c14 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2152,13 +2220,13 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   color: #62778c;
 }
 
-.c14 {
+.c15 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c19 {
+.c20 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2168,11 +2236,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   display: inline-flex;
 }
 
-.c19:hover {
+.c20:hover {
   color: #4d8de6;
 }
 
-.c15 {
+.c16 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -2184,17 +2252,17 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   cursor: copy;
 }
 
-.vf-canvas--commenting .c15 {
+.vf-canvas--commenting .c16 {
   cursor: crosshair;
 }
 
-.vf-canvas--merging .c15,
-.vf-canvas--selecting-group .c15,
-.vf-canvas__node--disabled .c15 {
+.vf-canvas--merging .c16,
+.vf-canvas--selecting-group .c16,
+.vf-canvas__node--disabled .c16 {
   cursor: inherit;
 }
 
-.c15::before {
+.c16::before {
   position: absolute;
   display: block;
   content: '';
@@ -2212,16 +2280,16 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   border: 4px solid white;
 }
 
-.c15.vf-canvas__port--highlighted::before {
+.c16.vf-canvas__port--highlighted::before {
   box-shadow: 0 0 0 1px #5d9df5;
   background-color: #5d9df5;
 }
 
-.c4:not(:last-of-type) {
+.c5:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2236,11 +2304,11 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2254,55 +2322,55 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c22 {
+.c1 .c28 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2312,7 +2380,23 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c24 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c25 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2329,17 +2413,17 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -2363,33 +2447,33 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block vf-canvas__block--flow"
+  className="c0 c1 vf-canvas__block vf-canvas__block--flow"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2432,7 +2516,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2443,20 +2527,20 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c5"
+          className="c6"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c12"
+                  className="c12 c13"
                   color="#279745"
                   size={16}
                 >
@@ -2466,16 +2550,16 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
                 </span>
               </div>
               <span
-                className="c13"
+                className="c14"
               >
                 <div
-                  className="c14"
+                  className="c15"
                 >
                   Conversation continues here
                 </div>
               </span>
               <div
-                className="c15 vf-canvas__port"
+                className="c16 vf-canvas__port"
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
               />
@@ -2486,13 +2570,13 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2535,7 +2619,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
     </div>
     <section>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2546,20 +2630,20 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c16"
+          className="c17"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c17"
+                  className="c12 c18"
                   color="#3c6997"
                   size={16}
                 >
@@ -2569,10 +2653,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
                 </span>
               </div>
               <span
-                className="c18"
+                className="c19"
               >
                 <div
-                  className="c19"
+                  className="c20"
                   onClick={[Function]}
                 >
                   Help
@@ -2583,7 +2667,7 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         </div>
       </div>
       <div
-        className="c4 vf-canvas__step"
+        className="c5 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -2594,20 +2678,20 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c16"
+          className="c17"
           draggable={false}
         >
           <section
-            className="c6 c7"
+            className="c7 c8"
           >
             <div
-              className="c8 c9"
+              className="c9 c10"
             >
               <div
-                className="c10"
+                className="c11"
               >
                 <span
-                  className="c11 c17"
+                  className="c12 c18"
                   color="#3c6997"
                   size={16}
                 >
@@ -2617,10 +2701,10 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
                 </span>
               </div>
               <span
-                className="c18"
+                className="c19"
               >
                 <div
-                  className="c19"
+                  className="c20"
                   onClick={[Function]}
                 >
                   Stop
@@ -2636,54 +2720,59 @@ exports[`Storyshots Creator/Start Block Flow With Commands 1`] = `
 `;
 
 exports[`Storyshots Creator/Start Block Google 1`] = `
-.c5 {
+.c6 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c5 > svg {
+.c6 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c20 {
+.c21 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3c6997;
 }
 
-.c20 > svg {
+.c21 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c14 {
+.c15 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5589eb;
 }
 
-.c14 > svg {
+.c15 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c22 .c4 {
+.c23 .c5 {
   color: #fff;
 }
 
-.c23 .c4 {
+.c24 .c5 {
   color: #6e849a;
 }
 
-.c13 {
+.c25 .c5 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2704,7 +2793,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   align-self: start;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2719,7 +2808,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   width: 100%;
 }
 
-.c10 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2734,7 +2823,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   width: 100%;
 }
 
-.c10 .c11:not(:first-of-type)::before {
+.c11 .c12:not(:first-of-type)::before {
   position: absolute;
   top: -1px;
   height: 1px;
@@ -2744,7 +2833,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border-top: 1px solid #eaeff4;
 }
 
-.c19 {
+.c20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2763,11 +2852,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c19 .c9:not(:first-of-type) {
+.c20 .c10:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c19 .c24 {
+.c20 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2777,27 +2866,27 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c19,
-.vf-canvas__step.vf-canvas__node--highlighted .c19 {
+.vf-canvas__step.vf-canvas__node--active .c20,
+.vf-canvas__step.vf-canvas__node--highlighted .c20 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c19:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c20:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c19 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c20 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c19 {
+.vf-canvas__block.vf-canvas__node--merge-target .c20 {
   z-index: -1;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2816,11 +2905,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c8 .c9:not(:first-of-type) {
+.c9 .c10:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c8 .c24 {
+.c9 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2830,22 +2919,22 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c8:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c9:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c8 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c9 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c8 {
+.vf-canvas__block.vf-canvas__node--merge-target .c9 {
   z-index: -1;
 }
 
-.c15 {
+.c16 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2855,13 +2944,13 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #132144;
 }
 
-.c16 {
+.c17 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.c21 {
+.c22 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2871,11 +2960,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   display: inline-flex;
 }
 
-.c21:hover {
+.c22:hover {
   color: #4d8de6;
 }
 
-.c17 {
+.c18 {
   position: relative;
   height: 54px;
   width: 42px;
@@ -2887,17 +2976,17 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   cursor: copy;
 }
 
-.vf-canvas--commenting .c17 {
+.vf-canvas--commenting .c18 {
   cursor: crosshair;
 }
 
-.vf-canvas--merging .c17,
-.vf-canvas--selecting-group .c17,
-.vf-canvas__node--disabled .c17 {
+.vf-canvas--merging .c18,
+.vf-canvas--selecting-group .c18,
+.vf-canvas__node--disabled .c18 {
   cursor: inherit;
 }
 
-.c17::before {
+.c18::before {
   position: absolute;
   display: block;
   content: '';
@@ -2915,16 +3004,16 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   border: 4px solid white;
 }
 
-.c17.vf-canvas__port--highlighted::before {
+.c18.vf-canvas__port--highlighted::before {
   box-shadow: 0 0 0 1px #5d9df5;
   background-color: #5d9df5;
 }
 
-.c7:not(:last-of-type) {
+.c8:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2939,11 +3028,11 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2957,55 +3046,55 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c24 {
+.c1 .c30 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3015,7 +3104,23 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   z-index: 99;
 }
 
-.c18 {
+.c26 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c27 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c28 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c29 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3032,7 +3137,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   text-overflow: ellipsis;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3050,17 +3155,17 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   padding: 0 42px;
 }
 
-.c6 {
+.c7 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c6,
-.vf-canvas--selecting-group .c6,
-.vf-canvas--creating-link .c6 {
+.vf-canvas--merging .c7,
+.vf-canvas--selecting-group .c7,
+.vf-canvas--creating-link .c7 {
   pointer-events: none;
 }
 
-.c6 input {
+.c7 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -3084,42 +3189,42 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
   color: #62778c;
 }
 
-.c6 input:active {
+.c7 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c6 input {
+.vf-canvas--commenting .c7 input {
   cursor: crosshair;
 }
 
-.c6 .vf-canvas__node--active input {
+.c7 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c3 {
+.c4 {
   position: absolute;
   left: 0;
   padding: 0 5px;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
 <div
-  className="c0 vf-canvas__block vf-canvas__block--home"
+  className="c0 c1 vf-canvas__block vf-canvas__block--home"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3"
+        className="c4"
       >
         <span
-          className="c4 c5"
+          className="c5 c6"
           color="#6e849a"
           size={16}
         >
@@ -3129,7 +3234,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         </span>
       </div>
       <div
-        className="c6 vf-canvas__block__section__title"
+        className="c7 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3172,7 +3277,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     </div>
     <section>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -3183,20 +3288,20 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c8"
+          className="c9"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c14"
+                  className="c5 c15"
                   color="#5589eb"
                   size={16}
                 >
@@ -3206,16 +3311,16 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c16"
+                  className="c17"
                 >
                   Hey Google, start Headspace
                 </div>
               </span>
               <div
-                className="c17 vf-canvas__port"
+                className="c18 vf-canvas__port"
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
               />
@@ -3226,13 +3331,13 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c18"
+      className="c19"
     >
       <div
-        className="c6 vf-canvas__block__section__title"
+        className="c7 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3275,7 +3380,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
     </div>
     <section>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -3286,20 +3391,20 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c20"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c20"
+                  className="c5 c21"
                   color="#3c6997"
                   size={16}
                 >
@@ -3309,10 +3414,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Help
@@ -3323,7 +3428,7 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         </div>
       </div>
       <div
-        className="c7 vf-canvas__step"
+        className="c8 vf-canvas__step"
         onClick={[Function]}
         onContextMenu={[Function]}
         onDoubleClick={[Function]}
@@ -3334,20 +3439,20 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
         onMouseUp={[Function]}
       >
         <div
-          className="c19"
+          className="c20"
           draggable={false}
         >
           <section
-            className="c9 c10"
+            className="c10 c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
             >
               <div
-                className="c13"
+                className="c14"
               >
                 <span
-                  className="c4 c20"
+                  className="c5 c21"
                   color="#3c6997"
                   size={16}
                 >
@@ -3357,10 +3462,10 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
                 </span>
               </div>
               <span
-                className="c15"
+                className="c16"
               >
                 <div
-                  className="c21"
+                  className="c22"
                   onClick={[Function]}
                 >
                   Stop

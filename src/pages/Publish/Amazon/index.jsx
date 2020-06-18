@@ -13,7 +13,6 @@ export function PublishAmazon(props) {
   const { stage, amazon, isLocked, checkAmazonAccount, syncVendors, resetAlexaUpload, publish } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
-
   const onPublish = () => {
     setOpen(true);
     publish({ submit: true });
@@ -30,7 +29,7 @@ export function PublishAmazon(props) {
     }
     // reset state on unmount
     return resetAlexaUpload;
-  }, []);
+  }, [amazon]);
 
   return (
     <>

@@ -22,6 +22,11 @@ exports[`Storyshots Prototype/Message Audio 1`] = `
   color: #6e849a;
 }
 
+.c7 .c1 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c4 {
   position: relative;
   max-width: 100%;
@@ -107,6 +112,11 @@ exports[`Storyshots Prototype/Message Debug 1`] = `
   color: #6e849a;
 }
 
+.c8 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c5 {
   position: relative;
   max-width: 100%;
@@ -141,12 +151,12 @@ exports[`Storyshots Prototype/Message Debug 1`] = `
   border-bottom-left-radius: 5px;
 }
 
-.c8 > .c2 {
+.c9 > .c2 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
 
-.c8 .c4 {
+.c9 .c4 {
   border-bottom-right-radius: 5px;
 }
 
@@ -247,6 +257,11 @@ exports[`Storyshots Prototype/Message Loading 1`] = `
   color: #6e849a;
 }
 
+.c8 .c1 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c4 {
   position: relative;
   max-width: 100%;
@@ -281,21 +296,21 @@ exports[`Storyshots Prototype/Message Loading 1`] = `
   border-bottom-left-radius: 5px;
 }
 
-.c8 > .c1 {
+.c9 > .c1 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
 
-.c8 .c3 {
+.c9 .c3 {
   border-bottom-right-radius: 5px;
 }
 
-.c9 .c3 {
+.c10 .c3 {
   white-space: pre;
   background: #eef4f6;
 }
 
-.c9 .c3 p {
+.c10 .c3 p {
   margin-bottom: 0;
 }
 
@@ -359,6 +374,11 @@ exports[`Storyshots Prototype/Message Speak 1`] = `
   color: #6e849a;
 }
 
+.c8 .c1 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c4 {
   position: relative;
   max-width: 100%;
@@ -393,12 +413,12 @@ exports[`Storyshots Prototype/Message Speak 1`] = `
   border-bottom-left-radius: 5px;
 }
 
-.c8 > .c1 {
+.c9 > .c1 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
 
-.c8 .c3 {
+.c9 .c3 {
   border-bottom-right-radius: 5px;
 }
 
@@ -461,6 +481,11 @@ exports[`Storyshots Prototype/Message Standard 1`] = `
 
 .c6 .c1 {
   color: #6e849a;
+}
+
+.c7 .c1 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .c4 {
@@ -548,6 +573,11 @@ exports[`Storyshots Prototype/Message User 1`] = `
   color: #6e849a;
 }
 
+.c7 .c1 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c4 {
   position: relative;
   max-width: 100%;
@@ -561,12 +591,12 @@ exports[`Storyshots Prototype/Message User 1`] = `
   border-radius: 15px;
 }
 
-.c7 > .c1 {
+.c8 > .c1 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c7 .c3 {
+.c8 .c3 {
   border-bottom-left-radius: 5px;
 }
 

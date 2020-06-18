@@ -38,6 +38,7 @@ export const useNodeInstance = () => {
       ref,
       rename: () => engine.focus.set(nodeEntity.nodeID, { renameActiveRevision: cuid() }),
       getRect,
+      getPosition: () => [0, 0],
       getCenterPoint: () => {
         const rect = getRect();
 

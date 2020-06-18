@@ -15,10 +15,13 @@ const ModalContainer = styled.section<ModalContainerProps>`
   border-radius: 5px;
   margin: 28px auto;
   width: 100%;
+  max-height: calc(100% - 56px);
   background: #fff;
   max-width: ${({ isSmall }) => (isSmall ? 500 : 780)}px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 1000;
+  pointer-events: all;
 
   ${down('sm')} {
     left: 0;

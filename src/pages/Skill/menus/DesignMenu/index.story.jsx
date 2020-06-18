@@ -5,7 +5,7 @@ import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.s
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
 import { EventualEngineProvider, OverlayProvider, RegisterEngine, RolePermissionsProvider } from '@/contexts';
-import { EditPermissionProvider, ShortcutModalProvider } from '@/pages/Skill/contexts';
+import { EditPermissionProvider } from '@/pages/Skill/contexts';
 
 import DesignMenu from '.';
 
@@ -242,24 +242,22 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
       <div style={{ width: '500px', height: '100vh', minHeight: '500px', position: 'relative', overflow: 'hidden' }}>
         <RolePermissionsProvider>
           <EditPermissionProvider>
-            <ShortcutModalProvider>
-              <EventualEngineProvider>
-                <OverlayProvider>
-                  <RegisterEngine
-                    engine={{
-                      canvas: {
-                        zoomIn: action('zoomIn'),
-                        zoomOut: action('zoomOut'),
-                        applyTransition: action('applyTransition'),
-                      },
-                    }}
-                  />
-                  <Component />
-                  <ConfirmModal />
-                  <ErrorModal />
-                </OverlayProvider>
-              </EventualEngineProvider>
-            </ShortcutModalProvider>
+            <EventualEngineProvider>
+              <OverlayProvider>
+                <RegisterEngine
+                  engine={{
+                    canvas: {
+                      zoomIn: action('zoomIn'),
+                      zoomOut: action('zoomOut'),
+                      applyTransition: action('applyTransition'),
+                    },
+                  }}
+                />
+                <Component />
+                <ConfirmModal />
+                <ErrorModal />
+              </OverlayProvider>
+            </EventualEngineProvider>
           </EditPermissionProvider>
         </RolePermissionsProvider>
       </div>

@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import SvgIcon from '@/components/SvgIcon';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
-export const SubTitleGroup = styled.div`
+export const GroupContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

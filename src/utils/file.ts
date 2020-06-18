@@ -29,3 +29,24 @@ export const imageSizeFromUrl = async (url: string) =>
 
     img.src = url;
   });
+
+export const readFileAsText = (file: File) => {
+  const reader = new FileReader();
+
+  const promise = new Promise<string>((resolve, reject) => {
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      if (event.target === null || event.target.result === null) {
+        reject(new Error("Couldn't get file result "));
+        return;
+      }
+
+      resolve(event.target.result as string);
+    };
+
+    reader.onerror = reject;
+  });
+
+  reader.readAsText(file);
+
+  return promise;
+};

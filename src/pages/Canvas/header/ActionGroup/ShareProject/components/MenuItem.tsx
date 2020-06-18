@@ -6,25 +6,29 @@ import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
 import { PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
+import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import ButtonContainer from './ButtonContainer';
 import Description from './Description';
 import Header from './Header';
+import LoadingButton from './LoadingButton';
 import MenuItemContainer from './MenuItemContainer';
 
 type MenuItemProps = {
   title: string;
   description: string;
   onRedirect: () => void;
-  link: string | boolean;
+  link: Nullable<string>;
   help: string;
-  plan: PlanType | null;
+  plan: Nullable<PlanType>;
   track: () => void;
+  loading?: boolean;
+  onClick?: () => void;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirect, help, link, track }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirect, help, link, track, loading, onClick: onClickProp }) => {
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
 
   const onCopy = React.useCallback(() => {
@@ -39,7 +43,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
       onRedirect();
     }
     track();
-  }, [plan, track]);
+
+    onClickProp?.();
+  }, [plan, track, onClickProp]);
 
   React.useEffect(() => {
     if (isCopied) {
@@ -60,11 +66,15 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
         </Description>
       </div>
       <ButtonContainer>
-        <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
-          <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
-            Copy
-          </Button>
-        </Tooltip>
+        {loading ? (
+          <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
+        ) : (
+          <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
+            <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
+              Copy
+            </Button>
+          </Tooltip>
+        )}
       </ButtonContainer>
     </MenuItemContainer>
   );

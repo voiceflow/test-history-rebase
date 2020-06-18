@@ -3,6 +3,7 @@ import React from 'react';
 import { MarkupShapeType } from '@/constants';
 import { useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import { MarkupLineInstance, MarkupRectangleInstance, MarkupShapeInstance } from '@/pages/Canvas/components/MarkupNode/types';
 import {
   DEFAULT_MARKUP_BACKGROUND_COLOR,
   DEFAULT_MARKUP_BORDER_COLOR,
@@ -38,16 +39,14 @@ const DEFAULT_SHAPE_DATA: Record<MarkupShapeType, any> = {
   },
 };
 
-type NewShapeInstance<T extends SVGElement> = NewShapeAPI & {
+type NewShapeInstance = NewShapeAPI & {
   isVisible: boolean;
   getOrigin: () => Point | null;
-  ref: React.RefObject<T>;
-  headRef: React.RefObject<SVGMarkerElement>;
+  ref: React.RefObject<MarkupShapeInstance>;
 };
 
-export const useNewShapeInstance = <T extends SVGElement>() => {
-  const ref = React.useRef<T>(null);
-  const headRef = React.useRef<SVGMarkerElement>(null);
+export const useNewShapeInstance = () => {
+  const ref = React.useRef<MarkupShapeInstance>(null);
   const start = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;
   const { modeType: shapeType, finishCreating } = React.useContext(MarkupModeContext)!;
@@ -57,11 +56,13 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
   const onMouseMove = React.useCallback(() => {
     const [startX, startY] = start.current!;
     const [endX, endY] = engine.getCanvasMousePosition();
-    const pathEl = ref.current;
+    const shapeEl = ref.current;
     const isRectangle = shapeType === MarkupShapeType.RECTANGLE;
     const isCircle = shapeType === MarkupShapeType.CIRCLE;
     const isLine = shapeType === MarkupShapeType.LINE;
     const isArrow = shapeType === MarkupShapeType.ARROW;
+
+    if (!shapeEl) return;
 
     const deltaX = endX - startX;
     const deltaY = endY - startY;
@@ -74,29 +75,23 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
       const rx = isCircle ? width : DEFAULT_MARKUP_BORDER_RADIUS;
       const ry = isCircle ? height : DEFAULT_MARKUP_BORDER_RADIUS;
 
-      window.requestAnimationFrame(() => {
-        if (!pathEl) {
-          return;
-        }
+      const rectEl = shapeEl as MarkupRectangleInstance;
 
-        pathEl.setAttribute('x', String(originX));
-        pathEl.setAttribute('y', String(originY));
-        pathEl.setAttribute('width', String(width));
-        pathEl.setAttribute('height', String(height));
-        pathEl.setAttribute('rx', String(rx));
-        pathEl.setAttribute('ry', String(ry));
+      window.requestAnimationFrame(() => {
+        rectEl.setAttribute('x', String(originX));
+        rectEl.setAttribute('y', String(originY));
+        rectEl.setAttribute('width', String(width));
+        rectEl.setAttribute('height', String(height));
+        rectEl.setAttribute('rx', String(rx));
+        rectEl.setAttribute('ry', String(ry));
       });
     } else if (isLine || isArrow) {
-      const headEl = headRef.current;
+      const lineEl = shapeEl as MarkupLineInstance;
 
       window.requestAnimationFrame(() => {
-        if (!pathEl) {
-          return;
-        }
-
-        headEl?.setAttribute('orient', `${getRotation(deltaY, deltaX)}rad`);
-        pathEl.setAttribute('x2', String(deltaX));
-        pathEl.setAttribute('y2', String(deltaY));
+        lineEl.setHeadAttribute('orient', `${getRotation(deltaY, deltaX)}rad`);
+        lineEl.setLineAttribute('x2', String(deltaX));
+        lineEl.setLineAttribute('y2', String(deltaY));
       });
     }
   }, [shapeType]);
@@ -135,15 +130,14 @@ export const useNewShapeInstance = <T extends SVGElement>() => {
         await engine.markup.addShapeNode([startX, startY], data);
       }
 
-      finishCreating(true);
+      finishCreating();
     },
     [shapeType]
   );
 
-  return React.useMemo<NewShapeInstance<T>>(
+  return React.useMemo<NewShapeInstance>(
     () => ({
       ref,
-      headRef,
       isVisible,
       show: (origin) => {
         start.current = origin;

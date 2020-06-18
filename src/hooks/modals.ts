@@ -11,7 +11,7 @@ export const useModals = <T extends object = {}>(modalId: ModalType) => {
 
   const isOpened = openedId === modalId;
   const isInStack = React.useMemo(() => stackModalIds.includes(modalId), [modalId, stackModalIds]);
-  const cacheState = React.useRef<{ isOpened: boolean; onClose?: () => void }>({ isOpened: openedId === modalId });
+  const cacheState = React.useRef<{ isInStack: boolean; onClose?: () => void }>({ isInStack });
 
   const closeModal = React.useCallback(() => close(modalId), [close, modalId]);
   const updateModal = React.useCallback((data = {}) => update(modalId, data), [update, modalId]);
@@ -33,12 +33,12 @@ export const useModals = <T extends object = {}>(modalId: ModalType) => {
   );
 
   React.useEffect(() => {
-    if (!isOpened && cacheState.current.isOpened) {
+    if (!isInStack && cacheState.current.isInStack) {
       cacheState.current.onClose?.();
     }
 
-    cacheState.current.isOpened = isOpened;
-  }, [isOpened]);
+    cacheState.current.isInStack = isInStack;
+  }, [isInStack]);
 
   return {
     fade,

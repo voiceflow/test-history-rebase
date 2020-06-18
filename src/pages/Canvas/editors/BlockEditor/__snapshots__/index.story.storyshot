@@ -233,6 +233,11 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   color: #6e849a;
 }
 
+.c49 .c12 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c30 {
   padding: 0 32px;
 }
@@ -309,15 +314,15 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   margin-right: 16px;
 }
 
-.c49 .c22 {
+.c50 .c22 {
   font-weight: 600;
 }
 
-.c50 .c22 {
+.c51 .c22 {
   font-weight: normal;
 }
 
-.c51 .c22 {
+.c52 .c22 {
   font-weight: 600;
 }
 
@@ -652,16 +657,16 @@ exports[`Storyshots Creator/Editor Normal 1`] = `
   color: rgba(110,132,154,0.85);
 }
 
-.c52 .c10:not(:active) {
+.c53 .c10:not(:active) {
   box-shadow: none;
 }
 
-.c52 > div:not(:last-of-type) .c10 {
+.c53 > div:not(:last-of-type) .c10 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.c52 > div:not(:first-of-type) .c10 {
+.c53 > div:not(:first-of-type) .c10 {
   margin-left: 1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;

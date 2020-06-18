@@ -1,5 +1,6 @@
 import { Overwrite } from 'utility-types';
 
+import { DiagramState as DState } from '@/constants';
 import { Link, Node, NodeData, PartialModel, Port } from '@/models';
 import { Normalized } from '@/utils/normalized';
 
@@ -15,6 +16,7 @@ export type DiagramState = {
   linkedNodesByNodeID: Record<string, string[]>;
   sections: Record<string, unknown>;
   markupNodeIDs: string[];
+  diagramState: DState;
 };
 
 export type NodeDescriptor = Overwrite<Node, { ports: Record<'in' | 'out', PartialModel<Port>[]> }>;

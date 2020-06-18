@@ -307,6 +307,18 @@ export const INTEGRATION_DATA_MODELS = {
   },
 };
 
+export enum PlanType {
+  OLD_STARTER = 'old_starter',
+  OLD_PRO = 'old_pro',
+  OLD_TEAM = 'old_team',
+  OLD_ENTERPRISE = 'old_enterprise',
+
+  STARTER = 'starter',
+  PRO = 'pro',
+  TEAM = 'team',
+  ENTERPRISE = 'enterprise',
+}
+
 export const RESPONSE_COLOR_CODES = {
   GREEN: '#349d51',
   YELLOW: '#e1d40b',
@@ -382,7 +394,13 @@ export enum ModalType {
   CANVAS_EXPORT = 'canvas-export',
   SHARE_MENU = 'share-menu',
 
+  SHORTCUTS = 'shortcuts',
+
+  IMPORT_SLOTS = 'import-slots',
   IMPORT_PROJECT = 'import-project',
+  IMPORT_UTTERANCES = 'import-utterances',
+  IMPORT_BULK_DENIED = 'import-bulk-denied',
+
   LOADING = 'loading',
 }
 
@@ -391,18 +409,6 @@ export enum UserRole {
   EDITOR = 'editor',
   VIEWER = 'viewer',
   LIBRARY = 'library',
-}
-
-export enum PlanType {
-  OLD_STARTER = 'old_starter',
-  OLD_PRO = 'old_pro',
-  OLD_TEAM = 'old_team',
-  OLD_ENTERPRISE = 'old_enterprise',
-
-  STARTER = 'starter',
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
 }
 
 export enum FEATURE_IDS {
@@ -416,6 +422,7 @@ export enum FEATURE_IDS {
   MARKUP = 'MARKUP',
   COMMENTING = 'COMMENTING',
   EXPORT = 'EXPORT',
+  BULK_UPLOAD = 'BULK_UPLOAD',
 }
 
 export const FEATURE_ROLE_PERMISSIONS = {
@@ -433,6 +440,8 @@ export const FEATURE_ROLE_PERMISSIONS = {
 export const FEATURE_PLAN_PERMISSIONS = {
   [FEATURE_IDS.MARKUP]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [FEATURE_IDS.EXPORT]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.COMMENTING]: [PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [FEATURE_IDS.BULK_UPLOAD]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
 };
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
@@ -490,6 +499,41 @@ export enum DisplayType {
   ADVANCED = 'advanced',
 }
 
+export const PLAN_NAMES = {
+  [PlanType.OLD_PRO]: {
+    label: 'Pro',
+    color: '#42B761',
+  },
+  [PlanType.PRO]: {
+    label: 'Pro',
+    color: '#42B761',
+  },
+  [PlanType.OLD_STARTER]: {
+    label: 'Starter',
+    color: '#8da2b5',
+  },
+  [PlanType.STARTER]: {
+    label: 'Starter',
+    color: '#8da2b5',
+  },
+  [PlanType.OLD_TEAM]: {
+    label: 'Team',
+    color: '#5D9DF5',
+  },
+  [PlanType.TEAM]: {
+    label: 'Team',
+    color: '#5D9DF5',
+  },
+  [PlanType.OLD_ENTERPRISE]: {
+    label: 'Enterprise',
+    color: '#ff5733',
+  },
+  [PlanType.ENTERPRISE]: {
+    label: 'Enterprise',
+    color: '#ff5733',
+  },
+};
+
 export enum MarkupShapeType {
   RECTANGLE = 'rectangle',
   CIRCLE = 'circle',
@@ -519,4 +563,11 @@ export enum TextAlignment {
   LEFT = 'left',
   RIGHT = 'right',
   CENTER = 'center',
+}
+
+export enum DiagramState {
+  IDLE = 'IDLE',
+  CHANGED = 'CHANGED',
+  SAVING = 'SAVING',
+  SAVED = 'SAVED',
 }

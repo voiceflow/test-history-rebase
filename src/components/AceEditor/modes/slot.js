@@ -8,7 +8,7 @@ ace.define('ace/mode/slot_highlight_rules', ['require', 'exports', 'module', 'ac
   const { TextHighlightRules } = req('./text_highlight_rules');
 
   const SlotHighlightRules = function () {
-    this.$rules = { start: [{ token: 'slot', regex: '^(.*?)(?=,)' }] };
+    this.$rules = { start: [{ token: 'slot', regex: '^(.*?)(?=,|$)' }] };
 
     this.normalizeRules();
   };

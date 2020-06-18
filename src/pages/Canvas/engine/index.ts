@@ -253,7 +253,7 @@ export class Engine {
   setActive(nodeID: string, isSelection?: boolean) {
     const node = this.getNodeByID(nodeID);
 
-    if (!MARKUP_NODES.includes(node.type) && isSelection) {
+    if (isSelection && !MARKUP_NODES.includes(node.type)) {
       this.selection.toggle(nodeID);
     } else {
       this.focus.set(nodeID);

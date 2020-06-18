@@ -1,19 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Tooltip } from 'react-tippy';
 
-import { GOOGLE_STATES, publish } from '@/ducks/publish/google';
+import * as Account from '@/ducks/account';
+import { GOOGLE_STATES } from '@/ducks/publish/google';
+import * as GooglePublish from '@/ducks/publish/google';
+import { connect } from '@/hocs';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
 function Upload(props) {
-  const { stage, publish, setPopup } = props;
+  const { stage, publish, setPopup, google } = props;
   const { isViewer } = React.useContext(EditPermissionContext);
   const state = GOOGLE_STATES[stage];
+  const needsLogin = !google;
+  const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
 
-  const text = state.end ? 'Upload to Google' : 'Uploading';
+  let text = state.end ? 'Upload to Google' : 'Uploading';
+  if (needsLogin) {
+    text = 'Connect to Google';
+  }
 
   const action = () => (state.end ? publish() : setPopup((open) => !open));
 
@@ -24,16 +31,20 @@ function Upload(props) {
       distance={19}
       disabled={isViewer}
     >
-      <UploadButton id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
+      <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} onClick={action} isUploading={!state.end}>
         {text}
       </UploadButton>
     </Tooltip>
   );
 }
 
-export default connect(
-  (state) => ({
-    stage: state.publish.google.stage,
-  }),
-  { publish }
-)(Upload);
+const mapStateToProps = {
+  stage: GooglePublish.publishStageSelector,
+  google: Account.googleAccountSelector,
+};
+
+const mapDispatchToProps = {
+  publish: GooglePublish.publish,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);

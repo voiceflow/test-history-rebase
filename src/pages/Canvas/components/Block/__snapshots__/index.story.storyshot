@@ -1,28 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Creator/Block Block User Lock 1`] = `
-.c10 {
+.c11 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c10 > svg {
+.c11 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c11 .c9 {
+.c12 .c10 {
   color: #fff;
 }
 
-.c12 .c9 {
+.c13 .c10 {
   color: #6e849a;
 }
 
-.c2 {
+.c14 .c10 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c3 {
   -webkit-transition: color 0.15s ease,border 0.15s ease;
   transition: color 0.15s ease,border 0.15s ease;
   width: 28px;
@@ -46,7 +51,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   user-select: none;
 }
 
-.c2:before {
+.c3:before {
   -webkit-transition: border 0.15s ease;
   transition: border 0.15s ease;
   display: block;
@@ -59,15 +64,15 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   content: '';
 }
 
-.c2:hover .c1:before {
+.c3:hover .c2:before {
   border-color: rgba(17,49,96,0.13);
 }
 
-.c2 > * {
+.c3 > * {
   display: inline-block;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -82,11 +87,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -100,55 +105,55 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c1 {
+.c1 .c2 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -158,7 +163,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c13 .c1 {
+.c15 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c15 .c2 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -168,7 +177,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c14 .c1 {
+.c16 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c16 .c2 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -178,7 +191,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c15 .c1 {
+.c17 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c17 .c2 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -188,7 +205,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c16 .c1 {
+.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c18 .c2 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -198,7 +219,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   z-index: 99;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -215,7 +236,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   text-overflow: ellipsis;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -233,17 +254,17 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   padding: 0 42px;
 }
 
-.c5 {
+.c6 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c5,
-.vf-canvas--selecting-group .c5,
-.vf-canvas--creating-link .c5 {
+.vf-canvas--merging .c6,
+.vf-canvas--selecting-group .c6,
+.vf-canvas--creating-link .c6 {
   pointer-events: none;
 }
 
-.c5 input {
+.c6 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -267,29 +288,29 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   color: #62778c;
 }
 
-.c5 input:active {
+.c6 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c5 input {
+.vf-canvas--commenting .c6 input {
   cursor: crosshair;
 }
 
-.c5 .vf-canvas__node--active input {
+.c6 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c8 {
+.c9 {
   position: absolute;
   left: 0;
   padding: 0 5px;
 }
 
-.c3 {
+.c4 {
   position: relative;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -314,10 +335,10 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
   }
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 c2"
+      className="c2 c3"
       style={
         Object {
           "backgroundColor": "#ECF8FA",
@@ -328,13 +349,13 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       M
     </div>
     <div
-      className="c3 vf-canvas__block__section"
+      className="c4 vf-canvas__block__section"
     >
       <div
-        className="c4"
+        className="c5"
       >
         <div
-          className="c5 vf-canvas__block__section__title"
+          className="c6 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -377,43 +398,43 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c6"
+          className="c7"
         >
           Step 1
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 2
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 3
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 4
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 5
         </div>
       </section>
     </div>
     <div
-      className="c3 vf-canvas__block__section"
+      className="c4 vf-canvas__block__section"
     >
       <div
-        className="c7"
+        className="c8"
       >
         <div
-          className="c8"
+          className="c9"
         >
           <span
-            className="c9 c10"
+            className="c10 c11"
             color="#6e849a"
             size={16}
           >
@@ -423,7 +444,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c5 vf-canvas__block__section__title"
+          className="c6 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -466,28 +487,28 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c6"
+          className="c7"
         >
           Step 1
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 2
         </div>
       </section>
     </div>
     <div
-      className="c3 vf-canvas__block__section"
+      className="c4 vf-canvas__block__section"
     >
       <div
-        className="c7"
+        className="c8"
       >
         <div
-          className="c8"
+          className="c9"
         >
           <span
-            className="c9 c10"
+            className="c10 c11"
             color="#6e849a"
             size={16}
           >
@@ -497,7 +518,7 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c5 vf-canvas__block__section__title"
+          className="c6 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -540,12 +561,12 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c6"
+          className="c7"
         >
           Step 1
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           Step 2
         </div>
@@ -556,7 +577,11 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Blue 1`] = `
-.c0 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -571,11 +596,11 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -589,55 +614,55 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #A2C1DC;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #A2C1DC;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c7 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -647,7 +672,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -664,17 +689,17 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -698,23 +723,23 @@ exports[`Storyshots Creator/Block Blue 1`] = `
   color: #0f7ec0;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #05588a;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -732,16 +757,16 @@ exports[`Storyshots Creator/Block Blue 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -784,27 +809,27 @@ exports[`Storyshots Creator/Block Blue 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -814,7 +839,7 @@ exports[`Storyshots Creator/Block Blue 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Disabled State 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -829,11 +854,11 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -847,55 +872,55 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -905,7 +930,23 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -922,17 +963,17 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -956,23 +997,23 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -993,16 +1034,16 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
   className="vf-canvas__node--disabled"
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -1045,27 +1086,27 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 3
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 4
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 5
         </div>
@@ -1076,7 +1117,7 @@ exports[`Storyshots Creator/Block Disabled State 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Focused State 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1091,11 +1132,11 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1109,55 +1150,55 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1167,7 +1208,23 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1184,17 +1241,17 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1218,23 +1275,23 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1255,16 +1312,16 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
   className="vf-canvas__node--focused"
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -1307,27 +1364,27 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 3
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 4
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 5
         </div>
@@ -1338,7 +1395,19 @@ exports[`Storyshots Creator/Block Focused State 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Green 1`] = `
-.c0 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1353,11 +1422,11 @@ exports[`Storyshots Creator/Block Green 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1371,55 +1440,55 @@ exports[`Storyshots Creator/Block Green 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #BECDC3;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #BECDC3;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c9 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1429,7 +1498,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1446,17 +1515,17 @@ exports[`Storyshots Creator/Block Green 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1480,23 +1549,23 @@ exports[`Storyshots Creator/Block Green 1`] = `
   color: #6b7a6b;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #485648;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1514,16 +1583,16 @@ exports[`Storyshots Creator/Block Green 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1566,27 +1635,27 @@ exports[`Storyshots Creator/Block Green 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -1596,7 +1665,7 @@ exports[`Storyshots Creator/Block Green 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Long Name 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1611,11 +1680,11 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1629,55 +1698,55 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1687,7 +1756,23 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1704,17 +1789,17 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1738,23 +1823,23 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1772,16 +1857,16 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -1824,27 +1909,27 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -1854,7 +1939,23 @@ exports[`Storyshots Creator/Block Long Name 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Purple 1`] = `
-.c0 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -1869,11 +1970,11 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -1887,55 +1988,55 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #CDCAD5;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #CDCAD5;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -1945,7 +2046,7 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1962,17 +2063,17 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -1996,23 +2097,23 @@ exports[`Storyshots Creator/Block Purple 1`] = `
   color: #765e84;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #4e355d;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2030,16 +2131,16 @@ exports[`Storyshots Creator/Block Purple 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2082,27 +2183,27 @@ exports[`Storyshots Creator/Block Purple 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -2112,7 +2213,15 @@ exports[`Storyshots Creator/Block Purple 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Red 1`] = `
-.c0 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2127,11 +2236,11 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2145,55 +2254,55 @@ exports[`Storyshots Creator/Block Red 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #D8CBD1;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #D8CBD1;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c8 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2203,7 +2312,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2220,17 +2329,17 @@ exports[`Storyshots Creator/Block Red 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -2254,23 +2363,23 @@ exports[`Storyshots Creator/Block Red 1`] = `
   color: #a84862;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #76273d;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2288,16 +2397,16 @@ exports[`Storyshots Creator/Block Red 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2340,27 +2449,27 @@ exports[`Storyshots Creator/Block Red 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -2370,7 +2479,7 @@ exports[`Storyshots Creator/Block Red 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Regular State 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2385,11 +2494,11 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2403,55 +2512,55 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2461,7 +2570,23 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2478,17 +2603,17 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -2512,23 +2637,23 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2546,16 +2671,16 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -2598,27 +2723,27 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -2628,7 +2753,7 @@ exports[`Storyshots Creator/Block Regular State 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Selected State 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2643,11 +2768,11 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2661,55 +2786,55 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2719,7 +2844,23 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2736,17 +2877,17 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -2770,23 +2911,23 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2807,16 +2948,16 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
   className="vf-canvas__node--selected"
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -2859,27 +3000,27 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 3
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 4
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 5
         </div>
@@ -2890,7 +3031,7 @@ exports[`Storyshots Creator/Block Selected State 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Standard 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -2905,11 +3046,11 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -2923,55 +3064,55 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c6 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -2981,7 +3122,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2998,17 +3139,17 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -3032,23 +3173,23 @@ exports[`Storyshots Creator/Block Standard 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3066,16 +3207,16 @@ exports[`Storyshots Creator/Block Standard 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -3118,27 +3259,27 @@ exports[`Storyshots Creator/Block Standard 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
@@ -3148,7 +3289,7 @@ exports[`Storyshots Creator/Block Standard 1`] = `
 `;
 
 exports[`Storyshots Creator/Block State Transitions 1`] = `
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -3163,11 +3304,11 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -3181,55 +3322,55 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c5 {
+.c1 .c10 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3239,7 +3380,23 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c6 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c7 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c8 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c9 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3256,17 +3413,17 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   text-overflow: ellipsis;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -3290,23 +3447,23 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3327,16 +3484,16 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
   className=""
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3379,27 +3536,27 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 3
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 4
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 5
         </div>
@@ -3410,28 +3567,33 @@ exports[`Storyshots Creator/Block State Transitions 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Step User Lock 1`] = `
-.c8 {
+.c9 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c8 > svg {
+.c9 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c13 .c7 {
+.c14 .c8 {
   color: #fff;
 }
 
-.c14 .c7 {
+.c15 .c8 {
   color: #6e849a;
 }
 
-.c12 {
+.c16 .c8 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c13 {
   -webkit-transition: color 0.15s ease,border 0.15s ease;
   transition: color 0.15s ease,border 0.15s ease;
   width: 28px;
@@ -3455,7 +3617,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   user-select: none;
 }
 
-.c12:before {
+.c13:before {
   -webkit-transition: border 0.15s ease;
   transition: border 0.15s ease;
   display: block;
@@ -3468,15 +3630,15 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   content: '';
 }
 
-.c12:hover .c11:before {
+.c13:hover .c12:before {
   border-color: rgba(17,49,96,0.13);
 }
 
-.c12 > * {
+.c13 > * {
   display: inline-block;
 }
 
-.c10 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3495,11 +3657,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   border: 1px solid #d3d9e4;
 }
 
-.c10 .c19:not(:first-of-type) {
+.c11 .c21:not(:first-of-type) {
   border-top: 1px solid #eaeff4;
 }
 
-.c10 .c11 {
+.c11 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3509,31 +3671,31 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.vf-canvas__step.vf-canvas__node--active .c10,
-.vf-canvas__step.vf-canvas__node--highlighted .c10 {
+.vf-canvas__step.vf-canvas__node--active .c11,
+.vf-canvas__step.vf-canvas__node--highlighted .c11 {
   border: 1px solid #5D9DF5;
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c10:hover {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--disabled .c11:hover {
   opacity: 0.7;
   cursor: not-allowed;
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px rgba(17,49,96,0.08);
 }
 
-.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c10 {
+.vf-canvas--creating-link .vf-canvas__step.vf-canvas__node--hovered .c11 {
   box-shadow: 0 1px 3px 0 rgba(17,49,96,0.06),0 0 0 1px #5D9DF5;
   cursor: copy;
 }
 
-.vf-canvas__block.vf-canvas__node--merge-target .c10 {
+.vf-canvas__block.vf-canvas__node--merge-target .c11 {
   z-index: -1;
 }
 
-.c9:not(:last-of-type) {
+.c10:not(:last-of-type) {
   padding-bottom: 6px;
 }
 
-.c0 {
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -3548,11 +3710,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -3566,55 +3728,55 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c11 {
+.c1 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3624,7 +3786,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c15 .c11 {
+.c17 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c17 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3634,7 +3800,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c16 .c11 {
+.c18 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c18 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3644,7 +3814,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c17 .c11 {
+.c19 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c19 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3654,7 +3828,11 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c18 .c11 {
+.c20 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c20 .c12 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -3664,7 +3842,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3681,7 +3859,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   text-overflow: ellipsis;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3699,17 +3877,17 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   padding: 0 42px;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -3733,29 +3911,29 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c6 {
+.c7 {
   position: absolute;
   left: 0;
   padding: 0 5px;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3780,16 +3958,16 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
   }
 >
   <div
-    className="c0 vf-canvas__block"
+    className="c0 c1 vf-canvas__block"
   >
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3832,43 +4010,43 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 3
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 4
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 5
         </div>
       </section>
     </div>
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c5"
+        className="c6"
       >
         <div
-          className="c6"
+          className="c7"
         >
           <span
-            className="c7 c8"
+            className="c8 c9"
             color="#6e849a"
             size={16}
           >
@@ -3878,7 +4056,7 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
           </span>
         </div>
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3921,25 +4099,25 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c4"
+          className="c5"
         >
           Step 1
         </div>
         <div
-          className="c4"
+          className="c5"
         >
           Step 2
         </div>
       </section>
     </div>
     <div
-      className="c1 vf-canvas__block__section"
+      className="c2 vf-canvas__block__section"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3 vf-canvas__block__section__title"
+          className="c4 vf-canvas__block__section__title"
           style={
             Object {
               "boxSizing": "content-box",
@@ -3982,24 +4160,24 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
       </div>
       <section>
         <div
-          className="c9 vf-canvas__step"
+          className="c10 vf-canvas__step"
           onMouseDown={[Function]}
         >
           <div
-            className="c10"
+            className="c11"
           >
             Order Pizza
           </div>
         </div>
         <div
-          className="c9 vf-canvas__step"
+          className="c10 vf-canvas__step"
           onMouseDown={[Function]}
         >
           <div
-            className="c10"
+            className="c11"
           >
             <div
-              className="c11 c12"
+              className="c12 c13"
               style={
                 Object {
                   "backgroundColor": "#ECF8FA",
@@ -4019,28 +4197,33 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 `;
 
 exports[`Storyshots Creator/Block Sub Sections 1`] = `
-.c8 {
+.c9 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #6e849a;
 }
 
-.c8 > svg {
+.c9 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c9 .c7 {
+.c10 .c8 {
   color: #fff;
 }
 
-.c10 .c7 {
+.c11 .c8 {
   color: #6e849a;
 }
 
-.c0 {
+.c12 .c8 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.c1 {
   width: 330px;
   border-radius: 8px;
   cursor: pointer;
@@ -4055,11 +4238,11 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: opacity 0.15s ease;
 }
 
-.vf-canvas--commenting .c0 {
+.vf-canvas--commenting .c1 {
   cursor: crosshair;
 }
 
-.c0::before {
+.c1::before {
   display: block;
   border-radius: 8px;
   position: absolute;
@@ -4073,55 +4256,55 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   transition: box-shadow 0.15s ease;
 }
 
-#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c0:hover::before {
+#vf-canvas:not(.vf-canvas--selecting-group) .vf-canvas__node:not(.vf-canvas__node--disabled):not(.vf-canvas__node--focused) .c1:hover::before {
   box-shadow: 0 4px 8px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered .c0 {
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered .c1 {
   cursor: copy;
 }
 
-#vf-canvas.vf-canvas--selecting-group .c0 {
+#vf-canvas.vf-canvas--selecting-group .c1 {
   cursor: inherit;
 }
 
-.vf-canvas__node--focused .c0::before {
+.vf-canvas__node--focused .c1::before {
   box-shadow: 0 12px 32px 0 rgba(17,49,96,0.2);
   border-color: #C5CBD6;
 }
 
-.vf-canvas__node--selected .c0,
-.vf-canvas__node--highlighted .c0,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0 {
+.vf-canvas__node--selected .c1,
+.vf-canvas__node--highlighted .c1,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1 {
   border-color: #5d9df5;
 }
 
-.vf-canvas__node--selected .c0::before,
-.vf-canvas__node--highlighted .c0::before,
-.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c0::before {
+.vf-canvas__node--selected .c1::before,
+.vf-canvas__node--highlighted .c1::before,
+.vf-canvas__node--hovered:not(.vf-canvas__node--disabled) .c1::before {
   display: none;
 }
 
-.vf-canvas--creating-link .vf-canvas__node--disabled .c0 {
+.vf-canvas--creating-link .vf-canvas__node--disabled .c1 {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0 {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) {
   opacity: 0.7;
 }
 
-.vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active) .c0:not(.vf-canvas__node--merge-target):hover {
+.c1 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
   opacity: 1;
 }
 
-.vf-canvas--markup .c0 {
+.vf-canvas--markup .c1 {
   pointer-events: none !important;
 }
 
-.c0 .c11 {
+.c1 .c17 {
   position: absolute;
   top: 6px;
   left: 6px;
@@ -4131,7 +4314,23 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   z-index: 99;
 }
 
-.c2 {
+.c13 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c14 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c15 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c16 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):not(.vf-canvas__node--merge-target) .c0 .vf-canvas--activation .vf-canvas__node:not(.vf-canvas__node--active):hover {
+  opacity: 1;
+}
+
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4148,7 +4347,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   text-overflow: ellipsis;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4166,17 +4365,17 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   padding: 0 42px;
 }
 
-.c3 {
+.c4 {
   max-width: 100%;
 }
 
-.vf-canvas--merging .c3,
-.vf-canvas--selecting-group .c3,
-.vf-canvas--creating-link .c3 {
+.vf-canvas--merging .c4,
+.vf-canvas--selecting-group .c4,
+.vf-canvas--creating-link .c4 {
   pointer-events: none;
 }
 
-.c3 input {
+.c4 input {
   max-width: 100%;
   box-sizing: content-box !important;
   -webkit-transition: background 0.15s ease;
@@ -4200,29 +4399,29 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
   color: #62778c;
 }
 
-.c3 input:active {
+.c4 input:active {
   background: transparent;
 }
 
-.vf-canvas--commenting .c3 input {
+.vf-canvas--commenting .c4 input {
   cursor: crosshair;
 }
 
-.c3 .vf-canvas__node--active input {
+.c4 .vf-canvas__node--active input {
   color: #132144;
 }
 
-.c6 {
+.c7 {
   position: absolute;
   left: 0;
   padding: 0 5px;
 }
 
-.c1 {
+.c2 {
   position: relative;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4240,16 +4439,16 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 }
 
 <div
-  className="c0 vf-canvas__block"
+  className="c0 c1 vf-canvas__block"
 >
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c2"
+      className="c3"
     >
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -4292,43 +4491,43 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 3
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 4
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 5
       </div>
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c5"
+      className="c6"
     >
       <div
-        className="c6"
+        className="c7"
       >
         <span
-          className="c7 c8"
+          className="c8 c9"
           color="#6e849a"
           size={16}
         >
@@ -4338,7 +4537,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </span>
       </div>
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -4381,28 +4580,28 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>
     </section>
   </div>
   <div
-    className="c1 vf-canvas__block__section"
+    className="c2 vf-canvas__block__section"
   >
     <div
-      className="c5"
+      className="c6"
     >
       <div
-        className="c6"
+        className="c7"
       >
         <span
-          className="c7 c8"
+          className="c8 c9"
           color="#6e849a"
           size={16}
         >
@@ -4412,7 +4611,7 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
         </span>
       </div>
       <div
-        className="c3 vf-canvas__block__section__title"
+        className="c4 vf-canvas__block__section__title"
         style={
           Object {
             "boxSizing": "content-box",
@@ -4455,12 +4654,12 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
     </div>
     <section>
       <div
-        className="c4"
+        className="c5"
       >
         Step 1
       </div>
       <div
-        className="c4"
+        className="c5"
       >
         Step 2
       </div>

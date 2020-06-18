@@ -7,12 +7,15 @@ const ProjectTitleContainer = styled(FlexCenter)`
   display: flex;
   align-items: center;
   height: inherit;
-  margin-right: auto;
-  flex: 2;
+  margin-right: 50px;
+  flex: 3;
 
   input {
     margin-top: -2px;
     width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 `;
 

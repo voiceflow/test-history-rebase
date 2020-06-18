@@ -9,9 +9,9 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { ConnectedProps } from '@/types';
+import { ConnectedProps, Nullable } from '@/types';
 
 import { ExportItem, MenuContainer, MenuItem } from './components';
 
@@ -24,33 +24,65 @@ type ShareProjectProps = {
 const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({
   meta,
   plan,
+  render,
   getImportToken,
   sharePrototype,
   renderPrototype,
-  render,
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
-  const [testableLink, setLink] = React.useState<string | boolean>(false);
+
   const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
   const [trackingEvents] = useTrackingEvents();
 
-  const makeConfig = async () => {
+  const [state, stateApi] = useSmartReducerV2({
+    testableLink: null as Nullable<string>,
+    loadingImportToken: false,
+    loadingTestableLink: false,
+  });
+
+  const onClickPrototype = () => {
     if (render) {
-      await renderPrototype();
+      renderPrototype();
     }
-    setLink(`${window.location.origin}/demo/${await sharePrototype()}`);
   };
 
-  React.useEffect(() => {
-    if (plan !== PlanType.STARTER) {
-      makeConfig();
-    } else {
-      setLink(false);
+  const loadTestableLink = async () => {
+    if (state.testableLink) {
+      return;
     }
-    getImportToken();
-  }, [getImportToken, plan]);
+
+    stateApi.loadingTestableLink.set(true);
+
+    const demoID = await sharePrototype();
+
+    stateApi.update({
+      testableLink: `${window.location.origin}/demo/${demoID}`,
+      loadingTestableLink: false,
+    });
+  };
+
+  const loadImportToken = async () => {
+    if (meta?.importToken) {
+      return;
+    }
+
+    stateApi.loadingImportToken.set(true);
+
+    await getImportToken();
+
+    stateApi.loadingImportToken.set(false);
+  };
+
+  const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
+    if (!prevIsOpen && plan !== PlanType.STARTER) {
+      loadImportToken();
+      loadTestableLink();
+    }
+
+    onToggle();
+  };
 
   return (
     <Dropdown
@@ -61,15 +93,19 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
           <FadeDownDelayedContainer>
             <MenuItem
               plan={plan}
+              loading={state.loadingTestableLink}
               title="Testable Link"
               description="Share your project with others for in browser prototyping."
               onRedirect={openTestableLinksModal}
               help="https://docs.voiceflow.com/#/quickstart/testable-links"
-              link={testableLink}
+              link={state.testableLink}
               track={trackingEvents.trackActiveProjectTestableLinkShare}
+              onClick={onClickPrototype}
             />
+
             <MenuItem
               plan={plan}
+              loading={state.loadingImportToken}
               title="Project Download"
               description="Allow other to download this project to their own Voiceflow account."
               onRedirect={openProjectDownloadModal}
@@ -85,7 +121,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     >
       {(ref: React.Ref<HTMLElement>, onToggle: () => void, isOpen: boolean) => (
         <Tooltip title="Share Project">
-          <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={onToggle} isActive={isOpen}>
+          <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={wrapToggleShare(isOpen, onToggle)} isActive={isOpen}>
             Share
           </Button>
         </Tooltip>
@@ -107,4 +143,4 @@ const mapDispatchToProps = {
 
 type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShareProject);
+export default connect(mapStateToProps, mapDispatchToProps)(ShareProject) as React.FC<ShareProjectProps>;

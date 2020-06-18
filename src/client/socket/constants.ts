@@ -23,6 +23,7 @@ export enum ServerEvent {
   SESSION_TAKEN = 'session:taken',
   FORCE_REFRESH = 'force_refresh',
   WORKSPACE_PLAN_DENIED = 'workspace:plan:denied',
+  INITIALIZE_PROJECT = 'project:init',
 }
 
 export enum ClientEvent {
@@ -33,4 +34,5 @@ export enum ClientEvent {
   LEAVE_DIAGRAM = 'diagramLeave',
   DIAGRAM_HEARTBEAT = 'diagramHeartbeat',
   TAKEOVER_SESSION = 'sessionTakeover',
+  CONNECT_PROJECT = 'projectConnect',
 }

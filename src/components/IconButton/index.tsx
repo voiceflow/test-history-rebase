@@ -16,6 +16,7 @@ export type IconButtonProps = Pick<IconProps, 'icon' | 'size'> &
     onClick?: React.ReactEventHandler;
     iconProps?: Omit<IconProps, 'icon' | 'size'>;
     id?: string;
+    disabled?: boolean;
   };
 
 const ICON_BUTTON_CONTAINERS = {

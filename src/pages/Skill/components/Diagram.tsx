@@ -14,7 +14,7 @@ import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 
-import { EditPermissionProvider, MarkupModeContext, ShortcutModalProvider } from '../contexts';
+import { EditPermissionProvider, MarkupModeContext } from '../contexts';
 import DiagramSync from './DiagramSync';
 import FlowControls from './FlowControls';
 import MarkupImageLoading from './MarkupImageLoading';
@@ -33,27 +33,25 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping }) => {
       {!isPrototyping && <DiagramSync diagramID={diagramID} />}
       <ManagerProvider value={getManager as any}>
         <EditPermissionProvider isPrototyping={isPrototyping}>
-          <ShortcutModalProvider>
-            <SettingsModalProvider>
-              <CanvasHeader />
+          <SettingsModalProvider>
+            <CanvasHeader />
 
-              <TopPrompt />
+            <TopPrompt />
 
-              {markupFeature.isEnabled && markupTool?.isOpen ? <MarkupMenu /> : <DesignMenu />}
+            {markupFeature.isEnabled && markupTool?.isOpen ? <MarkupMenu /> : <DesignMenu />}
 
-              <CanvasControls />
+            <CanvasControls />
 
-              <CanvasReadOnly />
+            <CanvasReadOnly />
 
-              <FlowControls />
+            <FlowControls />
 
-              <MarkupImageLoading />
+            <MarkupImageLoading />
 
-              <Canvas isPrototyping={isPrototyping} />
+            <Canvas isPrototyping={isPrototyping} />
 
-              <PrototypeSidebar />
-            </SettingsModalProvider>
-          </ShortcutModalProvider>
+            <PrototypeSidebar />
+          </SettingsModalProvider>
         </EditPermissionProvider>
       </ManagerProvider>
     </>

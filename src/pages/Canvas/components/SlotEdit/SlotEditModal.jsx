@@ -1,22 +1,20 @@
 import React from 'react';
 
-import Modal, { ModalHeader } from '@/components/LegacyModal';
+import Box from '@/components/Box';
+import Modal from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
 import SlotEdit from '.';
 
 function SlotEditModal() {
-  const { data, toggle, isOpened } = useModals(ModalType.SLOT_EDIT);
-
-  const handleToggle = React.useCallback(() => {
-    toggle(data);
-  }, [data, toggle]);
+  const { data } = useModals(ModalType.SLOT_EDIT);
 
   return (
-    <Modal isOpen={isOpened} toggle={handleToggle}>
-      <ModalHeader toggle={() => toggle(data)} header={data.isCreate ? 'NEW SLOT' : 'EDIT SLOT'} />
-      <SlotEdit {...data} />
+    <Modal id={ModalType.SLOT_EDIT} title={data.isCreate ? 'NEW SLOT' : 'EDIT SLOT'}>
+      <Box width="100%">
+        <SlotEdit {...data} />
+      </Box>
     </Modal>
   );
 }

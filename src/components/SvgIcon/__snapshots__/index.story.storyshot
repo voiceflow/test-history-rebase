@@ -24,6 +24,11 @@ exports[`Storyshots SVG Icon Normal 1`] = `
   color: #6e849a;
 }
 
+.c4 .c0 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 <span
   className="c0 c1"
   color="#000"
@@ -57,6 +62,11 @@ exports[`Storyshots SVG Icon With Height And Width 1`] = `
 
 .c3 .c0 {
   color: #6e849a;
+}
+
+.c4 .c0 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 <span
@@ -94,6 +104,11 @@ exports[`Storyshots SVG Icon With Many Transitions 1`] = `
 
 .c3 .c0 {
   color: #6e849a;
+}
+
+.c4 .c0 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 <span

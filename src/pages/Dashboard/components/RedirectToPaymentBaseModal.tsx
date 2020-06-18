@@ -1,12 +1,12 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import Button from '@/components/Button';
-import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
+import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
+import { styled } from '@/hocs';
 import { useModals } from '@/hooks';
 import { BodyContainer, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
-
-const Header: React.FC<any> = ModalHeader;
 
 export type RedirectToPaymentBaseModalProps = {
   modalType: ModalType;
@@ -16,8 +16,12 @@ export type RedirectToPaymentBaseModalProps = {
   className?: string;
 };
 
-const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, className }) => {
-  const { isOpened, toggle } = useModals(modalType);
+const StyledModal = styled(Modal)`
+  max-width: 392px;
+`;
+
+const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent }) => {
+  const { toggle } = useModals(modalType);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const onToggle = (e: React.MouseEvent) => {
@@ -31,26 +35,27 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
   };
 
   return (
-    <Modal modalname="planRestriction" isOpen={isOpened} toggle={toggle} wrapClassName={className}>
-      <Header toggle={toggle} header={header} />
+    <StyledModal id={modalType} title={header} isSmall>
+      <Box width="100%">
+        <BodyContainer column>
+          <img src={icon} alt="plan restriction" height={80} />
 
-      <BodyContainer column>
-        <img src={icon} alt="plan restriction" height={80} />
+          <ContentContainer>{bodyContent}</ContentContainer>
+        </BodyContainer>
 
-        <ContentContainer>{bodyContent}</ContentContainer>
-      </BodyContainer>
+        <ModalFooter>
+          <ButtonContainer>
+            <Button variant="tertiary" onClick={onToggle}>
+              Cancel
+            </Button>
+          </ButtonContainer>
 
-      <ModalFooter>
-        <ButtonContainer>
-          <Button variant="tertiary" onClick={onToggle}>
-            Cancel
-          </Button>
-        </ButtonContainer>
-        <ButtonContainer>
-          <Button onClick={onUnlock}>Unlock</Button>
-        </ButtonContainer>
-      </ModalFooter>
-    </Modal>
+          <ButtonContainer>
+            <Button onClick={onUnlock}>Unlock</Button>
+          </ButtonContainer>
+        </ModalFooter>
+      </Box>
+    </StyledModal>
   );
 };
 

@@ -5,10 +5,9 @@ import { RegisterEngine } from '@/contexts';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
-import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
-import { ConnectedStepProps } from '@/pages/Canvas/components/Step/types';
+import { Markup } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { NodeConfig } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -28,18 +27,7 @@ export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = Platfo
 
 export const withPlatform = withContext(PlatformContext, 'platform');
 
-export type ManagerValue = {
-  nodeID: string;
-  step: React.RefForwardingComponent<HTMLElement, ConnectedStepProps>;
-  label?: string;
-  markupNode?: React.FC<ConnectedMarkupNodeProps>;
-  mergeInitializer?: boolean;
-  mergeTerminator?: boolean;
-  editorsByPath: Record<string, NodeEditor<any>>;
-  editor: NodeEditor<any>;
-};
-
-export type ManagerGetter = (type: BlockType) => ManagerValue;
+export type ManagerGetter = <T extends object | Markup.AnyNodeData>(type: BlockType) => NodeConfig<T>;
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 

@@ -1,46 +1,38 @@
 import React from 'react';
-import { Input } from 'reactstrap';
 
 import Header from '@/components/Header';
 
+import LeftNavSection from './LeftNavSection';
 import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
 import UpgradeButton from './UpgradeButton';
 
-export default function DashboardHeader({
+const DashboardHeader = ({
   user,
   history,
   handleFilterText,
   workspaces,
   workspaceID,
-  workspace,
+  workspace: activeWorkspace,
   fetchBoards,
   team_setting,
   setTeamSetting,
-}) {
+}) => {
   return (
     <Header
       withLogo
-      logoAssetPath={workspace.image}
+      logoAssetPath={activeWorkspace.image}
       disableLogoClick
       history={history}
-      leftRenderer={() => (
-        <div className="searchBar">
-          <Input
-            name="filter_text"
-            className="search-input border-none"
-            placeholder="Search Projects"
-            onChange={(e) => handleFilterText(e.target.value)}
-          />
-        </div>
-      )}
+      leftRenderer={() => <LeftNavSection workspaces={workspaces} activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}
       centerRenderer={() => <UpgradeButton />}
       subHeaderRenderer={() => (
         <SecondaryNav
+          handleFilterText={handleFilterText}
           user={user}
           workspaces={workspaces}
-          workspace={workspace}
+          workspace={activeWorkspace}
           workspaceID={workspaceID}
           team_setting={team_setting}
           setTeamSetting={setTeamSetting}
@@ -49,4 +41,6 @@ export default function DashboardHeader({
       )}
     />
   );
-}
+};
+
+export default DashboardHeader;

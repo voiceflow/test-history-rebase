@@ -7,6 +7,7 @@ import * as Creator from '@/ducks/creator';
 import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
+import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
 import { EntityType } from '../constants';
@@ -18,6 +19,11 @@ export type NodeInstance = EntityInstance & {
    * get the outer DOMRect of the rendered node
    */
   getRect: () => DOMRect | null;
+
+  /**
+   * get the current x and y position of this node on the canvas
+   */
+  getPosition: () => Point;
 
   /**
    * get the center point of the rendered node
@@ -36,9 +42,14 @@ export type NodeInstance = EntityInstance & {
   translate?: (movement: Pair<number>) => void;
 
   /**
+   * create a snapshot of the current markup node size for use when transforming
+   */
+  snapshot?: () => void;
+
+  /**
    * only Markup nodes expose a rect for transformation
    */
-  getTransformRect?: () => DOMRect | null;
+  getTransform?: () => MarkupTransform;
 
   /**
    * only Markup nodes can be rotated
@@ -48,7 +59,17 @@ export type NodeInstance = EntityInstance & {
   /**
    * only Markup nodes can be scaled
    */
-  scale?: (delta: Pair<number>, offset: Pair<number>) => void;
+  scale?: (scale: Pair<number>, shift: Pair<number>) => void;
+
+  /**
+   * only line and arrow Markup shapes can have their vertices moved
+   */
+  moveVertices?: (offset: Pair<number>, shift: Pair<number>) => void;
+
+  /**
+   * only Markup nodes can be scaled
+   */
+  scaleText?: (width: number) => void;
 
   /**
    * apply any outstanding transformations

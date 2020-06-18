@@ -4,6 +4,17 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
 
+export type MarkupTransform = {
+  scale: number;
+  originX: number;
+  originY: number;
+  width: number;
+  height: number;
+  rotate: number;
+  invertX: boolean;
+  invertY: boolean;
+};
+
 export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
 
 export type BlockAPI<T extends HTMLElement = HTMLElement> = {
@@ -62,7 +73,7 @@ export type RealtimeLinkOverlayAPI = {
 };
 
 export type TransformOverlayAPI = {
-  initialize: (rect: DOMRect) => void;
+  initialize: (transform: MarkupTransform) => void;
   translate: (movement: Pair<number>) => void;
   clearTransformations: () => void;
   reset: () => void;

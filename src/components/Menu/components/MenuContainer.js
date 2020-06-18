@@ -36,6 +36,12 @@ const MenuContainer = styled.ul`
     css`
       animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
     `}
+  
+    ${({ noBottomPadding }) =>
+      noBottomPadding &&
+      css`
+        padding-bottom: 0;
+      `}
 `;
 
 export default MenuContainer;

@@ -2,6 +2,7 @@ import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
+import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
 import { ExportFormat, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
@@ -13,8 +14,8 @@ import { stopImmediatePropagation } from '@/utils/dom';
 import ButtonContainer from '../ButtonContainer';
 import Description from '../Description';
 import Header from '../Header';
+import LoadingButton from '../LoadingButton';
 import MenuItemContainer from '../MenuItemContainer';
-import { LoadingButton, RadioGroup } from './components';
 
 export const EXPORT_OPTIONS = [
   { id: ExportFormat.PNG, label: 'Image' },
@@ -57,7 +58,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan
           Content Format
         </Description>
 
-        <RadioGroup options={EXPORT_OPTIONS} checked={selectedExportType} onChange={setSelectedExportType} />
+        <RadioGroup isFlat options={EXPORT_OPTIONS} checked={selectedExportType} onChange={setSelectedExportType} />
       </div>
 
       <ButtonContainer>

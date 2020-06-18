@@ -55,11 +55,17 @@ class MarkupEngine extends EngineConsumer {
       content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
       textAlignment: TextAlignment.LEFT,
       scale: 1,
+      rotate: 0,
+      width: null,
     };
 
-    const nodeID = cuid();
-
-    await this.engine.node.add(BlockType.MARKUP_TEXT, this.engine.getCanvasMousePosition(), nodeData as NodeData<Markup.NodeData.Text>, nodeID);
+    const nodeID = await this.engine.node.add(
+      BlockType.MARKUP_TEXT,
+      this.engine.getCanvasMousePosition(),
+      nodeData as NodeData<Markup.NodeData.Text>,
+      cuid(),
+      false
+    );
 
     let editorState = this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<() => EditorState>('getEditorState')();
 
@@ -70,7 +76,7 @@ class MarkupEngine extends EngineConsumer {
 
     this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState')(editorState);
 
-    this.engine.transformation.reset();
+    this.engine.focus.set(nodeID);
   }
 
   async createShapeNode() {

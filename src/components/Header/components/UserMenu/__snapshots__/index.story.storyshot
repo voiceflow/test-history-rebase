@@ -1,59 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Header/User Menu Normal 1`] = `
-.c1 {
-  -webkit-transition: color 0.15s ease,border 0.15s ease;
-  transition: color 0.15s ease,border 0.15s ease;
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  font-size: 14px;
-  text-align: center;
-  color: #becedc;
-  position: relative;
-  background-color: #fff;
-  background-position: center center;
-  background-size: contain;
-  border-radius: 100%;
-  box-shadow: 0 0 0 2px #fff,0 1px 2px 2px rgba(17,49,96,0.16);
-  cursor: default;
-  font-weight: 600;
-  text-transform: uppercase;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.c2 {
+  box-sizing: content-box;
+  width: 9px;
+  height: 9px;
+  color: #6e849a;
 }
 
-.c1:before {
-  -webkit-transition: border 0.15s ease;
-  transition: border 0.15s ease;
+.c2 > svg {
   display: block;
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 100%;
-  content: '';
+  width: inherit;
+  height: inherit;
 }
 
-.c1:hover .c0:before {
-  border-color: rgba(17,49,96,0.13);
+.c3 .c1 {
+  color: #fff;
 }
 
-.c1 > * {
+.c4 .c1 {
+  color: #6e849a;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #132144;
+  cursor: pointer;
+  padding: 15px;
+  padding-left: 0;
+  margin-left: 24px;
+}
+
+.c0 div {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c0 .c1 {
   display: inline-block;
+  margin-left: 12px;
 }
 
 <div
-  className="account-dropdown nav-child-item"
+  className="account-dropdown"
 >
   <div
-    className="c0 c1 pointer"
+    className="c0"
     onClick={[Function]}
   >
-    ?
+    <div />
+    <span
+      className="c1 c2"
+      color="#6e849a"
+      size={9}
+    >
+      <svg
+        data-file-name="SvgCaretDown"
+      />
+    </span>
   </div>
 </div>
 `;

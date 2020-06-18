@@ -48,6 +48,11 @@ exports[`Storyshots Info Icon Rich Content 1`] = `
   color: #6e849a;
 }
 
+.c6 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 <div
   className="c0"
   onClick={[Function]}
@@ -114,6 +119,11 @@ exports[`Storyshots Info Icon Text 1`] = `
 
 .c5 .c2 {
   color: #6e849a;
+}
+
+.c6 .c2 {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 <div

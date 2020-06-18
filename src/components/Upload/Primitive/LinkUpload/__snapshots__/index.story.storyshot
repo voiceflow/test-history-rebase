@@ -125,6 +125,11 @@ exports[`Storyshots Upload/Primitive/Link With Back Button 1`] = `
   color: #6e849a;
 }
 
+.c12 .c2 {
+  display: inline-block;
+  margin-left: 12px;
+}
+
 .c9 {
   margin-top: 5px;
   color: #e91e63;

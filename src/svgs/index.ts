@@ -157,3 +157,5 @@ export { default as textAlignCenter } from './text-align-centre.svg';
 export { default as voiceflowV } from './V.svg';
 export { default as angle } from './angle.svg';
 export { default as prompt } from './prompt.svg';
+export { default as rocket } from './rocket.svg';
+export { default as upload } from './upload.svg';

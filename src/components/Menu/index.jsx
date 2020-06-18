@@ -29,6 +29,7 @@ function Menu(
     multiSelectProps: { multiselect, buttonClick, buttonLabel } = {},
     disableAnimation = false,
     maxVisibleItems,
+    noBottomPadding,
   },
   ref
 ) {
@@ -62,6 +63,7 @@ function Menu(
       maxVisibleItems={maxVisibleItems}
       disableAnimation={disableAnimation}
       nativeScrollbar={scrollBarWidth === 0}
+      noBottomPadding={noBottomPadding}
     >
       <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}

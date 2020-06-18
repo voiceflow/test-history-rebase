@@ -1,10 +1,11 @@
+import { DiagramState } from '@/constants';
 import * as CRUD from '@/ducks/utils/crud';
 
-import { DiagramState } from './types';
+import { DiagramState as DiagramStateType } from './types';
 
 export const DIAGRAM_STATE_KEY = 'diagram';
 
-export const INITIAL_DIAGRAM_STATE: DiagramState = {
+export const INITIAL_DIAGRAM_STATE: DiagramStateType = {
   diagramID: null,
   rootNodeIDs: [],
   nodes: CRUD.INITIAL_STATE,
@@ -16,4 +17,5 @@ export const INITIAL_DIAGRAM_STATE: DiagramState = {
   linkedNodesByNodeID: {},
   sections: {},
   markupNodeIDs: [],
+  diagramState: DiagramState.IDLE,
 };

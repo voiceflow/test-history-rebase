@@ -1,6 +1,7 @@
 import * as Redux from 'redux';
 import undoable, { includeAction } from 'redux-undo';
 
+import { DiagramState } from '@/constants';
 import { NodeData } from '@/models';
 import { ActionReducer, Reducer, RootReducer } from '@/store/types';
 import { compose } from '@/utils/functional';
@@ -14,13 +15,14 @@ import {
   RemoveLink,
   RemovePort,
   ReorderPorts,
+  SetDiagramState,
   SetSectionState,
   UpdateNodeData,
   UpdateNodeLocation,
 } from '../actions';
 import { INITIAL_DIAGRAM_STATE } from '../constants';
 import { portFactory } from '../factories';
-import { DiagramState } from '../types';
+import { DiagramState as DiagramStateType } from '../types';
 import {
   addPortToBlockInState,
   buildLinkedNodesByNodeID,
@@ -41,7 +43,7 @@ import unmergeNodeReducer from './unmergeNode';
 
 // reducers
 
-export const initializeCreatorReducer: ActionReducer<DiagramState, InitializeCreator> = ({
+export const initializeCreatorReducer: ActionReducer<DiagramStateType, InitializeCreator> = ({
   payload: { diagramID, rootNodeIDs, nodes, links, ports, data, markupNodeIDs },
 }) => ({
   diagramID,
@@ -55,9 +57,10 @@ export const initializeCreatorReducer: ActionReducer<DiagramState, InitializeCre
   linkedNodesByNodeID: buildLinkedNodesByNodeID(links),
   sections: {},
   markupNodeIDs,
+  diagramState: DiagramState.IDLE,
 });
 
-export const updateNodeDataReducer: Reducer<DiagramState, UpdateNodeData> = (state, { payload: { nodeID, data, patch } }) => {
+export const updateNodeDataReducer: Reducer<DiagramStateType, UpdateNodeData> = (state, { payload: { nodeID, data, patch } }) => {
   if (state.data.hasOwnProperty(nodeID)) {
     return {
       ...state,
@@ -71,21 +74,21 @@ export const updateNodeDataReducer: Reducer<DiagramState, UpdateNodeData> = (sta
   return state;
 };
 
-export const updateNodeLocationReducer: Reducer<DiagramState, UpdateNodeLocation> = (state, { payload: { nodeID, x, y } }) =>
+export const updateNodeLocationReducer: Reducer<DiagramStateType, UpdateNodeLocation> = (state, { payload: { nodeID, x, y } }) =>
   patchNodeInState(nodeID, { x, y })(state);
 
-export const addPortReducer: Reducer<DiagramState, AddPort> = (state, { payload: { nodeID, port } }) =>
+export const addPortReducer: Reducer<DiagramStateType, AddPort> = (state, { payload: { nodeID, port } }) =>
   addPortToBlockInState(portFactory(nodeID, port.id, port))(state);
 
-export const removePortReducer: Reducer<DiagramState, RemovePort> = (state, { payload: portID }) =>
+export const removePortReducer: Reducer<DiagramStateType, RemovePort> = (state, { payload: portID }) =>
   compose(removePortFromBlockInState(portID), removeAllLinksFromState(getLinkIDsByPortID(state)(portID)))(state);
 
-export const reorderPortsReducer: Reducer<DiagramState, ReorderPorts> = (state, { payload: { nodeID, from, to } }) =>
+export const reorderPortsReducer: Reducer<DiagramStateType, ReorderPorts> = (state, { payload: { nodeID, from, to } }) =>
   reorderNodePorts(nodeID, from, to)(state);
 
-export const removeLinkReducer: Reducer<DiagramState, RemoveLink> = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
+export const removeLinkReducer: Reducer<DiagramStateType, RemoveLink> = (state, { payload: linkID }) => removeLinkFromState(linkID)(state);
 
-export const setSectionStateReducer: Reducer<DiagramState, SetSectionState> = (state, { payload: { key, value } }) => {
+export const setSectionStateReducer: Reducer<DiagramStateType, SetSectionState> = (state, { payload: { key, value } }) => {
   if (value == null) {
     const { [key]: _, ...nextState } = state.sections;
 
@@ -104,7 +107,14 @@ export const setSectionStateReducer: Reducer<DiagramState, SetSectionState> = (s
   };
 };
 
-const creatorDiagramReducer: RootReducer<DiagramState, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
+export const setDiagramState: Reducer<DiagramStateType, SetDiagramState> = (state, { payload }) => {
+  return {
+    ...state,
+    diagramState: payload,
+  };
+};
+
+const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case CreatorAction.INITIALIZE_CREATOR:
@@ -143,12 +153,14 @@ const creatorDiagramReducer: RootReducer<DiagramState, AnyDiagramAction | AnyCre
       return removeLinkReducer(state, action);
     case DiagramAction.SET_SECTION_STATE:
       return setSectionStateReducer(state, action);
+    case DiagramAction.SET_DIAGRAM_STATE:
+      return setDiagramState(state, action);
     default:
       return state;
   }
 };
 
-export default undoable(creatorDiagramReducer as Redux.Reducer<DiagramState>, {
+export default undoable(creatorDiagramReducer as Redux.Reducer<DiagramStateType>, {
   undoType: DiagramAction.UNDO_HISTORY,
   redoType: DiagramAction.REDO_HISTORY,
   initTypes: ['@@redux-undo/INIT', CreatorAction.RESET_CREATOR],

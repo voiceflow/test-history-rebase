@@ -24,6 +24,7 @@ const ModalRoot = styled.div`
       z-index: -1000;
       opacity: 0;
       overflow: hidden;
+      visibility: hidden;
     `}
 `;
 

@@ -11,7 +11,7 @@ export const itemStyles = css`
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  margin: ${({ divider }) => (divider ? '4px 0' : 'none')};
+  margin: ${({ divider }) => (divider ? '6px 0' : 'none')};
   border-bottom: ${({ divider }) => (divider ? '1px solid #EAEFF4' : 'none')};
 
   ${({ disabled }) =>
@@ -49,6 +49,23 @@ export const itemStyles = css`
        background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), #ffffff;
      `}
   }
+  
+   ${({ bottomAction }) =>
+     bottomAction &&
+     css`
+       color: #5d9df5;
+       padding: 24px 46px;
+     `}
+   
+   ${({ teamItem }) =>
+     teamItem &&
+     css`
+       background: rgb(243, 248, 249);
+       color: #62778c;
+       margin-top: -6px;
+       height: 52px;
+       padding-bottom: 2px;
+     `}
 `;
 
 const MenuItem = styled.li`

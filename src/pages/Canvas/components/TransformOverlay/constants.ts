@@ -17,4 +17,6 @@ export const Y_INVERTED_HANDLES = [HandlePosition.TOP, HandlePosition.TOP_LEFT, 
 
 export const IMAGE_HANDLES = [HandlePosition.TOP, HandlePosition.RIGHT, HandlePosition.BOTTOM, HandlePosition.LEFT, ...SCALE_HANDLES];
 
-export const TEXT_HANDLES = [HandlePosition.RIGHT, HandlePosition.LEFT, ...SCALE_HANDLES];
+export const TEXT_WIDTH_HANDLES = [HandlePosition.RIGHT, HandlePosition.LEFT];
+
+export const TEXT_HANDLES = [...TEXT_WIDTH_HANDLES, ...SCALE_HANDLES];

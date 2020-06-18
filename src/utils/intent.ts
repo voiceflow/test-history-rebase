@@ -1,6 +1,6 @@
 import { constants } from '@voiceflow/common';
 
-import { FILTERED_AMAZON_INTENTS, PlatformType } from '@/constants';
+import { FILTERED_AMAZON_INTENTS, PlatformType, SLOT_REGEXP } from '@/constants';
 import { Intent } from '@/models';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
@@ -69,3 +69,38 @@ export const BUILT_IN_INTENTS = {
 };
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);
+
+const NUMERIC_UTTERANCE_REGEXP = /\d/;
+
+export function validateUtterance(utterance: string, intentID: string, intents: Intent[]) {
+  const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
+  let err = '';
+
+  if (utterance === '') {
+    return 'Utterances must contain text';
+  }
+
+  if (utteranceWithoutSlots.match(NUMERIC_UTTERANCE_REGEXP)) {
+    return 'Utterances cannot contain numbers, replace them with words or a slot that accepts numbers as a value.';
+  }
+
+  intents.some(({ inputs, id, name }) =>
+    inputs.some(({ text }) => {
+      if (text === utterance && id === intentID) {
+        err = 'You already have this utterance in this intent.';
+
+        return true;
+      }
+
+      if (text === utterance) {
+        err = `You already have this utterance defined in the "${name}" intent.`;
+
+        return true;
+      }
+
+      return false;
+    })
+  );
+
+  return err;
+}

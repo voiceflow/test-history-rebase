@@ -100,10 +100,12 @@ const BlockContainer = styled.div<BlockContainerProps>`
     cursor: not-allowed;
   }
 
-  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
-    ${disabledStyles}
+  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME})  {
+    & {
+      ${disabledStyles}
+    }
 
-    :not(.${NODE_MERGE_TARGET_CLASSNAME}):hover {
+    :not(.${NODE_MERGE_TARGET_CLASSNAME}) &:hover {
       opacity: 1;
     }
   }

@@ -2,6 +2,7 @@ import { Dispatch } from '@/store/types';
 
 import Client from './client';
 import createGlobalSocketClient from './global';
+import createProjectClient from './project';
 import createRealtimeClient from './realtime';
 
 function createSocketClient(dispatch: Dispatch) {
@@ -10,6 +11,7 @@ function createSocketClient(dispatch: Dispatch) {
   return {
     global: createGlobalSocketClient(client),
     realtime: createRealtimeClient(client),
+    project: createProjectClient(client),
 
     connect: client.connect,
     auth: client.auth,

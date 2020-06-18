@@ -14,8 +14,8 @@ import { stopImmediatePropagation } from '@/utils/dom';
 import ButtonContainer from '../ButtonContainer';
 import Description from '../Description';
 import Header from '../Header';
+import LoadingButton from '../LoadingButton';
 import MenuItemContainer from '../MenuItemContainer';
-import { LoadingButton } from './components';
 
 export const EXPORT_OPTIONS = [
   { id: ExportFormat.PNG, label: 'Image' },

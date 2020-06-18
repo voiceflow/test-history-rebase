@@ -6,7 +6,7 @@ import { BlockType, FEATURE_IDS } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { Markup } from '@/models';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
-import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
@@ -22,7 +22,6 @@ const MarkupNode = () => {
   const instance = useMarkupInstance<HTMLDivElement>();
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
-  const observer = React.useMemo(() => new ResizeObserver(() => engine.transformation.reinitialize()), []);
   const markup = React.useContext(MarkupModeContext);
   const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
 
@@ -46,20 +45,14 @@ const MarkupNode = () => {
 
   // for optimization reason using query selector to filter click events if markup is not opened
   const skipClick = React.useCallback(() => !document.getElementsByClassName(CANVAS_MARKUP_ENABLED_CLASSNAME).length, []);
+  const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);
 
-  const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipClick });
+  const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipClick, skipDrag });
 
   // TODO: implement context menu
   const onRightClick = React.useCallback(_noop, []);
 
   nodeEntity.useInstance(instance);
-
-  React.useEffect(() => {
-    const transformEl = instance.transformRef.current!;
-    observer.observe(transformEl);
-
-    return () => observer.unobserve(transformEl);
-  }, []);
 
   return (
     <>

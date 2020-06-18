@@ -130,7 +130,7 @@ export const useNewShapeInstance = () => {
         await engine.markup.addShapeNode([startX, startY], data);
       }
 
-      finishCreating(true);
+      finishCreating();
     },
     [shapeType]
   );

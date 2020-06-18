@@ -75,6 +75,8 @@ class MarkupEngine extends EngineConsumer {
     );
 
     this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState')(editorState);
+
+    this.engine.focus.set(nodeID);
   }
 
   async createShapeNode() {

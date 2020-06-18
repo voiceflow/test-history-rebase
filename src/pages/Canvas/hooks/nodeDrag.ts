@@ -3,12 +3,11 @@ import React from 'react';
 import { useTeardown } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
-import { stopPropagation } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 import MouseMovement from '@/utils/mouseMovement';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) => {
+export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean; skipDrag?: () => boolean } = {}) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const editPermission = React.useContext(EditPermissionContext)!;
@@ -50,7 +49,7 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
 
   const onDragStart = React.useCallback(
     (dragEvent: React.DragEvent) => {
-      if (dragEvent.defaultPrevented || !editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID)) return;
+      if (dragEvent.defaultPrevented || !editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID) || skipDrag?.()) return;
 
       dragEvent.preventDefault();
 
@@ -78,11 +77,21 @@ export const useNodeDrag = ({ skipClick }: { skipClick?: () => boolean } = {}) =
     [editPermission.canEdit, addMouseListeners]
   );
 
+  const onMouseDown = React.useCallback(
+    (event: React.MouseEvent) => {
+      if (editPermission.canEdit) {
+        event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
+      }
+    },
+    [editPermission.canEdit]
+  );
+
   useTeardown(() => teardownMouseListeners.current());
 
   return {
     onClick,
     onDragStart,
-    onMouseDown: stopPropagation(null, true),
+    onMouseDown,
   };
 };

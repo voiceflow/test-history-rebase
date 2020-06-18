@@ -43,7 +43,7 @@ class TransformationEngine extends EngineConsumer {
     if (this.isTarget(nodeID)) return;
 
     const node = this.engine.getNodeByID(nodeID);
-    if (node.type !== BlockType.MARKUP_TEXT) return;
+    if (node.type === BlockType.MARKUP_SHAPE) return;
 
     const transform = this.engine.node.api(nodeID)?.instance?.getTransform?.();
     if (!transform) return;

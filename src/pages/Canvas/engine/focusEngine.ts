@@ -35,7 +35,6 @@ class FocusEngine extends EngineConsumer {
     this.engine.transformation.reset();
 
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
-    this.engine.transformation.initialize(nodeID);
     this.dispatch(setFocus(nodeID, renameActiveRevision));
     this.engine.node.redrawLinks(nodeID);
 

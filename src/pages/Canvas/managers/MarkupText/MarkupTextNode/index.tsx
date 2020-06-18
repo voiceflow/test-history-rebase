@@ -19,12 +19,21 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
 
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const { isFocused } = nodeEntity.useState((e) => ({
+    isFocused: e.isFocused,
+  }));
 
   const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
   const plugins = React.useMemo(() => Object.values(pluginsObj), [pluginsObj]);
 
   const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);
+
+    if (!editorState.getCurrentContent().getPlainText().trim()) {
+      engine.node.remove(node.id);
+
+      return;
+    }
 
     cachedContent.current = content;
 
@@ -44,11 +53,7 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     setEditorState(state);
   }, []);
 
-  const onFocus = React.useCallback(() => {
-    if (nodeEntity.isFocused) {
-      engine.transformation.reset();
-    }
-  }, []);
+  const onFocus = React.useCallback(() => engine.transformation.reset(), []);
 
   const onDragStart = React.useCallback(
     (event: React.DragEvent) => {
@@ -60,6 +65,12 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     },
     [editorState]
   );
+
+  React.useEffect(() => {
+    if (isFocused && !editorState.getSelection().getHasFocus() && !editorState.getCurrentContent().isEmpty()) {
+      engine.transformation.initialize(nodeEntity.nodeID);
+    }
+  }, [isFocused]);
 
   return (
     <Container draggable onDragStart={onDragStart} ref={ref}>

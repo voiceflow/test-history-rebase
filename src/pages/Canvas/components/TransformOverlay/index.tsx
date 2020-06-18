@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { isLine, isShape } from '@/pages/Canvas/components/MarkupNode/utils';
 
-import { OverlayControls, ResizeHandle, RotateHandle, VertexHandle } from './components';
-import { IMAGE_HANDLES, SCALE_HANDLES } from './constants';
+import { OverlayControls, ResizeHandle } from './components';
+// import { OverlayControls, ResizeHandle, RotateHandle, VertexHandle } from './components';
+import { SCALE_HANDLES } from './constants';
 
 const TransformOverlay = () => (
   <OverlayControls>
-    {({ nodeType, data, onResizeStart, onRotateStart, onDragVertex }) => {
+    {({ nodeType, onResizeStart }) => {
+      // {({ nodeType, data, onResizeStart, onRotateStart, onDragVertex }) => {
       if (nodeType === BlockType.MARKUP_TEXT) {
         return (
           <>
@@ -25,25 +26,25 @@ const TransformOverlay = () => (
       }
 
       if ([BlockType.MARKUP_SHAPE, BlockType.MARKUP_IMAGE].includes(nodeType!)) {
-        if (isShape(data) && isLine(data)) {
-          const { offsetX, offsetY } = data;
-          const originX = Math.max(0, -offsetX);
-          const originY = Math.max(0, -offsetY);
+        // if (isShape(data) && isLine(data)) {
+        //   const { offsetX, offsetY } = data;
+        //   const originX = Math.max(0, -offsetX);
+        //   const originY = Math.max(0, -offsetY);
 
-          return (
-            <>
-              <VertexHandle point={[originX, originY]} onDragStart={onDragVertex('origin')} />
-              <VertexHandle point={[originX + offsetX, originY + offsetY]} onDragStart={onDragVertex('terminal')} />
-            </>
-          );
-        }
+        //   return (
+        //     <>
+        //       <VertexHandle point={[originX, originY]} onDragStart={onDragVertex('origin')} />
+        //       <VertexHandle point={[originX + offsetX, originY + offsetY]} onDragStart={onDragVertex('terminal')} />
+        //     </>
+        //   );
+        // }
 
         return (
           <>
-            {IMAGE_HANDLES.map((handle) => (
+            {SCALE_HANDLES.map((handle) => (
               <ResizeHandle position={handle} onDragStart={onResizeStart(handle)} key={handle} />
             ))}
-            <RotateHandle onDragStart={onRotateStart} />
+            {/* <RotateHandle onDragStart={onRotateStart} /> */}
           </>
         );
       }

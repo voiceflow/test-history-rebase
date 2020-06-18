@@ -24,8 +24,7 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })`
   }
 
   ${Label} {
-    width: 170px;
-    padding-right: 0;
+    padding-right: 20px;
     text-align: left;
   }
 `;

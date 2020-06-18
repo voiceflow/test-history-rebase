@@ -17,7 +17,7 @@ function Upload(props) {
   const needsLogin = !google;
   const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
 
-  let text = state.end ? 'Upload to Google' : 'Uploading';
+  let text = 'Upload to Google';
   if (needsLogin) {
     text = 'Connect to Google';
   }

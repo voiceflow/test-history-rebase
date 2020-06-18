@@ -86,7 +86,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
         {/* notifications component */}
         <Dropdown
           menu={
-            <Menu maxHeight={350}>
+            <Menu maxHeight="300px">
               <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />
             </Menu>
           }

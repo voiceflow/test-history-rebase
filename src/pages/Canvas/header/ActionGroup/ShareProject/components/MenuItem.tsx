@@ -34,7 +34,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
   const onCopy = React.useCallback(() => {
     copy(link);
     setCopiedStatus();
-  }, []);
+  }, [link]);
 
   const onClick = React.useCallback(() => {
     if (plan !== PlanType.STARTER) {
@@ -45,7 +45,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
     track();
 
     onClickProp?.();
-  }, [plan, track, onClickProp]);
+  }, [plan, track, onClickProp, onCopy]);
 
   React.useEffect(() => {
     if (isCopied) {

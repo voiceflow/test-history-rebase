@@ -307,3 +307,24 @@ export const updateWorkspace = (workspaceID, data) => async (dispatch) => {
     toast.error('Failed to set the plan.');
   }
 };
+
+export const updateWorkspaceMemberRole = (workspaceID, creatorID, role) => async (dispatch) => {
+  if (!workspaceID) return toast.error('Workspace not found');
+
+  try {
+    // Add one extra day to account for reset at midnight
+    await axios.patch(`/admin-api/workspace/${workspaceID}/members/${creatorID}`, { role });
+
+    dispatch({
+      type: UPDATE_WORKSPACE,
+      payload: {
+        id: workspaceID,
+        data: { role },
+      },
+    });
+
+    toast.success('The role is updated');
+  } catch (err) {
+    toast.error('Failed to update the role.');
+  }
+};

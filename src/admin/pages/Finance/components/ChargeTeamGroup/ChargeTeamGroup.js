@@ -11,7 +11,7 @@ import { cancelSubscription, editTrial, refundCharge } from '@/admin/store/ducks
 import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 
-import PlanModal from '../../../../components/PlanModal/PlanModal';
+import PlanModal from '../../../../components/RoleModal';
 import ChargeItem from '../ChargeItem/ChargeItem';
 
 const DATETIME_FORMAT = 'MMMM Do YYYY, h:mm:ss a';

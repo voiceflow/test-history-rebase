@@ -1,11 +1,12 @@
 import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
 import { EditorState } from 'draft-js';
+import _last from 'lodash/last';
 import React from 'react';
 
 import Select from '@/components/Select';
 
 import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, InlineStylePrefix } from '../../constants';
-import { getInlineStylePrefixAndValue, togglePrefixedInlineStyle } from '../../utils';
+import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../../utils';
 import { FormGroup } from './components';
 
 const PartialSelect = Select as React.ComponentType<Partial<React.ComponentProps<typeof Select>>>;
@@ -20,8 +21,8 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
   const { fontWeight, fontFamily } = React.useMemo(() => {
     const editorState = getEditorState?.();
 
-    let fontWeightValue = FontWeight.REGULAR;
-    let fontFamilyValue = Font.OPEN_SANS;
+    const fontWeightValue = FontWeight.REGULAR;
+    const fontFamilyValue = Font.OPEN_SANS;
 
     if (!editorState) {
       return {
@@ -30,29 +31,12 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
       };
     }
 
-    const inlineStyle = editorState.getCurrentInlineStyle();
-
-    inlineStyle.forEach((style) => {
-      const [prefix, value] = getInlineStylePrefixAndValue(style);
-
-      switch (prefix) {
-        case InlineStylePrefix.FONT_FAMILY: {
-          fontFamilyValue = value! as Font;
-          break;
-        }
-        case InlineStylePrefix.FONT_WEIGHT: {
-          fontWeightValue = value! as FontWeight;
-          break;
-        }
-        default: {
-          // empty
-        }
-      }
-    });
+    const fontFamilyStyle = _last(getSelectionPrefixedInlineStyle(editorState, InlineStylePrefix.FONT_FAMILY));
+    const fontWeightStyle = _last(getSelectionPrefixedInlineStyle(editorState, InlineStylePrefix.FONT_WEIGHT));
 
     return {
-      fontWeight: fontWeightValue,
-      fontFamily: fontFamilyValue,
+      fontFamily: (getInlineStylePrefixAndValue(fontFamilyStyle)[1] as Font) || Font.OPEN_SANS,
+      fontWeight: (getInlineStylePrefixAndValue(fontWeightStyle)[1] as FontWeight) || FontWeight.REGULAR,
     };
   }, [getEditorState?.()]);
 

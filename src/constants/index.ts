@@ -553,6 +553,8 @@ export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_
 
 export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
 
+export const COPY_NODES = [...MARKUP_NODES, BlockType.COMBINED];
+
 export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',

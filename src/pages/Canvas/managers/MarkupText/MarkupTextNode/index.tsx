@@ -1,4 +1,4 @@
-import { EditorState } from 'draft-js';
+import { DraftHandleValue, EditorState, RichUtils } from 'draft-js';
 import type BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';
 
@@ -16,6 +16,7 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
 
   const cachedContent = React.useRef(data.content);
   const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
+  const selectionCache = React.useRef<{ focusKey: string; anchorKey: string }>({ focusKey: '', anchorKey: '' });
 
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
@@ -49,9 +50,27 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     return null;
   }, []);
 
-  const onChange = React.useCallback((state: EditorState) => {
-    setEditorState(state);
+  const handleReturn = React.useCallback((_, state: EditorState) => {
+    setEditorState(RichUtils.insertSoftNewline(state));
+
+    return 'handled' as DraftHandleValue;
   }, []);
+
+  const onChange = React.useCallback(
+    (state: EditorState) => {
+      const selection = state.getSelection();
+
+      const focusKey = selection.getFocusKey();
+      const anchorKey = selection.getAnchorKey();
+
+      if (isFocused && !selection.isCollapsed() && (selectionCache.current.focusKey !== focusKey || selectionCache.current.anchorKey !== anchorKey)) {
+        setEditorState(pluginsObj.fakeSelectionPlugin.removeFakeSelection(state));
+      } else {
+        setEditorState(state);
+      }
+    },
+    [isFocused]
+  );
 
   const onFocus = React.useCallback(() => engine.transformation.reset(), []);
 
@@ -70,21 +89,28 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     if (isFocused && !editorState.getSelection().getHasFocus() && !editorState.getCurrentContent().isEmpty()) {
       engine.transformation.initialize(nodeEntity.nodeID);
     }
+
+    if (!isFocused) {
+      editorRef.current?.blur();
+    }
   }, [isFocused]);
 
   return (
     <Container draggable onDragStart={onDragStart} ref={ref}>
       <DraftJSEditor
         ref={editorRef}
+        ariaMultiline
+        onBlur={onBlur}
         plugins={plugins}
         onFocus={onFocus}
         onChange={onChange}
-        onBlur={onBlur}
-        keyBindingFn={keyBindingFn}
         editorState={editorState}
         placeholder="Type something"
+        handleReturn={handleReturn}
+        keyBindingFn={keyBindingFn}
         customStyleFn={customStyleFn}
         textAlignment={data.textAlignment}
+        stripPastedStyles
       />
     </Container>
   );

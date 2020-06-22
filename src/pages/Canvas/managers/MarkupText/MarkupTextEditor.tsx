@@ -60,6 +60,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
         <Content>
           <Section>
             <FontStyles
+              key={String(isOpen)}
               setEditorState={setEditorState}
               getEditorState={getEditorState}
               saveEditorState={saveEditorState}
@@ -79,6 +80,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
               <IconButtonSeparator />
 
               <Hyperlink
+                key={String(isOpen)}
                 setEditorState={wrapSetEditorStateToSave(setEditorState)}
                 getEditorState={getEditorState}
                 saveEditorState={saveEditorState}
@@ -92,6 +94,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
 
           <Section>
             <TextColor
+              key={String(isOpen)}
               setEditorState={setEditorState}
               getEditorState={getEditorState}
               saveEditorState={saveEditorState}

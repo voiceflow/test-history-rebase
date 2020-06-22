@@ -5,7 +5,7 @@ import { get, set } from 'idb-keyval';
 import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
 import nodeDataAdapter from '@/client/adapters/creator/nodeData';
-import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { addDiagrams, diagramsByIDsSelector } from '@/ducks/diagram';
 import { displaysByIDsSelector, loadDisplaysForSkill } from '@/ducks/display';
@@ -65,7 +65,7 @@ class ClipboardEngine extends EngineConsumer {
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
 
       // Block includes all the nodes - parent and nested
-      const copiedBlocks = copiedNodes.filter((node) => node.type === BlockType.COMBINED);
+      const copiedBlocks = copiedNodes.filter((node) => COPY_NODES.includes(node.type));
 
       const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out]));
 
@@ -157,7 +157,7 @@ class ClipboardEngine extends EngineConsumer {
   };
 
   copy(unfilteredNodeIDs: string[]) {
-    const nodeIDs = unfilteredNodeIDs.filter((nodeID) => this.engine.getNodeByID(nodeID).type === BlockType.COMBINED);
+    const nodeIDs = unfilteredNodeIDs.filter((nodeID) => COPY_NODES.includes(this.engine.getNodeByID(nodeID).type));
 
     if (!nodeIDs.length) return;
 

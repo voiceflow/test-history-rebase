@@ -41,7 +41,6 @@ const Spotlight = () => {
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
-  const promptFeature = useFeature(FeatureFlag.PROMPT_EDITOR);
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
     const position = engine.getCanvasMousePosition();
@@ -53,8 +52,6 @@ const Spotlight = () => {
   const options = React.useMemo(
     () =>
       BLOCK_TYPES.filter((option) => {
-        if (!promptFeature.isEnabled && option.value === BlockType.PROMPT) return false;
-
         if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.value)) return false;
 
         return true;

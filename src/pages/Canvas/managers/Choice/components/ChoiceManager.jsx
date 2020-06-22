@@ -4,12 +4,11 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, useManager, useToggle } from '@/hooks';
+import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
@@ -31,7 +30,6 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
 
   const updateChoices = React.useCallback((choices, save) => onChange({ choices }, save), [onChange]);
   const onRemoveChoice = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index + 1]), [engine.port, focusedNode.ports.out]);
-  const usingRepromptEditor = useFeature(FeatureFlag.REPROMPT_EDITOR);
 
   const hasNoReplyResponse = !!data.reprompt;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasNoReplyResponse ? null : repromptFactory() }), [
@@ -102,7 +100,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
         items={items}
         footer={
           <>
-            {usingRepromptEditor.isEnabled && <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />}
+            <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />
             {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
           </>
         }

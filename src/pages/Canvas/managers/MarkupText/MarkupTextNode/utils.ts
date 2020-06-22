@@ -53,3 +53,13 @@ export const customStyleFn = (styles: DraftInlineStyle): CSSProperties =>
       }
     }
   }, {});
+
+export const findAllDraggableParents = (node: HTMLElement): HTMLElement[] => {
+  const parent = node.closest<HTMLElement>('[draggable="true"]');
+
+  if (parent) {
+    return parent.parentElement ? [parent, ...findAllDraggableParents(parent.parentElement)] : [parent];
+  }
+
+  return [];
+};

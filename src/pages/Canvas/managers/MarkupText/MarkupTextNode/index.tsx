@@ -1,20 +1,23 @@
+import composeRefs from '@seznam/compose-react-refs';
 import { DraftHandleValue, EditorState, RichUtils } from 'draft-js';
 import type BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
+import { isFirefox } from '@/config';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 
 import { getRawContent } from '../utils';
 import { Container, Link } from './components';
-import { createEditorState, customStyleFn } from './utils';
+import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
 const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
-
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const cachedContent = React.useRef(data.content);
+  const draggableParentsCache = React.useRef<HTMLElement[]>([]);
   const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
   const selectionCache = React.useRef<{ focusKey: string; anchorKey: string }>({ focusKey: '', anchorKey: '' });
 
@@ -39,6 +42,10 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     cachedContent.current = content;
 
     engine.node.updateData(node.id, { content });
+
+    if (isFirefox) {
+      draggableParentsCache.current?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
+    }
   }, [editorState, nodeEntity.isFocused]);
 
   const keyBindingFn = React.useCallback(({ keyCode }: React.KeyboardEvent) => {
@@ -68,6 +75,15 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
       } else {
         setEditorState(state);
       }
+
+      // for some reason onFocus event is not triggered when setting focus manually via setEditorState
+      if (isFirefox && state.getSelection().getHasFocus()) {
+        const draggableParents = findAllDraggableParents(containerRef.current!);
+
+        draggableParents.forEach((parentNode) => parentNode.removeAttribute('draggable'));
+
+        draggableParentsCache.current = draggableParents;
+      }
     },
     [isFocused]
   );
@@ -96,7 +112,7 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
   }, [isFocused]);
 
   return (
-    <Container draggable onDragStart={onDragStart} ref={ref}>
+    <Container draggable onDragStart={onDragStart} ref={composeRefs(containerRef, ref)}>
       <DraftJSEditor
         ref={editorRef}
         ariaMultiline

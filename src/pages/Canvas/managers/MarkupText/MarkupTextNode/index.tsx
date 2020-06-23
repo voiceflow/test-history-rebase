@@ -4,6 +4,7 @@ import type BaseDraftJSEditor from 'draft-js-plugins-editor';
 import React from 'react';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
+import { deleteHandler } from '@/components/TextEditor/plugins/base/utils';
 import { isFirefox } from '@/config';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
@@ -16,10 +17,14 @@ import { createEditorState, customStyleFn, findAllDraggableParents } from './uti
 const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const cachedContent = React.useRef(data.content);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
   const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
-  const selectionCache = React.useRef<{ focusKey: string; anchorKey: string }>({ focusKey: '', anchorKey: '' });
+  const selectionCache = React.useRef<{ focusKey: string; anchorKey: string; anchorOffset: number; focusOffset: number }>({
+    focusKey: '',
+    anchorKey: '',
+    focusOffset: 0,
+    anchorOffset: 0,
+  });
 
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
@@ -39,8 +44,6 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
       return;
     }
 
-    cachedContent.current = content;
-
     engine.node.updateData(node.id, { content });
 
     if (isFirefox) {
@@ -48,14 +51,27 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
     }
   }, [editorState, nodeEntity.isFocused]);
 
-  const keyBindingFn = React.useCallback(({ keyCode }: React.KeyboardEvent) => {
-    // esc
-    if (keyCode === 27) {
-      editorRef.current?.blur();
-    }
+  const keyBindingFn = React.useCallback(
+    (e: React.KeyboardEvent) => {
+      // delete
+      if (e.keyCode === 127 || e.keyCode === 8) {
+        deleteHandler({
+          getEditorState: pluginsObj.toolbarPlugin.store.getItem<() => EditorState>('getEditorState'),
+          setEditorState: pluginsObj.toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState'),
+        })(e);
 
-    return null;
-  }, []);
+        return 'handled';
+      }
+
+      // esc
+      if (e.keyCode === 27) {
+        editorRef.current?.blur();
+      }
+
+      return null;
+    },
+    [pluginsObj]
+  );
 
   const handleReturn = React.useCallback((_, state: EditorState) => {
     setEditorState(RichUtils.insertSoftNewline(state));
@@ -69,15 +85,30 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
 
       const focusKey = selection.getFocusKey();
       const anchorKey = selection.getAnchorKey();
+      const focusOffset = selection.getFocusOffset();
+      const anchorOffset = selection.getAnchorOffset();
 
-      if (isFocused && !selection.isCollapsed() && (selectionCache.current.focusKey !== focusKey || selectionCache.current.anchorKey !== anchorKey)) {
+      const selectionChanged =
+        selectionCache.current.focusKey !== focusKey ||
+        selectionCache.current.anchorKey !== anchorKey ||
+        selectionCache.current.focusOffset !== focusOffset ||
+        selectionCache.current.anchorOffset !== anchorOffset;
+
+      if (isFocused && selection.getHasFocus() && selectionChanged) {
         setEditorState(pluginsObj.fakeSelectionPlugin.removeFakeSelection(state));
       } else {
         setEditorState(state);
       }
 
+      if (!selection.getHasFocus()) {
+        selectionCache.current.focusKey = focusKey;
+        selectionCache.current.anchorKey = anchorKey;
+        selectionCache.current.focusOffset = focusOffset;
+        selectionCache.current.anchorOffset = anchorOffset;
+      }
+
       // for some reason onFocus event is not triggered when setting focus manually via setEditorState
-      if (isFirefox && state.getSelection().getHasFocus()) {
+      if (isFirefox && selection.getHasFocus()) {
         const draggableParents = findAllDraggableParents(containerRef.current!);
 
         draggableParents.forEach((parentNode) => parentNode.removeAttribute('draggable'));

@@ -502,11 +502,11 @@ export enum DisplayType {
 export const PLAN_NAMES = {
   [PlanType.OLD_PRO]: {
     label: 'Pro',
-    color: '#42B761',
+    color: '#279745',
   },
   [PlanType.PRO]: {
     label: 'Pro',
-    color: '#42B761',
+    color: '#279745',
   },
   [PlanType.OLD_STARTER]: {
     label: 'Starter',
@@ -518,11 +518,11 @@ export const PLAN_NAMES = {
   },
   [PlanType.OLD_TEAM]: {
     label: 'Team',
-    color: '#5D9DF5',
+    color: '#5589eb',
   },
   [PlanType.TEAM]: {
     label: 'Team',
-    color: '#5D9DF5',
+    color: '#5589eb',
   },
   [PlanType.OLD_ENTERPRISE]: {
     label: 'Enterprise',

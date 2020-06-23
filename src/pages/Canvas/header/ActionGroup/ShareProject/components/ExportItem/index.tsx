@@ -4,7 +4,7 @@ import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
-import { ExportFormat, PlanType } from '@/constants';
+import { ExportFormat, FEATURE_IDS, FEATURE_PLAN_PERMISSIONS, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
@@ -31,10 +31,12 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
   const [trackingEvents] = useTrackingEvents();
 
+  const isEnabled = FEATURE_PLAN_PERMISSIONS[FEATURE_IDS.EXPORT].includes(plan!);
+
   const onClick = () => {
     trackingEvents.trackExportButtonClick({ format: selectedExportType });
 
-    if (plan !== PlanType.STARTER) {
+    if (isEnabled) {
       exportCanvas(selectedExportType);
     } else {
       onRedirect();
@@ -46,12 +48,12 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan
       <div>
         <Header>
           <span>Export</span>
-          {plan === PlanType.STARTER && <BubbleText color="green">Pro</BubbleText>}
+          {!isEnabled && <BubbleText color="green">Pro</BubbleText>}
         </Header>
 
         <Description mb={16}>
           <span>Export your projects content as an image or PDF file </span>
-          <Link href="voiceflow.com">Learn More</Link>
+          <Link href="https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng">Learn More</Link>
         </Description>
 
         <Description mb={8} fontWeight={600}>

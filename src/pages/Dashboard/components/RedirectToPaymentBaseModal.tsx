@@ -2,7 +2,9 @@ import React from 'react';
 
 import Box from '@/components/Box';
 import Button from '@/components/Button';
+import Flex from '@/components/Flex';
 import Modal, { ModalFooter } from '@/components/Modal';
+import { Link } from '@/components/Text';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -14,13 +16,18 @@ export type RedirectToPaymentBaseModalProps = {
   icon: string;
   bodyContent: React.ReactNode;
   className?: string;
+  helpLink?: string;
 };
 
 const StyledModal = styled(Modal)`
   max-width: 392px;
 `;
 
-const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent }) => {
+const ActionContainer = styled(Flex)`
+  white-space: nowrap;
+`;
+
+const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, helpLink }) => {
   const { toggle } = useModals(modalType);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
@@ -43,16 +50,20 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
           <ContentContainer>{bodyContent}</ContentContainer>
         </BodyContainer>
 
-        <ModalFooter>
-          <ButtonContainer>
-            <Button variant="tertiary" onClick={onToggle}>
-              Cancel
-            </Button>
-          </ButtonContainer>
+        <ModalFooter justifyContent="space-between">
+          <div>{helpLink && <Link href={helpLink}>See more</Link>}</div>
 
-          <ButtonContainer>
-            <Button onClick={onUnlock}>Unlock</Button>
-          </ButtonContainer>
+          <ActionContainer>
+            <ButtonContainer>
+              <Button variant="tertiary" onClick={onToggle}>
+                Cancel
+              </Button>
+            </ButtonContainer>
+
+            <ButtonContainer>
+              <Button onClick={onUnlock}>Unlock</Button>
+            </ButtonContainer>
+          </ActionContainer>
         </ModalFooter>
       </Box>
     </StyledModal>

@@ -392,6 +392,7 @@ export enum ModalType {
   PROJECT_DOWNLOAD = 'project-download',
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
+  CANVAS_MARKUP = 'canvas-markup',
   SHARE_MENU = 'share-menu',
 
   SHORTCUTS = 'shortcuts',

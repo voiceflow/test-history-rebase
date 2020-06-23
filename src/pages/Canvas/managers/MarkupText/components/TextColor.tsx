@@ -102,7 +102,10 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   };
 
   const onApplyFakeSelection = () => {
-    setEditorState(applyFakeSelection(getEditorState()));
+    // to fix the issue when te slider loses focus on the drag start
+    requestAnimationFrame(() => {
+      setEditorState(applyFakeSelection(getEditorState()));
+    });
   };
 
   const onRemoveAndSaveFakeSelection = () => {

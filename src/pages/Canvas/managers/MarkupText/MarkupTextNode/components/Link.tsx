@@ -9,6 +9,7 @@ type LinkProps = {
 };
 
 const ClickableLink = styled(ClickableText)`
+  display: inline;
   pointer-events: all;
 `;
 

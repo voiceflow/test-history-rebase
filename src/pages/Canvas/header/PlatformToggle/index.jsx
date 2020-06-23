@@ -1,9 +1,10 @@
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import { FlexApart } from '@/components/Flex';
+import Flex, { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
+import { Link } from '@/components/Text';
 import { PLATFORMS, PlatformType } from '@/constants';
 
 export const PLATFORM_LABELS = {
@@ -18,7 +19,7 @@ function PlatformToggle({ platform, onToggle, disabled }) {
       disabled={disabled}
       text={PLATFORM_LABELS[platform]}
       menu={
-        <Menu>
+        <Menu noBottomPadding>
           {PLATFORMS.map((platformType) => {
             return (
               <MenuItem
@@ -34,6 +35,15 @@ function PlatformToggle({ platform, onToggle, disabled }) {
               </MenuItem>
             );
           })}
+          <MenuItem divider />
+          <MenuItem disabled teamItem>
+            <Flex style={{ width: '100%' }}>
+              Custom Assistant?
+              <Link href="https://www.voiceflow.com/custom-assistant" marginLeft={5}>
+                See More
+              </Link>
+            </Flex>
+          </MenuItem>
         </Menu>
       }
     />

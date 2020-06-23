@@ -503,27 +503,27 @@ export enum DisplayType {
 export const PLAN_NAMES = {
   [PlanType.OLD_PRO]: {
     label: 'Pro',
-    color: '#279745',
+    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
   [PlanType.PRO]: {
     label: 'Pro',
-    color: '#279745',
+    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
   [PlanType.OLD_STARTER]: {
     label: 'Starter',
-    color: '#8da2b5',
+    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
   [PlanType.STARTER]: {
     label: 'Starter',
-    color: '#8da2b5',
+    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
   [PlanType.OLD_TEAM]: {
     label: 'Team',
-    color: '#5589eb',
+    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.TEAM]: {
     label: 'Team',
-    color: '#5589eb',
+    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.OLD_ENTERPRISE]: {
     label: 'Enterprise',

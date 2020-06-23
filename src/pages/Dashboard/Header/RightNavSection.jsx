@@ -5,7 +5,7 @@ import IconButton from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/components/ClickableText';
-import { FEATURE_IDS, ModalType, PLAN_NAMES, PlanType } from '@/constants';
+import { FEATURE_IDS, ModalType, PLAN_NAMES, PlanType, UserRole } from '@/constants';
 import { usePermissions } from '@/contexts';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
@@ -32,8 +32,12 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
-  const [canUseWorkspaceSettings] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
+  const [canUseWorkspaceSettings, userRole] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
+
+  const isEditor = userRole === UserRole.EDITOR;
+  const isViewer = userRole === UserRole.VIEWER;
+
   return (
     <>
       <SubHeaderItem>
@@ -61,7 +65,17 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
                   )}
                 </>
               ) : (
-                <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+                <>
+                  <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+                  {(isEditor || isViewer) && (
+                    <>
+                      <MenuItem divider />
+                      <MenuItem disabled teamItem>
+                        Workspace {isEditor ? 'Editor' : 'Viewer'}
+                      </MenuItem>
+                    </>
+                  )}
+                </>
               )}
             </Menu>
           }

@@ -53,7 +53,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan
 
         <Description mb={16}>
           <span>Export your projects content as an image or PDF file </span>
-          <Link href="voiceflow.com">Learn More</Link>
+          <Link href="https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng">Learn More</Link>
         </Description>
 
         <Description mb={8} fontWeight={600}>

@@ -27,6 +27,7 @@ import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pa
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
 import { EditPermissionProvider, MarkupModeProvider } from '@/pages/Skill/contexts';
+import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
 
@@ -128,7 +129,7 @@ const findCanvasExportOffsets = (nodes: Node[]): Point => {
 const applyCanvasExportOffsets = (nodes: Node[], [offsetX, offsetY]: Point) =>
   nodes.map((node) => ({
     ...node,
-    x: node.x + offsetX,
+    x: node.x + offsetX + (MARKUP_NODES.includes(node.type) ? BLOCK_WIDTH / 2 : 0),
     y: node.y + offsetY,
   }));
 

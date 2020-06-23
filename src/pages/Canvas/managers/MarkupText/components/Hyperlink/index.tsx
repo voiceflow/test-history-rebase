@@ -125,7 +125,7 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
           >
             {({ ref, style }) => (
               <PopoverContainer ref={ref} style={style}>
-                <Title>Hyplerlink</Title>
+                <Title>Hyperlink</Title>
                 <Input
                   value={localLink}
                   onBlur={onBlur}

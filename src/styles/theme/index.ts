@@ -1,9 +1,9 @@
-import BLOCK_THEME from './block';
+import BLOCK_THEME, { BLOCK_WIDTH } from './block';
 import BLOCK_STEP_THEME from './blockStep';
 import { ANIMATION_SPEED, COLOR_BLUE } from './constants';
 import ICON_THEME from './icon';
 
-export { ANIMATION_SPEED };
+export { ANIMATION_SPEED, BLOCK_WIDTH };
 
 const THEME = {
   unit: 8,

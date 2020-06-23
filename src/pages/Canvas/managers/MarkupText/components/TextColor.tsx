@@ -1,5 +1,6 @@
 import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
 import { EditorState } from 'draft-js';
+import _last from 'lodash/last';
 import { parseToRgb } from 'polished';
 import { RgbaColor } from 'polished/lib/types/color';
 import React from 'react';
@@ -11,7 +12,7 @@ import { useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
 
 import { InlineStylePrefix } from '../constants';
-import { getInlineStylePrefixAndValue, togglePrefixedInlineStyle } from '../utils';
+import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../utils';
 
 export type TextColorProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (state: EditorState) => void;
@@ -35,29 +36,22 @@ const getRGBAColor = (str: string) => {
 };
 
 const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, saveEditorState, applyFakeSelection, removeFakeSelection }) => {
-  const colorStr = React.useMemo(() => {
+  const { colorStr, hasFocus } = React.useMemo(() => {
     const editorState = getEditorState?.();
 
     if (!editorState) {
-      return DEFAULT_COLOR;
+      return {
+        colorStr: DEFAULT_COLOR,
+        hasFocus: false,
+      };
     }
 
-    let color = DEFAULT_COLOR;
+    const colorStyle = _last(getSelectionPrefixedInlineStyle(editorState, InlineStylePrefix.COLOR));
 
-    const inlineStyle = editorState.getCurrentInlineStyle();
-
-    inlineStyle.some((style) => {
-      const [prefix, value] = getInlineStylePrefixAndValue(style);
-
-      if (prefix === InlineStylePrefix.COLOR) {
-        color = value!;
-        return true;
-      }
-
-      return false;
-    });
-
-    return color;
+    return {
+      colorStr: getInlineStylePrefixAndValue(colorStyle)[1] || DEFAULT_COLOR,
+      hasFocus: editorState.getSelection().getHasFocus(),
+    };
   }, [getEditorState?.()]);
 
   const [color, setColor] = React.useState(() => getRGBAColor(colorStr));
@@ -108,7 +102,10 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   };
 
   const onApplyFakeSelection = () => {
-    setEditorState(applyFakeSelection(getEditorState()));
+    // to fix the issue when te slider loses focus on the drag start
+    requestAnimationFrame(() => {
+      setEditorState(applyFakeSelection(getEditorState()));
+    });
   };
 
   const onRemoveAndSaveFakeSelection = () => {
@@ -129,7 +126,7 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   };
 
   useDidUpdateEffect(() => {
-    if (getStrColor(color) !== colorStr) {
+    if (getStrColor(color) !== colorStr || hasFocus) {
       const nextColor = getRGBAColor(colorStr);
 
       unstable_batchedUpdates(() => {
@@ -137,7 +134,7 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
         setInputOpacity(`${(nextColor.a ?? 1) * 100}`);
       });
     }
-  }, [colorStr]);
+  }, [colorStr, hasFocus]);
 
   return (
     <SliderInputGroup

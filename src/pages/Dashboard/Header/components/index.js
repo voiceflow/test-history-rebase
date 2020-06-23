@@ -36,6 +36,7 @@ export const ProjectSearchInput = styled(Input)`
   background: transparent;
   font-size: 15px;
   box-shadow: none !important;
+  padding: 10px 16px 10px 0px;
 
   input::placeholder {
     line-height: 20px;

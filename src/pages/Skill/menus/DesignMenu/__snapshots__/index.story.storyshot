@@ -14,40 +14,27 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
-.c34 {
+.c35 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c34 > svg {
+.c35 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c37 {
+.c38 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c37 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c32 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #58457a;
-}
-
-.c32 > svg {
+.c38 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -57,10 +44,23 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
 }
 
 .c33 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c34 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c34 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -79,37 +79,11 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
-.c35 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c35 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c30 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #f86683;
-}
-
-.c30 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c36 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #74a4bf;
+  color: #3c6997;
 }
 
 .c36 > svg {
@@ -118,14 +92,40 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
-.c38 {
+.c31 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c31 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c37 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c37 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c39 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #e26d5a;
 }
 
-.c38 > svg {
+.c39 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -144,14 +144,27 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   height: inherit;
 }
 
-.c31 {
+.c29 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #4D5CAD;
+}
+
+.c29 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c32 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c31 > svg {
+.c32 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -220,7 +233,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   margin-bottom: 8px;
 }
 
-.c29 {
+.c30 {
   margin-right: 8px;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -243,15 +256,15 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transform: rotate(0deg);
 }
 
-.c41 .c9 {
+.c42 .c9 {
   color: #fff;
 }
 
-.c42 .c9 {
+.c43 .c9 {
   color: #6e849a;
 }
 
-.c43 .c9 {
+.c44 .c9 {
   display: inline-block;
   margin-left: 12px;
 }
@@ -396,7 +409,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transition: transform 0.15s ease,width 0.15s ease;
 }
 
-.c40 {
+.c41 {
   border-radius: 1.5px;
   background-color: #dfe3ed;
   cursor: pointer;
@@ -404,23 +417,23 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transition: background-color 0.15s ease;
 }
 
-.c40:hover {
+.c41:hover {
   background-color: #becedc;
 }
 
-.c39 {
+.c40 {
   width: 3px !important;
   top: 0;
   right: 6px;
   bottom: 0;
 }
 
-.c44 > .c9 {
+.c45 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c45 > .c9 {
+.c46 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -844,6 +857,37 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                         </span>
                       </div>
                     </div>
+                    <div
+                      className="c21 vf-step-menu__item"
+                    >
+                      <span
+                        className="c9 c29"
+                        color="#4D5CAD"
+                        size={16}
+                      >
+                        <svg
+                          data-file-name="SvgPrompt"
+                        />
+                      </span>
+                      <div
+                        className="c23"
+                      >
+                        Prompt
+                      </div>
+                      <div
+                        className="c24 c25"
+                      >
+                        <span
+                          className="c9 c26"
+                          color="#becedc"
+                          size={14}
+                        >
+                          <svg
+                            data-file-name="SvgDotsGroup"
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -855,7 +899,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -878,7 +922,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c30"
+                        className="c9 c31"
                         color="#f86683"
                         size={16}
                       >
@@ -909,7 +953,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c31"
+                        className="c9 c32"
                         color="#5590b5"
                         size={16}
                       >
@@ -940,7 +984,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c32"
+                        className="c9 c33"
                         color="#58457a"
                         size={16}
                       >
@@ -971,7 +1015,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -1002,7 +1046,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c34"
+                        className="c9 c35"
                         color="#d94c4c"
                         size={16}
                       >
@@ -1033,7 +1077,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c35"
+                        className="c9 c36"
                         color="#3c6997"
                         size={16}
                       >
@@ -1071,7 +1115,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -1094,7 +1138,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c36"
+                        className="c9 c37"
                         color="#74a4bf"
                         size={16}
                       >
@@ -1125,7 +1169,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c37"
+                        className="c9 c38"
                         color="#279745"
                         size={16}
                       >
@@ -1156,7 +1200,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c38"
+                        className="c9 c39"
                         color="#e26d5a"
                         size={16}
                       >
@@ -1217,7 +1261,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             />
           </div>
           <div
-            className="c39"
+            className="c40"
             style={
               Object {
                 "display": "none",
@@ -1229,7 +1273,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
             }
           >
             <div
-              className="c40"
+              className="c41"
               style={
                 Object {
                   "display": "block",
@@ -1260,40 +1304,27 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
-.c34 {
+.c35 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c34 > svg {
+.c35 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c37 {
+.c38 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c37 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c32 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #58457a;
-}
-
-.c32 > svg {
+.c38 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1303,10 +1334,23 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
 }
 
 .c33 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c34 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c34 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1325,37 +1369,11 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
-.c35 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c35 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c30 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #f86683;
-}
-
-.c30 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c36 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #74a4bf;
+  color: #3c6997;
 }
 
 .c36 > svg {
@@ -1364,14 +1382,40 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
-.c38 {
+.c31 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c31 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c37 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c37 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c39 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #e26d5a;
 }
 
-.c38 > svg {
+.c39 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1390,14 +1434,27 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   height: inherit;
 }
 
-.c31 {
+.c29 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #4D5CAD;
+}
+
+.c29 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c32 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c31 > svg {
+.c32 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -1466,7 +1523,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   margin-bottom: 8px;
 }
 
-.c29 {
+.c30 {
   margin-right: 8px;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -1489,15 +1546,15 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transform: rotate(0deg);
 }
 
-.c41 .c9 {
+.c42 .c9 {
   color: #fff;
 }
 
-.c42 .c9 {
+.c43 .c9 {
   color: #6e849a;
 }
 
-.c43 .c9 {
+.c44 .c9 {
   display: inline-block;
   margin-left: 12px;
 }
@@ -1642,7 +1699,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transition: transform 0.15s ease,width 0.15s ease;
 }
 
-.c40 {
+.c41 {
   border-radius: 1.5px;
   background-color: #dfe3ed;
   cursor: pointer;
@@ -1650,23 +1707,23 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transition: background-color 0.15s ease;
 }
 
-.c40:hover {
+.c41:hover {
   background-color: #becedc;
 }
 
-.c39 {
+.c40 {
   width: 3px !important;
   top: 0;
   right: 6px;
   bottom: 0;
 }
 
-.c44 > .c9 {
+.c45 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c45 > .c9 {
+.c46 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -2090,6 +2147,37 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                         </span>
                       </div>
                     </div>
+                    <div
+                      className="c21 vf-step-menu__item"
+                    >
+                      <span
+                        className="c9 c29"
+                        color="#4D5CAD"
+                        size={16}
+                      >
+                        <svg
+                          data-file-name="SvgPrompt"
+                        />
+                      </span>
+                      <div
+                        className="c23"
+                      >
+                        Prompt
+                      </div>
+                      <div
+                        className="c24 c25"
+                      >
+                        <span
+                          className="c9 c26"
+                          color="#becedc"
+                          size={14}
+                        >
+                          <svg
+                            data-file-name="SvgDotsGroup"
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2101,7 +2189,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -2124,7 +2212,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c30"
+                        className="c9 c31"
                         color="#f86683"
                         size={16}
                       >
@@ -2155,7 +2243,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c31"
+                        className="c9 c32"
                         color="#5590b5"
                         size={16}
                       >
@@ -2186,7 +2274,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c32"
+                        className="c9 c33"
                         color="#58457a"
                         size={16}
                       >
@@ -2217,7 +2305,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -2248,7 +2336,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c34"
+                        className="c9 c35"
                         color="#d94c4c"
                         size={16}
                       >
@@ -2279,7 +2367,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c35"
+                        className="c9 c36"
                         color="#3c6997"
                         size={16}
                       >
@@ -2317,7 +2405,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -2340,7 +2428,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c36"
+                        className="c9 c37"
                         color="#74a4bf"
                         size={16}
                       >
@@ -2371,7 +2459,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c37"
+                        className="c9 c38"
                         color="#279745"
                         size={16}
                       >
@@ -2402,7 +2490,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c38"
+                        className="c9 c39"
                         color="#e26d5a"
                         size={16}
                       >
@@ -2463,7 +2551,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             />
           </div>
           <div
-            className="c39"
+            className="c40"
             style={
               Object {
                 "display": "none",
@@ -2475,7 +2563,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
             }
           >
             <div
-              className="c40"
+              className="c41"
               style={
                 Object {
                   "display": "block",
@@ -3180,50 +3268,11 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c44 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #6e849a;
-}
-
-.c44 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c34 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #d94c4c;
-}
-
-.c34 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c37 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #279745;
-}
-
-.c37 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
 .c45 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #645f5f;
+  color: #6e849a;
 }
 
 .c45 > svg {
@@ -3232,14 +3281,40 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c32 {
+.c35 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #58457a;
+  color: #d94c4c;
 }
 
-.c32 > svg {
+.c35 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c38 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #279745;
+}
+
+.c38 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c46 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #645f5f;
+}
+
+.c46 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3249,10 +3324,23 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
 }
 
 .c33 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c34 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c34 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3271,40 +3359,14 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c41 {
+.c42 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #cdad32;
 }
 
-.c41 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c35 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c35 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c30 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #f86683;
-}
-
-.c30 > svg {
+.c42 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3314,7 +3376,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #74a4bf;
+  color: #3c6997;
 }
 
 .c36 > svg {
@@ -3323,14 +3385,40 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c38 {
+.c31 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c31 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c37 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c37 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c39 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #e26d5a;
 }
 
-.c38 > svg {
+.c39 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3349,40 +3437,53 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c40 {
+.c41 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #558B2F;
 }
 
-.c40 > svg {
+.c41 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c42 {
+.c29 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #4D5CAD;
+}
+
+.c29 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c43 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #c998a4;
 }
 
-.c42 > svg {
+.c43 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c31 {
+.c32 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c31 > svg {
+.c32 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3401,27 +3502,27 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   height: inherit;
 }
 
-.c39 {
+.c40 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c39 > svg {
+.c40 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c43 {
+.c44 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #3C6997;
 }
 
-.c43 > svg {
+.c44 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -3477,7 +3578,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   margin-bottom: 8px;
 }
 
-.c29 {
+.c30 {
   margin-right: 8px;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -3500,15 +3601,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transform: rotate(0deg);
 }
 
-.c48 .c9 {
+.c49 .c9 {
   color: #fff;
 }
 
-.c49 .c9 {
+.c50 .c9 {
   color: #6e849a;
 }
 
-.c50 .c9 {
+.c51 .c9 {
   display: inline-block;
   margin-left: 12px;
 }
@@ -3653,7 +3754,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transition: transform 0.15s ease,width 0.15s ease;
 }
 
-.c47 {
+.c48 {
   border-radius: 1.5px;
   background-color: #dfe3ed;
   cursor: pointer;
@@ -3661,23 +3762,23 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transition: background-color 0.15s ease;
 }
 
-.c47:hover {
+.c48:hover {
   background-color: #becedc;
 }
 
-.c46 {
+.c47 {
   width: 3px !important;
   top: 0;
   right: 6px;
   bottom: 0;
 }
 
-.c51 > .c9 {
+.c52 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c52 > .c9 {
+.c53 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -4101,6 +4202,37 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                         </span>
                       </div>
                     </div>
+                    <div
+                      className="c21 vf-step-menu__item"
+                    >
+                      <span
+                        className="c9 c29"
+                        color="#4D5CAD"
+                        size={16}
+                      >
+                        <svg
+                          data-file-name="SvgPrompt"
+                        />
+                      </span>
+                      <div
+                        className="c23"
+                      >
+                        Prompt
+                      </div>
+                      <div
+                        className="c24 c25"
+                      >
+                        <span
+                          className="c9 c26"
+                          color="#becedc"
+                          size={14}
+                        >
+                          <svg
+                            data-file-name="SvgDotsGroup"
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4112,7 +4244,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -4135,7 +4267,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c30"
+                        className="c9 c31"
                         color="#f86683"
                         size={16}
                       >
@@ -4166,7 +4298,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c31"
+                        className="c9 c32"
                         color="#5590b5"
                         size={16}
                       >
@@ -4197,7 +4329,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c32"
+                        className="c9 c33"
                         color="#58457a"
                         size={16}
                       >
@@ -4228,7 +4360,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -4259,7 +4391,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c34"
+                        className="c9 c35"
                         color="#d94c4c"
                         size={16}
                       >
@@ -4290,7 +4422,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c35"
+                        className="c9 c36"
                         color="#3c6997"
                         size={16}
                       >
@@ -4328,7 +4460,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -4351,7 +4483,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c36"
+                        className="c9 c37"
                         color="#74a4bf"
                         size={16}
                       >
@@ -4382,7 +4514,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c37"
+                        className="c9 c38"
                         color="#279745"
                         size={16}
                       >
@@ -4413,7 +4545,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c38"
+                        className="c9 c39"
                         color="#e26d5a"
                         size={16}
                       >
@@ -4451,7 +4583,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -4474,7 +4606,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c39"
+                        className="c9 c40"
                         color="#4f98c6"
                         size={16}
                       >
@@ -4505,7 +4637,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c35"
+                        className="c9 c36"
                         color="#3c6997"
                         size={16}
                       >
@@ -4536,7 +4668,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -4567,7 +4699,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c40"
+                        className="c9 c41"
                         color="#558B2F"
                         size={16}
                       >
@@ -4598,7 +4730,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c34"
+                        className="c9 c35"
                         color="#d94c4c"
                         size={16}
                       >
@@ -4629,7 +4761,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c41"
+                        className="c9 c42"
                         color="#cdad32"
                         size={16}
                       >
@@ -4660,7 +4792,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c42"
+                        className="c9 c43"
                         color="#c998a4"
                         size={16}
                       >
@@ -4691,7 +4823,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c43"
+                        className="c9 c44"
                         color="#3C6997"
                         size={16}
                       >
@@ -4722,7 +4854,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c44"
+                        className="c9 c45"
                         color="#6e849a"
                         size={16}
                       >
@@ -4753,7 +4885,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c45"
+                        className="c9 c46"
                         color="#645f5f"
                         size={16}
                       >
@@ -4814,7 +4946,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             />
           </div>
           <div
-            className="c46"
+            className="c47"
             style={
               Object {
                 "display": "none",
@@ -4826,7 +4958,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
             }
           >
             <div
-              className="c47"
+              className="c48"
               style={
                 Object {
                   "display": "block",
@@ -4857,40 +4989,27 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
-.c34 {
+.c35 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #d94c4c;
 }
 
-.c34 > svg {
+.c35 > svg {
   display: block;
   width: inherit;
   height: inherit;
 }
 
-.c37 {
+.c38 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #279745;
 }
 
-.c37 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c32 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #58457a;
-}
-
-.c32 > svg {
+.c38 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -4900,10 +5019,23 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #616c60;
+  color: #58457a;
 }
 
 .c33 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c34 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #616c60;
+}
+
+.c34 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -4922,40 +5054,14 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
-.c40 {
+.c41 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #cdad32;
 }
 
-.c40 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c35 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #3c6997;
-}
-
-.c35 > svg {
-  display: block;
-  width: inherit;
-  height: inherit;
-}
-
-.c30 {
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #f86683;
-}
-
-.c30 > svg {
+.c41 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -4965,7 +5071,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   box-sizing: content-box;
   width: 16px;
   height: 16px;
-  color: #74a4bf;
+  color: #3c6997;
 }
 
 .c36 > svg {
@@ -4974,14 +5080,40 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
-.c38 {
+.c31 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #f86683;
+}
+
+.c31 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c37 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #74a4bf;
+}
+
+.c37 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c39 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #e26d5a;
 }
 
-.c38 > svg {
+.c39 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -5000,14 +5132,27 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
-.c31 {
+.c29 {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  color: #4D5CAD;
+}
+
+.c29 > svg {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.c32 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #5590b5;
 }
 
-.c31 > svg {
+.c32 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -5026,14 +5171,14 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   height: inherit;
 }
 
-.c39 {
+.c40 {
   box-sizing: content-box;
   width: 16px;
   height: 16px;
   color: #4f98c6;
 }
 
-.c39 > svg {
+.c40 > svg {
   display: block;
   width: inherit;
   height: inherit;
@@ -5089,7 +5234,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   margin-bottom: 8px;
 }
 
-.c29 {
+.c30 {
   margin-right: 8px;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -5112,15 +5257,15 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transform: rotate(0deg);
 }
 
-.c43 .c9 {
+.c44 .c9 {
   color: #fff;
 }
 
-.c44 .c9 {
+.c45 .c9 {
   color: #6e849a;
 }
 
-.c45 .c9 {
+.c46 .c9 {
   display: inline-block;
   margin-left: 12px;
 }
@@ -5265,7 +5410,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transition: transform 0.15s ease,width 0.15s ease;
 }
 
-.c42 {
+.c43 {
   border-radius: 1.5px;
   background-color: #dfe3ed;
   cursor: pointer;
@@ -5273,23 +5418,23 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transition: background-color 0.15s ease;
 }
 
-.c42:hover {
+.c43:hover {
   background-color: #becedc;
 }
 
-.c41 {
+.c42 {
   width: 3px !important;
   top: 0;
   right: 6px;
   bottom: 0;
 }
 
-.c46 > .c9 {
+.c47 > .c9 {
   margin-right: 8px;
   margin-bottom: 2px;
 }
 
-.c47 > .c9 {
+.c48 > .c9 {
   margin-bottom: 2px;
   margin-left: 8px;
 }
@@ -5713,6 +5858,37 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                         </span>
                       </div>
                     </div>
+                    <div
+                      className="c21 vf-step-menu__item"
+                    >
+                      <span
+                        className="c9 c29"
+                        color="#4D5CAD"
+                        size={16}
+                      >
+                        <svg
+                          data-file-name="SvgPrompt"
+                        />
+                      </span>
+                      <div
+                        className="c23"
+                      >
+                        Prompt
+                      </div>
+                      <div
+                        className="c24 c25"
+                      >
+                        <span
+                          className="c9 c26"
+                          color="#becedc"
+                          size={14}
+                        >
+                          <svg
+                            data-file-name="SvgDotsGroup"
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -5724,7 +5900,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -5747,7 +5923,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c30"
+                        className="c9 c31"
                         color="#f86683"
                         size={16}
                       >
@@ -5778,7 +5954,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c31"
+                        className="c9 c32"
                         color="#5590b5"
                         size={16}
                       >
@@ -5809,7 +5985,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c32"
+                        className="c9 c33"
                         color="#58457a"
                         size={16}
                       >
@@ -5840,7 +6016,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -5871,7 +6047,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c34"
+                        className="c9 c35"
                         color="#d94c4c"
                         size={16}
                       >
@@ -5902,7 +6078,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c35"
+                        className="c9 c36"
                         color="#3c6997"
                         size={16}
                       >
@@ -5940,7 +6116,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -5963,7 +6139,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c36"
+                        className="c9 c37"
                         color="#74a4bf"
                         size={16}
                       >
@@ -5994,7 +6170,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c37"
+                        className="c9 c38"
                         color="#279745"
                         size={16}
                       >
@@ -6025,7 +6201,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c38"
+                        className="c9 c39"
                         color="#e26d5a"
                         size={16}
                       >
@@ -6063,7 +6239,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                   onClick={[Function]}
                 >
                   <span
-                    className="c9 c18 c29"
+                    className="c9 c18 c30"
                     color="#6E849A"
                     size={9}
                   >
@@ -6086,7 +6262,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c39"
+                        className="c9 c40"
                         color="#4f98c6"
                         size={16}
                       >
@@ -6117,7 +6293,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c33"
+                        className="c9 c34"
                         color="#616c60"
                         size={16}
                       >
@@ -6148,7 +6324,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
                       className="c21 vf-step-menu__item"
                     >
                       <span
-                        className="c9 c40"
+                        className="c9 c41"
                         color="#cdad32"
                         size={16}
                       >
@@ -6209,7 +6385,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             />
           </div>
           <div
-            className="c41"
+            className="c42"
             style={
               Object {
                 "display": "none",
@@ -6221,7 +6397,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
             }
           >
             <div
-              className="c42"
+              className="c43"
               style={
                 Object {
                   "display": "block",

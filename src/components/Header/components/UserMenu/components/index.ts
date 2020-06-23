@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { FlexApart } from '@/components/Flex';
 import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
 import { css, styled } from '@/hocs';
@@ -10,8 +11,7 @@ export const UserNameContainer = styled(FlexApart)<UserNameContainerProps>`
   font-size: 16px;
   color: #132144;
   cursor: pointer;
-  padding: 15px;
-  padding-left: 0;
+  padding: 15px 0;
   margin-left: 24px;
 
   div {

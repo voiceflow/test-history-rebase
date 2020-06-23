@@ -1,4 +1,4 @@
-import { BlockType } from '@/constants';
+import { BlockType, COPY_NODES } from '@/constants';
 import { Reducer } from '@/store/types';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
@@ -84,9 +84,9 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
     },
   }
 ) => {
-  const combinedNodes = nodesWithData.filter(({ node }) => node.type === BlockType.COMBINED);
-  const nodeXs = combinedNodes.map(({ node: { x } }) => x);
-  const nodeYs = combinedNodes.map(({ node: { y } }) => y);
+  const combinedAndMarkupNodes = nodesWithData.filter(({ node }) => COPY_NODES.includes(node.type));
+  const nodeXs = combinedAndMarkupNodes.map(({ node: { x } }) => x);
+  const nodeYs = combinedAndMarkupNodes.map(({ node: { y } }) => y);
   const minX = Math.min(...nodeXs);
   const maxX = Math.max(...nodeXs);
   const minY = Math.min(...nodeYs);

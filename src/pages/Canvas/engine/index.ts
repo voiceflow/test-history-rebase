@@ -7,7 +7,7 @@ import { RealtimeSubscription } from '@/client/socket/types';
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, MARKUP_NODES } from '@/constants';
+import { BlockType, COPY_NODES, MARKUP_NODES } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -288,7 +288,7 @@ export class Engine {
    * copy the active nodes to the clipboard
    */
   copyActive(nodeID?: string) {
-    if (nodeID && this.getNodeByID(nodeID).type === BlockType.COMBINED) {
+    if (nodeID && COPY_NODES.includes(this.getNodeByID(nodeID).type)) {
       this.clipboard.copy([nodeID]);
     } else if (this.activation.hasTargets) {
       this.clipboard.copy(this.activation.getTargets());

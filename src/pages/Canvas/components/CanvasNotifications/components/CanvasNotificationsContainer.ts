@@ -7,10 +7,10 @@ const CanvasNotificationsContainer = styled.div`
   flex-direction: column;
   top: 25px;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -200px;
   font-size: 13px;
   transition: 0.15s ease;
-  z-index: 5;
+  z-index: 110;
 
   /* for animations */
   .fade-enter {

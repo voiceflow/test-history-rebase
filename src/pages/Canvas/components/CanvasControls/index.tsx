@@ -25,7 +25,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
   const [canUseCommenting] = usePermissions(FEATURE_IDS.COMMENTING);
 
-  const { open } = useModals(ModalType.INTERACTION_MODEL);
+  const cmsModal = useModals(ModalType.INTERACTION_MODEL);
+  const markupModal = useModals(ModalType.CANVAS_MARKUP);
   const markupTool = React.useContext(MarkupModeContext);
   const commenting = React.useContext(CommentModeContext);
 
@@ -67,8 +68,11 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
 
   const onOpenMarkup = () => {
     if (!canUseMarkup) {
+      markupModal.open();
+
       return;
     }
+
     if (isPrototyping) {
       goToDesign();
     }
@@ -80,7 +84,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     () =>
       trackingEventsWrapper(() => {
         if (canUseInteractionModal) {
-          open();
+          cmsModal.open();
         }
       }, 'trackCanvasControlInteractionModel')(),
     []
@@ -131,7 +135,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
           onClick={toggleCommenting}
         />
       )}
-      {markupFeature.isEnabled && canUseMarkup && (
+      {markupFeature.isEnabled && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.MARKUP]}
           iconProps={{

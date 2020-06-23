@@ -1,5 +1,7 @@
 import { BlockVariant } from '@/constants/canvas';
 
+export const BLOCK_WIDTH = 330;
+
 const BLOCK_THEME = {
   variants: {
     [BlockVariant.STANDARD]: {
@@ -43,7 +45,7 @@ const BLOCK_THEME = {
       editTitleColor: ' rgba(118, 94, 132, 0.15)',
     },
   },
-  width: 330,
+  width: BLOCK_WIDTH,
 } as const;
 
 export default BLOCK_THEME;

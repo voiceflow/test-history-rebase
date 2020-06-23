@@ -1,12 +1,12 @@
 import { styled } from '@/hocs';
 
 const BubbleText = styled.span`
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: 6px;
-  color: ${({ color = '#5D9DF5' }) => color};
+  color: white;
   font-weight: 600;
   font-size: 11px;
-  background: white;
+  background: ${({ color = '#5D9DF5' }) => color};
   letter-spacing: 0.7px;
   font-weight: bold;
   border-radius: 20px;

@@ -15,6 +15,7 @@ import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import Modal from '@/components/LegacyModal/Modal';
+import RefreshModal from '@/components/RefreshModal';
 import { ToastContainer } from '@/components/Toast';
 import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
@@ -66,6 +67,7 @@ const App = () => {
       <CanvasMarkupModal />
       <BillingModal />
       <PaymentModal />
+      <RefreshModal />
     </>
   );
 };

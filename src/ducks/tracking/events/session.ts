@@ -4,7 +4,10 @@ import { EventName } from '../constants';
 
 export const trackSessionBegin = (workspaceIDs: string[] = []) => () => {
   client.analytics.track(EventName.SESSION_BEGIN);
-  client.analytics.identify({ workspace_ids: workspaceIDs });
+  client.analytics.identify({
+    traits: { workspace_id: workspaceIDs },
+    teamhashed: ['workspace_id'],
+  });
 };
 
 export const trackSessionDuration = (duration: number) => () =>

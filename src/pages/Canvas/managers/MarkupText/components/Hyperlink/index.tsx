@@ -1,5 +1,5 @@
 import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState } from 'draft-js';
 import utils from 'draft-js-plugins-utils';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
@@ -9,8 +9,6 @@ import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
-import { DraftBuiltInStyle, InlineStylePrefix } from '../../constants';
-import { togglePrefixedInlineStyle } from '../../utils';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
@@ -21,8 +19,6 @@ export type HyperlinkProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   createLinkAtSelection: (editorState: EditorState, url: string) => EditorState;
   removeLinkAtSelection: (editorState: EditorState) => EditorState;
 };
-
-const DEFAULT_LINK_COLOR = 'rgba(93,157,245,1)';
 
 const Hyperlink: React.FC<HyperlinkProps> = ({
   getEditorState,
@@ -79,12 +75,6 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
 
     if (!link) {
       state = createLinkAtSelection(state, localLink);
-      state = EditorState.push(
-        state,
-        Modifier.applyInlineStyle(state.getCurrentContent(), state.getSelection(), DraftBuiltInStyle.UNDERLINE),
-        'change-inline-style'
-      );
-      state = togglePrefixedInlineStyle(state, InlineStylePrefix.COLOR, DEFAULT_LINK_COLOR);
     } else if (!localLink) {
       state = removeLinkAtSelection(state);
     } else if (entityKey) {

@@ -132,7 +132,7 @@
     "simplebar": "^5.0.7",
     "simplebar-react": "^2.0.9",
     "socket.io-client": "^2.2.0",
-    "styled-breakpoints": "^7.2.0",
+    "styled-breakpoints": "^8.1.1",
     "styled-components": "^4.4.1",
     "styled-system": "^5.1.5",
     "throttle-debounce": "^2.1.0",

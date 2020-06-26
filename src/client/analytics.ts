@@ -17,8 +17,8 @@ const analyticsClient = {
     });
   },
 
-  identify: (traits: {}) => {
-    fetch.post(`${ANALYTICS_PATH}/identify`, { traits });
+  identify: <T extends {}, K extends keyof T>({ traits, hashed, teamhashed }: { traits: T; hashed?: K[]; teamhashed?: K[] }) => {
+    fetch.post(`${ANALYTICS_PATH}/identify`, { traits, hashed, teamhashed });
   },
 
   identifyWorkspace: (workspace: Workspace) => {

@@ -11,6 +11,11 @@ type LinkProps = {
 const ClickableLink = styled(ClickableText)`
   display: inline;
   pointer-events: all;
+
+  & > span {
+    color: rgba(93, 157, 245, 1) !important;
+    text-decoration: underline;
+  }
 `;
 
 const Link: React.FC<LinkProps> = ({ href, children }) => {
@@ -24,7 +29,10 @@ const Link: React.FC<LinkProps> = ({ href, children }) => {
       }
 
       if (withoutExtraKeys) {
-        window.open(href, '_blank', 'toolbar=0,location=0,menubar=0');
+        // not using http/https here since the links can have custom protocols, like zpl://
+        const link = href.startsWith('//') || href.includes('://') ? href : `//${href}`;
+
+        window.open(link, '_blank', 'toolbar=0,location=0,menubar=0');
       }
     },
     [href]

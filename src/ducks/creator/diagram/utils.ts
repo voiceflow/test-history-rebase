@@ -99,6 +99,12 @@ export const addAllLinksToState = (links: Link[]) => compose(...links.map(addLin
 
 export const removeLinkFromState = (linkID: string) => (state: DiagramState) => {
   const link = getNormalizedByKey(state.links, linkID);
+
+  // the link is already removed
+  if (!link) {
+    return state;
+  }
+
   const sourceNodeID = link.source.nodeID;
   const targetNodeID = link.target.nodeID;
 

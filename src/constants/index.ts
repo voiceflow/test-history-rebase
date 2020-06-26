@@ -403,6 +403,7 @@ export enum ModalType {
   IMPORT_BULK_DENIED = 'import-bulk-denied',
 
   LOADING = 'loading',
+  REFRESH = 'refresh',
 }
 
 export enum UserRole {

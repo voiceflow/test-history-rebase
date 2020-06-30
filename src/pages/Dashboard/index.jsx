@@ -15,6 +15,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import { FEATURE_IDS, ModalType } from '@/constants';
 import { ScrollContextProvider, usePermissions } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
@@ -24,9 +25,9 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
-import { useModals, useWorkspaceTracking } from '@/hooks';
-import { useScrollHelpers } from '@/hooks/scroll';
+import { useFeature, useModals, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import { copyProject, importProject } from '@/store/sideEffects';
+import * as Userflow from '@/vendors/userflow';
 
 import DashboardHeader from './Header';
 import BoardDeleteModal from './components/BoardDeleteModal';
@@ -81,9 +82,9 @@ export const DashBoard = (props) => {
     }
   }, []);
 
+  const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES_WORKSPACE);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
-  const [showInfo, setShowInfo] = React.useState(false);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
@@ -169,6 +170,12 @@ export const DashBoard = (props) => {
     }
   }, []);
 
+  useSetup(() => {
+    if (templatesWorkspaceFeature.isEnabled) {
+      Userflow.track(Userflow.Event.DASHBOARD_VISITED);
+    }
+  });
+
   useWorkspaceTracking();
 
   const LOCKED = props.workspace.state === 'LOCKED';
@@ -187,8 +194,6 @@ export const DashBoard = (props) => {
           user={props.user}
           history={props.history}
           handleFilterText={handleFilterText}
-          showInfo={showInfo}
-          setShowInfo={setShowInfo}
           workspaces={props.workspaces}
           workspaceID={props.workspaceID}
           workspace={props.workspace}

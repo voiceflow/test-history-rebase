@@ -302,8 +302,8 @@ exports[`Storyshots Creator/Block Block User Lock 1`] = `
 
 .c9 {
   position: absolute;
-  left: 0;
   padding: 0 5px;
+  left: 0;
 }
 
 .c4 {
@@ -3925,8 +3925,8 @@ exports[`Storyshots Creator/Block Step User Lock 1`] = `
 
 .c7 {
   position: absolute;
-  left: 0;
   padding: 0 5px;
+  left: 0;
 }
 
 .c2 {
@@ -4413,8 +4413,8 @@ exports[`Storyshots Creator/Block Sub Sections 1`] = `
 
 .c7 {
   position: absolute;
-  left: 0;
   padding: 0 5px;
+  left: 0;
 }
 
 .c2 {

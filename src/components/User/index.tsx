@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tippy';
 import FlexCenter from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
 import { LockOwner } from '@/models';
+import { Identifier } from '@/styles/constants';
 
 import { AddMemberIcon, MemberIcon, MembersContainer, MembersWrapper } from './components';
 import { MemberIconProps } from './components/MemberIcon';
@@ -82,7 +83,7 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
 
         {onAdd && (
           <Tooltip title="Add Collaborators" position="bottom">
-            <AddMemberIcon onClick={onAdd}>
+            <AddMemberIcon id={Identifier.ADD_COLLABORATORS} onClick={onAdd}>
               <SvgIcon icon="plus" size={12} />
             </AddMemberIcon>
           </Tooltip>

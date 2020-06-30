@@ -163,6 +163,7 @@ const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
         <Block
           name={name}
           isDisabled={isDisabled}
+          isLocked={nodeEntity.isLocked}
           variant={variant}
           updateName={updateName}
           lockOwner={lockOwner}

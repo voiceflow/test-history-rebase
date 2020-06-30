@@ -24,6 +24,7 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   lockOwner?: LockOwner | null;
   blockColor?: string;
   isDisabled?: boolean;
+  isLocked?: boolean;
   showMergeOverlay?: boolean;
   updateName?: (name: string) => void;
   onMouseMove?: (event: React.MouseEvent) => void;
@@ -43,6 +44,7 @@ const Block: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<Bloc
     onMouseLeave,
     onMouseMove,
     isDisabled,
+    isLocked,
     className,
     ...props
   },
@@ -65,6 +67,7 @@ const Block: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<Bloc
       <Section
         variant={variant}
         isDisabled={isDisabled}
+        isLocked={isLocked}
         isEditing={blockAPI.isEditing}
         setIsEditing={blockAPI.setIsEditing}
         titleRef={blockAPI.titleRef}

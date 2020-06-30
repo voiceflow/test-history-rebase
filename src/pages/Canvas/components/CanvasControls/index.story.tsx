@@ -15,27 +15,40 @@ export default {
 };
 
 // eslint-disable-next-line react/display-name
-const createStory = () =>
-  composeDecorators(withRedux(), withModalContext(ModalType.INTERACTION_MODEL), (Component: React.FC) => (
-    <TextEditorVariablesPopoverProvider value={document.body}>
-      <EventualEngineProvider>
-        <EditPermissionProvider isPrototyping>
-          <RegisterEngine
-            engine={
-              {
-                canvas: {
-                  zoomIn: action('zoomIn'),
-                  zoomOut: action('zoomOut'),
-                  applyTransition: action('applyTransition'),
-                },
-              } as any
-            }
-          />
+const createStory = (isTemplates = false) =>
+  composeDecorators(
+    withRedux({
+      workspace: {
+        activeWorkspaceID: 'a',
+        byId: {
+          a: { templates: isTemplates },
+        },
+      },
+    }),
+    withModalContext(ModalType.INTERACTION_MODEL),
+    (Component: React.FC) => (
+      <TextEditorVariablesPopoverProvider value={document.body}>
+        <EventualEngineProvider>
+          <EditPermissionProvider isPrototyping>
+            <RegisterEngine
+              engine={
+                {
+                  canvas: {
+                    zoomIn: action('zoomIn'),
+                    zoomOut: action('zoomOut'),
+                    applyTransition: action('applyTransition'),
+                  },
+                } as any
+              }
+            />
 
-          <Component />
-        </EditPermissionProvider>
-      </EventualEngineProvider>
-    </TextEditorVariablesPopoverProvider>
-  ));
+            <Component />
+          </EditPermissionProvider>
+        </EventualEngineProvider>
+      </TextEditorVariablesPopoverProvider>
+    )
+  );
 
 export const base = createStory()(() => <CanvasControlsV2 />);
+
+export const withTemplates = createStory(true)(() => <CanvasControlsV2 />);

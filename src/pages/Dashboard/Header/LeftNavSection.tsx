@@ -12,6 +12,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 const DropdownComponent: any = Dropdown;
@@ -26,7 +27,14 @@ type LeftNavSectionProps = {
   };
 };
 
-const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({ workspaces, activeWorkspace, goToWorkspace, goTo, plan }) => {
+const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({
+  workspaces,
+  activeWorkspace,
+  isTemplateWorkspace,
+  goToWorkspace,
+  goTo,
+  plan,
+}) => {
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const workspacesWithoutTemplates = workspaces.filter((workspace) => !workspace.templates);
   const filteredWorkspaces = templatesFeature.isEnabled ? workspaces : workspacesWithoutTemplates;
@@ -72,22 +80,25 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
         placement="bottom-start"
       >
         {(ref: React.Ref<any>, onToggle: () => void) => (
-          <WorkspacesDropdown onClick={onToggle} ref={ref}>
+          <WorkspacesDropdown className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
             <div>{activeWorkspace.name}</div>
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>
         )}
       </DropdownComponent>
       {/* This is the only place we want to show 'Free' */}
-      <BubbleText color={PLAN_NAMES[plan!].color}>
-        {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
-      </BubbleText>
+      {isTemplateWorkspace && (
+        <BubbleText color={PLAN_NAMES[plan!].color}>
+          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
+        </BubbleText>
+      )}
     </>
   );
 };
 
 const mapStateToProps = {
   plan: Workspace.planTypeSelector,
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

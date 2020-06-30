@@ -484,8 +484,8 @@ exports[`Storyshots Creator/Start Block Alexa 1`] = `
 
 .c4 {
   position: absolute;
-  left: 0;
   padding: 0 5px;
+  left: 0;
 }
 
 .c2 {
@@ -3203,8 +3203,8 @@ exports[`Storyshots Creator/Start Block Google 1`] = `
 
 .c4 {
   position: absolute;
-  left: 0;
   padding: 0 5px;
+  left: 0;
 }
 
 .c2 {

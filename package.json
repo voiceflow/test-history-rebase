@@ -121,7 +121,7 @@
     "reactstrap": "^6.5.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
-    "redux-form": "^8.2.6",
+    "redux-form": "^8.3.6",
     "redux-persist": "^5.10.0",
     "redux-persist-cookie-storage": "^1.0.0",
     "redux-thunk": "^2.3.0",

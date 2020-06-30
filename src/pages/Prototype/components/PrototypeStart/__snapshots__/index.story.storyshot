@@ -15,6 +15,18 @@ exports[`Storyshots Prototype/Start Base 1`] = `
 }
 
 .c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-right: 6px;
   padding: 7px;
   border-radius: 50%;
@@ -156,7 +168,7 @@ exports[`Storyshots Prototype/Start Base 1`] = `
     >
       Start Test
     </span>
-    <span
+    <div
       className="c4"
     >
       <span
@@ -168,7 +180,7 @@ exports[`Storyshots Prototype/Start Base 1`] = `
           data-file-name="SvgForward"
         />
       </span>
-    </span>
+    </div>
   </button>
 </div>
 `;

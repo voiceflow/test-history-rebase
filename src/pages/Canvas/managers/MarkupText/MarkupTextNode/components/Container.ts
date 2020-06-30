@@ -10,7 +10,7 @@ import {
 export const Container = styled.div`
   ${transition('border-color')}
 
-  min-width: 160px;
+  min-width: 330px;
   min-height: 30px;
 
   /* default text editor styles */

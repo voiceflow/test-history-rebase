@@ -5,7 +5,8 @@ import NestedMenu from '@/components/NestedMenu';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
-import { styled } from '@/hocs';
+import * as Workspace from '@/ducks/workspace';
+import { connect, styled } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine';
@@ -48,9 +49,10 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
 export type ContextMenuProps = {
   className?: string;
+  isTemplateWorkspace: boolean;
 };
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspace }) => {
   const contextMenu = React.useContext(ContextMenuContext)!;
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
@@ -62,6 +64,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
     clipboard,
     isMarkupFeatureEnabled: !!markupFeature?.isEnabled,
     isMarkupModeEnabled: !!markupTool?.isOpen,
+    isTemplate: isTemplateWorkspace,
   };
   const options =
     contextMenu.type && TARGET_OPTIONS[contextMenu.type]?.filter((option) => !option.shouldRender || option.shouldRender(contextMenu, optionProps));
@@ -106,6 +109,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
   );
 };
 
-export default styled(ContextMenu)`
+const mapStateToProps = {
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+};
+
+const ConnectedContextMenu = connect(mapStateToProps)(ContextMenu);
+
+export default styled(ConnectedContextMenu)`
   z-index: 10;
 `;

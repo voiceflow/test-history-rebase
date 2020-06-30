@@ -48,8 +48,8 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Add Comment',
     value: CanvasAction.ADD_COMMENT,
-    shouldRender: (_, { isMarkupModeEnabled }) => {
-      return !isMarkupModeEnabled;
+    shouldRender: (_, { isMarkupModeEnabled, isTemplate }) => {
+      return !isMarkupModeEnabled && !isTemplate;
     },
   },
   {

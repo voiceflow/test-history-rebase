@@ -3,6 +3,7 @@ import React from 'react';
 import { isSafari } from '@/config';
 import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Workspace from '@/ducks/workspace';
 import { connect, css, styled } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -38,7 +39,7 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null
     `}
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children }) => {
+const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, isTemplateWorkspace, children }) => {
   const { canEdit } = React.useContext(EditPermissionContext)!;
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
@@ -60,7 +61,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
   useHotKeys(Hotkey.UNDO, undoHistory as Callback, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory as Callback, { preventDefault: true });
-  useHotKeys(Hotkey.COMMENT, addComment, { preventDefault: true });
+  useHotKeys(Hotkey.COMMENT, () => !isTemplateWorkspace && addComment(), { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
 
   return (
@@ -70,11 +71,15 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   );
 };
 
+const mapStateToProps = {
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+};
+
 const mapDispatchToProps = {
   undoHistory: Creator.undoHistory,
   redoHistory: Creator.redoHistory,
 };
 
-type ConnectedCanvasContainerProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedCanvasContainerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(CanvasContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasContainer);

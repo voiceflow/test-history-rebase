@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withModalContext, withRedux } from '@/../.storybook';
+import { composeDecorators, withIdentityContext, withModalContext, withRedux } from '@/../.storybook';
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
@@ -26,6 +26,7 @@ const createStory = (isTemplates = false) =>
       },
     }),
     withModalContext(ModalType.INTERACTION_MODEL),
+    withIdentityContext(),
     (Component: React.FC) => (
       <TextEditorVariablesPopoverProvider value={document.body}>
         <EventualEngineProvider>

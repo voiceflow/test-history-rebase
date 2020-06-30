@@ -11,10 +11,10 @@ import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { FEATURE_IDS, ModalType, UserRole } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
-import { useFeature, useModals } from '@/hooks';
+import { useFeature, useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { stopPropagation } from '@/utils/dom';
@@ -51,7 +51,8 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const [canModifyProject, userRole] = usePermissions(FEATURE_IDS.DASHBOARD_PROJECT);
+  const [canModifyProject] = usePermission(Permission.DASHBOARD_PROJECT);
+  const [canCloneProject] = usePermission(Permission.CLONE_DASHBOARD_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
@@ -71,7 +72,7 @@ export function Item(props) {
       ]
     : [];
 
-  if (userRole === UserRole.LIBRARY && templatesFeature.isEnabled) {
+  if (canCloneProject && templatesFeature.isEnabled) {
     const cloneOption = {
       value: 'clone',
       label: 'Clone Project',

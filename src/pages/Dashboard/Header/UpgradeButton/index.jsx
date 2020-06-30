@@ -1,9 +1,10 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 
-import { FEATURE_IDS, ModalType } from '@/constants';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import RolePermissionGate from '@/gates/RolePermissionGate';
+import PermissionGate from '@/gates/PermissionGate';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 
@@ -13,7 +14,7 @@ function UpgradeButton({ isOnPaidPlan }) {
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   return (
-    <RolePermissionGate featureId={FEATURE_IDS.UPGRADE_WORKSPACE}>
+    <PermissionGate permission={Permission.UPGRADE_WORKSPACE}>
       <>
         {!isOnPaidPlan ? (
           <Container onClick={openPaymentsModal}>
@@ -22,7 +23,7 @@ function UpgradeButton({ isOnPaidPlan }) {
           </Container>
         ) : null}
       </>
-    </RolePermissionGate>
+    </PermissionGate>
   );
 }
 

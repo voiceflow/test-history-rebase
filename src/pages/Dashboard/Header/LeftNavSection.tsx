@@ -86,9 +86,9 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
           </WorkspacesDropdown>
         )}
       </DropdownComponent>
-      {/* This is the only place we want to show 'Free' */}
-      {isTemplateWorkspace && (
+      {!isTemplateWorkspace && (
         <BubbleText color={PLAN_NAMES[plan!].color}>
+          {/* This is the only place we want to show 'Free' */}
           {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
         </BubbleText>
       )}

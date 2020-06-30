@@ -7,28 +7,19 @@ import { StatusCode } from '@/client/fetch';
 import Button from '@/components/Button';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
-import { ModalType, UserRole } from '@/constants';
-import { userIDSelector } from '@/ducks/account';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import { goToWorkspace } from '@/ducks/router';
 import { allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspace';
-import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { importProject } from '@/store/sideEffects';
 
 import { ImportSelect } from './ModalComponents';
 
-const allowedToClone = (workspace, creatorId) => {
-  const creatorRole = extractMemberById(creatorId, workspace.members)?.role;
-  if ([UserRole.ADMIN, UserRole.EDITOR].includes(creatorRole)) {
-    return true;
-  }
-  return false;
-};
-function ImportModal(props) {
+function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWorkspace }) {
   const [trackEvents] = useTrackingEvents();
-
-  const { importProject, creatorId, workspaces, workspaceByIDSelector, goToWorkspace } = props;
+  const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
   const [targetWorkspace, setTargetWorkspace] = useState(workspaceOptions[0]);
   const { close, toggle, data, isOpened } = useModals(ModalType.IMPORT_PROJECT);
@@ -48,7 +39,7 @@ function ImportModal(props) {
 
   const cloneProject = async (workspaceId) => {
     const workspace = workspaceByIDSelector(workspaceId);
-    if (allowedToClone(workspace, creatorId)) {
+    if (canCloneProject) {
       try {
         close();
         openLoadingModal();
@@ -107,7 +98,6 @@ function ImportModal(props) {
 }
 
 const mapStateToProps = {
-  creatorId: userIDSelector,
   workspaces: allWorkspacesSelector,
   workspaceByIDSelector,
 };

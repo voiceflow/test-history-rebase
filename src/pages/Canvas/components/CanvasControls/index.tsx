@@ -3,12 +3,13 @@ import React from 'react';
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
-import { FEATURE_IDS, ModalType } from '@/constants';
-import { EventualEngineContext, usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
+import { EventualEngineContext } from '@/contexts';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
+import { useFeature, useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
@@ -22,9 +23,9 @@ const ZOOM_DELTA = 15;
 
 const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
-  const [canUseInteractionModal] = usePermissions(FEATURE_IDS.INTERACTION_MODAL);
-  const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
-  const [canUseCommenting] = usePermissions(FEATURE_IDS.COMMENTING);
+  const [canUseInteractionModal] = usePermission(Permission.INTERACTION_MODAL);
+  const [canUseMarkup] = usePermission(Permission.MARKUP);
+  const [canUseCommenting] = usePermission(Permission.COMMENTING);
 
   const cmsModal = useModals(ModalType.INTERACTION_MODEL);
   const markupModal = useModals(ModalType.CANVAS_MARKUP);

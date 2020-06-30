@@ -10,11 +10,11 @@ import theme from '@/styles/theme';
 
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
+import { IdentityProvider } from './IdentityContext';
 import LifecycleProvider from './LifecycleProvider';
 import { ModalsContextProvider } from './ModalsContext';
 import { MousePositionProvider } from './MousePositionContext';
 import { OverlayProvider } from './OverlayContext';
-import { RolePermissionsProvider } from './RolePermissionsContext';
 import StoreProvider from './StoreProvider';
 import { TextEditorVariablesPopoverProvider } from './TextEditorVariablesPopoverContext';
 
@@ -35,9 +35,9 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
               <DragProvider>
                 <OverlayProvider>
                   <EventualEngineProvider>
-                    <RolePermissionsProvider>
+                    <IdentityProvider>
                       <ModalsContextProvider>{IS_PRODUCTION ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}</ModalsContextProvider>
-                    </RolePermissionsProvider>
+                    </IdentityProvider>
                   </EventualEngineProvider>
                 </OverlayProvider>
               </DragProvider>

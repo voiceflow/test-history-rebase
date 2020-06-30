@@ -10,8 +10,7 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import { ModalBackdrop } from '@/components/LegacyModal';
-import { DragProvider } from '@/contexts';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { DragProvider, IdentityContext, ModalsContext } from '@/contexts';
 import { createGlobalStyle } from '@/hocs';
 import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -55,6 +54,12 @@ export const withModalContext = (openedId) => (Component) => (
     <ModalBackdrop />
     <Component />
   </ModalsContext.Provider>
+);
+
+export const withIdentityContext = (activeRole = null, activePlan = null) => (Component) => (
+  <IdentityContext.Provider value={{ activeRole, activePlan }}>
+    <Component />
+  </IdentityContext.Provider>
 );
 
 // eslint-disable-next-line xss/no-mixed-html

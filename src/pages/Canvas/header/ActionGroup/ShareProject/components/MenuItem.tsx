@@ -4,7 +4,6 @@ import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
-import { PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
@@ -22,13 +21,13 @@ type MenuItemProps = {
   onRedirect: () => void;
   link: Nullable<string>;
   help: string;
-  plan: Nullable<PlanType>;
+  isAllowed: boolean;
   track: () => void;
   loading?: boolean;
   onClick?: () => void;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirect, help, link, track, loading, onClick: onClickProp }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRedirect, help, link, track, loading, onClick: onClickProp }) => {
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
 
   const onCopy = React.useCallback(() => {
@@ -37,7 +36,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
   }, [link]);
 
   const onClick = React.useCallback(() => {
-    if (plan !== PlanType.STARTER) {
+    if (isAllowed) {
       onCopy();
     } else {
       onRedirect();
@@ -45,7 +44,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
     track();
 
     onClickProp?.();
-  }, [plan, track, onClickProp, onCopy]);
+  }, [isAllowed, track, onClickProp, onCopy]);
 
   React.useEffect(() => {
     if (isCopied) {
@@ -58,7 +57,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, plan, onRedirec
       <div>
         <Header>
           <span>{title}</span>
-          {plan === PlanType.STARTER && <BubbleText color="green">Pro</BubbleText>}
+          {!isAllowed && <BubbleText color="green">Pro</BubbleText>}
         </Header>
         <Description>
           <span>{description} </span>

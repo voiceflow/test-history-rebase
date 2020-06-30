@@ -578,7 +578,7 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #f9f9f9;
-  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
@@ -601,9 +601,6 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   z-index: 10;
   will-change: transform;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
 }
 
 .c0:after {
@@ -634,8 +631,8 @@ exports[`Storyshots Creator/Left Sidebar Base 1`] = `
   <aside
     className="c0"
     id="vf-design-menu"
-    onMouseEnter={[Function]}
-    onMouseLeave={[Function]}
+    onMouseEnter={null}
+    onMouseLeave={null}
     tabIndex={-1}
   >
     <div
@@ -1868,7 +1865,7 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #f9f9f9;
-  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
@@ -1891,9 +1888,6 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   z-index: 10;
   will-change: transform;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
 }
 
 .c0:after {
@@ -1924,8 +1918,8 @@ exports[`Storyshots Creator/Left Sidebar Cant Edit 1`] = `
   <aside
     className="c0"
     id="vf-design-menu"
-    onMouseEnter={[Function]}
-    onMouseLeave={[Function]}
+    onMouseEnter={null}
+    onMouseLeave={null}
     tabIndex={-1}
   >
     <div
@@ -3001,7 +2995,7 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #fff;
-  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
@@ -3024,9 +3018,6 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   z-index: 10;
   will-change: transform;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
 }
 
 .c0:after {
@@ -3057,8 +3048,8 @@ exports[`Storyshots Creator/Left Sidebar Flows Selected 1`] = `
   <aside
     className="c0"
     id="vf-design-menu"
-    onMouseEnter={[Function]}
-    onMouseLeave={[Function]}
+    onMouseEnter={null}
+    onMouseLeave={null}
     tabIndex={-1}
   >
     <div
@@ -3923,7 +3914,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #f9f9f9;
-  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
@@ -3946,9 +3937,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   z-index: 10;
   will-change: transform;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
 }
 
 .c0:after {
@@ -3979,8 +3967,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Alexa 1`] = `
   <aside
     className="c0"
     id="vf-design-menu"
-    onMouseEnter={[Function]}
-    onMouseLeave={[Function]}
+    onMouseEnter={null}
+    onMouseLeave={null}
     tabIndex={-1}
   >
     <div
@@ -5579,7 +5567,7 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #f9f9f9;
-  box-shadow: 0 8px 16px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
+  box-shadow: 0 2px 4px 0 rgba(17,49,96,0.16),0 0 0 1px rgba(17,49,96,0.06);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   overflow: hidden;
@@ -5602,9 +5590,6 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   transition: transform 350ms cubic-bezier(0.075,0.82,0.165,1);
   z-index: 10;
   will-change: transform;
-  -webkit-transform: translateX(0);
-  -ms-transform: translateX(0);
-  transform: translateX(0);
 }
 
 .c0:after {
@@ -5635,8 +5620,8 @@ exports[`Storyshots Creator/Left Sidebar Steps Google 1`] = `
   <aside
     className="c0"
     id="vf-design-menu"
-    onMouseEnter={[Function]}
-    onMouseLeave={[Function]}
+    onMouseEnter={null}
+    onMouseLeave={null}
     tabIndex={-1}
   >
     <div

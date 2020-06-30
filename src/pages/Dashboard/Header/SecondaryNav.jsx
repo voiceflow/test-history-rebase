@@ -2,18 +2,18 @@ import React from 'react';
 
 import FlexCenter from '@/components/Flex';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType, UserRole } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import { planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
 function SecondaryNav({ workspace: selectedWorkspace, handleFilterText }) {
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
-  const [, userRole] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
-  const [canAddCollaborators] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
 
   return (
     <>
@@ -27,12 +27,8 @@ function SecondaryNav({ workspace: selectedWorkspace, handleFilterText }) {
       </ProjectSearchContainer>
 
       <FlexCenter>
-        {selectedWorkspace && (
-          <>
-            {userRole !== UserRole.LIBRARY && (
-              <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
-            )}
-          </>
+        {selectedWorkspace && canViewCollaborators && (
+          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
         )}
       </FlexCenter>
     </>

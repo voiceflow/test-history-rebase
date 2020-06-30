@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { FEATURE_IDS } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
 import { withContext } from '@/hocs';
+import { usePermission } from '@/hooks';
 import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
 
 type EditPermissionValue = {
@@ -19,7 +19,7 @@ export type EditPermissionProviderProps = {
 };
 
 export const EditPermissionProvider: React.FC<EditPermissionProviderProps> = ({ isPrototyping, children }) => {
-  const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const commenting = React.useContext(CommentModeContext);
   const value = React.useMemo(() => {
     const canEdit = canEditCanvas && !isPrototyping && !commenting.isOpen;

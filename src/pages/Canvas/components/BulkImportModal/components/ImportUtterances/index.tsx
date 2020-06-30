@@ -216,8 +216,7 @@ const ImportSlots: React.FC<ConnectedImportSlotsProps> = ({ slots, intents }) =>
 
         <ModalFooter>
           <Box flex={1}>
-            {/* TODO: add link here */}
-            <Link href="https://voiceflow.com">See tutorial</Link>
+            <Link href="https://docs.voiceflow.com/#/features/bulk-import-utterances">See tutorial</Link>
           </Box>
 
           <Box mr={12}>

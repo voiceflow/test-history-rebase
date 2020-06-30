@@ -10,12 +10,12 @@ import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import Utterance from '@/components/Utterance';
 import { FeatureFlag } from '@/config/features';
-import { FEATURE_IDS, ModalType } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable, useFeature, useModals } from '@/hooks';
+import { useEnableDisable, useFeature, useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { stopPropagation } from '@/utils/dom';
@@ -30,7 +30,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
   const utteranceRef = React.useRef();
 
   const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
-  const [canBulkUpload] = usePermissions(FEATURE_IDS.BULK_UPLOAD);
+  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);

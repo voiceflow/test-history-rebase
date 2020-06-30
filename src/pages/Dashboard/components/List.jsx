@@ -8,9 +8,10 @@ import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import Form from '@/components/LegacyForm';
-import { FEATURE_IDS } from '@/constants';
-import { ScrollContextProvider, usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
+import { usePermission } from '@/hooks';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
 
@@ -49,8 +50,8 @@ export function List(props) {
   const listRef = useRef(null);
   const inputRef = useRef(null);
 
-  const [canModifyList] = usePermissions(FEATURE_IDS.DASHBOARD_LIST);
-  const [canModifyProject] = usePermissions(FEATURE_IDS.DASHBOARD_PROJECT);
+  const [canModifyList] = usePermission(Permission.DASHBOARD_LIST);
+  const [canModifyProject] = usePermission(Permission.DASHBOARD_PROJECT);
 
   const [isCreatingSkill] = useToggle(false);
 

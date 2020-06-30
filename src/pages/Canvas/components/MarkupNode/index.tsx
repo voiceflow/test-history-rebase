@@ -2,8 +2,9 @@ import cn from 'classnames';
 import _noop from 'lodash/noop';
 import React from 'react';
 
-import { BlockType, FEATURE_IDS } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { BlockType } from '@/constants';
+import { usePermission } from '@/hooks';
 import { Markup } from '@/models';
 import DraggingNode from '@/pages/Canvas/components/DraggingNode';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
@@ -23,7 +24,7 @@ const MarkupNode = () => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupModeContext);
-  const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
+  const [canUseMarkup] = usePermission(Permission.MARKUP);
 
   const { node, data } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Markup.AnyNodeData>();

@@ -4,10 +4,11 @@ import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
-import { ExportFormat, FEATURE_IDS, FEATURE_PLAN_PERMISSIONS, PlanType } from '@/constants';
+import { Permission } from '@/config/permissions';
+import { ExportFormat } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useTrackingEvents } from '@/hooks';
+import { usePermission, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
@@ -23,20 +24,18 @@ export const EXPORT_OPTIONS = [
 ];
 
 export type ExportItemProps = {
-  plan: PlanType | null;
   onRedirect: () => void;
 };
 
-const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan, onRedirect, isExporting, exportCanvas }) => {
+const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRedirect, isExporting, exportCanvas }) => {
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
   const [trackingEvents] = useTrackingEvents();
-
-  const isEnabled = FEATURE_PLAN_PERMISSIONS[FEATURE_IDS.EXPORT].includes(plan!);
+  const [canExport] = usePermission(Permission.EXPORT);
 
   const onClick = () => {
     trackingEvents.trackExportButtonClick({ format: selectedExportType });
 
-    if (isEnabled) {
+    if (canExport) {
       exportCanvas(selectedExportType);
     } else {
       onRedirect();
@@ -48,7 +47,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ plan
       <div>
         <Header>
           <span>Export</span>
-          {!isEnabled && <BubbleText color="green">Pro</BubbleText>}
+          {!canExport && <BubbleText color="green">Pro</BubbleText>}
         </Header>
 
         <Description mb={16}>

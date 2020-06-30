@@ -23,3 +23,4 @@ export * from './hover';
 export * from './reducerV2';
 export * from './upload';
 export * from './linked';
+export * from './permission';

@@ -8,12 +8,9 @@ declare module 'userflow.js' {
 
   export function init(token: string): void;
 
-  export function start(flowID: string): Promise<void>;
+  export function track(event: string, attributes?: Record<string, string>): Promise<void>;
 
-  /**
-   * a warning is given about this being deprecated, but `start` doesn't seem to exist
-   */
-  export function startFlow(flowID: string): Promise<void>;
+  export function start(flowID: string): Promise<void>;
 
   export function identify(id: string, user: IdentifyOptions): Promise<void>;
 }

@@ -9,6 +9,7 @@ import * as Tracking from '@/ducks/tracking';
 import { useModals } from '@/hooks';
 import { OptionLabel } from '@/pages/Canvas/components/CanvasControls/components/ResourcesDropdown/components';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
+import { ClassName } from '@/styles/constants';
 
 const SelectComponent: React.FC<any> = Select;
 
@@ -42,6 +43,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
   return (
     <Tooltip title="Learn" position="bottom">
       <SelectComponent
+        className={`${ClassName.MENU}--resources`}
         options={dropdownOptions}
         minWidth={false}
         maxHeight={225}

@@ -11,6 +11,7 @@ export enum Identifier {
   CANVAS = 'vf-canvas',
   BLOCK_EDITOR = 'vf-block-editor',
   CANVAS_HOME_BUTTON = 'vf-canvas__home-button',
+  ADD_COLLABORATORS = 'vf-add-collaborators',
 }
 
 export enum ClassName {
@@ -30,4 +31,5 @@ export enum ClassName {
   CANVAS_LINK = 'vf-canvas__link',
   FLOW_MENU_ITEM = 'vf-flow-menu__item',
   STEP_MENU_ITEM = 'vf-step-menu__item',
+  DROPDOWN = 'vf-dropdown',
 }

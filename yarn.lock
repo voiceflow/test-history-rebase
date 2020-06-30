@@ -22047,9 +22047,9 @@ use@^3.1.0:
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
 userflow.js@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-1.4.1.tgz#0e0d9628d6a375f097891d01ee7d4e5c0e298c47"
-  integrity sha512-v8tSKHPsOk1DXWTaUdveja+nEKlHBrO7XmLEbud8VZh69kYQTroAt0ygouA1rDYhlcs9njBlYIPW9r9yXxtgsg==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-1.5.0.tgz#f94c831e3c93dce0a075de127c26d25a7085c056"
+  integrity sha512-XE+u1Sd73p5vwk1t4Y0w1MjROGbOr52+GFAkFxGH1aDpsCdhj/G8+cbF7todH+fUa/fI26QsMde8F/1jzUqYPw==
 
 utf8-decode@^1.0.2:
   version "1.0.2"

@@ -3,6 +3,10 @@ import userflow from 'userflow.js';
 import { USERFLOW_ENABLED, USERFLOW_TOKEN } from '@/config';
 import { Account } from '@/models';
 
+export enum Event {
+  DASHBOARD_VISITED = 'dashboard_visited',
+}
+
 export const initialize = () => {
   if (USERFLOW_ENABLED) {
     userflow.init(USERFLOW_TOKEN);
@@ -21,6 +25,8 @@ export const identify = async (user: Account) => {
 
 export const startFlow = async (flowID: string) => {
   if (USERFLOW_ENABLED) {
-    await (userflow.start || userflow.startFlow)(flowID);
+    await userflow.start(flowID);
   }
 };
+
+export const track = (event: string) => userflow.track(event);

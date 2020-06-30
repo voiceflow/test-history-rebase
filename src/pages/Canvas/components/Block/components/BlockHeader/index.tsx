@@ -14,6 +14,7 @@ export type BlockHeaderProps = {
   icon?: Icon;
   isEditing?: boolean;
   isDisabled?: boolean;
+  isLocked?: boolean;
   canEditTitle?: boolean;
   updateName?: (value: string) => void;
   setIsEditing?: (value: boolean) => void;
@@ -29,6 +30,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   updateName,
   variant,
   isDisabled,
+  isLocked,
   titleRef,
 }) => {
   const [blockLabel, setBlockLabel] = React.useState(name ?? '');
@@ -79,7 +81,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   return (
     <Container hasIcon={!!icon}>
       {icon && (
-        <IconContainer>
+        <IconContainer side="left">
           <SvgIcon icon={icon} color="#6e849a" />
         </IconContainer>
       )}
@@ -101,6 +103,11 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
           }
         }}
       />
+      {isLocked && (
+        <IconContainer side="right">
+          <SvgIcon icon="lock" />
+        </IconContainer>
+      )}
     </Container>
   );
 };

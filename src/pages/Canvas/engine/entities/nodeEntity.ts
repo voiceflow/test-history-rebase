@@ -4,6 +4,7 @@ import shallowEqual from 'shallowequal';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Workspace from '@/ducks/workspace';
 import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
@@ -115,6 +116,10 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
 
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
+  }
+
+  get isLocked() {
+    return this.engine.select(Workspace.isTemplateWorkspaceSelector);
   }
 
   nodeType: BlockType;

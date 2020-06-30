@@ -6,6 +6,7 @@ import { FeatureFlag } from '@/config/features';
 import { FEATURE_IDS, ModalType } from '@/constants';
 import { EventualEngineContext, usePermissions } from '@/contexts';
 import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -19,7 +20,7 @@ import { CanvasControl, CanvasControlMeta } from './constants';
 
 const ZOOM_DELTA = 15;
 
-const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) => {
+const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
   const [canUseInteractionModal] = usePermissions(FEATURE_IDS.INTERACTION_MODAL);
   const [canUseMarkup] = usePermissions(FEATURE_IDS.MARKUP);
@@ -53,9 +54,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
 
   // Disable all modes before turning on any mode
   const openMode = (openCb?: () => void, allowedToUse = true) => {
-    if (!allowedToUse) {
-      return;
-    }
+    if (isTemplateWorkspace || !allowedToUse) return;
+
     if (markupTool?.isOpen) {
       markupTool.closeTool();
     } else if (commenting.isOpen) {
@@ -124,7 +124,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {allowCommenting && (
+      {!isTemplateWorkspace && allowCommenting && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.COMMENTING]}
           iconProps={{
@@ -135,7 +135,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
           onClick={toggleCommenting}
         />
       )}
-      {markupFeature.isEnabled && (
+      {!isTemplateWorkspace && markupFeature.isEnabled && (
         <CanvasControlButton
           {...CanvasControlMeta[CanvasControl.MARKUP]}
           iconProps={{
@@ -161,10 +161,14 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ goToDesign }) 
   );
 };
 
+const mapStateToProps = {
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+};
+
 const mapDispatchToProps = {
   goToDesign: Router.goToCurrentCanvas,
 };
 
-type ConnectedCanvasControlsProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedCanvasControlsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(CanvasControls);
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasControls);

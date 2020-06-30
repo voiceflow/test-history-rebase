@@ -1,11 +1,11 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { UserRole } from '@/constants';
+import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { ConnectionWarning, DisabledWarning, ReloadWarning } from './components';
@@ -22,10 +22,11 @@ const RealtimeLoadingGate: React.FC<RealtimeLoadingGateProps & ConnectedRealtime
   isErrorState,
   setupConnection,
   terminateConnection,
-  role,
   children,
 }) => {
-  if (role === UserRole.LIBRARY) {
+  const [isAllowed] = usePermission(Permission.REALTIME);
+
+  if (!isAllowed) {
     return <RealtimeSubscriptionProvider>{children()}</RealtimeSubscriptionProvider>;
   }
 
@@ -50,7 +51,6 @@ const mapStateToProps = {
   isConnected: Realtime.isRealtimeConnectedSelector,
   isErrorState: Realtime.isErrorStateSelector,
   isWebsocketsEnabled: Session.isWebsocketsEnabledSelector,
-  role: Workspace.userRoleSelector,
 };
 
 const mapDispatchToProps = {

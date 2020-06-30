@@ -2,7 +2,7 @@ import React from 'react';
 
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
-import { usePermissions } from '@/contexts';
+import { usePermission } from '@/hooks';
 
 import { CanvasControlMetaProps } from '../constants';
 import ControlContainer from './ControlContainer';
@@ -12,11 +12,11 @@ type CanvasControlButtonTypes = Partial<CanvasControlMetaProps> & {
   iconProps?: any;
 };
 
-const CanvasControlButton: React.FC<CanvasControlButtonTypes> = ({ title, featureID, hotkey, onClick, icon, iconProps }) => {
-  const [canUseControlButton] = usePermissions(featureID);
-  if (!canUseControlButton && featureID) {
-    return null;
-  }
+const CanvasControlButton: React.FC<CanvasControlButtonTypes> = ({ title, permission, hotkey, onClick, icon, iconProps }) => {
+  const [canUseControlButton] = usePermission(permission);
+
+  if (!canUseControlButton) return null;
+
   return (
     <ControlContainer>
       <Tooltip distance={6} title={title} position="top" hotkey={hotkey}>

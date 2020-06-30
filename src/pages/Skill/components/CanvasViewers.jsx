@@ -2,19 +2,22 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
-import { FEATURE_IDS, ModalType, UserRole } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { activeDiagramViewersSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 
 const CanvasViewers = ({ viewers }) => {
-  const [canAddCollaborators, userRole] = usePermissions(FEATURE_IDS.ADD_COLLABORATORS);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
 
-  return userRole === UserRole.LIBRARY ? null : (
+  if (!canViewCollaborators) return null;
+
+  return (
     <Flex>
       <Members members={viewers} onAdd={canAddCollaborators && (() => toggleCollaborators())} />
     </Flex>

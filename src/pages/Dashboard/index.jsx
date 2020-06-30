@@ -16,8 +16,9 @@ import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
-import { FEATURE_IDS, ModalType } from '@/constants';
-import { ScrollContextProvider, usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
+import { ScrollContextProvider } from '@/contexts';
 import { unnormalize } from '@/ducks/_normalize';
 import * as Account from '@/ducks/account';
 import * as Lists from '@/ducks/lists';
@@ -25,7 +26,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
-import { useFeature, useModals, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import { copyProject, importProject } from '@/store/sideEffects';
 import * as Userflow from '@/vendors/userflow';
 
@@ -83,6 +84,7 @@ export const DashBoard = (props) => {
   }, []);
 
   const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES_WORKSPACE);
+  const [canModifyList] = usePermission(Permission.DASHBOARD_LIST);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
@@ -90,8 +92,6 @@ export const DashBoard = (props) => {
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
   const { toggle: toggleLoadingModal } = useModals(ModalType.LOADING);
-
-  const [canModifyList] = usePermissions(FEATURE_IDS.DASHBOARD_LIST);
 
   const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {

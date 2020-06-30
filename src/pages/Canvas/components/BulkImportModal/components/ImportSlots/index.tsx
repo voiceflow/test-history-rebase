@@ -217,8 +217,7 @@ const ImportUtterances: React.FC = () => {
 
         <ModalFooter>
           <Box flex={1}>
-            {/* TODO: add link here */}
-            <Link href="https://voiceflow.com">See tutorial</Link>
+            <Link href="https://docs.voiceflow.com/#/features/bulk-import-slots">See tutorial</Link>
           </Box>
 
           <Box mr={12}>

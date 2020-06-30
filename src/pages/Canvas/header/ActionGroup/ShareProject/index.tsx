@@ -4,12 +4,12 @@ import Button, { ButtonVariant } from '@/components/Button';
 import BaseDropdown from '@/components/Dropdown';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
-import { ModalType, PlanType } from '@/constants';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
-import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
 
@@ -23,7 +23,6 @@ type ShareProjectProps = {
 
 const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({
   meta,
-  plan,
   render,
   getImportToken,
   sharePrototype,
@@ -34,6 +33,8 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
 
   const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
+  const [canDownloadProject] = usePermission(Permission.PROJECT_DOWNLOAD);
+  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [trackingEvents] = useTrackingEvents();
 
   const [state, stateApi] = useSmartReducerV2({
@@ -76,7 +77,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
-    if (!prevIsOpen && plan !== PlanType.STARTER) {
+    if (!prevIsOpen && (canDownloadProject || canSharePrototype)) {
       loadImportToken();
       loadTestableLink();
     }
@@ -92,7 +93,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
         <MenuContainer>
           <FadeDownDelayedContainer>
             <MenuItem
-              plan={plan}
+              isAllowed={canSharePrototype}
               loading={state.loadingTestableLink}
               title="Testable Link"
               description="Share your project with others for in browser prototyping."
@@ -104,7 +105,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
             />
 
             <MenuItem
-              plan={plan}
+              isAllowed={canDownloadProject}
               loading={state.loadingImportToken}
               title="Project Download"
               description="Allow other to download this project to their own Voiceflow account."
@@ -114,7 +115,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
               track={trackingEvents.trackActiveProjectDownloadLinkShare}
             />
 
-            {canvasExportFeature.isEnabled && <ExportItem plan={plan} onRedirect={openCanvasExportModal} />}
+            {canvasExportFeature.isEnabled && <ExportItem onRedirect={openCanvasExportModal} />}
           </FadeDownDelayedContainer>
         </MenuContainer>
       )}
@@ -132,7 +133,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
 const mapStateToProps = {
   meta: Skill.skillMetaSelector,
-  plan: Workspace.planTypeSelector,
 };
 
 const mapDispatchToProps = {

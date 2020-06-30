@@ -7,15 +7,14 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
-import { FEATURE_IDS } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
 import { updateProjectName } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import { goToDashboard } from '@/ducks/router';
 import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable } from '@/hooks';
+import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
 import Business from '@/pages/Business';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
@@ -40,7 +39,7 @@ const TIMEOUT_COUNT = 5 * 60 * 1000;
 
 function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
   const [isIdle, onIdle, onActive] = useEnableDisable();
-  const [canEditCanvas] = usePermissions(FEATURE_IDS.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const idleTimer = React.useRef();
   const isPrototyping = activePage === 'prototype';

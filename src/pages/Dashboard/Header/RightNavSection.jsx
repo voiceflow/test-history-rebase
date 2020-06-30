@@ -5,12 +5,12 @@ import IconButton from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/components/ClickableText';
-import { FEATURE_IDS, ModalType, PLAN_NAMES, PlanType, UserRole } from '@/constants';
-import { usePermissions } from '@/contexts';
+import { Permission } from '@/config/permissions';
+import { ModalType, PLAN_NAMES, PlanType, UserRole } from '@/constants';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
 import { stopPropagation } from '@/utils/dom';
@@ -32,11 +32,11 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
-  const [canUseWorkspaceSettings, userRole] = usePermissions(FEATURE_IDS.WORKSPACE_SETTINGS);
+  const [canUseWorkspaceSettings, { activeRole }] = usePermission(Permission.WORKSPACE_SETTINGS);
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
-  const isEditor = userRole === UserRole.EDITOR;
-  const isViewer = userRole === UserRole.VIEWER;
+  const isEditor = activeRole === UserRole.EDITOR;
+  const isViewer = activeRole === UserRole.VIEWER;
 
   return (
     <>

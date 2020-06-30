@@ -1,4 +1,4 @@
-import { FEATURE_IDS } from '@/constants';
+import { Permission } from '@/config/permissions';
 import * as Tracking from '@/ducks/tracking';
 import { Icon } from '@/svgs/types';
 
@@ -47,7 +47,12 @@ export enum CanvasControl {
   ZOOM_OUT = 'zoom_out',
 }
 
-export type CanvasControlMetaProps = { title: string; icon?: Icon; hotkey: string; featureID?: FEATURE_IDS };
+export type CanvasControlMetaProps = {
+  title: string;
+  hotkey: string;
+  icon?: Icon;
+  permission?: Permission;
+};
 
 export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = {
   [CanvasControl.HOME]: {
@@ -59,7 +64,7 @@ export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = 
     title: 'Model',
     icon: 'code',
     hotkey: 'M',
-    featureID: FEATURE_IDS.INTERACTION_MODAL,
+    permission: Permission.INTERACTION_MODAL,
   },
   [CanvasControl.COMMENTING]: {
     title: 'Commenting',

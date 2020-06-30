@@ -4,7 +4,7 @@ import React from 'react';
 import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
-import { EventualEngineProvider, OverlayProvider, RegisterEngine, RolePermissionsProvider } from '@/contexts';
+import { EventualEngineProvider, IdentityProvider, OverlayProvider, RegisterEngine } from '@/contexts';
 import { EditPermissionProvider } from '@/pages/Skill/contexts';
 
 import DesignMenu from '.';
@@ -240,7 +240,7 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
     }),
     (Component) => (
       <div style={{ width: '500px', height: '100vh', minHeight: '500px', position: 'relative', overflow: 'hidden' }}>
-        <RolePermissionsProvider>
+        <IdentityProvider>
           <EditPermissionProvider>
             <EventualEngineProvider>
               <OverlayProvider>
@@ -259,7 +259,7 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
               </OverlayProvider>
             </EventualEngineProvider>
           </EditPermissionProvider>
-        </RolePermissionsProvider>
+        </IdentityProvider>
       </div>
     )
   );

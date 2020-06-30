@@ -27,7 +27,14 @@ type LeftNavSectionProps = {
   };
 };
 
-const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({ workspaces, activeWorkspace, goToWorkspace, goTo, plan }) => {
+const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({
+  workspaces,
+  activeWorkspace,
+  isTemplateWorkspace,
+  goToWorkspace,
+  goTo,
+  plan,
+}) => {
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const workspacesWithoutTemplates = workspaces.filter((workspace) => !workspace.templates);
   const filteredWorkspaces = templatesFeature.isEnabled ? workspaces : workspacesWithoutTemplates;
@@ -80,15 +87,18 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
         )}
       </DropdownComponent>
       {/* This is the only place we want to show 'Free' */}
-      <BubbleText color={PLAN_NAMES[plan!].color}>
-        {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
-      </BubbleText>
+      {isTemplateWorkspace && (
+        <BubbleText color={PLAN_NAMES[plan!].color}>
+          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
+        </BubbleText>
+      )}
     </>
   );
 };
 
 const mapStateToProps = {
   plan: Workspace.planTypeSelector,
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

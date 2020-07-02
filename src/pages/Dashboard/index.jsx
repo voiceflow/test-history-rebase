@@ -171,7 +171,7 @@ export const DashBoard = (props) => {
   }, []);
 
   useSetup(() => {
-    if (templatesWorkspaceFeature.isEnabled) {
+    if (props.hasTemplatesWorkspace && templatesWorkspaceFeature.isEnabled) {
       Userflow.track(Userflow.Event.DASHBOARD_VISITED);
     }
   });
@@ -329,6 +329,7 @@ const mapStateToProps = (state) => ({
   workspace: Workspace.activeWorkspaceSelector(state),
   workspaceID: Workspace.activeWorkspaceIDSelector(state),
   workspaces: Workspace.allWorkspacesSelector(state),
+  hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector(state),
 });
 
 const mapDispatchToProps = {

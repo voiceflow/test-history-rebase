@@ -30,7 +30,7 @@ import { CommentModeProvider, MarkupModeProvider } from './contexts';
 const PAGES_MATCHES = {
   prototype: ['/prototype/:diagramID?'],
   tools: ['/tools'],
-  canvas: ['/canvas/:diagramID?'],
+  canvas: ['/canvas/:diagramID?', '/canvas/:diagramID/commenting'],
   migrate: ['/migrate'],
   publish: ['/publish'],
 };
@@ -75,7 +75,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
           <InactivityModal open={isIdle} onActive={setActive} />
         </>
       )}
-      <CommentModeProvider isPrototyping={isPrototyping}>
+      <CommentModeProvider>
         <Page
           header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
           userMenu={false}
@@ -85,7 +85,7 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
         >
           <Switch>
             <PrivateRoute
-              path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`]}
+              path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`, `${match.path}/canvas/:diagramID/commenting`]}
               component={Diagram}
               diagramID={diagramID}
               isPrototyping={isPrototyping}

@@ -20,6 +20,7 @@ import * as Slot from '@/ducks/slot';
 import * as User from '@/ducks/user';
 import { CRUD_ADD, CRUD_REMOVE, CRUD_UPDATE } from '@/ducks/utils/crud';
 import * as VariableSet from '@/ducks/variableSet';
+import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
 import { isLinkedeDisplayNode } from '@/utils/node';
 import { RootRoutes } from '@/utils/routes';
@@ -61,6 +62,9 @@ const createAutosaveMiddleware = <T>(
     const state = store.getState();
     const currentState = selector(state);
     const activeSkill = Skill.activeSkillSelector(state);
+    const isLibraryRole = Workspace.isLibraryRoleSelector(state);
+
+    if (isLibraryRole) return;
 
     if (
       activeSkill &&
@@ -110,9 +114,16 @@ const createRealtimeResourceUpdateMiddleware = <T>(
 };
 
 const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) => {
-  const viewers = activeDiagramViewersSelector(store.getState());
+  const state = store.getState();
+  const viewers = activeDiagramViewersSelector(state);
+  const isLibraryRole = Workspace.isLibraryRoleSelector(state);
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
+
+  if (isLibraryRole) {
+    next(action);
+    return;
+  }
 
   const saveDiagram = async () => {
     try {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
@@ -14,19 +15,33 @@ import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 
-import { EditPermissionProvider, MarkupModeContext } from '../contexts';
+import { CommentModeContext, EditPermissionProvider, MarkupModeContext } from '../contexts';
 import DiagramSync from './DiagramSync';
 import FlowControls from './FlowControls';
 import MarkupImageLoading from './MarkupImageLoading';
 
-export type DiagramProps = {
+export type DiagramProps = RouteComponentProps & {
   diagramID: string;
   isPrototyping: boolean;
 };
 
-const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping }) => {
+const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location }) => {
   const markupTool = React.useContext(MarkupModeContext);
+  const commenting = React.useContext(CommentModeContext);
   const markupFeature = useFeature(FeatureFlag.MARKUP);
+  const commentingFeature = useFeature(FeatureFlag.COMMENTING);
+
+  React.useEffect(() => {
+    if (commentingFeature.isEnabled) {
+      const isCommenting = location.pathname.includes('/commenting');
+
+      if (isCommenting && !commenting.isOpen) {
+        commenting.open();
+      } else if (!isCommenting && commenting.isOpen) {
+        commenting.close();
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <>

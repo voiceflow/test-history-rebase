@@ -25,7 +25,7 @@ export const CommentModeContext = React.createContext<CommentModeContext>(defaul
 
 export const { Consumer: CommentModeConsumer } = CommentModeContext;
 
-const Provider: React.FC<CommentProviderProps> = ({ children, goToDesign, goToCommenting }) => {
+const Provider: React.FC<CommentProviderProps> = ({ children, goToCommenting }) => {
   const [isOpen, openTool, closeTool] = useEnableDisable(false);
   const eventualEngine = React.useContext(EventualEngineContext)!;
 
@@ -36,7 +36,6 @@ const Provider: React.FC<CommentProviderProps> = ({ children, goToDesign, goToCo
   };
 
   const close = () => {
-    goToDesign();
     closeTool();
     eventualEngine.get()?.comment?.disable();
   };
@@ -64,7 +63,6 @@ const Provider: React.FC<CommentProviderProps> = ({ children, goToDesign, goToCo
 };
 
 const mapDispatchToProps = {
-  goToDesign: Router.goToCurrentCanvas,
   goToCommenting: Router.goToCurrentCanvasCommenting,
 };
 

@@ -83,7 +83,7 @@ export const DashBoard = (props) => {
     }
   }, []);
 
-  const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES_WORKSPACE);
+  const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES);
   const [canModifyList] = usePermission(Permission.DASHBOARD_LIST);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');

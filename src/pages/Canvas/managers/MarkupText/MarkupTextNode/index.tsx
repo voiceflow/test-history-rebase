@@ -14,7 +14,7 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
-const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
+const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);

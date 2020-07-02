@@ -11,7 +11,7 @@ export type DraftJSEditorProps = PluginEditorProps & {
   wordBreak?: string;
 };
 
-const DraftJSEditor: React.RefForwardingComponent<BaseDraftJSEditor, DraftJSEditorProps> = ({ wordBreak, ...props }, ref) => (
+const DraftJSEditor: React.ForwardRefRenderFunction<BaseDraftJSEditor, DraftJSEditorProps> = ({ wordBreak, ...props }, ref) => (
   <Container wordBreak={wordBreak}>
     <BaseDraftJSEditor {...props} ref={ref} />
   </Container>

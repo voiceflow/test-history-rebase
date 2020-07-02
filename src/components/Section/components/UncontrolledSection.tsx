@@ -50,8 +50,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   headerVariant?: HeaderVariant;
 };
 
-// eslint-disable-next-line react/display-name
-const UncontrolledSection: React.FC<UncontrolledSectionProps> = (
+const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, UncontrolledSectionProps> = (
   {
     count,
     prefix,
@@ -82,7 +81,7 @@ const UncontrolledSection: React.FC<UncontrolledSectionProps> = (
     headerVariant,
     ...props
   },
-  ref: React.Ref<HTMLDivElement>
+  ref
 ) => {
   const hasHeader = !!(prefix || suffix || header || tooltip || dropdown || status || count || collapseVariant || isLink);
   const clickHandler = onClick || (headerToggle ? toggle : undefined);

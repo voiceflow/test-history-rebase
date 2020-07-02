@@ -12,7 +12,7 @@ export type BlockWithCommandsProps = BaseStartBlockProps &
     className?: string;
   };
 
-const BlockWithCommands: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<BlockWithCommandsProps>> = (
+const BlockWithCommands: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<BlockWithCommandsProps>> = (
   { commands, children, ...props },
   ref
 ) => {

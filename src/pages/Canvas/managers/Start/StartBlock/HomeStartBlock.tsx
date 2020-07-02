@@ -8,7 +8,7 @@ import HomeStartStep, { HomeStartStepProps } from './components/HomeStartStep';
 
 export type HomeStartBlockProps = Omit<BlockWithCommandsProps, 'name' | 'icon'> & HomeStartStepProps;
 
-const HomeStartBlock: React.RefForwardingComponent<BlockAPI, HomeStartBlockProps> = (
+const HomeStartBlock: React.ForwardRefRenderFunction<BlockAPI, HomeStartBlockProps> = (
   { portID, platform, invocationName, children, ...props },
   ref
 ) => (

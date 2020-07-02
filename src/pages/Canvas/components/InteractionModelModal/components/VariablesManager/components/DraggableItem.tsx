@@ -18,9 +18,9 @@ export type DraggableItemProps = {
   isDraggingPreview?: boolean;
 };
 
-const DraggableItem: React.FC<DraggableItemProps> = (
+const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, withoutHover, onContextMenu, onSelectVariableID, selectedVariableID, isContextMenuOpen, isDraggingPreview },
-  ref: React.Ref<HTMLDivElement>
+  ref
 ) => {
   const isLocal = item.type === VariableType.LOCAL;
   const isBuiltIn = item.type === VariableType.BUILT_IN;

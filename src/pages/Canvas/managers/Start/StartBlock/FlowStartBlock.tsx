@@ -8,7 +8,7 @@ import FlowStartStep, { FlowStartStepProps } from './components/FlowStartStep';
 
 export type FlowStartBlockProps = BlockWithCommandsProps & FlowStartStepProps;
 
-const FlowStartBlock: React.RefForwardingComponent<BlockAPI, FlowStartBlockProps> = ({ portID, commands, ...props }, ref) => (
+const FlowStartBlock: React.ForwardRefRenderFunction<BlockAPI, FlowStartBlockProps> = ({ portID, commands, ...props }, ref) => (
   <BlockWithCommands {...props} className={FLOW_BLOCK_CLASSNAME} commands={commands} ref={ref}>
     <FlowStartStep portID={portID} />
   </BlockWithCommands>

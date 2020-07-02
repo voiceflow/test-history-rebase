@@ -16,7 +16,7 @@ export type ModalProps = {
   className?: string;
 };
 
-const Modal: React.FC<ModalProps> = ({ id, title, isSmall = true, children, className }, ref: React.Ref<HTMLDivElement>) => {
+const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, isSmall = true, children, className }, ref) => {
   const { fade, isOpened, close, isInStack } = useModals(id);
 
   // eslint-disable-next-line xss/no-mixed-html

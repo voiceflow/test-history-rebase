@@ -32,7 +32,6 @@ class TablePagination extends React.PureComponent {
       <div>
         <Button isBtn isClear onClick={this.handleFirstPageButtonClick} disabled={page === 0} aria-label="First Page">
           <i className="fas fa-step-forward" />
-          />
         </Button>
         <Button isBtn isClear onClick={this.handleBackButtonClick} disabled={page === 0} aria-label="Previous Page">
           <i className="fas fa-chevron-left" />

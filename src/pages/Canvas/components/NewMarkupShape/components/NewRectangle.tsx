@@ -12,7 +12,7 @@ export type NewRectangleProps = {
   isCircle: boolean;
 };
 
-const NewRectangle: React.RefForwardingComponent<MarkupRectangleInstance, NewRectangleProps> = ({ isCircle }, ref) => {
+const NewRectangle: React.ForwardRefRenderFunction<MarkupRectangleInstance, NewRectangleProps> = ({ isCircle }, ref) => {
   const rectRef = React.useRef<SVGRectElement>(null);
 
   React.useImperativeHandle(

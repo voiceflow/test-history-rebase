@@ -4,7 +4,7 @@ import SpeakItem, { SpeakItemProps } from '@/pages/Canvas/components/SpeakItem';
 
 type StyledSpeakItemProps = Omit<SpeakItemProps, 'styles'>;
 
-const StyledSpeakItem: React.RefForwardingComponent<HTMLDivElement, StyledSpeakItemProps> = (props, ref) => (
+const StyledSpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, StyledSpeakItemProps> = (props, ref) => (
   <SpeakItem {...props} ref={ref} formControlProps={{ contentBottomUnits: 2.5 }} />
 );
 

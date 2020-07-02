@@ -14,7 +14,7 @@ export type LineProps = {
   offsetY: number;
 };
 
-const Line: React.RefForwardingComponent<MarkupLineInstance, LineProps> = ({ id, isArrow, color, offsetX, offsetY }, ref) => {
+const Line: React.ForwardRefRenderFunction<MarkupLineInstance, LineProps> = ({ id, isArrow, color, offsetX, offsetY }, ref) => {
   const headRef = React.useRef<SVGMarkerElement>(null);
   const lineRef = React.useRef<SVGLineElement>(null);
   const rotate = getRotation(offsetY, offsetX);

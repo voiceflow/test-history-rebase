@@ -14,7 +14,7 @@ import NodeStep from './NodeStep';
 
 export type NodeStartBlockProps = {};
 
-const NodeStartBlock: React.RefForwardingComponent<BlockAPI, NodeStartBlockProps & ConnectedNodeStartBlockProps> = (
+const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockProps & ConnectedNodeStartBlockProps> = (
   { invocationName, isRootDiagram, diagram },
   ref
 ) => {

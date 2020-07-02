@@ -15,7 +15,10 @@ export type InputProps = {
   variant?: InputVariant;
 };
 
-const Input: React.FC<InputProps & React.ComponentProps<typeof DefaultInput>> = ({ variant = InputVariant.DEFAULT, ...props }, ref) => {
+const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps & React.ComponentProps<typeof DefaultInput>> = (
+  { variant = InputVariant.DEFAULT, ...props },
+  ref
+) => {
   const Component = INPUT_VARIANTS[variant];
 
   return variant === InputVariant.INLINE && props.children ? props.children({ ref }) : <Component {...props} ref={ref} />;

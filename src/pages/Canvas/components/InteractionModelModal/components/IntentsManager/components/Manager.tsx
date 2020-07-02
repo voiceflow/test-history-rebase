@@ -8,7 +8,7 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { formatIntentName } from '@/utils/intent';
@@ -18,54 +18,55 @@ export type ManagerProps = {
   removeIntent: (id: string) => void;
 };
 
-const Manager = React.forwardRef<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps>(
-  ({ id, intent, removeIntent, updateIntent }, ref) => {
-    const [name, setName] = React.useState(intent?.name ?? '');
-    const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
-    const resetPath = React.useCallback(() => setPath({ type: null }), []);
+const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
+  { id, intent, removeIntent, updateIntent },
+  ref
+) => {
+  const [name, setName] = React.useState(intent?.name ?? '');
+  const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
+  const resetPath = React.useCallback(() => setPath({ type: null }), []);
 
-    React.useImperativeHandle(
-      ref,
-      () => ({
-        resetPath,
-      }),
-      []
-    );
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      resetPath,
+    }),
+    []
+  );
 
-    React.useEffect(() => {
-      resetPath();
-      setName(intent?.name || '');
-    }, [id]);
+  React.useEffect(() => {
+    resetPath();
+    setName(intent?.name || '');
+  }, [id]);
 
-    const slotEdit = path.type === 'slot';
+  const slotEdit = path.type === 'slot';
 
-    return !intent ? null : (
-      <>
+  return !intent ? null : (
+    <>
+      <Section>
+        <FlexApart onClick={resetPath}>
+          <Input
+            value={name}
+            onBlur={() => updateIntent(id, { id, name }, true)}
+            onChange={({ currentTarget }) => setName(formatIntentName(currentTarget.value))}
+            placeholder="Intent Name"
+          />
+
+          <RemoveDropdown onRemove={() => removeIntent(id)} />
+        </FlexApart>
+      </Section>
+
+      <FadeLeftContainer key={(!slotEdit).toString()}>
+        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
+      </FadeLeftContainer>
+      {slotEdit && (
         <Section>
-          <FlexApart onClick={resetPath}>
-            <Input
-              value={name}
-              onBlur={() => updateIntent(id, { id, name }, true)}
-              onChange={({ currentTarget }) => setName(formatIntentName(currentTarget.value))}
-              placeholder="Intent Name"
-            />
-
-            <RemoveDropdown onRemove={() => removeIntent(id)} />
-          </FlexApart>
+          <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
         </Section>
-
-        <FadeLeftContainer key={(!slotEdit).toString()}>
-          {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
-        </FadeLeftContainer>
-        {slotEdit && (
-          <Section>
-            <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
-          </Section>
-        )}
-      </>
-    );
-  }
-);
+      )}
+    </>
+  );
+};
 
 const mapStateToProps = {
   intent: Intents.intentByIDSelector,
@@ -83,4 +84,4 @@ const mergeProps = (
 
 type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps, { forwardRef: true })(Manager);
+export default compose(connect(mapStateToProps, mapDispatchToProps, mergeProps, { forwardRef: true }), React.forwardRef)(Manager);

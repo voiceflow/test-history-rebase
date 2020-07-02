@@ -10,7 +10,7 @@ export type DeleteComponentProps = {
   message?: React.ReactNode;
 };
 
-const DeleteComponent: React.FC<DeleteComponentProps> = ({ message = 'Drop here to remove' }, ref: React.Ref<HTMLDivElement>) => {
+const DeleteComponent: React.ForwardRefRenderFunction<HTMLDivElement, DeleteComponentProps> = ({ message = 'Drop here to remove' }, ref) => {
   const [hover, startHover, stopHover] = useEnableDisable(false);
 
   return (

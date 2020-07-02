@@ -34,8 +34,8 @@ type Connect = {
     mergeProps?: M | null,
     options?: ConnectOptions & { forwardRef: true }
   ): <P extends object, R>(
-    component: React.RefForwardingComponent<R, P & ConnectedProps<S, D, M>>
-  ) => React.RefForwardingComponent<R, Omit<P, keyof ConnectedProps<S, D, M>>>;
+    component: React.ForwardRefRenderFunction<R, P & ConnectedProps<S, D, M>>
+  ) => React.ForwardRefRenderFunction<R, Omit<P, keyof ConnectedProps<S, D, M>>>;
 };
 
 // eslint-disable-next-line import/prefer-default-export

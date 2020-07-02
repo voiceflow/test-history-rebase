@@ -40,7 +40,7 @@ function isVoice(item: SpeakData): item is SSMLData {
 const AnySSML = SSMLWithVars as any;
 const AnyEditorSection = EditorSection as any;
 
-const SpeakItem: React.RefForwardingComponent<HTMLDivElement, SpeakItemProps> = (
+const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> = (
   {
     item,
     itemKey,

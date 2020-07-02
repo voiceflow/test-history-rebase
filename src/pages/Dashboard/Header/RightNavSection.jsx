@@ -36,7 +36,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
   const isEditor = activeRole === UserRole.EDITOR;
-  const isViewer = activeRole === UserRole.VIEWER;
+  const isViewer = activeRole === UserRole.VIEWER || activeRole === UserRole.LIBRARY;
 
   return (
     <>

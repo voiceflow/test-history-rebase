@@ -26,9 +26,11 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const [canUseInteractionModal] = usePermission(Permission.INTERACTION_MODAL);
   const [canUseMarkup] = usePermission(Permission.MARKUP);
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
+  const [canSeePaidCanvasControls] = usePermission(Permission.VISIBLE_PAID_CANVAS_CONTROLS);
 
   const cmsModal = useModals(ModalType.INTERACTION_MODEL);
   const markupModal = useModals(ModalType.CANVAS_MARKUP);
+  const upgradeModal = useModals(ModalType.PAYMENT);
   const markupTool = React.useContext(MarkupModeContext);
   const commenting = React.useContext(CommentModeContext);
 
@@ -36,8 +38,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const markupFeature = useFeature(FeatureFlag.MARKUP);
   const commentingFeature = useFeature(FeatureFlag.COMMENTING);
-
-  const allowCommenting = commentingFeature.isEnabled && canUseCommenting;
 
   const onZoomIn = React.useCallback(() => {
     eventualEngine.get()?.canvas?.applyTransition();
@@ -80,6 +80,19 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     openMode(markupTool?.openTool);
   };
 
+  const onOpenCommenting = () => {
+    if (!canUseCommenting) {
+      upgradeModal.open();
+
+      return;
+    }
+
+    if (isPrototyping) {
+      goToDesign();
+    }
+    openMode(commenting?.open);
+  };
+
   // this callback is needed to do not store event object in the modals context
   const onOpenCMS = React.useCallback(
     () =>
@@ -91,13 +104,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     []
   );
 
-  const toggleCommenting = React.useCallback(() => (commenting.isOpen ? commenting.close() : openMode(commenting.open, allowCommenting)), [
-    allowCommenting,
-    commenting.isOpen,
-    commenting.close,
-    openMode,
-  ]);
-
   const toggleMarkup = React.useCallback(() => {
     if (markupTool?.isOpen) {
       markupTool.closeTool();
@@ -105,6 +111,14 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       onOpenMarkup();
     }
   }, [onOpenMarkup, markupTool?.closeTool, markupTool?.isOpen]);
+
+  const toggleCommenting = React.useCallback(() => {
+    if (commenting.isOpen) {
+      commenting.close();
+    } else {
+      onOpenCommenting();
+    }
+  }, [onOpenCommenting, commenting.close, commenting.isOpen]);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
@@ -125,29 +139,32 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {!isTemplateWorkspace && allowCommenting && (
-        <CanvasControlButton
-          {...CanvasControlMeta[CanvasControl.COMMENTING]}
-          iconProps={{
-            active: commenting.isOpen,
-            icon: 'comment',
-            size: commenting.isOpen ? 14 : 16,
-          }}
-          onClick={toggleCommenting}
-        />
+      {canSeePaidCanvasControls && (
+        <>
+          {commentingFeature.isEnabled && (
+            <CanvasControlButton
+              {...CanvasControlMeta[CanvasControl.COMMENTING]}
+              iconProps={{
+                active: commenting.isOpen,
+                icon: 'comment',
+                size: commenting.isOpen ? 14 : 16,
+              }}
+              onClick={toggleCommenting}
+            />
+          )}
+          {markupFeature.isEnabled && (
+            <CanvasControlButton
+              {...CanvasControlMeta[CanvasControl.MARKUP]}
+              iconProps={{
+                active: markupTool?.isOpen,
+                icon: markupTool?.isOpen ? 'close' : 'editName',
+                size: markupTool?.isOpen ? 14 : 16,
+              }}
+              onClick={toggleMarkup}
+            />
+          )}
+        </>
       )}
-      {!isTemplateWorkspace && markupFeature.isEnabled && (
-        <CanvasControlButton
-          {...CanvasControlMeta[CanvasControl.MARKUP]}
-          iconProps={{
-            active: markupTool?.isOpen,
-            icon: markupTool?.isOpen ? 'close' : 'editName',
-            size: markupTool?.isOpen ? 14 : 16,
-          }}
-          onClick={toggleMarkup}
-        />
-      )}
-
       <ControlContainer>
         <ZoomContainer>
           <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">

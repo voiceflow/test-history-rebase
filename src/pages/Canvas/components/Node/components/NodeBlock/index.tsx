@@ -18,7 +18,7 @@ import NodePort from '../NodePort';
 import NodeStep from '../NodeStep';
 import { ReorderIndicator, SourceReorderIndicator, Styles, TerminalReorderIndicator } from './components';
 
-const NodeBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
+const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const blockRef = React.useRef<BlockAPI>(null);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;

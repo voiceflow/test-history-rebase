@@ -14,7 +14,7 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
-const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
+const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
@@ -35,6 +35,14 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
   const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
   const plugins = React.useMemo(() => Object.values(pluginsObj), [pluginsObj]);
 
+  const removeDraggables = () => {
+    const draggableParents = findAllDraggableParents(containerRef.current!);
+
+    draggableParents.forEach((parentNode) => parentNode.removeAttribute('draggable'));
+
+    draggableParentsCache.current = draggableParents;
+  };
+
   const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);
 
@@ -48,6 +56,7 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
 
     if (isFirefox) {
       draggableParentsCache.current?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
+      draggableParentsCache.current = [];
     }
   }, [editorState, nodeEntity.isFocused]);
 
@@ -108,18 +117,20 @@ const MarkupTextNode: React.RefForwardingComponent<HTMLDivElement, ConnectedMark
       }
 
       // for some reason onFocus event is not triggered when setting focus manually via setEditorState
-      if (isFirefox && selection.getHasFocus()) {
-        const draggableParents = findAllDraggableParents(containerRef.current!);
-
-        draggableParents.forEach((parentNode) => parentNode.removeAttribute('draggable'));
-
-        draggableParentsCache.current = draggableParents;
+      if (isFirefox && selection.getHasFocus() && draggableParentsCache?.current?.length === 0) {
+        removeDraggables();
       }
     },
     [isFocused]
   );
 
-  const onFocus = React.useCallback(() => engine.transformation.reset(), []);
+  const onFocus = React.useCallback(() => {
+    engine.transformation.reset();
+
+    if (isFirefox && draggableParentsCache?.current?.length === 0) {
+      removeDraggables();
+    }
+  }, []);
 
   const onDragStart = React.useCallback(
     (event: React.DragEvent) => {

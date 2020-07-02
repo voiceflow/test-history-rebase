@@ -9,22 +9,22 @@ import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, Wi
 
 export { ItemContainer as SearchableListItemContainer } from './components';
 
-export type SearchableListProps = {
-  items: any[];
-  getLabel: (item: any) => string;
+export type SearchableListProps<T> = {
+  items: T[];
+  getLabel: (item: T) => string;
   onAdd?: () => void;
   addMessage?: string;
-  onChange?: (value: string, items: any[]) => void;
+  onChange?: (value: string, items: T[]) => void;
   rowHeight?: number;
-  renderItem: (item: any, index: number) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
   placeholder: string;
   formatValue?: (value: string) => string;
   id?: string;
 };
 
-const SearchableList: React.FC<SearchableListProps> = (
+const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListProps<any>> = (
   { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value, id },
-  ref: React.Ref<Scrollbars>
+  ref
 ) => {
   const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
   const [searchValue, setSearchValue] = React.useState('');

@@ -11,7 +11,7 @@ type TitleProps = {
 };
 
 const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision }) => {
-  const inputRef = React.useRef<HTMLInputElement>();
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const [value, setValue] = React.useState(name);
   const engine = React.useContext(EngineContext)!;
 

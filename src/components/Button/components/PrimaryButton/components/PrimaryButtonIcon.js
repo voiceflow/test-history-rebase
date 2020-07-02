@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-const PrimaryButtonIcon = styled.span`
+import { FlexCenter } from '@/components/Flex';
+
+const PrimaryButtonIcon = styled(FlexCenter)`
   margin-right: 6px;
   padding: 7px;
   border-radius: 50%;

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { EDITOR_SEAT_ROLES, PlanType } from '@/constants';
+import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
 import { createRootSelector } from '@/ducks/utils';
 import { getAlternativeColor } from '@/utils/colors';
 
@@ -62,3 +62,5 @@ export const userRoleSelector = createSelector(
   [workspaceMemberSelector, userIDSelector],
   (getMember, creatorID) => getMember(String(creatorID))?.role
 );
+
+export const isLibraryRoleSelector = createSelector([userRoleSelector], (role) => role === UserRole.LIBRARY);

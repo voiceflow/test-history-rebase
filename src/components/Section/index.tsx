@@ -14,9 +14,9 @@ export type SectionProps = UncontrolledSectionProps & {
   onToggleChange?: (collapsed: boolean) => void;
 };
 
-const Section: React.FC<SectionProps> = (
+const Section: React.ForwardRefRenderFunction<HTMLDivElement, SectionProps> = (
   { initialOpen = false, onToggleChange, collapseVariant = null, ...props },
-  ref: React.Ref<HTMLDivElement>
+  ref
 ) => {
   const [isCollapsed, toggle] = useToggle(!!collapseVariant && !initialOpen);
 

@@ -6,7 +6,7 @@ export type ArrowHeadProps = {
   rotate: number;
 };
 
-const ArrowHead: React.RefForwardingComponent<SVGMarkerElement, ArrowHeadProps> = ({ id, color, rotate }, ref) => (
+const ArrowHead: React.ForwardRefRenderFunction<SVGMarkerElement, ArrowHeadProps> = ({ id, color, rotate }, ref) => (
   <marker
     id={id ? `head-${id}` : 'head'}
     viewBox="0 0 20 20"

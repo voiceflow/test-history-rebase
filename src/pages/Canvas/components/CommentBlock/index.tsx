@@ -12,7 +12,7 @@ import { stopImmediatePropagation, stopPropagation, withTargetValue } from '@/ut
 import { Container } from './components';
 import { useCommentBlockAPI } from './hooks';
 
-const CommentBlock: React.RefForwardingComponent<BlockAPI> = (_, ref) => {
+const CommentBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const engine = React.useContext(EngineContext)!;
   const { name, lockOwner } = nodeEntity.useState((e) => ({

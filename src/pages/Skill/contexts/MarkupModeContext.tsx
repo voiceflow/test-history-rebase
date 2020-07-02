@@ -127,6 +127,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     openTool();
 
     trackEvents.trackMarkupOpen();
+    setCreatingModeType(MarkupModeType.TEXT);
 
     startTimeCache.current = Date.now();
   }, []);

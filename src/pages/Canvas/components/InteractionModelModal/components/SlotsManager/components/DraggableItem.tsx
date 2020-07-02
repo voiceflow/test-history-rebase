@@ -17,9 +17,9 @@ export type DraggableItemProps = {
   isDraggingPreview?: boolean;
 };
 
-const DraggableItem: React.FC<DraggableItemProps> = (
+const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, isDraggingPreview, selectedID, withoutHover, onSelectSlot, onContextMenu, isContextMenuOpen },
-  ref: React.Ref<HTMLDivElement>
+  ref
 ) => {
   return (
     <SearchableListItemContainer

@@ -81,7 +81,7 @@ export function List(props) {
         onRef={(node) => {
           listRef.current = node;
         }}
-        style={{ height: isDraggingPreview || isDragging ? '100%' : null }}
+        style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         className={cn({
           hidden: isDragging,
           '__type-create': isCreatingSkill,

@@ -18,6 +18,7 @@ export enum Permission {
   CLONE_DASHBOARD_PROJECT = 'CLONE_DASHBOARD_PROJECT',
   CLONE_PROJECT = 'CLONE_PROJECT',
   REALTIME = 'REALTIME',
+  VISIBLE_PAID_CANVAS_CONTROLS = 'VISIBLE_PAID_CANVAS_CONTROLS',
 }
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
@@ -34,6 +35,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
   [Permission.CLONE_DASHBOARD_PROJECT]: [UserRole.LIBRARY],
   [Permission.CLONE_PROJECT]: [UserRole.ADMIN, UserRole.EDITOR],
+  [Permission.VISIBLE_PAID_CANVAS_CONTROLS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
 };
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {

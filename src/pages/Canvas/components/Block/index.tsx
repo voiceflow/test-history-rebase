@@ -33,7 +33,7 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   className?: string;
 };
 
-const Block: React.RefForwardingComponent<BlockAPI, React.PropsWithChildren<BlockProps>> = (
+const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<BlockProps>> = (
   {
     variant = BlockVariant.STANDARD,
     sections = [],

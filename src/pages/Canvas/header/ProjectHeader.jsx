@@ -43,7 +43,7 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
   const ContentContainer = diagramState === DiagramState.IDLE ? React.Fragment : GroupContainer;
 
   return isTemplateWorkspace ? (
-    <Button onClick={openCloneModal} icon="flows">
+    <Button onClick={openCloneModal} icon="flows" iconProps={{ size: 13 }}>
       Clone Project
     </Button>
   ) : (

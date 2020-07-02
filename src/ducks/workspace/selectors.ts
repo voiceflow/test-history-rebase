@@ -14,10 +14,10 @@ export const activeWorkspaceIDSelector = createSelector([rootSelector], ({ activ
 export const workspaceByIDSelector = createSelector([rootSelector], ({ byId }) => (workspaceID: string) => byId[workspaceID]);
 
 export const activeWorkspaceSelector = createSelector([workspaceByIDSelector, activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
-  getWorkspace(workspaceID!)
+  workspaceID ? getWorkspace(workspaceID) : null
 );
 
-export const workspaceNumberOfSeatsSelector = createSelector([activeWorkspaceSelector], ({ seats }) => seats);
+export const workspaceNumberOfSeatsSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.seats);
 
 export const planTypeSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.plan);
 
@@ -25,9 +25,9 @@ export const isOnPaidPlanSelector = createSelector([planTypeSelector], (plan) =>
 
 export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSelector], (activeWorkspace) => activeWorkspace?.members || []);
 
-export const seatLimitsSelector = createSelector([activeWorkspaceSelector], ({ seatLimits }) => seatLimits);
+export const seatLimitsSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.seatLimits);
 
-export const isTemplateWorkspaceSelector = createSelector([activeWorkspaceSelector], ({ templates }) => templates);
+export const isTemplateWorkspaceSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.templates);
 
 export const usedEditorSeatsSelector = createSelector(
   [activeWorkspaceMembersSelector],

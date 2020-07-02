@@ -14,7 +14,7 @@ import * as Intercom from '@/vendors/intercom';
 export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace }) => {
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
 
-  if (!intercomIntegration.isEnabled) {
+  if (!intercomIntegration.isEnabled || !workspace) {
     return null;
   }
 

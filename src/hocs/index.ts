@@ -1,6 +1,7 @@
 export * from './compose';
 export * from './styled';
 export * from './withContext';
+export * from './withClassName';
 export * from './withHook';
 export * from './connect';
 export * from './withDebug';

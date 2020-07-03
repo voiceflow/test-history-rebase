@@ -83,3 +83,7 @@ package-lock.json
 certs/
 
 scratch.js
+
+# cypress test artifacts
+cypress/videos/
+cypress/screenshots/

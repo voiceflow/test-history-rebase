@@ -1,0 +1,67 @@
+import { TEST_EMAIL, TEST_PASSWORD } from '../config';
+import loginPage from '../pages/login';
+import newWorkspacePage from '../pages/newWorkspace';
+import onboardingPage from '../pages/onboarding';
+import signupPage from '../pages/signup';
+
+context('Main', () => {
+  it('go to signup page when logged out', () => {
+    cy.visit('/');
+
+    cy.shouldBeOn(signupPage);
+  });
+
+  describe('signup page', () => {
+    beforeEach(() => cy.visit('/signup'));
+
+    it('show option to login', () => {
+      signupPage.el.loginPrompt.click();
+
+      cy.shouldBeOn(loginPage);
+    });
+
+    it('show social signup options', () => {
+      signupPage.el.googleLogin.should('have.text', 'Google');
+      signupPage.el.facebookLogin.should('have.text', 'Facebook');
+    });
+  });
+
+  describe('login page', () => {
+    beforeEach(() => cy.visit('/login'));
+
+    it('show option to signup', () => {
+      loginPage.el.signupPrompt.click();
+
+      cy.shouldBeOn(signupPage);
+    });
+
+    it('show social signup options', () => {
+      loginPage.el.googleLogin.should('have.text', 'Google');
+      loginPage.el.facebookLogin.should('have.text', 'Facebook');
+    });
+  });
+
+  describe('authentication', () => {
+    beforeEach(() => cy.removeTestAccount());
+    afterEach(() => cy.removeTestAccount());
+
+    it('signup', () => {
+      cy.signup();
+
+      cy.shouldBeOn(onboardingPage);
+    });
+
+    it('login', () => {
+      cy.createTestAccount();
+
+      cy.visit('/login');
+
+      loginPage.setEmail(TEST_EMAIL);
+      loginPage.setPassword(TEST_PASSWORD);
+
+      loginPage.submit();
+
+      cy.shouldBeOn(newWorkspacePage);
+    });
+  });
+});

@@ -18,6 +18,30 @@ declare global {
   }
 }
 
+const rootPosition = { left: 0, top: 0 };
+
+export const getBoundingClientOffset = (element: HTMLElement | Window | Document) => {
+  if (element === window || element === document || element === document.body) {
+    return rootPosition;
+  }
+
+  return (element as HTMLElement).getBoundingClientRect();
+};
+
+export const mouseEventOffset = (
+  event: { clientX?: number; clientY?: number; currentTarget: EventTarget | null; srcElement?: EventTarget | null },
+  overrideTarget?: HTMLElement
+): Point => {
+  // eslint-disable-next-line xss/no-mixed-html
+  const target = (overrideTarget || event.currentTarget || event.srcElement) as HTMLElement;
+
+  const cx = event.clientX ?? 0;
+  const cy = event.clientY ?? 0;
+  const rect = getBoundingClientOffset(target!);
+
+  return [cx - rect.left, cy - rect.top];
+};
+
 /**
  * Get the width of the browser scrollbar
  */

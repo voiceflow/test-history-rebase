@@ -30,7 +30,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, toggle, type = Sett
       <LockedResourceOverlay type={Realtime.ResourceType.SETTINGS} disabled={!open}>
         {({ forceUpdateKey }) => (
           <>
-            <ModalHeader toggle={toggle} header="Project Settings" />
+            <ModalHeader className="modal-title" toggle={toggle} header="Project Settings" />
             <ButtonGroupRouter
               containerComponent={ButtonGroupRouterContainer}
               key={forceUpdateKey!}

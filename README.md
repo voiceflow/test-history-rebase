@@ -90,6 +90,21 @@ You can also use the inbuilt interactive snapshot update mode of `jest` (press `
 
 See [here](https://jestjs.io/docs/en/snapshot-testing#interactive-snapshot-mode) for more documentation on `jest` and how to use the interactive watch mode.
 
+#### End to End Tests
+
+Run e2e tests with `cypress`.
+Make sure you already have `creator-api` and `creator-app` running locally and you've initialized the `database` with `yarn init:local`
+
+**Interactive Tests**
+
+1. Start the interactive testing tool `yarn cypress`
+1. Select the tests you want to run, and you can see them executing in a browser that will open
+
+**Headless Tests**
+
+1. Start the interactive testing tool `yarn cypress:run`
+1. Results of the tests will be printed to the console
+
 ### Storybook
 
 This repository generates a [storybook](https://storybook.js.org/) for its component library.

@@ -48,7 +48,7 @@ const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, 
   };
 
   return (
-    <ProjectTitleContainer>
+    <ProjectTitleContainer id="project-title">
       <input
         id={Identifier.PROJECT_TITLE}
         onDoubleClick={onDoubleClick}

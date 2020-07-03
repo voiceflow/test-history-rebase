@@ -1,5 +1,4 @@
 import composeRefs from '@seznam/compose-react-refs';
-import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
 import { isMac, isSafari } from '@/config';
@@ -7,6 +6,7 @@ import { OverlayValue, withOverlay } from '@/contexts';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
+import { mouseEventOffset } from '@/utils/dom';
 
 import { Container, RenderLayer } from './components';
 import { CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';

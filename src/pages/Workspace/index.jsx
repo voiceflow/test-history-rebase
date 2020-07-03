@@ -34,7 +34,7 @@ function Workspace({ workspaces }) {
           </span>
           <br />
           <Link to="/workspace/new" className="no-underline">
-            <Button isPrimary className="mt-4">
+            <Button id="createWorkspace" isPrimary className="mt-4">
               New Workspace
             </Button>
           </Link>

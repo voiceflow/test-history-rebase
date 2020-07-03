@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { activePlatformSelector, saveMeta, settingsSelector, updateSettings } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useTeardown } from '@/hooks';
+import { useFeature, useTeardown } from '@/hooks';
 
 type Settings = {
   customInterface?: boolean;
@@ -18,13 +19,15 @@ type SettingsProps = {
 };
 
 const Settings: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta }) => {
+  const gadgets = useFeature(FeatureFlag.GADGETS);
+
   useTeardown(() => {
     saveMeta({ settings });
   }, [settings]);
 
   return (
     <>
-      {platform === PlatformType.ALEXA && (
+      {platform === PlatformType.ALEXA && gadgets.isEnabled && (
         <UncontrolledSection
           header="Custom Interface"
           isDividerNested

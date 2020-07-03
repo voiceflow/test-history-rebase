@@ -236,7 +236,7 @@
     "mocha-suite": "^1.0.11",
     "mock-local-storage": "^1.1.11",
     "mock-require": "^3.0.3",
-    "nyc": "^14.1.1",
+    "nyc": "^15.1.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "patch-package": "^6.1.2",
     "postcss-flexbugs-fixes": "4.1.0",

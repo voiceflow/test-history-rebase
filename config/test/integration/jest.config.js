@@ -2,7 +2,7 @@ module.exports = {
   moduleFileExtensions: ['json', 'js', 'jsx', 'ts', 'tsx'],
   rootDir: '../../..',
   roots: ['<rootDir>/src', '<rootDir>/test'],
-  testMatch: ['**/storyshots.setup.js', '**/*.it.[jt]sx'],
+  testMatch: ['**/*.it.[jt]sx'],
   setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.js'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',

@@ -6,6 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
 const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { instrument } = require('webpack-nano/argv');
 
 const paths = require('../../paths');
 const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('../config');
@@ -14,11 +15,15 @@ module.exports = merge(
   {
     plugins: [
       new CleanWebpackPlugin(),
-      new ForkTSCheckerWebpackPlugin({
-        tsconfig: path.resolve(__dirname, '../../../tsconfig.build.json'),
-        checkSyntacticErrors: true,
-        compilerOptions: { skipLibCheck: true },
-      }),
+      ...(instrument
+        ? []
+        : [
+            new ForkTSCheckerWebpackPlugin({
+              tsconfig: path.resolve(__dirname, '../../../tsconfig.build.json'),
+              checkSyntacticErrors: true,
+              compilerOptions: { skipLibCheck: true },
+            }),
+          ]),
       new HtmlWebpackPlugin({
         inject: true,
         template: paths.indexHTML,
@@ -118,6 +123,21 @@ module.exports = merge(
               },
             },
           ],
+        },
+        {
+          rules: instrument
+            ? [
+                {
+                  test: /\.[jt]sx?$/,
+                  include: paths.sourceDir,
+                  loader: 'istanbul-instrumenter-loader',
+                  enforce: 'post',
+                  options: {
+                    esModules: true,
+                  },
+                },
+              ]
+            : [],
         },
       ],
     },

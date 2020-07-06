@@ -28,14 +28,26 @@
     "listEmittedFiles": false,
     "listFiles": false,
     "pretty": true,
-    "lib": ["es2019", "dom", "es2020.string"],
+    "lib": [
+      "es2019",
+      "dom",
+      "es2020.string"
+    ],
     "outDir": "./build",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "compileOnSave": false,
-  "include": ["src/**/*", "test/**/*", "typings/**/*.d.ts"],
-  "exclude": ["node_modules/**"]
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "typings/**/*.d.ts",
+  ],
+  "exclude": [
+    "node_modules/**"
+  ]
 }

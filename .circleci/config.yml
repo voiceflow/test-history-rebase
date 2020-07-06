@@ -17,16 +17,22 @@ executors:
       - image: voiceflow/ci-image:v3
 
 commands:
+  auth_npm:
+    description: Authenticate with npm
+    steps:
+      - run:
+          name: Authenticate with npm
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
   install_dependencies:
     description: Restore/update node_modules in cache
     steps:
       - restore_cache: # special step to restore the dependency cache
           key: creator-app-{{ checksum "yarn.lock" }}
+      - auth_npm
       - run:
           name: Install packages
-          command: |
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            yarn install --frozen-lockfile
+          command: yarn install --frozen-lockfile
       - save_cache: # Update dependency cache
           key: creator-app-{{ checksum "yarn.lock" }}
           paths:
@@ -72,7 +78,7 @@ jobs:
       - checkout
       - install_dependencies
       - run:
-          name: (Build App)
+          name: Build storybook
           command: yarn storybook:build
       - persist_to_workspace:
           root: ~/voiceflow
@@ -134,6 +140,7 @@ jobs:
           command: yarn test:dependencies # Run dependency test here
 
   test-e2e:
+    resource_class: large
     docker: # run the steps with Docker
       - image: cypress/base:10 # Test steps container
         environment:
@@ -147,7 +154,7 @@ jobs:
       - image: redis:5-alpine # Redis service container
     steps: # a collection of executable commands
       - checkout
-      - install_dependencies
+      - auth_npm
       - run:
           name: Setup environment
           command: |
@@ -175,19 +182,21 @@ jobs:
           name: Setup Database
           working_directory: ~/database
           command: |
-            yarn
+            yarn install --frozen-lockfile
             yarn init:e2e
       - run:
           name: Setup Creator API
           working_directory: ~/creator-api
           command: |
-            yarn
+            yarn install --frozen-lockfile
             yarn gen-certs:e2e
       - run:
           name: Setup Creator App
+          no_output_timeout: 15m
           command: |
             echo 'VF_APP_API_HOST=localhost' > .env.local
-            yarn build:dev
+            yarn install --frozen-lockfile
+            NODE_OPTIONS=--max_old_space_size=8192 yarn build:e2e
             yarn gen-certs:e2e
             cp -R build/. /var/www
             cp -R certs/. /etc/nginx/ssl
@@ -204,6 +213,9 @@ jobs:
       - run:
           name: Run Cypress Tests
           command: yarn cypress:ci
+      - codecov/upload:
+          file: nyc_coverage/lcov.info
+          flags: e2e
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:

@@ -40,6 +40,7 @@
     "mock-local-storage",
     "nyc",
     "typescript",
-    "utility-types"
+    "utility-types",
+    "istanbul-instrumenter-loader"
   ]
 }

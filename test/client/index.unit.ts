@@ -16,6 +16,8 @@ suite('Client - Root', ({ expect }) => {
       'skill',
       'display',
       'product',
+      'comment',
+      'thread',
       'file',
       'template',
       'onboarding',

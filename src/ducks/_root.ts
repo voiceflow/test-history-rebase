@@ -24,6 +24,7 @@ import session, * as Session from '@/ducks/session';
 import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
 import template, * as Template from '@/ducks/template';
+import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
 import userSetting, * as UserSetting from '@/ducks/user';
@@ -40,6 +41,7 @@ const getCombinedReducer = (history: History) =>
     [UserSetting.STATE_KEY]: userSetting,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
+    [Thread.STATE_KEY]: thread,
     [Account.STATE_KEY]: account,
     [IntegrationUsers.STATE_KEY]: integrationUsers,
     [Prototype.STATE_KEY]: prototype,

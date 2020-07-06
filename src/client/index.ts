@@ -1,6 +1,7 @@
 import analytics from './analytics';
 import canvasExport from './canvasExport';
 import clipboard from './clipboard';
+import comment from './comment';
 import diagram from './diagram';
 import display from './display';
 import feature from './feature';
@@ -14,6 +15,7 @@ import session from './session';
 import skill from './skill';
 import createSocketClient from './socket';
 import template from './template';
+import thread from './thread';
 import user from './user';
 import workspace from './workspace';
 import zapier from './zapier';
@@ -28,6 +30,8 @@ const client = {
   workspace,
   list,
   project,
+  comment,
+  thread,
   prototype,
   clipboard,
   skill,

@@ -4,12 +4,14 @@ import LoadingGate from '@/components/LoadingGate';
 import { setError } from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
+import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import { loadSkill } from '@/store/sideEffects';
 
-const ProjectLoadingGate = ({ isProjectLoaded, loadProject, setupProjectConnection, projectID, children }) => {
+const ProjectLoadingGate = ({ isProjectLoaded, loadProject, setupProjectConnection, loadThreads, projectID, children }) => {
   React.useEffect(() => {
     setupProjectConnection();
+    loadThreads(projectID);
   }, [projectID, setupProjectConnection]);
 
   return (
@@ -28,6 +30,7 @@ const mapDispatchToProps = {
   loadSkill,
   setError,
   setupProjectSocketConnection: Project.setupProjectSocketConnection,
+  loadThreads: Thread.loadThreads,
 };
 
 // eslint-disable-next-line no-shadow

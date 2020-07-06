@@ -315,7 +315,7 @@
     "build:e2e": "patch-package && wp --instrument",
     "commit": "scripts/change_remote.sh && git-cz",
     "cypress": "cypress open",
-    "cypress:ci": "cypress run --env CI=true --config defaultCommandTimeout=10000",
+    "cypress:ci": "cypress run --env CI=true --config defaultCommandTimeout=20000",
     "cypress:run": "cypress run",
     "demo": "scripts/apply_demo_env.sh && wp --action serve --host 0.0.0.0",
     "deploy:staging": "git push origin $(git branch | grep \\* | cut -d ' ' -f2):staging -f",

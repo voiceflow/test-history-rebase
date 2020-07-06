@@ -146,6 +146,7 @@ jobs:
         environment:
           DOCKERIZE_VERSION: v0.6.1
           MKCERT_VERSION: v1.4.0
+          NODE_OPTIONS: --max_old_space_size=8192
       - image: postgres:10-alpine # PostgresDB service container
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
@@ -196,7 +197,7 @@ jobs:
           command: |
             echo 'VF_APP_API_HOST=localhost' > .env.local
             yarn install --frozen-lockfile
-            NODE_OPTIONS=--max_old_space_size=8192 yarn build:e2e
+            yarn build:e2e
             yarn gen-certs:e2e
             cp -R build/. /var/www
             cp -R certs/. /etc/nginx/ssl

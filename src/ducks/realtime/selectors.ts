@@ -87,9 +87,11 @@ export const resourceLockOwnerSelector = createSelector(
   [realtimeLocksSelector, resourceLockOwnerTabIDSelector, Workspace.distinctWorkspaceMemberSelector],
   (locks, getTabID, getWorkspaceMember) => (resourceType: ResourceType) => {
     const tabID = getTabID(resourceType)!;
-    const found = Object.values(locks!.users)
-      .flatMap(Object.entries)
-      .find(([key]) => key === tabID);
+    const found =
+      locks &&
+      Object.values(locks!.users)
+        .flatMap(Object.entries)
+        .find(([key]) => key === tabID);
 
     if (found) {
       const [, creatorID] = found;

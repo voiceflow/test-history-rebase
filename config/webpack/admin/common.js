@@ -18,19 +18,14 @@ module.exports = merge(commonConfig, {
   plugins: IS_SERVING
     ? []
     : [
-        circularDependencyPlugin(),
+        circularDependencyPlugin({
+          exclude: /node_modules|src\/components\/NestedMenu\/Menu(Options)?\/index\.jsx/,
+        }),
         new UnusedFilesWebpackPlugin({
           failOnUnused: IS_PRODUCTION,
           globOptions: {
             cwd: paths.sourceDir,
-            ignore: [
-              '**/__tests__/**/*',
-              '**/__mock__/**/*',
-              '**/__mocks__/**/*',
-              '!(admin)/**/*',
-              '**/*.md',
-              '*',
-            ],
+            ignore: ['**/__tests__/**/*', '**/__mock__/**/*', '**/__mocks__/**/*', '!(admin)/**/*', '**/*.md', '*'],
           },
         }),
       ],

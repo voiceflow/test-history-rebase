@@ -45,6 +45,7 @@
   "include": [
     "src/**/*",
     "test/**/*",
+    "config/**/*",
     "typings/**/*.d.ts",
   ],
   "exclude": [

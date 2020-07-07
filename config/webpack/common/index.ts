@@ -1,14 +1,14 @@
-const { action } = require('webpack-nano/argv');
-const WebpackBar = require('webpackbar');
-const webpack = require('webpack');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const path = require('path');
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
+import { action } from 'webpack-nano/argv';
+import WebpackBar from 'webpackbar';
 
-const paths = require('../../paths');
-const { BASE_HREF, IS_PRODUCTION, ENV } = require('../config');
+import paths from '../../paths';
+import { BASE_HREF, ENV, IS_PRODUCTION } from '../config';
 
-module.exports = {
+const commonConfig: webpack.Configuration = {
   output: {
     publicPath: BASE_HREF,
   },
@@ -24,8 +24,8 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': Object.keys(ENV).reduce((acc, key) => {
-        acc[key] = JSON.stringify(ENV[key]);
+      'process.env': Object.keys(ENV).reduce<Record<string, string>>((acc, key) => {
+        acc[key] = JSON.stringify(ENV[key as keyof typeof ENV]);
 
         return acc;
       }, {}),
@@ -50,3 +50,5 @@ module.exports = {
     child_process: 'empty',
   },
 };
+
+export default commonConfig;

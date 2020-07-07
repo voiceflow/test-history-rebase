@@ -4,6 +4,7 @@
     "node_modules/**",
     "src/**/*.story.*",
     "test/**",
+    "config/**",
     "**/__tests__/**"
   ]
 }

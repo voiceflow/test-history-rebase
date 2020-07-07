@@ -1,8 +1,10 @@
-/* eslint-disable global-require */
-const { action, prod, env } = require('webpack-nano/argv');
+/* eslint-disable import/no-unresolved, global-require */
+require('ts-node/register/transpile-only');
+
 const dotenv = require('dotenv');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+const { action, env, prod } = require('webpack-nano/argv');
 
 process.env.NODE_ENV = prod ? 'production' : 'development';
 
@@ -17,13 +19,13 @@ if (fs.existsSync(envFile)) {
 module.exports = () => {
   switch (action) {
     case 'serve':
-      return require('./config/webpack/creator/serve');
+      return require('./config/webpack/creator/serve').default;
     case 'admin':
-      return require('./config/webpack/admin/build');
+      return require('./config/webpack/admin/build').default;
     case 'admin-serve':
-      return require('./config/webpack/admin/serve');
+      return require('./config/webpack/admin/serve').default;
     case 'build':
     default:
-      return require('./config/webpack/creator/build');
+      return require('./config/webpack/creator/build').default;
   }
 };

@@ -1,4 +1,4 @@
-const { default: webpackConfig } = require('./config/webpack/common');
+require('ts-node/register/transpile-only');
 
 module.exports = {
   extends: ['@voiceflow/eslint-config/frontend', 'plugin:@typescript-eslint/recommended'],
@@ -89,7 +89,7 @@ module.exports = {
     ],
     'import/resolver': {
       webpack: {
-        config: webpackConfig,
+        config: 'config/webpack/common',
       },
     },
     'import/extensions': ['.js', '.ts', '.jsx', '.tsx'],
@@ -117,9 +117,10 @@ module.exports = {
       },
     },
     {
-      files: ['config/**/*'],
+      files: ['webpack.config.js', 'config/**/*'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
+        'import/no-extraneous-dependencies': 'off',
       },
     },
     {
@@ -136,7 +137,7 @@ module.exports = {
         'no-use-before-define': 'off',
         '@typescript-eslint/no-namespace': 'off',
         'no-useless-constructor': 'off',
-        'spaced-comment': 'off'
+        'spaced-comment': 'off',
       },
     },
   ],

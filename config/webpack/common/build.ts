@@ -1,20 +1,20 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
-const merge = require('webpack-merge');
-const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { instrument } = require('webpack-nano/argv');
+import { BaseHrefWebpackPlugin } from 'base-href-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import ForkTSCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import merge from 'webpack-merge';
+import { instrument } from 'webpack-nano/argv';
 
-const paths = require('../../paths');
-const { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } = require('../config');
+import paths from '../../paths';
+import { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } from '../config';
 
-module.exports = merge(
+export default merge(
   {
     plugins: [
-      new CleanWebpackPlugin(),
+      new CleanWebpackPlugin() as any,
       ...(instrument
         ? []
         : [
@@ -45,7 +45,7 @@ module.exports = merge(
       }),
       new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
 
-      ...(IS_SERVING ? [] : [new CopyPlugin([{ from: paths.publicDir, to: IS_ADMIN ? paths.adminBuildDir : paths.buildDir }])]),
+      ...(IS_SERVING ? [] : [new CopyPlugin({ patterns: [{ from: paths.publicDir, to: IS_ADMIN ? paths.admin.buildDir : paths.buildDir }] })]),
     ],
 
     module: {
@@ -142,6 +142,6 @@ module.exports = merge(
       ],
     },
   },
-  // eslint-disable-next-line import/no-dynamic-require
-  require(IS_PRODUCTION ? './prod' : './dev')
+  // eslint-disable-next-line import/no-dynamic-require, global-require
+  require(IS_PRODUCTION ? './prod' : './dev').default
 );

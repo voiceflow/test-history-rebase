@@ -1,14 +1,14 @@
-const InlineSourcePlugin = require('html-webpack-inline-source-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const safePostCssParser = require('postcss-safe-parser');
-const ManifestPlugin = require('webpack-manifest-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+import InlineSourcePlugin from 'html-webpack-inline-source-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import safePostCssParser from 'postcss-safe-parser';
+import PreloadWebpackPlugin from 'preload-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import ManifestPlugin from 'webpack-manifest-plugin';
 
-const paths = require('../../paths');
+import paths from '../../paths';
 
-module.exports = {
+export default {
   output: {
     filename: `${paths.staticJS}[name].[hash:8].js`,
     chunkFilename: `${paths.staticJS}[name].[chunkhash:8].chunk.js`,
@@ -73,7 +73,7 @@ module.exports = {
       rel: 'preload',
       include: 'initial',
       exclude: 'runtime',
-      fileBlacklist: [/\.map$/, /runtime.*.js/],
+      fileBlacklist: [/\.map$/, /runtime.+js/],
     }),
     new InlineSourcePlugin(),
     new MiniCssExtractPlugin({

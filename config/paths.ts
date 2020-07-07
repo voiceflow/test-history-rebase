@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path';
 
 const sourceDir = 'src/';
 const publicDir = 'public/';
@@ -18,15 +18,15 @@ const ADMIN_PATHS = {
   buildDir: 'admin_build/',
 };
 
-function resolvePaths(paths) {
-  return Object.entries(paths).reduce((acc, [key, value]) => {
+const resolvePaths = <T extends string>(paths: Record<T, string>) => {
+  return (Object.entries(paths) as [T, string][]).reduce<Record<T, string>>((acc, [key, value]) => {
     acc[key] = path.resolve(value);
 
     return acc;
-  }, {});
-}
+  }, {} as Record<T, string>);
+};
 
-module.exports = {
+export default {
   ...resolvePaths(PATHS),
   admin: resolvePaths(ADMIN_PATHS),
   staticJS: `${staticDir}js/`,

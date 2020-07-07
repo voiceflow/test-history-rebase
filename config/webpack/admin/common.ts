@@ -1,12 +1,12 @@
-const merge = require('webpack-merge');
-const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
+import { UnusedFilesWebpackPlugin } from 'unused-files-webpack-plugin';
+import merge from 'webpack-merge';
 
-const paths = require('../../paths');
-const commonConfig = require('../common');
-const { circularDependencyPlugin } = require('../common/utils');
-const { IS_PRODUCTION, IS_SERVING } = require('../config');
+import paths from '../../paths';
+import commonConfig from '../common';
+import { circularDependencyPlugin } from '../common/utils';
+import { IS_PRODUCTION, IS_SERVING } from '../config';
 
-module.exports = merge(commonConfig, {
+export default merge(commonConfig, {
   entry: {
     app: ['react-hot-loader/patch', paths.admin.entrypoint],
   },

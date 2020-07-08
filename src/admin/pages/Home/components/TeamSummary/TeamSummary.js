@@ -56,6 +56,11 @@ class TeamSummary extends React.Component {
             <div className="mt-2 team_summary_created">{moment(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
 
             <div className="mt-2 team_summary_created">
+              <span className="bold">Plan: </span>
+              {this.props.board.plan}
+            </div>
+
+            <div className="mt-2 team_summary_created">
               <span className="bold">Plan Expiry: </span>
               {this.props.board.expiry ? moment(this.props.board.expiry).format('MMM Do YYYY') : 'No expiry set'}
             </div>

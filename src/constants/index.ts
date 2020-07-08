@@ -314,6 +314,7 @@ export enum PlanType {
   OLD_ENTERPRISE = 'old_enterprise',
 
   STARTER = 'starter',
+  EDUCATION = 'education',
   PRO = 'pro',
   TEAM = 'team',
   ENTERPRISE = 'enterprise',
@@ -469,14 +470,6 @@ export enum DisplayType {
 }
 
 export const PLAN_NAMES = {
-  [PlanType.OLD_PRO]: {
-    label: 'Pro',
-    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
-  },
-  [PlanType.PRO]: {
-    label: 'Pro',
-    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
-  },
   [PlanType.OLD_STARTER]: {
     label: 'Starter',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
@@ -484,6 +477,18 @@ export const PLAN_NAMES = {
   [PlanType.STARTER]: {
     label: 'Starter',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
+  },
+  [PlanType.EDUCATION]: {
+    label: 'Education',
+    color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
+  },
+  [PlanType.OLD_PRO]: {
+    label: 'Pro',
+    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
+  },
+  [PlanType.PRO]: {
+    label: 'Pro',
+    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
   [PlanType.OLD_TEAM]: {
     label: 'Team',

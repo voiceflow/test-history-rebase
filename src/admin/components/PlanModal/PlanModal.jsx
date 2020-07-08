@@ -1,5 +1,6 @@
 import './PlanModal.css';
 
+import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
@@ -9,6 +10,7 @@ import { Modal, ModalBody } from 'reactstrap';
 import * as Admin from '@/admin/store/ducks/admin';
 import Button from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
+import Select from '@/components/Select';
 import { PlanType } from '@/constants';
 
 class PlanModal extends React.Component {
@@ -34,7 +36,7 @@ class PlanModal extends React.Component {
     this.setState({ selectedDay: day });
   }
 
-  updatePlan = (planID) => () => {
+  updatePlan = (planID) => {
     this.props.updateWorkspace(this.props.workspace?.team_id, { plan: planID });
   };
 
@@ -119,16 +121,19 @@ class PlanModal extends React.Component {
                 Update Seats
               </Button>
             </div>
+
             <hr />
-            <label>Set Plan to: (currently {workspace.plan?.toUpperCase() || 'BASIC'})</label>
-            <FlexApart>
-              <Button variant="secondary" onClick={this.updatePlan(PlanType.STARTER)}>
-                Basic (Free)
-              </Button>
-              <Button onClick={this.updatePlan(PlanType.PRO)}>Pro</Button>
-              <Button onClick={this.updatePlan(PlanType.TEAM)}>Team</Button>
-              <Button onClick={this.updatePlan(PlanType.ENTERPRISE)}>Enterprise</Button>
-            </FlexApart>
+
+            <label>
+              Set Plan to: (currently <b>{_.upperFirst(workspace.plan || 'Starter')}</b>)
+            </label>
+
+            <Select
+              value={workspace.plan || PlanType.STARTER}
+              options={[PlanType.STARTER, PlanType.EDUCATION, PlanType.PRO, PlanType.TEAM, PlanType.ENTERPRISE]}
+              getOptionLabel={_.upperFirst}
+              onSelect={this.updatePlan}
+            />
           </ModalBody>
         </Modal>
       </div>

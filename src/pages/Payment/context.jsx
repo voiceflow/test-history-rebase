@@ -129,7 +129,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
     const plans = await client.workspace.getPlans();
     const paidPlans = plans.filter(({ pricing }) => !!pricing);
 
-    return paidPlans.filter(({ legacy }) => !legacy);
+    return paidPlans.filter(({ legacy, hidden }) => !(legacy || hidden));
   };
 
   useAsyncMountUnmount(async () => {

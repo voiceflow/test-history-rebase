@@ -28,7 +28,7 @@ const DEBOUNCE_TIMEOUT = 300;
 // TODO: remove what convert DropUpload to TS
 const PartialDropUpload = DropUpload as React.ComponentType<Partial<React.ComponentProps<typeof DropUpload>>>;
 
-const ImportSlots: React.FC<ConnectedImportSlotsProps> = ({ slots, intents }) => {
+const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, intents }) => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
     slotsCount: 0,
@@ -239,6 +239,6 @@ const mapStateToProps = {
   intents: Intent.allIntentsSelector,
 };
 
-type ConnectedImportSlotsProps = ConnectedProps<typeof mapStateToProps>;
+type ConnectedImportUtterancesProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(ImportSlots);
+export default connect(mapStateToProps)(ImportUtterances);

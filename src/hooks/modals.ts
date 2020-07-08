@@ -3,7 +3,6 @@ import React from 'react';
 import { ModalType } from '@/constants';
 import { ModalContextType, ModalsContext } from '@/contexts';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useModals = <T extends object = {}>(modalId: ModalType) => {
   const { fade, open, close, update, toggle, openedId, modalData, stackModalIds } = React.useContext(ModalsContext) as NonNullable<
     ModalContextType<T>
@@ -50,4 +49,17 @@ export const useModals = <T extends object = {}>(modalId: ModalType) => {
     isOpened,
     isInStack,
   };
+};
+
+export const useActiveModal = <T extends object = {}>() => {
+  const { close, update, openedId, modalData } = React.useContext(ModalsContext) as NonNullable<ModalContextType<T>>;
+
+  return openedId
+    ? {
+        type: openedId,
+        data: modalData,
+        close,
+        update,
+      }
+    : null;
 };

@@ -5,7 +5,7 @@ import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Workspace from '@/ducks/workspace';
 import { connect, css, styled } from '@/hocs';
-import { useHotKeys } from '@/hooks';
+import { useActiveModal, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, CommentModeContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
@@ -47,10 +47,13 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const { isCreating: isMarkupCreating, modeType: markupModeType, isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
   const { isOpen: commentingEnabled } = React.useContext(CommentModeContext);
 
-  const disableSpotlight = !canEdit || markupOpen;
+  const activeModal = useActiveModal();
+
+  const canDelete = canEdit && !activeModal;
+  const disableSpotlight = !canEdit || markupOpen || !!activeModal;
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
-  const deleteActive = React.useCallback<Callback>(() => canEdit && engine.removeActive(), [canEdit]);
+  const deleteActive = React.useCallback<Callback>(() => canDelete && engine.removeActive(), [canDelete]);
   const addComment = React.useCallback<Callback>(async () => {
     const position = engine.getCanvasMousePosition();
 

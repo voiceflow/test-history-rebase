@@ -20,7 +20,7 @@ const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
   terminateConnection,
   children,
 }) => {
-  const [isAllowed] = usePermission(Permission.REALTIME);
+  const [isAllowed] = usePermission(Permission.CANVAS_REALTIME);
 
   if (!isAllowed) {
     return <RealtimeSubscriptionProvider>{children}</RealtimeSubscriptionProvider>;

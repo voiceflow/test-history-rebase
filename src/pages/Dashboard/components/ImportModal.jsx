@@ -21,10 +21,7 @@ import { ImportSelect } from './ModalComponents';
 
 const allowedToClone = (workspace, creatorId) => {
   const creatorRole = extractMemberById(creatorId, workspace.members)?.role;
-  if (hasPermission(Permission.CLONE_PROJECT, creatorRole, null)) {
-    return true;
-  }
-  return false;
+  return hasPermission(Permission.MANAGE_PROJECTS, creatorRole, null);
 };
 
 function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWorkspace, creatorId }) {

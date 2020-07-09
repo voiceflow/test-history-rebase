@@ -30,7 +30,7 @@ export type ExportItemProps = {
 const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRedirect, isExporting, exportCanvas }) => {
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
   const [trackingEvents] = useTrackingEvents();
-  const [canExport] = usePermission(Permission.EXPORT);
+  const [canExport] = usePermission(Permission.CANVAS_EXPORT);
 
   const onClick = () => {
     trackingEvents.trackExportButtonClick({ format: selectedExportType });

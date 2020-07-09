@@ -64,7 +64,7 @@ export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = 
     title: 'Model',
     icon: 'code',
     hotkey: 'M',
-    permission: Permission.INTERACTION_MODAL,
+    permission: Permission.EDIT_CANVAS,
   },
   [CanvasControl.COMMENTING]: {
     title: 'Commenting',

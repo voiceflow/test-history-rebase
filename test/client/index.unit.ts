@@ -9,7 +9,7 @@ suite('Client - Root', ({ expect }) => {
       'diagram',
       'user',
       'workspace',
-      'list',
+      'projectList',
       'project',
       'prototype',
       'clipboard',

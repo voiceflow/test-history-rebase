@@ -7,11 +7,17 @@ import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
 import { ModalType } from '@/constants';
-import { deleteWorkspace } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
+import * as Models from '@/models';
+import { ConnectedProps } from '@/types';
 
-export function BoardDeleteModal({ workspace, deleteWorkspace }) {
+export type BoardDeleteModalProps = {
+  workspace: Models.Workspace;
+};
+
+export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDeleteModalProps> = ({ workspace, deleteWorkspace }) => {
   const [name, updateName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);
 
@@ -62,12 +68,12 @@ export function BoardDeleteModal({ workspace, deleteWorkspace }) {
       </ModalBody>
     </Modal>
   );
-}
-
-const mapStateToProps = {};
-
-const mapDispatchToProps = {
-  deleteWorkspace,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardDeleteModal);
+const mapDispatchToProps = {
+  deleteWorkspace: Workspace.deleteWorkspace,
+};
+
+type ConnectedBoardDeleteModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(BoardDeleteModal) as React.FC<BoardDeleteModalProps>;

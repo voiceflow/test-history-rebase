@@ -24,7 +24,7 @@ const MarkupNode = () => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupModeContext);
-  const [canUseMarkup] = usePermission(Permission.MARKUP);
+  const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
 
   const { node, data } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Markup.AnyNodeData>();

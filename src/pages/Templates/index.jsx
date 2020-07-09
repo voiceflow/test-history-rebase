@@ -8,7 +8,7 @@ import { Alert } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import { PlatformType } from '@/constants';
-import * as List from '@/ducks/lists';
+import * as ProjectList from '@/ducks/projectList';
 import * as Router from '@/ducks/router';
 import * as Template from '@/ducks/template';
 import * as Workspace from '@/ducks/workspace';
@@ -77,7 +77,7 @@ class Templates extends React.Component {
 
       const listID = computedMatch?.params?.listID;
       if (listID) {
-        await addProjectToList(listID, project.project_id);
+        addProjectToList(listID, project.project_id);
       }
 
       setTimeout(() => goToCanvas(project.skill_id, project.diagram, true), 3000);
@@ -143,7 +143,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addProjectToList: List.addProjectToList,
+  addProjectToList: ProjectList.addProjectToList,
   goToCanvas: Router.goToCanvas,
   loadTemplates: Template.loadTemplates,
   createProject: Workspace.createProject,

@@ -51,13 +51,13 @@ export function Item(props) {
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
-  const [canModifyProject] = usePermission(Permission.DASHBOARD_PROJECT);
-  const [canCloneProject] = usePermission(Permission.CLONE_DASHBOARD_PROJECT);
+  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
+  const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
-  const options = canModifyProject
+  const options = canManageProjects
     ? [
         {
           value: 'duplicate',
@@ -144,7 +144,7 @@ export function Item(props) {
     </div>
   );
 
-  return canModifyProject && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
+  return canManageProjects && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
 }
 
 export default withDraggable({

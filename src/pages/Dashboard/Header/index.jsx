@@ -7,17 +7,7 @@ import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
 import UpgradeButton from './UpgradeButton';
 
-const DashboardHeader = ({
-  user,
-  history,
-  handleFilterText,
-  workspaces,
-  workspaceID,
-  workspace: activeWorkspace,
-  fetchBoards,
-  team_setting,
-  setTeamSetting,
-}) => {
+const DashboardHeader = ({ user, history, handleFilterText, workspaces, workspaceID, workspace: activeWorkspace, fetchBoards }) => {
   return (
     <Header
       withLogo
@@ -34,8 +24,6 @@ const DashboardHeader = ({
           workspaces={workspaces}
           workspace={activeWorkspace}
           workspaceID={workspaceID}
-          team_setting={team_setting}
-          setTeamSetting={setTeamSetting}
           fetchBoards={fetchBoards}
         />
       )}

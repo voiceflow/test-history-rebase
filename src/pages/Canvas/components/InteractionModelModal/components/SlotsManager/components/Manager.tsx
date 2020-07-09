@@ -19,13 +19,7 @@ const Manager: React.FC<ManagerProps & ConnectedManagerProps> = ({ id, slotsMap,
 
   return !slot ? null : (
     <FadeLeftContainer style={{ marginTop: 10 }}>
-      <SlotEditComponent
-        {...slot}
-        key={slot.id}
-        onSave={(data: Partial<Slot>) => updateSlot(id, { id, ...data })}
-        onRemove={removeSlot}
-        isInteraction
-      />
+      <SlotEditComponent {...slot} key={slot.id} onSave={(data: Partial<Slot>) => updateSlot(id, data, true)} onRemove={removeSlot} isInteraction />
     </FadeLeftContainer>
   );
 };

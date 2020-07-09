@@ -10,11 +10,11 @@ import display, * as Display from '@/ducks/display';
 import feature, * as Feature from '@/ducks/feature';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
-import list from '@/ducks/lists';
 import modal, * as Modal from '@/ducks/modal';
 import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
+import projectList, * as ProjectList from '@/ducks/projectList';
 import prototype, * as Prototype from '@/ducks/prototype';
 import publish from '@/ducks/publish';
 import realtime, * as Realtime from '@/ducks/realtime';
@@ -36,7 +36,7 @@ const getCombinedReducer = (history: History) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(history),
     form: formReducer,
-    list,
+    [ProjectList.STATE_KEY]: projectList,
     publish,
     [UserSetting.STATE_KEY]: userSetting,
     [Modal.STATE_KEY]: modal,

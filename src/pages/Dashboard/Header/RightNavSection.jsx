@@ -32,7 +32,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
-  const [canUseWorkspaceSettings, { activeRole }] = usePermission(Permission.WORKSPACE_SETTINGS);
+  const [canConfigureWorkspace, { activeRole }] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
   const isEditor = activeRole === UserRole.EDITOR;
@@ -44,7 +44,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
         <Dropdown
           menu={
             <Menu noBottomPadding>
-              {canUseWorkspaceSettings ? (
+              {canConfigureWorkspace ? (
                 <>
                   <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
                   <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>

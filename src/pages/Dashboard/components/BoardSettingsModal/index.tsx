@@ -4,19 +4,36 @@ import { Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { ModalType, PlanType } from '@/constants';
-import { updateWorkspaceImage, updateWorkspaceName } from '@/ducks/workspace';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
+import * as Account from '@/ducks/account';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useModals } from '@/hooks';
+import { useDidUpdateEffect, useModals, usePermission } from '@/hooks';
+import * as Models from '@/models';
+import { ConnectedProps } from '@/types';
 
 import SettingField from './components/SettingField';
 
-export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updateWorkspaceImage }) {
+const UploadJustIconComponent: React.FC<any> = UploadJustIcon;
+
+export type BoardSettingsModalProps = {
+  user: Account.AccountState;
+  workspace: Models.Workspace;
+};
+
+export const BoardSettingsModal: React.FC<BoardSettingsModalProps & ConnectedBoardSettingsModalProps> = ({
+  user,
+  workspace,
+  updateWorkspaceName,
+  updateWorkspaceImage,
+}) => {
   const [name, updateName] = React.useState(workspace.name);
-  const [image, updateImage] = React.useState(workspace.image);
+  const [image, updateImage] = React.useState<string | null>(workspace.image);
   const { open: openBillingModal } = useModals(ModalType.BILLING);
   const { toggle, isOpened } = useModals(ModalType.BOARD_SETTINGS);
   const { open: openDeleteModal } = useModals(ModalType.BOARD_DELETE);
+  const [canManageBilling] = usePermission(Permission.MANAGE_BILLING);
 
   const saveName = React.useCallback(() => {
     if (name && name !== workspace.name) {
@@ -27,7 +44,7 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
   }, [name, updateWorkspaceName, updateName]);
 
   useDidUpdateEffect(() => {
-    updateWorkspaceImage(image);
+    updateWorkspaceImage(image!);
   }, [image]);
 
   React.useEffect(() => {
@@ -39,30 +56,21 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
     return null;
   }
 
-  const withoutIcon = workspace.status === 0;
-
   return (
     <Modal isOpen={isOpened} toggle={toggle} className="upgrade-modal">
       <ModalHeader toggle={toggle} header="Workspace Settings" />
 
       <ModalBody className="px-45 pt-0 overflow-hidden">
         <div className="mb-3">
-          <SettingField label="Workspace Icon" description={withoutIcon ? 'Upgrade this workspace under billing to add a custom image' : null}>
-            <UploadJustIcon image={workspace.image} update={updateImage} size="medium" />
+          <SettingField label="Workspace Icon" description={null}>
+            <UploadJustIconComponent image={workspace.image} update={updateImage} size="medium" />
           </SettingField>
-
-          {withoutIcon && (
-            <>
-              <br />
-              <br />
-            </>
-          )}
 
           <SettingField hr label="Name">
             <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
           </SettingField>
 
-          {(workspace.plan !== PlanType.ENTERPRISE || workspace.plan !== PlanType.OLD_ENTERPRISE) && (
+          {canManageBilling && (
             <SettingField hr label="Billing" description="View invoices, update your payment options">
               <Button onClick={openBillingModal} isBtn isLinkLarge>
                 Manage Payments
@@ -79,11 +87,13 @@ export function BoardSettingsModal({ user, workspace, updateWorkspaceName, updat
       </ModalBody>
     </Modal>
   );
-}
-
-const mapDispatchToProps = {
-  updateWorkspaceName,
-  updateWorkspaceImage,
 };
 
-export default connect(null, mapDispatchToProps)(BoardSettingsModal);
+const mapDispatchToProps = {
+  updateWorkspaceName: Workspace.updateWorkspaceName,
+  updateWorkspaceImage: Workspace.updateWorkspaceImage,
+};
+
+type ConnectedBoardSettingsModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(BoardSettingsModal) as React.FC<BoardSettingsModalProps>;

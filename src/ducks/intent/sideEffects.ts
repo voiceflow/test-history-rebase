@@ -16,7 +16,10 @@ import { getUniqSlots, newSlotsCreator } from './utils';
 const NEW_INTENT_NAME = 'intent';
 const { update } = createCRUDActionCreators<Intent>(STATE_KEY);
 
-export const updateIntent = (id: string, data: Intent | Partial<Intent>, patch?: boolean): Thunk => (dispatch, getState) => {
+export const updateIntent: {
+  (id: string, data: Intent, patch?: false): SyncThunk;
+  (id: string, data: Partial<Intent>, patch: true): SyncThunk;
+} = (id: string, data: Partial<Intent>, patch?: boolean): Thunk => (dispatch, getState) => {
   if (data.inputs) {
     const { slots: { byKey = {}, allKeys = [] } = {} } = intentByIDSelector(getState())(id);
     const uniqSlots = getUniqSlots(data.inputs);
@@ -37,28 +40,28 @@ export const updateIntent = (id: string, data: Intent | Partial<Intent>, patch?:
             allKeys: [...keysWithoutRemoved, ...keysToAdd],
           },
         },
-        patch
+        patch as any
       )
     );
   }
 
-  return dispatch(update(id, data, patch));
+  return dispatch(update(id, data, patch as any));
 };
 
-export const updateIntentSlot = (id: string, slotId: string, data: Partial<IntentSlot>): Thunk => (dispatch, getState) => {
+export const updateIntentSlot = (id: string, slotId: string, data: Partial<IntentSlot>): SyncThunk => (dispatch, getState) => {
   const { slots } = intentByIDSelector(getState())(id);
 
   return dispatch(updateIntent(id, { slots: patchNormalizedByKey<IntentSlot>(slots, slotId, data) }, true));
 };
 
-export const updateIntentSlotDialog = (id: string, slotId: string, dialog: IntentSlotDialog): Thunk => (dispatch, getState) => {
+export const updateIntentSlotDialog = (id: string, slotId: string, dialog: IntentSlotDialog): SyncThunk => (dispatch, getState) => {
   const { slots } = intentByIDSelector(getState())(id);
   const slot = getNormalizedByKey(slots, slotId);
 
   return dispatch(updateIntentSlot(id, slotId, { dialog: { ...slot.dialog, ...dialog } }));
 };
 
-export const reorderIntentSlots = (id: string, newAllKeys: string[]): Thunk => (dispatch, getState) => {
+export const reorderIntentSlots = (id: string, newAllKeys: string[]): SyncThunk => (dispatch, getState) => {
   const { slots } = intentByIDSelector(getState())(id);
 
   return dispatch(updateIntent(id, { slots: { ...slots, allKeys: newAllKeys } }, true));

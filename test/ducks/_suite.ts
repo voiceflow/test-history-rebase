@@ -6,6 +6,7 @@ import type { State } from '@/ducks/_root';
 import { createAction } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, RootReducer, Selector } from '@/store/types';
+import { Normalized, getNormalizedByKey } from '@/utils/normalized';
 
 type ReduxDuck<S, A extends AnyAction> = {
   default: RootReducer<S, A>;
@@ -20,23 +21,33 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
   createSuite((utils) => {
     const createState = (duckState: S, rootState?: any) => ({ [Duck.STATE_KEY]: duckState, ...rootState });
 
+    const createActionUtils = (rootState: DeepPartial<S>, action: A) => ({
+      get rawResult() {
+        return Duck.default(rootState as S, action);
+      },
+      get result() {
+        return utils.expect(this.rawResult);
+      },
+      toModify(diff: Partial<S>) {
+        const expectedState = { ...rootState, ...diff };
+        this.result.to.eql(expectedState);
+
+        return this;
+      },
+      toModifyByKey(key: string, diff: S extends Normalized<infer R> ? Partial<R> : never) {
+        const currValue = getNormalizedByKey<object>(rootState as any, key);
+        const nextValue = getNormalizedByKey(this.rawResult as any, key);
+        utils.expect(nextValue).to.eql({ ...currValue, ...diff });
+
+        return this;
+      },
+      withState: (overrideState: DeepPartial<S>) => createActionUtils(overrideState, action),
+    });
+
     const reducerUtils = {
       applyAction: (action: A, rootState = state) => Duck.default(rootState, action),
 
-      expectAction: (action: A) => {
-        const createUtils = (rootState: DeepPartial<S>) => ({
-          get result() {
-            return utils.expect(Duck.default(rootState as S, action));
-          },
-          toModify(diff: Partial<S>) {
-            const expectedState = { ...rootState, ...diff };
-            this.result.to.eql(expectedState);
-          },
-          withState: (overrideState: DeepPartial<S>) => createUtils(overrideState),
-        });
-
-        return createUtils(state as DeepPartial<S>);
-      },
+      expectAction: (action: A) => createActionUtils(state as DeepPartial<S>, action),
     };
 
     const selectorUtils = {
@@ -59,6 +70,10 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         const dispatch = utils.spy();
         const getState: () => any = utils.spy(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
         const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => utils.expect(dispatch).to.be.calledWithExactly(action);
+        const expectStubCalled = ([stub, effect]: [SinonStub, SinonSpy], ...args: any[]) => {
+          expectDispatch(effect);
+          utils.expect(stub).to.be.calledWithExactly(...args);
+        };
 
         try {
           const result = await sideEffect(dispatch, getState);
@@ -68,6 +83,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
             getState,
             dispatch,
             expectDispatch,
+            expectStubCalled,
           };
         } catch (error) {
           return {
@@ -75,6 +91,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
             getState,
             dispatch,
             expectDispatch,
+            expectStubCalled,
           };
         }
       },

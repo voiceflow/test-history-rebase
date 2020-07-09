@@ -9,16 +9,18 @@ import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED } from '@/config';
 import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
+import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Display from '@/ducks/display';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
+import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as User from '@/ducks/user';
-import { CRUD_ADD, CRUD_REMOVE, CRUD_UPDATE } from '@/ducks/utils/crud';
+import { CRUDAction } from '@/ducks/utils/crud';
 import * as VariableSet from '@/ducks/variableSet';
 import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
@@ -32,17 +34,18 @@ import { storeLogger } from './utils';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const CREATOR_HISTORY_ACTIONS: string[] = [Creator.DiagramAction.UNDO_HISTORY, Creator.DiagramAction.REDO_HISTORY];
+const AUTOSAVE_IGNORED_ACTIONS: string[] = [Account.AccountAction.RESET_ACCOUNT, Creator.DiagramAction.SET_DIAGRAM_STATE];
 
 const log = storeLogger.child('middleware');
 
 type ActionBlacklist = (string | ((action: AnyAction) => boolean))[];
 
-const createAutosaveMiddleware = <T>(
-  selector: Selector<T>,
+const createAutosaveMiddleware = (
+  selector: Selector<any> | Record<string, Selector<any>>,
   createSaveAction: () => Dispatchable,
   blacklist: ActionBlacklist = []
 ): StoreMiddleware => {
-  let prevState: T | null = null;
+  let prevState: unknown | null = null;
   const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, async (store: StoreMiddlewareAPI) => {
     try {
       store.dispatch(Creator.setDiagramState(DiagramState.SAVING));
@@ -60,7 +63,7 @@ const createAutosaveMiddleware = <T>(
     next(action);
 
     const state = store.getState();
-    const currentState = selector(state);
+    const currentState = (typeof selector === 'function' ? selector : createStructuredSelector<any, any>(selector))(state);
     const activeSkill = Skill.activeSkillSelector(state);
     const isLibraryRole = Workspace.isLibraryRoleSelector(state);
 
@@ -68,10 +71,10 @@ const createAutosaveMiddleware = <T>(
 
     if (
       activeSkill &&
+      !AUTOSAVE_IGNORED_ACTIONS.includes(action.type) &&
       !blacklist.includes(action.type) &&
       !shallowequal(prevState, currentState) &&
-      prevState !== null &&
-      action.type !== Creator.DiagramAction.SET_DIAGRAM_STATE
+      prevState !== null
     ) {
       store.dispatch(Creator.setDiagramState(DiagramState.CHANGED));
 
@@ -207,17 +210,13 @@ const createMiddleware = (history: History) => {
     creatorResetMiddleware,
     cleanupDisplayMiddleware,
     createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents),
-    createAutosaveMiddleware(createStructuredSelector({ platform: Skill.activePlatformSelector }), savePlatformAndActiveDiagram, [
-      Skill.SkillAction.SET_ACTIVE_SKILL,
+    createAutosaveMiddleware(Skill.activePlatformSelector, savePlatformAndActiveDiagram, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(VariableSet.activeDiagramVariables, VariableSet.saveActiveDiagramVariables, [
+      VariableSet.REPLACE_VARIABLE_SET_DIAGRAM,
+      Creator.CreatorAction.INITIALIZE_CREATOR,
     ]),
-    createAutosaveMiddleware(createStructuredSelector({ variables: Skill.globalVariablesSelector }), Skill.saveVariables, [
-      Skill.SkillAction.SET_ACTIVE_SKILL,
-    ]),
-    createAutosaveMiddleware(
-      createStructuredSelector({ diagramVariables: VariableSet.activeDiagramVariables }),
-      VariableSet.saveActiveDiagramVariables,
-      [VariableSet.REPLACE_VARIABLE_SET_DIAGRAM, Creator.CreatorAction.INITIALIZE_CREATOR]
-    ),
+    createAutosaveMiddleware(ProjectList.allProjectListsSelector, Workspace.saveActiveWorkspaceProjectLists),
     createRealtimeResourceUpdateMiddleware(
       Realtime.ResourceType.SETTINGS,
       createStructuredSelector({
@@ -230,9 +229,9 @@ const createMiddleware = (history: History) => {
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DISPLAYS, Display.allDisplaysSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, Product.allProductsSelector, [
-      CRUD_UPDATE,
-      (action) => action.type === CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,
-      (action) => action.type === CRUD_REMOVE && action.payload === NEW_PRODUCT_ID,
+      CRUDAction.CRUD_UPDATE,
+      (action) => action.type === CRUDAction.CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,
+      (action) => action.type === CRUDAction.CRUD_REMOVE && action.payload === NEW_PRODUCT_ID,
     ]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.INTENTS, Intent.allIntentsSelector),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.SLOTS, Slot.allSlotsSelector),

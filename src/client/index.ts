@@ -6,10 +6,10 @@ import diagram from './diagram';
 import display from './display';
 import feature from './feature';
 import file from './file';
-import list from './lists';
 import onboarding from './onboarding';
 import product from './product';
 import project from './project';
+import projectList from './projectList';
 import prototype from './prototype';
 import session from './session';
 import skill from './skill';
@@ -28,7 +28,7 @@ const client = {
   diagram,
   user,
   workspace,
-  list,
+  projectList,
   project,
   comment,
   thread,

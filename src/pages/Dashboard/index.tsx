@@ -2,11 +2,9 @@ import './DashBoard.css';
 
 import cn from 'classnames';
 import jwt from 'jsonwebtoken';
-import _ from 'lodash';
 import queryString from 'query-string';
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
@@ -19,15 +17,17 @@ import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
-import { unnormalize } from '@/ducks/_normalize';
 import * as Account from '@/ducks/account';
-import * as Lists from '@/ducks/lists';
 import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
+import * as ProjectList from '@/ducks/projectList';
 import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
 import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
-import { copyProject, importProject } from '@/store/sideEffects';
+import * as Models from '@/models';
+import { copyProject } from '@/store/sideEffects';
+import { ConnectedProps } from '@/types';
 import * as Userflow from '@/vendors/userflow';
 
 import DashboardHeader from './Header';
@@ -36,10 +36,10 @@ import BoardSettingsModal from './components/BoardSettingsModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 
-const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
-  const filtered = [];
+const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<string, Models.Project>, filter: string) => {
+  const filtered: Models.Project[] = [];
 
-  projectsIds.forEach((id) => {
+  projectsIDs.forEach((id) => {
     const project = projectsMap[id];
 
     if (project?.name.toLowerCase().includes(filter)) {
@@ -50,9 +50,10 @@ const getBoardFilteredProjects = (projectsIds, projectsMap, filter) => {
   return filtered;
 };
 
-export const DashBoard = (props) => {
-  const [team_setting, setTeamSetting] = React.useState(null);
-  const query = props.location?.search && queryString.parse(props.location.search);
+export type DashboardProps = RouteComponentProps & {};
+
+export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (props) => {
+  const query: Models.Query.Dashboard | null = props.location?.search ? queryString.parse(props.location.search) : null;
 
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
@@ -64,7 +65,7 @@ export const DashBoard = (props) => {
 
       if (importToken) {
         try {
-          const result = jwt.decode(importToken);
+          const result = jwt.decode(importToken) as Models.Project.ImportToken;
           if (!result.projectId || !result.projectName) {
             throw new Error('Unexpected JWT content');
           }
@@ -76,15 +77,15 @@ export const DashBoard = (props) => {
           props.setError('Bad Import Link');
         }
       }
+
       if (query.plan) {
         props.history.replace({ search: '' });
-        setTimeout(() => setTeamSetting('PLAN'), 100);
       }
     }
   }, []);
 
   const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES);
-  const [canModifyList] = usePermission(Permission.DASHBOARD_LIST);
+  const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
@@ -95,13 +96,13 @@ export const DashBoard = (props) => {
 
   const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {
-      if (props.projects.length >= props.workspace.projects) {
-        openProjectLimitModal({ projects: props.workspace.projects });
+      if (props.projects.length >= props.workspace!.projects) {
+        openProjectLimitModal({ projects: props.workspace!.projects });
         return;
       }
       toggleLoadingModal(true);
 
-      await props.copyProject(projectId, props.workspaceID, boardId);
+      await props.copyProject(projectId, props.workspaceID!, boardId);
 
       toggleLoadingModal(false);
     },
@@ -109,20 +110,20 @@ export const DashBoard = (props) => {
   );
 
   const onDeleteProject = React.useCallback(
-    (boardID) => (projectId, projectName) => {
+    (boardID: string) => (projectId: string, projectName: string) => {
       props.setConfirm({
         text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
         warning: true,
-        confirm: () => props.deleteBoardProject(boardID, projectId).catch((err) => props.setError(err.message)),
+        confirm: () => props.deleteProject(boardID, projectId).catch((err) => props.setError(err.message)),
       });
     },
-    [props.deleteBoardProject]
+    [props.deleteProject]
   );
 
   const onCreateProject = React.useCallback(
     (id) => {
-      if (props.projects.length >= props.workspace.projects) {
-        openProjectLimitModal({ projects: props.workspace.projects });
+      if (props.projects.length >= props.workspace!.projects) {
+        openProjectLimitModal({ projects: props.workspace!.projects });
       } else {
         props.history.push(id !== 'initial' ? `/workspace/template/${id}` : '/workspace/template');
       }
@@ -130,7 +131,7 @@ export const DashBoard = (props) => {
     [props.projects, props.workspace, props.history]
   );
 
-  let fetchLists;
+  let loadLists;
 
   const onDeleteBoard = React.useCallback(
     ({ name, id, projects }) => {
@@ -150,11 +151,18 @@ export const DashBoard = (props) => {
   const updateWorkspace = () => {
     // ensure workspace hasn't changed
     toggleLoading(true);
-    fetchLists = props.fetchLists(props.workspaceID).then(() => {
+    loadLists = props.loadLists(props.workspaceID!).then(() => {
       toggleLoading(false);
-      fetchLists = null;
+      loadLists = null;
     });
   };
+
+  const onMove = React.useCallback((drag, hover) => props.moveList(drag.id, hover.id), [props.moveList]);
+
+  const onMoveProject = React.useCallback(
+    (drag, hover) => props.transplantProject({ listID: drag.listId, projectID: drag.id }, { listID: hover.listId, projectID: hover.id }),
+    [props.transplantProject]
+  );
 
   React.useEffect(() => {
     updateWorkspace();
@@ -163,9 +171,9 @@ export const DashBoard = (props) => {
   React.useEffect(() => {
     props.fetchNotifications();
 
-    if (query.invite_collaborators) {
+    if (query?.invite_collaborators) {
       openCollaboratorsModal();
-    } else if (query.upgrade_workspace) {
+    } else if (query?.upgrade_workspace) {
       openPaymentModal();
     }
   }, []);
@@ -178,16 +186,14 @@ export const DashBoard = (props) => {
 
   useWorkspaceTracking();
 
-  const LOCKED = props.workspace.state === 'LOCKED';
+  const LOCKED = props.workspace!.state === 'LOCKED';
 
   const filter = filter_text.trim().toLowerCase();
 
-  const onSaveList = React.useCallback(() => props.updateLists(props.workspaceID), [props.updateLists, props.workspaceID]);
-
   return (
     <>
-      <BoardDeleteModal workspace={props.workspace} />
-      <BoardSettingsModal user={props.user} workspace={props.workspace} />
+      <BoardDeleteModal workspace={props.workspace!} />
+      <BoardSettingsModal user={props.user} workspace={props.workspace!} />
 
       <div id="app" className="dashboard">
         <DashboardHeader
@@ -197,9 +203,7 @@ export const DashBoard = (props) => {
           workspaces={props.workspaces}
           workspaceID={props.workspaceID}
           workspace={props.workspace}
-          fetchBoards={fetchLists}
-          team_setting={team_setting}
-          setTeamSetting={setTeamSetting}
+          fetchBoards={loadLists}
         />
 
         {LOCKED && (
@@ -226,7 +230,6 @@ export const DashBoard = (props) => {
               if (LOCKED) {
                 e.preventDefault();
                 e.stopPropagation();
-                return false;
               }
             }}
           >
@@ -251,15 +254,15 @@ export const DashBoard = (props) => {
                   <ScrollContextProvider value={scrollHelpers}>
                     <div ref={bodyRef} className="main-lists">
                       <div ref={innerRef} className="main-lists-inner">
-                        {_.map(props.listsArray, (list, idx) => {
+                        {props.projectLists.map((list, idx) => {
                           const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
                           if (filter && !projects.length) {
                             return null;
                           }
                           return (
                             <List
-                              id={list.board_id}
-                              key={list.board_id}
+                              id={list.id}
+                              key={list.id}
                               isNew={list.isNew}
                               index={idx}
                               name={list.name}
@@ -267,20 +270,18 @@ export const DashBoard = (props) => {
                               onRemove={onDeleteBoard}
                               projects={projects}
                               onCopyProject={onCopyProject}
-                              onDeleteProject={onDeleteProject(list.board_id)}
+                              onDeleteProject={onDeleteProject(list.id)}
                               createSkill={onCreateProject}
-                              onMove={props.changeListPosition}
-                              onDrop={onSaveList}
-                              onMoveProject={props.changeProjectPosition}
+                              onMove={onMove}
+                              onMoveProject={onMoveProject}
                               clearNewBoard={props.clearNewList}
-                              onDropProject={onSaveList}
                               disableDragging={!!filter}
                             />
                           );
                         })}
 
                         <DragLayer withMemo>
-                          {(item) => {
+                          {(item: any) => {
                             if (item.dragType === 'dashboard-list') {
                               return <SimpleList {...item} />;
                             }
@@ -293,17 +294,10 @@ export const DashBoard = (props) => {
                           }}
                         </DragLayer>
 
-                        {canModifyList && (
+                        {canManageLists && (
                           <div className="main-list-add">
                             <Tooltip distance={10} title="Add new list" position="bottom">
-                              <IconButton
-                                large
-                                icon="addStep"
-                                onClick={() => {
-                                  props.addList(props.workspaceID);
-                                }}
-                                size={13}
-                              />
+                              <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
                             </Tooltip>
                           </div>
                         )}
@@ -320,34 +314,32 @@ export const DashBoard = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: Account.userSelector(state),
-  projects: Project.allProjectsSelector(state),
-  projectsMap: Project.projectsMapSelector(state),
-  lists: state.list,
-  listsArray: unnormalize(state.list),
-  workspace: Workspace.activeWorkspaceSelector(state),
-  workspaceID: Workspace.activeWorkspaceIDSelector(state),
-  workspaces: Workspace.allWorkspacesSelector(state),
-  hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector(state),
-});
+const mapStateToProps = {
+  user: Account.userSelector,
+  projects: Project.allProjectsSelector,
+  projectsMap: Project.projectsMapSelector,
+  projectLists: ProjectList.allProjectListsSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  workspaceID: Workspace.activeWorkspaceIDSelector,
+  workspaces: Workspace.allWorkspacesSelector,
+  hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector,
+};
 
 const mapDispatchToProps = {
-  fetchLists: Lists.fetchLists,
-  addList: Lists.addList,
-  deleteBoardProject: Lists.deleteBoardProject,
-  importProject,
+  loadLists: ProjectList.loadProjectLists,
+  createNewList: ProjectList.createNewList,
+  deleteProject: ProjectList.deleteProjectFromList,
   copyProject,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
-  updateLists: Lists.updateLists,
-  deleteList: Lists.deleteList,
-  renameList: Lists.renameList,
-  clearNewList: Lists.clearNewList,
-  updateBoards: Lists.updateBoards,
-  changeProjectPosition: Lists.changeProjectPosition,
-  changeListPosition: Lists.changeListPosition,
+  deleteList: ProjectList.deleteProjectList,
+  renameList: ProjectList.renameProjectList,
+  clearNewList: ProjectList.clearNewProjectList,
+  transplantProject: ProjectList.transplantProject,
+  moveList: ProjectList.moveProjectList,
   fetchNotifications: Notifications.fetchNotifications,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
+type ConnectedDashboardProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

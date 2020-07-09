@@ -102,13 +102,12 @@ suite(VariableSet, MOCK_STATE)('Ducks - Variable Set', ({ expect, stub, describe
 
     describe('addVariableToDiagramAndSave()', () => {
       it('should add variable to diagram and save', async () => {
-        const [saveVariableSet, saveVariableSetEffect] = stubEffect(VariableSet, 'saveVariableSet');
+        const saveVariableSet = stubEffect(VariableSet, 'saveVariableSet');
 
-        const { expectDispatch } = await applyEffect(VariableSet.addVariableToDiagramAndSave(DIAGRAM_ID, VARIABLE));
+        const { expectDispatch, expectStubCalled } = await applyEffect(VariableSet.addVariableToDiagramAndSave(DIAGRAM_ID, VARIABLE));
 
         expectDispatch(VariableSet.addVariableToDiagram(DIAGRAM_ID, VARIABLE));
-        expect(saveVariableSet).to.be.calledWithExactly(DIAGRAM_ID);
-        expectDispatch(saveVariableSetEffect);
+        expectStubCalled(saveVariableSet, DIAGRAM_ID);
       });
     });
 

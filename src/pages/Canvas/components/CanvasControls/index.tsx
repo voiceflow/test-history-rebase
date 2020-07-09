@@ -23,10 +23,10 @@ const ZOOM_DELTA = 15;
 
 const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, goToDesign }) => {
   const [, trackingEventsWrapper] = useTrackingEvents();
-  const [canUseInteractionModal] = usePermission(Permission.INTERACTION_MODAL);
-  const [canUseMarkup] = usePermission(Permission.MARKUP);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
-  const [canSeePaidCanvasControls] = usePermission(Permission.VISIBLE_PAID_CANVAS_CONTROLS);
+  const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
 
   const cmsModal = useModals(ModalType.INTERACTION_MODEL);
   const markupModal = useModals(ModalType.CANVAS_MARKUP);
@@ -97,7 +97,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const onOpenCMS = React.useCallback(
     () =>
       trackingEventsWrapper(() => {
-        if (canUseInteractionModal) {
+        if (canEditCanvas) {
           cmsModal.open();
         }
       }, 'trackCanvasControlInteractionModel')(),
@@ -139,7 +139,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     <Container>
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.HOME]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {canSeePaidCanvasControls && (
+      {showHintFeatures && (
         <>
           {commentingFeature.isEnabled && (
             <CanvasControlButton

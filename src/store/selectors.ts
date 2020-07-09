@@ -74,7 +74,7 @@ export const isOnlyViewerSelector = createSelector(projectViewerCountSelector, (
 export const diagramViewersSelector = createSelector(
   Realtime.realtimeLocksSelector,
   Workspace.workspaceMemberSelector,
-  (locks, getWorkspaceMember) => (diagramID) => {
+  (locks, getWorkspaceMember) => (diagramID: string) => {
     if (!locks || !diagramID) {
       return [];
     }
@@ -114,12 +114,12 @@ export const unusedDiagramsSelector = createSelector(
   (rootFlow, diagramIDs, getDiagrams) => {
     const unusedDiagramIDs = new Set(diagramIDs);
 
-    function removeDiagrams(flow) {
+    const removeDiagrams = (flow: Diagram.StructuredFlow) => {
       if (unusedDiagramIDs.has(flow.id)) {
         unusedDiagramIDs.delete(flow.id);
         flow.children.forEach(removeDiagrams);
       }
-    }
+    };
 
     removeDiagrams(rootFlow);
 
@@ -131,7 +131,7 @@ export const hasActiveLinksSelector = createSelector(
   Skill.activePlatformSelector,
   Creator.portByIDSelector,
   Creator.linksByPortIDSelector,
-  (platform, getPortByID, getAllLinksByPortID) => (portID) =>
+  (platform, getPortByID, getAllLinksByPortID) => (portID: string) =>
     getAllLinksByPortID(portID).some((link) => {
       const sourcePort = getPortByID(link.source.portID);
       return !sourcePort.platform || sourcePort.platform === platform;

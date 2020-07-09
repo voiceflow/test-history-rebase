@@ -1,7 +1,9 @@
+/* eslint-disable lodash/prefer-lodash-typecheck */
 import { createSelector } from 'reselect';
 
 import type { State } from '@/ducks/_root';
 import { Action, RootReducer, Selector } from '@/store/types';
+import { reorder } from '@/utils/array';
 import {
   GetKey,
   Normalized,
@@ -32,73 +34,81 @@ export const INITIAL_STATE: CRUDState<any> = {
 
 // actions
 
-export const CRUD_ADD = 'CRUD:ADD';
-export type CrudAdd<T, M extends Meta = Meta> = Action<typeof CRUD_ADD, { key: string; value: T }, M>;
+export enum CRUDAction {
+  CRUD_ADD = 'CRUD:ADD',
+  CRUD_ADD_MANY = 'CRUD:ADD_MANY',
+  CRUD_UPDATE = 'CRUD:UPDATE',
+  CRUD_REMOVE = 'CRUD:REMOVE',
+  CRUD_REPLACE = 'CRUD:REPLACE',
+  CRUD_REORDER = 'CRUD:REORDER',
+  CRUD_MOVE = 'CRUD:MOVE',
+}
 
-export const CRUD_ADD_MANY = 'CRUD:ADD_MANY';
-export type CrudAddMany<T, M extends Meta = Meta> = Action<typeof CRUD_ADD_MANY, T[], M>;
+export type CRUDAdd<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_ADD, { key: string; value: T }, M>;
 
-export const CRUD_UPDATE = 'CRUD:UPDATE';
-export type CrudUpdate<T, M extends Meta = Meta> = Action<typeof CRUD_UPDATE, { key: string; value: T; patch?: boolean }, M>;
+export type CRUDAddMany<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_ADD_MANY, T[], M>;
 
-export const CRUD_REMOVE = 'CRUD:REMOVE';
-export type CrudRemove<M extends Meta = Meta> = Action<typeof CRUD_REMOVE, string, M>;
+export type CRUDUpdate<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_UPDATE, { key: string; value: T; patch?: false }, M>;
 
-export const CRUD_REPLACE = 'CRUD:REPLACE';
-export type CrudReplace<T, M extends Meta = Meta> = Action<typeof CRUD_REPLACE, T[], M>;
+export type CRUDPatch<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_UPDATE, { key: string; value: Partial<T>; patch: true }, M>;
 
-export const CRUD_REORDER = 'CRUD:REORDER';
-export type CrudReorder<M extends Meta = Meta> = Action<typeof CRUD_REORDER, string[], M>;
+export type CRUDRemove<M extends Meta = Meta> = Action<CRUDAction.CRUD_REMOVE, string, M>;
 
-export type CrudActionType =
-  | typeof CRUD_ADD
-  | typeof CRUD_ADD_MANY
-  | typeof CRUD_UPDATE
-  | typeof CRUD_REMOVE
-  | typeof CRUD_REPLACE
-  | typeof CRUD_REORDER;
+export type CRUDReplace<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_REPLACE, T[], M>;
 
-export type CrudAction<T> = CrudAdd<T> | CrudAddMany<T> | CrudUpdate<T> | CrudRemove | CrudReplace<T> | CrudReorder;
+export type CRUDReorder<M extends Meta = Meta> = Action<CRUDAction.CRUD_REORDER, string[], M>;
 
-export type CrudTypedAction<T> = {
-  [CRUD_ADD]: CrudAdd<T>;
-  [CRUD_ADD_MANY]: CrudAddMany<T>;
-  [CRUD_UPDATE]: CrudUpdate<T>;
-  [CRUD_REMOVE]: CrudRemove;
-  [CRUD_REPLACE]: CrudReplace<T>;
-  [CRUD_REORDER]: CrudReorder;
-};
+export type CRUDMove<M extends Meta = Meta> = Action<CRUDAction.CRUD_MOVE, { from: string | number; to: string | number }, M>;
+
+export type AnyCRUDAction<T> = CRUDAdd<T> | CRUDAddMany<T> | CRUDPatch<T> | CRUDUpdate<T> | CRUDRemove | CRUDReplace<T> | CRUDReorder | CRUDMove;
 
 // reducers
 
-export const crudReorderReducer = <T, S extends CRUDState<T> = CRUDState<T>>({ byKey }: S, { payload }: CrudReorder) => reorderKeys(payload, byKey);
+export const crudReorderReducer = <T, S extends CRUDState<T> = CRUDState<T>>({ byKey }: S, { payload }: CRUDReorder) => reorderKeys(payload, byKey);
 
-export const crudAddReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value } }: CrudAdd<T>) =>
+export const crudAddReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value } }: CRUDAdd<T>) =>
   addNormalizedByKey(state, key, value);
 
 export const crudAddManyReducer = <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
   state: S,
-  { payload: values }: CrudAddMany<T>,
+  { payload: values }: CRUDAddMany<T>,
   getKey: K
 ) => addAllNormalizedByKeys(state, values, getKey);
 
-export const crudUpdateReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value, patch } }: CrudUpdate<T>) =>
-  updateNormalizedByKey(state, key, patch ? { ...getNormalizedByKey(state, key), ...value } : value);
+export const crudUpdateReducer = <T, S extends CRUDState<T> = CRUDState<T>>(
+  state: S,
+  { payload: { key, value, patch } }: CRUDPatch<T> | CRUDUpdate<T>
+) => updateNormalizedByKey(state, key, patch ? { ...getNormalizedByKey(state, key), ...value } : value);
 
-export const crudRemoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: key }: CrudRemove) =>
+export const crudRemoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: key }: CRUDRemove) =>
   removeNormalizedByKey(state, key);
 
-export const crudReplaceReducer = <T, K extends GetKey<T> = (obj: T) => string>({ payload: values }: CrudReplace<T>, getKey: K) =>
+export const crudReplaceReducer = <T, K extends GetKey<T> = (obj: T) => string>({ payload: values }: CRUDReplace<T>, getKey: K) =>
   normalize(values, getKey);
+
+export const crudMoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { from, to } }: CRUDMove) => {
+  if (from === to) return state;
+
+  const reordered = reorder(
+    state.allKeys,
+    typeof from === 'number' ? from : state.allKeys.indexOf(from),
+    typeof to === 'number' ? to : state.allKeys.indexOf(to)
+  );
+
+  return reorderKeys(reordered, state.byKey);
+};
 
 const createCRUDReducer: {
   <T extends ObjectWithId, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
     modelType: string,
     getKey?: K
-  ): RootReducer<S, CrudAction<T>>;
+  ): RootReducer<S, AnyCRUDAction<T>>;
   // must provide getKey if object does not extend ObjectWithId
-  <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(modelType: string, getKey: K): RootReducer<S, CrudAction<T>>;
-} = (modelType: string, getKey?: (obj: any) => string) => (state = INITIAL_STATE, action: CrudAction<any>) => {
+  <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(modelType: string, getKey: K): RootReducer<
+    S,
+    AnyCRUDAction<T>
+  >;
+} = (modelType: string, getKey?: (obj: any) => string) => (state = INITIAL_STATE, action: AnyCRUDAction<any>) => {
   const keyGetter = getKey ?? defaultGetKey;
 
   if (!action.meta || action.meta.modelType !== modelType) {
@@ -106,18 +116,20 @@ const createCRUDReducer: {
   }
 
   switch (action.type) {
-    case CRUD_ADD:
+    case CRUDAction.CRUD_ADD:
       return crudAddReducer(state, action);
-    case CRUD_ADD_MANY:
+    case CRUDAction.CRUD_ADD_MANY:
       return crudAddManyReducer(state, action, keyGetter);
-    case CRUD_UPDATE:
+    case CRUDAction.CRUD_UPDATE:
       return crudUpdateReducer(state, action);
-    case CRUD_REMOVE:
+    case CRUDAction.CRUD_REMOVE:
       return crudRemoveReducer(state, action);
-    case CRUD_REPLACE:
+    case CRUDAction.CRUD_REPLACE:
       return crudReplaceReducer(action, keyGetter);
-    case CRUD_REORDER:
+    case CRUDAction.CRUD_REORDER:
       return crudReorderReducer(state, action);
+    case CRUDAction.CRUD_MOVE:
+      return crudMoveReducer(state, action);
     default:
       return state;
   }
@@ -157,22 +169,29 @@ export const createCRUDSelectors = <T>(modelType: keyof State) => {
 
 // action creators
 
-export const crudAction = <T extends CrudActionType, P, M extends Meta = Meta>(modelType: string, type: T, payload: P, meta?: M) =>
+export const crudAction = <T extends CRUDAction, P, M extends Meta = Meta>(modelType: string, type: T, payload: P, meta?: M) =>
   createAction(type, payload, { modelType, ...meta });
 
-export const addModel = <T>(modelType: string) => (key: string, value: T) => crudAction(modelType, CRUD_ADD, { key, value });
+export const addModel = <T>(modelType: string) => (key: string, value: T) => crudAction(modelType, CRUDAction.CRUD_ADD, { key, value });
 
-export const addManyModels = <T>(modelType: string) => (values: T[]) => crudAction(modelType, CRUD_ADD_MANY, values);
+export const addManyModels = <T>(modelType: string) => (values: T[]) => crudAction(modelType, CRUDAction.CRUD_ADD_MANY, values);
 
-export const updateModel = <T>(modelType: string) => <P extends boolean>(key: string, value: P extends true ? Partial<T> : T, patch?: P) =>
-  crudAction(modelType, CRUD_UPDATE, { key, value, patch: patch ?? false });
+export const updateModel = <T>(
+  modelType: string
+): {
+  (key: string, value: Partial<T>, patch: true): CRUDPatch<T>;
+  (key: string, value: T, patch?: false): CRUDUpdate<T>;
+} => (key: string, value: any, patch = false) => crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: patch as any });
 
-export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUD_REMOVE, key);
+export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
 
 export const replaceModels = <T, M extends Meta = Meta>(modelType: string) => (values: T[], meta?: M) =>
-  crudAction(modelType, CRUD_REPLACE, values, meta);
+  crudAction(modelType, CRUDAction.CRUD_REPLACE, values, meta);
 
-export const reorderModels = (modelType: string) => (keyArray: string[]) => crudAction(modelType, CRUD_REORDER, keyArray);
+export const reorderModels = (modelType: string) => (keyArray: string[]) => crudAction(modelType, CRUDAction.CRUD_REORDER, keyArray);
+
+export const moveModels = (modelType: string) => (from: string | number, to: string | number) =>
+  crudAction(modelType, CRUDAction.CRUD_MOVE, { from, to });
 
 export const createCRUDActionCreators = <T>(modelType: string) => ({
   add: addModel<T>(modelType),
@@ -181,4 +200,5 @@ export const createCRUDActionCreators = <T>(modelType: string) => ({
   remove: removeModel(modelType),
   replace: replaceModels<T>(modelType),
   reorder: reorderModels(modelType),
+  move: moveModels(modelType),
 });

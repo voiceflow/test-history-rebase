@@ -50,8 +50,8 @@ export function List(props) {
   const listRef = useRef(null);
   const inputRef = useRef(null);
 
-  const [canModifyList] = usePermission(Permission.DASHBOARD_LIST);
-  const [canModifyProject] = usePermission(Permission.DASHBOARD_PROJECT);
+  const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
+  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
   const [isCreatingSkill] = useToggle(false);
 
@@ -72,7 +72,7 @@ export function List(props) {
 
   const list = (
     <div
-      style={{ cursor: !canModifyList ? 'default' : undefined }}
+      style={{ cursor: !canManageLists ? 'default' : undefined }}
       className={cn('main-list', {
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
@@ -117,7 +117,7 @@ export function List(props) {
                     value={values.name}
                     onBlur={onInputNameBlur}
                     selected
-                    disabled={!canModifyList}
+                    disabled={!canManageLists}
                     onChange={({ target }) => handleChange('name', target.value)}
                     onKeyPress={({ charCode }) => charCode === 13 && onInputNameBlur()}
                     maxLength={32}
@@ -125,7 +125,7 @@ export function List(props) {
                   />
                 </div>
 
-                {canModifyList && (
+                {canManageLists && (
                   <div className="main-list-header__aside">
                     <Dropdown
                       options={[
@@ -192,7 +192,7 @@ export function List(props) {
                   </div>
                 </div>
               )}
-              {canModifyProject && (
+              {canManageProjects && (
                 <div
                   className={cn('main-list-footer', {
                     'h-o-0': isDragging,
@@ -214,7 +214,7 @@ export function List(props) {
     </div>
   );
 
-  return canModifyList && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
+  return canManageLists && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
 }
 
 export default withDraggable({

@@ -4,6 +4,7 @@ import { PlatformType, UserRole } from '@/constants';
 import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
 import { goToDashboard } from '@/ducks/router/actions';
+import * as ProjectList from '@/ducks/projectList';
 import * as Template from '@/ducks/template';
 import * as Tracking from '@/ducks/tracking';
 import { DBProject, DBWorkspace, Workspace } from '@/models';
@@ -318,4 +319,12 @@ export const ejectFromWorkspace = (workspaceID: string, workspaceName: string): 
   }
 
   toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
+};
+
+export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, getState) => {
+  const workspaceID = activeWorkspaceIDSelector(getState());
+
+  if (!workspaceID) return;
+
+  await dispatch(ProjectList.saveProjectListsForWorkspace(workspaceID));
 };

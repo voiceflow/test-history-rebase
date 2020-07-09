@@ -86,7 +86,7 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
   const projectID = Skill.activeProjectIDSelector(getState());
 
   client.thread.update(projectID, threadID, data as Thread);
-  dispatch(updateThread(threadID, data));
+  dispatch(updateThread(threadID, data, true));
 };
 
 export const deleteThread = (threadID: string): Thunk => async (dispatch, getState) => {
@@ -106,7 +106,7 @@ export const createComment = (threadID: string, data: Partial<Pick<Comment, 'tex
 
   const comment = await client.comment.create(projectID, threadID, { ...data, creatorID } as Comment);
 
-  dispatch(updateThread(threadID, { comments: [...thread.comments, comment] }));
+  dispatch(updateThread(threadID, { comments: [...thread.comments, comment] }, true));
 };
 
 export const updateComment = (threadID: string, commentID: string, data: Partial<Pick<Comment, 'text' | 'mentions'>>): Thunk => async (
@@ -118,7 +118,9 @@ export const updateComment = (threadID: string, commentID: string, data: Partial
   const thread = threadByIDSelector(state)(threadID);
 
   await client.comment.update(projectID, commentID, data as Comment);
-  dispatch(updateThread(threadID, { comments: thread.comments.map((comment) => (comment.id === commentID ? { ...comment, ...data } : comment)) }));
+  dispatch(
+    updateThread(threadID, { comments: thread.comments.map((comment) => (comment.id === commentID ? { ...comment, ...data } : comment)) }, true)
+  );
 };
 
 export const deleteComment = (threadID: string, commentID: string): Thunk => async (dispatch, getState) => {
@@ -127,5 +129,5 @@ export const deleteComment = (threadID: string, commentID: string): Thunk => asy
   const thread = threadByIDSelector(state)(threadID);
 
   await client.comment.delete(projectID, commentID);
-  dispatch(updateThread(threadID, { comments: thread.comments.filter((comment) => comment.id !== commentID) }));
+  dispatch(updateThread(threadID, { comments: thread.comments.filter((comment) => comment.id !== commentID) }, true));
 };

@@ -10,7 +10,13 @@ export * from './IdentityContext';
 export * from './EventualEngineContext';
 export * from './TextEditorVariablesPopoverContext';
 
-export const ScrollContext = React.createContext('scroll-context');
+export type ScrollContextValue = {
+  scrollToNode: (node: HTMLElement, padding?: number) => void;
+  setScrollBarOffset: () => void;
+  scrollHorizontalToNode: (node: HTMLElement, padding?: number) => void;
+};
+
+export const ScrollContext = React.createContext<ScrollContextValue | null>(null);
 export const { Consumer: ScrollContextConsumer, Provider: ScrollContextProvider } = ScrollContext;
 
 export const MemoryTabsContext = React.createContext('memory-tabs-context');

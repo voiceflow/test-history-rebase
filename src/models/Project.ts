@@ -12,6 +12,13 @@ export type Project = {
   largeIcon: string | null;
 };
 
+export namespace Project {
+  export type ImportToken = {
+    projectId: string;
+    projectName: string;
+  };
+}
+
 export type DBProject = {
   project_id: string;
   skill_id: string;

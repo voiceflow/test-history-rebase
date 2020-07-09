@@ -2,7 +2,13 @@
 
 import React from 'react';
 
-export default function SettingField({ hr, label, children, description }) {
+export type SettingFieldProps = {
+  label: React.ReactNode;
+  hr?: boolean;
+  description?: React.ReactNode;
+};
+
+const SettingField: React.FC<SettingFieldProps> = ({ hr, label, children, description }) => {
   return (
     <>
       <label>{label}</label>
@@ -19,4 +25,6 @@ export default function SettingField({ hr, label, children, description }) {
       {hr && <hr />}
     </>
   );
-}
+};
+
+export default SettingField;

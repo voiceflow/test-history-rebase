@@ -33,7 +33,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
 
   const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
-  const [canDownloadProject] = usePermission(Permission.PROJECT_DOWNLOAD);
+  const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [trackingEvents] = useTrackingEvents();
 
@@ -77,7 +77,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
-    if (!prevIsOpen && (canDownloadProject || canSharePrototype)) {
+    if (!prevIsOpen && (canShareProject || canSharePrototype)) {
       loadImportToken();
       loadTestableLink();
     }
@@ -105,7 +105,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
             />
 
             <MenuItem
-              isAllowed={canDownloadProject}
+              isAllowed={canShareProject}
               loading={state.loadingImportToken}
               title="Project Download"
               description="Allow other to download this project to their own Voiceflow account."

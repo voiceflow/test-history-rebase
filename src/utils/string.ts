@@ -1,4 +1,8 @@
+import cuid from 'cuid';
+
 import { convertToWord } from './number';
+
+export { cuid };
 
 export const createNextName = (prefix: string, items: string[]) => {
   let counter = 1;

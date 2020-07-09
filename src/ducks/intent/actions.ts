@@ -12,4 +12,4 @@ export const addIntent = (id: string, data: Intent) => add(id, intentProcessor(d
 
 export const addIntents = (values: Intent[]) => addMany(values.map(intentProcessor));
 
-export const replaceIntents = (values: Intent[], meta: any) => replace(values.map(intentProcessor), meta);
+export const replaceIntents = (values: Intent[], meta?: any) => replace(values.map(intentProcessor), meta);

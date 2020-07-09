@@ -1,18 +1,25 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import { FeatureFlag } from '@/config/features';
 import { setError } from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import { loadSkill } from '@/store/sideEffects';
 
 const ProjectLoadingGate = ({ isProjectLoaded, loadProject, setupProjectConnection, loadThreads, projectID, children }) => {
+  const commenting = useFeature(FeatureFlag.COMMENTING);
+
   React.useEffect(() => {
     setupProjectConnection();
-    loadThreads(projectID);
-  }, [projectID, setupProjectConnection]);
+
+    if (commenting.isEnabled) {
+      loadThreads(projectID);
+    }
+  }, [projectID]);
 
   return (
     <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProject}>

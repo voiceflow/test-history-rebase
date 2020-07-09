@@ -1,14 +1,10 @@
-import Markdown from 'markdown-to-jsx';
 import moize from 'moize';
-import React from 'react';
 import io from 'socket.io-client';
 
 import { API_ENDPOINT, DEBUG_SOCKET, DEVICE_INFO } from '@/config';
-import { setConfirm } from '@/ducks/modal';
-import { Dispatch } from '@/store/types';
 
 import { clientLogger } from '../utils';
-import { ServerEvent, SocketEvent } from './constants';
+import { AnySocketEvent, CALL_MAP, SocketEvent } from './constants';
 
 declare global {
   interface Window {
@@ -18,6 +14,7 @@ declare global {
 
 const SOCKET_INIT_TIMEOUT = 3000;
 const SOCKET_CONNECTION_TIMEOUT = 5000;
+const SOCKET_REPLY_TIMEOUT = 5000;
 
 const log = clientLogger.child('socket');
 
@@ -34,15 +31,20 @@ function debugEmit(event: string, data: any) {
 }
 
 export enum SocketStatus {
+  DISCONNECTED = 'disconnected',
   CONNECTING = 'connecting',
   RECONNECTING = 'reconnecting',
   CONNECTED = 'connected',
-  AUTHENTICATED = 'authenticated',
   TERMINATED = 'terminated',
   TRANSFERRING = 'transferring',
 }
 
-const CONNECTED_STATUSES = [SocketStatus.CONNECTED, SocketStatus.AUTHENTICATED];
+type AuthProfile = {
+  auth: string | undefined;
+  browserId: string;
+  tabId: string;
+  device: typeof DEVICE_INFO;
+};
 
 class SocketClient {
   socket = io(API_ENDPOINT, {
@@ -52,28 +54,21 @@ class SocketClient {
     transports: ['websocket'],
   });
 
-  status = SocketStatus.CONNECTING;
+  status = SocketStatus.DISCONNECTED;
 
-  connectionHandlers: Record<string, () => void> = {};
-
-  authProfile: {
-    auth: string | undefined;
-    browserId: string;
-    tabId: string;
-    device: typeof DEVICE_INFO;
-  } | null = null;
+  authProfile: AuthProfile | null = null;
 
   get isConnected() {
-    return CONNECTED_STATUSES.includes(this.status);
+    return this.status === SocketStatus.CONNECTED;
   }
 
-  constructor(protected dispatch: Dispatch) {
+  constructor() {
     window.addEventListener('beforeunload', this.disconnect);
   }
 
   // re-expose socket methods with debugging
 
-  on = <T extends any = void>(event: string, callback: (value: T) => void) => {
+  on = <T extends any = void>(event: AnySocketEvent, callback: (value: T) => void) => {
     if (DEBUG_SOCKET) {
       log.warn('adding socket subscription', log.value(event));
     }
@@ -81,7 +76,7 @@ class SocketClient {
     this.socket.on(event, DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback);
   };
 
-  once = <T extends any = void>(event: string, callback: (value: T) => void) => {
+  once = <T extends any = void>(event: AnySocketEvent, callback: (value: T) => void) => {
     if (DEBUG_SOCKET) {
       log.warn('adding one-time socket subscription', log.value(event));
     }
@@ -89,13 +84,37 @@ class SocketClient {
     this.socket.once(event, DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback);
   };
 
-  off = (event: string, callback: ((value?: any) => void) | undefined = undefined) => {
+  off = (event: AnySocketEvent, callback: ((value?: any) => void) | undefined = undefined) => {
     if (DEBUG_SOCKET) {
       log.warn('removing socket subscription', log.value(event));
     }
 
     this.socket.off(event, callback && (DEBUG_SOCKET ? createDebugSubscription(event, callback) : callback));
   };
+
+  watch = <T extends any = void>(event: AnySocketEvent, callback: (value: T) => void) => {
+    this.on(event, callback);
+
+    return () => this.off(event, callback);
+  };
+
+  watchOnce = <T extends any = void>(event: AnySocketEvent, callback: (value: T) => void) => {
+    this.once(event, callback);
+
+    return () => this.off(event, callback);
+  };
+
+  call = (event: keyof typeof CALL_MAP, data?: any, timeout = SOCKET_REPLY_TIMEOUT) =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.off(CALL_MAP[event], resolve);
+        reject();
+      }, timeout);
+
+      this.once(CALL_MAP[event], resolve);
+
+      return this.emit(event, data);
+    });
 
   emit = (event: string, data?: any) => {
     if (DEBUG_SOCKET) {
@@ -107,95 +126,67 @@ class SocketClient {
 
   // lifecycle methods
 
-  // eslint-disable-next-line consistent-return
-  connect = (sessionCancelHandler: () => void) => {
-    if (!this.socket.connected) {
-      this.setupErrorHandlers();
+  connect = () => {
+    if (this.socket.connected) return Promise.resolve();
 
-      this.on(ServerEvent.FORCE_REFRESH, () => window.location.reload(true));
+    this.status = SocketStatus.CONNECTING;
 
-      return new Promise((resolve) => {
-        this.once(SocketEvent.CONNECT, () => {
-          this.status = SocketStatus.CONNECTED;
+    // log socket error events
+    this.#setupErrorHandlers();
 
-          // not sure if we can expect further "connect" events
-          this.on(SocketEvent.CONNECT, () => this.initializeConnection());
+    return new Promise((resolve) => {
+      this.once(SocketEvent.CONNECT, () => {
+        this.status = SocketStatus.CONNECTED;
 
-          resolve();
+        this.on(SocketEvent.DISCONNECT, () => {
+          this.status = SocketStatus.DISCONNECTED;
         });
 
-        this.once(ServerEvent.SESSION_CANCELLED, sessionCancelHandler);
-
-        this.socket.connect();
+        resolve();
       });
-    }
 
-    return Promise.resolve();
+      this.socket.connect();
+    });
   };
 
-  auth = (authToken: string, browserID: string, tabID: string) => {
-    this.authProfile = {
+  disconnect = () => {
+    if (!this.socket.connected) return;
+
+    this.status = SocketStatus.TERMINATED;
+    this.socket.disconnect();
+  };
+
+  auth = async (authToken: string, browserID: string, tabID: string) => {
+    const authProfile = {
       auth: authToken || undefined,
       browserId: browserID,
       tabId: tabID,
       device: DEVICE_INFO,
     };
 
-    return new Promise((resolve) => {
-      const timeout = setTimeout(() => log.error('Unable to connect to Voiceflow'), SOCKET_INIT_TIMEOUT);
+    try {
+      await this.#initializeConnection(authProfile);
 
-      this.once(SocketEvent.INITIALIZE, () => {
-        this.handleConnection();
-        clearTimeout(timeout);
-        resolve();
-      });
+      this.on(SocketEvent.RECONNECT, () => this.#initializeConnection());
 
-      this.initializeConnection();
-    });
-  };
-
-  initializeConnection() {
-    this.emit(SocketEvent.INITIALIZE, this.authProfile);
-  }
-
-  setupErrorHandlers() {
-    const addErrorHandler = (event: string) => this.on(event, this.handleError(event));
-
-    addErrorHandler(SocketEvent.FAIL);
-    addErrorHandler(SocketEvent.ERROR);
-    // to catch if the server is offline
-    addErrorHandler(SocketEvent.CONNECT_ERROR);
-    // catch failed connection attempts
-    addErrorHandler(SocketEvent.CONNECT_FAILED);
-  }
-
-  handleConnection = () => {
-    this.status = SocketStatus.AUTHENTICATED;
-    // queued up events after reconnection
-    Object.values(this.connectionHandlers).forEach((handler) => handler && handler());
-  };
-
-  disconnect = () => this.socket && this.socket.connected && this.socket.disconnect();
-
-  handleError = (event: string) => () => {
-    log.error('socket failure from event', log.value(event));
-  };
-
-  handleMessage = (data: { message?: string; redirect?: string }) => {
-    if (data.redirect) {
-      window.location.replace(data.redirect);
-      // eslint-disable-next-line xss/no-location-href-assign
-      window.location.href = data.redirect;
-      throw new Error('REDIRECT');
-    } else if (data.message && window.store) {
-      this.dispatch(
-        setConfirm({
-          size: 'rg',
-          text: <Markdown>{data.message}</Markdown>,
-        })
-      );
+      this.authProfile = authProfile;
+    } catch {
+      log.error('Unable to connect to Voiceflow');
     }
   };
+
+  #initializeConnection = (authProfile = this.authProfile) => this.call(SocketEvent.INITIALIZE, authProfile!, SOCKET_INIT_TIMEOUT);
+
+  #setupErrorHandlers = () => {
+    this.#handleError(SocketEvent.FAIL);
+    this.#handleError(SocketEvent.ERROR);
+    // to catch if the server is offline
+    this.#handleError(SocketEvent.CONNECT_ERROR);
+    // catch failed connection attempts
+    this.#handleError(SocketEvent.CONNECT_FAILED);
+  };
+
+  #handleError = (event: SocketEvent) => this.on(event, () => log.error('socket failure from event', log.value(event)));
 }
 
-export default SocketClient;
+export default new SocketClient();

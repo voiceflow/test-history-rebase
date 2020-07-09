@@ -1,32 +1,27 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import client from '@/client';
-import createSocketClient from '@/client/socket';
 import LoadingGate from '@/components/LoadingGate';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { handleRealtimeSessionCancelled } from '@/store/sideEffects';
+import { ConnectedProps } from '@/types';
 
-const SocketLoadingGate = ({ disableWebsockets, children }) => {
+const SocketLoadingGate: React.FC<ConnectedSocketLoadingGateProps> = ({ disableWebsockets, children }) => {
   const [isConnected, acknowledgeConnection] = useEnableDisable();
-  const dispatch = useDispatch();
-  const disconnectSocket = () => client.socket.disconnect();
-  const sessionCancelHandler = (data) => dispatch(handleRealtimeSessionCancelled(data));
   const websocketsSupported = !!window.WebSocket;
 
-  const connectSocket = async () => {
-    try {
-      client.socket = createSocketClient(dispatch);
+  const disconnectSocket = React.useCallback(() => client.socket!.disconnect(), []);
 
-      await client.socket.connect(sessionCancelHandler);
+  const connectSocket = React.useCallback(async () => {
+    try {
+      await client.socket.connect();
 
       acknowledgeConnection();
     } catch (err) {
       console.error('failed to connect to socket', err);
     }
-  };
+  }, []);
 
   React.useEffect(() => {
     if (!websocketsSupported) {
@@ -44,5 +39,7 @@ const SocketLoadingGate = ({ disableWebsockets, children }) => {
 const mapDispatchToProps = {
   disableWebsockets: Session.disableWebsockets,
 };
+
+type ConnectedSocketLoadingGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(SocketLoadingGate);

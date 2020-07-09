@@ -1,15 +1,16 @@
 import axios from 'axios';
+import cuid from 'cuid';
 import _noop from 'lodash/noop';
 import moment from 'moment';
-import randomstring from 'randomstring';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 
-import LoadingGate from '@/admin/Routes/LoadingGate';
+import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
+import { ConnectedProps } from '@/types';
 import { getMaintenanceCookie } from '@/utils/cookies';
 
 import MaintenanceController from './MaintenanceController';
@@ -27,12 +28,12 @@ const getMaintenance = async () => {
 
   const {
     data: { startTimeUtc, endTimeUtc },
-  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${randomstring.generate()}`, { withCredentials: false });
+  } = await axios.get(`${MAINTENANCE_STATUS_SOURCE}?q=${cuid()}`, { withCredentials: false });
 
   return { startTimeUtc, endTimeUtc };
 };
 
-function MaintenanceGate({ children, setConfirm, forceNotification }) {
+const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, setConfirm, forceNotification }) => {
   const [checked, updateChecked] = React.useState(false);
 
   const action = React.useCallback((interval = null) => {
@@ -88,7 +89,7 @@ function MaintenanceGate({ children, setConfirm, forceNotification }) {
           if (Date.now() < end) {
             forceNotification({
               id: 'maintenance',
-              type: 'UPDATE',
+              type: Notifications.NotificationType.UPDATE,
               created: moment(start).toString(),
               details: `Voiceflow Creator will go under planned maintenance from _**${moment(start).format('h:mmA, MMM Do')}**_ to _**${moment(
                 end
@@ -117,11 +118,13 @@ function MaintenanceGate({ children, setConfirm, forceNotification }) {
       {children}
     </LoadingGate>
   );
-}
+};
 
 const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
   forceNotification: Notifications.forceNotificationIfNew,
 };
+
+type ConnectedMaintenanceGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
 export default connect(null, mapDispatchToProps)(MaintenanceGate);

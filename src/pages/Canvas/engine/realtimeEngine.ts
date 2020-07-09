@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
-import { RealtimeSubscription } from '@/client/socket/types';
 import { MovementCalculator } from '@/components/Canvas/types';
 import * as Realtime from '@/ducks/realtime';
+import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { ActionPayload } from '@/store/types';

@@ -4,13 +4,13 @@ import { FullSpinner, Spinner } from '@/components/Spinner';
 
 export type LoadingGateProps = {
   isLoaded: boolean;
-  load: () => void | Promise<void>;
+  load: () => unknown | Promise<any>;
   unload?: () => void;
   label?: string;
   full?: boolean;
   zIndex?: number;
   backgroundColor?: string;
-  children: React.ReactElement | (() => React.ReactElement);
+  children?: React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined | (() => React.ReactNode);
 };
 
 const LoadingGate: React.FC<LoadingGateProps> = ({ label, isLoaded, load, unload, full = true, children, zIndex, backgroundColor }) => {
@@ -29,7 +29,7 @@ const LoadingGate: React.FC<LoadingGateProps> = ({ label, isLoaded, load, unload
     return <SpinnerComponent name={label || 'Data'} zIndex={zIndex} backgroundColor={backgroundColor} />;
   }
 
-  return typeof children === 'function' ? children() : (children as React.ReactElement);
+  return <>{typeof children === 'function' ? (children as any)() : children}</>;
 };
 
 export default LoadingGate;

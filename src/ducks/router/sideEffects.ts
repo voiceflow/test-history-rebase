@@ -17,8 +17,8 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
   if (isRealtimeConnected && realtimeDiagramID !== diagramID) {
     try {
       const locks = isNewDiagram
-        ? await client.socket!.realtime.initialize(versionID, diagramID)
-        : await client.socket!.realtime.switch(versionID, diagramID);
+        ? await client.socket.diagram.initialize(versionID, diagramID)
+        : await client.socket.diagram.switch(versionID, diagramID);
 
       dispatch(Realtime.initializeRealtime(diagramID, locks));
     } catch {

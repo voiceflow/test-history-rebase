@@ -1,17 +1,16 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
-import { Redirect, Switch } from 'react-router-dom';
+import { Redirect, RouteComponentProps, Switch } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
-import { updateProjectName } from '@/ducks/project';
+import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
-import { goToDashboard } from '@/ducks/router';
-import { activeSkillSelector, saveSkillSettings } from '@/ducks/skill';
+import * as Router from '@/ducks/router';
+import * as SkillDuck from '@/ducks/skill';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
@@ -20,6 +19,8 @@ import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
 import { isOnlyViewerSelector } from '@/store/selectors';
+import { ConnectedProps, MergeArguments } from '@/types';
+import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 import Diagram from './components/Diagram';
@@ -37,24 +38,41 @@ const PAGES_MATCHES = {
 
 const TIMEOUT_COUNT = 5 * 60 * 1000;
 
-function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDashboard, updateProjectName, isOnlyViewer }) {
+export type SkillProps = RouteComponentProps & {
+  versionID: string;
+  diagramID: string;
+  activePage: string;
+  // TODO: figure out if this prop is used
+  error?: string;
+};
+
+const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
+  match,
+  error,
+  diagramID,
+  activePage,
+  activeSkill,
+  goToDashboard,
+  updateProjectName,
+  isOnlyViewer,
+}) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
-  const idleTimer = React.useRef();
+  const idleTimer = React.useRef<IdleTimer>(null);
   const isPrototyping = activePage === 'prototype';
 
   const setActive = React.useCallback(() => {
     onActive();
-    idleTimer.current.reset();
+    idleTimer.current?.reset();
   }, [onActive]);
 
   const setIdle = React.useCallback(() => {
     onIdle();
-    idleTimer.current.pause();
+    idleTimer.current?.pause();
   }, [onIdle]);
 
-  useCanvasTracking(activeSkill.id);
+  useCanvasTracking();
 
   if (error) {
     return (
@@ -103,38 +121,46 @@ function Skill({ match, error, diagramID, activePage, activeSkill = {}, goToDash
       </CommentModeProvider>
     </MarkupModeProvider>
   );
-}
+};
 
 const mapStateToProps = {
-  activeSkill: activeSkillSelector,
+  activeSkill: SkillDuck.activeSkillSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   isOnlyViewer: isOnlyViewerSelector,
 };
 
 const mapDispatchToProps = {
-  goToDashboard,
-  updateProjectName,
-  updateSkillName: saveSkillSettings,
+  goToDashboard: Router.goToDashboard,
+  updateProjectName: Project.updateProjectName,
+  updateSkillName: SkillDuck.saveSkillSettings,
 };
 
-const mergeProps = ({ activeSkill }, { updateProjectName, updateSkillName }) => ({
-  updateProjectName: (name) => {
+const mergeProps = (
+  ...[{ activeSkill }, { updateProjectName, updateSkillName }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
+) => ({
+  updateProjectName: (name: string) => {
     updateProjectName(activeSkill?.projectID, name);
     updateSkillName({ name });
   },
 });
+
+type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps, mergeProps),
   withBatchLoadingGate(
     [
       ProjectLoadingGate,
-      ({ match, location }) => {
-        const { activePage, activePageMatch } = getActivePageAndMatch(PAGES_MATCHES, location.pathname, match.path);
+      ({ match, location }: RouteComponentProps) => {
+        const { activePage, activePageMatch } = getActivePageAndMatch<{ versionID?: string; diagramID?: string }>(
+          PAGES_MATCHES,
+          location.pathname,
+          match.path
+        );
 
         return {
-          versionID: activePageMatch.params?.versionID,
-          diagramID: activePageMatch.params?.diagramID,
+          versionID: activePageMatch?.params?.versionID,
+          diagramID: activePageMatch?.params?.diagramID,
           activePage,
         };
       },
@@ -144,4 +170,4 @@ export default compose(
     WorkspaceLoadingGate,
     RealtimeLoadingGate
   )
-)(Skill);
+)(Skill as any) as React.FC<SkillProps>;

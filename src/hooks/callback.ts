@@ -2,7 +2,9 @@ import type { DebounceSettings, ThrottleSettings } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+
+import { Callback } from '@/types';
 
 export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: DebounceSettings) =>
   useMemo(() => _debounce(callback, delay, options), deps);
@@ -20,3 +22,10 @@ export const useCurried = <S extends any[], D extends any[], R extends any = voi
       ),
     [callback, ...dependencies]
   );
+
+export const useInterval = (callback: Callback, timeout: number, dependencies: any[] = []) =>
+  useEffect(() => {
+    const interval = setInterval(callback, timeout);
+
+    return () => clearInterval(interval);
+  }, dependencies);

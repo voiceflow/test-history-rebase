@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import client from '@/client';
 import skillAdapter, { extractIntents, extractProject, extractSlots } from '@/client/adapters/skill';
-import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import { loadDisplaysForSkill } from '@/ducks/display';
@@ -12,7 +11,6 @@ import { addProjectToList, pushToTargetWorkspaceList } from '@/ducks/lists';
 import { loadProductsForSkill } from '@/ducks/product';
 import { addProject, projectByIDSelector } from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
-import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
 import { replaceVariableSetDiagram, saveVariableSet } from '@/ducks/variableSet';
@@ -75,12 +73,12 @@ export const initializeCreatorForDiagram = (diagramID) => async (dispatch, getSt
   dispatch(Creator.saveHistory());
 };
 
-export const loadSkill = (skillID, diagramID) => async (dispatch) => {
+export const loadSkill = (versionID, diagramID) => async (dispatch) => {
   const [body] = await Promise.all([
-    client.skill.get(skillID),
-    dispatch(Diagram.loadDiagramsForSkill(skillID)),
-    dispatch(loadProductsForSkill(skillID)),
-    dispatch(loadDisplaysForSkill(skillID)),
+    client.skill.get(versionID),
+    dispatch(Diagram.loadDiagramsForSkill(versionID)),
+    dispatch(loadProductsForSkill(versionID)),
+    dispatch(loadDisplaysForSkill(versionID)),
   ]);
 
   const skill = skillAdapter.fromDB(body);
@@ -111,15 +109,3 @@ export const saveVariableSets = () => async (dispatch, getState) => {
 };
 
 export const savePlatformAndActiveDiagram = () => (dispatch) => Promise.all([dispatch(Skill.savePlatform()), dispatch(Diagram.saveActiveDiagram())]);
-
-export const handleRealtimeSessionCancelled = (data) => async (dispatch, getState) => {
-  const currentWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
-
-  await dispatch(Workspace.removeWorkspace(data.workspaceId));
-
-  if (currentWorkspaceID === data.workspaceId) {
-    dispatch(Router.goToDashboard());
-  }
-
-  toast.info(`You are no longer a collaborator for "${data.workspaceName}" workspace`);
-};

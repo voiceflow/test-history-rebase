@@ -3,6 +3,7 @@ import { toast } from '@/components/Toast';
 import { PlatformType, UserRole } from '@/constants';
 import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
+import { goToDashboard } from '@/ducks/router/actions';
 import * as Template from '@/ducks/template';
 import * as Tracking from '@/ducks/tracking';
 import { DBProject, DBWorkspace, Workspace } from '@/models';
@@ -305,4 +306,16 @@ export const createProject = (workspaceID: string, project: NewProjectOptions, t
     log.error(err);
     throw err;
   }
+};
+
+export const ejectFromWorkspace = (workspaceID: string, workspaceName: string): Thunk => async (dispatch, getState) => {
+  const currentWorkspaceID = activeWorkspaceIDSelector(getState());
+
+  await dispatch(removeWorkspace(workspaceID));
+
+  if (currentWorkspaceID === workspaceID) {
+    dispatch(goToDashboard());
+  }
+
+  toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
 };

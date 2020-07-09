@@ -3,7 +3,11 @@ import React from 'react';
 import Button from '@/components/Button';
 import SessionLocked from '@/components/ErrorPages/SessionLocked';
 
-const ProjectLockWarning = ({ onTakeover }) => (
+export type ProjectLockWarningProps = {
+  onTakeover: () => void;
+};
+
+const ProjectLockWarning: React.FC<ProjectLockWarningProps> = ({ onTakeover }) => (
   <SessionLocked>
     <Button onClick={onTakeover}>Takeover session</Button>
   </SessionLocked>

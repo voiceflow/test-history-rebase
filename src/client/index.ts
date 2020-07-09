@@ -13,7 +13,7 @@ import project from './project';
 import prototype from './prototype';
 import session from './session';
 import skill from './skill';
-import createSocketClient from './socket';
+import socket from './socket';
 import template from './template';
 import thread from './thread';
 import user from './user';
@@ -42,7 +42,7 @@ const client = {
   onboarding,
   feature,
   zapier,
-  socket: null as ReturnType<typeof createSocketClient> | null,
+  socket,
   canvasExport,
 };
 

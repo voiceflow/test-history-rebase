@@ -1,21 +1,43 @@
-import SocketClient from './client';
+import { DBWorkspace } from '@/models';
+import { Callback } from '@/types';
 
-function createGlobalSocketClient(client: SocketClient) {
-  return {
-    handlers: {} as Record<string, () => void>,
+import client, { SocketStatus } from './client';
+import { ServerEvent, SocketEvent } from './constants';
 
-    initialize(handlers: Record<string, () => void>) {
-      this.handlers = handlers;
-    },
+const globalSocketClient = {
+  watchForceRefresh: (handler: Callback) => client.watchOnce(ServerEvent.FORCE_REFRESH, handler),
 
-    subscribe() {
-      Object.keys(this.handlers).forEach((eventName) => client.on(eventName, this.handlers[eventName]));
-    },
+  watchWorkspaceMembers: (handler: (payload: { workspaceID: string; members: DBWorkspace.Member[] }) => void) =>
+    client.watch(ServerEvent.WORKSPACE_MEMBERS_UPDATE, handler),
 
-    unsubscribe() {
-      Object.keys(this.handlers).forEach((eventName) => client.off(eventName, this.handlers[eventName]));
-    },
-  };
-}
+  watchForMembershipRevoked: (handler: (payload: { workspaceId: string; workspaceName: string }) => void) =>
+    client.watch(ServerEvent.WORKSPACE_MEMBERSHIP_REVOKED, handler),
 
-export default createGlobalSocketClient;
+  watchForReconnected: (handler: Callback) => client.watch(SocketEvent.INITIALIZE, handler),
+
+  watchForConnectionError: (handler: Callback) => client.watch(SocketEvent.CONNECT_ERROR, handler),
+
+  handleDisconnect: (onDisconnect: Callback, onReconnect: Callback) => {
+    if (client.status === SocketStatus.RECONNECTING) return;
+
+    client.status = SocketStatus.RECONNECTING;
+
+    onDisconnect();
+
+    client.once(SocketEvent.INITIALIZE, () => {
+      onReconnect();
+
+      client.status = SocketStatus.CONNECTED;
+    });
+  },
+
+  watchForFailure: (callback: Callback) => {
+    return client.watch(SocketEvent.FAIL, (error?: { code?: number }) => {
+      if (client.status !== SocketStatus.TRANSFERRING && typeof error === 'object' && (error?.code ?? 0 >= 400)) {
+        return callback();
+      }
+    });
+  },
+};
+
+export default globalSocketClient;

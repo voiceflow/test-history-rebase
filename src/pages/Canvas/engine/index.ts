@@ -3,7 +3,6 @@ import moize from 'moize';
 import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
-import { RealtimeSubscription } from '@/client/socket/types';
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
@@ -15,6 +14,7 @@ import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
+import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
 import { useTeardown } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';

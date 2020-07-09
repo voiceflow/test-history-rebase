@@ -8,16 +8,7 @@ import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
-export type PlanRestrictionGateProps = {
-  children: React.ReactElement;
-};
-
-const PlanRestrictionGate: React.FC<PlanRestrictionGateProps & ConnectedPlanRestrictionGateProps> = ({
-  hasRestriction,
-  resetRestriction,
-  goToHome,
-  children,
-}) => {
+const PlanRestrictionGate: React.FC<ConnectedPlanRestrictionGateProps> = ({ hasRestriction, resetRestriction, goToHome, children }) => {
   const { open: openRestrictionModal } = useModals(ModalType.REALTIME_DENIED);
 
   const lockProject = React.useCallback(() => {

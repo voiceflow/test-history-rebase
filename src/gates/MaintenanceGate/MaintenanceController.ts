@@ -6,10 +6,11 @@ class MaintenanceController {
 
   end = -1;
 
-  timeout = null;
+  timeout: number | null = null;
 
-  constructor(action, intervals) {
-    this.action = action;
+  intervals: number[];
+
+  constructor(private action: (timeout: string | null) => void, intervals: number[]) {
     this.intervals = intervals.map((interval) => interval * 60 * 1000);
   }
 
@@ -35,20 +36,20 @@ class MaintenanceController {
       }
 
       // only show pop up warning if within intervals
-      if (closestInterval < this.intervals[0]) {
+      if (closestInterval! < this.intervals[0]) {
         this.action(moment(this.start).fromNow(true));
       }
 
-      this.timeout = setTimeout(() => this.maintenanceInterval(false), waitTime + 1000);
+      this.timeout = setTimeout(() => this.maintenanceInterval(), waitTime + 1000);
     }
   };
 
   // reference maintenance start/end time in UNIX timestamp
-  evaluateMaintenance = (start, end) => {
+  evaluateMaintenance = (start: number, end: number) => {
     if (start !== this.start || end !== this.end) {
       this.start = start;
       this.end = end;
-      clearTimeout(this.timeout);
+      clearTimeout(this.timeout!);
       this.maintenanceInterval();
     }
   };

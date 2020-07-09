@@ -4,19 +4,33 @@ import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks/toggle';
 import { Identifier } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 
 import ProjectTitleContainer from './ProjectTitleContainer';
 
 const EMPTY_TITLE_DEFAULT = 'Untitled Project';
 
-const validateTitle = (value) => {
+const validateTitle = (value: string) => {
   if (!value.trim()) {
     return EMPTY_TITLE_DEFAULT;
   }
   return value;
 };
 
-const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, isLockedSelector }) => {
+export type ProjectTitleProps = {
+  title: string;
+  canEdit: boolean;
+  onChange: (value: string) => void;
+};
+
+const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = ({
+  title,
+  canEdit,
+  onChange,
+  lockResource,
+  unlockResource,
+  isLockedSelector,
+}) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
@@ -33,15 +47,15 @@ const ProjectTitle = ({ title, canEdit, onChange, lockResource, unlockResource, 
     unlockResource();
   };
 
-  const onDoubleClick = (e) => {
+  const onDoubleClick = (event: React.MouseEvent) => {
     if (!isEditing && !isLocked && canEdit) {
       enableEditing();
-      e.target.select();
+      (event.target as HTMLInputElement).select();
       lockResource();
     }
   };
 
-  const handleEnterPress = (event) => {
+  const handleEnterPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       onBlur();
     }
@@ -73,4 +87,6 @@ const mapDispatchToProps = {
   unlockResource: () => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectTitle);
+type ConnectedProjectTitleProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectTitle) as React.FC<ProjectTitleProps>;

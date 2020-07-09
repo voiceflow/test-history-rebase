@@ -4,8 +4,9 @@ import LoadingGate from '@/components/LoadingGate';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
-const FeatureLoadingGate = ({ isLoaded, authToken, loadFeatures, children }) => (
+const FeatureLoadingGate: React.FC<ConnectedFeatureLoadingGateProps> = ({ isLoaded, authToken, loadFeatures, children }) => (
   <LoadingGate label="Features" isLoaded={!authToken || isLoaded} load={loadFeatures}>
     {children}
   </LoadingGate>
@@ -19,5 +20,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   loadFeatures: Feature.loadFeatures,
 };
+
+type ConnectedFeatureLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeatureLoadingGate);

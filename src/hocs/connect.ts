@@ -19,7 +19,7 @@ import Logger from '@/utils/logger';
 
 type MergePropsType<T extends AnyFunction> = T extends (...args: MergeArguments<any, any, infer R>) => any ? R : {};
 
-type ConnectOptions = { debug?: boolean; removeDispatch?: boolean } & Omit<ReactRedux.Options, 'forwardRef'>;
+type ConnectOptions = { debug?: boolean; removeDispatch?: boolean; merge?: boolean } & Omit<ReactRedux.Options, 'forwardRef'>;
 
 type Connect = {
   <S extends SelectorLookup, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
@@ -47,6 +47,7 @@ export const connect: Connect = (
 ) => (component: React.FC<any>) => {
   const isDebug = !IS_PRODUCTION && options.debug;
   const removeDispatch = options.removeDispatch;
+  const shouldMerge = options.merge ?? true;
   const log = Logger.child(`connect(${getDisplayName(component)})`);
 
   return ReactRedux.connect(
@@ -59,16 +60,28 @@ export const connect: Connect = (
           stateProps: MappedStateProps<any>,
           { dispatch, ...dispatchProps }: MappedDispatchProps<any> & { dispatch: Dispatch },
           props: MergePropsType<any>
-        ) =>
-          (isDebug && log.debug('connect() was called', { stateProps, dispatchProps, props })) || {
-            ...stateProps,
-            ...dispatchProps,
-            ...(removeDispatch ? { dispatch } : null),
-            ...props,
-            ...mergeProps?.(stateProps, dispatchProps as any, props),
+        ) => {
+          if (isDebug) {
+            log.debug('connect() was called', { stateProps, dispatchProps, props });
           }
-      : (null as any),
 
+          const mergedProps = mergeProps?.(stateProps, dispatchProps as any, props);
+
+          return shouldMerge
+            ? {
+                ...stateProps,
+                ...dispatchProps,
+                ...(removeDispatch ? { dispatch } : null),
+                ...props,
+                ...mergedProps,
+              }
+            : {
+                ...(removeDispatch ? { dispatch } : null),
+                ...props,
+                ...mergedProps,
+              };
+        }
+      : (null as any),
     options
   )(component);
 };

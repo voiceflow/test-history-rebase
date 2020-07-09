@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { withLoadingGate } from '@/hocs';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import IntentsModal from '@/pages/Canvas/components/IntentsModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
@@ -58,4 +58,4 @@ const Canvas: React.FC = () => {
   );
 };
 
-export default compose(React.memo, withBatchLoadingGate(DiagramLoadingGate))(Canvas);
+export default compose(React.memo, withLoadingGate(DiagramLoadingGate))(Canvas);

@@ -1,24 +1,18 @@
-import { Dispatch } from '@/store/types';
+import client from './client';
+import diagram from './diagram';
+import global from './global';
+import project from './project';
 
-import Client from './client';
-import createGlobalSocketClient from './global';
-import createProjectClient from './project';
-import createRealtimeClient from './realtime';
+const socketClient = {
+  global,
+  project,
+  diagram,
 
-function createSocketClient(dispatch: Dispatch) {
-  const client = new Client(dispatch);
+  connect: client.connect,
+  auth: client.auth,
+  disconnect: client.disconnect,
+};
 
-  return {
-    global: createGlobalSocketClient(client),
-    realtime: createRealtimeClient(client),
-    project: createProjectClient(client),
+export default socketClient;
 
-    connect: client.connect,
-    auth: client.auth,
-    disconnect: client.disconnect,
-  };
-}
-
-export default createSocketClient;
-
-export type SocketClient = ReturnType<typeof createSocketClient>;
+export type SocketClient = typeof socketClient;

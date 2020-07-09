@@ -7,6 +7,7 @@ import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { CommentModeContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { ConnectedProps } from '@/types';
 
 import CanvasViewers from './CanvasViewers';
 
@@ -25,7 +26,18 @@ const TABS = [
   },
 ];
 
-const SkillSubHeader = ({ showPublish, activePage, goToDesign, goToPrototype, goToPublish }) => {
+export type SkillSubHeaderProps = {
+  showPublish: boolean;
+  activePage: string;
+};
+
+const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderProps> = ({
+  showPublish,
+  activePage,
+  goToDesign,
+  goToPrototype,
+  goToPublish,
+}) => {
   const markupTool = React.useContext(MarkupModeContext);
   const { close: closeCommentingMode } = React.useContext(CommentModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
@@ -80,4 +92,6 @@ const mapDispatchToProps = {
   goToPublish: Router.goToActivePlatformPublish,
 };
 
-export default connect(null, mapDispatchToProps)(SkillSubHeader);
+type ConnecteedeSkillSubHeaderProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(SkillSubHeader) as React.FC<SkillSubHeaderProps>;

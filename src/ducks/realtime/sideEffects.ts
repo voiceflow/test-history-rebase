@@ -1,9 +1,7 @@
 import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
-import { goToDashboard } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
@@ -11,6 +9,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 
 import {
   AnyRealtimeAction,
+  connectRealtime,
   disconnectRealtime,
   initializeRealtime,
   resetRealtime,
@@ -46,8 +45,6 @@ export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => as
   dispatch(updateActiveDiagramViewers(users));
 };
 
-export const sendHeartbeat = (): SyncThunk => () => client.socket?.realtime.sendHeartbeat();
-
 export const sendRealtimeUpdate = (action: Socket.AnySocketAction | AnyRealtimeAction): Thunk => async (_, getState) => {
   const state = getState();
   const lastTimestamp = lastRealtimeTimestampSelector(state)!;
@@ -57,7 +54,7 @@ export const sendRealtimeUpdate = (action: Socket.AnySocketAction | AnyRealtimeA
     const serverAction = createServerAction(action)!;
     const lockAction = action?.meta?.lock || null;
 
-    await client.socket?.realtime.sendUpdate(action, lastTimestamp, lockAction, serverAction);
+    await client.socket.diagram.sendUpdate(action, lastTimestamp, lockAction, serverAction);
   }
 };
 
@@ -65,7 +62,7 @@ export const sendRealtimeVolatileUpdate = (action: Socket.AnySocketAction): Sync
   const isConnected = isRealtimeConnectedSelector(getState());
 
   if (isConnected) {
-    client.socket?.realtime.sendVolatileUpdate(action);
+    client.socket.diagram.sendVolatileUpdate(action);
   }
 };
 
@@ -77,31 +74,19 @@ export const sendRealtimeProjectUpdate = (action: Socket.AnySocketAction): Thunk
   if (isConnected) {
     const lockAction = action?.meta?.lock || null;
 
-    await client.socket?.realtime.sendProjectUpdate(action, lastTimestamp, lockAction);
+    await client.socket.project.sendUpdate(action, lastTimestamp, lockAction);
   }
 };
 
 export const terminateRealtimeConnection = (): Thunk => async (dispatch) => {
   dispatch(disconnectRealtime());
-  await client.socket?.realtime.terminate();
+  await client.socket.diagram.terminate();
   dispatch(resetRealtime());
 };
 
 export const handleRealtimeTakeover = (): SyncThunk => (dispatch) => {
-  client.socket?.realtime.initiateSessionTakeOver();
+  client.socket.project.takeoverSession();
   dispatch(resetSessionBusy());
-};
-
-export const handleSessionCancelled = (data: { workspaceName: string; workspaceId: string }): Thunk => async (dispatch, getState) => {
-  const currentWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
-
-  await dispatch(Workspace.removeWorkspace(data.workspaceId));
-
-  if (currentWorkspaceID === data.workspaceId) {
-    dispatch(goToDashboard());
-  }
-
-  toast.info(`You are no longer a collaborator for "${data.workspaceName}" workspace`);
 };
 
 export const setupRealtimeConnection = (skillID: string, diagramID: string): Thunk => async (dispatch, getState) => {
@@ -109,7 +94,7 @@ export const setupRealtimeConnection = (skillID: string, diagramID: string): Thu
   const tabID = Session.tabIDSelector(state);
 
   try {
-    const locks = await client.socket!.realtime.initialize(skillID, diagramID);
+    const locks = await client.socket!.diagram.initialize(skillID, diagramID);
 
     dispatch(initializeRealtime(diagramID, removeSelfFromLocks(locks, tabID)));
     await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
@@ -132,4 +117,10 @@ export const setupActiveDiagramConnection = (): Thunk => async (dispatch, getSta
   const diagramID = Skill.activeDiagramIDSelector(state);
 
   await dispatch(setupRealtimeConnection(skillID, diagramID));
+};
+
+export const reestablishConnection = (): Thunk => async (dispatch) => {
+  await dispatch(setupActiveDiagramConnection());
+  dispatch(connectRealtime());
+  await dispatch(sendRealtimeUpdate(Socket.reconnectNoop()));
 };

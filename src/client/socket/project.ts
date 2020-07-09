@@ -1,20 +1,39 @@
-import SocketClient from './client';
+import { LockAction, LockType } from '@/ducks/realtime/constants';
+import { LockPayload } from '@/ducks/realtime/socket';
+import { AnyAction } from '@/store/types';
+import { Callback, Function } from '@/types';
+
+import client from './client';
 import { ClientEvent, ServerEvent } from './constants';
 
-function createProjectSocketClient(client: SocketClient) {
-  return {
-    initialize(projectID: string) {
-      return new Promise((resolve) => {
-        // once this is received, we have the ability to send notifications for comments
-        client.once(ServerEvent.INITIALIZE_PROJECT, resolve);
+const projectSocketClient = {
+  initialize(projectID: string) {
+    return client.call(ClientEvent.CONNECT_PROJECT, { projectId: projectID });
+  },
 
-        // expect a `project:init` event to be sent in return
-        client.emit(ClientEvent.CONNECT_PROJECT, {
-          projectId: projectID,
-        });
-      });
-    },
-  };
-}
+  sendUpdate(action: AnyAction, lastTimestamp: number, lock: LockPayload<string, LockType, LockAction> | null = null) {
+    if (!client.isConnected) return Promise.resolve();
 
-export default createProjectSocketClient;
+    return client.call(ClientEvent.UPDATE_PROJECT, {
+      action,
+      lastTimestamp,
+      lock,
+    });
+  },
+
+  takeoverSession() {
+    if (!client.isConnected) return;
+
+    client.emit(ClientEvent.TAKEOVER_SESSION);
+  },
+
+  watchForSessionTerminated(callback: Function<[{ browserID: string }]>) {
+    return client.watchOnce(ServerEvent.SESSION_TERMINATED, callback);
+  },
+
+  watchForSessionAcquired(callback: Callback) {
+    return client.watchOnce(ServerEvent.SESSION_ACQUIRED, callback);
+  },
+};
+
+export default projectSocketClient;

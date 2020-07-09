@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components';
 
-const PageContent = styled.main`
+export type PageContentProps = {
+  scrollHorizontal?: boolean;
+  canScroll?: boolean;
+};
+
+const PageContent = styled.main<PageContentProps>`
   position: relative;
   flex-grow: 1;
   background: ${({ theme }) => theme.backgrounds.offWhite};

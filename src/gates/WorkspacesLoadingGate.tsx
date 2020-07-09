@@ -1,3 +1,4 @@
+import { History, Location } from 'history';
 import queryString from 'query-string';
 import React, { Component } from 'react';
 
@@ -7,15 +8,24 @@ import * as Modal from '@/ducks/modal';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { Query } from '@/models';
+import { ConnectedProps, MergeArguments } from '@/types';
 
 const DASHBOARD_PATH = '/dashboard';
 
-class WorkspacesLoadingGate extends Component {
+export type WorkspacesLoadingGateProps = {
+  history: History;
+  location: Location;
+  urlWorkspaceID: string;
+  activePage?: string;
+};
+
+class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & ConnectedWorkspacesLoadingGateProps> {
   state = {
     loaded: false,
   };
 
-  updateWorkspace(workspaceID) {
+  updateWorkspace(workspaceID: string) {
     const { history, location, activePage } = this.props;
 
     if (activePage === 'dashboard') {
@@ -27,7 +37,7 @@ class WorkspacesLoadingGate extends Component {
     const { history, location, setModal, validateInvite, trackInvitationAccepted } = this.props;
 
     if (location.search) {
-      const query = queryString.parse(location.search);
+      const query: Query.Onboarding = queryString.parse(location.search);
 
       if (query.invite) {
         const newWorkspaceID = await validateInvite(query.invite);
@@ -70,7 +80,7 @@ class WorkspacesLoadingGate extends Component {
       if (!this.props.workspaceID) {
         this.props.updateCurrentWorkspace(urlWorkspaceID || this.props.workspaces[0]?.id);
       }
-      if (!urlWorkspaceID && this.props.page !== 'template') this.updateWorkspace(this.props.workspaceID);
+      if (!urlWorkspaceID && this.props.activePage !== 'template') this.updateWorkspace(this.props.workspaceID!);
     } else {
       if (this.props.location.pathname !== DASHBOARD_PATH)
         this.props.history.push({
@@ -82,12 +92,12 @@ class WorkspacesLoadingGate extends Component {
     this.setState({ loaded: true });
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: WorkspacesLoadingGateProps & ConnectedWorkspacesLoadingGateProps) {
     const { workspaceID, urlWorkspaceID, history, updateCurrentWorkspace } = this.props;
 
     // If redux store updated and url doesn't match
     if (prevProps.workspaceID !== workspaceID && workspaceID !== urlWorkspaceID) {
-      this.updateWorkspace(workspaceID);
+      this.updateWorkspace(workspaceID!);
       // If url updated and redux store doesn't match
     } else if (urlWorkspaceID && workspaceID !== urlWorkspaceID) {
       updateCurrentWorkspace(urlWorkspaceID);
@@ -124,8 +134,10 @@ const mapDispatchToProps = {
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
 
-const mergeProps = ({ email }, { trackInvitationAccepted }) => ({
-  trackInvitationAccepted: (workspaceID) => trackInvitationAccepted(workspaceID, email),
+const mergeProps = (...[{ email }, { trackInvitationAccepted }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+  trackInvitationAccepted: (workspaceID: string) => trackInvitationAccepted(workspaceID, email!),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspacesLoadingGate);
+type ConnectedWorkspacesLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspacesLoadingGate as any) as React.FC;

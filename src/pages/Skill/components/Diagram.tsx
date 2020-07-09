@@ -63,7 +63,7 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location })
 
             <MarkupImageLoading />
 
-            <Canvas isPrototyping={isPrototyping} />
+            <Canvas />
 
             <PrototypeSidebar />
           </SettingsModalProvider>

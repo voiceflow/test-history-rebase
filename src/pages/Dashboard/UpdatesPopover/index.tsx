@@ -1,8 +1,9 @@
 import React from 'react';
 
+import * as Notifications from '@/ducks/notifications';
 import { styled } from '@/hocs';
 
-import Notification, { NotificationType } from './components/Notification';
+import Notification from './components/Notification';
 
 export const NotificationContainer = styled.div`
   & > * {
@@ -15,7 +16,7 @@ export const NotificationContainer = styled.div`
 `;
 
 type UpdatesPopoverTypes = {
-  notifications: NotificationType[];
+  notifications: Notifications.Notification[];
 };
 
 const UpdatesPopover: React.FC<UpdatesPopoverTypes> = ({ notifications }) => {

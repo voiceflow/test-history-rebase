@@ -11,15 +11,13 @@ function BatchLoadingGate({ gates, children, ...componentProps }) {
 
   return (
     <Gate {...gateProps}>
-      {() =>
-        nextGates.length ? (
-          <BatchLoadingGate {...gateProps} gates={nextGates}>
-            {children}
-          </BatchLoadingGate>
-        ) : (
-          children(gateProps)
-        )
-      }
+      {nextGates.length ? (
+        <BatchLoadingGate {...gateProps} gates={nextGates}>
+          {children}
+        </BatchLoadingGate>
+      ) : (
+        children(gateProps)
+      )}
     </Gate>
   );
 }

@@ -10,10 +10,19 @@ import { Container, Content, Header, HeaderContainer, HeaderPortalContainer, Sub
 
 export { Container };
 
-export const HeaderContext = React.createContext(null);
+export const HeaderContext = React.createContext<React.RefObject<HTMLElement> | null>(null);
 
-const Page = ({ header, subHeader, scrollHorizontal, canScroll = true, userMenu = true, onNavigateBack, children }) => {
-  const headerRef = React.useRef(null);
+export type PageProps = {
+  header: React.ReactNode;
+  onNavigateBack: () => void;
+  subHeader?: React.ReactNode;
+  canScroll?: boolean;
+  scrollHorizontal?: boolean;
+  userMenu?: boolean;
+};
+
+const Page: React.FC<PageProps> = ({ header, subHeader, scrollHorizontal, canScroll = true, userMenu = true, onNavigateBack, children }) => {
+  const headerRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <HeaderContext.Provider value={headerRef}>
@@ -38,13 +47,13 @@ const Page = ({ header, subHeader, scrollHorizontal, canScroll = true, userMenu 
   );
 };
 
-export const HeaderPortal = ({ children }) => {
+export const HeaderPortal: React.FC = ({ children }) => {
   // skip mounting cycle since parent needs to mount for headerRef to be declared
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
 
   return mounted ? (
-    <HeaderContext.Consumer>{(headerRef) => headerRef && ReactDom.createPortal(children, headerRef.current)}</HeaderContext.Consumer>
+    <HeaderContext.Consumer>{(headerRef) => headerRef?.current && ReactDom.createPortal(children, headerRef.current)}</HeaderContext.Consumer>
   ) : null;
 };
 

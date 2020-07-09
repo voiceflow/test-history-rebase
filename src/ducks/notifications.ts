@@ -8,11 +8,17 @@ import { MD5 } from '@/utils/crypto';
 
 import * as Account from './account';
 
+export enum NotificationType {
+  FEATURE = 'FEATURE',
+  UPDATE = 'UPDATE',
+  CHANGE = 'CHANGE',
+}
+
 export type Notification = {
   id: string;
-  type: 'CHANGE' | 'UPDATE' | 'FEATURE';
+  type: NotificationType;
   details: string;
-  created: number;
+  created: string;
   isNew?: boolean;
 };
 

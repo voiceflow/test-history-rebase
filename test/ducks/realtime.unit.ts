@@ -2,11 +2,9 @@ import * as ReduxUndo from 'redux-undo';
 
 import client from '@/client';
 import { SocketClient } from '@/client/socket';
-import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import * as RealtimeUtils from '@/ducks/realtime/utils';
-import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
@@ -308,10 +306,10 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
   });
 
   describeSideEffects(({ applyEffect, createState, stubEffect }) => {
-    const stubRealtimeClient = (name: keyof SocketClient['realtime']) => {
+    const stubSocket = <K extends keyof SocketClient>(clientName: K, name: keyof SocketClient[K]) => {
       const clientMethod = stub();
 
-      stub(client, 'socket').get(() => ({ realtime: { [name]: clientMethod } }));
+      stub(client, 'socket').get(() => ({ [clientName]: { [name]: clientMethod } }));
 
       return clientMethod;
     };
@@ -362,22 +360,12 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
     });
 
-    describe('sendHeartbeat()', () => {
-      it('should make heartbeat call to API', () => {
-        const sendHeartbeat = stubRealtimeClient('sendHeartbeat');
-
-        applyEffect(Realtime.sendHeartbeat());
-
-        expect(sendHeartbeat).to.be.called;
-      });
-    });
-
     describe('sendRealtimeUpdate()', () => {
       const action: any = { type: 'SOME_ACTION' };
       const serverAction: any = { type: 'server::SOME_ACTION' };
 
       it('should send realtime update action when connected', async () => {
-        const sendUpdate = stubRealtimeClient('sendUpdate');
+        const sendUpdate = stubSocket('diagram', 'sendUpdate');
         const createServerAction = stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(action));
@@ -389,7 +377,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should send realtime update action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
         const updateLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
-        const sendUpdate = stubRealtimeClient('sendUpdate');
+        const sendUpdate = stubSocket('diagram', 'sendUpdate');
         stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(updateLockAction));
@@ -398,7 +386,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should not send realtime update action when disconnected', async () => {
-        const sendUpdate = stubRealtimeClient('sendUpdate');
+        const sendUpdate = stubSocket('diagram', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeUpdate(action), createState({ ...MOCK_STATE, connected: false }));
 
@@ -410,7 +398,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const volatileAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime volatile action when connected', async () => {
-        const sendVolatileUpdate = stubRealtimeClient('sendVolatileUpdate');
+        const sendVolatileUpdate = stubSocket('diagram', 'sendVolatileUpdate');
 
         await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction));
 
@@ -418,7 +406,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should not send realtime volatile action when disconnected', async () => {
-        const sendVolatileUpdate = stubRealtimeClient('sendVolatileUpdate');
+        const sendVolatileUpdate = stubSocket('diagram', 'sendVolatileUpdate');
 
         await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction), createState({ ...MOCK_STATE, connected: false }));
 
@@ -430,35 +418,35 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const projectAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime project action when connected', async () => {
-        const sendProjectUpdate = stubRealtimeClient('sendProjectUpdate');
+        const sendUpdate = stubSocket('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction));
 
-        expect(sendProjectUpdate).to.be.calledWithExactly(projectAction, MOCK_STATE.lastTimestamp, null);
+        expect(sendUpdate).to.be.calledWithExactly(projectAction, MOCK_STATE.lastTimestamp, null);
       });
 
       it('should send realtime project action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
         const projectLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
-        const sendProjectUpdate = stubRealtimeClient('sendProjectUpdate');
+        const sendUpdate = stubSocket('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectLockAction));
 
-        expect(sendProjectUpdate).to.be.calledWithExactly(projectLockAction, MOCK_STATE.lastTimestamp, lockAction);
+        expect(sendUpdate).to.be.calledWithExactly(projectLockAction, MOCK_STATE.lastTimestamp, lockAction);
       });
 
       it('should not send realtime project action when disconnected', async () => {
-        const sendProjectUpdate = stubRealtimeClient('sendProjectUpdate');
+        const sendUpdate = stubSocket('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction), createState({ ...MOCK_STATE, connected: false }));
 
-        expect(sendProjectUpdate).to.not.be.called;
+        expect(sendUpdate).to.not.be.called;
       });
     });
 
     describe('terminateRealtimeConnection()', () => {
       it('should end and clean up active realtime connection', async () => {
-        const terminate = stubRealtimeClient('terminate');
+        const terminate = stubSocket('diagram', 'terminate');
 
         const { expectDispatch } = await applyEffect(Realtime.terminateRealtimeConnection());
 
@@ -470,41 +458,12 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('handleRealtimeTakeover()', () => {
       it('should attempt to takeover a realtime session', async () => {
-        const initiateSessionTakeOver = stubRealtimeClient('initiateSessionTakeOver');
+        const takeoverSessioon = stubSocket('project', 'takeoverSession');
 
         const { expectDispatch } = await applyEffect(Realtime.handleRealtimeTakeover());
 
         expectDispatch(Realtime.resetSessionBusy());
-        expect(initiateSessionTakeOver).to.be.called;
-      });
-    });
-
-    describe('handleSessionCancelled()', () => {
-      const workspaceID = 'abcdef';
-      const workspaceName = 'Team Workspace';
-
-      it('should remove access to the current workspace', async () => {
-        const [removeWorkspace, removeWorkspaceEffect] = stubEffect(Workspace, 'removeWorkspace');
-        const infoToast = stub(toast, 'info');
-        stub(Workspace, 'activeWorkspaceIDSelector').returns(workspaceID);
-
-        const { dispatch, expectDispatch } = await applyEffect(Realtime.handleSessionCancelled({ workspaceId: workspaceID, workspaceName }));
-
-        expectDispatch(Router.goToDashboard());
-        expectDispatch(removeWorkspaceEffect);
-        expect(dispatch).to.be.calledTwice;
-        expect(removeWorkspace).to.be.calledWithExactly(workspaceID);
-        expect(infoToast).to.be.calledWithExactly(`You are no longer a collaborator for "${workspaceName}" workspace`);
-      });
-
-      it('should remove access to a workspace', async () => {
-        const [, removeWorkspaceEffect] = stubEffect(Workspace, 'removeWorkspace');
-        stub(Workspace, 'activeWorkspaceIDSelector').returns('12d9d8');
-
-        const { dispatch, expectDispatch } = await applyEffect(Realtime.handleSessionCancelled({ workspaceId: workspaceID, workspaceName }));
-
-        expectDispatch(removeWorkspaceEffect);
-        expect(dispatch).to.be.calledOnce;
+        expect(takeoverSessioon).to.be.called;
       });
     });
 
@@ -516,7 +475,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should setup a realtime connection', async () => {
         const locks = { blocks: { movement: { def: tabID } } };
         const filteredLocks: any = { blocks: { movement: {} } };
-        const initialize = stubRealtimeClient('initialize').returns(locks);
+        const initialize = stubSocket('diagram', 'initialize').returns(locks);
         const removeSelfFromLocks = stub(RealtimeUtils, 'removeSelfFromLocks').returns(filteredLocks);
         stub(Session, 'tabIDSelector').returns(tabID);
 
@@ -529,7 +488,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should set session as busy', async () => {
-        stubRealtimeClient('initialize').throws({ browserId: 'abc', device: {} });
+        stubSocket('diagram', 'initialize').throws({ browserId: 'abc', device: {} });
         stub(Session, 'tabIDSelector').returns(tabID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
@@ -539,7 +498,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should set realtime restriction', async () => {
-        stubRealtimeClient('initialize').throws({ busyBy: ['11'] });
+        stubSocket('diagram', 'initialize').throws({ busyBy: ['11'] });
         stub(Session, 'tabIDSelector').returns(tabID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));

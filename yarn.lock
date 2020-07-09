@@ -3906,6 +3906,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-helmet@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-6.0.0.tgz#5b74e44a12662ffb12d1c97ee702cf4e220958cf"
+  integrity sha512-NBMPAxgjpaMooXa51cU1BTgrX6T+hQbMiLm77JhBbfOzPQea3RB5rNpPOD5xGWHIVpGXHd59cltEzIq0qglGcQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-input-autosize@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.0.2.tgz#6ccdfb100c21b6096c1a04c3c3fac196b0ce61c1"

@@ -8,14 +8,10 @@ import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
-import { ConnectionWarning, DisabledWarning, ReloadWarning } from './components';
+import { ConnectionWarning, DiagramHeartbeat, DiagramLifecycle, DisabledWarning, ReloadWarning } from './components';
 import { RealtimeSubscriptionProvider } from './contexts';
 
-export type RealtimeLoadingGateProps = {
-  children: () => React.ReactElement;
-};
-
-const RealtimeLoadingGate: React.FC<RealtimeLoadingGateProps & ConnectedRealtimeLoadingGateProps> = ({
+const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
   locks,
   isWebsocketsEnabled,
   isConnected,
@@ -27,7 +23,7 @@ const RealtimeLoadingGate: React.FC<RealtimeLoadingGateProps & ConnectedRealtime
   const [isAllowed] = usePermission(Permission.REALTIME);
 
   if (!isAllowed) {
-    return <RealtimeSubscriptionProvider>{children()}</RealtimeSubscriptionProvider>;
+    return <RealtimeSubscriptionProvider>{children}</RealtimeSubscriptionProvider>;
   }
 
   if (!isWebsocketsEnabled) {
@@ -36,12 +32,22 @@ const RealtimeLoadingGate: React.FC<RealtimeLoadingGateProps & ConnectedRealtime
 
   return (
     <LoadingGate label="Collaboration" isLoaded={!!locks} load={setupConnection} unload={terminateConnection}>
-      {() => (
-        <RealtimeSubscriptionProvider>
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {isConnected ? isErrorState ? <ReloadWarning /> : children() : <ConnectionWarning />}
-        </RealtimeSubscriptionProvider>
-      )}
+      <RealtimeSubscriptionProvider>
+        <DiagramLifecycle />
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {isConnected ? (
+          isErrorState ? (
+            <ReloadWarning />
+          ) : (
+            <>
+              <DiagramHeartbeat />
+              {children}
+            </>
+          )
+        ) : (
+          <ConnectionWarning />
+        )}
+      </RealtimeSubscriptionProvider>
     </LoadingGate>
   );
 };
@@ -60,4 +66,4 @@ const mapDispatchToProps = {
 
 type ConnectedRealtimeLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(RealtimeLoadingGate) as React.FC<RealtimeLoadingGateProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(RealtimeLoadingGate) as React.FC;

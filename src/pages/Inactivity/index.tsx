@@ -4,14 +4,15 @@ import Countdown from 'react-countdown-now';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import SvgIcon from '@/components/SvgIcon';
-import { goToDashboard } from '@/ducks/router';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { Callback, ConnectedProps } from '@/types';
 
 import { BodyContainer } from './components/BodyContainer';
 
 const TIMER_COUNT = 5 * 60 * 1000;
 
-const countdownRenderer = ({ minutes, seconds }) => {
+const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: number }) => {
   return (
     <span>
       {` ${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}.
@@ -19,7 +20,12 @@ const countdownRenderer = ({ minutes, seconds }) => {
   );
 };
 
-function InactivityModal({ open, onActive, goToDashboard }) {
+export type InactivityModalProps = {
+  open: boolean;
+  onActive: Callback;
+};
+
+const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => {
   return (
     <Modal isOpen={open} toggle={onActive}>
       <ModalHeader toggle={onActive} header="INACTIVITY" />
@@ -39,10 +45,12 @@ function InactivityModal({ open, onActive, goToDashboard }) {
       </ModalFooter>
     </Modal>
   );
-}
-
-const mapDispatchToProps = {
-  goToDashboard,
 };
 
-export default connect(null, mapDispatchToProps)(InactivityModal);
+const mapDispatchToProps = {
+  goToDashboard: Router.goToDashboard,
+};
+
+type ConnectedInactivityModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(InactivityModal) as React.FC<InactivityModalProps>;

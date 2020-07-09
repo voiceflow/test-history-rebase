@@ -8,7 +8,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, useTeardown } from '@/hooks';
 import { Markup } from '@/models';
 
 import { InlineStylePrefix } from '../constants';
@@ -61,7 +61,6 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
     let state = getEditorState();
 
     state = togglePrefixedInlineStyle(state, InlineStylePrefix.COLOR, getStrColor(nextColor));
-
     setEditorState(state);
 
     return state;
@@ -135,6 +134,10 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
       });
     }
   }, [colorStr, hasFocus]);
+
+  useTeardown(() => {
+    onRemoveAndSaveFakeSelection();
+  }, []);
 
   return (
     <SliderInputGroup

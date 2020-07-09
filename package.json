@@ -323,9 +323,6 @@
     ]
   },
   "prettier": "@voiceflow/prettier-config",
-  "release": {
-    "branch": "production"
-  },
   "scripts": {
     "build": "patch-package && wp --prod",
     "build:admin": "wp --action admin --prod",

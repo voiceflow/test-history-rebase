@@ -2,19 +2,16 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@1.0.2
+  vfcommon: voiceflow/common@0.0.7
 
-executors:
-  node-executor:
-    working_directory: ~/voiceflow # directory where steps will run
-    docker: # run the steps with Docker
-      - image: circleci/node:12 # ...with this image as the primary container; this is where all `steps` will run
-    environment:
-      NODE_OPTIONS: --max-old-space-size=4096
-    resource_class: medium+
-  image_builder:
-    working_directory: /tmp/vf-build
-    docker:
-      - image: voiceflow/ci-image:v3
+# Reusable YAML chunks
+defaults:
+  prod_deploy_filters: &prod_deploy_filters
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^v[0-9]*(\.[0-9]*)*$/
 
 commands:
   auth_npm:
@@ -24,38 +21,17 @@ commands:
           name: Authenticate with npm
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-  install_dependencies:
-    description: Restore/update node_modules in cache
-    steps:
-      - restore_cache: # special step to restore the dependency cache
-          key: creator-app-{{ checksum "yarn.lock" }}
-      - auth_npm
-      - run:
-          name: Install packages
-          command: yarn install --frozen-lockfile
-      - save_cache: # Update dependency cache
-          key: creator-app-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
 
 jobs:
-  release:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      - run: git tag --merged production
-      - run: npx semantic-release@15
-
   build-app:
-    executor: node-executor
+    executor: vfcommon/node-executor
     steps:
       - checkout
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
           name: Build app
           command: |
-            if [ "$CIRCLE_BRANCH" == "production" ]; then
+            if [ "$CIRCLE_BRANCH" == "master" ]; then
               export VF_APP_API_HOST=api.voiceflow.com
               export VF_APP_BUILD_ENV=production
               export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json
@@ -73,10 +49,10 @@ jobs:
             - config
 
   build-storybook:
-    executor: node-executor
+    executor: vfcommon/node-executor
     steps:
       - checkout
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
           name: Build storybook
           command: yarn storybook:build
@@ -87,10 +63,10 @@ jobs:
             - storybook.dockerfile
 
   build-admin:
-    executor: node-executor
+    executor: vfcommon/node-executor
     steps:
       - checkout
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
           name: Build admin static artifacts
           command: |
@@ -110,33 +86,31 @@ jobs:
             - config
 
   test-integration: # Run integration tests in parallel
-    executor: node-executor
+    executor: vfcommon/node-executor
     steps: # a collection of executable commands
       - checkout
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
-          name: (Integration Tests)
+          name: Integration Tests
           command: yarn test:integration --coverage --detectOpenHandles
       - codecov/upload:
           file: jest_coverage/lcov.info
           flags: integration
 
   test: # Main unit, style, and dependency tests
-    executor: node-executor
+    executor: vfcommon/node-executor
     steps: # a collection of executable commands
       - checkout
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
-          name: (Unit Tests)
+          name: Unit Tests
           command: yarn test:unit
       - codecov/upload:
           file: nyc_coverage/lcov.info
           flags: unit
+      - vfcommon/lint_source
       - run:
-          name: (Code Style)
-          command: yarn lint:quiet
-      - run:
-          name: (Dependency Tests)
+          name: Dependency Tests
           command: yarn test:dependencies # Run dependency test here
 
   test-e2e:
@@ -223,7 +197,12 @@ jobs:
           path: cypress/screenshots
 
   build-deploy-app-image:
-    executor: image_builder
+    parameters:
+      tagged:
+        description: Running on a git tag?
+        type: boolean
+        default: false
+    executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
     steps:
@@ -247,21 +226,14 @@ jobs:
             docker push $IMAGE_NAME
             docker tag $IMAGE_NAME $IMAGE_REPO:latest-$CIRCLE_BRANCH
             docker push $IMAGE_REPO:latest-$CIRCLE_BRANCH
-      - run:
-          name: Deploy image
-          command: |
-            IMAGE_TAG="k8s-$CIRCLE_SHA1"
-            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-            if [ "$CIRCLE_BRANCH" == "master" ] || [ "$CIRCLE_BRANCH" == "staging" ]; then
-              aws eks --region us-east-1 update-kubeconfig --name development
-            fi
-            if [ "$CIRCLE_BRANCH" == "production" ]; then
-              aws eks --region us-east-1 update-kubeconfig --name production
-            fi
-            kubectl set image --namespace voiceflow-v1 statefulset/creator-app-$CIRCLE_BRANCH app=$IMAGE_NAME
+      - vfcommon/deploy_image:
+          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+          namespace: "voiceflow-v1"
+          target: "statefulset/creator-app"
+          tagged: << parameters.tagged >>
 
   build-deploy-storybook-image:
-    executor: image_builder
+    executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
     steps:
@@ -293,13 +265,10 @@ jobs:
             if [ "$CIRCLE_BRANCH" == "master" ] || [ "$CIRCLE_BRANCH" == "staging" ]; then
               aws eks --region us-east-1 update-kubeconfig --name development
             fi
-            if [ "$CIRCLE_BRANCH" == "production" ]; then
-              aws eks --region us-east-1 update-kubeconfig --name production
-            fi
             kubectl set image --namespace voiceflow-v1 deployment/storybook-$CIRCLE_BRANCH storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1
 
   build-deploy-admin-image:
-    executor: image_builder
+    executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
     steps:
@@ -338,7 +307,7 @@ jobs:
             kubectl set image --namespace voiceflow-v1 deployment/admin-ui-$DEPLOY_SUFFIX app=$IMAGE_REPO:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1
 
   build-app-dev-environment:
-    executor: node-executor
+    executor: vfcommon/node-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
     steps:
@@ -359,7 +328,7 @@ jobs:
             if [[ $SEARCH_IMAGE_RESULT -eq 0 ]]; then  
               circleci-agent step halt  # Image exists, skip following steps
             fi
-      - install_dependencies
+      - vfcommon/install_node_modules
       - run:
           name: Build app, if docker container does not exist
           command: |
@@ -376,7 +345,7 @@ jobs:
             - config
 
   deploy-app-dev-environment:
-    executor: image_builder
+    executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
     steps:
@@ -481,7 +450,6 @@ workflows:
             branches:
               ignore:
                 - /env-.*/
-                - production
       - build-deploy-storybook-image:
           context: dev-test
           requires:
@@ -492,7 +460,7 @@ workflows:
                 - master
                 - staging
 
-  app:
+  test-and-release-app:
     jobs:
       - test-integration:
           context: dev-test
@@ -512,7 +480,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - /ephemeral.*/
+                - /env-.*/
                 - staging
       - build-app:
           context: dev-test
@@ -521,28 +489,28 @@ workflows:
               ignore:
                 - /env-.*/
                 - staging
+      - vfcommon/release:
+          context: dev-test
+          requires:
+            - test
+            - test-integration
+            - test-e2e
+            - build-app
+          filters:
+            branches:
+              only: master
+
+  deploy-app:
+    jobs:
+      - build-app:
+          <<: *prod_deploy_filters
+          context: dev-test
       - build-deploy-app-image:
+          <<: *prod_deploy_filters
+          tagged: true
           context: dev-test
           requires:
-            - test
-            - test-integration
-            - test-e2e
             - build-app
-          filters:
-            branches:
-              only:
-                - master
-                - production
-      - release:
-          context: dev-test
-          requires:
-            - test
-            - test-integration
-            - test-e2e
-            - build-app
-          filters:
-            branches:
-              only: production
 
   app-staging:
     jobs:

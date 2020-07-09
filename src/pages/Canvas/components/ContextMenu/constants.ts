@@ -46,13 +46,6 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     },
   },
   {
-    label: 'Add Comment',
-    value: CanvasAction.ADD_COMMENT,
-    shouldRender: (_, { isMarkupModeEnabled, isTemplate }) => {
-      return !isMarkupModeEnabled && !isTemplate;
-    },
-  },
-  {
     label: 'Return to Home',
     value: CanvasAction.RETURN_TO_HOME,
     shouldRender: (_, { isMarkupModeEnabled }) => {

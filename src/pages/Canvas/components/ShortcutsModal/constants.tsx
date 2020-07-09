@@ -41,14 +41,6 @@ export const SHORTCUTS = [
     ),
   },
   {
-    title: 'Comment',
-    command: (
-      <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>/</ShortcutCommand>
-      </>
-    ),
-  },
-  {
     title: 'Multiple Block Selection',
     command: (
       <>

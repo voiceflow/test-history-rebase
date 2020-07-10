@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Build app
           command: |
-            if [ "$CIRCLE_BRANCH" == "master" ]; then
+            if [[ -z "$CIRCLE_BRANCH" && ! -z "$CIRCLE_TAG" ]]; then
               export VF_APP_API_HOST=api.voiceflow.com
               export VF_APP_BUILD_ENV=production
               export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json

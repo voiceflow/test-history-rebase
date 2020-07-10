@@ -1,7 +1,7 @@
 export default {
   openSettings: () => cy.get('[data-original-title="Settings"]').click(),
 
-  goToCanvas: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/canvas/${skillID}/${diagramID}`)),
+  goToCanvas: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/project/${skillID}/canvas/${diagramID}`)),
 
   el: {
     get projectTitle() {
@@ -25,6 +25,6 @@ export default {
   },
 
   meta: {
-    route: /canvas\/.*\/.*/,
+    route: /project\/.*\/canvas\/.*/,
   },
 };

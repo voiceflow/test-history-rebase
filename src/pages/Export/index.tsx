@@ -80,7 +80,7 @@ const AnyCanvasProviders = CanvasProviders as any;
 
 const MockRealtimeGate: React.FC<{ children: () => React.ReactElement }> = ({ children }) => (
   <RealtimeSubscriptionContext.Provider value={{ onUpdate: _noop as any, destroy: _noop as any, on: _noop as any }}>
-    {children()}
+    {children}
   </RealtimeSubscriptionContext.Provider>
 );
 

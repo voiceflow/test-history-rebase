@@ -1743,7 +1743,14 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@7.4.5":
+  version "7.4.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
+  integrity sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.4.tgz#a6724f1a6b8d2f6ea5236dbfe58c7d7ea9c5eb99"
   integrity sha512-UpTN5yUJr9b4EX2CnGNWIvER7Ab83ibv0pcvvHc4UOdrBI5jb8bj+32cCwPX6xu0mt2daFNjYhoi+X7beH0RSw==
@@ -3924,6 +3931,13 @@
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.0.2.tgz#6ccdfb100c21b6096c1a04c3c3fac196b0ce61c1"
   integrity sha512-QzewaD5kog7c6w5e3dretb+50oM8RDdDvVumQKCtPjI6VHyR8lA/HxCiTrv5l9Vgbi4NCitYuix/NorOevlrng==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-mentions@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-mentions/-/react-mentions-3.3.0.tgz#b446362a1ae20d0c71661c22abd523e8e033220a"
+  integrity sha512-sySDvqX9N5jyOSITd/aylm2b95ALc7zw3grqShqKw7oe0SR0yR+p3O7JoIQjRfVyqYqoOC4WSGyUtoSfnBuiWw==
   dependencies:
     "@types/react" "*"
 
@@ -19172,6 +19186,16 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-mentions@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-mentions/-/react-mentions-4.0.1.tgz#454850eb549ca19f0199a5490e8efb38cd1f56d6"
+  integrity sha512-AsHwGulJ6wpkWPn2ymryTK/ghozgDC1wg1avzFW6V5cP4zPD7fq603ygPJlTZRUXy3RLmn+NoamMrLYBuSHhHg==
+  dependencies:
+    "@babel/runtime" "7.4.5"
+    invariant "^2.2.4"
+    prop-types "^15.5.8"
+    substyle "^9.1.0"
+
 react-popper-tooltip@^2.8.3:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-2.11.1.tgz#3c4bdfd8bc10d1c2b9a162e859bab8958f5b2644"
@@ -21974,6 +21998,14 @@ subarg@^1.0.0:
   integrity sha1-9izxdYHplrSPyWVpn1TAauJouNI=
   dependencies:
     minimist "^1.1.0"
+
+substyle@^9.1.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/substyle/-/substyle-9.2.0.tgz#71144955058f8f19509187bb9466a13ffbb41710"
+  integrity sha512-iPvumr9jSEKrCBik3UOYJfvtw2T6Ki7mzx3tMTA6Xtl7mpjLOgPfnImt6kjrdOvvFe05aWxUEgB9jWLm/IBJBQ==
+  dependencies:
+    "@babel/runtime" "^7.3.4"
+    invariant "^2.2.4"
 
 sugarss@^1.0.0:
   version "1.0.1"

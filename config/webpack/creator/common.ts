@@ -52,6 +52,8 @@ export default merge(commonConfig, {
               'components/DropdownButton/**/*',
               'components/Link/**/*',
               'components/Title/**/*',
+              'components/MentionEditor/**/*',
+              'components/CommentPreview.tsx',
             ],
           },
         }),

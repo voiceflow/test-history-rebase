@@ -1,7 +1,9 @@
+require('ts-node/register/transpile-only');
+
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const paths = require('../config/paths');
+const paths = require('../config/paths').default;
 
 const { ENV, IS_PRODUCTION } = require('../config/webpack/config');
 

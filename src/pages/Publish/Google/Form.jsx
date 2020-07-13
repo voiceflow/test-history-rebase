@@ -53,7 +53,8 @@ const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
 const PrivacyPolicyLink = styled.div`
   color: #8da2b5;
   font-size: 13px;
-  flex: 1;
+  flex: 5;
+  word-break: break-all;
 `;
 
 const LegalDisclaimer = styled.div`

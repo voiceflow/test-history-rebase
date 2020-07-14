@@ -70,6 +70,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
                       goTo('workspace/new');
                     }}
                     bottomAction
+                    id="createWorkspace"
                   >
                     Create New Workspace
                   </MenuItemComponent>
@@ -81,7 +82,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
         placement="bottom-start"
       >
         {(ref: React.Ref<any>, onToggle: () => void) => (
-          <WorkspacesDropdown className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
+          <WorkspacesDropdown id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
             <div>{activeWorkspace.name}</div>
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>

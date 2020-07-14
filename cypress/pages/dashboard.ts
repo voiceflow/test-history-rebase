@@ -3,6 +3,9 @@ export default {
     get newProjectButton() {
       return cy.get('#dashboard a');
     },
+    get workspaceDropdownButton() {
+      return cy.get('#workspaceDropdown');
+    },
     get projectList() {
       return cy.get('.main-list');
     },

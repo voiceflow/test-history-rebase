@@ -7,6 +7,7 @@ import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
+import * as Workspace from '@/ducks/workspace';
 
 import { createPublishStateSelector, createUploadStep, log } from './utils';
 
@@ -144,9 +145,11 @@ export const uploadSuccess = () =>
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const projectID = Skill.activeProjectIDSelector(getState());
+    const workspaceID = Workspace.activeWorkspaceIDSelector(getState());
+
     dispatch(updateGoogleStage(GOOGLE_STAGES.UPLOADING_GOOGLE));
     try {
-      await axios.post(`/project/${projectID}/version/${newVersionId}/google`);
+      await axios.post(`/project/${projectID}/version/${newVersionId}/google`, { workspaceID });
       dispatch(uploadSuccess());
     } catch (err) {
       const error_msg = _.get(err, ['response', 'data', 'message']) || err;

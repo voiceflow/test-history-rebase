@@ -9,6 +9,7 @@ import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
+import * as Workspace from '@/ducks/workspace';
 
 import { createPublishStateSelector, createUploadStep, invNameError, log } from './utils';
 
@@ -197,11 +198,12 @@ export const submitForReview = () =>
     const state = getState();
     const skillID = Skill.activeSkillIDSelector(state);
     const amznID = amznIDSelector(state);
+    const workspaceID = Workspace.activeWorkspaceIDSelector(state);
 
     dispatch(updateAlexaStage(ALEXA_STAGES.SUBMITTING_SKILL));
 
     try {
-      await axios.post(`/amazon/${skillID}/${amznID}/certify`);
+      await axios.post(`/amazon/${skillID}/${amznID}/certify`, { workspaceID });
       dispatch(updatePublishInfo({ review: true }));
       dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
     } catch (err) {
@@ -289,9 +291,10 @@ export const checkInteractionModel = () =>
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const projectID = Skill.activeProjectIDSelector(getState());
+    const workspaceID = Workspace.activeWorkspaceIDSelector(getState());
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOADING_ALEXA));
     try {
-      const { data: amznID } = await axios.post(`/project/${projectID}/version/${newVersionId}/alexa`);
+      const { data: amznID } = await axios.post(`/project/${projectID}/version/${newVersionId}/alexa`, { workspaceID });
       dispatch(updatePublishInfo({ amznID }));
       dispatch(checkInteractionModel());
     } catch (err) {

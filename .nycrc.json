@@ -1,10 +1,5 @@
 {
-  "extension": [
-    ".ts",
-    ".tsx",
-    ".js",
-    ".jsx"
-  ],
+  "extension": [".ts", ".tsx", ".js", ".jsx"],
   "exclude": [
     "coverage/**",
     "test/**",
@@ -19,11 +14,6 @@
     "scripts/**",
     "config/**"
   ],
-  "reporter": [
-    "html",
-    "text",
-    "text-summary",
-    "lcov"
-  ],
+  "reporter": ["html", "text-summary", "lcov"],
   "report-dir": "nyc_coverage"
 }

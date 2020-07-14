@@ -36,6 +36,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   plan,
 }) => {
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
+  const workspaceCreationFeature = useFeature(FeatureFlag.WORKSPACE_CREATION_FLOW);
   const workspacesWithoutTemplates = workspaces.filter((workspace) => !workspace.templates);
   const filteredWorkspaces = templatesFeature.isEnabled ? workspaces : workspacesWithoutTemplates;
 
@@ -43,7 +44,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
     <>
       <DropdownComponent
         menu={
-          <MenuComponent>
+          <MenuComponent maxHeight={600}>
             <>
               {filteredWorkspaces.map((workspace) => {
                 const active = workspace.id === activeWorkspace.id;
@@ -61,7 +62,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
                   </MenuItemComponent>
                 );
               })}
-              {filteredWorkspaces.length < WORKSPACES_LIMIT && (
+              {(workspaceCreationFeature.isEnabled || filteredWorkspaces.length < WORKSPACES_LIMIT) && (
                 <>
                   <MenuItemComponent divider />
                   <MenuItemComponent

@@ -8,6 +8,7 @@ export const TEMPLATES_ENABLED = process.env.FF_TEMPLATES === 'true';
 export const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 export const COMMENTING_ENABLED = process.env.FF_COMMENTING === 'true';
 export const BULK_UPLOAD_ENABLED = process.env.FF_BULK_UPLOAD === 'true';
+export const WORKSPACE_CREATION_ENABLED = process.env.FF_WORKSPACE_CREATION_FLOW === 'true';
 
 export enum FeatureFlag {
   MARKUP = 'markup',
@@ -16,6 +17,7 @@ export enum FeatureFlag {
   GADGETS = 'gadgets',
   COMMENTING = 'commenting',
   BULK_UPLOAD = 'bulk_upload',
+  WORKSPACE_CREATION_FLOW = 'workspace_creation_flow',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -28,6 +30,7 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
   [FeatureFlag.COMMENTING]: COMMENTING_ENABLED,
   [FeatureFlag.BULK_UPLOAD]: BULK_UPLOAD_ENABLED,
+  [FeatureFlag.WORKSPACE_CREATION_FLOW]: WORKSPACE_CREATION_ENABLED,
 
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
 };

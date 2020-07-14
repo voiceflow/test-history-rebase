@@ -262,6 +262,7 @@ yarn start --ff_someFeature
 - `ff_repromptEditor` / `VF_APP_FF_REPROMPT_EDITOR`: enable reprompt editor
 - `ff_commenting` / `VF_APP_FF_COMMENTING`: commenting
 - `ff_bulkUpload` / `VF_APP_FF_BULK_UPLOAD`: slots and utterances bulk upload
+- `ff_workspaceCreationFlow` / `VF_APP_FF_WORKSPACE_CREATION_FLOW`: new create workspace flow
 
 ## Previewing in an ephmeral environment
 

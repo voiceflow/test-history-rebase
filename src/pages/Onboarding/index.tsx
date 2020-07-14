@@ -10,13 +10,13 @@ import { CurrentStep, Header, InnerContainer, OuterContainer } from './component
 import { OnboardingProvider } from './context';
 import { OnboardingDataProps, OnboardingProps } from './types';
 
-export const Onboarding: React.FC<OnboardingProps> = ({ data, location }) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ data, location, firstTime = true }) => {
   const query = queryString.parse(location?.search);
 
   return (
     <div>
       <OuterContainer>
-        <OnboardingProvider query={query}>
+        <OnboardingProvider firstTime={firstTime} query={query}>
           <InnerContainer>
             <Header />
             <CurrentStep data={data} />

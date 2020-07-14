@@ -3,14 +3,15 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import client from '@/client';
+import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
@@ -60,6 +61,7 @@ export type OnboardingContextProps = {
     onboardingComplete: boolean;
     sendingRequests: boolean;
     workspaceId: string;
+    justCreatingWorkspace: boolean;
   };
   actions: {
     stepBack: () => null;
@@ -72,6 +74,7 @@ export type OnboardingContextProps = {
     setAddCollaboratorMeta: (data: {}) => void;
     finishCreateOnboarding: () => void;
     finishJoiningWorkspace: () => void;
+    onCancel: () => void;
   };
 };
 
@@ -87,6 +90,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     setJoinWorkspaceMeta: _.constant(null),
     finishCreateOnboarding: _.constant(null),
     finishJoiningWorkspace: _.constant(null),
+    onCancel: _.constant(null),
   },
   state: {
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
@@ -105,6 +109,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     onboardingComplete: false,
     sendingRequests: false,
     workspaceId: '',
+    justCreatingWorkspace: false,
   },
 });
 
@@ -115,7 +120,10 @@ export enum OnboardingType {
   join = 'join_workpsace',
 }
 
-const getFirstStep = (flow: OnboardingType) => {
+const getFirstStep = (flow: OnboardingType, firstTime: boolean) => {
+  if (!firstTime) {
+    return OnboardingType.create;
+  }
   switch (flow) {
     case OnboardingType.create:
       return StepID.WELCOME;
@@ -126,7 +134,10 @@ const getFirstStep = (flow: OnboardingType) => {
   }
 };
 
-const getNumberOfSteps = (query: any, flow: OnboardingType) => {
+const getNumberOfSteps = (query: any, flow: OnboardingType, firstTime: boolean) => {
+  if (!firstTime) {
+    return 3;
+  }
   if (flow === OnboardingType.join) {
     return 1;
   }
@@ -162,6 +173,7 @@ type OnboardingProviderProps = {
   stripe: any;
   checkChargeable: (data: any) => void;
   trackInvitationAccepted: (workspaceId: string) => void;
+  firstTime: boolean;
 };
 
 const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
@@ -178,18 +190,22 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   validateInvite,
   createProject,
   workspaces,
+  firstTime,
   trackInvitationAccepted,
   account,
   currentWorkspaceID,
   updateWorkspaceName,
   updateWorkspaceImage,
+  goToWorkspace,
 }) => {
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const { plan, period, couponCode, flow } = extractQueryParams(query);
-  const firstStep = getFirstStep(flow);
-  const numberOfSteps = getNumberOfSteps(query, flow);
+  const firstStep = getFirstStep(flow, firstTime);
+  const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
+
+  const numberOfSteps = getNumberOfSteps(query, flow, firstTime);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
 
   const [state, actions] = useSmartReducer({
@@ -210,6 +226,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     numberOfSteps,
     onboardingComplete: false,
     sendingRequests: false,
+    justCreatingWorkspace: !firstTime,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
@@ -258,6 +275,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     return source;
+  };
+
+  const onCancel = () => {
+    goToDashboard();
   };
 
   const handlePayment = async (workspaceID: string, source: any) => {
@@ -365,14 +386,16 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
-    trackingEvents.trackOnboardingIdentify({
-      name: userName!,
-      role,
-      email: email!,
-      channels,
-      teamSize,
-      workspaceIDs: userWorkspaces?.allIds,
-    });
+    if (firstTime) {
+      trackingEvents.trackOnboardingIdentify({
+        name: userName!,
+        role,
+        email: email!,
+        channels,
+        teamSize,
+        workspaceIDs: userWorkspaces?.allIds,
+      });
+    }
 
     try {
       const { skill_id, diagram } = await createProject(
@@ -380,8 +403,15 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         { name: ONBOARDING_PROJECT_NAME, locales: ['en-US'], platform: PlatformType.ALEXA },
         1
       );
-      await goToCanvas(skill_id, diagram);
-      await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+      if (firstTime) {
+        await goToCanvas(skill_id, diagram);
+        await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+      } else {
+        const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
+        goToWorkspace(workspace.id);
+
+        openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
+      }
       toastNotif.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
@@ -437,9 +467,11 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         return;
       }
 
-      dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
+      if (firstTime) {
+        dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
+      }
 
-      if (workspaceID) {
+      if (workspaceID && firstTime) {
         trackingEvents.trackOnboardingComplete({ skip: false, workspaceID });
       }
     };
@@ -449,7 +481,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   }, [isFinalizing]);
 
   React.useEffect(() => {
-    if (cache.current.stepStack.length < stepStack.length) {
+    if (cache.current.stepStack.length < stepStack.length && firstTime) {
       const prevStepID: StepID = cache.current.stepStack[0];
 
       dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
@@ -469,6 +501,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       stepBack,
       finishJoiningWorkspace,
       finishCreateOnboarding,
+      onCancel,
     },
   };
 
@@ -492,6 +525,7 @@ const mapDispatchToProps = {
   createProject: Workspace.createProject,
   updateWorkspaceName: Workspace.updateWorkspaceName,
   updateWorkspaceImage: Workspace.updateWorkspaceImage,
+  goToWorkspace: Router.goToWorkspace,
 };
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

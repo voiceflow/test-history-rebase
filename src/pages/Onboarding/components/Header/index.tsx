@@ -7,8 +7,8 @@ import { ActionButton, Container, StepStatus } from './components';
 
 const OnboardingHeader: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
-  const { currentStepID, stepStack } = state;
-  const { stepBack, stepForward } = actions;
+  const { currentStepID, stepStack, justCreatingWorkspace } = state;
+  const { stepBack, stepForward, onCancel } = actions;
 
   const currentStepMeta = STEP_META[currentStepID];
   const hasBackButton = currentStepMeta?.canBack && stepStack.length > 1;
@@ -18,14 +18,18 @@ const OnboardingHeader: React.FC = () => {
     <Container>
       <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
       <StepStatus />
-      <ActionButton
-        shouldRender={hasSkipButton}
-        icon="next"
-        label="skip"
-        onClick={() => {
-          stepForward(currentStepMeta?.skipTo, { skip: true });
-        }}
-      />
+      {justCreatingWorkspace ? (
+        <ActionButton shouldRender={true} icon="close" label="cancel" onClick={onCancel} />
+      ) : (
+        <ActionButton
+          shouldRender={hasSkipButton}
+          icon="next"
+          label="skip"
+          onClick={() => {
+            stepForward(currentStepMeta?.skipTo, { skip: true });
+          }}
+        />
+      )}
     </Container>
   );
 };

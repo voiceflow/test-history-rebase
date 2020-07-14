@@ -7,10 +7,12 @@ import { FlexCenter } from '@/components/Flex';
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useFeature, useModals } from '@/hooks';
+import Onboarding from '@/pages/Onboarding';
 import { Container, LabelContainer, NameInput } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { InnerContainer, OuterContainer } from '@/pages/Onboarding/components';
 import { ActionButton, Container as HeaderContainer } from '@/pages/Onboarding/components/Header/components';
@@ -18,6 +20,7 @@ import { Container as HeaderTitleContainer, Title } from '@/pages/Onboarding/com
 import { FadeDownContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
+const OnboardingComp: any = Onboarding;
 const IconUpload: React.FC<any> = UploadJustIcon;
 
 export type NewWorkspaceProps = {
@@ -30,6 +33,7 @@ const NewWorkspace: React.FC<NewWorkspaceProps & ConnectedNewWorkspaceProps> = (
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const canContinue = !!name.trim() && name.length <= 32;
   const iconUploadRef = React.createRef<HTMLElement>();
+  const workspaceCreationFeature = useFeature(FeatureFlag.WORKSPACE_CREATION_FLOW);
 
   const onBlur = () => {
     if (name.length > 32) {
@@ -53,7 +57,9 @@ const NewWorkspace: React.FC<NewWorkspaceProps & ConnectedNewWorkspaceProps> = (
     }
   }, [createWorkspace, name, image, history, openSuccessModal]);
 
-  return (
+  return workspaceCreationFeature.isEnabled ? (
+    <OnboardingComp firstTime={false} />
+  ) : (
     <FadeDownContainer>
       <OuterContainer>
         <InnerContainer>

@@ -9,4 +9,5 @@ export type OnboardingDataProps = {
 export type OnboardingProps = {
   data: OnboardingDataProps;
   location?: any;
+  firstTime?: boolean;
 };

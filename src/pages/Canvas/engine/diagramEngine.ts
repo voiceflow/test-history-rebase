@@ -3,11 +3,12 @@ import cuid from 'cuid';
 import { BlockType } from '@/constants';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { EntityMap, Node } from '@/models';
-import { Point } from '@/types';
+import { Pair } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, cloneEntityMap, mergeEntityMaps } from './utils';
 
-const DUPLICATE_OFFSET = 40;
+const DUPLICATE_OFFSET: Pair<number> = [40, 40];
 
 class DiagramEngine extends EngineConsumer {
   getEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {
@@ -60,11 +61,11 @@ class DiagramEngine extends EngineConsumer {
     return node.combinedNodes.map((childNodeID) => this.getEntities(childNodeID, false, { x: node.x, y: node.y })).reduce(mergeEntityMaps);
   }
 
-  async cloneEntities(entityMap: EntityMap, position: Point) {
+  async cloneEntities(entityMap: EntityMap, coords: Coords) {
     const state = this.engine.store.getState();
     const skillID = activeSkillIDSelector(state);
     const clonedEntityMap = await cloneEntityMap(entityMap, this.engine.store.dispatch, skillID);
-    await this.engine.node.addMany(clonedEntityMap, position);
+    await this.engine.node.addMany(clonedEntityMap, coords);
 
     return clonedEntityMap;
   }
@@ -77,9 +78,9 @@ class DiagramEngine extends EngineConsumer {
     const childEntities = this.getEntities(node.id, false);
     const mergedEntities = mergeEntityMaps(entities, childEntities);
 
-    const newPosition: Point = [parentNode.x + DUPLICATE_OFFSET, parentNode.y + DUPLICATE_OFFSET];
+    const coords = this.engine.canvas!.toCoords([parentNode.x, parentNode.y]).add(DUPLICATE_OFFSET);
 
-    return this.cloneEntities(mergedEntities, newPosition);
+    return this.cloneEntities(mergedEntities, coords);
   }
 
   duplicateChildNode(node: Node) {
@@ -87,9 +88,9 @@ class DiagramEngine extends EngineConsumer {
     const childEntities = this.getChildEntities(node.id);
     const mergedEntities = mergeEntityMaps(entities, childEntities);
 
-    const newPosition: Point = [node.x + DUPLICATE_OFFSET, node.y + DUPLICATE_OFFSET];
+    const coords = this.engine.canvas!.toCoords([node.x, node.y]).add(DUPLICATE_OFFSET);
 
-    return this.cloneEntities(mergedEntities, newPosition);
+    return this.cloneEntities(mergedEntities, coords);
   }
 
   async duplicateNode(nodeID: string) {

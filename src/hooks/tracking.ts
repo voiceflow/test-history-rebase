@@ -28,7 +28,7 @@ export const useTrackingEvents = () => {
     <T extends (...args: any[]) => any, A extends keyof Events>(callback: T, action: A, ...actionArgs: Parameters<Events[A]>) => (
       ...args: Parameters<T>
     ) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       events[action](...actionArgs);
 

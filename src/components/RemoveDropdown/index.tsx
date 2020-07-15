@@ -15,7 +15,7 @@ const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove }) => (
   <Container>
     <DropdownComponent options={[{ label: 'Delete', onClick: onRemove }]}>
       {(ref: React.Ref<HTMLButtonElement>, onToggle: Function, isOpen: boolean) => (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         <IconButton icon="elipsis" variant="flat" active={isOpen} onClick={onToggle} ref={ref} />
       )}

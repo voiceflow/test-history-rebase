@@ -11,7 +11,7 @@ export const getRawContent = (editorState: EditorState) => {
 export const createPrefixedInlineStyle = (prefix: InlineStylePrefix, value: string) => `${prefix}${INLINE_STYLE_SEPARATOR}${value}`;
 
 export const isPrefixedInlineStyle = (prefix: InlineStylePrefix) => (style: string | undefined) =>
-  !!style?.startsWith(`${prefix}${INLINE_STYLE_SEPARATOR}`)!!;
+  !!style?.startsWith(`${prefix}${INLINE_STYLE_SEPARATOR}`);
 
 export const getInlineStylePrefixAndValue = (style: string | undefined) =>
   !style ? ([] as []) : (style.split(INLINE_STYLE_SEPARATOR) as [string, string] | [string]);

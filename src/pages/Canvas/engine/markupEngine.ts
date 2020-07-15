@@ -62,7 +62,7 @@ class MarkupEngine extends EngineConsumer {
 
     const nodeID = await this.engine.node.add(
       BlockType.MARKUP_TEXT,
-      this.engine.getCanvasMousePosition(),
+      this.engine.getMousePoint(),
       nodeData as NodeData<Markup.NodeData.Text>,
       cuid(),
       false
@@ -85,7 +85,7 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async addShapeNode(point: Point, nodeData: NodeData<Markup.NodeData.Shape>) {
-    await this.engine.node.add(BlockType.MARKUP_SHAPE, point, nodeData, cuid());
+    await this.engine.node.add(BlockType.MARKUP_SHAPE, this.engine.canvas!.toCoords(point), nodeData, cuid());
 
     this.newShape?.hide();
   }

@@ -35,7 +35,7 @@ const ColorSelect: React.FC<ColorSelectProps> = ({ color, onChange, onClose, onS
         <Portal portalNode={document.body}>
           <Popper
             innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               popperRef.current = node;
             }}

@@ -51,7 +51,7 @@ const ResourcesDropdown: React.FC = () => {
   useHotKeys(Hotkey.OPEN_RESOURCES_DROPDOWN, onOpen, { preventDefault: true });
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <Select
       id={Identifier.RESOURCE_MENU}

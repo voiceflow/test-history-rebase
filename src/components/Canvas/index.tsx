@@ -7,6 +7,7 @@ import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
 import { mouseEventOffset } from '@/utils/dom';
+import { CartesianPlane, Coords, Vector } from '@/utils/geometry';
 
 import { Container, RenderLayer } from './components';
 import { CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
@@ -54,6 +55,8 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
   applyTransitionTimeout: number | null = null;
 
+  rect: DOMRect | null = null;
+
   api = {
     getControlScheme: () => this.controls.scheme,
     isPanning: () => this.controls.isPanning,
@@ -62,6 +65,33 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     getPosition: () => this.position,
     getRef: () => this.rootRef.current!,
     getRect: () => this.rootRef.current!.getBoundingClientRect(),
+    getCachedRect: () => {
+      if (this.rect !== null) return this.rect;
+
+      const rect = this.rootRef.current!.getBoundingClientRect();
+
+      this.rect = rect;
+
+      return rect;
+    },
+    getPlane: (): CartesianPlane => {
+      const [posX, posY] = this.position;
+      const { x, y } = this.api.getCachedRect();
+
+      return {
+        origin: new Coords([x + posX, y + posY]),
+        scale: this.api.getZoom(),
+      };
+    },
+    fromVector(vector: Vector) {
+      return vector.map(this.getPlane());
+    },
+    toCoords(point: Point) {
+      return new Coords(point, this.getPlane());
+    },
+    toVector(point: Point) {
+      return new Vector(point, this.getPlane());
+    },
     getBoundingPosition: () => {
       const { x, y } = this.renderLayerRef.current!.getBoundingClientRect();
       return [x, y];

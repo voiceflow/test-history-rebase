@@ -18,6 +18,8 @@ export type NullableRecord<T extends object> = { [K in keyof T]: Nullable<T[K]> 
 
 export type Pair<T> = [T, T];
 
+export type Quad<T> = [T, T, T, T];
+
 export type Point = Pair<number>;
 
 export type Viewport = {

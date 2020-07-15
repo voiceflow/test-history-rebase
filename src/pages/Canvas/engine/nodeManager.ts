@@ -9,6 +9,7 @@ import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 import { isCommandNode } from '@/utils/node';
 
 import { EngineConsumer, nodeFactory } from './utils';
@@ -151,7 +152,8 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(type: BlockType, [x, y]: Point, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid(), autoFocus = true) {
+  async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid(), autoFocus = true) {
+    const [x, y] = this.engine.canvas!.fromVector(coords);
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };
@@ -172,11 +174,12 @@ class NodeManager extends EngineConsumer {
     return nodeID;
   }
 
-  async addMany(entities: EntityMap, position: Point) {
+  async addMany(entities: EntityMap, coords: Coords) {
     this.log.debug(this.log.pending('adding many nodes'), entities);
 
-    await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, position));
-    this.internal.addMany(entities, position);
+    const point = this.engine.canvas!.fromVector(coords);
+    await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, point));
+    this.internal.addMany(entities, point);
     this.engine.saveHistory();
 
     this.log.info(this.log.success('added many nodes'), this.log.value(entities.nodesWithData.length));

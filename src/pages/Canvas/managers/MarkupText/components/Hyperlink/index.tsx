@@ -106,7 +106,7 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
         <Portal portalNode={document.body}>
           <Popper
             innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               popperRef.current = node;
             }}

@@ -47,7 +47,7 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
         if (_isFunction(ref)) {
           ref(scrls);
         } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           ref.current = scrls;
         }

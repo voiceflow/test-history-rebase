@@ -145,7 +145,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
     ),
   });
 
-  const captureDropRef = React.useCallback((api: BlockAPI) => connectBlockDrop(api?.ref.current!), [connectBlockDrop]);
+  const captureDropRef = React.useCallback((api: BlockAPI | null) => api && connectBlockDrop(api.ref.current!), [connectBlockDrop]);
 
   const isDisabled = isHovered && hasLinkWarning;
   nodeEntity.useConditionalStyle(NODE_HOVERED_CLASSNAME, isHovered);

@@ -62,7 +62,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
       setSelected(variableType, value);
       setValue('');
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       toast.error(err.message);
     }

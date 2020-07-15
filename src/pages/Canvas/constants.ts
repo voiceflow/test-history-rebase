@@ -53,6 +53,7 @@ export enum CanvasAction {
   ZOOM = 'zoom',
   PAN = 'pan',
   IDLE = 'idle',
+  MOVE_MOUSE = 'moveMouse',
 }
 
 export enum CanvasTransformation {

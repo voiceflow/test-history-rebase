@@ -3,7 +3,7 @@ import { Popper } from 'react-popper';
 
 import NestedMenu from '@/components/NestedMenu';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
+import { CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
@@ -12,6 +12,7 @@ import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMen
 import type { Engine } from '@/pages/Canvas/engine';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { buildVirtualElement } from '@/utils/dom';
+import { Coords } from '@/utils/geometry';
 
 import { CanvasAction, TARGET_OPTIONS } from './constants';
 
@@ -24,13 +25,11 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     const clipboardDataKey = localStorage.getItem(CLIPBOARD_DATA_KEY);
 
     if (clipboardDataKey) {
-      engine.paste(clipboardDataKey, engine.canvas!.transformPoint(position!));
+      engine.paste(clipboardDataKey, new Coords(position!));
     }
   },
 
   [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID!),
-
-  [CanvasAction.ADD_COMMENT]: ({ position }, { engine }) => engine.node.add(BlockType.COMMENT, engine.canvas!.transformPoint(position!)),
 
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
 

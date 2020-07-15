@@ -96,7 +96,7 @@ export const setScrollbarOffset = (
 
     const [offsetProp, scrollProp] = property.match(/(margin-right|margin-left)/) ? ['offsetHeight', 'scrollHeight'] : ['offsetWidth', 'scrollWidth'];
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (scrollableNode[offsetProp] < scrollableNode[scrollProp]) {
       offsetNode.style.removeProperty(property);

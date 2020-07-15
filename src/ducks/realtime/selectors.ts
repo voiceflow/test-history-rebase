@@ -60,7 +60,7 @@ export const creatorMappingSelector = createSelector(
   (locks, getTabID) => (lockType: AnyNodeLock, nodeID: string, diagramID: string): [string, string?] => {
     const tabID = getTabID(lockType, nodeID)!;
 
-    return [tabID, locks?.users[diagramID]?.[tabID!]];
+    return [tabID, locks?.users[diagramID]?.[tabID]];
   }
 );
 

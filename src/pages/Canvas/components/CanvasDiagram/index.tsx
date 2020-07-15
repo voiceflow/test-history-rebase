@@ -17,6 +17,7 @@ import { ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
 
@@ -81,9 +82,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
 
-      const position = engine.canvas!.transformPoint([mouseX, mouseY]);
-
-      await engine.node.add(blockType, position, factoryData);
+      await engine.node.add(blockType, new Coords([mouseX, mouseY]), factoryData);
     },
     hover: _throttle(
       (item, monitor) => {

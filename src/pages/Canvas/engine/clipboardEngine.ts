@@ -16,9 +16,9 @@ import { addSlots, findSlotsByIDsSelector } from '@/ducks/slot';
 import { setCanvasInfo } from '@/ducks/user';
 import { loadVariableSetForDiagram } from '@/ducks/variableSet';
 import { DBNode, Diagram, Display, Intent, Link, Node, NodeData, Port, Product, Slot } from '@/models';
-import { Point } from '@/types';
 import * as Clipboard from '@/utils/clipboard';
 import { base64, synchronous as synchronousCrypto } from '@/utils/crypto';
+import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer } from './utils';
 
@@ -175,7 +175,7 @@ class ClipboardEngine extends EngineConsumer {
     this.log.info(this.log.success('copied to buffer'), this.log.value(unfilteredNodeIDs.length));
   }
 
-  async paste(pastedText: string, mousePosition: Point) {
+  async paste(pastedText: string, coords: Coords) {
     const state = this.engine.store.getState();
     const skillID = activeSkillIDSelector(state);
     const copyBuffer = Clipboard.deserialize(pastedText);
@@ -200,7 +200,7 @@ class ClipboardEngine extends EngineConsumer {
 
         const { ports, links } = result;
 
-        await this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, mousePosition);
+        await this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, coords);
 
         this.log.info(this.log.success('pasted to canvas'), this.log.value(nodesWithData.length));
       } catch (err) {

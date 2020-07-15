@@ -15,11 +15,12 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
-import { useTeardown } from '@/hooks';
+import { useMouseMove, useTeardown } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { Selector, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
@@ -298,9 +299,9 @@ export class Engine {
   /**
    * attempt to convert text and copy canvas entities
    */
-  paste(pastedText: string, mousePosition: Point) {
+  paste(pastedText: string, coords: Coords) {
     this.clearActivation();
-    this.clipboard.paste(pastedText, mousePosition);
+    this.clipboard.paste(pastedText, coords);
     this.saveHistory();
   }
 
@@ -323,6 +324,10 @@ export class Engine {
 
   getCanvasMousePosition() {
     return this.canvas!.transformPoint(this.mousePosition.current!);
+  }
+
+  getMousePoint() {
+    return new Coords(this.mousePosition.current!);
   }
 
   async reset() {
@@ -351,6 +356,8 @@ function useEngine() {
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
   const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription), []);
+
+  useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), []);
 
   React.useEffect(
     () => () => {

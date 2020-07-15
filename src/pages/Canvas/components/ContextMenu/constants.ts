@@ -6,7 +6,6 @@ import { ContextMenuOption } from './types';
 
 export enum CanvasAction {
   PASTE = 'paste',
-  ADD_COMMENT = 'add_comment',
   RENAME_BLOCK = 'rename_block',
   COPY_BLOCK = 'copy_block',
   DELETE_BLOCK = 'delete_block',

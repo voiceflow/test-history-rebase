@@ -4,8 +4,9 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
+import { Coords } from '@/utils/geometry';
 
-export const useCanvasIdle = (onIdle: () => void, deps: any[] = []) => {
+export const useCanvasIdle = (onIdle: () => void, dependencies: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 
   React.useEffect(() => {
@@ -14,10 +15,10 @@ export const useCanvasIdle = (onIdle: () => void, deps: any[] = []) => {
     return () => {
       engine.emitter.off(CanvasAction.IDLE, onIdle);
     };
-  }, deps);
+  }, dependencies);
 };
 
-export const useCanvasPan = (onPan: (movement: Pair<number>) => void, deps: any[] = []) => {
+export const useCanvasPan = (onPan: (movement: Pair<number>) => void, dependencies: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 
   React.useEffect(() => {
@@ -26,10 +27,10 @@ export const useCanvasPan = (onPan: (movement: Pair<number>) => void, deps: any[
     return () => {
       engine.emitter.off(CanvasAction.PAN, onPan);
     };
-  }, deps);
+  }, dependencies);
 };
 
-export const useCanvasZoom = (onZoom: (calulateMovement: MovementCalculator) => void, deps: any[] = []) => {
+export const useCanvasZoom = (onZoom: (calulateMovement: MovementCalculator) => void, dependencies: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 
   React.useEffect(() => {
@@ -38,5 +39,17 @@ export const useCanvasZoom = (onZoom: (calulateMovement: MovementCalculator) => 
     return () => {
       engine.emitter.off(CanvasAction.ZOOM, onZoom);
     };
-  }, deps);
+  }, dependencies);
+};
+
+export const useCanvasMouse = (onMove: (point: Coords) => void, dependencies: any[] = []) => {
+  const engine = React.useContext(EngineContext)!;
+
+  React.useEffect(() => {
+    engine.emitter.on(CanvasAction.MOVE_MOUSE, onMove);
+
+    return () => {
+      engine.emitter.off(CanvasAction.MOVE_MOUSE, onMove);
+    };
+  }, dependencies);
 };

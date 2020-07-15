@@ -16,7 +16,7 @@ export const useCurried = <S extends any[], D extends any[], R extends any = voi
   useMemo(
     () =>
       moize((...staticArgs: S) => (...dynamicArgs: D) =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         callback(...staticArgs, ...dynamicArgs)
       ),

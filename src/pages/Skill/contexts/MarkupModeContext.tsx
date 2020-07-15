@@ -93,7 +93,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
         const nodeData: Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
 
-        engine.node.add(BlockType.MARKUP_IMAGE, [offsetX, offsetY], nodeData as NodeData<Markup.NodeData.Image>);
+        engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas!.toCoords([offsetX, offsetY]), nodeData as NodeData<Markup.NodeData.Image>);
       } catch {
         toast.error('There was an error');
       }

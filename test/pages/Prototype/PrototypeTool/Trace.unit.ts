@@ -1,4 +1,4 @@
-/* eslint-disable dot-notation, @typescript-eslint/ban-ts-ignore */
+/* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
 import './utils/mockAudio';
 

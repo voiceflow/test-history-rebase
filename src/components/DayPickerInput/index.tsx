@@ -83,7 +83,7 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
           <div ref={ref as any} onClick={onShow}>
             <VariablesInputComponent
               ref={(editor: any) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 variablesInputRef.current = editor;
               }}
@@ -100,7 +100,7 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
         <Portal>
           <Popper
             innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               dayPickerRef.current = node;
             }}

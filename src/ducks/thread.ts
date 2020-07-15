@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
@@ -74,9 +75,13 @@ export const createThread = ({
     comments: [newComment],
   };
 
-  const thread: Thread = await client.thread.create(projectID, generatedThread as Thread);
+  try {
+    const thread: Thread = await client.thread.create(projectID, generatedThread as Thread);
 
-  dispatch(addThread(thread.id!, thread));
+    dispatch(addThread(thread.id!, thread));
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
 };
 
 export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'resolved' | 'position' | 'nodeID'>>): Thunk => async (
@@ -85,15 +90,23 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
 ) => {
   const projectID = Skill.activeProjectIDSelector(getState());
 
-  client.thread.update(projectID, threadID, data as Thread);
-  dispatch(updateThread(threadID, data, true));
+  try {
+    client.thread.update(projectID, threadID, data as Thread);
+    dispatch(updateThread(threadID, data, true));
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
 };
 
 export const deleteThread = (threadID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());
 
-  await client.thread.delete(projectID, threadID);
-  dispatch(removeThread(threadID));
+  try {
+    await client.thread.delete(projectID, threadID);
+    dispatch(removeThread(threadID));
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
 };
 
 // Comment CRUD
@@ -104,9 +117,13 @@ export const createComment = (threadID: string, data: Partial<Pick<Comment, 'tex
   const creatorID = Account.userIDSelector(state)!;
   const thread = threadByIDSelector(state)(threadID);
 
-  const comment = await client.comment.create(projectID, threadID, { ...data, creatorID } as Comment);
+  try {
+    const comment = await client.comment.create(projectID, threadID, { ...data, creatorID } as Comment);
 
-  dispatch(updateThread(threadID, { comments: [...thread.comments, comment] }, true));
+    dispatch(updateThread(threadID, { comments: [...thread.comments, comment] }, true));
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
 };
 
 export const updateComment = (threadID: string, commentID: string, data: Partial<Pick<Comment, 'text' | 'mentions'>>): Thunk => async (
@@ -117,10 +134,14 @@ export const updateComment = (threadID: string, commentID: string, data: Partial
   const projectID = Skill.activeProjectIDSelector(state);
   const thread = threadByIDSelector(state)(threadID);
 
-  await client.comment.update(projectID, commentID, data as Comment);
-  dispatch(
-    updateThread(threadID, { comments: thread.comments.map((comment) => (comment.id === commentID ? { ...comment, ...data } : comment)) }, true)
-  );
+  try {
+    await client.comment.update(projectID, commentID, data as Comment);
+    dispatch(
+      updateThread(threadID, { comments: thread.comments.map((comment) => (comment.id === commentID ? { ...comment, ...data } : comment)) }, true)
+    );
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
 };
 
 export const deleteComment = (threadID: string, commentID: string): Thunk => async (dispatch, getState) => {
@@ -128,6 +149,14 @@ export const deleteComment = (threadID: string, commentID: string): Thunk => asy
   const projectID = Skill.activeProjectIDSelector(state);
   const thread = threadByIDSelector(state)(threadID);
 
-  await client.comment.delete(projectID, commentID);
-  dispatch(updateThread(threadID, { comments: thread.comments.filter((comment) => comment.id !== commentID) }, true));
+  if (thread.comments.length === 1) {
+    dispatch(deleteThread(threadID));
+  } else {
+    try {
+      await client.comment.delete(projectID, commentID);
+      dispatch(updateThread(threadID, { comments: thread.comments.filter((comment) => comment.id !== commentID) }, true));
+    } catch (e) {
+      toast.error('Something went wrong. Please try again');
+    }
+  }
 };

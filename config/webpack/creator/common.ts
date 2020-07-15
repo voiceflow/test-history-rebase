@@ -45,6 +45,9 @@ export default merge(commonConfig, {
               '**/types.ts',
               'models/**/*',
 
+              // TODO: remove when commenting is fully implemented
+              'components/Commenter.tsx',
+              'pages/Canvas/components/ThreadEditor/**/*',
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'components/CaptionedIconButton/**/*',

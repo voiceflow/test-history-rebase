@@ -14,7 +14,7 @@ const threadClient = {
   update: (projectID: string, threadID: string, data: Thread) =>
     fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, threadAdapter.toDB(data)),
 
-  delete: (projectID: string, threadID: string) => fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`),
+  delete: (projectID: string, threadID: string) => fetch.delete(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`),
 };
 
 export default threadClient;

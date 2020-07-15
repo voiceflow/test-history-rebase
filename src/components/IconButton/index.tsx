@@ -6,6 +6,7 @@ import { Either } from '@/types';
 import { ActionContainer, Container, OutlineContainer, SubtleContainer } from './components';
 import { ContainerProps } from './components/Container';
 import { OutlineContainerProps } from './components/OutlineContainer';
+import { SubtleContainerProps } from './components/SubtleContainer';
 import { IconButtonVariant } from './types';
 
 export { Container, IconButtonVariant };
@@ -17,9 +18,10 @@ export type IconButtonProps = Pick<IconProps, 'icon' | 'size'> &
     iconProps?: Omit<IconProps, 'icon' | 'size'>;
     id?: string;
     disabled?: boolean;
+    hoverColor?: string;
   };
 
-const ICON_BUTTON_CONTAINERS = {
+const ICON_BUTTON_CONTAINERS: Record<IconButtonVariant, React.FC<ContainerProps | SubtleContainerProps>> = {
   [IconButtonVariant.FLAT]: Container,
   [IconButtonVariant.NORMAL]: Container,
   [IconButtonVariant.SUBTLE]: SubtleContainer,

@@ -10,8 +10,8 @@ export type Thread = {
   projectID: string;
   diagramID: string;
   nodeID: string | null;
-  creatorID: number;
   position: Pair<number>;
+  creatorID: number;
   resolved: boolean;
   comments: Comment[];
 };

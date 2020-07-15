@@ -1,9 +1,13 @@
-import { buttonContainerStyles } from '@/components/Button/components/ButtonContainer';
+import ButtonContainer from '@/components/Button/components/ButtonContainer';
 import * as SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
-const SubtleContainer = styled.button`
-  ${buttonContainerStyles}
+export type SubtleContainerProps = {
+  hoverColor?: string;
+};
+
+const SubtleContainer = styled(ButtonContainer)<SubtleContainerProps>`
+  border-style: none;
 
   & ${SvgIcon.Container} {
     color: #8da2b5;
@@ -11,7 +15,7 @@ const SubtleContainer = styled.button`
   }
 
   &:hover ${SvgIcon.Container} {
-    color: #2e3852;
+    color: ${({ hoverColor = '#2e3852' }) => hoverColor};
   }
 `;
 

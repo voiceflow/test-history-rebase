@@ -1,6 +1,7 @@
 import { css, styled, transition } from '@/hocs';
 
 export type MemberIconProps = {
+  medium?: boolean;
   large?: boolean;
   solid?: boolean;
 };
@@ -41,6 +42,15 @@ const MemberIcon = styled.div<MemberIconProps>`
   &:hover &:before {
     border-color: rgba(17, 49, 96, 0.13);
   }
+
+  ${({ medium }) =>
+    medium &&
+    css`
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      line-height: 32px;
+    `}
 
   ${({ large }) =>
     large &&

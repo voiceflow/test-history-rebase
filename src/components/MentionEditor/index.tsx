@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mention, MentionsInput, OnChangeHandlerFunc } from 'react-mentions';
+import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc } from 'react-mentions';
 
 import { Permission, hasPermission } from '@/config/permissions';
 import * as Workspace from '@/ducks/workspace';
@@ -17,19 +17,17 @@ export type MentionEditorProps = {
   permissiongType: Permission;
   onChange: (value: string, mentions: number[]) => void;
   value?: string;
-  mentionedCreators?: number[];
+  placeholder: string;
+  inputProps?: MentionsInputProps;
+  onBlur?: () => void;
 };
 
-const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({ members, onChange, value, mentionedCreators }) => {
-  const [textValue, setTextValue] = React.useState(value ?? '');
-  const [mentions, updateMentions] = React.useState<number[]>(mentionedCreators ?? []);
-
-  const onBlur = () => onChange(textValue, mentions);
-
-  const onValueChange: OnChangeHandlerFunc = (e, _, __, mentionedUsers) => {
-    setTextValue(e.target.value);
-    updateMentions(mentionedUsers.map(({ id }) => parseInt(id, 10)));
-  };
+const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({ members, onChange, onBlur, value, placeholder, inputProps }) => {
+  const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
+    onChange(
+      e.target.value,
+      mentions.map(({ id }) => parseInt(id, 10))
+    );
 
   const mentionsData = React.useMemo(() => members.map((member) => ({ id: member.creator_id, display: `@${formatNameToMention(member.name)}` })), [
     members,
@@ -39,11 +37,14 @@ const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> 
     <MentionEditorContainer>
       <MentionsInput
         className="mentionInput"
-        placeholder="Comment or @mention"
-        value={textValue}
+        placeholder={placeholder}
+        value={value}
         onChange={onValueChange}
-        onBlur={onBlur}
         style={mentionEditorStyle}
+        onBlur={onBlur}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
+        {...inputProps}
       >
         <Mention
           trigger="@"
@@ -69,4 +70,4 @@ const mergeProps = (...[{ members, plan }, , { permissiongType }]: MergeArgument
 
 export type ConnectedMentionEditorProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
 
-export default connect(mapStateToProps, null, mergeProps)(MentionEditor as any) as React.FC<MentionEditorProps & ConnectedMentionEditorProps>;
+export default connect(mapStateToProps, null, mergeProps)(MentionEditor as any) as React.FC<MentionEditorProps>;

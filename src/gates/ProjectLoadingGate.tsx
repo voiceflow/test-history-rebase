@@ -23,6 +23,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
   joinProjectChannel,
   loadThreads,
   setError,
+  projectID,
   children,
 }) => {
   const commenting = useFeature(FeatureFlag.COMMENTING);
@@ -30,14 +31,14 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
       await loadProject();
-      if (commenting.isEnabled) {
+      if (commenting.isEnabled && projectID) {
         await loadThreads();
       }
       await joinProjectChannel();
     } catch (e) {
       setError(e);
     }
-  }, [loadProject, loadThreads, joinProjectChannel, setError]);
+  }, [loadProject, loadThreads, joinProjectChannel, setError, projectID]);
 
   React.useEffect(() => client.socket.global.watchForReconnected(joinProjectChannel), [joinProjectChannel]);
 
@@ -50,6 +51,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 
 const mapStateToProps = {
   activeSkill: Skill.activeSkillSelector,
+  projectID: Skill.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -61,7 +63,7 @@ const mapDispatchToProps = {
 
 // eslint-disable-next-line no-shadow
 const mergeProps = (
-  ...[{ activeSkill }, { loadProject, joinProjectChannel, loadThreads, setError }, { versionID, diagramID }]: MergeArguments<
+  ...[{ projectID, activeSkill }, { loadProject, joinProjectChannel, loadThreads, setError }, { versionID, diagramID }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
     ProjectLoadingGateProps
@@ -71,7 +73,7 @@ const mergeProps = (
   isProjectLoaded: !!activeSkill && activeSkill.id === versionID,
   loadProject: () => loadProject(versionID, diagramID),
   joinProjectChannel: () => joinProjectChannel(versionID),
-  loadThreads: () => loadThreads(versionID),
+  loadThreads: () => loadThreads(projectID),
 });
 
 type ConnectedProjectLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

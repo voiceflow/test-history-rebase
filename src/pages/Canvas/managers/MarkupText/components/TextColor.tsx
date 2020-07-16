@@ -136,7 +136,11 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   }, [colorStr, hasFocus]);
 
   useTeardown(() => {
-    onRemoveAndSaveFakeSelection();
+    const state = getEditorState?.();
+
+    if (state) {
+      saveEditorState(state);
+    }
   }, []);
 
   return (

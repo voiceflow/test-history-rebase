@@ -137,7 +137,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMa
       const hasFocus = editorState.getSelection().getHasFocus();
 
       if (hasFocus) {
-        event.preventDefault();
+        event.stopPropagation();
       }
     },
     [editorState]

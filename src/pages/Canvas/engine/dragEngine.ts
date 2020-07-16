@@ -40,7 +40,10 @@ class DragEngine extends EngineConsumer {
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
     await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
     this.addStyle();
-
+    const focusedNode = this.engine.focus.getTarget();
+    if (focusedNode && !nodeIDs.includes(focusedNode)) {
+      this.engine.focus.reset();
+    }
     this.log.info(this.log.success('set drag group'), this.log.value(nodeIDs.length));
   }
 
@@ -57,6 +60,9 @@ class DragEngine extends EngineConsumer {
     this.engine.node.redraw(nodeID);
     await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
     this.addStyle();
+    if (this.engine.focus.getTarget() !== nodeID) {
+      this.engine.focus.reset();
+    }
 
     this.log.info(this.log.success('set drag target'), this.log.slug(nodeID));
   }

@@ -3,6 +3,7 @@ import React from 'react';
 import { PrototypeStatus, prototypeStatusSelector, resetPrototype, startPrototype } from '@/ducks/prototype';
 import { recentprototypeSelector } from '@/ducks/recent';
 import { activeLocalesSelector } from '@/ducks/skill';
+import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useTrackingEvents } from '@/hooks';
@@ -19,9 +20,17 @@ export type PrototypeProps = {
   isPublic?: boolean;
 };
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ locale, status, isPublic, startPrototype, resetPrototype, debug }) => {
+const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
+  locale,
+  status,
+  isPublic,
+  startPrototype,
+  resetPrototype,
+  debug,
+  slots,
+}) => {
   const [, trackEventsWrapper] = useTrackingEvents();
-  const [prototypeMachineStatus, messages, interactions, onInteraction, onPlay] = usePrototype(status, debug);
+  const [prototypeMachineStatus, messages, interactions, onInteraction, onPlay] = usePrototype(status, debug, slots);
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
@@ -62,6 +71,7 @@ const mapStateToProps = {
   status: prototypeStatusSelector,
   locales: activeLocalesSelector,
   settings: recentprototypeSelector,
+  slots: Slot.allSlotsSelector,
 };
 
 const mapDispatchProps = {

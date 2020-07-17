@@ -1,8 +1,9 @@
 /* eslint-disable no-throw-literal */
-import NLC, { IIntentFullfilment } from '@voiceflow/natural-language-commander';
+import NLC, { IIntentFullfilment, ISlotFullfilment } from '@voiceflow/natural-language-commander';
 import cuid from 'cuid';
 
 import client from '@/client';
+import { Slot } from '@/models';
 import { regexVariables } from '@/utils/string';
 
 import { PMStatus, TMAmazonIntent } from '../types';
@@ -14,6 +15,7 @@ export type DialogControllerProps = {
   locale: string;
   variables: Record<string, any>;
   updateStatus: (status: PMStatus) => void;
+  slots: Array<Slot>;
 };
 
 type DialogControllerOptions = {
@@ -118,6 +120,20 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
     }
   }
 
+  private mapToSlotKeys = (unmappedSlot: ISlotFullfilment) => {
+    const slotMeta = this.props.slots.find(({ name }) => name === unmappedSlot.name);
+
+    if (!slotMeta) throw new Error('NLC produced an unexpected slot');
+
+    const input = slotMeta.inputs.find(
+      ({ value, synonyms }) => value === unmappedSlot.value || synonyms.split(', ').some((synonym) => synonym === unmappedSlot.value)
+    );
+
+    if (!input) throw new Error('NLC matched slot type, but its value is incorrect');
+
+    unmappedSlot.value = input.value;
+  };
+
   public async handle(input: string) {
     // eslint-disable-next-line sonarjs/no-small-switch
     if (this.status === DialogStatus.CONFIRM) {
@@ -134,6 +150,11 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
 
     this.status = DialogStatus.INTERACTION;
     this.dialog = null;
+
+    if (this.fulfillment) {
+      this.fulfillment.slots.forEach((slot) => this.mapToSlotKeys(slot));
+    }
+
     return this.fulfillment;
   }
 

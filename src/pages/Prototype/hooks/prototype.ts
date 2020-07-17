@@ -6,13 +6,15 @@ import { EventualEngineContext } from '@/contexts';
 import { setError } from '@/ducks/modal';
 import { Context, PrototypeStatus, fetchContext, prototypeNLCSelector, prototypeVariablesSelector, updatePrototypeStatus } from '@/ducks/prototype';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
+import { Slot } from '@/models';
 
 import PrototypeTool from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
 
 const usePrototype = (
   prototypeToolStatus: PrototypeStatus,
-  debug: boolean
+  debug: boolean,
+  slots: Array<Slot>
 ): [PMStatus | null, Message[], Interaction[], (input: string) => void, (src: string) => void] => {
   const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ const usePrototype = (
     locale,
     engine,
     variables,
+    slots,
     setError: (error: string) => dispatch(setError(error)),
     enterFlow: (diagramID: string) => dispatch(updateDiagramID(diagramID)),
     updateStatus: setStatus,

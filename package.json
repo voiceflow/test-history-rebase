@@ -96,7 +96,7 @@
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.13.1",
-    "react-dom-confetti": "^0.1.0",
+    "react-dom-confetti": "^0.2.0",
     "react-dropzone": "^6.2.4",
     "react-dropzone10": "npm:react-dropzone@^10.2.1",
     "react-facebook-login": "^4.1.1",

@@ -118,7 +118,7 @@ jobs:
   test-e2e:
     resource_class: large
     docker: # run the steps with Docker
-      - image: cypress/base:10 # Test steps container
+      - image: cypress/base:12 # Test steps container
         environment:
           DOCKERIZE_VERSION: v0.6.1
           MKCERT_VERSION: v1.4.0

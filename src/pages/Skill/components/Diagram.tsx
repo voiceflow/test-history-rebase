@@ -2,7 +2,8 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
+import { EventualEngineContext } from '@/contexts';
+import { useFeature, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import { CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
@@ -28,6 +29,7 @@ export type DiagramProps = RouteComponentProps & {
 const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location }) => {
   const markupTool = React.useContext(MarkupModeContext);
   const commenting = React.useContext(CommentModeContext);
+  const eventualEngine = React.useContext(EventualEngineContext);
   const markupFeature = useFeature(FeatureFlag.MARKUP);
   const commentingFeature = useFeature(FeatureFlag.COMMENTING);
 
@@ -42,6 +44,10 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location })
       }
     }
   }, [location.pathname]);
+
+  useTeardown(() => {
+    eventualEngine?.get()?.teardown();
+  });
 
   return (
     <>

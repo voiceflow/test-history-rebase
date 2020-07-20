@@ -15,7 +15,7 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
-import { useMouseMove, useTeardown } from '@/hooks';
+import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { Selector, Store } from '@/store/types';
@@ -365,8 +365,6 @@ function useEngine() {
     },
     [currentDiagramID]
   );
-
-  useTeardown(() => engine.teardown());
 
   return engine;
 }

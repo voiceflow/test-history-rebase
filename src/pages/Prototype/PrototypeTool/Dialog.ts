@@ -123,15 +123,15 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
   private mapToSlotKeys = (unmappedSlot: ISlotFullfilment) => {
     const slotMeta = this.props.slots.find(({ name }) => name === unmappedSlot.name);
 
-    if (!slotMeta) throw new Error('NLC produced an unexpected slot');
+    if (slotMeta) {
+      const input = slotMeta.inputs.find(
+        ({ value, synonyms }) => value === unmappedSlot.value || synonyms.split(', ').some((synonym) => synonym === unmappedSlot.value)
+      );
 
-    const input = slotMeta.inputs.find(
-      ({ value, synonyms }) => value === unmappedSlot.value || synonyms.split(', ').some((synonym) => synonym === unmappedSlot.value)
-    );
-
-    if (!input) throw new Error('NLC matched slot type, but its value is incorrect');
-
-    unmappedSlot.value = input.value;
+      if (input) {
+        unmappedSlot.value = input.value;
+      }
+    }
   };
 
   public async handle(input: string) {

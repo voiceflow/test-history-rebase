@@ -6,6 +6,7 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { getAudioTitle } from '@/utils/audio';
 import { transformVariablesToReadable } from '@/utils/slot';
+import { stripHTMLTags } from '@/utils/string';
 
 export type SpeakStepItem = {
   content?: string;
@@ -46,7 +47,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
             <Item
               {...itemProps}
               key={`${index}`}
-              label={content ? transformVariablesToReadable(content) : null}
+              label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
               portID={index === itemsToRender.length - 1 ? portID : null}
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}

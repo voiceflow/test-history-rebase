@@ -4,6 +4,8 @@ import { convertToWord } from './number';
 
 export { cuid };
 
+const TAGS_REGEXP = /(<([^>]+)>)/gi;
+
 export const createNextName = (prefix: string, items: string[]) => {
   let counter = 1;
   while (items.includes(`${prefix}_${convertToWord(counter)}`)) {
@@ -33,4 +35,8 @@ export const arrayStringReplace = (targetString: string, newString: string, stri
   return stringArray.map((string: string) => {
     return string.replace(targetString, newString);
   });
+};
+
+export const stripHTMLTags = (str: string) => {
+  return str.replace(TAGS_REGEXP, '');
 };

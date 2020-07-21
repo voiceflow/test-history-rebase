@@ -1,9 +1,15 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const HoverContainer = styled.div`
+const HoverContainer = styled.div<{ readOnlyMode: boolean }>`
   :not(:last-of-type) {
     padding-bottom: 6px;
   }
+
+  ${({ readOnlyMode }) =>
+    readOnlyMode &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 export default HoverContainer;

@@ -23,16 +23,17 @@ const Node: React.FC = () => {
     isFocused: e.isFocused,
   }));
   const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
-
   const { onMouseDown, onClick, onDragStart } = useNodeDrag();
 
-  const onRightClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-
-    if (nodeEntity.nodeType !== BlockType.START && editPermission.canEdit) {
-      contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
-    }
-  }, []);
+  const onRightClick = React.useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      if (nodeEntity.nodeType !== BlockType.START && editPermission.canEdit) {
+        contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
+      }
+    },
+    [editPermission.canEdit]
+  );
 
   const onDoubleClick = React.useCallback(() => engine.node.center(nodeEntity.nodeID), []);
 

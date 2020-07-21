@@ -15,6 +15,7 @@ import {
 type HeaderInputProps = AutosizeInputProps & {
   canEdit?: boolean;
   variant: BlockVariant;
+  viewOnlyMode: boolean;
 };
 
 const HeaderInput = styled(
@@ -49,6 +50,7 @@ const HeaderInput = styled(
     cursor: text;
     overflow: hidden;
     user-select: ${({ readOnly }) => readOnly && 'none'};
+    pointer-events: ${({ viewOnlyMode }) => viewOnlyMode && 'none'};
     color: ${withBlockVariantStyle((variant) => variant.color)};
 
     :hover {

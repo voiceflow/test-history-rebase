@@ -147,7 +147,7 @@ function SlotEdit({
     if (isInteraction) {
       updateSlot();
     }
-  }, [selectedColor, customLines.length]);
+  }, [slotType, selectedColor, customLines.length]);
 
   return (
     <>
@@ -188,7 +188,6 @@ function SlotEdit({
       >
         <Select
           value={slotType}
-          onBlur={isInteraction && updateSlot}
           options={slotTypes}
           onSelect={updateSlotType}
           searchable

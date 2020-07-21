@@ -264,26 +264,24 @@ yarn start --ff_someFeature
 - `ff_bulkUpload` / `VF_APP_FF_BULK_UPLOAD`: slots and utterances bulk upload
 - `ff_workspaceCreationFlow` / `VF_APP_FF_WORKSPACE_CREATION_FLOW`: new create workspace flow
 
-## Previewing in an ephmeral environment
 
-1. Ask Frank (@Fran) <<frank@voiceflow.com>> for an ephemeral environment
-2. A hash string will be given to you that represents your ephemeral environment name
-3. Run `yarn preview <environment name>`
-4. Monitor CircleCI to check your ephemeral branch's (`ephemeral-<environment name>`) deployment status.
+### Environment variable overrides
+To properly decouple code from configuration, certain configuration variables can be overriden at runtime. 
+This is accomplished by injecting these variables into the `window` global variable in `public/static.js`. 
+The dockerfile entrypoint is a script that checks for container environment variables prefixed with `VF_OVERRIDE` and populates `public/static.js`.
+The override logic is written in `src/config/index.ts`; if the override on a given variable is populated, then it will override the target variable. 
+NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by the startup script.   
 
-- Make sure you run `yarn preview <environment name>` at least once in the `creator-app` repository after you have received your ephemeral environment. This will ensure that the app's API_URL is set correctly to your ephemeral API server.
+## Previewing in a Development Environment
 
-| Component   | URL                                                |
-| ----------- | -------------------------------------------------- |
-| creator-api | `https://api.<environment name>.voiceflow.com`     |
-| creator-app | `https://creator.<environment name>.voiceflow.com` |
+#### Preparations
+Make sure your `envcli` utility is properly set up by following the [envcli readme](https://github.com/voiceflow/envcli).  
 
-Currently, only the `creator` component is supported; `voiceflow-server` and `integrations` services are not deployed as of this writing. HTTP 500 errors on the `/integrations` path is normal since the `integrations` service is not deployed.
-
-#### Ephemeral environment rip down
-
-1. Run `yarn preview:delete <environment name>`
-2. If you are completely finished using the environment, please inform Frank to remove all cloud resources.
+#### Previewing
+```bash
+envcli preview
+```
+Follow the interactive prompt for environment creation (if applicable). The command will output a CircleCI link that you can follow to see the deployment status of the `creator-app` in your environment. 
 
 ## Editor Configuration
 

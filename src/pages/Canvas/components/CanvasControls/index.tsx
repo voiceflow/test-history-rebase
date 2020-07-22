@@ -87,9 +87,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       return;
     }
 
-    if (isPrototyping) {
-      goToDesign();
-    }
     openMode(commenting?.open);
   };
 

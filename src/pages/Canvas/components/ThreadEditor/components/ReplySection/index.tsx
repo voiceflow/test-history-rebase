@@ -18,23 +18,24 @@ type ReplySectionProps = {
 const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
   const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
 
-  const commenting = React.useContext(CommentModeContext);
+  const { newReply, setNewValues, resetNewValues, postComment } = React.useContext(CommentModeContext);
 
   const doneReplying = async () => {
-    await commenting.postComment();
-    commenting.setThreadID(null);
+    await postComment();
+
+    resetNewValues(true);
     disableReplying();
   };
 
   const onClick = () => {
     enableReplying();
-    commenting.setThreadID(threadID);
+    setNewValues({ threadID }, true);
   };
 
   const onBlur = () => {
-    if (!commenting.text) {
+    if (!newReply?.text) {
       disableReplying();
-      commenting.resetValues();
+      resetNewValues(true);
     }
   };
 
@@ -44,9 +45,9 @@ const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
       <Box mt={12}>
         <MentionEditor
           permissiongType={Permission.COMMENTING}
-          onChange={commenting.setValues}
+          onChange={(text: string, mentions: number[]) => setNewValues({ ...newReply, text, mentions }, true)}
           placeholder="Reply or @mention"
-          value={commenting.text}
+          value={newReply?.threadID && newReply?.text}
           onBlur={onBlur}
         />
       </Box>

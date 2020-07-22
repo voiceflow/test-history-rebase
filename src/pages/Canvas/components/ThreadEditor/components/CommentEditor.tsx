@@ -18,27 +18,22 @@ type CommentEditorProps = {
 const CommentEditor: React.FC<CommentEditorProps> = ({ comment, showResolve }) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
 
-  const commenting = React.useContext(CommentModeContext);
+  const { editingComment, setEditingValues, resetEditingValues, updateComment } = React.useContext(CommentModeContext);
 
   const doneEditing = async () => {
-    await commenting.updateComment();
+    await updateComment();
 
     disableEditing();
-    commenting.setThreadID(null);
-    commenting.setCommentID(null);
   };
 
   const onEdit = () => {
-    commenting.setValues(comment.text, comment.mentions);
-
+    setEditingValues(comment);
     enableEditing();
-    commenting.setThreadID(comment.threadID);
-    commenting.setCommentID(comment.id);
   };
 
   const onBlur = () => {
-    if (!commenting.text) {
-      commenting.resetValues();
+    if (!editingComment?.text) {
+      resetEditingValues();
       disableEditing();
     }
   };
@@ -54,14 +49,15 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, showResolve }) =
         isEditing={isEditing}
         showResolve={showResolve}
         isPosted={!isEditing}
+        postedTime={comment.created}
       />
       <Box mt={12} onBlur={onBlur}>
         {isEditing ? (
           <MentionEditor
             permissiongType={Permission.COMMENTING}
-            onChange={commenting.setValues}
+            onChange={(text: string, mentions: number[]) => setEditingValues({ ...editingComment, text, mentions } as Comment)}
             placeholder="Comment or @mention"
-            value={commenting.text}
+            value={editingComment?.text}
             onBlur={onBlur}
           />
         ) : (

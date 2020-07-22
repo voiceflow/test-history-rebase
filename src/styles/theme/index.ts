@@ -57,6 +57,9 @@ const THEME = {
     markupSidebar: {
       width: 360,
     },
+    historyDrawer: {
+      width: 440,
+    },
     menuBar: {
       width: 40,
     },

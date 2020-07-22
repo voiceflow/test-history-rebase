@@ -1,0 +1,19 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import Commenter from '.';
+
+<Meta title="Commenter" component={Commenter} />
+
+# Commenter
+
+A Commenter component.
+
+## Variants
+
+<Preview>
+  <Story name="basic">{stories.basic()}</Story>
+  <Story name="with time">{stories.withTime()}</Story>
+</Preview>
+

@@ -29,9 +29,11 @@ export const {
   has: hasThreadsSelector,
 } = createCRUDSelectors<Thread>(STATE_KEY);
 
-export const filterByOpenThreads = createSelector([allThreadsSelector], (threads) => threads.map((thread) => !thread.resolved));
+export const openThreads = createSelector([allThreadsSelector], (threads) => threads.filter((thread) => !thread.resolved));
 
-export const filterByResolvedThreads = createSelector([allThreadsSelector], (threads) => threads.map((thread) => thread.resolved));
+export const resolvedThreads = createSelector([allThreadsSelector], (threads) => threads.filter((thread) => thread.resolved));
+
+export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.length);
 
 // action creators
 
@@ -89,9 +91,10 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
   getState
 ) => {
   const projectID = Skill.activeProjectIDSelector(getState());
+  const thread = threadByIDSelector(getState())(threadID);
 
   try {
-    client.thread.update(projectID, threadID, data as Thread);
+    client.thread.update(projectID, threadID, { ...thread, ...data });
     dispatch(updateThread(threadID, data, true));
   } catch (e) {
     toast.error('Something went wrong. Please try again');

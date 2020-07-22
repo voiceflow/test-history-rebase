@@ -1,4 +1,3 @@
-export { default as SuggestionItem } from './SuggestionItem';
 export { default as MentionEditorContainer } from './MentionEditorContainer';
 
 export const mentionEditorStyle = {

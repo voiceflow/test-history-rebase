@@ -4,11 +4,13 @@ import { ButtonBox, Flex } from '@/components/Box';
 import BaseDropdown from '@/components/Dropdown';
 import { FlexEnd } from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import BaseMenu, { MenuItem } from '@/components/Menu';
+import BaseMenu, { MenuItem as BaseMenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
+import { noop } from '@/utils/functional';
 
 const Menu: any = BaseMenu;
+const MenuItem: any = BaseMenuItem;
 const Dropdown: any = BaseDropdown;
 
 export type CommentActionsProps = {
@@ -46,7 +48,10 @@ const CommentActions: React.FC<CommentActionsProps> = ({
         <Dropdown
           menu={
             <Menu>
-              <MenuItem onClick={onEdit}>Edit</MenuItem>
+              {/* Disable edit button if there is already a comment in editing mode */}
+              <MenuItem disabled={!!commenting.editingComment} onClick={onEdit}>
+                Edit
+              </MenuItem>
               <MenuItem onClick={() => commenting.deleteComment(threadID!, commentID!)}>Delete</MenuItem>
             </Menu>
           }
@@ -81,7 +86,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
       {!isPosted && (
         <ButtonBox
           ml={10}
-          onClick={onPost}
+          onClick={isDisabled ? noop : onPost}
           color="#62778c"
           fontSize={13}
           fontWeight={600}

@@ -11,6 +11,7 @@ export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; d
     css`
       color: #5190e6;
     `}
+
    ${({ padding }) =>
      padding &&
      css`
@@ -29,4 +30,6 @@ cursor: pointer;
 export const TextContainer = styled.div`
   display: inline-block;
   margin-right: 13px;
+
+  color: ${({ color = '#6e849a' }) => color};
 `;

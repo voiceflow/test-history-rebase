@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Drawer from '@/components/Drawer';
 import { isSafari } from '@/config';
 import { MarkupModeType, MarkupShapeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -35,6 +36,10 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null
     commentingEnabled &&
     css`
       cursor: crosshair;
+
+      ${Drawer} {
+        cursor: pointer;
+      }
     `}
 `;
 

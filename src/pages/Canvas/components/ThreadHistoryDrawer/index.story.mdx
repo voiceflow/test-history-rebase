@@ -1,0 +1,18 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import HistoryDrawer from '.';
+
+<Meta title="Thread History Drawer" component={HistoryDrawer} />
+
+# HistoryDrawer
+
+A ThreadHistoryDrawer
+
+<Preview>
+  <Story name="no threads">{stories.noThreads()}</Story>
+  <Story name="open threads">{stories.onlyOpenThreads()}</Story>
+  <Story name="resolved threads">{stories.onlyResolvedThreads()}</Story>
+  <Story name="all threads">{stories.allThreads()}</Story>
+</Preview>

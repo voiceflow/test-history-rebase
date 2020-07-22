@@ -8,12 +8,14 @@ import { ConnectedProps } from '@/types';
 
 import CommentActions, { CommentActionsProps } from './CommentActions';
 
-type ThreadEditorHeaderProps = CommentActionsProps & {};
+type ThreadEditorHeaderProps = CommentActionsProps & {
+  postedTime?: string;
+};
 
-const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, ...actionProps }) => {
+const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => {
   return (
     <Flex justifyContent="space-between" height={33}>
-      <Commenter creatorID={currentUser.creator_id!} />
+      <Commenter creatorID={currentUser.creator_id!} time={postedTime} />
       <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
     </Flex>
   );

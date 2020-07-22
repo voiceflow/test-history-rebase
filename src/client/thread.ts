@@ -6,13 +6,17 @@ import fetch from './fetch';
 export const COMMENTING_PATH = 'commenting/project';
 
 const threadClient = {
-  find: (projectID: string) => fetch.get<DBThread[]>(`${COMMENTING_PATH}/${projectID}/threads`).then(threadAdapter.mapFromDB),
+  find: (projectID: string) =>
+    fetch.get<{ threads: DBThread[] }>(`${COMMENTING_PATH}/${projectID}/threads`).then(({ threads }) => threadAdapter.mapFromDB(threads)),
 
   create: (projectID: string, data: Thread) =>
     fetch.post<DBThread>(`${COMMENTING_PATH}/${projectID}/threads`, threadAdapter.toDB(data)).then(threadAdapter.fromDB),
 
-  update: (projectID: string, threadID: string, data: Thread) =>
-    fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, threadAdapter.toDB(data)),
+  update: (projectID: string, threadID: string, data: Thread) => {
+    const { resolved, node_id, position } = threadAdapter.toDB(data);
+
+    return fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, { resolved, node_id, position });
+  },
 
   delete: (projectID: string, threadID: string) => fetch.delete(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`),
 };

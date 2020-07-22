@@ -98,7 +98,7 @@ export const loadSkill = (versionID: string, diagramID: string): Thunk<unknown> 
   dispatch(Project.addProject(project.id, project));
   dispatch(Skill.setActiveSkill(skill, diagramID));
 
-  return skill;
+  return skill as Models.Skill;
 };
 
 export const savePlatformAndActiveDiagram = (): SyncThunk => (dispatch) =>

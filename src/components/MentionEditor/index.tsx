@@ -1,6 +1,7 @@
 import React from 'react';
-import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc } from 'react-mentions';
+import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 
+import Commenter from '@/components/Commenter';
 import { Permission, hasPermission } from '@/config/permissions';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -8,7 +9,7 @@ import { DBWorkspace } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import MentionPreview from '../CommentPreview';
-import { MentionEditorContainer, SuggestionItem, mentionEditorStyle, mentionStyle } from './components';
+import { MentionEditorContainer, mentionEditorStyle, mentionStyle } from './components';
 import { formatNameToMention } from './utils';
 
 export { MentionPreview };
@@ -22,7 +23,14 @@ export type MentionEditorProps = {
   onBlur?: () => void;
 };
 
-const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({ members, onChange, onBlur, value, placeholder, inputProps }) => {
+export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({
+  members,
+  onChange,
+  onBlur,
+  value = '',
+  placeholder,
+  inputProps,
+}) => {
   const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
     onChange(
       e.target.value,
@@ -52,7 +60,8 @@ const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> 
           appendSpaceOnAdd
           data={mentionsData}
           style={mentionStyle}
-          renderSuggestion={(suggestion) => <SuggestionItem suggestion={suggestion} members={members} />}
+          // suggestion.id type is coming from the editor library, casting it as number as we know the type of id
+          renderSuggestion={(suggestion: SuggestionDataItem) => <Commenter creatorID={suggestion.id as number} />}
         />
       </MentionsInput>
     </MentionEditorContainer>

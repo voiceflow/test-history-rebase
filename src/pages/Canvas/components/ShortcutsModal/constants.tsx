@@ -52,7 +52,7 @@ export const SHORTCUTS = [
     title: 'Search and Add Block',
     command: (
       <>
-        <ShortcutCommand>Space</ShortcutCommand>
+        <ShortcutCommand>Shift</ShortcutCommand> + <ShortcutCommand>Space</ShortcutCommand>
       </>
     ),
   },

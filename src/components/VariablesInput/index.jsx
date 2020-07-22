@@ -77,7 +77,7 @@ const VariablesInput = (
         {...props}
         ref={ref}
         onBlur={onBlurCallback}
-        onEnterPress={onEnterPressCallback}
+        onEnterPress={onEnterPress && onEnterPressCallback}
         pluginsTypes={pluginsTypes}
         pluginsProps={pluginProps}
       />

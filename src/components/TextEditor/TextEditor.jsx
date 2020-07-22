@@ -1,3 +1,4 @@
+import { RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
@@ -19,6 +20,7 @@ function TextEditor({
   forwardedRef,
   pluginsTypes = DEFAULT_PLUGINS,
   pluginsProps,
+  newLineOnEnter,
   onEditorStateChange,
 }) {
   const initialState = React.useRef(value);
@@ -48,21 +50,29 @@ function TextEditor({
 
   const onHandlerReturn = React.useCallback(
     (e, nextEditorState) => {
-      const callback = store.get('onEnterPress');
+      if (ableToHandleReturn()) {
+        const onEnterPress = store.get('onEnterPress');
 
-      if (callback && ableToHandleReturn()) {
-        const nextValue = fromStateWithAdapter(nextEditorState);
+        if (onEnterPress) {
+          const nextValue = fromStateWithAdapter(nextEditorState);
 
-        store.set('textValue', nextValue.text);
+          store.set('textValue', nextValue.text);
 
-        callback(nextValue);
+          onEnterPress(nextValue);
 
-        return 'handled';
+          return 'handled';
+        }
+
+        if (newLineOnEnter) {
+          updateEditorState(RichUtils.insertSoftNewline(nextEditorState));
+
+          return 'handled';
+        }
       }
 
       return null;
     },
-    [ableToHandleReturn, fromStateWithAdapter, store]
+    [ableToHandleReturn, fromStateWithAdapter, store, newLineOnEnter]
   );
 
   const onBlurEditor = React.useCallback(() => {

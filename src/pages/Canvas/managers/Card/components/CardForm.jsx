@@ -18,7 +18,7 @@ function CardForm({ data, onChange, withImage }) {
       </FormControl>
 
       <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>
-        <VariablesInput value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" />
+        <VariablesInput value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" newLineOnEnter />
       </FormControl>
 
       {withImage && (

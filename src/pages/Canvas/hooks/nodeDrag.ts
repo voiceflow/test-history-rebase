@@ -65,10 +65,9 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
           isDragging.current = false;
           teardownMouseListeners.current();
 
-          if (engine.drag.isSoleTarget(nodeEntity.nodeID)) {
+          if (engine.drag.isTarget(nodeEntity.nodeID)) {
             await engine.node.drop();
           }
-
           await engine.drag.reset();
         },
         { once: true }

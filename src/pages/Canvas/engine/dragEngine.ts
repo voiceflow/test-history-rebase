@@ -16,6 +16,10 @@ class DragEngine extends EngineConsumer {
     return this.target !== null;
   }
 
+  get hasGroup() {
+    return this.group !== null;
+  }
+
   isSoleTarget(nodeID: string) {
     return this.target === nodeID;
   }
@@ -38,12 +42,15 @@ class DragEngine extends EngineConsumer {
     this.group = nodeIDs;
 
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
+    nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
     await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
     this.addStyle();
+
     const focusedNode = this.engine.focus.getTarget();
     if (focusedNode && !nodeIDs.includes(focusedNode)) {
       this.engine.focus.reset();
     }
+
     this.log.info(this.log.success('set drag group'), this.log.value(nodeIDs.length));
   }
 
@@ -88,6 +95,7 @@ class DragEngine extends EngineConsumer {
       this.group = null;
 
       this.log.debug(this.log.pending('resetting drag group'), group);
+      group.forEach((nodeID) => this.engine.node.redraw(nodeID));
       await this.engine.node.translateMany(group, [0, 0], false);
       await this.engine.realtime.sendUpdate(Realtime.unlockNodes(group, DRAG_LOCKS));
       this.removeStyle();

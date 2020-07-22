@@ -207,7 +207,7 @@ export class Engine {
   // canvas orchestration methods
 
   get isCanvasBusy() {
-    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget;
+    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup;
   }
 
   /**

@@ -85,16 +85,13 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
     return 'Utterances cannot contain numbers, replace them with words or a slot that accepts numbers as a value.';
   }
 
+  const lowercaseUtterance = utterance.toLowerCase();
+
   intents.some(({ inputs, id, name }) =>
     inputs.some(({ text }) => {
-      if (text === utterance && id === intentID) {
-        err = 'You already have this utterance in this intent.';
-
-        return true;
-      }
-
-      if (text === utterance) {
-        err = `You already have this utterance defined in the "${name}" intent.`;
+      if (text.toLowerCase() === lowercaseUtterance) {
+        err =
+          id === intentID ? 'You already have this utterance in this intent.' : `You already have this utterance defined in the "${name}" intent.`;
 
         return true;
       }

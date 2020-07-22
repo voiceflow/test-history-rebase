@@ -62,7 +62,7 @@ function SlotEdit({
   const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(type);
-  const [slotName, setSlotName] = React.useState(name);
+  const [slotName, setSlotName] = React.useState(() => formatIntentName(name));
   const [customLines, setCustomLines] = React.useState(inputs);
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
 
@@ -134,7 +134,7 @@ function SlotEdit({
   };
 
   React.useEffect(() => {
-    setSlotName(name);
+    setSlotName(formatIntentName(name));
   }, [name]);
 
   React.useEffect(() => {

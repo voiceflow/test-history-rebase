@@ -9,6 +9,7 @@ export const formatIntentName = (name = '') => {
   return name
     .replace(' ', '_')
     .replace(/[^A-Z_a-z]/g, '')
+    .replace(/_+$/g, '')
     .toLowerCase();
 };
 

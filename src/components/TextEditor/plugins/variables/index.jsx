@@ -12,7 +12,7 @@ const variablesPlugin = (globalStore, { characters = '' } = {}) => {
   const store = new Store();
 
   const plugin = createMentionPlugin({
-    mentionRegExp: `[\\w${characters}-]*`,
+    mentionRegExp: `[\\w${characters}]*`,
     mentionPrefix: '{',
     mentionSuffix: '}',
     mentionTrigger: '{',

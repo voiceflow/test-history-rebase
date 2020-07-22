@@ -6,7 +6,6 @@ import { EventualEngineContext } from '@/contexts';
 import { useFeature, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
-import { CanvasReadOnly } from '@/pages/Canvas/components/CanvasControls/components';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
@@ -62,8 +61,6 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location })
             {markupFeature.isEnabled && markupTool?.isOpen ? <MarkupMenu /> : <DesignMenu />}
 
             <CanvasControls />
-
-            <CanvasReadOnly />
 
             <FlowControls />
 

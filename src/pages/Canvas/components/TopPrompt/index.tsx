@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { CommentModeContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import * as Router from '@/ducks/router';
+import { connect } from '@/hocs';
+import { CommentModeContext, EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { FadeDownContainer } from '@/styles/animations';
+import { ConnectedProps } from '@/types';
 
 import { CenterContainer, Container, KeyBubble } from './components';
 
@@ -10,17 +13,23 @@ const fadeConfig = {
   duration: 0.4,
   animationFunction: 'ease',
 };
-const TopPrompt = () => {
-  const commenting: { isOpen: boolean } = React.useContext(CommentModeContext);
-  const markup: { isOpen: boolean } | null = React.useContext(MarkupModeContext);
-
+const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
+  const commenting: { isOpen: boolean; close: () => void } = React.useContext(CommentModeContext);
+  const markup: { isOpen: boolean; closeTool: () => void } | null = React.useContext(MarkupModeContext);
+  const editPermission = React.useContext(EditPermissionContext)!;
   let modeText = '';
-  const show = commenting.isOpen || markup?.isOpen;
+  const show = commenting.isOpen || markup?.isOpen || editPermission.isPrototyping;
+  let onClick: () => void;
 
   if (commenting.isOpen) {
     modeText = 'commenting';
+    onClick = commenting.close;
   } else if (markup?.isOpen) {
     modeText = 'markup';
+    onClick = markup.closeTool;
+  } else if (editPermission.isPrototyping) {
+    modeText = 'prototyping';
+    onClick = goToDesign;
   }
 
   return (
@@ -28,7 +37,7 @@ const TopPrompt = () => {
       {show && (
         <CenterContainer>
           <FadeDownContainer {...fadeConfig}>
-            <Container>
+            <Container onClick={() => onClick?.()}>
               <KeyBubble>esc</KeyBubble> to exit {modeText}
             </Container>
           </FadeDownContainer>
@@ -38,4 +47,9 @@ const TopPrompt = () => {
   );
 };
 
-export default TopPrompt;
+const mapDispatchToProps = {
+  goToDesign: Router.goToCurrentCanvas,
+};
+type ConnectedTopPrompt = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(TopPrompt);

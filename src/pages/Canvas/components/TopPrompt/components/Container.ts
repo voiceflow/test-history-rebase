@@ -6,10 +6,10 @@ const Container = styled.div`
   padding: 10px 15px;
   background: white;
   position: relative;
+  cursor: pointer;
   top: 40px;
   font-size: 15px;
   color: #62778c;
-  cursor: default;
 `;
 
 export default Container;

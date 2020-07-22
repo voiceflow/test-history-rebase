@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import moize from 'moize';
 import React from 'react';
 
+import { IS_TEST } from '@/config';
 import { hasIdenticalMembers, reorder } from '@/utils/array';
 import { identity } from '@/utils/functional';
 import {
@@ -39,9 +40,7 @@ export const useManager = (items, onChange, { factory = identity, getKey, autosa
 
   const setDependencies = useLazy(
     () => {
-      keyLookup.current = new Map(
-        items.map((item, index) => [generateLookupKey(item, index), process.env.NODE_ENV === 'test' ? index : generateKey(item)])
-      );
+      keyLookup.current = new Map(items.map((item, index) => [generateLookupKey(item, index), IS_TEST ? index : generateKey(item)]));
       normalized.current = normalize(items, (item, index) => keyLookup.current.get(generateLookupKey(item, index)));
     },
     [items],

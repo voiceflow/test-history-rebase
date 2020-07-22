@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { ThemeProvider } from 'styled-components';
 
-import { IS_PRODUCTION } from '@/config';
+import { IS_PRODUCTION_ENV } from '@/config';
 import { MaintenanceGate } from '@/gates';
 import theme from '@/styles/theme';
 
@@ -36,7 +36,9 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
                 <OverlayProvider>
                   <EventualEngineProvider>
                     <IdentityProvider>
-                      <ModalsContextProvider>{IS_PRODUCTION ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}</ModalsContextProvider>
+                      <ModalsContextProvider>
+                        {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
+                      </ModalsContextProvider>
                     </IdentityProvider>
                   </EventualEngineProvider>
                 </OverlayProvider>

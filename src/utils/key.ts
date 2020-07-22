@@ -1,9 +1,11 @@
 /* eslint-disable no-case-declarations */
+import { IS_TEST } from '@/config';
+
 let lastKey = new Date().getTime();
 const globalCache = new Map();
 
 function getKey(object: any, cache: Map<any, string>) {
-  if (process.env.NODE_ENV === 'test') {
+  if (IS_TEST) {
     const key = cache.get(object) || `test-key-${cache.size}`;
 
     cache.set(object, key);

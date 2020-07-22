@@ -3,6 +3,8 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
+import { IS_TEST } from '@/config';
+
 const cachedRecourses = new Map();
 
 function loadResource({ type, path, async, ...attrs }) {
@@ -65,7 +67,7 @@ export const withExternalResources = ({ resources, SpinnerComponent = null }) =>
   setDisplayName(wrapDisplayName(Component, 'withExternalResources'))(
     React.forwardRef((props, ref) => {
       // eslint-disable-next-line no-process-env
-      const [loaded, setLoaded] = React.useState(process.env.NODE_ENV === 'test');
+      const [loaded, setLoaded] = React.useState(IS_TEST);
 
       React.useEffect(() => {
         let unmounted = false;

@@ -45,7 +45,7 @@ export const BASE_HREF = '/';
 
 export const ENV = {
   NODE_ENV,
-  BUILD_ENV: env || process.env.BUILD_ENV || 'local',
+  APP_ENV: env || process.env.APP_ENV || 'local',
 
   // logging
   LOG_LEVEL: logLevel || '',

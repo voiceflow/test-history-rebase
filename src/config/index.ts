@@ -10,6 +10,15 @@ export const DEVICE_INFO = {
   browser: browser.name,
 };
 
+// Container env var-based configuration overrides
+declare global {
+  interface Window {
+    VF_OVERRIDE_API_HOST?: string; // API_HOST URL
+    VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT?: string; // CANVAS_ENDPOINT URL
+    VF_OVERRIDE_APP_ENV?: string; // creator-app runtime environment
+  }
+}
+
 export const isMac = DEVICE_INFO.os === 'macOS';
 export const isWindows = DEVICE_INFO.os === 'Windows';
 export const isChromeOS = DEVICE_INFO.os === 'Chrome OS';
@@ -24,7 +33,9 @@ export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 export const IS_TEST = NODE_ENV === 'test';
 
-export const BUILD_ENV = process.env.BUILD_ENV!;
+export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
+export const IS_PRODUCTION_ENV = APP_ENV === 'production';
+
 export const CREATOR_URL = 'creator.voiceflow.com';
 export const LEGACY_URL = 'creator.getvoiceflow.com';
 
@@ -40,16 +51,10 @@ function getHost() {
   return process.env.API_HOST!;
 }
 
-declare global {
-  interface Window {
-    VF_OVERRIDE_API_HOST?: string;
-  }
-}
-
 export const API_HOST = window.VF_OVERRIDE_API_HOST || getHost();
 export const API_ENDPOINT = `https://${API_HOST}${IS_DEVELOPMENT ? ':8080' : ''}`;
 
-export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_PRODUCTION ? 'voiceflow.com' : window.location.hostname);
+export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_DEVELOPMENT ? window.location.hostname : 'voiceflow.com');
 export const VERSION = process.env.VERSION!;
 
 // logging
@@ -72,9 +77,9 @@ export const ADMIN_HOST =
   // eslint-disable-next-line no-nested-ternary
   !API_HOST || API_HOST.includes('localhost')
     ? 'https://localhost:3001'
-    : BUILD_ENV === 'staging'
-    ? 'https://admin.development.voiceflow.com'
-    : 'https://admin.voiceflow.com';
+    : IS_PRODUCTION_ENV
+    ? 'https://admin.voiceflow.com'
+    : 'https://admin.development.voiceflow.com';
 
 // amazon
 export const AMAZON_APP_ID = process.env.AMAZON_APP_ID!;
@@ -83,7 +88,7 @@ export const AMAZON_APP_ID = process.env.AMAZON_APP_ID!;
 export const GOOGLE_OAUTH_ID = process.env.GOOGLE_OAUTH_ID!;
 const GOOGLE_PROD_CLIENT_ID = process.env.GOOGLE_PROD_CLIENT_ID!;
 const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID!;
-export const GOOGLE_CLIENT_ID = BUILD_ENV === 'production' ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
+export const GOOGLE_CLIENT_ID = IS_PRODUCTION_ENV ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
 
 // tracking
 export const TRACKING_ENABLED = IS_PRODUCTION || process.env.TRACKING_ENABLED === 'true';
@@ -95,10 +100,10 @@ export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID!;
 // zapier
 const ZAPIER_DEV_PATH = process.env.ZAPIER_DEV_PATH!;
 const ZAPIER_PROD_PATH = process.env.ZAPIER_PROD_PATH!;
-export const ZAPIER_PATH = IS_PRODUCTION && BUILD_ENV !== 'staging' ? ZAPIER_PROD_PATH : ZAPIER_DEV_PATH;
+export const ZAPIER_PATH = IS_PRODUCTION_ENV ? ZAPIER_PROD_PATH : ZAPIER_DEV_PATH;
 
 const ONBOARDING_ZAPIER_PROD_PATH = process.env.ONBOARDING_ZAPIER_PROD_PATH!;
-export const ONBOARDING_ZAPIER_PATH = IS_PRODUCTION && BUILD_ENV !== 'staging' ? ONBOARDING_ZAPIER_PROD_PATH : '';
+export const ONBOARDING_ZAPIER_PATH = IS_PRODUCTION_ENV ? ONBOARDING_ZAPIER_PROD_PATH : '';
 
 // facebook
 export const FACEBOOK_GROUP_ID = process.env.FACEBOOK_GROUP_ID!;
@@ -113,7 +118,7 @@ export const AIRTABLE_ID = process.env.AIRTABLE_ID!;
 // stripe
 const STRIPE_LIVE_KEY = process.env.STRIPE_LIVE_KEY!;
 const STRIPE_TEST_KEY = process.env.STRIPE_TEST_KEY!;
-export const STRIPE_KEY = IS_PRODUCTION && BUILD_ENV !== 'staging' ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
+export const STRIPE_KEY = IS_PRODUCTION_ENV ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
 
 // logrocket
 export const LOGROCKET_ENABLED = IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true';
@@ -133,9 +138,9 @@ export const COPY_PASTE_KEY = process.env.COPY_PASTE_KEY!;
 export const USERFLOW_ENABLED = IS_PRODUCTION || process.env.USERFLOW_ENABLED === 'true';
 const USERFLOW_PROD_TOKEN = process.env.USERFLOW_PROD_TOKEN!;
 const USERFLOW_DEV_TOKEN = process.env.USERFLOW_DEV_TOKEN!;
-export const USERFLOW_TOKEN = BUILD_ENV === 'production' ? USERFLOW_PROD_TOKEN : USERFLOW_DEV_TOKEN;
+export const USERFLOW_TOKEN = IS_PRODUCTION_ENV ? USERFLOW_PROD_TOKEN : USERFLOW_DEV_TOKEN;
 export const USERFLOW_ONBOARDING_FLOW_ID = process.env.USERFLOW_ONBOARDING_FLOW_ID!;
 export const USERFLOW_DASHBOARD_FLOW_ID = process.env.USERFLOW_DASHBOARD_FLOW_ID!;
 
 // canvas export
-export const CANVAS_EXPORT_ENDPOINT = process.env.CANVAS_EXPORT_ENDPOINT!;
+export const CANVAS_EXPORT_ENDPOINT = window.VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT || process.env.CANVAS_EXPORT_ENDPOINT!;

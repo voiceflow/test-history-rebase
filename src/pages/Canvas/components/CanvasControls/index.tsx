@@ -128,8 +128,12 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     () => {
       markupTool?.closeTool();
       commenting.close();
+      if (isPrototyping) {
+        goToDesign();
+      }
     },
-    { preventDefault: true }
+    { preventDefault: true },
+    [isPrototyping]
   );
 
   return (

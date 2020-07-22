@@ -19,6 +19,8 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
   icon: 'prompt',
   iconColor: '#4D5CAD',
 
+  mergeTerminator: true,
+
   label: 'Prompt',
   tip: 'Prompts will stop & listen to the user to match an intent',
 

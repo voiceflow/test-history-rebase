@@ -53,7 +53,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
               iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
-              labelLineClamp={4}
+              labelLineClamp={10}
             />
           ))
         ) : (

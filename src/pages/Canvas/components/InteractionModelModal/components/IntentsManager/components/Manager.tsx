@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import { FlexApart } from '@/components/Flex';
 import Input from '@/components/Input';
 import IntentForm from '@/components/IntentForm';
@@ -19,12 +20,42 @@ export type ManagerProps = {
 };
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id, intent, removeIntent, updateIntent },
+  { id, intent: selectedIntent, removeIntent, updateIntent, allIntents },
   ref
 ) => {
-  const [name, setName] = React.useState(intent?.name ?? '');
+  const [name, setName] = React.useState(selectedIntent?.name ?? '');
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
+  const [nameError, setNameError] = React.useState(false);
+
+  const existingIntentNames: string[] = React.useMemo(
+    () => allIntents.filter((intent) => intent.id !== selectedIntent.id).map((intent) => intent.name),
+    [allIntents, selectedIntent.id]
+  );
+
+  const attemptNameSave = () => {
+    if (!nameError) {
+      updateIntent(id, { id, name }, true);
+    }
+  };
+
+  const localNameUpdate = ({ value }: { value: string }) => {
+    const formattedIntentName = formatIntentName(value);
+    validateName(formattedIntentName);
+    setName(formattedIntentName);
+  };
+
+  const validateName = (newName: string) => {
+    if (existingIntentNames.includes(newName)) {
+      setNameError(true);
+    } else {
+      setNameError(false);
+    }
+  };
+
+  React.useEffect(() => {
+    validateName(selectedIntent.name);
+  }, [selectedIntent.id]);
 
   React.useImperativeHandle(
     ref,
@@ -36,28 +67,33 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   React.useEffect(() => {
     resetPath();
-    setName(intent?.name || '');
+    setName(selectedIntent?.name || '');
   }, [id]);
 
   const slotEdit = path.type === 'slot';
 
-  return !intent ? null : (
+  return !selectedIntent ? null : (
     <>
       <Section>
         <FlexApart onClick={resetPath}>
           <Input
+            error={nameError}
             value={name}
-            onBlur={() => updateIntent(id, { id, name }, true)}
-            onChange={({ currentTarget }) => setName(formatIntentName(currentTarget.value))}
+            onBlur={attemptNameSave}
+            onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"
           />
-
           <RemoveDropdown onRemove={() => removeIntent(id)} />
         </FlexApart>
+        {nameError && (
+          <FadeLeftContainer>
+            <ErrorMessage style={{ marginBottom: '0px', paddingTop: '10px' }}>This intent name already exists</ErrorMessage>
+          </FadeLeftContainer>
+        )}
       </Section>
 
       <FadeLeftContainer key={(!slotEdit).toString()}>
-        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={intent} pushToPath={setPath} />}
+        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={selectedIntent} pushToPath={setPath} />}
       </FadeLeftContainer>
       {slotEdit && (
         <Section>
@@ -70,6 +106,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
 const mapStateToProps = {
   intent: Intents.intentByIDSelector,
+  allIntents: Intents.allIntentsSelector,
 };
 
 const mapDispatchToProps = {

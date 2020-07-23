@@ -5,7 +5,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
 import { Permission } from '@/config/permissions';
-import { ExportFormat } from '@/constants';
+import { ExportFormat, PLAN_TYPE_META, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { usePermission, useTrackingEvents } from '@/hooks';
@@ -47,7 +47,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRe
       <div>
         <Header>
           <span>Export</span>
-          {!canExport && <BubbleText color="green">Pro</BubbleText>}
+          {!canExport && <BubbleText color={PLAN_TYPE_META[PlanType.PRO].color}>Pro</BubbleText>}
         </Header>
 
         <Description mb={16}>

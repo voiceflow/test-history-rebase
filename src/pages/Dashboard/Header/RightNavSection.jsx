@@ -6,7 +6,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import ClickableText from '@/components/Text/components/ClickableText';
 import { Permission } from '@/config/permissions';
-import { ModalType, PLAN_NAMES, PlanType, UserRole } from '@/constants';
+import { ModalType, PLAN_TYPE_META, PlanType, UserRole } from '@/constants';
 import { notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -51,7 +51,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
                   <MenuItem divider />
                   {plan ? (
                     <MenuItem disabled capitalize teamItem>
-                      {PLAN_NAMES[plan].label} Plan
+                      {PLAN_TYPE_META[plan].label} Plan
                       {(plan === PlanType.STARTER || plan === PlanType.OLD_STARTER) && (
                         <>
                           &nbsp;-&nbsp; <ClickableText onClick={openUpgrade}>Upgrade</ClickableText>

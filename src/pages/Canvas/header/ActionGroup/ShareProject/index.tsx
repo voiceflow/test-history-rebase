@@ -108,7 +108,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
               isAllowed={canShareProject}
               loading={state.loadingImportToken}
               title="Project Download"
-              description="Allow other to download this project to their own Voiceflow account."
+              description="Allow others to download this project to their own Voiceflow account."
               onRedirect={openProjectDownloadModal}
               help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
               link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}

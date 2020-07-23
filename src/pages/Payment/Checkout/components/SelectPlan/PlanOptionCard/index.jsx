@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
-import { PLAN_NAMES } from '@/constants';
+import { PLAN_TYPE_META } from '@/constants';
 
 import { Container, Description, Price, PriceContainer, PriceDescription, SelectBox } from './components';
 
@@ -12,7 +12,7 @@ function PlanOptionCard({ plan, active, selectPlan, period }) {
   return (
     <Container active={active} color={color} onClick={() => selectPlan(plan)}>
       <SelectBox checked={active} color={active ? color : '#8DA2B5'} readOnly />
-      <BubbleText color={PLAN_NAMES[id].color}>{name}</BubbleText>
+      <BubbleText color={PLAN_TYPE_META[id].color}>{name}</BubbleText>
       <Description>{cardSummary}</Description>
       <PriceContainer>
         {price && <Price>${price}</Price>}

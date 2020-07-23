@@ -469,7 +469,7 @@ export enum DisplayType {
   ADVANCED = 'advanced',
 }
 
-export const PLAN_NAMES = {
+export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {
     label: 'Starter',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
@@ -500,11 +500,11 @@ export const PLAN_NAMES = {
   },
   [PlanType.OLD_ENTERPRISE]: {
     label: 'Enterprise',
-    color: '#ff5733',
+    color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
   },
   [PlanType.ENTERPRISE]: {
     label: 'Enterprise',
-    color: '#ff5733',
+    color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
   },
 };
 

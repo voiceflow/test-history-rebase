@@ -6,7 +6,7 @@ import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
-import { PlanType } from '@/constants';
+import { PLAN_TYPE_META, PlanType } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -80,7 +80,6 @@ function PlansDetails({
         };
       });
   });
-
   return (
     <div>
       <CarouselButtons
@@ -100,7 +99,7 @@ function PlansDetails({
           </ImagesContainer>
 
           <PlanTypeBubbleContainer>
-            <BubbleText color={plan.color}>{plan.name}</BubbleText>
+            <BubbleText color={PLAN_TYPE_META[plan.id].color}>{plan.name}</BubbleText>
           </PlanTypeBubbleContainer>
           <DetailsSection>
             <LeftSection>

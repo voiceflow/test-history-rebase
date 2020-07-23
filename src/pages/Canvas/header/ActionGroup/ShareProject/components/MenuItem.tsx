@@ -4,7 +4,7 @@ import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
-import { PLAN_NAMES, PlanType } from '@/constants';
+import { PLAN_TYPE_META, PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
@@ -58,7 +58,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRe
       <div>
         <Header>
           <span>{title}</span>
-          {!isAllowed && <BubbleText color={PLAN_NAMES[PlanType.PRO].color}>Pro</BubbleText>}
+          {!isAllowed && <BubbleText color={PLAN_TYPE_META[PlanType.PRO].color}>Pro</BubbleText>}
         </Header>
         <Description>
           <span>{description} </span>

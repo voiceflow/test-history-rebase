@@ -6,7 +6,7 @@ import { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
-import { PLAN_NAMES, PlanType, WORKSPACES_LIMIT } from '@/constants';
+import { PLAN_TYPE_META, PlanType, WORKSPACES_LIMIT } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -89,9 +89,9 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
         )}
       </DropdownComponent>
       {!isTemplateWorkspace && (
-        <BubbleText color={PLAN_NAMES[plan!].color}>
+        <BubbleText color={PLAN_TYPE_META[plan!].color}>
           {/* This is the only place we want to show 'Free' */}
-          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_NAMES[plan!].label}
+          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_TYPE_META[plan!].label}
         </BubbleText>
       )}
     </>

@@ -1,3 +1,4 @@
+import { ChildInput } from '@/components/Input/components';
 import InputWrapper from '@/components/Input/components/InputWrapper';
 import Section from '@/components/Section';
 import { styled, units } from '@/hocs';
@@ -12,6 +13,10 @@ const TestSettingsVariables = styled(Section).attrs({ dividers: false })`
   /* chrome scrollbar fix */
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${ChildInput} {
+    min-width: 0;
   }
 
   ${InputWrapper} {

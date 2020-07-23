@@ -3,6 +3,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import Input from '@/components/Input';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import { prototypeVariablesSelector, updateVariables } from '@/ducks/prototype';
 import { recentprototypeSelector, updateRecentPrototype } from '@/ducks/recent';
@@ -23,7 +24,13 @@ const PrototypeSettings = ({ open, settings, updateSettings, variables, updateVa
           return (
             <Input
               key={name}
-              leftAction={<VariableTag>{`{${name}}`}</VariableTag>}
+              leftAction={
+                <VariableTag style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <Tooltip delay={500} distance={6} title={name} position="top">
+                    {`{${name}}`}
+                  </Tooltip>
+                </VariableTag>
+              }
               value={value}
               onChange={(e) => updateVariables({ [name]: e.target.value })}
               placeholder="Enter value"

@@ -6,6 +6,7 @@ import { Members } from '@/components/User';
 import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { diagramViewersSelector } from '@/store/selectors';
@@ -16,13 +17,12 @@ import ItemContainer from './ItemContainer';
 import ItemDeleteConfirm from './ItemDeleteConfirm';
 import ItemInput from './ItemInput';
 
-const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, goToDiagram, renameDiagram, deleteDiagram }) => {
+const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, goToDiagram, renameDiagram, deleteDiagram, rootDiagramID }) => {
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
   const [label, setLabel] = React.useState(name || '');
 
-  const menuOptions = React.useMemo(
-    () => [
-      { label: 'Rename', onClick: toggleRenameEnabled },
+  const menuOptions = React.useMemo(() => {
+    const options = [
       { label: 'Duplicate', onClick: () => copyDiagram(id) },
       {
         label: 'Delete',
@@ -33,9 +33,11 @@ const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, 
             confirm: () => deleteDiagram(id).catch((err) => setError(err.message)),
           }),
       },
-    ],
-    [id, setError, setConfirm, copyDiagram, deleteDiagram, toggleRenameEnabled]
-  );
+    ];
+    if (id !== rootDiagramID) options.unshift({ label: 'Rename', onClick: toggleRenameEnabled });
+
+    return options;
+  }, [id, setError, setConfirm, copyDiagram, deleteDiagram, toggleRenameEnabled, rootDiagramID]);
 
   const onSaveName = () => {
     renameDiagram(id, label);
@@ -80,6 +82,7 @@ const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, 
 
 const mapStateToProps = {
   getDiagramViewers: diagramViewersSelector,
+  rootDiagramID: Skill.rootDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

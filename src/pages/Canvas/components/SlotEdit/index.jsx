@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import _sample from 'lodash/sample';
 import React from 'react';
 
@@ -28,17 +27,12 @@ import { removeTrailingUnderscores } from '@/utils/string';
 import { ColorSelector, SlotTag } from './components';
 import CustomLine from './components/CustomLine';
 import ValueSynonymsSection from './components/ValueSynonymsSection';
+import { generateSlotInput, mergeSlotInputs } from './utils';
 
 const FlexModalFooter = styled(ModalFooter)`
   ${flexApartStyles}
   flex-direction: row-reverse;
 `;
-
-const generateLineItem = (value = '', synonyms = '') => ({
-  id: cuid.slug(),
-  value,
-  synonyms,
-});
 
 function SlotEdit({
   id,
@@ -102,7 +96,7 @@ function SlotEdit({
   };
 
   const addCustomLine = () => {
-    setCustomLines([...customLines, generateLineItem()]);
+    setCustomLines([...customLines, generateSlotInput()]);
   };
 
   const removeCustomLine = (index) => {
@@ -127,9 +121,11 @@ function SlotEdit({
       openImportBulkDeniedModal();
     } else {
       openSlotsBulkUploadModal({
-        values: customLines.map(({ value }) => value),
-        onUpload: (slots) =>
-          setCustomLines((prevLines) => [...prevLines, ...slots.map(([slot, ...synonyms]) => generateLineItem(slot, synonyms.join(', ')))]),
+        onUpload: (slots) => {
+          const newCustomLines = slots.map(([slot, ...synonyms]) => generateSlotInput(slot, synonyms.join(', ')));
+
+          setCustomLines((prevLines) => mergeSlotInputs(prevLines, newCustomLines));
+        },
       });
     }
   };

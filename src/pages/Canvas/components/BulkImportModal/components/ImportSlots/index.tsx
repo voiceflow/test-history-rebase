@@ -41,7 +41,7 @@ const ImportSlots: React.FC = () => {
   });
   const isInline = state.uploadVariant === UploadType.INLINE;
 
-  const { close, data, isOpened } = useModals<{ values: string[]; onUpload: (lines: string[][]) => void }>(ModalType.IMPORT_SLOTS);
+  const { close, data, isOpened } = useModals<{ onUpload: (lines: string[][]) => void }>(ModalType.IMPORT_SLOTS);
 
   const findSlotsAndSynonyms = useDebouncedCallback(
     DEBOUNCE_TIMEOUT,
@@ -121,7 +121,7 @@ const ImportSlots: React.FC = () => {
   const onUpload = React.useCallback(() => {
     const slotsWithSynonyms = getSlotsWithSynonyms(state.editorValue);
 
-    const [errors, validSlots] = validateSlots(slotsWithSynonyms, data.values);
+    const [errors, validSlots] = validateSlots(slotsWithSynonyms);
 
     if (errors.size && !state.ignoreErrors) {
       stateApi.update({ errors, validSlots, uploadDisabled: true });

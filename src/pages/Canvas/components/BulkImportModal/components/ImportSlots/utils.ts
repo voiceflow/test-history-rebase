@@ -9,7 +9,7 @@ export const getSlotsWithSynonyms = (value: string) =>
     .filter((arr) => arr.length);
 
 // eslint-disable-next-line import/prefer-default-export
-export const validateSlots = (slotsWithSynonyms: string[][], values: string[]) => {
+export const validateSlots = (slotsWithSynonyms: string[][]) => {
   const errors = new Map<number, string>();
   const slotsNames = new Map<string, number>();
   const validSlotsWithSynonyms: string[][] = [];
@@ -19,10 +19,6 @@ export const validateSlots = (slotsWithSynonyms: string[][], values: string[]) =
 
     if (!name) {
       errors.set(index, "Slot value can't be empty.");
-    } else if (slotsNames.has(name)) {
-      errors.set(index, `An identical slot value already exists on ${slotsNames.get(name)! + 1} line.`);
-    } else if (values.includes(name)) {
-      errors.set(index, 'An identical slot value already exists inside this slot.');
     } else {
       slotsNames.set(name, index);
       validSlotsWithSynonyms.push([slot, ...synonym.map(_trim).filter(Boolean)]);

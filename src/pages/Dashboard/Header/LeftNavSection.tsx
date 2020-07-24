@@ -44,7 +44,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
     <>
       <DropdownComponent
         menu={
-          <MenuComponent maxHeight={600}>
+          <MenuComponent maxHeight={600} maxVisibleItems={15}>
             <>
               {filteredWorkspaces.map((workspace) => {
                 const active = workspace.id === activeWorkspace.id;

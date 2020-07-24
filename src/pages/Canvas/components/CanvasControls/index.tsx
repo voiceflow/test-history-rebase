@@ -148,7 +148,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
               iconProps={{
                 active: commenting.isOpen,
                 icon: 'comment',
-                size: commenting.isOpen ? 14 : 16,
+                size: 16,
               }}
               onClick={toggleCommenting}
             />

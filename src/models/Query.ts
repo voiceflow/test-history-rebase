@@ -8,6 +8,7 @@ export namespace Query {
     ob_coupon: any;
     ob_period: BillingPeriod;
     invite: string;
+    choose_workspace: boolean;
   }>;
 
   export type Dashboard = Partial<{

@@ -8,6 +8,7 @@ const InfoBubble = styled(Flex)`
   padding: 11px 32px;
   background: rgba(238, 244, 246, 0.5);
   margin-bottom: 30px;
+  margin-top: 20px;
 `;
 
 export default InfoBubble;

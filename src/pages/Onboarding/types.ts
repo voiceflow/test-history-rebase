@@ -1,4 +1,5 @@
 import { UserRole } from '@/constants';
+import { Workspace } from '@/models';
 
 export type CollaboratorType = { email: string; permission: UserRole };
 
@@ -10,4 +11,6 @@ export type OnboardingProps = {
   data: OnboardingDataProps;
   location?: any;
   firstTime?: boolean;
+  workspaces?: Workspace[];
+  workspaceSelector?: (id: string) => Workspace;
 };

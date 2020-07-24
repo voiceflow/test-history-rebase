@@ -34,6 +34,7 @@ export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
 
 export type OnboardingContextProps = {
   state: {
+    selectableWorkspace: boolean;
     stepStack: StepID[];
     currentStepID: StepID;
     numberOfSteps: number;
@@ -50,6 +51,7 @@ export type OnboardingContextProps = {
       plan?: PlanType;
       couponCode?: string;
       period: BillingPeriod;
+      selectedWorkspaceId: string;
     };
     addCollaboratorMeta: {
       isDemoBooked: boolean;
@@ -67,11 +69,11 @@ export type OnboardingContextProps = {
     stepBack: () => null;
     stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
     closeOnboarding: () => void;
-    setCreateWorkspaceMeta: (data: {}) => void;
-    setPersonalizeWorkspaceMeta: (data: {}) => void;
-    setPaymentMeta: (data: {}) => void;
-    setJoinWorkspaceMeta: (data: {}) => void;
-    setAddCollaboratorMeta: (data: {}) => void;
+    setCreateWorkspaceMeta: (data: unknown) => void;
+    setPersonalizeWorkspaceMeta: (data: unknown) => void;
+    setPaymentMeta: (data: unknown) => void;
+    setJoinWorkspaceMeta: (data: unknown) => void;
+    setAddCollaboratorMeta: (data: unknown) => void;
     finishCreateOnboarding: () => void;
     finishJoiningWorkspace: () => void;
     onCancel: () => void;
@@ -93,6 +95,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     onCancel: _.constant(null),
   },
   state: {
+    selectableWorkspace: false,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
@@ -102,6 +105,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
+      selectedWorkspaceId: '',
     },
     joinWorkspaceMeta: {
       role: '',
@@ -209,6 +213,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
 
   const [state, actions] = useSmartReducer({
+    selectableWorkspace: !!query.choose_workspace,
     usedSignupCoupon: false,
     workspaceId: '',
     stepStack: [firstStep],
@@ -337,19 +342,26 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
     let workspace;
     let userWorkspaces: any;
-    try {
-      if (usedSignupCoupon) {
-        workspace = nonTemplateWorkspaces[0];
-        updateWorkspaceName(name);
-        updateWorkspaceImage(workspaceImage);
-      } else {
-        workspace = await createWorkspace({ name, image: workspaceImage || undefined });
+
+    const selectedWorkspaceID = paymentMeta.selectedWorkspaceID;
+    if (selectedWorkspaceID) {
+      workspace = workspaces[selectedWorkspaceID];
+    }
+    if (!workspace) {
+      try {
+        if (usedSignupCoupon) {
+          workspace = nonTemplateWorkspaces[0];
+          updateWorkspaceName(name);
+          updateWorkspaceImage(workspaceImage);
+        } else {
+          workspace = await createWorkspace({ name, image: workspaceImage || undefined });
+        }
+        updateCurrentWorkspace(workspace.id);
+      } catch (e) {
+        toastNotif.error('Error creating workspace, please try again later');
+        goToDashboard();
+        return;
       }
-      updateCurrentWorkspace(workspace.id);
-    } catch (e) {
-      toastNotif.error('Error creating workspace, please try again later');
-      goToDashboard();
-      return;
     }
 
     // This is so we can invite users and update redux, targeting the just created ^ workspace
@@ -395,6 +407,13 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         teamSize,
         workspaceIDs: userWorkspaces?.allIds,
       });
+    }
+
+    if (selectedWorkspaceID) {
+      goToDashboard();
+      toastNotif.success('Successfully updated workspace');
+      setSendingRequests(false);
+      return;
     }
 
     try {

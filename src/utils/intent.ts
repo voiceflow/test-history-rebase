@@ -5,13 +5,11 @@ import { Intent } from '@/models';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
-export const formatIntentName = (name = '') => {
-  return name
+export const formatIntentName = (name = '') =>
+  name
     .replace(' ', '_')
     .replace(/[^A-Z_a-z]/g, '')
-    .replace(/_+$/g, '')
     .toLowerCase();
-};
 
 export const prettifyIntentName = (name = '') =>
   name

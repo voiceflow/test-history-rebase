@@ -5,6 +5,7 @@ import { convertToWord } from './number';
 export { cuid };
 
 const TAGS_REGEXP = /(<([^>]+)>)/gi;
+const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
 
 export const createNextName = (prefix: string, items: string[]) => {
   let counter = 1;
@@ -37,6 +38,6 @@ export const arrayStringReplace = (targetString: string, newString: string, stri
   });
 };
 
-export const stripHTMLTags = (str: string) => {
-  return str.replace(TAGS_REGEXP, '');
-};
+export const stripHTMLTags = (str: string) => str.replace(TAGS_REGEXP, '');
+
+export const removeTrailingUnderscores = (str: string) => str.replace(TRAILING_UNDERSCORES_REGEXP, '');

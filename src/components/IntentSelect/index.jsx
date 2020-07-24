@@ -7,6 +7,7 @@ import { SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
+import { removeTrailingUnderscores } from '@/utils/string';
 
 import { MissingIntentMessage, Option } from './components';
 
@@ -70,9 +71,12 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
 
   const onCreate = React.useCallback(
     (name) => {
-      onSelectIntent(newIntent({ name: prettifyIntentName(name) }));
+      const preparedName = removeTrailingUnderscores(prettifyIntentName(name));
+      const intent = filteredIntents.find(({ name }) => removeTrailingUnderscores(name) === preparedName);
+
+      onSelectIntent(intent ? intent.id : newIntent({ name: preparedName }));
     },
-    [newIntent, onSelectIntent]
+    [newIntent, intentLookup, onSelectIntent]
   );
 
   return (

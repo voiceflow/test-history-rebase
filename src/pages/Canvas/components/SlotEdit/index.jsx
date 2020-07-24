@@ -23,6 +23,7 @@ import { activeSlotTypes } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';
 import { formatIntentName } from '@/utils/intent';
+import { removeTrailingUnderscores } from '@/utils/string';
 
 import { ColorSelector, SlotTag } from './components';
 import CustomLine from './components/CustomLine';
@@ -62,7 +63,7 @@ function SlotEdit({
   const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(type);
-  const [slotName, setSlotName] = React.useState(() => formatIntentName(name));
+  const [slotName, setSlotName] = React.useState(() => removeTrailingUnderscores(formatIntentName(name)));
   const [customLines, setCustomLines] = React.useState(inputs);
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
 
@@ -84,7 +85,7 @@ function SlotEdit({
     } else {
       onSave?.({
         type: slotType,
-        name: slotName,
+        name: removeTrailingUnderscores(slotName),
         color: selectedColor,
         inputs: customLines,
       });
@@ -133,8 +134,13 @@ function SlotEdit({
     }
   };
 
+  const onBlurInInteraction = () => {
+    setSlotName(removeTrailingUnderscores(slotName));
+    updateSlot();
+  };
+
   React.useEffect(() => {
-    setSlotName(formatIntentName(name));
+    setSlotName(removeTrailingUnderscores(formatIntentName(name)));
   }, [name]);
 
   React.useEffect(() => {
@@ -164,7 +170,7 @@ function SlotEdit({
         <FlexApart>
           <Input
             value={slotName}
-            onBlur={isInteraction && updateSlot}
+            onBlur={isInteraction && onBlurInInteraction}
             onChange={(e) => setSlotName(formatIntentName(e.target.value))}
             placeholder="Enter Slot Name"
             ref={nameRef}

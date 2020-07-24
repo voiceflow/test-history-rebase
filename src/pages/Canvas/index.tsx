@@ -5,7 +5,6 @@ import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
-import IntentsModal from '@/pages/Canvas/components/IntentsModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
@@ -49,7 +48,6 @@ const Canvas: React.FC = () => {
       <ShortcutsModal />
       <DisplayPreviewModal />
       <SlotEditModal />
-      <IntentsModal />
       <BulkImportSlots />
       <BulkImportUtterances />
       <InteractionModelModal />

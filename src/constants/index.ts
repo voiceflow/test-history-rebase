@@ -381,7 +381,6 @@ export enum ModalType {
   SUCCESS = 'success',
 
   SLOT_EDIT = 'slot-edit',
-  INTENTS = 'intents',
   INTERACTION_MODEL = 'interaction-model',
 
   DISPLAY_PREVIEW = 'display-preview',

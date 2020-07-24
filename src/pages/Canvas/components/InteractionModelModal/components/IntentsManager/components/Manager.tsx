@@ -13,6 +13,7 @@ import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { formatIntentName } from '@/utils/intent';
+import { removeTrailingUnderscores } from '@/utils/string';
 
 export type ManagerProps = {
   id: string;
@@ -33,15 +34,18 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     [allIntents, selectedIntent.id]
   );
 
-  const attemptNameSave = () => {
-    if (!nameError) {
-      updateIntent(id, { id, name }, true);
+  const onBlur = () => {
+    if (nameError) {
+      return;
     }
+
+    setName(removeTrailingUnderscores(name));
+    updateIntent(id, { id, name: removeTrailingUnderscores(name) }, true);
   };
 
   const localNameUpdate = ({ value }: { value: string }) => {
     const formattedIntentName = formatIntentName(value);
-    validateName(formattedIntentName);
+    validateName(removeTrailingUnderscores(formattedIntentName));
     setName(formattedIntentName);
   };
 
@@ -79,7 +83,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
           <Input
             error={nameError}
             value={name}
-            onBlur={attemptNameSave}
+            onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"
           />

@@ -273,7 +273,7 @@
     "prettier-stylelint": "^0.4.2",
     "react-hot-loader": "^4.12.6",
     "react-test-renderer": "^16.12.0",
-    "sinon": "^8.0.4",
+    "sinon": "^9.0.2",
     "sinon-chai": "^3.3.0",
     "style-loader": "0.23.0",
     "stylelint": "^13.6.1",

@@ -5,5 +5,4 @@ export type AxialTransformation = {
   shift: Pair<number>;
   size: Pair<number>;
   position: Point;
-  shiftOverlay: Pair<number>;
 };

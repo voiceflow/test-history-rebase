@@ -31,7 +31,6 @@ export const getScaleTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [0, 0],
   };
 };
 
@@ -61,7 +60,6 @@ export const getCenteredScaleTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [(nextWidth - transform.width) / 2, (nextHeight - transform.height) / 2],
   };
 };
 
@@ -89,7 +87,6 @@ export const getStretchTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [0, 0],
   };
 };
 

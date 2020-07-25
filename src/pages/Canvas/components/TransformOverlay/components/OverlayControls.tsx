@@ -119,6 +119,7 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
       const [width, height] = size.current!;
       const [left, top] = position.current!;
       const [mouseX, mouseY] = mousePosition;
+      const curRotation = rotation.current!;
       const isTextNode = nodeType === BlockType.MARKUP_TEXT;
 
       const result = getResizeTransformations(transform, handle, [left, top], [width, height], [mouseX, mouseY], event, isTextNode);
@@ -146,10 +147,10 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
           nextLeft = originX - nextWidth / 2;
           nextTop = originY - nextHeight / 2;
 
-          engine.transformation.scaleTarget([scale, scale], [0, 0]);
+          engine.transformation.scaleTarget([scale, scale], [0, 0], curRotation);
         }
       } else {
-        engine.transformation.scaleTarget(result.scale, result.shift);
+        engine.transformation.scaleTarget(result.scale, result.shift, curRotation);
       }
 
       position.current = [nextLeft, nextTop];

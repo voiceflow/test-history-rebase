@@ -28,7 +28,7 @@ class DisplayRender extends Component {
   renderPreview = async () => {
     try {
       await this.renderer.render(JSON.parse(this.props.apl), JSON.parse(this.props.data || '{}'), {});
-      await this.renderer.executeCommands(JSON.parse(this.props.commands || '[]'));
+      if (this.props.commands) await this.renderer.executeCommands(JSON.parse(this.props.commands));
     } catch (err) {
       this.setError(err);
     }
@@ -41,7 +41,7 @@ class DisplayRender extends Component {
     this.renderer.setDeviceConfiguration(this.device);
     try {
       await this.renderer.render(JSON.parse(this.props.apl), JSON.parse(this.props.data), {});
-      await this.renderer.executeCommands(JSON.parse(this.props.commands || '[]'));
+      if (this.props.commands) await this.renderer.executeCommands(JSON.parse(this.props.commands));
     } catch (err) {
       this.setError(err);
     }

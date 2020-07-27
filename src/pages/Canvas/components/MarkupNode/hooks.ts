@@ -172,18 +172,6 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         const nextScaleX = scaleX * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
         const nextScaleY = scaleY * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
 
-        // Need to track the current state of the transform, even properties like
-        // `rotation` aren't relevant to the operation of `scale()`.
-        //
-        // $TODO - We should refactor this code to have a "declarative" interface, that is,
-        //         we save a snapshot, operations can modify one property of this snapshot
-        //         like `scale()` affects `scale`, then the snapshot is dispatched to
-        //         a function like `applyTransformations()` and the snapshot is converted
-        //         to CSS.
-        //
-        //         Currently, this is not the case. The refs like `scale.current` and
-        //         `scale.current` reset themselves after `applyTransformation()` is
-        //         executed.
         scale.current = [nextScaleX, nextScaleY];
         rotation.current = rotate;
 

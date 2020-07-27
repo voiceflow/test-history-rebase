@@ -45,12 +45,17 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
   const nodeType = node?.type || null;
 
   const onTransformStart = React.useCallback(() => {
+    const markupNodeID = engine.focus.getTarget()!;
+    engine.drag.setTarget(markupNodeID);
+
     document.addEventListener(
       'mouseup',
       () => {
         handlePosition.current = null;
         lineVertex.current = null;
         isRotating.current = false;
+
+        engine.node.drop();
 
         return engine.transformation.complete();
       },

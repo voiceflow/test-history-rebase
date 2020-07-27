@@ -107,7 +107,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
 
   return (
     <>
-      <LeftColumn>
+      <LeftColumn isDragging={isDragging}>
         <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedVariableID(addPrefix(type, variable))} />
 
         <VariableListContainer>
@@ -123,6 +123,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
             itemComponent={DraggableItem}
             deleteComponent={DeleteComponent}
             previewComponent={DraggableItem}
+            renderDeleteDelayed
             unmountableDuringDrag
             withContextMenuDelete
           >

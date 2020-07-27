@@ -68,7 +68,7 @@ const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIn
 
   return (
     <>
-      <LeftColumn>
+      <LeftColumn isDragging={isDragging}>
         <DraggableList
           type="intents"
           onDrop={stopDragging}
@@ -81,6 +81,7 @@ const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIn
           itemComponent={DraggableItem}
           deleteComponent={DeleteComponent}
           previewComponent={DraggableItem}
+          renderDeleteDelayed
           unmountableDuringDrag
           withContextMenuDelete
         >

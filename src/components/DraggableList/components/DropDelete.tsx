@@ -7,11 +7,13 @@ export type DropDeleteProps = {
   type: string;
   handlers: { current: Handlers };
   deleteProps?: Record<string, any>;
+  renderDelayed?: boolean;
   deleteComponent: React.FC<{ ref: React.ReactElement | null }>;
 };
 
-const DropDelete = <I extends unknown>({ type, deleteComponent: Delete, handlers, deleteProps }: DropDeleteProps) => {
+const DropDelete = <I extends unknown>({ type, deleteComponent: Delete, handlers, deleteProps, renderDelayed }: DropDeleteProps) => {
   const rootRef = React.useRef(null);
+  const [rendered, setRendered] = React.useState(!renderDelayed);
 
   const [, connectDrop] = useDrop<InternalItem<I>, unknown, unknown>({
     drop: (item, ...args) => {
@@ -26,9 +28,15 @@ const DropDelete = <I extends unknown>({ type, deleteComponent: Delete, handlers
     },
   });
 
+  React.useEffect(() => {
+    const timeout = renderDelayed ? setTimeout(() => setRendered(true), 100) : undefined;
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const connectTarget = connectDrop(rootRef);
 
-  return <Delete ref={connectTarget} {...deleteProps} />;
+  return rendered ? <Delete ref={connectTarget} {...deleteProps} /> : null;
 };
 
 export default React.memo(DropDelete);

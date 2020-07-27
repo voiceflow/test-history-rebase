@@ -4,7 +4,7 @@ import Tabs from '@/components/Tabs';
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 
-import { IntentsManager, Modal, SlotsManager, VariablesManager } from './components';
+import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } from './components';
 import { TABS, TabType } from './constants';
 
 function InteractionModelModal() {
@@ -20,9 +20,11 @@ function InteractionModelModal() {
     >
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
-          {activeTab === TabType.SLOTS && <SlotsManager />}
-          {activeTab === TabType.INTENTS && <IntentsManager />}
-          {activeTab === TabType.VARIABLES && <VariablesManager />}
+          <ModalContent>
+            {activeTab === TabType.SLOTS && <SlotsManager />}
+            {activeTab === TabType.INTENTS && <IntentsManager />}
+            {activeTab === TabType.VARIABLES && <VariablesManager />}
+          </ModalContent>
         </TextEditorVariablesPopoverProvider>
       )}
     </Modal>

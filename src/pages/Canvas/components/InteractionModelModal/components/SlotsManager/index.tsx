@@ -74,7 +74,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
 
   return (
     <>
-      <LeftColumn>
+      <LeftColumn isDragging={isDragging}>
         <DraggableList
           type="slots"
           onDrop={stopDragging}
@@ -87,6 +87,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
           itemComponent={DraggableItem}
           deleteComponent={DeleteComponent}
           previewComponent={DraggableItem}
+          renderDeleteDelayed
           unmountableDuringDrag
           withContextMenuDelete
         >

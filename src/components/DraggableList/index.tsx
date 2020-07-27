@@ -30,6 +30,7 @@ export type DraggableListProps<I> = {
   partialDragItem?: boolean;
   previewComponent: React.FC<any>;
   contextMenuOptions?: MenuOption[];
+  renderDeleteDelayed?: boolean;
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
 } & (
@@ -66,6 +67,7 @@ const DraggableList = <I extends unknown>({
   deleteComponent,
   partialDragItem,
   previewComponent,
+  renderDeleteDelayed,
   unmountableDuringDrag,
   withContextMenuDelete,
   ...props
@@ -168,7 +170,9 @@ const DraggableList = <I extends unknown>({
 
       <DragPreview type={type} options={previewOptions} component={previewComponent} handlers={handlers} />
 
-      {!!deleteComponent && dragging && <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />}
+      {!!deleteComponent && dragging && (
+        <DropDelete type={type} handlers={handlers} renderDelayed={renderDeleteDelayed} deleteComponent={deleteComponent} deleteProps={deleteProps} />
+      )}
     </ListContainer>
   );
 };

@@ -1,5 +1,3 @@
-export const CONTENT_HEIGHT = 660;
-
 export enum TabType {
   SLOTS = 'slots',
   INTENTS = 'intents',

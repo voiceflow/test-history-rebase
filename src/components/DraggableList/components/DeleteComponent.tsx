@@ -3,6 +3,7 @@ import React from 'react';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { useEnableDisable } from '@/hooks';
 
+import DeleteComponentContent from './DeleteComponentContent';
 import DeleteComponentWrapper from './DeleteComponentWrapper';
 import DeleteText from './DeleteText';
 
@@ -14,9 +15,11 @@ const DeleteComponent: React.ForwardRefRenderFunction<HTMLDivElement, DeleteComp
   const [hover, startHover, stopHover] = useEnableDisable(false);
 
   return (
-    <DeleteComponentWrapper ref={ref} onDragOver={startHover} onDragLeave={stopHover}>
-      <IconButton icon={hover ? 'trashOpen' : 'trash'} variant={IconButtonVariant.FLAT} />
-      <DeleteText>{message}</DeleteText>
+    <DeleteComponentWrapper>
+      <DeleteComponentContent ref={ref} onDragOver={startHover} onDragLeave={stopHover}>
+        <IconButton icon={hover ? 'trashOpen' : 'trash'} variant={IconButtonVariant.FLAT} />
+        <DeleteText>{message}</DeleteText>
+      </DeleteComponentContent>
     </DeleteComponentWrapper>
   );
 };

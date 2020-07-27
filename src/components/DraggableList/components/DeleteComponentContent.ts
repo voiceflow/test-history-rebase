@@ -1,0 +1,12 @@
+import { flexApartStyles } from '@/components/Flex';
+import { styled } from '@/hocs';
+
+const DeleteComponentContent = styled.div.attrs({ column: true })`
+  ${flexApartStyles}
+  pointer-events: all;
+  width: 100%;
+  height: 100px;
+  padding-top: 22px;
+`;
+
+export default DeleteComponentContent;

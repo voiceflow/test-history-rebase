@@ -9,7 +9,15 @@ const nativeScrollbarsStyle = css`
   }
 `;
 
-const MenuContainer = styled.ul`
+export type MenuContainerProps = {
+  fullWidth?: boolean;
+  nativeScrollbar?: boolean;
+  noBottomPadding?: boolean;
+  maxVisibleItems?: number;
+  disableAnimation?: boolean;
+};
+
+const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles}
 
   max-height: ${({ theme, maxVisibleItems }) => theme.components.menuItem.height * (maxVisibleItems || MAX_VISIBLE_ITEMS)}px;
@@ -30,18 +38,18 @@ const MenuContainer = styled.ul`
   transform-origin: top;
 
   ${({ nativeScrollbar }) => nativeScrollbar && nativeScrollbarsStyle}
-  
+
   ${({ disableAnimation }) =>
     !disableAnimation &&
     css`
       animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
     `}
-  
-    ${({ noBottomPadding }) =>
-      noBottomPadding &&
-      css`
-        padding-bottom: 0;
-      `}
+
+  ${({ noBottomPadding }) =>
+    noBottomPadding &&
+    css`
+      padding-bottom: 0;
+    `}
 `;
 
 export default MenuContainer;

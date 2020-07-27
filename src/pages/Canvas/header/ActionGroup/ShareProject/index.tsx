@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
-import BaseDropdown from '@/components/Dropdown';
+import Dropdown from '@/components/Dropdown';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
@@ -14,8 +14,6 @@ import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
 
 import { ExportItem, MenuContainer, MenuItem } from './components';
-
-const Dropdown: React.FC<any> = BaseDropdown;
 
 type ShareProjectProps = {
   render: boolean;
@@ -120,7 +118,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
         </MenuContainer>
       )}
     >
-      {(ref: React.Ref<HTMLElement>, onToggle: () => void, isOpen: boolean) => (
+      {(ref, onToggle, isOpen) => (
         <Tooltip title="Share Project">
           <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={wrapToggleShare(isOpen, onToggle)} isActive={isOpen}>
             Share

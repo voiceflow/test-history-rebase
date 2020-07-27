@@ -11,8 +11,6 @@ import { OptionLabel } from '@/pages/Canvas/components/CanvasControls/components
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
 import { ClassName } from '@/styles/constants';
 
-const SelectComponent: React.FC<any> = Select;
-
 type Option = {
   link?: string;
   icon: Icon;
@@ -28,27 +26,27 @@ export type Resource = Omit<StaticResource, 'link'> & {
 
 const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
   const shortcutModal = useModals(ModalType.SHORTCUTS);
-  const dropdownOptions = hasShortcuts
+  const dropdownOptions: Option[] = hasShortcuts
     ? [
         ...STATIC_RESOURCES,
-        ({
+        {
           icon: 'shortcuts',
           label: 'Shortcuts',
           onClick: shortcutModal.toggle,
           resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,
-        } as Option) as StaticResource,
+        },
       ]
     : STATIC_RESOURCES;
 
   return (
     <Tooltip title="Learn" position="bottom">
-      <SelectComponent
+      <Select
         className={`${ClassName.MENU}--resources`}
         options={dropdownOptions}
         minWidth={false}
         maxHeight={225}
         placement="bottom-end"
-        onSelect={(option: Option) => {
+        onSelect={(option) => {
           if (option.link) {
             window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
           } else {
@@ -56,12 +54,12 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
           }
         }}
         autoWidth={false}
-        getOptionKey={(option: Option) => option?.icon}
-        getOptionLabel={(option: Option) => option?.label}
-        triggerRenderer={({ isOpen }: { isOpen: boolean }) => (
+        getOptionKey={(option) => option?.icon}
+        getOptionLabel={(option) => option?.label}
+        triggerRenderer={({ isOpen }) => (
           <IconButton variant={IconButtonVariant.OUTLINE} icon="information" active={isOpen} large iconProps={{ width: 16, height: 15 }} />
         )}
-        renderOptionLabel={(option: Option) => (
+        renderOptionLabel={(option) => (
           <>
             <SvgIcon icon={option.icon} size={16} color="#6e849a" />
             <OptionLabel>{option.label}</OptionLabel>

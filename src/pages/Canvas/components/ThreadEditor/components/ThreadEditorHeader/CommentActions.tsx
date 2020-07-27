@@ -1,17 +1,13 @@
 import React from 'react';
 
 import { ButtonBox, Flex } from '@/components/Box';
-import BaseDropdown from '@/components/Dropdown';
+import Dropdown from '@/components/Dropdown';
 import { FlexEnd } from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import BaseMenu, { MenuItem as BaseMenuItem } from '@/components/Menu';
+import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
 import { noop } from '@/utils/functional';
-
-const Menu: any = BaseMenu;
-const MenuItem: any = BaseMenuItem;
-const Dropdown: any = BaseDropdown;
 
 export type CommentActionsProps = {
   onPost: () => void;
@@ -56,7 +52,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
             </Menu>
           }
         >
-          {(ref: any, onToggle: any, isOpen: boolean) => (
+          {(ref, onToggle, isOpen) => (
             <IconButton
               ref={ref}
               size={16}

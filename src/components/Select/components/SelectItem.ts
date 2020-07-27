@@ -1,7 +1,14 @@
 import { MenuItem } from '@/components/Menu';
 import { css, styled } from '@/hocs';
 
-const SelectItem = styled(MenuItem)`
+export type SelectItemProps = {
+  isGroup?: boolean;
+  isNested?: boolean;
+  isFocused?: boolean;
+  withSubLevel?: boolean;
+};
+
+const SelectItem = styled(MenuItem)<SelectItemProps>`
   position: relative;
 
   ${({ isFocused }) =>

@@ -47,12 +47,7 @@ function DropdownMultiselect({
       maxVisibleItems={maxVisibleItems}
       menu={
         menu || (
-          <Menu
-            maxHeight={maxHeight}
-            maxVisibleItems={maxVisibleItems}
-            disabled={buttonDisabled}
-            multiSelectProps={{ multiselect: true, buttonClick, buttonLabel }}
-          >
+          <Menu maxHeight={maxHeight} maxVisibleItems={maxVisibleItems} disabled={buttonDisabled} multiSelectProps={{ buttonClick, buttonLabel }}>
             {dropdownOptions.map(({ sectionLabel, options }, index) => {
               return (
                 <span key={index}>

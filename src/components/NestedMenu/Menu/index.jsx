@@ -44,13 +44,13 @@ function BaseNestedMenu({
   isDropdown,
   optionsPath = DEFAULT_PATH,
   searchLabel,
-  formatValue,
   getOptionKey,
   onFocusOption,
   getOptionValue,
   getOptionLabel,
   inputWrapperRef,
   isButtonDisabled = _constant(false),
+  formatInputValue,
   popoverModifiers,
   disableAnimation,
   firstOptionIndex = 0,
@@ -139,6 +139,7 @@ function BaseNestedMenu({
     searchable,
     searchLabel,
     onFocusItem,
+    optionsPath,
     focusedIndex: focusedOptionIndex,
     newOptionLabel,
     getOptionValue,
@@ -162,6 +163,7 @@ function BaseNestedMenu({
         creatable,
         searchable,
         searchLabel,
+        optionsPath,
         onFocusItem,
         focusedIndex,
         newOptionLabel,
@@ -200,7 +202,7 @@ function BaseNestedMenu({
           onCreate(nextValue);
         } else if ((!isInput || inputWrapperRef.contains(e.target) || (creatable && searchable)) && (!creatable || focusedIndex > 0)) {
           swallowEvent(null, true)(e);
-          onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]));
+          onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]), optionsPath);
         }
       } else if (e.key === KeyCodes.ESCAPE) {
         swallowEvent(null, true)(e);
@@ -273,7 +275,7 @@ function BaseNestedMenu({
                     newOptionLabel={newOptionLabel}
                     focusedOptionRef={focusedOptionRef}
                     isButtonDisabled={isButtonDisabled}
-                    updateSearchLabel={(value) => updateSearchLabel(formatValue ? formatValue(value) : value)}
+                    updateSearchLabel={(value) => updateSearchLabel(formatInputValue ? formatInputValue(value) : value)}
                     focusedOptionIndex={focusedOptionIndex}
                     onChangeSearchLabel={onChangeSearchLabel}
                     createInputPlaceholder={createInputPlaceholder}

@@ -1,7 +1,18 @@
 import Input from '@/components/Input';
 import { css, styled, units } from '@/hocs';
 
-const SearchInput = styled(Input)`
+export type SearchInputProps = {
+  opened?: boolean;
+  inline?: boolean;
+  withIcon?: boolean;
+  clearable?: boolean;
+  searchable?: boolean;
+  isDropdown?: boolean;
+  borderLess?: boolean;
+  isDropDownOpened?: boolean;
+};
+
+const SearchInput = styled(Input)<SearchInputProps>`
   padding-right: ${units(4.5)}px;
   height: ${({ theme }) => theme.components.input.height}px;
 
@@ -30,7 +41,7 @@ const SearchInput = styled(Input)`
     css`
       display: inline-block;
     `}
-  
+
   ${({ isDropDownOpened, opened }) =>
     (isDropDownOpened || opened) &&
     css`

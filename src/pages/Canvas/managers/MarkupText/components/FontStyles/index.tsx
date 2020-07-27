@@ -9,8 +9,6 @@ import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, 
 import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../../utils';
 import { FormGroup } from './components';
 
-const PartialSelect = Select as React.ComponentType<Partial<React.ComponentProps<typeof Select>>>;
-
 type FontStylesProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (state: EditorState) => void;
   applyFakeSelection: (state: EditorState) => EditorState;
@@ -75,25 +73,25 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
   return (
     <FormGroup
       leftColumn={
-        <PartialSelect
+        <Select
           value={fontFamily}
           onOpen={onShowFakeSelection}
           onClose={onHideFakeSelection}
           options={Object.values(Font)}
           onSelect={onChangeFontFamily}
           minWidth={false}
-          getOptionLabel={(value: Font) => FONTS_LABELS[value]}
+          getOptionLabel={(value) => FONTS_LABELS[value!]}
         />
       }
       rightColumn={
-        <PartialSelect
+        <Select
           value={fontWeight}
           onOpen={onShowFakeSelection}
           onClose={onHideFakeSelection}
           options={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily]}
           onSelect={onChangeFontWeight}
           minWidth={false}
-          getOptionLabel={(value: FontWeight) => FONT_WEIGHTS_LABELS[value]}
+          getOptionLabel={(value) => FONT_WEIGHTS_LABELS[value!]}
         />
       }
     />

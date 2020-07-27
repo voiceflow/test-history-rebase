@@ -23,8 +23,6 @@ const VARIABLE_LABELS: Record<VariableType, string> = {
   [VariableType.BUILT_IN]: 'Built In',
 };
 
-const DropdownComponent = Dropdown as React.FC<any>;
-
 export type VariableInputProps = {
   setSelected: (type: VariableType, variable: string) => void;
   children?: never;
@@ -36,7 +34,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
 
   const isFlow = variableType === VariableType.LOCAL;
 
-  const MenuOptions = React.useMemo(
+  const menuOptions = React.useMemo(
     () => [
       {
         label: VARIABLE_LABELS[VariableType.GLOBAL],
@@ -75,13 +73,13 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
           <Label>Add Variable</Label>
           <InfoIcon>{Info}</InfoIcon>
         </Flex>
-        <DropdownComponent options={MenuOptions}>
-          {(ref: any, onToggle: any, isOpen: boolean) => (
+        <Dropdown options={menuOptions}>
+          {(ref, onToggle, isOpen) => (
             <Select ref={ref} onClick={onToggle} active={isOpen}>
               {VARIABLE_LABELS[variableType]} <SvgIcon icon="caretDown" size={8} />
             </Select>
           )}
-        </DropdownComponent>
+        </Dropdown>
       </FlexApart>
       <Input
         placeholder={`Add ${VARIABLE_LABELS[variableType]} Variable`}

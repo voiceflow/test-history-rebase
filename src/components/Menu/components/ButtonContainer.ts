@@ -1,6 +1,10 @@
 import { styled } from '@/hocs';
 
-const ButtonContainer = styled.div`
+export type ButtonContainerProps = {
+  disabled?: boolean;
+};
+
+const ButtonContainer = styled.div<ButtonContainerProps>`
   padding: 24px 40px;
   margin-bottom: -8px;
   border-top: 1px solid #eaeff4;

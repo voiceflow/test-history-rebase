@@ -2,8 +2,6 @@ import React from 'react';
 
 import Select from '@/components/Select';
 
-const SelectComponent: any = Select;
-
 const ROLE_OPTIONS = [
   'Conversation Designer',
   'UI / UX Designer',
@@ -24,7 +22,7 @@ type RoleSelectProps = {
 
 const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => {
   return (
-    <SelectComponent
+    <Select
       value={userRole}
       options={ROLE_OPTIONS}
       placeholder="Select your role"
@@ -32,10 +30,7 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => {
       maxHeight={192}
       creatable
       createInputPlaceholder="Add new role"
-      onCreate={(role: string) => {
-        setUserRole(role);
-      }}
-      dropdownActive
+      onCreate={(role) => setUserRole(role)}
       withSearchIcon={false}
     />
   );

@@ -2,7 +2,7 @@
 import React from 'react';
 
 import BaseMenu from '@/components/Menu';
-import { setRef } from '@/components/Select/utils';
+import { setRef } from '@/utils/refs';
 
 import AdvancedMenu, { DEFAULT_PATH } from './Menu';
 import MenuHeader from './MenuHeader';

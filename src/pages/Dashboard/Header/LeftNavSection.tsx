@@ -15,10 +15,6 @@ import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-const DropdownComponent: any = Dropdown;
-const MenuComponent: any = Menu;
-const MenuItemComponent: any = MenuItem;
-
 type LeftNavSectionProps = {
   workspaces: { templates: boolean; id: string; name: string }[];
   activeWorkspace: {
@@ -42,52 +38,41 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
 
   return (
     <>
-      <DropdownComponent
+      <Dropdown
         menu={
-          <MenuComponent maxHeight={600} maxVisibleItems={15}>
+          <Menu maxHeight={600} maxVisibleItems={15}>
             <>
               {filteredWorkspaces.map((workspace) => {
                 const active = workspace.id === activeWorkspace.id;
                 return (
-                  <MenuItemComponent
-                    key={workspace.id}
-                    onClick={() => {
-                      goToWorkspace(workspace.id);
-                    }}
-                  >
+                  <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
                     <FlexApart style={{ width: '100%' }}>
                       <WorkspaceItemNameWrapper>{workspace.name}</WorkspaceItemNameWrapper>
                       {active && <SvgIcon icon="blocks" color="#becedc" />}
                     </FlexApart>
-                  </MenuItemComponent>
+                  </MenuItem>
                 );
               })}
               {(workspaceCreationFeature.isEnabled || filteredWorkspaces.length < WORKSPACES_LIMIT) && (
                 <>
-                  <MenuItemComponent divider />
-                  <MenuItemComponent
-                    onClick={() => {
-                      goTo('workspace/new');
-                    }}
-                    bottomAction
-                    id="createWorkspace"
-                  >
+                  <MenuItem divider />
+                  <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
                     Create New Workspace
-                  </MenuItemComponent>
+                  </MenuItem>
                 </>
               )}
             </>
-          </MenuComponent>
+          </Menu>
         }
         placement="bottom-start"
       >
-        {(ref: React.Ref<any>, onToggle: () => void) => (
+        {(ref, onToggle) => (
           <WorkspacesDropdown id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
             <div>{activeWorkspace.name}</div>
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>
         )}
-      </DropdownComponent>
+      </Dropdown>
       {!isTemplateWorkspace && (
         <BubbleText color={PLAN_TYPE_META[plan!].color}>
           {/* This is the only place we want to show 'Free' */}

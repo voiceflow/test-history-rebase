@@ -1,11 +1,9 @@
 import React from 'react';
 
 import Dropdown from '@/components/Dropdown';
-import IconButton from '@/components/IconButton';
+import IconButton, { IconButtonVariant } from '@/components/IconButton';
 
 import { Container } from './components';
-
-const DropdownComponent = Dropdown as React.FC<any>;
 
 export type RemoveDropDownProps = {
   onRemove: () => void;
@@ -13,13 +11,9 @@ export type RemoveDropDownProps = {
 
 const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove }) => (
   <Container>
-    <DropdownComponent options={[{ label: 'Delete', onClick: onRemove }]}>
-      {(ref: React.Ref<HTMLButtonElement>, onToggle: Function, isOpen: boolean) => (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <IconButton icon="elipsis" variant="flat" active={isOpen} onClick={onToggle} ref={ref} />
-      )}
-    </DropdownComponent>
+    <Dropdown options={[{ label: 'Delete', onClick: onRemove }]}>
+      {(ref, onToggle, isOpen) => <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} onClick={onToggle} ref={ref} />}
+    </Dropdown>
   </Container>
 );
 

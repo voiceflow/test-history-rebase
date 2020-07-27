@@ -2,17 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 
 import BaseDropdown from '@/components/Dropdown';
-import BaseMenu, { MenuItem as BaseMenuItem } from '@/components/Menu';
+import Menu, { MenuItem } from '@/components/Menu';
 import { SectionToggleVariant } from '@/components/Section';
 import Icon from '@/components/SvgIcon';
 import { UserRole } from '@/constants';
 import { styled } from '@/hocs';
 
 import DropdownButton from './DropdownButton';
-
-// types
-const Menu: any = BaseMenu;
-const MenuItem: any = BaseMenuItem;
 
 type PermissionDropdownProps = {
   options?: { value: UserRole; label: string }[];
@@ -25,7 +21,7 @@ type PermissionDropdownProps = {
 };
 
 // styled components
-const Dropdown: any = styled(BaseDropdown)`
+const Dropdown = styled(BaseDropdown)`
   border-left: 0;
 `;
 
@@ -43,7 +39,6 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
 
   return (
     <Dropdown
-      orientation={orientation}
       menu={
         <Menu>
           {options.map(({ label, value }, index) => (
@@ -56,7 +51,7 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
         </Menu>
       }
     >
-      {(ref: any, onToggle: () => void, isOpen: boolean) => (
+      {(ref, onToggle, isOpen) => (
         <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _.constant(null) : onToggle} error={hasError} active={isOpen}>
           {dropdownValue?.label?.toUpperCase()}
           {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}

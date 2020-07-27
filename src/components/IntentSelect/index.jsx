@@ -87,13 +87,13 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
         options={filteredIntents}
         onCreate={onCreate}
         onSelect={onSelectIntent}
-        formatValue={formatIntentName}
         creatable
         searchable
         placeholder="Name new intent or select existing intent"
         optionsFilter={optionsFilter}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
+        formatInputValue={formatIntentName}
         isButtonDisabled={isButtonDisabled}
         renderOptionLabel={labelRenderer}
         createInputPlaceholder="Name new intent"

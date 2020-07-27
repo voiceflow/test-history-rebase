@@ -10,8 +10,6 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpTooltip } from './components';
 
-const OverflowMenuAny: any = OverflowMenu;
-
 const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
   const hasReprompt = !!data.reprompt;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
@@ -22,7 +20,7 @@ const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath 
       footer={() => (
         <Controls
           menu={
-            <OverflowMenuAny
+            <OverflowMenu
               placement="top-end"
               options={[
                 {

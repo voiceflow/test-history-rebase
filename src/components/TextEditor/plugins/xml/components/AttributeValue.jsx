@@ -48,7 +48,7 @@ export default function AttributeValue({ value, name, onUpdate, tagData, attribu
       onClose={onClose}
       onSelect={onUpdateAttr}
       autoWidth={false}
-      wrapperTag="span"
+      renderAsSpan
       getOptionKey={(option) => `${option?.name}-${option?.inputAttribute || ''}`}
       getOptionLabel={(option) => option?.name}
       getOptionValue={(option) => option?.name}

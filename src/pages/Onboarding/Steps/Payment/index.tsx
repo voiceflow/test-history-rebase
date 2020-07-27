@@ -37,11 +37,8 @@ import {
   PriceContainer,
 } from './components';
 
-const MenuComponent: any = Menu;
-
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const DropdownComponent: any = Dropdown;
 const PeriodDropdown: any = BillingDropdown;
 
 const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) => {
@@ -110,16 +107,16 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
     ? {
         text: `${selectedPlan} PLAN`,
         menu: (
-          <MenuComponent>
+          <Menu>
             <MenuItem onClick={() => setSelectedPlan(PlanType.PRO)}>Pro Plan</MenuItem>
             <MenuItem onClick={() => setSelectedPlan(PlanType.TEAM)}>Team Plan</MenuItem>
-          </MenuComponent>
+          </Menu>
         ),
       }
     : {
         text: selectedWorkspaceId ? `Workspace: ${workspaceSelector!(selectedWorkspaceId).name}` : 'Select a Workspace',
         menu: (
-          <MenuComponent>
+          <Menu>
             {workspaces!.map((workspace) => {
               return (
                 <MenuItem key={workspace.id} onClick={() => setSelectedWorkspaceId(workspace.id)}>
@@ -127,7 +124,7 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
                 </MenuItem>
               );
             })}
-          </MenuComponent>
+          </Menu>
         ),
       };
 
@@ -148,7 +145,7 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
           <BubbleTextContainer column>
             <EditorSeatsText>{numberOfSeats} Editor Seats</EditorSeatsText>
             <PeriodDropdownContainer>
-              <DropdownComponent
+              <Dropdown
                 options={[
                   {
                     label: 'Monthly',
@@ -161,13 +158,13 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
                 ]}
                 placement="bottom-start"
               >
-                {(ref: React.Ref<any>, onToggle: any, isOpen: boolean) => (
+                {(ref, onToggle, isOpen) => (
                   <PeriodDropdown ref={ref} onClick={onToggle} isOpen={isOpen}>
                     Billed {PERIOD_NAME[paymentPeriod]}
                     <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : ''} size={7} />
                   </PeriodDropdown>
                 )}
-              </DropdownComponent>
+              </Dropdown>
             </PeriodDropdownContainer>
           </BubbleTextContainer>
           <PriceContainer>

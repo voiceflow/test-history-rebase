@@ -23,8 +23,6 @@ type EditorHeaderProps = {
   renameRevision: string;
 };
 
-const AnyDropdown = Dropdown as any;
-
 const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, className, goToPath, hideTitle, renameRevision }) => {
   const sidebar = React.useContext(SidebarContext)!;
   const engine = React.useContext(EngineContext)!;
@@ -57,14 +55,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, 
           <Title name={data.name} onChange={onRename} renameRevision={renameRevision} />
 
           {!!headerActions.length && (
-            <AnyDropdown
+            <Dropdown
               placement="bottom-end"
               options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data, engine }) }))}
             >
-              {(ref: React.Ref<HTMLButtonElement>, onOpen: () => void, isOpened: boolean) => (
-                <IconButton ref={ref} icon="elipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />
-              )}
-            </AnyDropdown>
+              {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="elipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />}
+            </Dropdown>
           )}
         </TitleActionsContainer>
       )}

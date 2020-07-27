@@ -1,14 +1,12 @@
 import React from 'react';
 
-import BaseDropdown from '@/components/Dropdown';
+import Dropdown from '@/components/Dropdown';
 import { MarkupShapeType } from '@/constants';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import MenuIcon from '../MenuIcon';
 import { ShapesContainer, ShapesWrapper } from './components';
-
-const Dropdown: any = BaseDropdown;
 
 const AddShapesMenu: React.FC = () => {
   const { modeType, setCreatingModeType } = React.useContext(MarkupModeContext)!;
@@ -27,7 +25,7 @@ const AddShapesMenu: React.FC = () => {
         </ShapesContainer>
       }
     >
-      {(ref: React.Ref<HTMLButtonElement>, onToggle: () => void, isOpen: boolean) => (
+      {(ref, onToggle, isOpen) => (
         <MenuIcon
           ref={ref}
           large

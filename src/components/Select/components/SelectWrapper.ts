@@ -2,7 +2,14 @@ import InputWrapper from '@/components/Input/components/InputWrapper';
 import { inputFocus } from '@/components/Input/styles';
 import { css, styled } from '@/hocs';
 
-const SelectWrapper = styled.div`
+export type SelectWrapperProps = {
+  minWidth?: boolean;
+  clearable?: boolean;
+  fullWidth?: boolean;
+  isFocused?: boolean;
+};
+
+const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;
   outline: none;
   cursor: pointer;
@@ -13,13 +20,13 @@ const SelectWrapper = styled.div`
     css`
       min-width: 200px;
     `}
-  
+
   ${({ fullWidth }) =>
     fullWidth &&
     css`
       width: 100%;
     `}
-  
+
   ${({ clearable }) =>
     clearable &&
     css`

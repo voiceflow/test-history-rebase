@@ -51,8 +51,6 @@ const ResourcesDropdown: React.FC = () => {
   useHotKeys(Hotkey.OPEN_RESOURCES_DROPDOWN, onOpen, { preventDefault: true });
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     <Select
       id={Identifier.RESOURCE_MENU}
       open={isOpen}
@@ -63,10 +61,10 @@ const ResourcesDropdown: React.FC = () => {
       minWidth={false}
       maxHeight={225}
       autoWidth={false}
-      getOptionKey={(option: Resource) => option?.icon}
-      getOptionLabel={(option: Resource) => option?.label}
+      getOptionKey={(option) => option?.icon}
+      getOptionLabel={(option) => option?.label}
       triggerRenderer={() => <IconButton icon="information" active={isOpen} />}
-      renderOptionLabel={(option: Resource) => (
+      renderOptionLabel={(option) => (
         <>
           <SvgIcon icon={option.icon} size={16} color="#6e849a" />
           <OptionLabel>{option.label}</OptionLabel>

@@ -130,7 +130,7 @@ export const multiselect = () => {
         },
       ]}
       {...getProps()}
-      multiSelectProps={{ multiselect: true, buttonClick: selectAll, buttonLabel: 'Select All' }}
+      multiSelectProps={{ buttonClick: selectAll, buttonLabel: 'Select All' }}
     />
   );
 };

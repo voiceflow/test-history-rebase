@@ -1,52 +1,27 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import Menu, { MenuItem } from '@/components/Menu';
+import Dropdown, { DropdownPlacement } from '@/components/Dropdown';
+import Menu, { MenuOption, MenuProps } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 
 import Container from './components/OverflowMenuContainer';
 
-const DropdownAny = Dropdown as any;
-const MenuAny = Menu as any;
-
-export type OverflowMenuItem = {
-  onClick: (e: React.MouseEvent) => any;
-  label: string | React.ReactNode;
-};
-
-export type OverflowMenuProps = {
-  options: OverflowMenuItem[];
+export type OverflowMenuProps<T = undefined> = {
+  options: MenuOption<T>[];
   disabled?: boolean;
-  onSelect?: (value: any) => void;
-  placement: string;
+  onSelect?: MenuProps<T>['onSelect'];
+  placement?: DropdownPlacement;
 };
 
-function OverflowMenu({ options, onSelect, disabled, placement }: OverflowMenuProps) {
-  return (
-    <DropdownAny
-      {...(onSelect
-        ? { onSelect, options }
-        : {
-            menu: (
-              <MenuAny>
-                {options.map(({ onClick, label }, index) => (
-                  <MenuItem key={index} onClick={onClick}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </MenuAny>
-            ),
-          })}
-      placement={placement}
-    >
-      {(ref: React.Ref<any>, onToggle: (e: React.MouseEvent) => any) => (
-        <Container disabled={disabled} onClick={onToggle} ref={ref}>
-          <SvgIcon icon="elipsis" />
-        </Container>
-      )}
-    </DropdownAny>
-  );
-}
+const OverflowMenu = <T extends any = undefined>({ options, onSelect, disabled, placement }: OverflowMenuProps<T>) => (
+  <Dropdown<T> {...(onSelect ? { onSelect, options } : { menu: <Menu options={options} /> })} placement={placement}>
+    {(ref, onToggle) => (
+      <Container disabled={disabled} onClick={onToggle} ref={ref}>
+        <SvgIcon icon="elipsis" />
+      </Container>
+    )}
+  </Dropdown>
+);
 
 export default OverflowMenu;

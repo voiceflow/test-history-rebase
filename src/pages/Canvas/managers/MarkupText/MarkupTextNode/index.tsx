@@ -25,7 +25,6 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMa
     focusOffset: 0,
     anchorOffset: 0,
   });
-
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { isFocused } = nodeEntity.useState((e) => ({
@@ -42,6 +41,10 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMa
 
     draggableParentsCache.current = draggableParents;
   };
+
+  React.useEffect(() => {
+    setEditorState(createEditorState(data.content));
+  }, [data.content]);
 
   const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);

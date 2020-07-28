@@ -27,7 +27,7 @@ const fadeOutKeyframes = keyframes`
 const MarkupMenuContainer = styled(Flex as any)<{ isOpen: boolean }>`
   position: absolute;
   z-index: 20;
-  top: 40px;
+  top: 60px;
 
   animation: ${fadeOutKeyframes} ${({ length = 0.35 }) => length}s ease-in-out;
   animation-fill-mode: both;

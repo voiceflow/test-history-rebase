@@ -5,7 +5,9 @@ import { noop } from '@/utils/functional';
 import { useSubscription } from './hooks';
 import RealtimeSubscription from './subscription';
 
-export const RealtimeSubscriptionContext = React.createContext<Pick<RealtimeSubscription, 'on' | 'onUpdate' | 'destroy'>>({
+export type RealtimeSubscriptionValue = Pick<RealtimeSubscription, 'on' | 'onUpdate' | 'destroy'>;
+
+export const RealtimeSubscriptionContext = React.createContext<RealtimeSubscriptionValue>({
   destroy: noop,
   onUpdate: () => noop,
   on: noop,

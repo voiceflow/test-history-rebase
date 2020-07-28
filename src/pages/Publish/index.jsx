@@ -6,6 +6,7 @@ import { NavLink, Switch } from 'react-router-dom';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
+import { PublishRoute } from '@/config/routes';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
@@ -32,9 +33,8 @@ const TABS = [
         Alexa
       </Flex>
     ),
-    link: '/alexa',
+    link: `/${PublishRoute.ALEXA}`,
     exact: true,
-    match: ['alexa'],
   },
   {
     // eslint-disable-next-line react/display-name
@@ -44,8 +44,7 @@ const TABS = [
         Google
       </Flex>
     ),
-    link: '/google',
-    match: ['google'],
+    link: `/${PublishRoute.GOOGLE}`,
   },
 ];
 
@@ -75,7 +74,7 @@ function Publish(props) {
               <PrivateRoute
                 {...ownProps}
                 key={forceUpdateKey}
-                path={`${path}/alexa`}
+                path={`${path}/${PublishRoute.ALEXA}`}
                 skillID={skillID}
                 component={PublishAmazon}
                 isLocked={!!lockOwner || !!prevOwner}
@@ -83,7 +82,7 @@ function Publish(props) {
               <PrivateRoute
                 {...ownProps}
                 key={forceUpdateKey}
-                path={`${path}/google`}
+                path={`${path}/${PublishRoute.GOOGLE}`}
                 skillID={skillID}
                 component={PublishGoogle}
                 isLocked={!!lockOwner || !!prevOwner}

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, lodash/prefer-noop */
 import { MovementCalculator } from '@/components/Canvas/types';
 import * as Realtime from '@/ducks/realtime';
-import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
+import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { ActionPayload } from '@/store/types';
@@ -23,7 +23,7 @@ class RealtimeEngine extends EngineConsumer {
 
   teardownHandlers: () => void;
 
-  constructor(subscription: RealtimeSubscription, engine: Engine) {
+  constructor(subscription: RealtimeSubscriptionValue, engine: Engine) {
     super(engine);
 
     this.teardownHandlers = subscription.onUpdate(async (action, otherTabID, options = {}) => {

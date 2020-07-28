@@ -1,16 +1,9 @@
 import { Node } from '@/models';
+import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
 import { CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
 import { EngineConsumer } from './utils';
-
-export type NewLinkAPI = {
-  show: () => void;
-  hide: () => void;
-  isPinned: () => boolean;
-  pin: (position: [number, number]) => void;
-  unpin: () => void;
-};
 
 class LinkCreationEngine extends EngineConsumer {
   log = this.engine.log.child('link-creation');

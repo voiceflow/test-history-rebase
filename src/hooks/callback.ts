@@ -2,9 +2,12 @@ import type { DebounceSettings, ThrottleSettings } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { Callback } from '@/types';
+import { noop } from '@/utils/functional';
+
+import { useTeardown } from './lifecycle';
 
 export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: DebounceSettings) =>
   useMemo(() => _debounce(callback, delay, options), deps);
@@ -29,3 +32,22 @@ export const useInterval = (callback: Callback, timeout: number, dependencies: a
 
     return () => clearInterval(interval);
   }, dependencies);
+
+export const useCancellable = <T extends any[]>(effect: (...args: T) => () => void, dependencies: any[] = []): [(...args: T) => void, () => void] => {
+  const teardownHandler = useRef(noop);
+
+  const callback = useCallback((...args: T) => {
+    const handler = effect(...args);
+
+    teardownHandler.current = () => {
+      handler();
+      teardownHandler.current = noop;
+    };
+  }, dependencies);
+
+  const teardown = useCallback(() => teardownHandler.current?.(), []);
+
+  useTeardown(teardown);
+
+  return [callback, teardown];
+};

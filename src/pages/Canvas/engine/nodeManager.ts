@@ -153,7 +153,7 @@ class NodeManager extends EngineConsumer {
   // crud methods
 
   async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid(), autoFocus = true) {
-    const [x, y] = this.engine.canvas!.fromVector(coords);
+    const [x, y] = this.engine.canvas!.fromCoords(coords);
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };
@@ -177,7 +177,7 @@ class NodeManager extends EngineConsumer {
   async addMany(entities: EntityMap, coords: Coords) {
     this.log.debug(this.log.pending('adding many nodes'), entities);
 
-    const point = this.engine.canvas!.fromVector(coords);
+    const point = this.engine.canvas!.fromCoords(coords);
     await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, point));
     this.internal.addMany(entities, point);
     this.engine.saveHistory();
@@ -491,7 +491,7 @@ class NodeManager extends EngineConsumer {
       const targets = this.engine.selection.getTargets();
 
       await this.engine.drag.setGroup(targets);
-      await this.engine.node.translateMany(targets, movement);
+      await this.translateMany(targets, movement);
     } else if (this.engine.transformation.isActive && !this.engine.focus.isTarget(nodeID)) {
       this.engine.focus.reset();
     } else {
@@ -500,7 +500,7 @@ class NodeManager extends EngineConsumer {
       }
 
       await this.engine.drag.setTarget(nodeID);
-      await this.engine.node.translate(nodeID, movement);
+      await this.translate(nodeID, movement);
       this.engine.transformation.transformOverlay?.translate(movement);
 
       this.engine.merge.updateCandidates();
@@ -521,15 +521,7 @@ class NodeManager extends EngineConsumer {
 
     if (!center || MARKUP_NODES.includes(node.type)) return;
 
-    const [centerX, centerY] = center;
-    const xOffset = window.innerWidth / 2;
-    const yOffset = window.innerHeight / 2;
-
-    const canvasAPI = this.engine.canvas!;
-
-    canvasAPI.applyTransition();
-    canvasAPI.setZoom(80);
-    canvasAPI.setPosition([(xOffset - centerX) * 0.8, (yOffset - centerY - 100) * 0.8]);
+    this.engine.center(center);
 
     this.log.info('centered canvas on node', this.log.slug(nodeID));
   }

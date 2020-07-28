@@ -58,6 +58,8 @@ class MouseControls extends BaseControls {
   };
 
   click = (event: React.MouseEvent) => {
+    if (event.defaultPrevented) return;
+
     if (this.isPanning) {
       this.isPanning = false;
 

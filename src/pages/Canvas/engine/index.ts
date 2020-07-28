@@ -13,8 +13,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
-import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
-import RealtimeSubscription from '@/gates/RealtimeLoadingGate/subscription';
+import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
@@ -32,6 +31,7 @@ import DragEngine from './dragEngine';
 import LinkEntity from './entities/linkEntity';
 import NodeEntity from './entities/nodeEntity';
 import PortEntity from './entities/portEntity';
+import ThreadEntity from './entities/threadEntity';
 import FocusEngine from './focusEngine';
 import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
@@ -94,6 +94,8 @@ export class Engine {
 
   links = new Map<string, { api: LinkEntity }>();
 
+  threads = new Map<string, { api: ThreadEntity }>();
+
   supportedLinks: string[] = [];
 
   canvas: CanvasAPI | null = null;
@@ -124,7 +126,7 @@ export class Engine {
     ];
   }
 
-  constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscription) {
+  constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscriptionValue) {
     // do not change these to property declarations, they depend on this.store being set
     this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
@@ -202,6 +204,14 @@ export class Engine {
 
   expireLink(linkID: string, instanceID: string) {
     expireInstance(this.links, linkID, instanceID);
+  }
+
+  registerThread(threadID: string, api: ThreadEntity) {
+    this.threads.set(threadID, { api });
+  }
+
+  expireThread(threadID: string, instanceID: string) {
+    expireInstance(this.threads, threadID, instanceID);
   }
 
   // canvas orchestration methods
@@ -326,8 +336,19 @@ export class Engine {
     return this.canvas!.transformPoint(this.mousePosition.current!);
   }
 
-  getMousePoint() {
+  getMouseCoords() {
     return new Coords(this.mousePosition.current!);
+  }
+
+  center([centerX, centerY]: Point) {
+    const xOffset = window.innerWidth / 2;
+    const yOffset = window.innerHeight / 2;
+
+    const canvasAPI = this.canvas!;
+
+    canvasAPI.applyTransition();
+    canvasAPI.setZoom(80);
+    canvasAPI.setPosition([(xOffset - centerX) * 0.8, (yOffset - centerY - 100) * 0.8]);
   }
 
   async reset() {
@@ -348,14 +369,14 @@ export class Engine {
   }
 }
 
-const createEngine = moize.simple((store, mousePosition, realtimeSubscription) => new Engine(store, mousePosition, realtimeSubscription));
+const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
 
 function useEngine() {
   const store = useStore();
   const currentDiagramID = useSelector(Creator.creatorDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
-  const engine = React.useMemo(() => createEngine(store, mousePosition, realtimeSubscription), []);
+  const engine = React.useMemo(() => createEngine(store as any, mousePosition!, realtimeSubscription), []);
 
   useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), []);
 

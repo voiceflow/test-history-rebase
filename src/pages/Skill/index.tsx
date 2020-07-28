@@ -7,6 +7,7 @@ import { Alert } from 'reactstrap';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
+import { CanvasRoute, ProjectRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
@@ -26,19 +27,12 @@ import { getActivePageAndMatch } from '@/utils/routes';
 import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
-import { CommentModeProvider, MarkupModeProvider } from './contexts';
+import { PAGES_MATCHES, TIMEOUT_COUNT } from './contants';
+import { MarkupModeProvider } from './contexts';
 
-const PAGES_MATCHES = {
-  prototype: ['/prototype/:diagramID?'],
-  tools: ['/tools'],
-  canvas: ['/canvas/:diagramID?', '/canvas/:diagramID/commenting'],
-  migrate: ['/migrate'],
-  publish: ['/publish'],
-};
+export type SkillProps = RouteComponentProps;
 
-const TIMEOUT_COUNT = 5 * 60 * 1000;
-
-export type SkillProps = RouteComponentProps & {
+export type InjectedSkillProps = {
   versionID: string;
   diagramID: string;
   activePage: string;
@@ -46,7 +40,7 @@ export type SkillProps = RouteComponentProps & {
   error?: string;
 };
 
-const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
+const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
   match,
   error,
   diagramID,
@@ -93,32 +87,34 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
           <InactivityModal open={isIdle} onActive={setActive} />
         </>
       )}
-      <CommentModeProvider>
-        <Page
-          header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
-          userMenu={false}
-          canScroll={false}
-          subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-          onNavigateBack={goToDashboard}
-        >
-          <Switch>
-            <PrivateRoute
-              path={[`${match.path}/prototype/:diagramID?`, `${match.path}/canvas/:diagramID?`, `${match.path}/canvas/:diagramID/commenting`]}
-              component={Diagram}
-              diagramID={diagramID}
-              isPrototyping={isPrototyping}
-            />
+      <Page
+        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
+        userMenu={false}
+        canScroll={false}
+        subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+        onNavigateBack={goToDashboard}
+      >
+        <Switch>
+          <PrivateRoute
+            path={[
+              `${match.path}/${ProjectRoute.PROTOTYPE}/:diagramID?`,
+              `${match.path}/${ProjectRoute.CANVAS}/:diagramID?`,
+              `${match.path}/${ProjectRoute.CANVAS}/:diagramID/${CanvasRoute.COMMENTING}`,
+            ]}
+            component={Diagram}
+            diagramID={diagramID}
+            isPrototyping={isPrototyping}
+          />
 
-            <PrivateRoute path={`${match.path}/tools`} component={Business} />
+          <PrivateRoute path={`${match.path}/${ProjectRoute.TOOLS}`} component={Business} />
 
-            <PrivateRoute path={`${match.path}/migrate`} component={Migrate} />
+          <PrivateRoute path={`${match.path}/${ProjectRoute.MIGRATE}`} component={Migrate} />
 
-            <PrivateRoute path={`${match.path}/publish`} component={Publish} />
+          <PrivateRoute path={`${match.path}/${ProjectRoute.PUBLISH}`} component={Publish} />
 
-            <Redirect to={`${match.path}/canvas`} />
-          </Switch>
-        </Page>
-      </CommentModeProvider>
+          <Redirect to={`${match.path}/${ProjectRoute.CANVAS}`} />
+        </Switch>
+      </Page>
     </MarkupModeProvider>
   );
 };

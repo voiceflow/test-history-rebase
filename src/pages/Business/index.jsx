@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
+import { ToolsRoute } from '@/config/routes';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
@@ -24,8 +25,8 @@ function Business(props) {
     <>
       <PageContainer>
         <Switch>
-          <PrivateRoute {...ownProps} path={`${path}/products`} component={ProductsList} />
-          <PrivateRoute {...ownProps} path={`${path}/product/:id`} component={Product} />
+          <PrivateRoute {...ownProps} path={`${path}/${ToolsRoute.PRODUCTS}`} component={ProductsList} />
+          <PrivateRoute {...ownProps} path={`${path}/${ToolsRoute.PRODUCT}/:id`} component={Product} />
         </Switch>
       </PageContainer>
       <LockedResourceOverlay type={Realtime.ResourceType.PRODUCTS} />

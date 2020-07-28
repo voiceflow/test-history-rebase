@@ -5,7 +5,7 @@ import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
-import { Comment, Thread } from '@/models';
+import { Comment, NewThread, Thread } from '@/models';
 import { Thunk } from '@/store/types';
 import { Pair } from '@/types';
 
@@ -35,6 +35,10 @@ export const resolvedThreads = createSelector([allThreadsSelector], (threads) =>
 
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.length);
 
+export const rootThreadIDsSelector = createSelector([allThreadsSelector], (threads) =>
+  threads.filter((thread) => !thread.resolved && !thread.nodeID).map(({ id }) => id)
+);
+
 // action creators
 
 export const { add: addThread, update: updateThread, remove: removeThread, replace: replaceThreads } = createCRUDActionCreators<Thread>(STATE_KEY);
@@ -56,10 +60,10 @@ export const createThread = ({
   position,
   data,
 }: {
-  data: Partial<Pick<Comment, 'text' | 'mentions'>>;
-  nodeID: string;
+  data: Pick<Comment, 'text' | 'mentions'>;
+  nodeID: string | null;
   position: Pair<number>;
-}): Thunk => async (dispatch, getState) => {
+}): Thunk<Thread> => async (dispatch, getState) => {
   const state = getState();
   const projectID = Skill.activeProjectIDSelector(state);
   const diagramID = Skill.activeDiagramIDSelector(state);
@@ -67,7 +71,7 @@ export const createThread = ({
 
   const newComment = { ...data, creatorID };
 
-  const generatedThread = {
+  const generatedThread: NewThread = {
     projectID,
     diagramID,
     nodeID,
@@ -78,11 +82,14 @@ export const createThread = ({
   };
 
   try {
-    const thread: Thread = await client.thread.create(projectID, generatedThread as Thread);
+    const thread = await client.thread.create(projectID, generatedThread);
 
     dispatch(addThread(thread.id!, thread));
+
+    return thread;
   } catch (e) {
     toast.error('Something went wrong. Please try again');
+    throw e;
   }
 };
 
@@ -100,6 +107,8 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
     toast.error('Something went wrong. Please try again');
   }
 };
+
+export const resolveThread = (id: string) => updateThreadData(id, { resolved: true });
 
 export const deleteThread = (threadID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());

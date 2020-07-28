@@ -2,11 +2,9 @@ import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 
 import Commenter from '@/components/Commenter';
-import { Permission, hasPermission } from '@/config/permissions';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { DBWorkspace } from '@/models';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 
 import MentionPreview from '../CommentPreview';
 import { MentionEditorContainer, mentionEditorStyle, mentionStyle } from './components';
@@ -15,7 +13,6 @@ import { formatNameToMention } from './utils';
 export { MentionPreview };
 
 export type MentionEditorProps = {
-  permissiongType: Permission;
   onChange: (value: string, mentions: number[]) => void;
   value?: string;
   placeholder: string;
@@ -69,14 +66,9 @@ export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditor
 };
 
 const mapStateToProps = {
-  members: Workspace.activeWorkspaceMembersSelector,
-  plan: Workspace.planTypeSelector,
+  members: Workspace.activeWorkspaceCommentingMembersSelector,
 };
 
-const mergeProps = (...[{ members, plan }, , { permissiongType }]: MergeArguments<typeof mapStateToProps, {}, MentionEditorProps>) => ({
-  members: members.filter((member: DBWorkspace.Member) => hasPermission(permissiongType, member.role, plan!)),
-});
+export type ConnectedMentionEditorProps = ConnectedProps<typeof mapStateToProps>;
 
-export type ConnectedMentionEditorProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
-
-export default connect(mapStateToProps, null, mergeProps)(MentionEditor as any) as React.FC<MentionEditorProps>;
+export default connect(mapStateToProps)(MentionEditor as any) as React.FC<MentionEditorProps>;

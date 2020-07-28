@@ -1,10 +1,10 @@
 import client from '@/client';
+import { CanvasRoute, ProjectRoute, RootRoute } from '@/config/routes';
 import * as Modal from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { Skill as SkillModel } from '@/models';
 import { GetState, Thunk, ThunkDispatch } from '@/store/types';
-import { RootRoutes } from '@/utils/routes';
 
 import { goTo, goToPrototype, goToPublish } from './actions';
 
@@ -30,7 +30,11 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
 export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
   await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
 
-  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}${diagramID ? `/canvas/${diagramID}` : '/canvas'}${window.location.search}`));
+  dispatch(
+    goTo(
+      `${RootRoute.PROJECT}/${versionID}${diagramID ? `/${ProjectRoute.CANVAS}/${diagramID}` : `/${ProjectRoute.CANVAS}`}${window.location.search}`
+    )
+  );
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
@@ -48,7 +52,7 @@ export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getStat
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
 
-  dispatch(goTo(`${RootRoutes.PROJECT}/${versionID}/canvas/${diagramID}/commenting${window.location.search}`));
+  dispatch(goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.CANVAS}/${diagramID}/${CanvasRoute.COMMENTING}${window.location.search}`));
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {

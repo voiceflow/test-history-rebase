@@ -43,7 +43,7 @@ const Spotlight = () => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
-    await engine.node.add(blockType, engine.getMousePoint(), factoryData);
+    await engine.node.add(blockType, engine.getMouseCoords(), factoryData);
     spotlight?.hide();
   };
 

@@ -7,7 +7,7 @@ import * as Display from '@/ducks/display';
 import { EntityMap, Link, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
-import { Dispatch, Dispatchable, Selector } from '@/store/types';
+import { Dispatch, DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { isLinkedeDisplayNode } from '@/utils/node';
@@ -34,6 +34,10 @@ export class EngineConsumer {
 
   dispatch<T extends Dispatchable>(dispatchable: T) {
     return this.engine.store.dispatch<T>(dispatchable);
+  }
+
+  bind<T extends Dispatcher<any[]>>(dispatcher: T) {
+    return (...args: Parameters<T>): DispatchResult<ReturnType<T>> => this.engine.store.dispatch(dispatcher(...args));
   }
 
   select<T>(selector: Selector<T>) {

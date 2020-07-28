@@ -1,14 +1,12 @@
 import React from 'react';
 
-import Box from '@/components/Box';
-import MentionEditor from '@/components/MentionEditor';
 import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
-import { Permission } from '@/config/permissions';
 import { useEnableDisable } from '@/hooks';
-import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { preventDefault } from '@/utils/dom';
 
-import ThreadEditorHeader from '../ThreadEditorHeader';
+import EditableComment from '../EditableComment';
 import ReplySectionContainer from './ReplySectionContainer';
 
 type ReplySectionProps = {
@@ -16,42 +14,22 @@ type ReplySectionProps = {
 };
 
 const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
+  const engine = React.useContext(EngineContext)!;
   const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
 
-  const { newReply, setNewValues, resetNewValues, postComment } = React.useContext(CommentModeContext);
-
-  const doneReplying = async () => {
-    await postComment();
-
-    resetNewValues(true);
-    disableReplying();
-  };
-
-  const onClick = () => {
-    enableReplying();
-    setNewValues({ threadID }, true);
-  };
-
-  const onBlur = () => {
-    if (!newReply?.text) {
-      disableReplying();
-      resetNewValues(true);
-    }
-  };
+  const onClick = preventDefault(() => enableReplying());
 
   return isReplying ? (
-    <Box>
-      <ThreadEditorHeader threadID={threadID} onPost={doneReplying} isPosted={!isReplying} />
-      <Box mt={12}>
-        <MentionEditor
-          permissiongType={Permission.COMMENTING}
-          onChange={(text: string, mentions: number[]) => setNewValues({ ...newReply, text, mentions }, true)}
-          placeholder="Reply or @mention"
-          value={newReply?.threadID && newReply?.text}
-          onBlur={onBlur}
-        />
-      </Box>
-    </Box>
+    <EditableComment
+      isEditing
+      onSave={async (values) => {
+        await engine.comment.createComment(threadID, values);
+        disableReplying();
+      }}
+      headerProps={{
+        isPosted: !isReplying,
+      }}
+    />
   ) : (
     <ReplySectionContainer onClick={onClick}>
       <Text color="#8da2b5">Reply</Text>

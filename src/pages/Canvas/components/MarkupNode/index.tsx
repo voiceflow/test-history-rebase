@@ -6,10 +6,10 @@ import { Permission } from '@/config/permissions';
 import { BlockType } from '@/constants';
 import { usePermission } from '@/hooks';
 import { Markup } from '@/models';
-import DraggingNode from '@/pages/Canvas/components/DraggingNode';
+import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
+import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
@@ -59,7 +59,7 @@ const MarkupNode = () => {
     <>
       <NodeStyles />
 
-      <DraggingNode
+      <NodeDragTarget
         draggable
         className={cn(ClassName.CANVAS_NODE, `${ClassName.CANVAS_NODE}--${nodeEntity.nodeType}`)}
         position={instance.getPosition()}
@@ -84,7 +84,7 @@ const MarkupNode = () => {
             <NodeComponent node={node} data={data as any} />
           </Container>
         )}
-      </DraggingNode>
+      </NodeDragTarget>
     </>
   );
 };

@@ -8,5 +8,4 @@ export type InternalNodeInstance<T extends HTMLElement> = NodeInstance & {
   ref: React.RefObject<T>;
   blockRef: React.RefObject<BlockAPI>;
   position: React.RefObject<Point>;
-  getPosition: () => Point;
 };

@@ -19,7 +19,7 @@ type HeaderInputProps = AutosizeInputProps & {
 };
 
 const HeaderInput = styled(
-  mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, ...props }) => ({
+  mapProps<AutosizeInputProps, HeaderInputProps>(({ canEdit, variant, viewOnlyMode, ...props }) => ({
     ...props,
   }))(AutosizeInput)
 )

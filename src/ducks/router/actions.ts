@@ -1,8 +1,8 @@
 import { CALL_HISTORY_METHOD, push } from 'connected-react-router';
 
+import { ProductRoute, ProjectRoute, RootRoute, ToolsRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import { Action } from '@/store/types';
-import { RootRoutes } from '@/utils/routes';
 
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
@@ -10,29 +10,25 @@ export const goTo = (path: string, state = null) => push(`/${path}`, state) as R
 
 export const goToHome = () => goTo('');
 
-export const goToLogin = () => goTo('login');
+export const goToLogin = () => goTo(RootRoute.LOGIN);
 
-export const goToWorkspace = (workspaceId: string) => goTo(`workspace/${workspaceId}`);
+export const goToWorkspace = (workspaceId: string) => goTo(`${RootRoute.WORKSPACE}/${workspaceId}`);
 
-export const goToDashboard = () => goTo('dashboard');
+export const goToDashboard = () => goTo(RootRoute.DASHBOARD);
 
-export const goToDashboardWithSearch = (search: string) => goTo(`dashboard${search}`);
+export const goToDashboardWithSearch = (search: string) => goTo(`${RootRoute.DASHBOARD}${search}`);
 
-export const goToOnboarding = () => goTo(`onboarding${window.location.search}`);
+export const goToOnboarding = () => goTo(`${RootRoute.ONBOARDING}${window.location.search}`);
 
-export const goToTeam = (teamID: string) => goTo(`team/${teamID}`);
-
-export const goToNewTeamFlow = () => goTo('team/new');
-
-export const gotToNewProjectFlow = (boardID: string) => goTo(`team/template/${boardID}`);
-
-export const goToPrototype = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/prototype`);
+export const goToPrototype = (versionID: string) => goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.PROTOTYPE}`);
 
 export const goToPublish = (versionID: string, platform: PlatformType) =>
-  goTo(`${RootRoutes.PROJECT}/${versionID}/publish${platform ? `/${platform}` : ''}`);
+  goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.PUBLISH}${platform ? `/${platform}` : ''}`);
 
-export const goToProducts = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/products`);
+export const goToProducts = (versionID: string) => goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.TOOLS}/${ToolsRoute.PRODUCTS}`);
 
-export const goToNewProduct = (versionID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/new`);
+export const goToNewProduct = (versionID: string) =>
+  goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.TOOLS}/${ToolsRoute.PRODUCT}/${ProductRoute.NEW}`);
 
-export const goToEditProduct = (versionID: string, productID: string) => goTo(`${RootRoutes.PROJECT}/${versionID}/tools/product/${productID}`);
+export const goToEditProduct = (versionID: string, productID: string) =>
+  goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.TOOLS}/${ToolsRoute.PRODUCT}/${productID}`);

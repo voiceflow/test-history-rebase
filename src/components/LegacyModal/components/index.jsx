@@ -11,7 +11,7 @@ import ModalBody from './ModalBody';
 import ModalFooter from './ModalFooter';
 import ModalHeader from './ModalHeader';
 
-const BaseModal = styled(ReactstrapModal)`
+const BaseModal = styled(({ modalWidth, ...props }) => <ReactstrapModal {...props} />)`
   ${({ modalname, theme }) =>
     modalname &&
     css`

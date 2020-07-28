@@ -2,13 +2,16 @@ import React from 'react';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
 import ErrorBoundary from '@/components/ErrorPages/ErrorBoundary';
+import { Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 export type PrivateRouteProps<T extends object> = {
   path: string | string[];
-  component: React.FC<T>;
+  component: React.ComponentType<T>;
+  name?: string;
+  exact?: boolean;
 } & Omit<T, keyof RouteComponentProps>;
 
 const PrivateRoute = <T extends object>({ component: Component, authToken, ...rest }: PrivateRouteProps<T> & ConnectedPrivateRouteProps) => (
@@ -22,7 +25,7 @@ const PrivateRoute = <T extends object>({ component: Component, authToken, ...re
       ) : (
         <Redirect
           to={{
-            pathname: '/login',
+            pathname: Path.LOGIN,
             search: props.location.search,
             state: { from: props.location },
           }}

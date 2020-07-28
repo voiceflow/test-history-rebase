@@ -17,7 +17,7 @@ export type DropdownPlacement = PopperProps['placement'];
 
 export type DropdownProps<T> = {
   menu?: React.ReactNode | ((onToggle: () => void) => void);
-  portal?: HTMLElement;
+  portal?: HTMLElement | null;
   zIndex?: string | number;
   onClose?: () => void;
   options?: MenuOption<T>[];
@@ -84,7 +84,18 @@ const Dropdown = <T extends any = undefined>({
                   ref(container);
                   containerRef.current = container;
                 }}
-                style={style}
+                style={
+                  // eslint-disable-next-line no-nested-ternary
+                  portal
+                    ? style
+                    : childRef
+                    ? {
+                        position: 'absolute',
+                        left: `${childRef.offsetLeft}px`,
+                        top: `${childRef.offsetTop + childRef.offsetHeight}px`,
+                      }
+                    : undefined
+                }
                 zIndex={zIndex}
                 noScroll={noScroll}
                 autoWidth={autoWidth}

@@ -8,7 +8,7 @@ import { ConnectedProps } from '@/types';
 
 import CommentActions, { CommentActionsProps } from './CommentActions';
 
-type ThreadEditorHeaderProps = CommentActionsProps & {
+export type ThreadEditorHeaderProps = CommentActionsProps & {
   postedTime?: string;
 };
 

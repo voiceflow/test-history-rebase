@@ -20,6 +20,8 @@ export type Pair<T> = [T, T];
 
 export type Quad<T> = [T, T, T, T];
 
+export type Eventual<T> = Promise<T> | T;
+
 export type Point = Pair<number>;
 
 export type Viewport = {

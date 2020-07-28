@@ -12,7 +12,7 @@ import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
-import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
+import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -32,7 +32,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const markupModal = useModals(ModalType.CANVAS_MARKUP);
   const upgradeModal = useModals(ModalType.PAYMENT);
   const markupTool = React.useContext(MarkupModeContext);
-  const commenting = React.useContext(CommentModeContext);
+
+  const isCommentingMode = useCommentingMode();
 
   const { isPrototyping } = React.useContext(EditPermissionContext)!;
   const eventualEngine = React.useContext(EventualEngineContext)!;
@@ -59,8 +60,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
 
     if (markupTool?.isOpen) {
       markupTool.closeTool();
-    } else if (commenting.isOpen) {
-      commenting.close();
+    } else if (isCommentingMode) {
+      eventualEngine.get()?.comment.disable();
     }
     if (openCb) {
       openCb();
@@ -87,7 +88,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       return;
     }
 
-    openMode(commenting?.open);
+    openMode(() => eventualEngine.get()?.comment.enable());
   };
 
   // this callback is needed to do not store event object in the modals context
@@ -110,12 +111,12 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   }, [onOpenMarkup, markupTool?.closeTool, markupTool?.isOpen]);
 
   const toggleCommenting = React.useCallback(() => {
-    if (commenting.isOpen) {
-      commenting.close();
+    if (isCommentingMode) {
+      eventualEngine.get()?.comment.disable();
     } else {
       onOpenCommenting();
     }
-  }, [onOpenCommenting, commenting.close, commenting.isOpen]);
+  }, [onOpenCommenting, isCommentingMode]);
 
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
@@ -127,7 +128,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     Hotkey.CLOSE_CANVAS_MODE,
     () => {
       markupTool?.closeTool();
-      commenting.close();
+      eventualEngine.get()?.comment.disable();
       if (isPrototyping) {
         goToDesign();
       }
@@ -146,7 +147,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
             <CanvasControlButton
               {...CanvasControlMeta[CanvasControl.COMMENTING]}
               iconProps={{
-                active: commenting.isOpen,
+                active: isCommentingMode,
                 icon: 'comment',
                 size: 16,
               }}

@@ -41,7 +41,8 @@ const BlockContainer = styled.div<BlockContainerProps>`
   border-color: none;
 
   .${CANVAS_COMMENTING_ENABLED} & {
-   cursor: crosshair;
+    cursor: crosshair;
+    pointer-events: none;
   }
 
   ::before {

@@ -25,6 +25,7 @@ export enum ClassName {
   SSML_PLAY_AUDIO = 'vf-ssml__play-audio',
   CANVAS_EDITOR = 'vf-canvas__editor',
   CANVAS_NODE = 'vf-canvas__node',
+  CANVAS_THREAD = 'vf-canvas__thread',
   CANVAS_BLOCK = 'vf-canvas__block',
   CANVAS_STEP = 'vf-canvas__step',
   CANVAS_PORT = 'vf-canvas__port',

@@ -33,6 +33,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
       const skill = (await loadProject()) as Models.Skill;
 
       if (commenting.isEnabled && skill.projectID) {
+        // TODO: move this into loadProject once FF removed
         await loadThreads(skill.projectID);
       }
 

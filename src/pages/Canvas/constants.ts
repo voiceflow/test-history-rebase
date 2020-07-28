@@ -54,6 +54,7 @@ export enum CanvasAction {
   PAN = 'pan',
   IDLE = 'idle',
   MOVE_MOUSE = 'moveMouse',
+  CLICK = 'click',
 }
 
 export enum CanvasTransformation {

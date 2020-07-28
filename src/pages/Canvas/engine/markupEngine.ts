@@ -62,7 +62,7 @@ class MarkupEngine extends EngineConsumer {
 
     const nodeID = await this.engine.node.add(
       BlockType.MARKUP_TEXT,
-      this.engine.getMousePoint(),
+      this.engine.getMouseCoords(),
       nodeData as NodeData<Markup.NodeData.Text>,
       cuid(),
       false

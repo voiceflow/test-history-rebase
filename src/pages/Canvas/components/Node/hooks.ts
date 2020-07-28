@@ -3,7 +3,9 @@ import React from 'react';
 import { useLinkedRef } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
+import { useDragTranslate, useEntityDrag } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
+import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { Point } from '@/types';
 
 import { InternalNodeInstance } from './types';
@@ -29,15 +31,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const position = useNodePosition();
 
-  const updateTransform = React.useCallback(([x, y]: Point, callback?: () => void) => {
-    const nodeEl = ref.current!;
-
-    window.requestAnimationFrame(() => {
-      nodeEl.style.transform = `translate(${x}px, ${y}px)`;
-
-      callback?.();
-    });
-  }, []);
+  const translate = useDragTranslate(ref, position);
 
   const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 
@@ -59,14 +53,55 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
         return [node.x, node.y];
       },
       rename: () => blockRef.current?.rename(),
-      translate: ([movementX, movementY]) => {
-        const [posX, posY] = position.current!;
-        const nextPosition: Point = [posX + movementX, posY + movementY];
-        position.current = nextPosition;
-
-        updateTransform(nextPosition);
-      },
+      translate,
     }),
     [elementInstance]
   );
+};
+
+export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean; skipDrag?: () => boolean } = {}) => {
+  const engine = React.useContext(EngineContext)!;
+  const nodeEntity = React.useContext(NodeEntityContext)!;
+  const editPermission = React.useContext(EditPermissionContext)!;
+
+  const onClick = React.useCallback(
+    (event: React.MouseEvent) => {
+      if (event.defaultPrevented || skipClick?.()) return;
+
+      event.preventDefault();
+
+      engine.setActive(nodeEntity.nodeID, event.shiftKey);
+    },
+    [skipClick]
+  );
+
+  const onDragStart = useEntityDrag(
+    {
+      skipDrag: () => !editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID) || !!skipDrag?.(),
+      drag: (movement) => engine.node.drag(nodeEntity.nodeID, movement),
+      drop: async () => {
+        if (engine.drag.isTarget(nodeEntity.nodeID)) {
+          await engine.node.drop();
+        }
+        await engine.drag.reset();
+      },
+    },
+    [editPermission.canEdit, skipDrag]
+  );
+
+  const onMouseDown = React.useCallback(
+    (event: React.MouseEvent) => {
+      if (!editPermission.canEdit) return;
+
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+    },
+    [editPermission.canEdit]
+  );
+
+  return {
+    onClick,
+    onDragStart,
+    onMouseDown,
+  };
 };

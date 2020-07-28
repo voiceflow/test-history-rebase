@@ -7,8 +7,9 @@ import * as Creator from '@/ducks/creator';
 import { connect, css, styled } from '@/hocs';
 import { useActiveModal, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { ClipboardContext, CommentModeContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Callback, ConnectedProps } from '@/types';
 
 export const MARKUP_MODE_CURSORS: Record<MarkupModeType | MarkupShapeType, string> = {
@@ -20,7 +21,7 @@ export const MARKUP_MODE_CURSORS: Record<MarkupModeType | MarkupShapeType, strin
   [MarkupModeType.IMAGE]: 'default',
 };
 
-const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null; isMarkupCreating: boolean; commentingEnabled: boolean }>`
+const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null; isMarkupCreating: boolean; isCommentingMode: boolean }>`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
@@ -32,8 +33,8 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null
       cursor: ${MARKUP_MODE_CURSORS[markupMode]};
     `}
 
-  ${({ commentingEnabled }) =>
-    commentingEnabled &&
+  ${({ isCommentingMode }) =>
+    isCommentingMode &&
     css`
       cursor: crosshair;
 
@@ -49,7 +50,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
   const { isCreating: isMarkupCreating, modeType: markupModeType, isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
-  const { isOpen: commentingEnabled } = React.useContext(CommentModeContext);
+  const isCommentingMode = useCommentingMode();
 
   const activeModal = useActiveModal();
 
@@ -66,7 +67,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
 
   return (
-    <Wrapper markupMode={markupModeType} isMarkupCreating={isMarkupCreating} commentingEnabled={commentingEnabled}>
+    <Wrapper markupMode={markupModeType} isMarkupCreating={isMarkupCreating} isCommentingMode={isCommentingMode}>
       {children}
     </Wrapper>
   );

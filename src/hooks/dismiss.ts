@@ -49,7 +49,9 @@ export function useDismissable(
     }
   }, [autoDismiss, overlay?.canOpen, overlay?.setHandler, handleClose, removeRootListener]);
 
-  const onToggle = isOpen ? handleClose : handleOpen;
+  const forceClose = React.useCallback(() => handleClose(), [handleClose]);
+
+  const onToggle = isOpen ? forceClose : handleOpen;
 
   React.useEffect(() => {
     if (isOpen) {

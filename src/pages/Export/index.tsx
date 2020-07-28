@@ -16,7 +16,7 @@ import removeIntercom from '@/hocs/removeIntercom';
 import { useFeature } from '@/hooks';
 import { Node } from '@/models';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
-import DraggingNode from '@/pages/Canvas/components/DraggingNode';
+import DragTarget from '@/pages/Canvas/components/DragTarget';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -66,7 +66,7 @@ const ExportCanvasDiagram = styled(Canvas as any)`
     }
   }
 
-  ${DraggingNode} {
+  ${DragTarget} {
     margin-bottom: ${EXPORT_MARGIN}px;
 
     ${MarkupChildNodeContainer} {

@@ -78,9 +78,15 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.MANAGE_BILLING]: [PlanType.STARTER, PlanType.OLD_STARTER, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM],
 };
 
-export const hasPermission = (permission: Permission, role: UserRole, plan: PlanType) => {
-  const hasRolePermission = !ROLE_PERMISSIONS[permission] || ROLE_PERMISSIONS[permission]!.includes(role);
-  const hasPlanPermission = !PLAN_PERMISSIONS[permission] || PLAN_PERMISSIONS[permission]!.includes(plan);
+export const hasRolePermission = (permission: Permission, role: UserRole) =>
+  !ROLE_PERMISSIONS[permission] || ROLE_PERMISSIONS[permission]!.includes(role);
 
-  return hasRolePermission && hasPlanPermission;
+export const hasPlanPermission = (permission: Permission, plan: PlanType) =>
+  !PLAN_PERMISSIONS[permission] || PLAN_PERMISSIONS[permission]!.includes(plan);
+
+export const hasPermission = (permission: Permission, role: UserRole, plan: PlanType) => {
+  const roleAllowed = hasRolePermission(permission, role);
+  const planAllowed = hasPlanPermission(permission, plan);
+
+  return roleAllowed && planAllowed;
 };

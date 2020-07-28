@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+import { Assign } from 'utility-types';
+
 import { Pair } from '@/types';
 
 import { Comment, DBComment } from './Comment';
@@ -15,6 +17,8 @@ export type Thread = {
   resolved: boolean;
   comments: Comment[];
 };
+
+export type NewThread = Assign<Omit<Thread, 'id'>, { comments: [Pick<Comment, 'creatorID' | 'text' | 'mentions'>] }>;
 
 // Backend type
 

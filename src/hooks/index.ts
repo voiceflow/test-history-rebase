@@ -25,3 +25,4 @@ export * from './upload';
 export * from './linked';
 export * from './permission';
 export * from './cache';
+export * from './state';

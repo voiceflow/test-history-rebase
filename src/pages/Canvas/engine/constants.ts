@@ -7,4 +7,5 @@ export enum EntityType {
   NODE = 'node',
   PORT = 'port',
   LINK = 'link',
+  THREAD = 'thread',
 }

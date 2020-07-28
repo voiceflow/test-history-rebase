@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
@@ -13,12 +14,15 @@ import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
+import { CANVAS_COMMENTING_ENABLED } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { useCommentingMode } from '@/pages/Skill/hooks';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
 import { Coords } from '@/utils/geometry';
 
+import ThreadLayer from '../ThreadLayer';
 import { useCursorControls } from './hooks';
 
 const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {
@@ -38,6 +42,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const { canEdit } = React.useContext(EditPermissionContext)!;
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
+  const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
   const onDragStart = React.useCallback(
@@ -58,15 +63,35 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     engine.clearActivation();
   }, []);
 
-  const onClickCanvas = React.useCallback(async () => {
-    if (!isMarkupCreating || MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) return;
+  const onMouseDown = React.useCallback(
+    (event: React.MouseEvent) => {
+      if (event.defaultPrevented) return;
 
-    if (markupModeType === MarkupModeType.TEXT) {
-      await engine.markup.addTextNode();
-    }
+      if (isCommentingMode && !engine.comment.hasTarget) {
+        if (engine.comment.isCreating) {
+          engine.comment.reset();
+        } else {
+          engine.comment.startThread();
+        }
+      }
+    },
+    [isCommentingMode]
+  );
 
-    finishMarkupCreating();
-  }, [isMarkupCreating, markupModeType]);
+  const onClickCanvas = React.useCallback(
+    async (event: React.MouseEvent) => {
+      if (event.defaultPrevented) return;
+
+      if (isMarkupCreating && !MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
+        if (markupModeType === MarkupModeType.TEXT) {
+          await engine.markup.addTextNode();
+        }
+
+        finishMarkupCreating();
+      }
+    },
+    [isCommentingMode, isMarkupCreating, markupModeType]
+  );
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
@@ -105,6 +130,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         viewport={viewport}
         onClick={onClickCanvas}
         onMouseUp={onMouseUp}
+        onMouseDown={onMouseDown}
         onChange={updateViewport}
         onPan={panViewport}
         onZoom={zoomViewport}
@@ -113,10 +139,12 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         onShiftDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
         onDragStart={onDragStart}
+        className={cn({ [CANVAS_COMMENTING_ENABLED]: isCommentingMode })}
       >
         <LinkLayer />
         <NodeLayer />
         {markup.isEnabled && <MarkupLayer />}
+        <ThreadLayer />
         <MergeLayer />
         <SelectionMarquee />
       </Canvas>

@@ -15,7 +15,7 @@ import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 
-import { CommentModeContext, EditPermissionProvider, MarkupModeContext } from '../contexts';
+import { EditPermissionProvider, MarkupModeContext } from '../contexts';
 import DiagramSync from './DiagramSync';
 import FlowControls from './FlowControls';
 import MarkupImageLoading from './MarkupImageLoading';
@@ -25,24 +25,10 @@ export type DiagramProps = RouteComponentProps & {
   isPrototyping: boolean;
 };
 
-const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping, location }) => {
+const Diagram: React.FC<DiagramProps> = ({ diagramID, isPrototyping }) => {
   const markupTool = React.useContext(MarkupModeContext);
-  const commenting = React.useContext(CommentModeContext);
   const eventualEngine = React.useContext(EventualEngineContext);
   const markupFeature = useFeature(FeatureFlag.MARKUP);
-  const commentingFeature = useFeature(FeatureFlag.COMMENTING);
-
-  React.useEffect(() => {
-    if (commentingFeature.isEnabled) {
-      const isCommenting = location.pathname.includes('/commenting');
-
-      if (isCommenting && !commenting.isOpen) {
-        commenting.open();
-      } else if (!isCommenting && commenting.isOpen) {
-        commenting.close();
-      }
-    }
-  }, [location.pathname]);
 
   useTeardown(() => {
     eventualEngine?.get()?.teardown();

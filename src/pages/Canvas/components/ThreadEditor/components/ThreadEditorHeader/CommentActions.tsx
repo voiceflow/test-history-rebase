@@ -6,8 +6,8 @@ import { FlexEnd } from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
-import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
-import { noop } from '@/utils/functional';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { preventDefault } from '@/utils/dom';
 
 export type CommentActionsProps = {
   onPost: () => void;
@@ -34,7 +34,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
   showResolve,
   isPosted,
 }) => {
-  const commenting = React.useContext(CommentModeContext);
+  const engine = React.useContext(EngineContext)!;
 
   const isCommentOwner = creatorID === currentUser;
 
@@ -42,13 +42,12 @@ const CommentActions: React.FC<CommentActionsProps> = ({
     <FlexEnd>
       {commentID && isPosted && isCommentOwner && (
         <Dropdown
+          portal={null}
           menu={
             <Menu>
               {/* Disable edit button if there is already a comment in editing mode */}
-              <MenuItem disabled={!!commenting.editingComment} onClick={onEdit}>
-                Edit
-              </MenuItem>
-              <MenuItem onClick={() => commenting.deleteComment(threadID!, commentID!)}>Delete</MenuItem>
+              <MenuItem onClick={onEdit}>Edit</MenuItem>
+              <MenuItem onClick={() => engine.comment.deleteComment(threadID!, commentID!)}>Delete</MenuItem>
             </Menu>
           }
         >
@@ -58,7 +57,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               size={16}
               icon="elipsis"
               variant={IconButtonVariant.SUBTLE}
-              onClick={onToggle}
+              onClick={preventDefault(onToggle)}
               iconProps={{ color: isOpen ? '#6e849a' : '#becedc' }}
               hoverColor="#6e849a"
             />
@@ -72,7 +71,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               size={16}
               icon="check2"
               variant={IconButtonVariant.SUBTLE}
-              onClick={() => commenting.resolveThread(threadID)}
+              onClick={() => engine.comment.resolveThread(threadID)}
               iconProps={{ color: '#becedc' }}
               hoverColor="#6e849a"
             />
@@ -82,7 +81,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
       {!isPosted && (
         <ButtonBox
           ml={10}
-          onClick={isDisabled ? noop : onPost}
+          onClick={isDisabled ? undefined : preventDefault(onPost)}
           color="#62778c"
           fontSize={13}
           fontWeight={600}

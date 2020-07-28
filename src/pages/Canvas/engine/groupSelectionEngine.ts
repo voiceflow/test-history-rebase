@@ -7,14 +7,6 @@ import { buildVirtualDOMRect } from '@/utils/dom';
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
 import { EngineConsumer, NodeCandidate, getCandidates } from './utils';
 
-export type NewLinkAPI = {
-  show: () => void;
-  hide: () => void;
-  isPinned: () => boolean;
-  pin: (position: [number, number]) => void;
-  unpin: () => void;
-};
-
 class GroupSelectionEngine extends EngineConsumer {
   log = this.engine.log.child('group-selection');
 

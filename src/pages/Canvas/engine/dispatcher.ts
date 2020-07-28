@@ -58,6 +58,10 @@ class Dispatcher extends EngineConsumer {
     this.redrawEntity(EntityType.LINK, linkID);
   }
 
+  redrawThread(threadID: string) {
+    this.redrawEntity(EntityType.THREAD, threadID);
+  }
+
   reset() {
     this.emitter.removeAllListeners();
   }

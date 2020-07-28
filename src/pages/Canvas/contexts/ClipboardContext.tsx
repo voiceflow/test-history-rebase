@@ -30,7 +30,7 @@ export const ClipboardProvider: React.FC = ({ children }) => {
 
       event.preventDefault();
 
-      engine.paste(event.clipboardData!.getData('text'), engine.getMousePoint());
+      engine.paste(event.clipboardData!.getData('text'), engine.getMouseCoords());
     };
 
     document.addEventListener('paste', handlePaste);

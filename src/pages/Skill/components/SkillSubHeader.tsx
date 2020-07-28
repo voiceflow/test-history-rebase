@@ -6,7 +6,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { CommentModeContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 
 import CanvasViewers from './CanvasViewers';
@@ -39,12 +39,10 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   goToPublish,
 }) => {
   const markupTool = React.useContext(MarkupModeContext);
-  const { close: closeCommentingMode } = React.useContext(CommentModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
   const disableAllModes = () => {
     markupTool?.closeTool();
-    closeCommentingMode();
   };
 
   const onChange = React.useCallback(

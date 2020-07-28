@@ -5,6 +5,7 @@ import { ResourceEntity } from '@/pages/Canvas/engine/entities/entity';
 import LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
 import NodeEntity from '@/pages/Canvas/engine/entities/nodeEntity';
 import PortEntity from '@/pages/Canvas/engine/entities/portEntity';
+import ThreadEntity from '@/pages/Canvas/engine/entities/threadEntity';
 
 import { EngineContext } from './EngineContext';
 
@@ -37,3 +38,8 @@ export const NodeEntityContext = React.createContext<NodeEntity | null>(null);
 export const { Consumer: NodeEntityConsumer } = NodeEntityContext;
 
 export const NodeEntityProvider = createResourceEntityProvider(NodeEntityContext, NodeEntity);
+
+export const ThreadEntityContext = React.createContext<ThreadEntity | null>(null);
+export const { Consumer: ThreadEntityConsumer } = ThreadEntityContext;
+
+export const ThreadEntityProvider = createResourceEntityProvider(ThreadEntityContext, ThreadEntity);

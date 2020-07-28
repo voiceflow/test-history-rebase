@@ -3,14 +3,13 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import { useSetup } from '@/hooks';
 import CommentBlock from '@/pages/Canvas/components/CommentBlock';
+import { useNodeDrag, useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { useNodeDrag } from '@/pages/Canvas/hooks';
 import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
-import { useNodeInstance } from './hooks';
 
 const Node: React.FC = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);

@@ -3,7 +3,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { withContext } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
+import { useCommentingMode } from '@/pages/Skill/hooks';
 
 type EditPermissionValue = {
   isViewer: boolean;
@@ -20,16 +20,16 @@ export type EditPermissionProviderProps = {
 
 export const EditPermissionProvider: React.FC<EditPermissionProviderProps> = ({ isPrototyping, children }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const commenting = React.useContext(CommentModeContext);
+  const isCommentingMode = useCommentingMode();
   const value = React.useMemo(() => {
-    const canEdit = canEditCanvas && !isPrototyping && !commenting.isOpen;
+    const canEdit = canEditCanvas && !isPrototyping && !isCommentingMode;
 
     return {
       canEdit,
       isViewer: !canEditCanvas,
       isPrototyping,
     };
-  }, [canEditCanvas, isPrototyping, commenting.isOpen]);
+  }, [canEditCanvas, isPrototyping, isCommentingMode]);
 
   return <EditPermissionContext.Provider value={value}>{children}</EditPermissionContext.Provider>;
 };

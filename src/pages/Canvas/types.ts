@@ -3,6 +3,7 @@ import React from 'react';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 export type MarkupTransform = {
   scale: number;
@@ -46,15 +47,20 @@ export type NewLinkAPI = {
   show: () => void;
   hide: () => void;
   isPinned: () => boolean;
-  pin: (position: [number, number]) => void;
+  pin: (position: Point) => void;
   unpin: () => void;
+};
+
+export type NewCommentAPI = {
+  show: (origin: Coords) => void;
+  hide: () => void;
 };
 
 export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
   isVisible: boolean;
   isTransparent: boolean;
-  initialize: (point: [number, number], offset: [number, number]) => void;
+  initialize: (point: Point, offset: Pair<number>) => void;
   reset: () => void;
   setTransparent: () => void;
   clearTransparent: () => void;

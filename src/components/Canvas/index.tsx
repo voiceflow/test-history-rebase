@@ -26,12 +26,12 @@ export type CanvasProps = {
   controlScheme?: ControlScheme;
   innerRef?: React.Ref<HTMLDivElement>;
   className?: string;
-  disableClick?: boolean;
   onChange?: (viewport: Viewport) => void;
   onPan?: (movement: Pair<number>) => void;
   onZoom?: (translateZoom: MovementCalculator) => void;
   onClick?: (event: React.MouseEvent) => void;
   onMouseUp?: (event: MouseEvent) => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
   onRightClick?: (event: React.MouseEvent) => void;
   onShiftDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
@@ -83,8 +83,8 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         scale: this.api.getZoom(),
       };
     },
-    fromVector(vector: Vector) {
-      return vector.map(this.getPlane());
+    fromCoords(coords: Coords) {
+      return coords.map(this.getPlane());
     },
     toCoords(point: Point) {
       return new Coords(point, this.getPlane());
@@ -294,18 +294,20 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   controls = generateControls(this.props.controlScheme, this.handleControl);
 
   onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const { disableClick } = this.props;
-
-    if (disableClick) return;
-
     this.controls.click(event);
+  };
+
+  onMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { onMouseDown } = this.props;
+
+    onMouseDown?.(event);
+    this.controls.mousedown(event);
   };
 
   onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     const { onDragStart } = this.props;
 
     onDragStart?.(event);
-
     this.controls.dragstart(event);
   };
 
@@ -352,7 +354,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
           onContextMenu={onRightClick}
           onClick={this.onClick}
           onDragStart={this.onDragStart}
-          onMouseDown={this.controls.mousedown}
+          onMouseDown={this.onMouseDown}
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >

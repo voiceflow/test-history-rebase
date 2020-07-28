@@ -8,6 +8,8 @@ export type DispatchResult<T extends Dispatchable> = T extends AnyThunk ? Return
 
 export type Dispatch = <T extends Dispatchable>(dipatchable: T) => DispatchResult<T>;
 
+export type Dispatcher<A extends any[]> = (...args: A) => Dispatchable;
+
 // store
 
 export type Store = {

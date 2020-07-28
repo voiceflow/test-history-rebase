@@ -6,12 +6,11 @@ import Drawer from '@/components/Drawer';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import BaseMenu, { MenuItem } from '@/components/Menu';
 import Text from '@/components/Text';
-import * as Creator from '@/ducks/creator';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
-import { CommentModeContext } from '@/pages/Skill/contexts/CommentingContext';
+import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
 import { ConnectedProps } from '@/types';
@@ -30,39 +29,22 @@ export type ThreadHistoryDrawerProps = {
 export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedThreadHistoryDrawerProps> = ({
   openThreads,
   resolvedThreads,
-  focus,
   theme,
 }) => {
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
-  const [threads, updateThreads] = React.useState<ThreadType[]>(openThreads);
+  const threads = filter === FilterType.RESOLVED ? resolvedThreads : openThreads;
+  const label = FILTER_LABELS[filter];
+  const dropdownText = threads.length ? `${threads.length} ${label}` : label;
 
-  const commenting = React.useContext(CommentModeContext);
+  const isCommentingMode = useCommentingMode();
 
-  const onClick = React.useCallback(
-    (type: FilterType) => () => {
-      updateFilter(type);
-      updateThreads(type === FilterType.RESOLVED ? resolvedThreads : openThreads);
-    },
-    [resolvedThreads, openThreads]
-  );
-
-  const dropdownText = React.useCallback(() => {
-    const threadCount = threads?.length;
-    const label = FILTER_LABELS[filter];
-
-    return threadCount ? `${threadCount} ${label}` : label;
-  }, [threads, filter]);
-
-  React.useEffect(() => {
-    updateThreads(filter === FilterType.RESOLVED ? resolvedThreads : openThreads);
-  }, [openThreads, resolvedThreads]);
+  const onClick = React.useCallback((type: FilterType) => () => updateFilter(type), [resolvedThreads, openThreads]);
 
   return (
     <Drawer
       scrollable
-      key={focus?.target ?? undefined}
       width={theme.components.historyDrawer.width}
-      open={commenting.isOpen}
+      open={isCommentingMode}
       direction={SlideOutDirection.LEFT}
       onPaste={stopImmediatePropagation()}
     >
@@ -73,7 +55,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedT
         <DropdownWithCaret
           placement="bottom-end"
           padding="10px 0px"
-          text={dropdownText()}
+          text={dropdownText}
           color="#62778c"
           menu={
             <Menu fullWidth>
@@ -97,8 +79,6 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedT
 };
 
 const mapStateToProps = {
-  node: Creator.focusedNodeSelector,
-  focus: Creator.creatorFocusSelector,
   openThreads: Thread.openThreads,
   resolvedThreads: Thread.resolvedThreads,
 };

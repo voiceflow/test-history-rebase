@@ -187,4 +187,4 @@ const mapDispatchToProps = {
 
 type ConnectedSignupFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(SignupForm);
+export default connect(null, mapDispatchToProps)(SignupForm) as React.FC<SignupFormProps>;

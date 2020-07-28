@@ -5,7 +5,7 @@ import * as Realtime from '@/ducks/realtime';
 import { useTeardown } from '@/hooks';
 import { buildPath, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { NewLinkAPI } from '@/pages/Canvas/engine/linkCreationEngine';
+import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 import { noop } from '@/utils/functional';
 

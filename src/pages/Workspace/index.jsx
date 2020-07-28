@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
+import { Path } from '@/config/routes';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -12,9 +13,9 @@ import Templates from '@/pages/Templates';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 const PAGES_MATCHES = {
-  template: ['/workspace/template', '/workspace/template/:workspaceID'],
-  dashboard: ['/workspace/:workspaceID', '/dashboard'],
-  onboarding: ['/onboarding'],
+  template: [Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:workspaceID`],
+  dashboard: [`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD],
+  onboarding: [Path.ONBOARDING],
 };
 
 function Workspace({ workspaces }) {
@@ -33,7 +34,7 @@ function Workspace({ workspaces }) {
             incredible voice experiences
           </span>
           <br />
-          <Link to="/workspace/new" className="no-underline">
+          <Link to={Path.NEW_WORKSPACE} className="no-underline">
             <Button id="createWorkspace" isPrimary className="mt-4">
               New Workspace
             </Button>
@@ -45,8 +46,8 @@ function Workspace({ workspaces }) {
 
   return (
     <Switch>
-      <PrivateRoute exact path={['/workspace/template', '/workspace/template/:listID']} component={Templates} />
-      <PrivateRoute exact path={['/workspace/:workspaceID', '/dashboard']} component={Dashboard} />
+      <PrivateRoute exact path={[Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:listID`]} component={Templates} />
+      <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD]} component={Dashboard} />
     </Switch>
   );
 }

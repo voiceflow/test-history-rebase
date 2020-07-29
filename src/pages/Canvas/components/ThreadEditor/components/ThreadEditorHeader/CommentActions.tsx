@@ -6,8 +6,12 @@ import { FlexEnd } from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
+import { isMac } from '@/config';
+import { useEnableDisable } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
+
+const hotKey = isMac ? '⌘↵' : 'Ctrl↵';
 
 export type CommentActionsProps = {
   onPost: () => void;
@@ -34,6 +38,8 @@ const CommentActions: React.FC<CommentActionsProps> = ({
   showResolve,
   isPosted,
 }) => {
+  const [hovered, enableHover, disableHover] = useEnableDisable(false);
+
   const engine = React.useContext(EngineContext)!;
 
   const isCommentOwner = creatorID === currentUser;
@@ -89,8 +95,11 @@ const CommentActions: React.FC<CommentActionsProps> = ({
           p="3px 8px"
           borderRadius="5px"
           cursor={isDisabled ? 'not-allowed' : 'pointer'}
+          onMouseEnter={enableHover}
+          onMouseLeave={disableHover}
         >
-          {commentID && isEditing ? 'Done' : 'Post'}
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {hovered ? hotKey : commentID && isEditing ? 'Done' : 'Post'}
         </ButtonBox>
       )}
     </FlexEnd>

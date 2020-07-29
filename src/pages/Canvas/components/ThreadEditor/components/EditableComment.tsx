@@ -38,18 +38,15 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
     reset: () => setComment(EMPTY_COMMENT),
   }));
 
+  const onPost = () => {
+    onSave(comment);
+    setComment(EMPTY_COMMENT);
+    onClose?.();
+  };
+
   return (
     <Box>
-      <ThreadEditorHeader
-        onPost={() => {
-          onSave(comment);
-          setComment(EMPTY_COMMENT);
-          onClose?.();
-        }}
-        isEditing={isEditing}
-        isDisabled={!headerProps?.threadID && !comment.text}
-        {...headerProps}
-      />
+      <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
       <Box mt={12}>
         {isEditing ? (
           <MentionEditor
@@ -57,6 +54,13 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
             placeholder="Comment or @mention"
             value={comment.text}
             onBlur={onBlur}
+            inputProps={{
+              onKeyDown: (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
+                  onPost();
+                }
+              },
+            }}
           />
         ) : (
           <CommentPreview text={comment.text} />

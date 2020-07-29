@@ -35,3 +35,11 @@ export const withTime = () => {
     </Box>
   );
 };
+
+export const longName = () => {
+  return (
+    <Box m={30}>
+      <Commenter {...({ user: { ...USER, name: 'Michael Anderson Scott' } } as any)} time="2020-07-02T18:07:31.215Z" />
+    </Box>
+  );
+};

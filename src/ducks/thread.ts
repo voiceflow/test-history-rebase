@@ -6,7 +6,7 @@ import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
 import { Comment, NewThread, Thread } from '@/models';
-import { Thunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 import { Pair } from '@/types';
 
 // state
@@ -108,7 +108,15 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
   }
 };
 
-export const resolveThread = (id: string) => updateThreadData(id, { resolved: true });
+export const resolveThread = (id: string): SyncThunk => (dispatch) => {
+  dispatch(updateThreadData(id, { resolved: true }));
+  toast.success('Thread has been resolved');
+};
+
+export const unresolveThread = (id: string): SyncThunk => (dispatch) => {
+  dispatch(updateThreadData(id, { resolved: false }));
+  toast.success('Thread has been unresolved');
+};
 
 export const deleteThread = (threadID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());

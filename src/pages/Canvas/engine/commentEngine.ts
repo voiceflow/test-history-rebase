@@ -82,6 +82,8 @@ class CommentEngine extends EngineConsumer {
 
   resolveThread = this.bind(Thread.resolveThread);
 
+  unresolveThread = this.bind(Thread.unresolveThread);
+
   startThread() {
     if (this.hasTarget) return;
 

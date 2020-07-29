@@ -69,6 +69,7 @@ export { default as flow } from './flow.svg';
 export { default as flows } from './flows.svg';
 export { default as folderLight } from './folder-light.svg';
 export { default as forward } from './forward.svg';
+export { default as filledCheck } from './filled-check.svg';
 
 // g
 export { default as globe } from './images/globe.svg';

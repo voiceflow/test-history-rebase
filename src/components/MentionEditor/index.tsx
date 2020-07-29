@@ -16,7 +16,7 @@ export type MentionEditorProps = {
   onChange: (value: string, mentions: number[]) => void;
   value?: string;
   placeholder: string;
-  inputProps?: MentionsInputProps;
+  inputProps?: Omit<MentionsInputProps, 'children'>;
   onBlur?: () => void;
 };
 

@@ -1,2 +1,2 @@
 /* eslint-disable import/prefer-default-export */
-export const formatNameToMention = (name: string) => name.toLowerCase().split(' ').join('');
+export const formatNameToMention = (name = '') => name.toLowerCase().split(' ').join('');

@@ -2,12 +2,13 @@ import React from 'react';
 
 import Box, { Flex } from '@/components/Box';
 import Duration from '@/components/Duration';
-import Text from '@/components/Text';
 import User from '@/components/User';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { capitalizeAllWords } from '@/utils/string';
+
+import NameContainer from './NameContainer';
 
 type CommenterProps = {
   creatorID: number;
@@ -18,12 +19,10 @@ export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ 
   return (
     <Flex>
       <User user={user!} medium />
-      <Text fontWeight={600} ml={12} fontSize={15}>
-        {capitalizeAllWords(user!.name)}
-      </Text>
+      <NameContainer>{capitalizeAllWords(user!.name)}</NameContainer>
       {time && (
         <Box ml={6}>
-          <Duration time={time} />
+          <Duration time={time} short={!!time} />
         </Box>
       )}
     </Flex>

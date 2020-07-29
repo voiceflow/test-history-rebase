@@ -90,3 +90,5 @@ export type ConnectedProps<
 > = Overwrite<Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>, ReturnType<M>>;
 
 export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
+
+export type NonNullableRecord<T extends object> = { [K in keyof T]: NonNullable<T[K]> };

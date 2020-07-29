@@ -3,6 +3,8 @@ import { createSelector } from 'reselect';
 import { Permission, hasRolePermission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
 import { createRootSelector } from '@/ducks/utils';
+import { Workspace } from '@/models';
+import { NonNullableRecord } from '@/types';
 import { getAlternativeColor } from '@/utils/colors';
 
 import { userIDSelector } from '../account';
@@ -26,8 +28,12 @@ export const isOnPaidPlanSelector = createSelector([planTypeSelector], (plan) =>
 
 export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSelector], (activeWorkspace) => activeWorkspace?.members || []);
 
-export const activeWorkspaceCommentingMembersSelector = createSelector([activeWorkspaceMembersSelector], (members) =>
-  members.filter((member) => hasRolePermission(Permission.COMMENTING, member.role))
+export const activeWorkspaceCommentingMembersSelector = createSelector(
+  [activeWorkspaceMembersSelector],
+  (members) =>
+    members.filter((member: Workspace.Member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)) as NonNullableRecord<
+      Workspace.Member
+    >[]
 );
 
 export const seatLimitsSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.seatLimits);

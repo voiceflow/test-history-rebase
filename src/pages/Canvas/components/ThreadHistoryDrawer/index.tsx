@@ -50,7 +50,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedT
     >
       <HeaderContainer>
         <Text fontSize={18} fontWeight={600}>
-          Comments
+          Threads
         </Text>
         <DropdownWithCaret
           placement="bottom-end"

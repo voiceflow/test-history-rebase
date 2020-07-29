@@ -20,6 +20,23 @@ export type Workspace = {
 
 export namespace Workspace {
   export type ActivationState = 'LOCKED' | 'WARNING';
+
+  export type Member = {
+    creator_id: number | null;
+    seats: number;
+    name: string | null;
+    email: string;
+    role: UserRole;
+    image: string | null;
+    created: string;
+    /**
+     * don't see these two properties being used
+     * it would be great if we have invite property boolean enabled
+     * to indicate user is invited but has not yet accepted
+     */
+    status: unknown;
+    invite?: string;
+  };
 }
 
 export type DBWorkspace = {

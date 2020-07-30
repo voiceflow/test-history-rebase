@@ -6,6 +6,9 @@ import React from 'react';
 import DraftJSEditor from '@/components/DraftJSEditor';
 import { deleteHandler } from '@/components/TextEditor/plugins/base/utils';
 import { isFirefox } from '@/config';
+import { isNodeEditLockedSelector } from '@/ducks/realtime';
+import { compose, connect } from '@/hocs';
+import { useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -14,7 +17,11 @@ import { getRawContent } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
-const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>> = ({ node, data }, ref) => {
+type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
+  isNodeLocked: (nodeID: string) => boolean;
+};
+
+const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
@@ -42,13 +49,15 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMa
     draggableParentsCache.current = draggableParents;
   };
 
-  React.useEffect(() => {
-    setEditorState(createEditorState(data.content));
-  }, [data.content]);
+  useDidUpdateEffect(() => {
+    const isLocked = !!isNodeLocked?.(nodeEntity.nodeID);
+    if (!isFocused || isLocked) {
+      setEditorState(createEditorState(data.content));
+    }
+  }, [data.content, isFocused]);
 
   const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);
-
     if (!editorState.getCurrentContent().getPlainText().trim()) {
       engine.node.remove(node.id);
 
@@ -177,4 +186,11 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMa
   );
 };
 
-export default React.forwardRef(MarkupTextNode);
+const mapStateToProps = {
+  isNodeLocked: isNodeEditLockedSelector,
+};
+
+export default compose(
+  connect(mapStateToProps, null, null, { forwardRef: true }),
+  React.forwardRef
+)(MarkupTextNode) as React.ForwardRefRenderFunction<HTMLDivElement, ConnectedMarkupNodeProps<Markup.NodeData.Text>>;

@@ -42,7 +42,8 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
       const defaultList = normalizedLists.find((list) => list.name === DEFAULT_LIST_NAME);
 
       if (defaultList) {
-        normalizedLists = replace(normalizedLists, normalizedLists.indexOf(defaultList), { ...defaultList, projects: unusedProjectIDs });
+        const projects = _uniq([...defaultList.projects, ...unusedProjectIDs]);
+        normalizedLists = replace(normalizedLists, normalizedLists.indexOf(defaultList), { ...defaultList, projects });
       } else {
         normalizedLists.push({
           id: cuid(),

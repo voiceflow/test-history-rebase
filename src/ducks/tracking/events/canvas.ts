@@ -26,3 +26,15 @@ export const trackMarkupOpen = createProjectEventTracker((options) =>
 export const trackMarkupSessionDuration = createProjectEventTracker<{ duration: number }>((options) =>
   client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }))
 );
+
+export const trackCommentingOpen = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.CANVAS_COMMENTING_OPENED, createProjectEventPayload(options))
+);
+
+export const trackNewThreadCreated = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_NEW_COMMENT_THREAD, createProjectEventPayload(options))
+);
+
+export const trackNewThreadReply = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_NEW_THREAD_REPLY, createProjectEventPayload(options))
+);

@@ -22,7 +22,7 @@ import { CanvasControl, CanvasControlMeta } from './constants';
 const ZOOM_DELTA = 15;
 
 const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, goToDesign }) => {
-  const [, trackingEventsWrapper] = useTrackingEvents();
+  const [trackEvents, trackingEventsWrapper] = useTrackingEvents();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
@@ -115,6 +115,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       eventualEngine.get()?.comment.disable();
     } else {
       onOpenCommenting();
+      trackEvents.trackCommentingOpen();
     }
   }, [onOpenCommenting, isCommentingMode]);
 

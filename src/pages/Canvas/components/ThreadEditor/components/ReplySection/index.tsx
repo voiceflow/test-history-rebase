@@ -2,7 +2,8 @@ import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useTrackingEvents } from '@/hooks';
+import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { preventDefault } from '@/utils/dom';
 
@@ -16,16 +17,21 @@ type ReplySectionProps = {
 const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
   const engine = React.useContext(EngineContext)!;
   const [isReplying, enableReplying, disableReplying] = useEnableDisable(false);
+  const [trackEvents] = useTrackingEvents();
 
   const onClick = preventDefault(() => enableReplying());
+
+  const onSave = async (values: Pick<Comment, 'text' | 'mentions'>) => {
+    await engine.comment.createComment(threadID, values);
+
+    trackEvents.trackNewThreadReply();
+    disableReplying();
+  };
 
   return isReplying ? (
     <EditableComment
       isEditing
-      onSave={async (values) => {
-        await engine.comment.createComment(threadID, values);
-        disableReplying();
-      }}
+      onSave={onSave}
       headerProps={{
         isPosted: !isReplying,
       }}

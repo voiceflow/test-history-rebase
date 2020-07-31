@@ -22,6 +22,8 @@ export enum EventName {
   PROJECT_SHARE_TESTABLE_LINK = 'Testable Link Button',
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
   CLONE_PROJECT = 'Clone Project',
+  PROJECT_NEW_COMMENT_THREAD = 'New Comment Thread Created',
+  PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
 
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
@@ -29,6 +31,7 @@ export enum EventName {
   CANVAS_CONTROL_INTERACTION_MODEL = 'Canvas Control Interaction Model',
   CANVAS_MARKUP_OPENED = 'Canvas Markup Opened',
   CANVAS_MARKUP_DURATION = 'Markup Session Duration',
+  CANVAS_COMMENTING_OPENED = 'Canvas Commenting Opened',
 
   ONBOARDING_PAY = 'Onboarding - Pay',
   ONBOARDING_JOIN = 'Onboarding - Join',

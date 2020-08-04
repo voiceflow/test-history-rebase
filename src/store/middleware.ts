@@ -8,6 +8,7 @@ import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED } from '@/config';
+import { RootRoute } from '@/config/routes';
 import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
@@ -25,7 +26,6 @@ import * as VariableSet from '@/ducks/variableSet';
 import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
 import { isLinkedeDisplayNode } from '@/utils/node';
-import { RootRoutes } from '@/utils/routes';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
@@ -192,7 +192,7 @@ const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) =>
     const state = store.getState();
     const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
     const creatorDiagramID = Creator.creatorDiagramIDSelector(state);
-    const pathnameRegexp = new RegExp(`\\/${RootRoutes.PROJECT}\\/[^\\/]+\\/canvas\\/[^\\/]+`);
+    const pathnameRegexp = new RegExp(`\\/${RootRoute.PROJECT}\\/[^\\/]+\\/canvas\\/[^\\/]+`);
 
     if (!isRealtimeConnected && creatorDiagramID && action.payload.location.pathname.match(pathnameRegexp)) {
       store.dispatch(Creator.resetCreator());

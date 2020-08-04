@@ -12,6 +12,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
+import { RootRoute } from '@/config/routes';
 import { ModalType } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
 import { useFeature, useModals, usePermission } from '@/hooks';
@@ -19,7 +20,6 @@ import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
-import { RootRoutes } from '@/utils/routes';
 
 import {
   DropdownIconWrapper,
@@ -55,7 +55,7 @@ export function Item(props) {
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
-  const pathTo = isReference ? `/reference/${id}` : `/${RootRoutes.PROJECT}/${version_id}/canvas/${diagram}`;
+  const pathTo = isReference ? `/reference/${id}` : `/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
   const options = canManageProjects
     ? [

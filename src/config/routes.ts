@@ -26,6 +26,7 @@ export enum ProjectRoute {
 }
 
 export enum CanvasRoute {
+  MODEL = 'model',
   MARKUP = 'markup',
   COMMENTING = 'commenting',
 }
@@ -92,8 +93,12 @@ export const Path = {
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE, ':diagramID?'),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
+  PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
 
+  CANVAS_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
+  CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
+  CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),
 
   PRODUCT_DETAILS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT, ':id'),
   PRODUCT_LIST: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCTS),

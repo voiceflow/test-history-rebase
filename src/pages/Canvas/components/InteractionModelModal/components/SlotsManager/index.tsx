@@ -17,8 +17,20 @@ import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
 
-const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, slotsIDs, removeSlot, reorderSlots }) => {
-  const [selectedID, setSelectedID] = React.useState(slots[0]?.id);
+export type SlotsManagerProps = {
+  selectedID?: string;
+  setSelectedID: (id: string) => void;
+};
+
+const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = ({
+  slots,
+  addSlot,
+  slotsIDs,
+  removeSlot,
+  selectedID = slots[0]?.id,
+  reorderSlots,
+  setSelectedID,
+}) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
 
   const scrollbarsRef = React.useRef<Scrollbars>(null);
@@ -34,7 +46,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
         setSelectedID(slotsIDs[index === 0 ? 1 : 0]);
       }
     },
-    [removeSlot, slotsIDs, selectedID]
+    [removeSlot, slotsIDs, selectedID, setSelectedID]
   );
 
   const onDeleteFromManager = React.useCallback(
@@ -52,7 +64,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
         setSelectedID(items[0]?.id);
       }
     },
-    [selectedID]
+    [selectedID, setSelectedID]
   );
 
   const onReorder = React.useCallback((from: number, to: number) => reorderSlots(reorderArray(slotsIDs, from, to)), [slotsIDs, reorderSlots]);
@@ -70,7 +82,7 @@ const SlotsManager: React.FC<ConnectedSlotsManagerProps> = ({ slots, addSlot, sl
         setSelectedID(id);
       },
     });
-  }, []);
+  }, [setSelectedID]);
 
   return (
     <>
@@ -134,4 +146,4 @@ const mapDispatchToProps = {
 
 type ConnectedSlotsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SlotsManager);
+export default connect(mapStateToProps, mapDispatchToProps)(SlotsManager) as React.FC<SlotsManagerProps>;

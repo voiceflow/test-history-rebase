@@ -19,10 +19,17 @@ import { VARIABLE_DESCRIPTION, VariableType } from './constants';
 import { Variable } from './types';
 import { addPrefix } from './utils';
 
+export type VariablesManagerProps = {
+  selectedID?: string;
+  setSelectedID: (id: string) => void;
+};
+
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
-const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
+const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManagerProps> = ({
+  selectedID,
+  setSelectedID,
   localVariables,
   globalVariables,
   removeLocalVariable,
@@ -42,7 +49,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
     return [list, map];
   }, [localVariables, globalVariables]);
 
-  const [selectedVariableID, setSelectedVariableID] = React.useState<string | undefined>(mergedVariables[0].id);
+  const selectedVariableID = selectedID || mergedVariables[0].id;
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
 
   const selectedVariable = selectedVariableID ? mergedVariablesMap[selectedVariableID] : null;
@@ -59,10 +66,10 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
       if (selectedVariableID === item.id) {
         const index = mergedVariables.findIndex(({ id }) => id === item.id);
 
-        setSelectedVariableID(mergedVariables[index === 0 ? 1 : 0].id);
+        setSelectedID(mergedVariables[index === 0 ? 1 : 0].id);
       }
     },
-    [removeGlobalVariable, mergedVariables, selectedVariableID]
+    [removeGlobalVariable, mergedVariables, selectedVariableID, setSelectedID]
   );
 
   const onDeleteLocal = React.useCallback(
@@ -72,10 +79,10 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
       if (selectedVariableID === item.id) {
         const index = mergedVariables.findIndex(({ id }) => id === item.id);
 
-        setSelectedVariableID(mergedVariables[index === 0 ? 1 : 0].id);
+        setSelectedID(mergedVariables[index === 0 ? 1 : 0].id);
       }
     },
-    [removeLocalVariable, mergedVariables, selectedVariableID]
+    [removeLocalVariable, mergedVariables, selectedVariableID, setSelectedID]
   );
 
   const deleteSelectedVariable = React.useCallback(() => {
@@ -89,10 +96,10 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
   const onFilter = React.useCallback(
     (_, items: Variable[]) => {
       if (!items.some((variable) => variable.id === selectedVariable?.id)) {
-        setSelectedVariableID(items[0]?.id);
+        setSelectedID(items[0]?.id);
       }
     },
-    [selectedVariable]
+    [selectedVariable, setSelectedID]
   );
 
   const onReorderGlobalVariables = React.useCallback((from: number, to: number) => replaceGlobalVariables(reorderArray(globalVariables, from, to)), [
@@ -108,7 +115,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
   return (
     <>
       <LeftColumn isDragging={isDragging}>
-        <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedVariableID(addPrefix(type, variable))} />
+        <VariableInput setSelected={(type: VariableType, variable: string) => setSelectedID(addPrefix(type, variable))} />
 
         <VariableListContainer>
           <DraggableList
@@ -116,7 +123,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
             onDrop={stopDragging}
             onDelete={onDeleteGlobal}
             onReorder={onReorderGlobalVariables}
-            itemProps={{ addToIndex: localVariables.length, withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedVariableID }}
+            itemProps={{ addToIndex: localVariables.length, withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedID }}
             onEndDrag={stopDragging}
             getItemKey={getItemKey}
             onStartDrag={startDragging}
@@ -133,7 +140,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
                 onDrop={stopDragging}
                 onDelete={onDeleteLocal}
                 onReorder={onReorderLocalVariables}
-                itemProps={{ withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedVariableID }}
+                itemProps={{ withoutHover: isDragging, selectedVariableID, onSelectVariableID: setSelectedID }}
                 onEndDrag={stopDragging}
                 getItemKey={getItemKey}
                 onStartDrag={startDragging}
@@ -156,7 +163,7 @@ const VariablesManager: React.FC<ConnectedVariablesManagerProps> = ({
                       ) : index < mergedVariables.length - BUILT_IN_VARIABLES.length ? (
                         renderGlobalItem({ key: item.id, itemKey: item.id, item, index: index - localVariables.length })
                       ) : (
-                        <DraggableItem key={item.id} item={item} selectedVariableID={selectedVariableID} onSelectVariableID={setSelectedVariableID} />
+                        <DraggableItem key={item.id} item={item} selectedVariableID={selectedVariableID} onSelectVariableID={setSelectedID} />
                       )
                     }
                     placeholder="Search Variables"
@@ -202,4 +209,4 @@ const mergeProps = (
 
 type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariablesManager);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariablesManager) as React.FC<VariablesManagerProps>;

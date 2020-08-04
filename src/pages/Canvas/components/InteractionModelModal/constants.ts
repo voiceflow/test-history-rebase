@@ -1,20 +1,16 @@
-export enum TabType {
-  SLOTS = 'slots',
-  INTENTS = 'intents',
-  VARIABLES = 'variables',
-}
+import { InteractionModelTabType } from '@/constants';
 
 export const TABS = [
   {
-    value: TabType.INTENTS as string,
+    value: InteractionModelTabType.INTENTS as string,
     label: 'Intents',
   },
   {
-    value: TabType.SLOTS as string,
+    value: InteractionModelTabType.SLOTS as string,
     label: 'Slots',
   },
   {
-    value: TabType.VARIABLES as string,
+    value: InteractionModelTabType.VARIABLES as string,
     label: 'Variables',
   },
 ];

@@ -1,9 +1,5 @@
 import { match, matchPath } from 'react-router-dom';
 
-export const RootRoutes = {
-  PROJECT: 'project',
-};
-
 // eslint-disable-next-line import/prefer-default-export
 export const getActivePageAndMatch = <P extends object = {}>(
   routesMatches: Record<string, string[]>,

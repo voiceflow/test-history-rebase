@@ -11,3 +11,4 @@ export * from './withExternalResources';
 export * from './withBatchLoadingGate';
 export * from './withUpload';
 export * from './withNamespace';
+export * from './withInnerRef';

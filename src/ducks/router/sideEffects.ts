@@ -1,10 +1,13 @@
+import { generatePath } from 'react-router-dom';
+
 import client from '@/client';
-import { CanvasRoute, ProjectRoute, RootRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
+import { InteractionModelTabType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { Skill as SkillModel } from '@/models';
-import { GetState, Thunk, ThunkDispatch } from '@/store/types';
+import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 
 import { goTo, goToPrototype, goToPublish } from './actions';
 
@@ -30,11 +33,7 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
 export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
   await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
 
-  dispatch(
-    goTo(
-      `${RootRoute.PROJECT}/${versionID}${diagramID ? `/${ProjectRoute.CANVAS}/${diagramID}` : `/${ProjectRoute.CANVAS}`}${window.location.search}`
-    )
-  );
+  dispatch(goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`));
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
@@ -52,7 +51,7 @@ export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getStat
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
 
-  dispatch(goTo(`${RootRoute.PROJECT}/${versionID}/${ProjectRoute.CANVAS}/${diagramID}/${CanvasRoute.COMMENTING}${window.location.search}`));
+  dispatch(goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${window.location.search}`));
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
@@ -79,4 +78,20 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   const platform = Skill.activePlatformSelector(state);
 
   dispatch(goToPublish(versionID, platform));
+};
+
+export const goToCurrentCanvasInteractionModel = (entityType: InteractionModelTabType): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const diagramID = Skill.activeDiagramIDSelector(state);
+
+  dispatch(goTo(generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType: entityType })));
+};
+
+export const goToCurrentCanvasInteractionModelEntity = (entityType: InteractionModelTabType, entityID: string): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const diagramID = Skill.activeDiagramIDSelector(state);
+
+  dispatch(goTo(generatePath(Path.CANVAS_MODEL_ENTITY, { versionID, diagramID, modelType: entityType, modelEntityID: entityID })));
 };

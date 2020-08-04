@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import client from '@/client';
 import { FullSpinner } from '@/components/Spinner';
-import { RootRoutes } from '@/utils/routes';
+import { RootRoute } from '@/config/routes';
 
 const Diagram = styled.div`
   position: fixed;
@@ -23,7 +23,7 @@ function Reference(props) {
   const history = props.history;
 
   useEffect(() => {
-    client.project.claimReference(projectID).then(({ skill_id }) => history.replace(`/${RootRoutes.PROJECT}/${skill_id}/canvas`));
+    client.project.claimReference(projectID).then(({ skill_id }) => history.replace(`/${RootRoute.PROJECT}/${skill_id}/canvas`));
   }, [projectID]);
 
   return (

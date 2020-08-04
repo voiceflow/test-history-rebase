@@ -7,7 +7,7 @@ import { Alert } from 'reactstrap';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
-import { CanvasRoute, ProjectRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
@@ -41,7 +41,6 @@ export type InjectedSkillProps = {
 };
 
 const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
-  match,
   error,
   diagramID,
   activePage,
@@ -96,23 +95,19 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
       >
         <Switch>
           <PrivateRoute
-            path={[
-              `${match.path}/${ProjectRoute.PROTOTYPE}/:diagramID?`,
-              `${match.path}/${ProjectRoute.CANVAS}/:diagramID?`,
-              `${match.path}/${ProjectRoute.CANVAS}/:diagramID/${CanvasRoute.COMMENTING}`,
-            ]}
+            path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
             component={Diagram}
             diagramID={diagramID}
             isPrototyping={isPrototyping}
           />
 
-          <PrivateRoute path={`${match.path}/${ProjectRoute.TOOLS}`} component={Business} />
+          <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
 
-          <PrivateRoute path={`${match.path}/${ProjectRoute.MIGRATE}`} component={Migrate} />
+          <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-          <PrivateRoute path={`${match.path}/${ProjectRoute.PUBLISH}`} component={Publish} />
+          <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
 
-          <Redirect to={`${match.path}/${ProjectRoute.CANVAS}`} />
+          <Redirect to={Path.PROJECT_CANVAS} />
         </Switch>
       </Page>
     </MarkupModeProvider>
@@ -147,12 +142,8 @@ export default compose(
   withBatchLoadingGate(
     [
       ProjectLoadingGate,
-      ({ match, location }: RouteComponentProps) => {
-        const { activePage, activePageMatch } = getActivePageAndMatch<{ versionID?: string; diagramID?: string }>(
-          PAGES_MATCHES,
-          location.pathname,
-          match.path
-        );
+      ({ location }: RouteComponentProps) => {
+        const { activePage, activePageMatch } = getActivePageAndMatch<{ versionID?: string; diagramID?: string }>(PAGES_MATCHES, location.pathname);
 
         return {
           versionID: activePageMatch?.params?.versionID,

@@ -16,8 +16,20 @@ import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
 
-const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIntent, intentsIDs, removeIntent, reorderIntents }) => {
-  const [selectedID, setSelectedID] = React.useState(intents[0]?.id);
+export type IntentsManagerProps = {
+  selectedID?: string;
+  setSelectedID: (id: string) => void;
+};
+
+const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProps> = ({
+  intents,
+  newIntent,
+  selectedID = intents[0]?.id,
+  intentsIDs,
+  removeIntent,
+  setSelectedID,
+  reorderIntents,
+}) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
 
@@ -26,10 +38,13 @@ const IntentsManager: React.FC<ConnectedIntentsManagerProps> = ({ intents, newIn
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
   const getItemLabel = React.useCallback((item: Intent) => item.name, []);
 
-  const updateSelected = React.useCallback((id: string) => {
-    setSelectedID(id);
-    managerRef.current?.resetPath();
-  }, []);
+  const updateSelected = React.useCallback(
+    (id: string) => {
+      setSelectedID(id);
+      managerRef.current?.resetPath();
+    },
+    [setSelectedID]
+  );
 
   const onDelete = React.useCallback(
     (index: string | number, { item }: { item: Intent }) => {
@@ -129,4 +144,4 @@ const mapDispatchToProps = {
 
 type ConnectedIntentsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(IntentsManager);
+export default connect(mapStateToProps, mapDispatchToProps)(IntentsManager) as React.FC<IntentsManagerProps>;

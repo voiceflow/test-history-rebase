@@ -546,3 +546,9 @@ export enum DiagramState {
   SAVING = 'SAVING',
   SAVED = 'SAVED',
 }
+
+export enum InteractionModelTabType {
+  SLOTS = 'slots',
+  INTENTS = 'intents',
+  VARIABLES = 'variables',
+}

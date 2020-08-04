@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DragTarget from '@/pages/Canvas/components/DragTarget';
-import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
+import { EngineContext, FocusThreadContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { CommentIndicator, ThreadEditor } from './components';
@@ -9,6 +9,7 @@ import { useThreadHandlers, useThreadInstance } from './hooks';
 
 const CommentThread: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
+  const focusThread = React.useContext(FocusThreadContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const instance = useThreadInstance<HTMLDivElement>();
   const { commentCount, isFocused } = threadEntity.useState((e) => ({
@@ -22,9 +23,9 @@ const CommentThread: React.FC = () => {
     mouseup: () => engine.comment.setTarget(null),
     click: async () => {
       if (threadEntity.isFocused) {
-        engine.comment.reset();
+        focusThread?.resetFocus();
       } else {
-        await engine.comment.setFocus(threadEntity.threadID);
+        await focusThread.setFocus(threadEntity.threadID);
       }
     },
     doubleClick: () => engine.comment.centerThread(threadEntity.threadID),

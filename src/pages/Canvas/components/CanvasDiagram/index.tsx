@@ -15,7 +15,7 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { CANVAS_COMMENTING_ENABLED } from '@/pages/Canvas/constants';
-import { ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { activeDiagramViewportSelector } from '@/store/selectors';
@@ -37,7 +37,10 @@ type ConnectedCanvasDiagramProps = {
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const markup = useFeature(FeatureFlag.MARKUP);
+  const commenting = useFeature(FeatureFlag.COMMENTING);
   const engine = React.useContext(EngineContext)!;
+  const focusThread = React.useContext(FocusThreadContext)!;
+
   const contextMenu = React.useContext(ContextMenuContext)!;
   const { canEdit } = React.useContext(EditPermissionContext)!;
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
@@ -71,6 +74,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         if (engine.comment.isCreating) {
           engine.comment.reset();
         } else {
+          focusThread.resetFocus();
           engine.comment.startThread();
         }
       }
@@ -144,7 +148,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         <LinkLayer />
         <NodeLayer />
         {markup.isEnabled && <MarkupLayer />}
-        <ThreadLayer />
+        {commenting.isEnabled && <ThreadLayer />}
         <MergeLayer />
         <SelectionMarquee />
       </Canvas>

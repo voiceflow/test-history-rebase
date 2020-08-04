@@ -12,6 +12,7 @@ import { NodeConfig } from '@/pages/Canvas/managers/types';
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
+import { FocusThreadProvider } from './FocusThreadContext';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './EngineContext';
@@ -20,6 +21,7 @@ export * from './ClipboardContext';
 export * from './ContextMenuContext';
 export * from './SpotlightContext';
 export * from './PresentationModeContext';
+export * from './FocusThreadContext';
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;
@@ -44,7 +46,9 @@ export const CanvasProviders = connect({
       <RegisterEngine engine={engine} />
       <ContextMenuProvider>
         <ClipboardProvider>
-          <SpotlightProvider>{children}</SpotlightProvider>
+          <FocusThreadProvider>
+            <SpotlightProvider>{children}</SpotlightProvider>
+          </FocusThreadProvider>
         </ClipboardProvider>
       </ContextMenuProvider>
     </EngineProvider>

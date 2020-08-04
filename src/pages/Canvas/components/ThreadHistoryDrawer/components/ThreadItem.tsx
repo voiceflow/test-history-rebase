@@ -12,24 +12,28 @@ import TippyTooltip from '@/components/TippyTooltip';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { Thread as ThreadType } from '@/models';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import ItemContainer from './ItemContainer';
 
-type ThreadItemProps = ThreadType & {
-  isFocused?: boolean;
-};
+type ThreadItemProps = ThreadType & {};
 
-const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: threadID, resolved, comments, user, isFocused = false }) => {
+const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: threadID, resolved, comments, user }) => {
   const engine = React.useContext(EngineContext)!;
+  const focusThread = React.useContext(FocusThreadContext)!;
 
   const { text, created } = comments[0];
 
   const hasReplies = comments.length - 1;
 
+  const onFocus = React.useCallback(async () => {
+    engine.comment.centerThread(threadID);
+    await focusThread.setFocus(threadID);
+  }, [focusThread.focusedID]);
+
   return (
-    <ItemContainer isFocused={isFocused}>
+    <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onFocus}>
       <FlexApart>
         <Commenter creatorID={user.creator_id} />
         {resolved && (

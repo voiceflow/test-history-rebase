@@ -24,6 +24,7 @@ const Menu: any = BaseMenu;
 
 export type ThreadHistoryDrawerProps = {
   theme: Theme;
+  focusedTarget?: string | null;
 };
 
 export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedThreadHistoryDrawerProps> = ({

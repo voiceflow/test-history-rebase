@@ -27,7 +27,7 @@ import { getActivePageAndMatch } from '@/utils/routes';
 import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
-import { PAGES_MATCHES, TIMEOUT_COUNT } from './contants';
+import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
 import { MarkupModeProvider } from './contexts';
 
 export type SkillProps = RouteComponentProps;

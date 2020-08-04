@@ -33,7 +33,9 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
 
   const translate = useDragTranslate(ref, position);
 
-  const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
+  const getRect = React.useCallback(() => {
+    return blockRef.current?.getRect() || null;
+  }, []);
 
   const elementInstance = useElementInstance(ref);
 

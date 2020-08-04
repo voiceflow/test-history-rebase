@@ -6,6 +6,7 @@ export type ResizableMarkupNodeData = Markup.NodeData.Image | Markup.NodeData.Re
 export type ConnectedMarkupNodeProps<T extends Markup.AnyNodeData = Markup.AnyNodeData> = {
   node: Node;
   data: NodeData<T>;
+  ref: React.Ref<any>;
 };
 
 export type MarkupRectangleInstance = {

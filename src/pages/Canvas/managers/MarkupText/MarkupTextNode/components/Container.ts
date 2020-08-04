@@ -1,5 +1,5 @@
 import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
-import { styled, transition } from '@/hocs';
+import { css, styled } from '@/hocs';
 import {
   CANVAS_DRAGGING_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
@@ -7,8 +7,8 @@ import {
   NODE_FOCUSED_CLASSNAME,
 } from '@/pages/Canvas/constants';
 
-export const Container = styled.div`
-  ${transition('border-color')}
+export const Container = styled.div<{ activated: boolean }>`
+  border: solid 1px transparent;
 
   min-width: 330px;
   min-height: 30px;
@@ -24,9 +24,15 @@ export const Container = styled.div`
     pointer-events: none;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}):not(.${CANVAS_MARKUP_TRANSFORMING_CLASSNAME}) &:not(:focus-within):hover ${DraftJSEditorContainer} {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}):not(.${CANVAS_MARKUP_TRANSFORMING_CLASSNAME}) &:not(:focus-within):hover  {
     border: solid 1px #5d9df5;
   }
+
+   ${({ activated }) =>
+     activated &&
+     css`
+       border: solid 1px #5d9df5;
+     `}
 
   .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
     border: solid 1px transparent !important;

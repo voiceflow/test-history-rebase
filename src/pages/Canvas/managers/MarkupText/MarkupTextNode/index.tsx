@@ -10,8 +10,10 @@ import { isNodeEditLockedSelector } from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
+import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
+import { BlockAPI } from '@/pages/Canvas/types';
 
 import { getRawContent } from '../utils';
 import { Container, Link } from './components';
@@ -21,7 +23,7 @@ type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
   isNodeLocked: (nodeID: string) => boolean;
 };
 
-const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
+const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
@@ -34,8 +36,9 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, MarkupProps
   });
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const { isFocused } = nodeEntity.useState((e) => ({
+  const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
+    isActivated: e.isActive,
   }));
 
   const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
@@ -165,8 +168,11 @@ const MarkupTextNode: React.ForwardRefRenderFunction<HTMLDivElement, MarkupProps
     }
   }, [isFocused]);
 
+  const blockAPI = useBlockAPI();
+  React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
+
   return (
-    <Container draggable onDragStart={onDragStart} ref={composeRefs(containerRef, ref)}>
+    <Container activated={isActivated} draggable onDragStart={onDragStart} ref={composeRefs(containerRef, blockAPI.ref)}>
       <DraftJSEditor
         ref={editorRef}
         ariaMultiline

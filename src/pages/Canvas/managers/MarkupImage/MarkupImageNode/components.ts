@@ -1,10 +1,11 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
 type ContainerProps = {
   url: string;
   width: number;
   height: number;
+  activated: boolean;
 };
 
 export const Container = styled.div.attrs<ContainerProps>(({ width, height }) => ({
@@ -23,6 +24,12 @@ export const Container = styled.div.attrs<ContainerProps>(({ width, height }) =>
   .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:hover {
     border: solid 1px #5d9df5;
   }
+
+  ${({ activated }) =>
+    activated &&
+    css`
+      border: solid 1px #5d9df5;
+    `}
 
 `;
 

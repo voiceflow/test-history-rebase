@@ -81,7 +81,7 @@ const MarkupNode = () => {
             maxWidth={(data as Markup.NodeData.Text).width ?? null}
             ref={instance.transformRef}
           >
-            <NodeComponent node={node} data={data as any} />
+            <NodeComponent ref={instance.blockRef} node={node} data={data as any} />
           </Container>
         )}
       </NodeDragTarget>

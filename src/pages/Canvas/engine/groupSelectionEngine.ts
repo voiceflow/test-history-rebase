@@ -1,4 +1,4 @@
-import { ROOT_NODES } from '@/constants';
+import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { findUnion } from '@/utils/array';
@@ -42,7 +42,9 @@ class GroupSelectionEngine extends EngineConsumer {
     this.candidates = getCandidates(
       Array.from(this.engine.nodes.keys()).filter((nodeID) => {
         const node = this.engine.getNodeByID(nodeID);
-
+        if (this.engine.markup.isEnabled) {
+          return MARKUP_NODES.includes(node.type);
+        }
         return ROOT_NODES.includes(node.type);
       }),
       this.engine

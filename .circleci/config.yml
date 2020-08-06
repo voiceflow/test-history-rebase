@@ -289,23 +289,22 @@ jobs:
           at: /tmp/vf-build
       - setup_remote_docker
       - run:
-          name: "Build and push dev environment image"
+          name: "Build storybook docker image"
+          command: |
+            IMAGE_TAG="k8s-$CIRCLE_SHA1"
+            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
+            docker build \
+              -f storybook.dockerfile \
+              -t $IMAGE_NAME .
+      - run:
+          name: "Push storybook docker images"
           command: |
             IMAGE_TAG="k8s-$CIRCLE_SHA1"
             IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
             $(aws ecr get-login --no-include-email --region us-east-1)
-            set +e
-            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $IMAGE_NAME > /dev/null 2>&1
-            SEARCH_IMAGE_RESULT=$?
-            set -e
-            if [[ $SEARCH_IMAGE_RESULT -ne 0 ]]; then   # Only build the image if there are no existing images 
-              docker build \
-                -f storybook.dockerfile \
-                -t $IMAGE_NAME .
-              $(aws ecr get-login --no-include-email --region us-east-1)
-              docker push $IMAGE_NAME
-            fi
-            git push origin --delete $CIRCLE_BRANCH --no-verify # Clean up branch
+            docker push $IMAGE_NAME
+            docker tag $IMAGE_NAME $IMAGE_REPO:latest-$CIRCLE_BRANCH
+            docker push $IMAGE_REPO:latest-$CIRCLE_BRANCH
       - run:
           name: Update image
           command: |

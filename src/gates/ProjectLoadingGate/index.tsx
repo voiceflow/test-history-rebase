@@ -13,6 +13,8 @@ import * as Models from '@/models';
 import { loadSkill } from '@/store/sideEffects';
 import { ConnectedProps, MergeArguments } from '@/types';
 
+import CommentingUpdates from './ComentingUpdates';
+
 export type ProjectLoadingGateProps = {
   versionID: string;
   diagramID: string;
@@ -37,7 +39,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
         await loadThreads(skill.projectID);
       }
 
-      await joinProjectChannel();
+      await joinProjectChannel(skill.projectID);
     } catch (e) {
       setError(e);
     }
@@ -47,6 +49,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 
   return (
     <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProjectAndJoinChannel}>
+      <CommentingUpdates />
       {children}
     </LoadingGate>
   );
@@ -75,7 +78,7 @@ const mergeProps = (
   loadThreads,
   isProjectLoaded: !!activeSkill && activeSkill.id === versionID,
   loadProject: () => loadProject(versionID, diagramID),
-  joinProjectChannel: () => joinProjectChannel(versionID),
+  joinProjectChannel: (projectID = activeSkill.projectID) => joinProjectChannel(projectID),
 });
 
 type ConnectedProjectLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

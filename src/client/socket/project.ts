@@ -1,7 +1,7 @@
 import { LockAction, LockType } from '@/ducks/realtime/constants';
 import { LockPayload } from '@/ducks/realtime/socket';
 import { AnyAction } from '@/store/types';
-import { Callback, Function } from '@/types';
+import { AnyFunction, Callback, Function } from '@/types';
 
 import client from './client';
 import { ClientEvent, ServerEvent } from './constants';
@@ -33,6 +33,30 @@ const projectSocketClient = {
 
   watchForSessionAcquired(callback: Callback) {
     return client.watchOnce(ServerEvent.SESSION_ACQUIRED, callback);
+  },
+
+  watchForNewThread(callback: AnyFunction) {
+    return client.watch(ServerEvent.NEW_THREAD, callback);
+  },
+
+  watchForThreadUpdate(callback: AnyFunction) {
+    return client.watch(ServerEvent.THREAD_UPDATED, callback);
+  },
+
+  watchForThreadDelete(callback: AnyFunction) {
+    return client.watch(ServerEvent.THREAD_DELETED, callback);
+  },
+
+  watchForNewReply(callback: AnyFunction) {
+    return client.watch(ServerEvent.NEW_REPLY, callback);
+  },
+
+  watchForCommentUpdate(callback: AnyFunction) {
+    return client.watch(ServerEvent.COMMENT_UPDATED, callback);
+  },
+
+  watchForCommentDelete(callback: AnyFunction) {
+    return client.watch(ServerEvent.COMMENT_DELETED, callback);
   },
 };
 

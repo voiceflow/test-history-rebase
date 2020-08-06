@@ -14,8 +14,9 @@ export enum SocketEvent {
 }
 
 export enum ServerEvent {
-  SESSION_BUSY = 'session:busy',
+  INITIALIZE_PROJECT = 'project:init',
   PROJECT_UPDATED = 'project:updated',
+
   INITIALIZE_DIAGRAM = 'diagram:init',
   UPDATE_DIAGRAM = 'diagram:update',
   VOLATILE_UPDATE_DIAGRAM = 'diagram:volatile',
@@ -23,13 +24,22 @@ export enum ServerEvent {
   DIAGRAM_LEFT = 'diagram:left',
   DIAGRAM_RECOVER = 'diagram:recover',
   DIAGRAM_REFRESH = 'diagram:refresh',
+  FORCE_REFRESH = 'force_refresh',
+
+  SESSION_BUSY = 'session:busy',
   SESSION_TERMINATED = 'session:takeover',
   SESSION_ACQUIRED = 'session:taken',
-  FORCE_REFRESH = 'force_refresh',
+
   WORKSPACE_MEMBERSHIP_REVOKED = 'session:cancelled',
   WORKSPACE_PLAN_DENIED = 'workspace:plan:denied',
   WORKSPACE_MEMBERS_UPDATE = 'workspace:members:update',
-  INITIALIZE_PROJECT = 'project:init',
+
+  NEW_THREAD = 'thread:created',
+  THREAD_UPDATED = 'thread:updated',
+  THREAD_DELETED = 'thread:deleted',
+  NEW_REPLY = 'comment:created',
+  COMMENT_UPDATED = 'comment:updated',
+  COMMENT_DELETED = 'comment:deleted',
 }
 
 export enum ClientEvent {

@@ -15,7 +15,7 @@ export type ThreadEditorHeaderProps = CommentActionsProps & {
 const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => {
   return (
     <Flex justifyContent="space-between" height={33}>
-      <Commenter creatorID={currentUser.creator_id!} time={postedTime} />
+      <Commenter creatorID={actionProps.creatorID || currentUser.creator_id!} time={postedTime} />
       <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
     </Flex>
   );

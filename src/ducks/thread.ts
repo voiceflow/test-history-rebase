@@ -1,11 +1,13 @@
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import commentAdapter from '@/client/adapters/comment';
+import threadAdapter from '@/client/adapters/thread';
 import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
-import { Comment, NewThread, Thread } from '@/models';
+import { Comment, DBComment, DBThread, NewThread, Thread } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { Pair } from '@/types';
 
@@ -179,4 +181,75 @@ export const deleteComment = (threadID: string, commentID: string): Thunk => asy
       toast.error('Something went wrong. Please try again');
     }
   }
+};
+
+// socket event handlers
+
+export const handleNewThread = (payload: { projectID: string; created: DBThread }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const thread = threadAdapter.fromDB(payload.created);
+
+  const creatorID = Account.userIDSelector(state)!;
+
+  if (creatorID === thread.creatorID) return;
+
+  dispatch(addThread(thread.id, thread));
+};
+
+export const handleThreadUpdate = (payload: { projectID: string; updatedThread: DBThread }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const thread = threadAdapter.fromDB(payload.updatedThread);
+
+  const creatorID = Account.userIDSelector(state)!;
+
+  if (creatorID === thread.creatorID) return;
+
+  dispatch(updateThread(thread.id, thread));
+};
+
+export const handleThreadDelete = (payload: { projectID: string; threadID: string }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+
+  const creatorID = Account.userIDSelector(state)!;
+  const thread = threadByIDSelector(state)(payload.threadID);
+
+  if (creatorID === thread.creatorID) return;
+
+  dispatch(deleteThread(payload.threadID));
+};
+
+export const handleNewReply = (payload: { projectID: string; created: DBComment }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const comment = commentAdapter.fromDB(payload.created);
+
+  const creatorID = Account.userIDSelector(state)!;
+  const thread = threadByIDSelector(state)(comment.threadID);
+
+  if (creatorID === comment.creatorID) return;
+
+  dispatch(updateThread(thread.id, { comments: [...thread.comments, comment] }, true));
+};
+
+export const handleCommentUpdate = (payload: { projectID: string; updatedComment: DBComment }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const comment = commentAdapter.fromDB(payload.updatedComment);
+
+  const thread = threadByIDSelector(state)(comment.threadID);
+  const creatorID = Account.userIDSelector(state)!;
+
+  if (creatorID === thread.creatorID) return;
+
+  dispatch(
+    updateThread(thread.id, { comments: thread.comments.map((item: Comment) => (item.id === comment.id ? { ...item, ...comment } : item)) }, true)
+  );
+};
+
+export const handleCommentDelete = (payload: { projectID: string; commentID: string; threadID: string }): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const thread = threadByIDSelector(state)(payload.threadID);
+  const creatorID = Account.userIDSelector(state)!;
+
+  if (creatorID === thread.creatorID) return;
+
+  dispatch(updateThread(payload.threadID, { comments: thread.comments.filter((item: Comment) => item.id !== payload.commentID) }, true));
 };

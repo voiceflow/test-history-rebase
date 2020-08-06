@@ -27,7 +27,7 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs }) => 
 };
 
 const mapStateToProps = {
-  rootThreadIDs: Thread.rootThreadIDsSelector,
+  rootThreadIDs: Thread.activeDiagramRootThreadIDsSelector,
 };
 
 type ConnectedThreadLayerProps = ConnectedProps<typeof mapStateToProps>;

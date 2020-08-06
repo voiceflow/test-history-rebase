@@ -37,8 +37,8 @@ export const resolvedThreads = createSelector([allThreadsSelector], (threads) =>
 
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.length);
 
-export const rootThreadIDsSelector = createSelector([allThreadsSelector], (threads) =>
-  threads.filter((thread) => !thread.resolved && !thread.nodeID).map(({ id }) => id)
+export const activeDiagramRootThreadIDsSelector = createSelector([allThreadsSelector, Skill.activeDiagramIDSelector], (threads, diagramID) =>
+  threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && !thread.nodeID).map(({ id }) => id)
 );
 
 // action creators

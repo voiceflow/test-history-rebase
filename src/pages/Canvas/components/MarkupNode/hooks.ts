@@ -163,7 +163,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           shapeEl?.setHeadAttribute?.('orient', `${rotate}rad`);
         });
       },
-      scale: ([scaleX, scaleY], [offsetX, offsetY], rotate) => {
+      scale: ([scaleX, scaleY], [offsetX, offsetY], rotate, [rotationOffsetX, rotationOffsetY]) => {
         const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
         const transformEl = transformRef.current!;
         const zoom = engine.canvas!.getZoom();
@@ -181,7 +181,9 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           if (!isTextNode) {
             transformEl.style.transformOrigin = 'left top';
           }
-          transformEl.style.transform = `scale(${nextScaleX}, ${nextScaleY}) rotate(${(data as ResizableMarkupNodeData).rotate}rad)`;
+          transformEl.style.transform = `translate(${rotationOffsetX / zoom}px, ${
+            rotationOffsetY / zoom
+          }px) scale(${nextScaleX}, ${nextScaleY}) rotate(${(data as ResizableMarkupNodeData).rotate}rad)`;
         });
       },
       scaleText: (maxWidth: number) => {

@@ -66,7 +66,7 @@ export type NodeInstance = EntityInstance & {
   /**
    * only Markup nodes can be scaled
    */
-  scale?: (scale: Pair<number>, shift: Pair<number>, rotation: number) => void;
+  scale?: (scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) => void;
 
   /**
    * only line and arrow Markup shapes can have their vertices moved

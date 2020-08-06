@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
-import { ONBOARDING_ZAPIER_PATH, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
@@ -54,7 +54,6 @@ export type OnboardingContextProps = {
       selectedWorkspaceId: string;
     };
     addCollaboratorMeta: {
-      isDemoBooked: boolean;
       collaborators: CollaboratorType[];
     };
     joinWorkspaceMeta: {
@@ -101,7 +100,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     numberOfSteps: 0,
     personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
     stepStack: [],
-    addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
+    addCollaboratorMeta: { collaborators: [] },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
@@ -224,7 +223,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       couponCode,
       period,
     },
-    addCollaboratorMeta: { isDemoBooked: false, collaborators: [] },
+    addCollaboratorMeta: { collaborators: [] },
     joinWorkspaceMeta: {
       role: '',
     },
@@ -258,10 +257,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       const [, ...newStepStack] = stepStack;
       setStepStack([...newStepStack]);
     }
-  };
-
-  const sendZap = (name: string, email: string, workspaceID: string, workspaceName: string) => {
-    client.zapier.triggerZap(ONBOARDING_ZAPIER_PATH, { name, email, workspaceID, workspaceName });
   };
 
   const checkPayment = async () => {
@@ -439,10 +434,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     setSendingRequests(false);
-
-    if (addCollaboratorMeta.isDemoBooked) {
-      sendZap(userName!, email!, workspace.id, name);
-    }
 
     return workspace;
   };

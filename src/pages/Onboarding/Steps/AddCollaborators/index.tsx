@@ -6,12 +6,11 @@ import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
 import { UserRole } from '@/constants';
-import { useEnableDisable } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
 
 import { StepID } from '../../constants';
-import { AddTeamMember, BookDemo, Container, HeaderLabel, Text } from './components';
+import { AddTeamMember, Container, HeaderLabel, Text } from './components';
 import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
@@ -23,7 +22,6 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)
   );
-  const [isDemoBooked, bookDemo, notBookDemo] = useEnableDisable(addCollaboratorMeta.isDemoBooked);
   // eslint-disable-next-line lodash/prefer-constant
   const [errors, updateErrors] = React.useState<string[]>(() => collaborators.map(() => ''));
 
@@ -46,28 +44,14 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     setCollaborators(members);
   };
 
-  const updateDemo = () => {
-    if (isDemoBooked) {
-      notBookDemo();
-    } else {
-      bookDemo();
-    }
-  };
-
   const onContinue = () => {
-    setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email), isDemoBooked });
+    setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email) });
     stepForward(StepID.PAYMENT);
   };
 
   React.useEffect(() => {
     recalculateErrors(collaborators);
   }, [collaborators.length]);
-
-  React.useEffect(() => {
-    if (!validMembers.length) {
-      notBookDemo();
-    }
-  }, [validMembers.length]);
 
   return (
     <Container>
@@ -77,8 +61,6 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
       </HeaderLabel>
 
       <AddTeamMember errors={errors} onUpdate={onMemberUpdate} collaborators={collaborators} />
-
-      <BookDemo checked={isDemoBooked} onChange={updateDemo} disabled={!validMembers.length} />
 
       <FlexCenter column>
         <Button disabled={!validMembers.length || hasErrors || sendingRequests} variant="primary" onClick={onContinue}>

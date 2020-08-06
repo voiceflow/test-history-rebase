@@ -1,5 +1,7 @@
 import React from 'react';
+import { useDrop } from 'react-dnd';
 
+import { DragItem } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
@@ -43,6 +45,12 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
 
   const isOpen = (!isHidden || isOpenByHover) && canEdit;
 
+  // This useDrop doesnt do anything functional, but it prevents the awful lag when dropping steps back onto the
+  // step menu
+  const [, dropRef] = useDrop({
+    accept: DragItem.BLOCK_MENU,
+  });
+
   return (
     <Container
       id={Identifier.DESIGN_MENU}
@@ -50,6 +58,7 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
       onMouseEnter={canEdit ? openByHover : null}
       onMouseLeave={canEdit ? closeByLoseHover : null}
       tabIndex={-1}
+      ref={dropRef}
     >
       <Content isOpen={isOpen} activeTab={selectedTab}>
         <Header tabs={TABS} locked={!isHidden} toggleLock={toggleIsHidden} selectedTab={selectedTab} selectActiveTab={selectActiveTab} />

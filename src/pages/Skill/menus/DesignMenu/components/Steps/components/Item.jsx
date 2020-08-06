@@ -5,7 +5,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import SvgIcon from '@/components/SvgIcon';
 import { DragItem } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
-import { useSetup } from '@/hooks';
+import { useEnableDisable, useSetup } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import ItemContainer from './ItemContainer';
@@ -14,6 +14,8 @@ import ItemLabel from './ItemLabel';
 
 const Item = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) => {
   const eventualEngine = React.useContext(EventualEngineContext);
+  const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
+
   const [{ isDragging }, connectDrag, connectPreview] = useDrag({
     item: { type: DragItem.BLOCK_MENU, icon, label, iconColor, blockType: type, factoryData },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
@@ -29,8 +31,22 @@ const Item = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) 
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   });
 
+  React.useEffect(() => {
+    if (isDragging) {
+      clearClickedState();
+    }
+  }, [isDragging]);
+
   return (
-    <ItemContainer className={ClassName.STEP_MENU_ITEM} ref={connectDrag} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
+    <ItemContainer
+      isClicked={isClickedState}
+      onMouseUp={clearClickedState}
+      onMouseDown={enableClickedState}
+      className={ClassName.STEP_MENU_ITEM}
+      ref={connectDrag}
+      isDragging={isDragging}
+      isDraggingPreview={isDraggingPreview}
+    >
       {!isDragging && (
         <>
           <SvgIcon icon={icon} size={16} color={iconColor} />

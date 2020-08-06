@@ -49,10 +49,20 @@ const ItemContainer = styled(Flex)`
       opacity: 1;
     }
   }
+  
+   ${({ isClicked }) =>
+     isClicked &&
+     css`
+       transition: transform 0s;
+       transform: rotate(-2deg);
+     `}
 
   &:active {
+ 
     cursor: grabbing;
   }
+  
+  
 `;
 
 export default ItemContainer;

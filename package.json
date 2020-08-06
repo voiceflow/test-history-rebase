@@ -17,7 +17,7 @@
     "@types/markdown-to-jsx": "^6.11.0",
     "@types/mousetrap": "^1.6.3",
     "@types/number-to-words": "^1.2.0",
-    "@types/papaparse": "^5.0.4",
+    "@types/papaparse": "^5.0.6",
     "@types/pluralize": "^0.0.29",
     "@types/rc-slider": "^8.6.5",
     "@types/react-addons-css-transition-group": "^15.0.5",

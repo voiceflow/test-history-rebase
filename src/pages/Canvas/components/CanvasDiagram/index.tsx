@@ -68,7 +68,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
 
   const onMouseDown = React.useCallback(
     (event: React.MouseEvent) => {
-      if (event.defaultPrevented) return;
+      if (event.defaultPrevented || event.button === 2) return;
 
       if (isCommentingMode && !engine.comment.hasTarget) {
         if (engine.comment.isCreating) {

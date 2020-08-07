@@ -47,8 +47,6 @@ export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditor
         onChange={onValueChange}
         style={mentionEditorStyle}
         onBlur={onBlur}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
         {...inputProps}
       >
         <Mention

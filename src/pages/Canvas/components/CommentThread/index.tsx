@@ -44,7 +44,7 @@ const CommentThread: React.FC = () => {
       ref={instance.ref}
       zIndex={isFocused ? 10 : undefined}
     >
-      <CommentIndicator draggable tabIndex={-1} {...handlers}>
+      <CommentIndicator draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
         {commentCount}
       </CommentIndicator>
       {isFocused && <ThreadEditor />}

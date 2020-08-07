@@ -15,6 +15,7 @@ export type IconButtonProps = Pick<IconProps, 'icon' | 'size'> &
   Either<ContainerProps, OutlineContainerProps> & {
     variant?: IconButtonVariant;
     onClick?: React.ReactEventHandler;
+    onBlur?: React.ReactEventHandler;
     iconProps?: Omit<IconProps, 'icon' | 'size'>;
     id?: string;
     disabled?: boolean;

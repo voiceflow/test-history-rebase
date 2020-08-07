@@ -207,7 +207,7 @@ export const updateComment = (threadID: string, commentID: string, data: Partial
   const thread = threadByIDSelector(state)(threadID);
 
   try {
-    await client.comment.update(projectID, commentID, data as Comment);
+    await client.comment.update(projectID, commentID, { text: data.text, mentions: data.mentions } as Comment);
     dispatch(
       updateThread(threadID, { comments: thread.comments.map((comment) => (comment.id === commentID ? { ...comment, ...data } : comment)) }, true)
     );

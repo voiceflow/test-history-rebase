@@ -64,6 +64,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               icon="elipsis"
               variant={IconButtonVariant.SUBTLE}
               onClick={preventDefault(onToggle)}
+              onBlur={onToggle}
               iconProps={{ color: isOpen ? '#6e849a' : '#becedc' }}
               hoverColor="#6e849a"
             />

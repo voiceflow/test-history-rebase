@@ -13,6 +13,7 @@ export type ContextMenuOption<T> = {
       clipboard: ClipboardContextValue;
       isMarkupFeatureEnabled: boolean;
       isMarkupModeEnabled: boolean;
+      isCommentingModeEnabled: boolean;
       isTemplate: boolean;
     }
   ) => boolean;

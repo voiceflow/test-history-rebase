@@ -31,6 +31,7 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
     setMenuContext(null);
     overlay.setHandler(null);
   };
+
   const onOpen = (event: React.MouseEvent, type = ContextMenuTarget.CANVAS, target: string | null = null) => {
     event.preventDefault();
 

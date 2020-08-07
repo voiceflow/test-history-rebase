@@ -10,6 +10,9 @@ const ThreadEditorContainer = styled.div`
   box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
   background: #fff;
 
+  animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
+  transform-origin: top;
+
   cursor: initial;
 
   & > * {

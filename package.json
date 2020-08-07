@@ -19,7 +19,7 @@
     "@types/number-to-words": "^1.2.0",
     "@types/papaparse": "^5.0.6",
     "@types/pluralize": "^0.0.29",
-    "@types/rc-slider": "^8.6.5",
+    "@types/rc-slider": "^8.6.6",
     "@types/react-addons-css-transition-group": "^15.0.5",
     "@types/react-custom-scrollbars": "^4.0.6",
     "@types/react-input-autosize": "^2.0.2",

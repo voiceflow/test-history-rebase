@@ -1,22 +1,17 @@
 import React from 'react';
 
-import { useMouseMove } from '@/hooks';
+import { useMouseMove, useRegistration } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 
 import SelectionArea from './components/SelectionArea';
-
-const styleSelectionElement = (selectionEl: HTMLElement, left: number, top: number, width: number, height: number) => {
-  selectionEl.style.left = `${left}px`;
-  selectionEl.style.top = `${top}px`;
-  selectionEl.style.width = `${width}px`;
-  selectionEl.style.height = `${height}px`;
-  selectionEl.style.display = width === 0 && height === 0 ? 'none' : 'block';
-};
+import { styleSelectionElement } from './constants';
+import { useSelectionMarqueeAPI } from './hooks';
 
 const SelectionMarquee: React.FC = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
+  const api = useSelectionMarqueeAPI();
 
   useMouseMove(({ clientX, clientY }) => {
     if (engine.groupSelection.isDrawing) {
@@ -41,27 +36,7 @@ const SelectionMarquee: React.FC = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    engine.groupSelection.registerSelectionMarquee({
-      show: () => {
-        document.addEventListener(
-          'mouseup',
-          () => {
-            const rootEl = ref.current!;
-
-            engine.groupSelection.complete();
-
-            window.requestAnimationFrame(() => {
-              styleSelectionElement(rootEl, 0, 0, 0, 0);
-            });
-          },
-          { once: true }
-        );
-      },
-    });
-
-    return () => engine.groupSelection.registerSelectionMarquee(null);
-  }, []);
+  useRegistration(() => engine.groupSelection.register('selectionMarquee', api), [api]);
 
   return <SelectionArea ref={ref} />;
 };

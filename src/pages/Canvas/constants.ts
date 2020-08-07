@@ -9,8 +9,7 @@ export const CANVAS_SELECTING_GROUP_CLASSNAME = `${Identifier.CANVAS}--selecting
 export const CANVAS_MARKUP_ENABLED_CLASSNAME = `${Identifier.CANVAS}--markup`;
 export const CANVAS_MARKUP_CREATING_CLASSNAME = `${Identifier.CANVAS}--markup-creating`;
 export const CANVAS_MARKUP_TRANSFORMING_CLASSNAME = `${Identifier.CANVAS}--markup-transforming`;
-
-export const CANVAS_COMMENTING_ENABLED = `${Identifier.CANVAS}--commenting`;
+export const CANVAS_COMMENTING_ENABLED_CLASSNAME = `${Identifier.CANVAS}--commenting`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;
@@ -55,6 +54,7 @@ export enum CanvasAction {
   IDLE = 'idle',
   MOVE_MOUSE = 'moveMouse',
   CLICK = 'click',
+  RENDERED = 'rendered',
 }
 
 export enum CanvasTransformation {

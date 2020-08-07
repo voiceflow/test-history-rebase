@@ -2,12 +2,12 @@ import React from 'react';
 
 import { useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 import EditableComment from './EditableComment';
 
 export type NewCommentProps = {
-  origin: Point;
+  origin: Coords;
 };
 
 const NewComment: React.FC<NewCommentProps> = ({ origin }) => {

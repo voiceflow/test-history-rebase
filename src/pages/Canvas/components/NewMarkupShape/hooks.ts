@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MarkupShapeType } from '@/constants';
-import { useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import { MarkupLineInstance, MarkupRectangleInstance, MarkupShapeInstance } from '@/pages/Canvas/components/MarkupNode/types';
 import {
@@ -45,6 +44,7 @@ type NewShapeInstance = NewShapeAPI & {
   ref: React.RefObject<MarkupShapeInstance>;
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export const useNewShapeInstance = () => {
   const ref = React.useRef<MarkupShapeInstance>(null);
   const start = React.useRef<Point | null>(null);
@@ -161,15 +161,4 @@ export const useNewShapeInstance = () => {
     }),
     [isVisible, onMouseMove, onMouseUp]
   );
-};
-
-export const useNewMarkupShapeSubscription = (api: NewShapeAPI) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => engine.markup.registerNewShape(api), [api]);
-
-  useTeardown(() => {
-    engine.markup.registerNewShape(null);
-    api.hide();
-  });
 };

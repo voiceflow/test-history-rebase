@@ -275,3 +275,5 @@ export const clearPersistedLogs = () => {
 };
 
 export default createLogger([BASE_LOGGER_NAME]);
+
+export type Logger = ReturnType<typeof createLogger>;

@@ -1,12 +1,12 @@
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
-import { Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 import { NewCommentAPI } from '../types';
 import { EngineConsumer } from './utils';
 
-class CommentEngine extends EngineConsumer {
+class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');
 
   focusTarget: string | null = null;
@@ -14,8 +14,6 @@ class CommentEngine extends EngineConsumer {
   target: string | null = null;
 
   isCreating = false;
-
-  newComment: NewCommentAPI | null = null;
 
   get hasFocus() {
     return !!this.focusTarget;
@@ -27,12 +25,6 @@ class CommentEngine extends EngineConsumer {
 
   isFocused(threadID: string) {
     return this.focusTarget === threadID;
-  }
-
-  registerNewComment(newComment: NewCommentAPI | null) {
-    this.newComment = newComment;
-
-    this.log.debug(this.log.init(newComment ? 'registered' : 'expired'), this.log.value('<NewCommentThread>'));
   }
 
   async setFocus(threadID: string | null) {
@@ -90,7 +82,7 @@ class CommentEngine extends EngineConsumer {
     this.reset();
 
     this.isCreating = true;
-    this.newComment?.show(this.engine.getMouseCoords());
+    this.components.newComment?.show(this.engine.getMouseCoords().onPlane(this.engine.canvas!.getPlane()));
     this.log.info(this.log.pending('started new comment'));
   }
 
@@ -98,20 +90,10 @@ class CommentEngine extends EngineConsumer {
     return this.engine.threads.get(threadID)?.api;
   }
 
-  async addNewThread(origin: Point, nodeID: string | null, text: string, mentions: number[]) {
-    const thread = await this.dispatch(Thread.createThread({ nodeID, position: origin, data: { text, mentions } }));
+  async addNewThread(origin: Coords, nodeID: string | null, text: string, mentions: number[]) {
+    const thread = await this.dispatch(Thread.createThread({ nodeID, position: this.engine.canvas!.fromCoords(origin), data: { text, mentions } }));
 
     this.setFocus(thread.id);
-  }
-
-  async translateThread(threadID: string, movement: Pair<number>) {
-    if (!this.engine.threads.has(threadID)) return;
-
-    this.thread(threadID)?.instance?.translate?.(movement);
-  }
-
-  async dragThread(threadID: string, movement: Pair<number>) {
-    await this.translateThread(threadID, movement);
   }
 
   async dropThread(threadID: string) {
@@ -119,18 +101,18 @@ class CommentEngine extends EngineConsumer {
 
     if (!thread?.instance) return;
 
-    const position = thread.instance.getPosition();
-    await this.dispatch(Thread.updateThreadData(threadID, { position }));
+    const coords = thread.instance.getCoords();
+    await this.dispatch(Thread.updateThreadData(threadID, { position: this.engine.canvas!.fromCoords(coords) }));
 
     this.log.debug('location saved', this.log.slug(threadID));
   }
 
   centerThread(threadID: string) {
-    const center = this.thread(threadID)?.instance?.getCenterPoint();
+    const coords = this.thread(threadID)?.instance?.getCoords();
 
-    if (!center) return;
+    if (!coords) return;
 
-    this.engine.center(center);
+    this.engine.center(this.engine.canvas!.fromCoords(coords));
 
     this.log.info('centered canvas on thread', this.log.slug(threadID));
   }
@@ -151,7 +133,7 @@ class CommentEngine extends EngineConsumer {
     if (!this.isCreating) return;
 
     this.isCreating = false;
-    this.newComment?.hide();
+    this.components.newComment?.hide();
     this.log.info(this.log.reset('reset new comment'));
   }
 

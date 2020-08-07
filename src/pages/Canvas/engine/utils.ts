@@ -8,8 +8,9 @@ import { EntityMap, Link, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatch, DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
-import { Pair, Point } from '@/types';
+import { NullableRecord, Pair, Point } from '@/types';
 import { asyncForEach } from '@/utils/array';
+import { Logger } from '@/utils/logger';
 import { isLinkedeDisplayNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
 
@@ -26,9 +27,29 @@ export type CloneUtils = {
   getPortID: (portID: string) => string;
 };
 
-export class EngineConsumer {
+export class ComponentManager<C extends Record<string, unknown> = Record<string, unknown>> {
+  log: Logger | null = null;
+
+  components: Partial<NullableRecord<C>> = {};
+
+  register<K extends keyof C>(name: K, component: C[K] | null) {
+    this.components[name] = component;
+
+    this.log?.debug(this.log.init(component === null ? 'expired' : 'registered'), this.log.value(name));
+
+    return () => {
+      this.components[name] = null;
+
+      this.log?.debug(this.log.reset('expired'), this.log.value(name));
+    };
+  }
+}
+
+export class EngineConsumer<C extends Record<string, unknown> = Record<string, unknown>> extends ComponentManager<C> {
   // eslint-disable-next-line no-useless-constructor
   constructor(protected engine: Engine) {
+    super();
+
     engine.log.debug(this.engine.log.init('initializing'), this.engine.log.value(Object.getPrototypeOf(this).constructor.name));
   }
 

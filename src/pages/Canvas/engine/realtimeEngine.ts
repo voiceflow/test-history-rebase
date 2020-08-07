@@ -10,16 +10,8 @@ import { Pair } from '@/types';
 import { EngineConsumer } from './utils';
 import type { Engine } from '.';
 
-class RealtimeEngine extends EngineConsumer {
+class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI; [OverlayType.LINK]: RealtimeLinkOverlayAPI }> {
   log = this.engine.log.child('realtime');
-
-  overlays: {
-    [OverlayType.CURSOR]: RealtimeCursorOverlayAPI | null;
-    [OverlayType.LINK]: RealtimeLinkOverlayAPI | null;
-  } = {
-    [OverlayType.CURSOR]: null,
-    [OverlayType.LINK]: null,
-  };
 
   teardownHandlers: () => void;
 
@@ -80,7 +72,7 @@ class RealtimeEngine extends EngineConsumer {
     [Realtime.SocketAction.REMOVE_LINK]: (linkID: ActionPayload<Realtime.RemoveLink>) => this.engine.link.internal.remove(linkID),
 
     [Realtime.SocketAction.MOVE_LINK]: (linkData: ActionPayload<Realtime.MoveLink>, tabID) =>
-      this.overlays[OverlayType.LINK]?.moveLink(tabID, linkData),
+      this.components[OverlayType.LINK]?.moveLink(tabID, linkData),
 
     [Realtime.SocketAction.ADD_PORT]: ({ nodeID, port }: ActionPayload<Realtime.AddPort>) => this.engine.port.internal.add(nodeID, port),
     [Realtime.SocketAction.REMOVE_PORT]: (portID: ActionPayload<Realtime.RemovePort>) => this.engine.port.internal.remove(portID),
@@ -88,7 +80,7 @@ class RealtimeEngine extends EngineConsumer {
       this.engine.port.internal.reorder(nodeID, from, to),
 
     [Realtime.SocketAction.MOVE_MOUSE]: (location: ActionPayload<Realtime.MoveMouse>, tabID) =>
-      this.overlays[OverlayType.CURSOR]?.moveMouse(tabID, location),
+      this.components[OverlayType.CURSOR]?.moveMouse(tabID, location),
   };
 
   sendUpdate(action: Realtime.AnySocketAction) {
@@ -103,24 +95,12 @@ class RealtimeEngine extends EngineConsumer {
     return this.dispatch(Realtime.sendRealtimeProjectUpdate(action));
   }
 
-  registerOverlay<K extends keyof RealtimeEngine['overlays']>(key: K, api: RealtimeEngine['overlays'][K]) {
-    this.overlays[key] = api;
-
-    this.log.debug(this.log.init('registered overlay'), this.log.value(key));
-  }
-
-  expireOverlay(key: keyof RealtimeEngine['overlays']) {
-    this.overlays[key] = null;
-
-    this.log.debug(this.log.init('expired overlay'), this.log.value(key));
-  }
-
   panViewport(movement: Pair<number>) {
-    this.overlays[OverlayType.CURSOR]?.panViewport(movement);
+    this.components[OverlayType.CURSOR]?.panViewport(movement);
   }
 
   zoomViewport(calculateMovement: MovementCalculator) {
-    this.overlays[OverlayType.CURSOR]?.zoomViewport(calculateMovement);
+    this.components[OverlayType.CURSOR]?.zoomViewport(calculateMovement);
   }
 
   teardown() {

@@ -5,14 +5,12 @@ import { Pair, Point } from '@/types';
 import { CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
 import { EngineConsumer } from './utils';
 
-class LinkCreationEngine extends EngineConsumer {
+class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   log = this.engine.log.child('link-creation');
 
   sourcePortID: string | null = null;
 
   activeTargetPortID: string | null = null;
-
-  newLink: NewLinkAPI | null = null;
 
   mouseOrigin: [number, number] | null = null;
 
@@ -25,15 +23,7 @@ class LinkCreationEngine extends EngineConsumer {
   }
 
   get hasPin() {
-    return !!this.newLink?.isPinned();
-  }
-
-  addStyle() {
-    this.engine.canvas?.addClass(CANVAS_CREATING_LINK_CLASSNAME);
-  }
-
-  removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_CREATING_LINK_CLASSNAME);
+    return !!this.components.newLink?.isPinned();
   }
 
   isSourcePort(portID: string) {
@@ -48,12 +38,6 @@ class LinkCreationEngine extends EngineConsumer {
 
   canTargetNode(nodeID: string) {
     return this.isDrawing && !this.isSourceNode(nodeID);
-  }
-
-  registerNewLink(newLink: NewLinkAPI | null) {
-    this.newLink = newLink;
-
-    this.log.debug(this.log.init(newLink ? 'registered' : 'expired'), this.log.value('<NewLink>'));
   }
 
   containsSourcePort(nodeID: string) {
@@ -71,12 +55,12 @@ class LinkCreationEngine extends EngineConsumer {
       await Promise.all(linkIDs.map((linkID) => this.engine.link.remove(linkID)));
     }
 
-    this.addStyle();
+    this.engine.addClass(CANVAS_CREATING_LINK_CLASSNAME);
     this.sourcePortID = sourcePortID;
     this.mouseOrigin = mouseOrigin;
 
     this.engine.highlight.setPortTarget(sourcePortID);
-    this.newLink?.show();
+    this.components.newLink?.show();
 
     this.log.info(this.log.success('started drawing from port'), this.log.slug(sourcePortID));
   }
@@ -99,8 +83,8 @@ class LinkCreationEngine extends EngineConsumer {
     }
 
     this.log.debug(this.log.pending('aborting link creation'), this.log.value(this.sourcePortID));
-    this.newLink?.unpin();
-    this.newLink?.hide();
+    this.components.newLink?.unpin();
+    this.components.newLink?.hide();
     this.reset();
 
     this.log.info(this.log.reset('aborted link creation'));
@@ -111,7 +95,7 @@ class LinkCreationEngine extends EngineConsumer {
     clearTimeout(this.unpinTimeout);
 
     this.activeTargetPortID = targetPortID;
-    this.newLink?.pin(position);
+    this.components.newLink?.pin(position);
 
     this.log.debug(this.log.success('pinned to port'), this.log.slug(targetPortID));
   }
@@ -126,7 +110,7 @@ class LinkCreationEngine extends EngineConsumer {
 
       this.log.debug(this.log.pending('unpinning from port'), this.log.slug(targetPortID));
       this.activeTargetPortID = null;
-      this.newLink?.unpin();
+      this.components.newLink?.unpin();
 
       this.log.debug(this.log.success('unpinned from port'), this.log.slug(targetPortID));
     }, 24);
@@ -149,7 +133,7 @@ class LinkCreationEngine extends EngineConsumer {
     clearTimeout(this.unpinTimeout);
 
     this.engine.highlight.reset();
-    this.removeStyle();
+    this.engine.removeClass(CANVAS_CREATING_LINK_CLASSNAME);
 
     this.sourcePortID = null;
     this.activeTargetPortID = null;

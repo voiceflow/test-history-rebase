@@ -10,7 +10,7 @@ import { mouseEventOffset } from '@/utils/dom';
 import { CartesianPlane, Coords, Vector } from '@/utils/geometry';
 
 import { Container, RenderLayer } from './components';
-import { CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
+import { CANVAS_ANIMATING_CLASSNAME, CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
 import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
@@ -27,6 +27,8 @@ export type CanvasProps = {
   innerRef?: React.Ref<HTMLDivElement>;
   className?: string;
   onChange?: (viewport: Viewport) => void;
+  addClass?: (className: string) => void;
+  removeClass?: (className: string) => void;
   onPan?: (movement: Pair<number>) => void;
   onZoom?: (translateZoom: MovementCalculator) => void;
   onClick?: (event: React.MouseEvent) => void;
@@ -74,6 +76,14 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
       return rect;
     },
+    getOuterPlane: (): CartesianPlane => {
+      const { x, y } = this.api.getCachedRect();
+
+      return {
+        origin: new Coords([x, y]),
+        scale: 1,
+      };
+    },
     getPlane: (): CartesianPlane => {
       const [posX, posY] = this.position;
       const { x, y } = this.api.getCachedRect();
@@ -96,8 +106,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       const { x, y } = this.renderLayerRef.current!.getBoundingClientRect();
       return [x, y];
     },
-    addClass: (className: string) => this.rootRef.current?.classList.add(className),
-    removeClass: (className: string) => this.rootRef.current?.classList.remove(className),
+
     zoomIn: (delta: number, options?: ZoomOptions) => this.offsetZoom(delta, options),
     zoomOut: (delta: number, options?: ZoomOptions) => this.offsetZoom(-delta, options),
     reorient: () => this.resetPosition(),
@@ -142,7 +151,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       return [x + rect.left, y + rect.top];
     },
 
-    setBusy(isBusy: boolean) {
+    setBusy: (isBusy: boolean) => {
       if (isBusy) {
         this.addClass(CANVAS_BUSY_CLASSNAME);
       } else {
@@ -150,6 +159,10 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       }
     },
   };
+
+  addClass = (className: string) => this.rootRef.current?.classList.add(className);
+
+  removeClass = (className: string) => this.rootRef.current?.classList.remove(className);
 
   onChange = () =>
     this.props.onChange?.({
@@ -280,6 +293,12 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         break;
       case ControlType.MOUSE_UP:
         this.props.onMouseUp?.(control.event);
+        break;
+      case ControlType.START_ANIMATE:
+        this.props.addClass?.(CANVAS_ANIMATING_CLASSNAME);
+        break;
+      case ControlType.END_ANIMATE:
+        this.props.removeClass?.(CANVAS_ANIMATING_CLASSNAME);
         break;
       case ControlType.END:
         this.onChange();

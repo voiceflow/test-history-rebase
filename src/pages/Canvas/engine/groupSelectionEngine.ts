@@ -7,37 +7,21 @@ import { buildVirtualDOMRect } from '@/utils/dom';
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
 import { EngineConsumer, NodeCandidate, getCandidates } from './utils';
 
-class GroupSelectionEngine extends EngineConsumer {
+class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionMarqueeAPI }> {
   log = this.engine.log.child('group-selection');
 
   candidates: NodeCandidate[] = [];
 
   mouseOrigin: [number, number] | null = null;
 
-  selectionMarquee: SelectionMarqueeAPI | null = null;
-
   get isDrawing() {
     return !!this.mouseOrigin;
-  }
-
-  addStyle() {
-    this.engine.canvas?.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
-  }
-
-  removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_SELECTING_GROUP_CLASSNAME);
-  }
-
-  registerSelectionMarquee(selectionMarquee: SelectionMarqueeAPI | null) {
-    this.selectionMarquee = selectionMarquee;
-
-    this.log.debug(this.log.init(selectionMarquee ? 'registered' : 'expired'), this.log.value('<SelectionMarquee>'));
   }
 
   start(origin: Point) {
     this.log.debug(this.log.pending('starting selection'));
 
-    this.addStyle();
+    this.engine.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
     this.mouseOrigin = origin;
     this.candidates = getCandidates(
       Array.from(this.engine.nodes.keys()).filter((nodeID) => {
@@ -50,7 +34,7 @@ class GroupSelectionEngine extends EngineConsumer {
       this.engine
     );
 
-    this.selectionMarquee?.show();
+    this.components.selectionMarquee?.show();
 
     this.log.debug('discoverd selection candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('started selection'));
@@ -85,7 +69,7 @@ class GroupSelectionEngine extends EngineConsumer {
   reset() {
     this.log.debug(this.log.pending('resetting group selection'));
 
-    this.removeStyle();
+    this.engine.removeClass(CANVAS_SELECTING_GROUP_CLASSNAME);
 
     this.mouseOrigin = null;
     this.candidates = [];

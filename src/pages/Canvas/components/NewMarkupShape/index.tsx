@@ -2,25 +2,29 @@ import cn from 'classnames';
 import React from 'react';
 
 import { BlockType, MarkupShapeType } from '@/constants';
+import { useRegistration, useTeardown } from '@/hooks';
 import { MarkupLineInstance, MarkupRectangleInstance } from '@/pages/Canvas/components/MarkupNode/types';
 import { Line, SvgContainer } from '@/pages/Canvas/components/MarkupShape';
 import { DEFAULT_MARKUP_LINE_COLOR } from '@/pages/Canvas/constants';
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 import { rgbaToHex } from '@/utils/colors';
 
 import { Container, NewRectangle } from './components';
-import { useNewMarkupShapeSubscription, useNewShapeInstance } from './hooks';
+import { useNewShapeInstance } from './hooks';
 
 const LINE_COLOR = rgbaToHex(DEFAULT_MARKUP_LINE_COLOR);
 
 const NewMarkupShape: React.FC = () => {
   const { modeType: shapeType } = React.useContext(MarkupModeContext)!;
+  const engine = React.useContext(EngineContext)!;
 
   const api = useNewShapeInstance();
   const origin = api.getOrigin();
 
-  useNewMarkupShapeSubscription(api);
+  useRegistration(() => engine.markup.register('newShape', api), [api]);
+  useTeardown(() => api.hide(), [api.hide]);
 
   if (!api.isVisible || !origin) return null;
 

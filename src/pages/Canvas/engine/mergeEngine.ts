@@ -10,7 +10,7 @@ import { EngineConsumer, NodeCandidate, createBoundaryTest, getCandidates } from
 
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
 
-class MergeEngine extends EngineConsumer {
+class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
   log = this.engine.log.child('merge');
 
   candidates: NodeCandidate[] = [];
@@ -26,8 +26,6 @@ class MergeEngine extends EngineConsumer {
   // eslint-disable-next-line lodash/prefer-constant
   isWithinTarget: ((point: [number, number]) => boolean) | null = null;
 
-  mergeLayer: MergeLayerAPI | null = null;
-
   get hasSource() {
     return !!this.sourceNodeID || !!this.virtualSource;
   }
@@ -38,20 +36,6 @@ class MergeEngine extends EngineConsumer {
 
   get hasTargetStep() {
     return !!this.targetStep;
-  }
-
-  addStyle() {
-    this.engine.canvas?.addClass(CANVAS_MERGING_CLASSNAME);
-  }
-
-  removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_MERGING_CLASSNAME);
-  }
-
-  registerMergeLayer(mergeLayer: MergeLayerAPI | null) {
-    this.mergeLayer = mergeLayer;
-
-    this.log.debug(this.log.init(mergeLayer ? 'registered' : 'expired'), this.log.value('<MergeLayer>'));
   }
 
   createBoundaryTest(nodeID: string) {
@@ -84,12 +68,12 @@ class MergeEngine extends EngineConsumer {
 
       const offset: [number, number] = [mousePosition[0] - nodeX, mousePosition[1] - nodeY];
 
-      this.mergeLayer?.initialize(mousePosition, offset);
+      this.components.mergeLayer?.initialize(mousePosition, offset);
 
       this.log.debug(this.log.init('initializing merge layer'));
     }
 
-    this.addStyle();
+    this.engine.addClass(CANVAS_MERGING_CLASSNAME);
     this.sourceNodeID = sourceNodeID;
     this.candidates = getCandidates(withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
 
@@ -162,7 +146,7 @@ class MergeEngine extends EngineConsumer {
     this.isWithinTarget = isWithinTarget;
 
     this.engine.node.redraw(nodeID);
-    this.mergeLayer?.setTransparent();
+    this.components.mergeLayer?.setTransparent();
 
     this.log.debug(this.log.success('set merge target block'), this.log.slug(nodeID));
   }
@@ -189,7 +173,7 @@ class MergeEngine extends EngineConsumer {
     this.targetNodeID = null;
     this.isWithinTarget = null;
 
-    this.mergeLayer?.clearTransparent();
+    this.components.mergeLayer?.clearTransparent();
     this.engine.node.redraw(targetNodeID);
 
     this.log.debug(this.log.reset('cleared merge target block'), this.log.slug(targetNodeID));
@@ -199,9 +183,9 @@ class MergeEngine extends EngineConsumer {
     const candidateCount = this.candidates.length;
 
     this.log.debug(this.log.pending('resetting merge system'));
-    this.mergeLayer?.reset();
+    this.components.mergeLayer?.reset();
     this.clearTarget();
-    this.removeStyle();
+    this.engine.removeClass(CANVAS_MERGING_CLASSNAME);
 
     this.sourceNodeID = null;
     this.virtualSource = null;

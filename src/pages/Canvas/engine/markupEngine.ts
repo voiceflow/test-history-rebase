@@ -11,7 +11,6 @@ import React from 'react';
 import { BlockType, TextAlignment } from '@/constants';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 import { NewShapeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 
@@ -23,32 +22,21 @@ type Plugins = {
   fakeSelectionPlugin: FakeSelectionPlugin;
 };
 
-class MarkupEngine extends EngineConsumer {
+class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
   log = this.engine.log.child('markup');
 
   pluginsByNodeID: Record<string, Plugins> = {};
 
   isEnabled = false;
 
-  newShape: NewShapeAPI | null = null;
-
   enable() {
-    this.engine.canvas?.addClass(CANVAS_MARKUP_ENABLED_CLASSNAME);
-    this.log.debug('enable markup tool');
-
     this.isEnabled = true;
   }
 
   disable() {
     this.engine.clearActivation();
-    this.engine.canvas?.removeClass(CANVAS_MARKUP_ENABLED_CLASSNAME);
-    this.log.debug('disable markup tool');
 
     this.isEnabled = false;
-  }
-
-  registerNewShape(newShape: NewShapeAPI | null) {
-    this.newShape = newShape;
   }
 
   async addTextNode() {
@@ -81,13 +69,13 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async createShapeNode() {
-    this.newShape?.show(this.engine.getCanvasMousePosition());
+    this.components.newShape?.show(this.engine.getCanvasMousePosition());
   }
 
   async addShapeNode(point: Point, nodeData: NodeData<Markup.NodeData.Shape>) {
     await this.engine.node.add(BlockType.MARKUP_SHAPE, this.engine.canvas!.toCoords(point), nodeData, cuid());
 
-    this.newShape?.hide();
+    this.components.newShape?.hide();
   }
 
   useSetupPlugins(nodeID: string, { anchorOptions }: { anchorOptions: AnchorPluginConfig }) {
@@ -118,7 +106,7 @@ class MarkupEngine extends EngineConsumer {
   reset() {
     if (!this.isEnabled) return;
 
-    this.newShape?.hide();
+    this.components.newShape?.hide();
 
     this.isEnabled = false;
   }

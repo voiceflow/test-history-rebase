@@ -3,7 +3,7 @@ import React from 'react';
 import * as Thread from '@/ducks/thread';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { Pair, Point } from '@/types';
+import { Coords, Vector } from '@/utils/geometry';
 
 import { EntityType } from '../constants';
 import type { Engine } from '..';
@@ -11,16 +11,11 @@ import { EntityInstance, ResourceEntity } from './entity';
 
 export type ThreadInstance = EntityInstance & {
   /**
-   * get the current x and y position of this thread on the canvas
+   * get the current coordinates of this thread on the canvas
    */
-  getPosition: () => Point;
+  getCoords: () => Coords;
 
-  /**
-   * get the center point of the rendered thread
-   */
-  getCenterPoint: () => Point | null;
-
-  translate: (movement: Pair<number>) => void;
+  translate: (movement: Vector) => void;
 };
 
 class ThreadEntity extends ResourceEntity<Models.Thread, ThreadInstance> {
@@ -41,16 +36,16 @@ class ThreadEntity extends ResourceEntity<Models.Thread, ThreadInstance> {
   useCoordinates() {
     const { x, y } = this.useState((e) => {
       const {
-        position: [positionX, positionY],
+        position: [posX, posY],
       } = e.resolve();
 
       return {
-        x: positionX,
-        y: positionY,
+        x: posX,
+        y: posY,
       };
     });
 
-    return { x, y };
+    return React.useMemo(() => this.engine.canvas!.toCoords([x, y]).onPlane(this.engine.canvas!.getOuterPlane()), [x, y]);
   }
 
   useInstance(instance: ThreadInstance) {

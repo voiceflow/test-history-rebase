@@ -5,7 +5,7 @@ import { mapProps } from 'recompose';
 import { BlockVariant } from '@/constants/canvas';
 import { styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
-  CANVAS_COMMENTING_ENABLED,
+  CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
   CANVAS_MERGING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
@@ -64,7 +64,7 @@ const HeaderInput = styled(
     :active {
       background: transparent;
     }
-    .${CANVAS_COMMENTING_ENABLED} & {
+    .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
       cursor: crosshair;
     }
   }

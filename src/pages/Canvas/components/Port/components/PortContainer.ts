@@ -1,6 +1,6 @@
 import { css, styled, units } from '@/hocs';
 import {
-  CANVAS_COMMENTING_ENABLED,
+  CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_MERGING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
   NODE_DISABLED_CLASSNAME,
@@ -31,7 +31,7 @@ const PortContainer = styled.div<PortContainerProps>`
   align-self: center;
   cursor: copy;
 
-  .${CANVAS_COMMENTING_ENABLED} & {
+  .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;
   }
 

@@ -3,9 +3,9 @@ import React from 'react';
 import { useCancellable, useConstant, useLinkedRef } from '@/hooks';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { useDragTranslate } from '@/pages/Canvas/hooks';
+import { useVectorDragTranslate } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { Eventual, Pair, Point } from '@/types';
+import { Eventual, Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';
 
 import { InternalThreadInstance } from './types';
@@ -19,30 +19,24 @@ enum CommentState {
 
 const DOUBLE_CLICK_TIMEOUT = 175;
 
-export const useThreadPosition = () => {
-  const engine = React.useContext(EngineContext)!;
+export const useThreadCoords = () => {
+  // const engine = React.useContext(EngineContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
-  const { x, y } = threadEntity.useCoordinates();
+  const coords = threadEntity.useCoordinates();
 
-  const threadPosition = React.useMemo<Point>(() => [x, y], [x, y]);
-
-  React.useEffect(() => {
-    engine.node.redrawLinks(threadEntity.threadID);
-  }, [x, y]);
-
-  return useLinkedRef(threadPosition);
+  return useLinkedRef(coords);
 };
 
 export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstance<T> => {
   const ref = React.useRef<T | null>(null);
   const blockRef = React.useRef<BlockAPI>(null);
-  const position = useThreadPosition();
+  const coords = useThreadCoords();
 
   const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 
   const elementInstance = useElementInstance(ref);
 
-  const translate = useDragTranslate(ref, position);
+  const translate = useVectorDragTranslate(ref, coords);
 
   return React.useMemo<InternalThreadInstance<T>>(
     () => ({
@@ -50,11 +44,9 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
 
       ref,
       blockRef,
-      position,
       getRect,
 
-      getPosition: () => position.current!,
-      getCenterPoint: () => position.current,
+      getCoords: () => coords.current!,
 
       translate,
     }),

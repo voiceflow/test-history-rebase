@@ -18,6 +18,11 @@ export type MarkupTransform = {
 
 export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
 
+export type CanvasContainerAPI = {
+  addClass: (className: string) => void;
+  removeClass: (className: string) => void;
+};
+
 export type BlockAPI<T extends HTMLElement = HTMLElement> = {
   ref: React.RefObject<T>;
   rename: () => void;

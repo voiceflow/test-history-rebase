@@ -5,7 +5,6 @@ import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useEnableDisable, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { imageSizeFromUrl } from '@/utils/file';
 
 const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
@@ -50,10 +49,8 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     setCreating(!!type);
 
     if (type) {
-      eventualEngine.get()?.canvas?.addClass(CANVAS_MARKUP_CREATING_CLASSNAME);
       eventualEngine.get()?.canvas?.setBusy(true);
     } else {
-      eventualEngine.get()?.canvas?.removeClass(CANVAS_MARKUP_CREATING_CLASSNAME);
       eventualEngine.get()?.canvas?.setBusy(false);
     }
   };

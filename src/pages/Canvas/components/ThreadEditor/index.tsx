@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Comment, Thread } from '@/models';
-import { Either, Point } from '@/types';
+import { Either } from '@/types';
 import { preventDefault, stopPropagation } from '@/utils/dom';
+import { Coords } from '@/utils/geometry';
 
 import { CommentEditor, Container, NewComment, ReplySection } from './components';
 
@@ -11,7 +12,7 @@ export type ThreadEditorProps = Either<
     thread: Thread;
   },
   {
-    origin: Point;
+    origin: Coords;
   }
 >;
 

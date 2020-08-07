@@ -17,6 +17,7 @@ import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
+import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { Selector, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
@@ -44,6 +45,7 @@ import PortManager from './portManager';
 import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
+import { ComponentManager } from './utils';
 
 const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, entityID: string, instanceID: string) => {
   if (entities.has(entityID) && entities.get(entityID)!.api.instanceID === instanceID) {
@@ -51,7 +53,7 @@ const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, 
   }
 };
 
-export class Engine {
+export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
   log = logger.child('engine');
 
   emitter = new EventEmitter<string>();
@@ -127,6 +129,8 @@ export class Engine {
   }
 
   constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscriptionValue) {
+    super();
+
     // do not change these to property declarations, they depend on this.store being set
     this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
@@ -218,6 +222,16 @@ export class Engine {
 
   get isCanvasBusy() {
     return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup;
+  }
+
+  addClass(className: string) {
+    this.components.container?.addClass(className);
+    this.log.debug(this.log.init('added class'), this.log.value(className));
+  }
+
+  removeClass(className: string) {
+    this.components.container?.removeClass(className);
+    this.log.debug(this.log.reset('removed class'), this.log.value(className));
   }
 
   /**

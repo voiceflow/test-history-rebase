@@ -9,6 +9,7 @@ export enum Identifier {
   UPLOAD = 'vf-upload',
   PROJECT_TITLE = 'vf-project-title',
   CANVAS = 'vf-canvas',
+  CANVAS_CONTAINER = 'vf-canvas-container',
   BLOCK_EDITOR = 'vf-block-editor',
   CANVAS_HOME_BUTTON = 'vf-canvas__home-button',
   ADD_COLLABORATORS = 'vf-add-collaborators',

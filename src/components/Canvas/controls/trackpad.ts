@@ -1,7 +1,7 @@
 import { isChrome, isChromeOS, isEdge, isFirefox, isMac, isWindows } from '@/config';
 import { preventDefault } from '@/utils/dom';
 
-import { ControlType, SCROLL_TIMEOUT } from '../constants';
+import { ANIMATION_TIMEOUT, ControlType, SCROLL_TIMEOUT } from '../constants';
 import { GestureEvent } from './types';
 import { BaseControls } from './utils';
 
@@ -16,6 +16,8 @@ class TrackPadControls extends BaseControls {
 
   scrollComplete: number | null = null;
 
+  animateCompleteEarly: number | null = null;
+
   lastScale = 1;
 
   isPanning = false;
@@ -23,6 +25,8 @@ class TrackPadControls extends BaseControls {
   gesturestart = (event: GestureEvent) => {
     this.lastScale = 1;
     event.preventDefault();
+
+    this.handle({ type: ControlType.START_ANIMATE });
   };
 
   gesturechange = (event: GestureEvent) => {
@@ -38,6 +42,11 @@ class TrackPadControls extends BaseControls {
     this.scrollComplete = null;
     this.isPanning = false;
     this.handle({ type: ControlType.END });
+  };
+
+  onAnimateCompleteEarly = () => {
+    this.animateCompleteEarly = null;
+    this.handle({ type: ControlType.END_ANIMATE });
   };
 
   wheel = preventDefault((event: WheelEvent & { wheelDeltaX?: number; wheelDeltaY?: number }) => {
@@ -144,6 +153,14 @@ class TrackPadControls extends BaseControls {
     }
 
     this.scrollComplete = setTimeout(this.onScrollComplete, SCROLL_TIMEOUT);
+
+    if (this.animateCompleteEarly) {
+      clearTimeout(this.animateCompleteEarly);
+    } else {
+      this.handle({ type: ControlType.START_ANIMATE });
+    }
+
+    this.animateCompleteEarly = setTimeout(this.onAnimateCompleteEarly, ANIMATION_TIMEOUT);
 
     if (event.ctrlKey) {
       this.handle({ type: ControlType.SCALE, scale: Math.exp(deltaY / 100), event });

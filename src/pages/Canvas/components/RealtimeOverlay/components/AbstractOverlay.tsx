@@ -47,13 +47,13 @@ abstract class AbstractOverlay<T extends RealtimeCursorOverlayAPI | RealtimeLink
   }
 
   componentDidMount() {
-    this.props.engine.realtime.registerOverlay(this.overlayType, this.api);
+    this.props.engine.realtime.register(this.overlayType, this.api);
   }
 
   componentWillUnmount() {
     this.unmounted = true;
 
-    this.props.engine.realtime.expireOverlay(this.overlayType);
+    this.props.engine.realtime.register(this.overlayType, null);
   }
 
   removeItem(tabID: string) {

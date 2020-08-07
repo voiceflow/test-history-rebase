@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
@@ -14,7 +13,6 @@ import MergeLayer from '@/pages/Canvas/components/MergeLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
-import { CANVAS_COMMENTING_ENABLED } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
 import { useCommentingMode } from '@/pages/Skill/hooks';
@@ -22,7 +20,6 @@ import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-import ThreadLayer from '../ThreadLayer';
 import { useCursorControls } from './hooks';
 
 const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {
@@ -37,7 +34,6 @@ type ConnectedCanvasDiagramProps = {
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const markup = useFeature(FeatureFlag.MARKUP);
-  const commenting = useFeature(FeatureFlag.COMMENTING);
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
 
@@ -128,6 +124,10 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     ),
   });
 
+  const addClass = React.useCallback((className: string) => engine.addClass(className), []);
+
+  const removeClass = React.useCallback((className: string) => engine.removeClass(className), []);
+
   return (
     <>
       <Canvas
@@ -143,12 +143,12 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         onShiftDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
         onDragStart={onDragStart}
-        className={cn({ [CANVAS_COMMENTING_ENABLED]: isCommentingMode })}
+        addClass={addClass}
+        removeClass={removeClass}
       >
         <LinkLayer />
         <NodeLayer />
         {markup.isEnabled && <MarkupLayer />}
-        {commenting.isEnabled && <ThreadLayer />}
         <MergeLayer />
         <SelectionMarquee />
       </Canvas>

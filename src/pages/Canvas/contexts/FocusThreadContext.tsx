@@ -4,7 +4,7 @@ import { EngineContext } from './EngineContext';
 
 export type FocusThreadContextValue = {
   focusedID: string | null;
-  setFocus: (id: string) => void;
+  setFocus: (id: string) => Promise<void>;
   resetFocus: () => void;
 };
 

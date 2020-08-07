@@ -1,3 +1,4 @@
+import { CANVAS_ANIMATING_CLASSNAME } from '@/components/Canvas/constants';
 import Flex from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
@@ -38,6 +39,10 @@ const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
       css`
         transform: translate(-50%, -50%) scale(1, 1);
       `}
+  }
+
+  .${CANVAS_ANIMATING_CLASSNAME} & {
+    pointer-events: none;
   }
 `;
 

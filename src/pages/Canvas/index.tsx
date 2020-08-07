@@ -3,7 +3,7 @@ import React from 'react';
 import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useFeature } from '@/hooks';
+import { useFeature, useSetup } from '@/hooks';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
@@ -21,6 +21,8 @@ import EditSidebar from './components/EditorSidebar';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
+import ThreadLayer from './components/ThreadLayer';
+import { CanvasAction } from './constants';
 import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
@@ -34,6 +36,8 @@ const Canvas: React.FC = () => {
     }
   }, [engine]);
 
+  useSetup(() => engine.emitter.emit(CanvasAction.RENDERED));
+
   return (
     <CanvasProviders engine={engine}>
       <Container>
@@ -42,7 +46,12 @@ const Canvas: React.FC = () => {
         <RealtimeOverlay />
         <EditSidebar />
         <Spotlight />
-        {commenting.isEnabled && <ThreadHistoryDrawer />}
+        {commenting.isEnabled && (
+          <>
+            <ThreadLayer />
+            <ThreadHistoryDrawer />
+          </>
+        )}
       </Container>
 
       <ShortcutsModal />

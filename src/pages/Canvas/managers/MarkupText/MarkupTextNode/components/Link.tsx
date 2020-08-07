@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ClickableText } from '@/components/Text';
 import { styled } from '@/hocs';
-import { CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { EngineContext } from '@/pages/Canvas/contexts';
 
 type LinkProps = {
   href: string;
@@ -19,11 +19,13 @@ const ClickableLink = styled(ClickableText)`
 `;
 
 const Link: React.FC<LinkProps> = ({ href, children }) => {
+  const engine = React.useContext(EngineContext)!;
+
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
       const withoutExtraKeys = !(e.metaKey || e.ctrlKey || e.shiftKey);
 
-      if (!document.getElementsByClassName(CANVAS_MARKUP_ENABLED_CLASSNAME) || withoutExtraKeys) {
+      if (!engine.markup.isEnabled || withoutExtraKeys) {
         e.stopPropagation();
         e.preventDefault();
       }

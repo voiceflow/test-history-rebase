@@ -1,18 +1,22 @@
 import React from 'react';
 
+import { useRegistration, useTeardown } from '@/hooks';
 import { HeadMarker, Path, buildHeadMarker, buildPath, getVirtualPoints } from '@/pages/Canvas/components/Link';
+import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { Container } from './components';
-import { useNewLinkAPI, useNewLinkSubscription } from './hooks';
+import { useNewLinkAPI } from './hooks';
 
 const NEW_LINK_ID = 'newLink';
 const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
 const NewLink: React.FC = () => {
+  const engine = React.useContext(EngineContext)!;
   const api = useNewLinkAPI<SVGPathElement>();
   const points = api.getPoints();
 
-  useNewLinkSubscription(api);
+  useRegistration(() => engine.linkCreation.register('newLink', api), [api]);
+  useTeardown(() => api.hide(), [api.hide]);
 
   if (!points || !api.isVisible) return null;
 

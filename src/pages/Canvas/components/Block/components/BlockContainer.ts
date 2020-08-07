@@ -3,7 +3,7 @@ import { BlockVariant } from '@/constants/canvas';
 import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_ACTIVATION_CLASSNAME,
-  CANVAS_COMMENTING_ENABLED,
+  CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
@@ -40,7 +40,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   opacity: 1;
   border-color: none;
 
-  .${CANVAS_COMMENTING_ENABLED} & {
+  .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;
     pointer-events: none;
   }
@@ -64,7 +64,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   ${transition('opacity')}
 
-  #${Identifier.CANVAS}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${
+  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${
   ClassName.CANVAS_NODE
 }:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
@@ -76,7 +76,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     cursor: copy;
   }
 
-  #${Identifier.CANVAS}.${CANVAS_SELECTING_GROUP_CLASSNAME} & {
+  #${Identifier.CANVAS_CONTAINER}.${CANVAS_SELECTING_GROUP_CLASSNAME} & {
     cursor: inherit;
   }
 

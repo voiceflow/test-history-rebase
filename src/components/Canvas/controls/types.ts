@@ -22,6 +22,14 @@ export type MouseZoomAction = {
 
 export type ZoomAction = Either<TrackpadZoomAction, MouseZoomAction>;
 
+export type StartAnimateAction = {
+  type: ControlType.START_ANIMATE;
+};
+
+export type EndAnimateAction = {
+  type: ControlType.END_ANIMATE;
+};
+
 export type EndAction = {
   type: ControlType.END;
 };
@@ -47,4 +55,12 @@ export type PanAction = {
   deltaY: number;
 };
 
-export type ControlAction = ZoomAction | EndAction | PanAction | ClickAction | MouseUpAction | ShiftDragStartAction;
+export type ControlAction =
+  | ZoomAction
+  | StartAnimateAction
+  | EndAnimateAction
+  | EndAction
+  | PanAction
+  | ClickAction
+  | MouseUpAction
+  | ShiftDragStartAction;

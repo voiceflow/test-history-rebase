@@ -4,27 +4,33 @@ import { useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point } from '@/types';
 import { noop } from '@/utils/functional';
+import { Coords, Vector } from '@/utils/geometry';
 import MouseMovement from '@/utils/mouseMovement';
 
-export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, position: React.MutableRefObject<Point>) => {
-  const updateTransform = React.useCallback(([x, y]: Point, callback?: () => void) => {
-    const nodeEl = ref.current!;
+const updateTransform = <T extends HTMLElement>(ref: React.RefObject<T | null>, [x, y]: Point) => {
+  const targetEl = ref.current!;
 
-    window.requestAnimationFrame(() => {
-      nodeEl.style.transform = `translate(${x}px, ${y}px)`;
+  window.requestAnimationFrame(() => {
+    targetEl.style.transform = `translate(${x}px, ${y}px)`;
+  });
+};
 
-      callback?.();
-    });
-  }, []);
-
-  return React.useCallback(([movementX, movementY]: Pair<number>) => {
+export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, position: React.MutableRefObject<Point>) =>
+  React.useCallback(([movementX, movementY]: Pair<number>) => {
     const [posX, posY] = position.current!;
     const nextPosition: Point = [posX + movementX, posY + movementY];
     position.current = nextPosition;
 
-    updateTransform(nextPosition);
+    updateTransform(ref, nextPosition);
   }, []);
-};
+
+export const useVectorDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, coords: React.MutableRefObject<Coords>) =>
+  React.useCallback((movement: Vector) => {
+    const nextCoords = coords.current.add(movement);
+    coords.current = nextCoords;
+
+    updateTransform(ref, nextCoords.point);
+  }, []);
 
 export const useEntityDrag = (
   {

@@ -5,22 +5,12 @@ import { Pair } from '@/types';
 
 import { EngineConsumer } from './utils';
 
-class TransformationEngine extends EngineConsumer {
+class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformOverlayAPI }> {
   log = this.engine.log.child('transformation');
-
-  transformOverlay: TransformOverlayAPI | null = null;
 
   isActive = false;
 
   isTransforming = false;
-
-  addStyle() {
-    this.engine.canvas?.addClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
-  }
-
-  removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
-  }
 
   getTarget() {
     const nodeID = this.engine.focus.getTarget();
@@ -31,12 +21,6 @@ class TransformationEngine extends EngineConsumer {
 
   isTarget(nodeID: string) {
     return nodeID === this.getTarget();
-  }
-
-  registerTransformOverlay(transformOverlay: TransformOverlayAPI | null) {
-    this.transformOverlay = transformOverlay;
-
-    this.log.debug(this.log.init(transformOverlay ? 'registered' : 'expired'), this.log.value('<TransformOverlay>'));
   }
 
   initialize(nodeID: string) {
@@ -50,8 +34,8 @@ class TransformationEngine extends EngineConsumer {
 
     this.log.debug(this.log.pending('setting tranformation target'), this.log.slug(nodeID));
     this.isActive = true;
-    this.transformOverlay?.initialize(transform);
-    this.addStyle();
+    this.components.transformOverlay?.initialize(transform);
+    this.engine.addClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
 
     this.log.info(this.log.success('set transformation target'), this.log.slug(nodeID));
   }
@@ -60,7 +44,7 @@ class TransformationEngine extends EngineConsumer {
     const transform = this.engine.node.api(this.getTarget()!)?.instance?.getTransform?.();
     if (!transform) return;
 
-    this.transformOverlay?.initialize(transform);
+    this.components.transformOverlay?.initialize(transform);
   }
 
   start() {
@@ -90,7 +74,7 @@ class TransformationEngine extends EngineConsumer {
 
     this.engine.node.api(this.getTarget()!)?.instance?.applyTransformations?.();
 
-    this.transformOverlay?.clearTransformations();
+    this.components.transformOverlay?.clearTransformations();
   }
 
   reset() {
@@ -99,8 +83,8 @@ class TransformationEngine extends EngineConsumer {
     this.log.debug(this.log.pending('resetting transformation'));
     this.isActive = false;
     this.isTransforming = false;
-    this.transformOverlay?.reset();
-    this.removeStyle();
+    this.components.transformOverlay?.reset();
+    this.engine.removeClass(CANVAS_MARKUP_TRANSFORMING_CLASSNAME);
 
     this.log.info(this.log.reset('reset transformation'));
   }

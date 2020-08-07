@@ -1,10 +1,11 @@
 import React from 'react';
 
-import DragTarget from '@/pages/Canvas/components/DragTarget';
 import { EngineContext, FocusThreadContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
+import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
+import { Vector } from '@/utils/geometry';
 
-import { CommentIndicator, ThreadEditor } from './components';
+import { CommentIndicator, DragTarget, ThreadEditor } from './components';
 import { useThreadHandlers, useThreadInstance } from './hooks';
 
 const CommentThread: React.FC = () => {
@@ -18,13 +19,13 @@ const CommentThread: React.FC = () => {
   }));
 
   const { onDoubleClick, ...handlers } = useThreadHandlers({
-    drag: (movement) => engine.comment.dragThread(threadEntity.threadID, movement),
+    drag: (movement) => instance.translate(engine.canvas!.toVector(movement)),
     drop: () => engine.comment.dropThread(threadEntity.threadID),
     mousedown: () => engine.comment.setTarget(threadEntity.threadID),
     mouseup: () => engine.comment.setTarget(null),
     click: async () => {
       if (threadEntity.isFocused) {
-        focusThread?.resetFocus();
+        focusThread.resetFocus();
       } else {
         await focusThread.setFocus(threadEntity.threadID);
       }
@@ -32,7 +33,17 @@ const CommentThread: React.FC = () => {
     doubleClick: () => engine.comment.centerThread(threadEntity.threadID),
   });
 
+  useCanvasPan((movement) => instance.translate(new Vector(movement)));
+
+  useCanvasZoom((calculateMovement) => {
+    const [moveX, moveY] = calculateMovement(instance.getCoords().map(engine.canvas!.getOuterPlane()));
+
+    instance.translate(new Vector([moveX, moveY]));
+  }, []);
+
   threadEntity.useInstance(instance);
+
+  const origin = instance.getCoords().map(engine.canvas!.getOuterPlane());
 
   return (
     <DragTarget
@@ -40,7 +51,7 @@ const CommentThread: React.FC = () => {
       onDoubleClick={onDoubleClick}
       className={ClassName.CANVAS_THREAD}
       data-thread-id={threadEntity.threadID}
-      position={instance.getPosition()}
+      position={origin}
       ref={instance.ref}
       zIndex={isFocused ? 10 : undefined}
     >

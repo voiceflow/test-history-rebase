@@ -118,18 +118,15 @@ export class Coords extends Vector {
     return [x, y];
   }
 
-  relative(point: Coords) {
-    const [originX, originY] = this.point;
-    const [terminalX, terminalY] = point.map(this.plane);
-
-    return new Vector([terminalX - originX, terminalY - originY], this.plane);
-  }
-
   min(point: Coords, plane = this.plane) {
     const [lhsX, lhsY] = this.map(plane);
     const [rhsX, rhsY] = point.map(plane);
 
     return new Coords([Math.min(lhsX, rhsX), Math.min(lhsY, rhsY)], this.plane);
+  }
+
+  onPlane(plane: CartesianPlane) {
+    return new Coords(this.map(plane), plane);
   }
 
   toVector() {
@@ -165,7 +162,7 @@ export class Quadrilateral extends Shape<Quad<Coords>> {
 
   // eslint-disable-next-line class-methods-use-this
   fromPoints([topLeft, , bottomRight]: Quad<Coords>) {
-    return new Quadrilateral(topLeft, bottomRight.relative(topLeft), 0) as this;
+    return new Quadrilateral(topLeft, bottomRight.sub(topLeft), 0) as this;
   }
 }
 

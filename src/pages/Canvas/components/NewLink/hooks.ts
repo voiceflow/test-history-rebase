@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import * as Realtime from '@/ducks/realtime';
-import { useTeardown } from '@/hooks';
 import { buildPath, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -15,6 +14,7 @@ type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   isVisible: boolean;
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export const useNewLinkAPI = <T extends SVGElement>() => {
   const ref = React.useRef<T>(null);
   const dispatch = useDispatch();
@@ -106,15 +106,4 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     }),
     [isVisible, onMouseMove, onMouseUp, moveLink]
   );
-};
-
-export const useNewLinkSubscription = (api: NewLinkAPI) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => engine.linkCreation.registerNewLink(api), [api]);
-
-  useTeardown(() => {
-    engine.linkCreation.registerNewLink(null);
-    api.hide();
-  });
 };

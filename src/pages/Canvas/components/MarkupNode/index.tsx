@@ -8,7 +8,7 @@ import { usePermission } from '@/hooks';
 import { Markup } from '@/models';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
-import { CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
@@ -44,8 +44,9 @@ const MarkupNode = () => {
 
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
 
+  const skipClick = React.useCallback(() => !engine.markup.isEnabled, []);
+
   // for optimization reason using query selector to filter click events if markup is not opened
-  const skipClick = React.useCallback(() => !document.getElementsByClassName(CANVAS_MARKUP_ENABLED_CLASSNAME).length, []);
   const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);
 
   const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipClick, skipDrag });

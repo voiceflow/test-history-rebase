@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { useEnableDisable, useTeardown } from '@/hooks';
+import { useEnableDisable } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
 
+// eslint-disable-next-line import/prefer-default-export
 export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObject<T>) => {
   const offsetRef = React.useRef<[number, number]>([0, 0]);
   const [isVisible, show, hide] = useEnableDisable();
@@ -54,12 +55,4 @@ export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObj
     }),
     [isVisible, isTransparent]
   );
-};
-
-export const useMergeLayerSubscription = (api: MergeLayerAPI) => {
-  const engine = React.useContext(EngineContext)!;
-
-  React.useEffect(() => engine.merge.registerMergeLayer(api), [api]);
-
-  useTeardown(() => engine.merge.registerMergeLayer(null));
 };

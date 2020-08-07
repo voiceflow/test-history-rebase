@@ -43,13 +43,11 @@ class ActivationEngine extends EngineConsumer {
   }
 
   addStyle() {
-    this.engine.canvas?.addClass(CANVAS_ACTIVATION_CLASSNAME);
-    this.log.debug('added canvas activation style');
+    this.engine.addClass(CANVAS_ACTIVATION_CLASSNAME);
   }
 
   removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_ACTIVATION_CLASSNAME);
-    this.log.debug('removed canvas activation style');
+    this.engine.removeClass(CANVAS_ACTIVATION_CLASSNAME);
   }
 
   /**

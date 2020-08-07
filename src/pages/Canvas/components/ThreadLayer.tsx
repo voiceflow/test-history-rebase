@@ -4,6 +4,7 @@ import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { ThreadEntityProvider } from '@/pages/Canvas/contexts';
+import { CanvasRenderGate } from '@/pages/Canvas/gates';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
@@ -22,7 +23,9 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs, updat
     <>
       {rootThreadIDs.map((threadID) => (
         <ThreadEntityProvider id={threadID} key={threadID}>
-          <CommentThread />
+          <CanvasRenderGate>
+            <CommentThread />
+          </CanvasRenderGate>
         </ThreadEntityProvider>
       ))}
       <NewCommentThread />

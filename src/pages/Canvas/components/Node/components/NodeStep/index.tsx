@@ -70,7 +70,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
         {isDragging ? (
           <>
             <Step.Placeholder variant={variant} isLast={isLast} />
-            <Portal portalNode={engine.merge.mergeLayer!.ref.current!}>
+            <Portal portalNode={engine.merge.components.mergeLayer!.ref.current!}>
               <StepComponent node={node} data={data} platform={platform} withPorts={stepAPI.withPorts} />
             </Portal>
           </>

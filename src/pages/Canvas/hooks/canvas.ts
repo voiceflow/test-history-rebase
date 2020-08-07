@@ -6,6 +6,25 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
 import { Coords } from '@/utils/geometry';
 
+export const useCanvasRendered = () => {
+  const engine = React.useContext(EngineContext)!;
+  const [isRendered, setRendered] = React.useState(!!engine.canvas);
+
+  React.useEffect(() => {
+    if (isRendered) return undefined;
+
+    const handler = () => setRendered(true);
+
+    engine.emitter.once(CanvasAction.RENDERED, handler);
+
+    return () => {
+      engine.emitter.off(CanvasAction.RENDERED, handler);
+    };
+  }, []);
+
+  return isRendered;
+};
+
 export const useCanvasIdle = (onIdle: () => void, dependencies: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 

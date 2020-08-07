@@ -29,11 +29,11 @@ class DragEngine extends EngineConsumer {
   }
 
   addStyle() {
-    this.engine.canvas?.addClass(CANVAS_DRAGGING_CLASSNAME);
+    this.engine.addClass(CANVAS_DRAGGING_CLASSNAME);
   }
 
   removeStyle() {
-    this.engine.canvas?.removeClass(CANVAS_DRAGGING_CLASSNAME);
+    this.engine.removeClass(CANVAS_DRAGGING_CLASSNAME);
   }
 
   async setGroup(nodeIDs: string[]) {

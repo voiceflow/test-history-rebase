@@ -153,7 +153,7 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
         const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
         const nextTopleft = new Coords([nextLeft, nextTop]);
         const rotatedNextTopleft = rotateCoordsCW(nextTopleft, rotationAxis, curRotation);
-        const rotationOffset = [rotatedNextTopleft[0] - nextLeft, rotatedNextTopleft[1] - nextTop] as Pair<number>;
+        const rotationOffset = rotatedNextTopleft.sub(nextTopleft).raw();
 
         engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);
       }

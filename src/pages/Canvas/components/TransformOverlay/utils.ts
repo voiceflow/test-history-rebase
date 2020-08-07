@@ -99,7 +99,7 @@ export const getResizeTransformations = (
   event: MouseEvent,
   isCentered?: boolean
 ) => {
-  const [originX, originY] = transform.origin.raw();
+  const [originX, originY] = transform.origin.point;
 
   const invertX = X_INVERTED_HANDLES.includes(handle);
   const invertY = Y_INVERTED_HANDLES.includes(handle);

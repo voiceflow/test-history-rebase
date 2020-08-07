@@ -68,5 +68,5 @@ export const rotateCoordsCW = (pos: Coords, axis: Coords, angle: number) => {
    * ...and conveniently, this displacement vector allows us to compute `mappedPos` within the
    * original coordinate system of `pos`.
    */
-  return pos.add(delta).point;
+  return pos.add(delta);
 };

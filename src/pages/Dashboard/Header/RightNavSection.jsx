@@ -96,6 +96,7 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
           )}
         </Dropdown>
       </SubHeaderItem>
+
       <SubHeaderItem>
         {/* notifications component */}
         <Dropdown

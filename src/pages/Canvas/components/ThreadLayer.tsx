@@ -9,8 +9,12 @@ import { ConnectedProps } from '@/types';
 
 import NewCommentThread from './NewCommentThread';
 
-const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs }) => {
+const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs, updateUnreadComments }) => {
   const isCommentingMode = useCommentingMode();
+
+  React.useEffect(() => {
+    updateUnreadComments(false);
+  }, [isCommentingMode]);
 
   if (!isCommentingMode) return null;
 
@@ -30,6 +34,10 @@ const mapStateToProps = {
   rootThreadIDs: Thread.activeDiagramRootThreadIDsSelector,
 };
 
-type ConnectedThreadLayerProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  updateUnreadComments: Thread.updateUnreadComments,
+};
 
-export default connect(mapStateToProps)(ThreadLayer);
+type ConnectedThreadLayerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThreadLayer);

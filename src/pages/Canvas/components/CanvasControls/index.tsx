@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
@@ -7,6 +8,7 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import * as Router from '@/ducks/router';
+import * as Thread from '@/ducks/thread';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
@@ -16,12 +18,12 @@ import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import { CanvasControlButton, Container, ControlContainer, ZoomContainer } from './components';
+import { CanvasControlButton, Container, ControlContainer, UnreadCommentsIndicator, ZoomContainer } from './components';
 import { CanvasControl, CanvasControlMeta } from './constants';
 
 const ZOOM_DELTA = 15;
 
-const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, goToDesign }) => {
+const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, hasUnreadComments, goToDesign }) => {
   const [trackEvents, trackingEventsWrapper] = useTrackingEvents();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
@@ -145,15 +147,18 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       {showHintFeatures && (
         <>
           {commentingFeature.isEnabled && (
-            <CanvasControlButton
-              {...CanvasControlMeta[CanvasControl.COMMENTING]}
-              iconProps={{
-                active: isCommentingMode,
-                icon: 'comment',
-                size: 16,
-              }}
-              onClick={toggleCommenting}
-            />
+            <Box position="relative">
+              <CanvasControlButton
+                {...CanvasControlMeta[CanvasControl.COMMENTING]}
+                iconProps={{
+                  active: isCommentingMode,
+                  icon: isCommentingMode ? 'close' : 'comment',
+                  size: isCommentingMode ? 14 : 16,
+                }}
+                onClick={toggleCommenting}
+              />
+              {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
+            </Box>
           )}
           {markupFeature.isEnabled && (
             <CanvasControlButton
@@ -184,6 +189,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
 
 const mapStateToProps = {
   isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+  hasUnreadComments: Thread.hasUnreadCommentsSelector,
 };
 
 const mapDispatchToProps = {

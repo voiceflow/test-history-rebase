@@ -6,22 +6,73 @@ import threadAdapter from '@/client/adapters/thread';
 import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
-import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
+import { createAction, createRootSelector } from '@/ducks/utils';
+import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
 import { Comment, DBComment, DBThread, NewThread, Thread } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import { Action, Reducer, RootReducer, SyncThunk, Thunk } from '@/store/types';
 import { Pair } from '@/types';
 
 // state
 
+export type CommentingState = CRUD.CRUDState<Thread> & {
+  hasUnreadComments: boolean;
+};
+
 export const STATE_KEY = 'thread';
+
+export const INITIAL_STATE: CommentingState = {
+  ...CRUD.INITIAL_STATE,
+  hasUnreadComments: false,
+};
+
+// actions
+
+export enum CommentingAction {
+  UPDATE_UNREAD_COMMENTS = 'UPDATE_UNREAD_COMMENTS',
+}
+
+// action types
+
+export type UpdateUnreadComments = Action<CommentingAction.UPDATE_UNREAD_COMMENTS, boolean>;
+
+export type AnyCommentingAction = UpdateUnreadComments | CRUD.AnyCRUDAction<Thread>;
+
+// action creators
+
+export const updateUnreadComments = (hasUnreadComments: boolean): UpdateUnreadComments =>
+  createAction(CommentingAction.UPDATE_UNREAD_COMMENTS, hasUnreadComments);
+
+export const { add: addThread, update: updateThread, remove: removeThread, replace: replaceThreads } = CRUD.createCRUDActionCreators<Thread>(
+  STATE_KEY
+);
 
 // reducers
 
-const threadReducer = createCRUDReducer<Thread>(STATE_KEY);
+const threadCRUDReducer = createCRUDReducer<Thread>(STATE_KEY);
+
+const updateUnreadCommentReducer: Reducer<CommentingState, UpdateUnreadComments> = (state, { payload: hasUnreadComments }) => ({
+  ...state,
+  hasUnreadComments,
+});
+
+const threadReducer: RootReducer<CommentingState, AnyCommentingAction> = (state = INITIAL_STATE, action) => {
+  // eslint-disable-next-line sonarjs/no-small-switch
+  switch (action.type) {
+    case CommentingAction.UPDATE_UNREAD_COMMENTS:
+      return updateUnreadCommentReducer(state, action);
+    default:
+      return {
+        ...state,
+        ...threadCRUDReducer(state, action),
+      };
+  }
+};
 
 export default threadReducer;
 
 // selectors
+
+const rootSelector = createRootSelector(STATE_KEY);
 
 export const {
   root: rootThreadsSelector,
@@ -29,7 +80,7 @@ export const {
   byID: threadByIDSelector,
   findByIDs: threadsByIDsSelector,
   has: hasThreadsSelector,
-} = createCRUDSelectors<Thread>(STATE_KEY);
+} = CRUD.createCRUDSelectors<Thread>(STATE_KEY);
 
 export const openThreads = createSelector([allThreadsSelector], (threads) => threads.filter((thread) => !thread.resolved));
 
@@ -41,9 +92,7 @@ export const activeDiagramRootThreadIDsSelector = createSelector([allThreadsSele
   threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && !thread.nodeID).map(({ id }) => id)
 );
 
-// action creators
-
-export const { add: addThread, update: updateThread, remove: removeThread, replace: replaceThreads } = createCRUDActionCreators<Thread>(STATE_KEY);
+export const hasUnreadCommentsSelector = createSelector([rootSelector], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);
 
 // side effects
 
@@ -195,6 +244,7 @@ export const handleNewThread = (payload: { projectID: string; created: DBThread 
   if (creatorID === thread.creatorID) return;
 
   dispatch(addThread(thread.id, thread));
+  dispatch(updateUnreadComments(true));
 };
 
 export const handleThreadUpdate = (payload: { projectID: string; updatedThread: DBThread }): SyncThunk => (dispatch, getState) => {
@@ -230,6 +280,7 @@ export const handleNewReply = (payload: { projectID: string; created: DBComment 
   const thread = threadByIDSelector(state)(comment.threadID);
 
   dispatch(updateThread(thread.id, { comments: [...thread.comments, comment] }, true));
+  dispatch(updateUnreadComments(true));
 };
 
 export const handleCommentUpdate = (payload: { projectID: string; updatedComment: DBComment }): SyncThunk => (dispatch, getState) => {

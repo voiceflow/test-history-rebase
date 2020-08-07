@@ -10,7 +10,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { ConnectedProps, Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import { Coords, Vector } from '@/utils/geometry';
 import { getCenter, rotateCoordsCW } from '@/utils/linalg';
 import { getRotation } from '@/utils/math';
 
@@ -152,8 +152,10 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
           engine.transformation.scaleTarget([scale, scale], [0, 0], curRotation, [0, 0]);
         }
       } else {
+        // TODO - Refactor resize to use Coords so we don't need to manually convert
         const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
-        const rotatedNextTopleft = rotateCoordsCW(new Coords([nextLeft, nextTop]), rotationAxis, curRotation);
+        const nextTopleft = new Coords([nextLeft, nextTop]);
+        const rotatedNextTopleft = rotateCoordsCW(nextTopleft, rotationAxis, curRotation);
         const rotationOffset = [rotatedNextTopleft[0] - nextLeft, rotatedNextTopleft[1] - nextTop] as Pair<number>;
 
         engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);
@@ -173,12 +175,15 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
   );
 
   const onRotate = React.useCallback(() => {
-    const mousePosition = engine.mousePosition.current!;
     const el = ref.current!;
     const transform = snapshot.current!;
-    const [mouseX, mouseY] = mousePosition;
-    const centerX = transform.originX + transform.width / 2;
-    const centerY = transform.originY + transform.height / 2;
+
+    const transformOrigin = new Coords([transform.originX, transform.originY]);
+    const transformSize = new Vector([transform.width, transform.height]);
+
+    const [centerX, centerY] = transformOrigin.add(transformSize.scalarDiv(2)).point;
+    const [mouseX, mouseY] = engine.mousePosition.current!;
+
     const deltaX = mouseX - centerX;
     const deltaY = centerY - mouseY;
     const rotate = getRotation(deltaX, deltaY);

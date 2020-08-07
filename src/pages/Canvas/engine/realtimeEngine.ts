@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, lodash/prefer-noop */
+/* eslint-disable lodash/prefer-noop */
 import { MovementCalculator } from '@/components/Canvas/types';
 import * as Realtime from '@/ducks/realtime';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';

@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-
 function isOnRoute(_chai) {
   function assertIsOnRoute(page, ...args) {
     new _chai.Assertion(page).to.have.nested.property('meta.route');

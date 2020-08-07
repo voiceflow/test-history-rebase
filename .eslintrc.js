@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 require('ts-node/register/transpile-only');
 
 module.exports = {
@@ -12,7 +13,6 @@ module.exports = {
     quotes: ['error', 'single', 'avoid-escape'],
     'no-secrets/no-secrets': ['error', { tolerance: 4.45 }],
     'lodash/path-style': ['error', 'array'],
-    'no-use-before-define': ['error', 'nofunc'],
     'prefer-destructuring': [
       'error',
       {
@@ -45,6 +45,7 @@ module.exports = {
     'sonarjs/no-duplicate-string': 'off',
     'no-prototype-builtins': 'off',
     'no-use-before-define': 'off',
+    'no-underscore-dangle': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

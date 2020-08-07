@@ -12,7 +12,6 @@ declare global {
   }
 }
 
-// eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
 
 function createStore(history: History) {

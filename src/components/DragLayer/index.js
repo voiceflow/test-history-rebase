@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { useMemo } from 'react';
 import { DragLayer } from 'react-dnd';
 import compose from 'recompose/compose';

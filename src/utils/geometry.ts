@@ -18,7 +18,7 @@ export class Vector {
   constructor(public point: Point, public _plane?: CartesianPlane) {}
 
   get plane() {
-    // eslint-disable-next-line no-underscore-dangle, lodash/prefer-lodash-typecheck, @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line lodash/prefer-lodash-typecheck, @typescript-eslint/no-use-before-define
     return this._plane || Coords.WINDOW_PLANE;
   }
 

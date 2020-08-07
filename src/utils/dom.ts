@@ -107,7 +107,6 @@ export const setScrollbarOffset = (
   }
 };
 
-// eslint-disable-next-line no-underscore-dangle
 const _getOffsetToNode = (node: HTMLElement, body: HTMLElement, key: keyof HTMLElement) => {
   let obj: HTMLElement | null = node;
   let offset = 0;

@@ -27,7 +27,6 @@ export default ({ name, styles = {}, canDrag, canDrop, onDropKey, onMoveKey, all
       const item = monitor.getItem();
       const { [onDropKey]: onDrop, onToggleDragging } = props;
 
-      // eslint-disable-next-line no-underscore-dangle
       onDrop && onDrop({ toListId: item.listId, fromListId: item._initialListId });
       onToggleDragging && onToggleDragging(false);
     },

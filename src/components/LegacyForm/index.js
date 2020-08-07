@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import cn from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';

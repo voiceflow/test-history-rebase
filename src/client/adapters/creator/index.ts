@@ -98,7 +98,7 @@ const creatorAdapter = createSimpleAdapter<
       const { virtualExtras, ...extras } = node.extras || {};
       const virtualPortID = virtualExtras?.inPortID || getVirtualPortID(node.id);
       const virtualNodeID = virtualExtras?.id || getVirtualNodeID(node.id);
-      let _node = node; // eslint-disable-line no-underscore-dangle
+      let _node = node;
 
       if (nodeType === BlockType.COMBINED) {
         _node = {

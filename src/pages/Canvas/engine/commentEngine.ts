@@ -114,6 +114,17 @@ class CommentEngine extends EngineConsumer {
     await this.translateThread(threadID, movement);
   }
 
+  async dropThread(threadID: string) {
+    const thread = this.thread(threadID);
+
+    if (!thread?.instance) return;
+
+    const position = thread.instance.getPosition();
+    await this.dispatch(Thread.updateThreadData(threadID, { position }));
+
+    this.log.debug('location saved', this.log.slug(threadID));
+  }
+
   centerThread(threadID: string) {
     const center = this.thread(threadID)?.instance?.getCenterPoint();
 

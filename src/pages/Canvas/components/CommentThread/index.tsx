@@ -19,6 +19,7 @@ const CommentThread: React.FC = () => {
 
   const { onDoubleClick, ...handlers } = useThreadHandlers({
     drag: (movement) => engine.comment.dragThread(threadEntity.threadID, movement),
+    drop: () => engine.comment.dropThread(threadEntity.threadID),
     mousedown: () => engine.comment.setTarget(threadEntity.threadID),
     mouseup: () => engine.comment.setTarget(null),
     click: async () => {

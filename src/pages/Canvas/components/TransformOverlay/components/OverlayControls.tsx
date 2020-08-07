@@ -10,7 +10,8 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { ConnectedProps, Pair, Point } from '@/types';
-import { getCenter, rotateVectorCW, subVec } from '@/utils/linalg';
+import { Coords } from '@/utils/geometry';
+import { getCenter, rotateCoordsCW } from '@/utils/linalg';
 import { getRotation } from '@/utils/math';
 
 import { HandlePosition, TEXT_WIDTH_HANDLES } from '../constants';
@@ -151,9 +152,9 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
           engine.transformation.scaleTarget([scale, scale], [0, 0], curRotation, [0, 0]);
         }
       } else {
-        const rotationAxis = getCenter([nextLeft, nextTop], [nextWidth, nextHeight]);
-        const rotatedNextTopleft = rotateVectorCW([nextLeft, nextTop], rotationAxis, curRotation);
-        const rotationOffset = subVec([nextLeft, nextTop], rotatedNextTopleft);
+        const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
+        const rotatedNextTopleft = rotateCoordsCW(new Coords([nextLeft, nextTop]), rotationAxis, curRotation);
+        const rotationOffset = [rotatedNextTopleft[0] - nextLeft, rotatedNextTopleft[1] - nextTop] as Pair<number>;
 
         engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);
       }

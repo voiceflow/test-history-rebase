@@ -92,6 +92,14 @@ export class Vector {
   toVector(): Vector {
     return this;
   }
+
+  scalarMul(scalar: number, plane = this.plane) {
+    return this.mul([scalar, scalar], plane);
+  }
+
+  scalarDiv(scalar: number, plane = this.plane) {
+    return this.scalarMul(1 / scalar, plane);
+  }
 }
 
 export class Coords extends Vector {

@@ -1,5 +1,7 @@
 import { Pair, Point } from '@/types';
 
+import { Coords } from './geometry';
+
 /**
  * Computes the centre-point of an unrotated quadrilateral with given `topleft` corner
  * and `size` (its width and height).
@@ -7,11 +9,7 @@ import { Pair, Point } from '@/types';
  * @param topleft The top-left corner of the quadrilteral
  * @param size The width and height of the quadrilateral
  */
-export const getCenter = ([left, top]: Pair<number>, [width, height]: Pair<number>): Point => [left + width / 2, top + height / 2];
-
-export const addVec = ([x1, y1]: Pair<number>, [x2, y2]: Pair<number>) => [x2 + x1, y2 + y1] as Pair<number>;
-
-export const subVec = ([x1, y1]: Pair<number>, vec2: Pair<number>) => addVec([-x1, -y1], vec2);
+export const getCenter = ([left, top]: Point, [width, height]: Pair<number>): Point => [left + width / 2, top + height / 2];
 
 /**
  * Given a vector/point `vec` and an `angle`, rotates the `vec` about the origin of its coordinate
@@ -21,7 +19,7 @@ export const subVec = ([x1, y1]: Pair<number>, vec2: Pair<number>) => addVec([-x
  * @param vec the vector / point that must be rotated
  * @param angle the amount (in radians) to rotate counter-clockwise
  */
-const applyCCWRotationMatrix = ([x, y]: Pair<number>, angle: number): Pair<number> => {
+const applyCCWRotationMatrix = ([x, y]: Point, angle: number): Point => {
   /**
    * We matrix multiply the point [x, y] by a counter-clockwise Rotation Matrix where theta = `angle` to
    * obtain the coordinates of the rotated point.
@@ -40,14 +38,14 @@ const applyCCWRotationMatrix = ([x, y]: Pair<number>, angle: number): Pair<numbe
  * @param axis The axis of rotation for `pos`
  * @param angle The amount (in radians) that we rotate
  */
-export const rotateVectorCW = (pos: Point, axis: Point, angle: number): Pair<number> => {
+export const rotateCoordsCW = (pos: Coords, axis: Coords, angle: number) => {
   /**
    * In linear algebra, vectors are always rotated with (0,0) as the axis of rotation.
    *
    * Thus, we implicitly define `axis` to be our origin, then map `pos` so that it is a point
    * relative to axis.
    */
-  const mappedPos = subVec(axis, pos);
+  const mappedPos = pos.sub(axis);
 
   /**
    * Rotation matrices work under Cartesian coordinate systems as defined in mathematics. This
@@ -58,17 +56,17 @@ export const rotateVectorCW = (pos: Point, axis: Point, angle: number): Pair<num
    *
    * Hence, we apply a CCW rotation matrix to perform a CW rotation.
    */
-  const rotatedMappedPos = applyCCWRotationMatrix(mappedPos, angle);
+  const rotatedMappedPos = new Coords(applyCCWRotationMatrix(mappedPos.point, angle), mappedPos.plane);
 
   /**
    * We determine the displacement needed to move `pos` to `mappedPos` within the coordinate
    * system with `axis` as its origin...
    */
-  const delta = subVec(mappedPos, rotatedMappedPos);
+  const delta = rotatedMappedPos.sub(mappedPos);
 
   /**
    * ...and conveniently, this displacement vector allows us to compute `mappedPos` within the
    * original coordinate system of `pos`.
    */
-  return addVec(pos, delta);
+  return pos.add(delta).point;
 };

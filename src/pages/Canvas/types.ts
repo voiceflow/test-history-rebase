@@ -7,13 +7,12 @@ import { Coords } from '@/utils/geometry';
 
 export type MarkupTransform = {
   scale: number;
-  originX: number;
-  originY: number;
   width: number;
   height: number;
   rotate: number;
   invertX: boolean;
   invertY: boolean;
+  origin: Coords;
 };
 
 export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;

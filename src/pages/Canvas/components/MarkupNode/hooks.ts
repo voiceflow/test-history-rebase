@@ -6,6 +6,7 @@ import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
+import { Coords } from '@/utils/geometry';
 import { getRotation } from '@/utils/math';
 
 import { MarkupShapeInstance, ResizableMarkupNodeData } from './types';
@@ -45,14 +46,13 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
       const scaledWidth = data.width ? data.width * data.scale : rect.width;
 
       return {
-        originX: rect.left,
-        originY: rect.top,
         width: scaledWidth,
         height: rect.height,
         rotate: data.rotate,
         scale: data.scale,
         invertX: false,
         invertY: false,
+        origin: new Coords([rect.left, rect.top]),
       };
     }
 
@@ -62,28 +62,26 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
       const diffY = offsetY * zoom;
 
       return {
-        originX: left + Math.min(0, diffX),
-        originY: top + Math.min(0, diffY),
         width: Math.abs(diffX),
         height: Math.abs(diffY),
         rotate: 0,
         scale: 1,
         invertX: offsetX < 0,
         invertY: offsetY < 0,
+        origin: new Coords([left + Math.min(0, diffX), top + Math.min(0, diffY)]),
       };
     }
 
     const resizableData = data as ResizableMarkupNodeData;
 
     return {
-      originX: left,
-      originY: top,
       width: resizableData.width * zoom,
       height: resizableData.height * zoom,
       rotate: resizableData.rotate,
       scale: 1,
       invertX: false,
       invertY: false,
+      origin: new Coords([left, top]),
     };
   }, []);
 

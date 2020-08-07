@@ -124,21 +124,21 @@ export default merge(
             },
           ],
         },
-        {
-          rules: instrument
-            ? [
-                {
-                  test: /\.[jt]sx?$/,
-                  include: paths.sourceDir,
-                  loader: 'istanbul-instrumenter-loader',
-                  enforce: 'post',
-                  options: {
-                    esModules: true,
-                  },
-                },
-              ]
-            : [],
-        },
+        // {
+        //   rules: instrument
+        //     ? [
+        //         {
+        //           test: /\.[jt]sx?$/,
+        //           include: paths.sourceDir,
+        //           loader: 'istanbul-instrumenter-loader',
+        //           enforce: 'post',
+        //           options: {
+        //             esModules: true,
+        //           },
+        //         },
+        //       ]
+        //     : [],
+        // },
       ],
     },
   },

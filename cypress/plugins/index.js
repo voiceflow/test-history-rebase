@@ -1,7 +1,7 @@
-const codeCoverage = require('@cypress/code-coverage/task');
+// const codeCoverage = require('@cypress/code-coverage/task');
 
-module.exports = (on, config) => {
-  codeCoverage(on, config);
-
-  return config;
+// eslint-disable-next-line lodash/prefer-noop
+module.exports = () => {
+  // codeCoverage(on, config);
+  // return config;
 };

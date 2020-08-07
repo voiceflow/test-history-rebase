@@ -188,11 +188,14 @@ jobs:
           working_directory: ~/creator-api
           command: yarn e2e
       - run:
+          name: Wait for Creator API
+          command: dockerize -wait tcp://localhost:8080 -timeout 1m
+      - run:
           name: Run Cypress Tests
           command: yarn cypress:ci
-      - codecov/upload:
-          file: nyc_coverage/lcov.info
-          flags: e2e
+      # - codecov/upload:
+      #     file: nyc_coverage/lcov.info
+      #     flags: e2e
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:

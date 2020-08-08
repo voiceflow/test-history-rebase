@@ -7,14 +7,14 @@ import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useEnableDisable, useHotKeys, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
 
 function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
-  const { canEdit } = React.useContext(EditPermissionContext);
+  const isEditingMode = useEditingMode();
   const selectedTab = React.useMemo(() => (Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS), [activeTab]);
   const [events] = useTrackingEvents();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
@@ -43,7 +43,7 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
     events.trackCanvasMenuLock({ state: isHidden ? Tracking.CanvasMenuLockState.UNLOCKED : Tracking.CanvasMenuLockState.LOCKED });
   }, [isHidden]);
 
-  const isOpen = (!isHidden || isOpenByHover) && canEdit;
+  const isOpen = (!isHidden || isOpenByHover) && isEditingMode;
 
   // This useDrop doesnt do anything functional, but it prevents the awful lag when dropping steps back onto the
   // step menu
@@ -55,8 +55,8 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, selectActiveTab }) {
     <Container
       id={Identifier.DESIGN_MENU}
       isOpen={isOpen}
-      onMouseEnter={canEdit ? openByHover : null}
-      onMouseLeave={canEdit ? closeByLoseHover : null}
+      onMouseEnter={isEditingMode ? openByHover : null}
+      onMouseLeave={isEditingMode ? closeByLoseHover : null}
       tabIndex={-1}
       ref={dropRef}
     >

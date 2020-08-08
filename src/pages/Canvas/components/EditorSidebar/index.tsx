@@ -14,7 +14,7 @@ import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverla
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
 import { MergeArguments } from '@/types';
@@ -36,14 +36,14 @@ type EditSidebarProps = {
 };
 
 const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme }) => {
-  const { canEdit: isVisible } = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
   const { path, goToPath, pushToPath, popFromPath } = useEditorPath(node, parent);
   const getManager = React.useContext(ManagerContext)!;
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
-  const isOpen = isVisible && shouldRender && focus.isActive && !isModal;
+  const isOpen = isEditingMode && shouldRender && focus.isActive && !isModal;
   const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 

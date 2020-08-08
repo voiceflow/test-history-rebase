@@ -1,7 +1,7 @@
 import React from 'react';
 
 import User from '@/components/User';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
@@ -20,7 +20,7 @@ export type StepProps = BaseStepProps;
 
 const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children }) => {
   const stepAPI = React.useContext(StepAPIContext);
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
 
   const element = (
     <HoverContainer
@@ -28,7 +28,7 @@ const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children }) =
       {...stepAPI?.handlers}
       ref={stepAPI?.ref}
       onMouseDown={stopPropagation(null, true)}
-      readOnlyMode={!editPermission.canEdit}
+      readOnlyMode={!isEditingMode}
     >
       <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable}>
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}

@@ -53,7 +53,6 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const idleTimer = React.useRef<IdleTimer>(null);
-  const isPrototyping = activePage === 'prototype';
 
   const setActive = React.useCallback(() => {
     onActive();
@@ -87,7 +86,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
         </>
       )}
       <Page
-        header={<ProjectTitle title={activeSkill.name} canEdit={canEditCanvas && !isPrototyping} onChange={updateProjectName} />}
+        header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
         userMenu={false}
         canScroll={false}
         subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
@@ -98,7 +97,6 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
             path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
             component={Diagram}
             diagramID={diagramID}
-            isPrototyping={isPrototyping}
           />
 
           <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />

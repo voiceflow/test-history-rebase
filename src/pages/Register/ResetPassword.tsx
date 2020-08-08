@@ -29,8 +29,7 @@ class ResetPassword extends Component<RouteComponentProps<{ id: string }>, Reset
     email: '',
   };
 
-  // eslint-disable-next-line react/no-deprecated
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { match } = this.props;
 
     axios

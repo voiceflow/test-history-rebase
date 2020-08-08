@@ -14,7 +14,6 @@ import { DragProvider, IdentityContext, ModalsContext } from '@/contexts';
 import { createGlobalStyle } from '@/hocs';
 import { StepAPIContext } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
 import { identity, noop } from '@/utils/functional';
 import { ReduxProvider, ThemeProvider } from '@/utils/testing';
 
@@ -120,9 +119,6 @@ export const withStepContext = ({ withPorts = true, isActive = false, isConnecte
       lockOwner,
       inPortID: 'abc',
       useState: () => ({}),
-    }),
-    withContext(EditPermissionContext, {
-      canEdit: true,
     }),
     withEngine({
       getPortByID: () => true,

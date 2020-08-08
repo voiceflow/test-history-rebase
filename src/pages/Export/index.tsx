@@ -26,7 +26,7 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { EditPermissionProvider, MarkupModeProvider } from '@/pages/Skill/contexts';
+import { MarkupModeProvider } from '@/pages/Skill/contexts';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
@@ -76,8 +76,6 @@ const ExportCanvasDiagram = styled(Canvas as any)`
   }
 `;
 
-const AnyCanvasProviders = CanvasProviders as any;
-
 const MockRealtimeGate: React.FC<{ children: () => React.ReactElement }> = ({ children }) => (
   <RealtimeSubscriptionContext.Provider value={{ onUpdate: _noop as any, destroy: _noop as any, on: _noop as any }}>
     {children}
@@ -98,16 +96,14 @@ const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string
     <PresentationModeProvider>
       <MarkupModeProvider>
         <ManagerProvider value={getManager as any}>
-          <EditPermissionProvider isPrototyping={false}>
-            <AnyCanvasProviders engine={engine}>
-              <ExportStyle />
-              <ExportCanvasDiagram onRegister={registerCanvas}>
-                {markup.isEnabled && <MarkupLayer />}
-                <LinkLayer />
-                <NodeLayer />
-              </ExportCanvasDiagram>
-            </AnyCanvasProviders>
-          </EditPermissionProvider>
+          <CanvasProviders engine={engine}>
+            <ExportStyle />
+            <ExportCanvasDiagram onRegister={registerCanvas}>
+              {markup.isEnabled && <MarkupLayer />}
+              <LinkLayer />
+              <NodeLayer />
+            </ExportCanvasDiagram>
+          </CanvasProviders>
         </ManagerProvider>
       </MarkupModeProvider>
     </PresentationModeProvider>

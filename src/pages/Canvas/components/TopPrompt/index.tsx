@@ -2,8 +2,8 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode } from '@/pages/Skill/hooks';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { useCommentingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
@@ -14,11 +14,12 @@ const fadeConfig = {
   duration: 0.4,
   animationFunction: 'ease',
 };
+
 const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
+  const isPrototypingMode = usePrototypingMode();
   const isCommentingMode = useCommentingMode();
-  const editPermission = React.useContext(EditPermissionContext)!;
   const markup: { isOpen: boolean; closeTool: () => void } | null = React.useContext(MarkupModeContext);
-  const show = isCommentingMode || markup?.isOpen || editPermission.isPrototyping;
+  const show = isCommentingMode || markup?.isOpen || isPrototypingMode;
 
   let onClick: () => void;
   let modeText = '';
@@ -29,7 +30,7 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   } else if (markup?.isOpen) {
     modeText = 'markup';
     onClick = markup.closeTool;
-  } else if (editPermission.isPrototyping) {
+  } else if (isPrototypingMode) {
     modeText = 'prototyping';
     onClick = goToDesign;
   }

@@ -10,7 +10,7 @@ import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Ca
 import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { preventDefault, stopPropagation } from '@/utils/dom';
 
 export type InternalNodeInstance = NodeInstance & {
@@ -56,7 +56,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
       lockOwner: e.lockOwner,
     };
   });
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
   const contextMenu = React.useContext(ContextMenuContext)!;
   const engine = React.useContext(EngineContext)!;
   const theme = React.useContext(ThemeContext);
@@ -108,7 +108,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
         onClick: preventDefault(() => engine.setActive(nodeEntity.nodeID)),
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
-          if (nodeEntity.nodeType === BlockType.START || !editPermission.canEdit) return;
+          if (nodeEntity.nodeType === BlockType.START || !isEditingMode) return;
 
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),
@@ -120,7 +120,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
           engine.linkCreation.complete(nodeEntity.inPortID);
         },
         onDragStart: async (dragEvent: React.DragEvent) => {
-          if (!editPermission.canEdit) return;
+          if (!isEditingMode) return;
 
           dragEvent.preventDefault();
 
@@ -139,6 +139,6 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
         ...hoverHandlers,
       },
     }),
-    [lockOwner, withPorts, isDraggable, isHovered, hasLinkWarning, editPermission.canEdit, wrapElement, hoverHandlers]
+    [lockOwner, withPorts, isDraggable, isHovered, hasLinkWarning, isEditingMode, wrapElement, hoverHandlers]
   );
 };

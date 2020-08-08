@@ -13,7 +13,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -37,7 +37,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
 
   const isCommentingMode = useCommentingMode();
 
-  const { isPrototyping } = React.useContext(EditPermissionContext)!;
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const markupFeature = useFeature(FeatureFlag.MARKUP);
   const commentingFeature = useFeature(FeatureFlag.COMMENTING);
@@ -62,9 +61,8 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
 
     if (markupTool?.isOpen) {
       markupTool.closeTool();
-    } else if (isCommentingMode) {
-      eventualEngine.get()?.comment.disable();
     }
+
     if (openCb) {
       openCb();
     }
@@ -77,9 +75,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       return;
     }
 
-    if (isPrototyping) {
-      goToDesign();
-    }
     openMode(markupTool?.openTool);
   };
 
@@ -131,13 +126,9 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
     Hotkey.CLOSE_CANVAS_MODE,
     () => {
       markupTool?.closeTool();
-      eventualEngine.get()?.comment.disable();
-      if (isPrototyping) {
-        goToDesign();
-      }
+      goToDesign();
     },
-    { preventDefault: true },
-    [isPrototyping]
+    { preventDefault: true }
   );
 
   return (

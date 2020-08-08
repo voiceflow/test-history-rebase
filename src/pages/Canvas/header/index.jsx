@@ -1,16 +1,15 @@
 import React from 'react';
 
 import { HeaderPortal } from '@/components/Page';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
 
 import ProjectHeader from './ProjectHeader';
 import PrototypeHeader from './Prototype/PrototypeHeader';
 
 const CanvasHeader = () => {
-  const { isPrototyping } = React.useContext(EditPermissionContext);
+  const isPrototypingMode = usePrototypingMode();
 
-  // eslint-disable-next-line no-nested-ternary
-  return <HeaderPortal>{isPrototyping ? <PrototypeHeader /> : <ProjectHeader />}</HeaderPortal>;
+  return <HeaderPortal>{isPrototypingMode ? <PrototypeHeader /> : <ProjectHeader />}</HeaderPortal>;
 };
 
 export default CanvasHeader;

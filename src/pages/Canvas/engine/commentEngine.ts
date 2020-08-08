@@ -1,3 +1,6 @@
+import { createMatchSelector } from 'connected-react-router';
+
+import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
@@ -14,6 +17,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   target: string | null = null;
 
   isCreating = false;
+
+  get isActive() {
+    return !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
+  }
 
   get hasFocus() {
     return !!this.focusTarget;

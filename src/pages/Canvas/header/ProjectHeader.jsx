@@ -5,13 +5,13 @@ import { ActionCreators } from 'redux-undo';
 import client from '@/client';
 import Button from '@/components/Button';
 import Text from '@/components/Text';
+import { Permission } from '@/config/permissions';
 import { DiagramState, ModalType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useModals, usePermission } from '@/hooks';
 import { projectViewerCountSelector } from '@/store/selectors';
 
 import ActionGroup, { GroupContainer } from './ActionGroup';
@@ -31,8 +31,7 @@ const getStateLabel = (state) => {
 
 const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplateWorkspace, projectId, diagramState }) => {
   const hasViewers = projectViewerCount > 1;
-  const { isViewer } = React.useContext(EditPermissionContext);
-  const toggle = <PlatformToggle platform={platform} onToggle={togglePlatform} disabled={hasViewers || isViewer} />;
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
   const openCloneModal = async () => {
@@ -41,6 +40,8 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
   };
 
   const ContentContainer = diagramState === DiagramState.IDLE ? React.Fragment : GroupContainer;
+
+  const toggle = <PlatformToggle platform={platform} onToggle={togglePlatform} disabled={hasViewers || !canEditCanvas} />;
 
   return isTemplateWorkspace ? (
     <Button onClick={openCloneModal} icon="flows" iconProps={{ size: 13 }}>

@@ -5,7 +5,6 @@ import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.s
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
 import { EventualEngineProvider, IdentityProvider, OverlayProvider, RegisterEngine } from '@/contexts';
-import { EditPermissionProvider } from '@/pages/Skill/contexts';
 
 import DesignMenu from '.';
 
@@ -241,24 +240,22 @@ const createStory = ({ tab, userId = '1', platform = null, diagramID = '9bee442a
     (Component) => (
       <div style={{ width: '500px', height: '100vh', minHeight: '500px', position: 'relative', overflow: 'hidden' }}>
         <IdentityProvider>
-          <EditPermissionProvider>
-            <EventualEngineProvider>
-              <OverlayProvider>
-                <RegisterEngine
-                  engine={{
-                    canvas: {
-                      zoomIn: action('zoomIn'),
-                      zoomOut: action('zoomOut'),
-                      applyTransition: action('applyTransition'),
-                    },
-                  }}
-                />
-                <Component />
-                <ConfirmModal />
-                <ErrorModal />
-              </OverlayProvider>
-            </EventualEngineProvider>
-          </EditPermissionProvider>
+          <EventualEngineProvider>
+            <OverlayProvider>
+              <RegisterEngine
+                engine={{
+                  canvas: {
+                    zoomIn: action('zoomIn'),
+                    zoomOut: action('zoomOut'),
+                    applyTransition: action('applyTransition'),
+                  },
+                }}
+              />
+              <Component />
+              <ConfirmModal />
+              <ErrorModal />
+            </OverlayProvider>
+          </EventualEngineProvider>
         </IdentityProvider>
       </div>
     )

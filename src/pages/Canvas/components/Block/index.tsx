@@ -30,6 +30,8 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   onMouseMove?: (event: React.MouseEvent) => void;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
   className?: string;
 };
 
@@ -43,6 +45,8 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
     onMouseEnter,
     onMouseLeave,
     onMouseMove,
+    onMouseDown,
+    onClick,
     isDisabled,
     isLocked,
     className,
@@ -61,6 +65,8 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       onMouseMove={onMouseMove}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onMouseDown={onMouseDown}
+      onClick={onClick}
       ref={blockAPI.ref}
     >
       {lockOwner && <User user={lockOwner} />}

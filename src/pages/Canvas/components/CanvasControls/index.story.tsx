@@ -5,7 +5,6 @@ import { composeDecorators, withIdentityContext, withModalContext, withRedux } f
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
-import { EditPermissionProvider } from '@/pages/Skill/contexts';
 
 import CanvasControlsV2 from '.';
 
@@ -30,21 +29,19 @@ const createStory = (isTemplates = false) =>
     (Component: React.FC) => (
       <TextEditorVariablesPopoverProvider value={document.body}>
         <EventualEngineProvider>
-          <EditPermissionProvider isPrototyping>
-            <RegisterEngine
-              engine={
-                {
-                  canvas: {
-                    zoomIn: action('zoomIn'),
-                    zoomOut: action('zoomOut'),
-                    applyTransition: action('applyTransition'),
-                  },
-                } as any
-              }
-            />
+          <RegisterEngine
+            engine={
+              {
+                canvas: {
+                  zoomIn: action('zoomIn'),
+                  zoomOut: action('zoomOut'),
+                  applyTransition: action('applyTransition'),
+                },
+              } as any
+            }
+          />
 
-            <Component />
-          </EditPermissionProvider>
+          <Component />
         </EventualEngineProvider>
       </TextEditorVariablesPopoverProvider>
     )

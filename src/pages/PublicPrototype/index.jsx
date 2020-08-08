@@ -16,7 +16,6 @@ import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/d
 import { replaceSlots } from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
 import Prototype from '@/pages/Prototype';
-import { EditPermissionProvider } from '@/pages/Skill/contexts';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import * as Intercom from '@/vendors/intercom';
 
@@ -106,9 +105,7 @@ class PublicPrototype extends React.Component {
         />
         {!this.state.loading && (
           <PrototypeContainer id="PublicUserPrototype">
-            <EditPermissionProvider isPrototyping={true}>
-              <Prototype isPublic debug={false} />
-            </EditPermissionProvider>
+            <Prototype isPublic debug={false} />
           </PrototypeContainer>
         )}
       </>

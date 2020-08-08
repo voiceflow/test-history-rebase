@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EngineContext, LinkEntityContext, PlatformContext } from '@/pages/Canvas/contexts';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Group, HeadMarker, Overlay, Path, RemoveButton, Styles } from './components';
@@ -14,7 +14,7 @@ export * from './utils';
 
 const Link = () => {
   const linkEntity = React.useContext(LinkEntityContext)!;
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
   const instance = useLinkInstance();
@@ -46,7 +46,7 @@ const Link = () => {
         <Overlay d={path} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={instance.hiddenPathRef} />
         <Path d={path} markerEnd={buildHeadMarker(linkEntity.linkID)} ref={instance.pathRef} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        {editPermission.canEdit && <RemoveButton x={centerX} y={centerY} isHovering={isHighlighted} onMouseLeave={onMouseLeave} onClick={onRemove} />}
+        {isEditingMode && <RemoveButton x={centerX} y={centerY} isHovering={isHighlighted} onMouseLeave={onMouseLeave} onClick={onRemove} />}
       </Group>
     </>
   );

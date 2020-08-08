@@ -3,7 +3,7 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import { BlockVariant } from '@/constants/canvas';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { Icon } from '@/svgs/types';
 import { preventDefault, unhighlightAllText, withEnterPress } from '@/utils/dom';
 
@@ -34,7 +34,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   isLocked,
   titleRef,
 }) => {
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
 
   const [blockLabel, setBlockLabel] = React.useState(name ?? '');
   const readOnly = !isEditing || isDisabled || !canEditTitle;
@@ -90,7 +90,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
       )}
       <Input
         className={BLOCK_SECTION_TITLE_CLASSNAME}
-        viewOnlyMode={!editPermission.canEdit}
+        viewOnlyMode={!isEditingMode}
         canEdit={canEditTitle}
         onClick={startEditMode}
         onMouseUp={preventDefault()}

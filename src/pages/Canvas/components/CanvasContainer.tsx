@@ -10,8 +10,8 @@ import { useActiveModal, useHotKeys, useRegistration } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode } from '@/pages/Skill/hooks';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { Callback, ConnectedProps } from '@/types';
 
@@ -51,17 +51,17 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null
 
 const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const { canEdit } = React.useContext(EditPermissionContext)!;
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
   const { isCreating: isMarkupCreating, modeType: markupModeType, isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
   const isCommentingMode = useCommentingMode();
+  const isEditingMode = useEditingMode();
 
   const activeModal = useActiveModal();
 
-  const canDelete = canEdit && !activeModal;
-  const disableSpotlight = !canEdit || markupOpen || !!activeModal;
+  const canDelete = isEditingMode && !activeModal;
+  const disableSpotlight = !isEditingMode || markupOpen || !!activeModal;
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
   const deleteActive = React.useCallback<Callback>(() => canDelete && engine.removeActive(), [canDelete]);

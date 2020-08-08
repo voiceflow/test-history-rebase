@@ -14,7 +14,7 @@ import { recentprototypeSelector } from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { compose } from '@/utils/functional';
 
 import PrototypeSettings from './components/PrototypeSettings';
@@ -25,11 +25,11 @@ import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiveDiagram }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
-  const { isPrototyping: isOpen } = React.useContext(EditPermissionContext);
+  const isPrototypingMode = usePrototypingMode();
   const eventualEngine = React.useContext(EventualEngineContext);
 
   React.useEffect(() => {
-    if (isOpen) {
+    if (isPrototypingMode) {
       eventualEngine.get()?.focus.reset();
       enableLoading();
 
@@ -46,12 +46,12 @@ const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiv
         resetPrototype();
       };
     }
-  }, [isOpen]);
+  }, [isPrototypingMode]);
 
   return (
     <>
-      {isOpen && <PrototypeSettings open={settingsOpen} />}
-      <Drawer as="section" open={isOpen} width={PROTOTYPE_SIDEBAR_WIDTH} direction="left">
+      {isPrototypingMode && <PrototypeSettings open={settingsOpen} />}
+      <Drawer as="section" open={isPrototypingMode} width={PROTOTYPE_SIDEBAR_WIDTH} direction="left">
         {loading ? (
           <FlexCenter style={{ height: '100%' }}>
             <LoadCircle />
@@ -67,7 +67,7 @@ const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiv
                 </Tooltip>
               }
             />
-            <EmbedContainer>{isOpen && <Prototype debug={settings.debug} />}</EmbedContainer>
+            <EmbedContainer>{isPrototypingMode && <Prototype debug={settings.debug} />}</EmbedContainer>
           </Container>
         )}
       </Drawer>

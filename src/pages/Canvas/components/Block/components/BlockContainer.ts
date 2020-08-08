@@ -42,7 +42,6 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;
-    pointer-events: none;
   }
 
   ::before {

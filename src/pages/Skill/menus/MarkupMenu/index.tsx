@@ -2,13 +2,14 @@ import React from 'react';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { MarkupModeType } from '@/constants';
-import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 
 // import { AddShapesMenu, MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 import { MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
-  const { canEdit: isVisible } = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
   const { isOpen, modeType, onAddImage, setCreatingModeType } = React.useContext(MarkupModeContext)!;
 
   const isTextActive = modeType === MarkupModeType.TEXT;
@@ -32,7 +33,7 @@ const MarkupMenu: React.FC = () => {
         </MarkupButtonContainer>
       </MenuContainer>
 
-      {isOpen && isVisible && <RemoveIntercom />}
+      {isOpen && isEditingMode && <RemoveIntercom />}
     </>
   );
 };

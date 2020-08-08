@@ -6,7 +6,7 @@ import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { useNodeDrag, useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
@@ -15,7 +15,7 @@ const Node: React.FC = () => {
   const isPresentationMode = React.useContext(PresentationModeContext);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
   const contextMenu = React.useContext(ContextMenuContext)!;
   const instance = useNodeInstance<HTMLDivElement>();
   const { isFocused } = nodeEntity.useState((e) => ({
@@ -27,14 +27,18 @@ const Node: React.FC = () => {
   const onRightClick = React.useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation();
-      if (nodeEntity.nodeType !== BlockType.START && editPermission.canEdit) {
+      if (nodeEntity.nodeType !== BlockType.START && isEditingMode) {
         contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
       }
     },
-    [editPermission.canEdit]
+    [isEditingMode]
   );
 
-  const onDoubleClick = React.useCallback(() => engine.node.center(nodeEntity.nodeID), []);
+  const onDoubleClick = React.useCallback(() => {
+    if (engine.comment.isActive) return;
+
+    engine.node.center(nodeEntity.nodeID);
+  }, []);
 
   nodeEntity.useInstance(instance);
 

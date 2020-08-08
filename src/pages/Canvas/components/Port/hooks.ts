@@ -3,7 +3,7 @@ import React from 'react';
 
 import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { swallowEvent } from '@/utils/dom';
 
 import { InternalPortInstance } from './types';
@@ -26,15 +26,15 @@ export const usePortInstance = <T extends HTMLElement>() => {
 export const useHandlers = () => {
   const portEntity = React.useContext(PortEntityContext)!;
   const engine = React.useContext(EngineContext)!;
-  const editPermission = React.useContext(EditPermissionContext);
+  const isEditingMode = useEditingMode();
 
   const onMouseDown = React.useCallback(
     swallowEvent((event: React.MouseEvent) => {
-      if (editPermission?.canEdit && !engine.isCanvasBusy) {
+      if (isEditingMode && !engine.isCanvasBusy) {
         engine.linkCreation.start(portEntity.portID, mouseEventOffset(event, engine.canvas!.getRef()));
       }
     }),
-    [editPermission?.canEdit]
+    [isEditingMode]
   );
 
   const onMouseUp = React.useCallback((event: React.MouseEvent) => {

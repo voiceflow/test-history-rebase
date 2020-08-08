@@ -5,7 +5,7 @@ import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useDragTranslate, useEntityDrag } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { Point } from '@/types';
 
 import { InternalNodeInstance } from './types';
@@ -64,7 +64,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
 export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean; skipDrag?: () => boolean } = {}) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const editPermission = React.useContext(EditPermissionContext)!;
+  const isEditingMode = useEditingMode();
 
   const onClick = React.useCallback(
     (event: React.MouseEvent) => {
@@ -79,7 +79,7 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
 
   const onDragStart = useEntityDrag(
     {
-      skipDrag: () => !editPermission.canEdit || engine.isNodeMovementLocked(nodeEntity.nodeID) || !!skipDrag?.(),
+      skipDrag: () => !isEditingMode || engine.isNodeMovementLocked(nodeEntity.nodeID) || !!skipDrag?.(),
       drag: (movement) => engine.node.drag(nodeEntity.nodeID, movement),
       drop: async () => {
         if (engine.drag.isTarget(nodeEntity.nodeID)) {
@@ -88,17 +88,17 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
         await engine.drag.reset();
       },
     },
-    [editPermission.canEdit, skipDrag]
+    [isEditingMode, skipDrag]
   );
 
   const onMouseDown = React.useCallback(
     (event: React.MouseEvent) => {
-      if (!editPermission.canEdit) return;
+      if (!isEditingMode) return;
 
       event.stopPropagation();
       event.nativeEvent.stopImmediatePropagation();
     },
-    [editPermission.canEdit]
+    [isEditingMode]
   );
 
   return {

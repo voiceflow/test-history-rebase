@@ -2,17 +2,18 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks';
 import { SettingsModalContext } from '@/pages/Settings/contexts';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
 
 const CanvasSettingsButton = () => {
-  const { isViewer } = React.useContext(EditPermissionContext)!;
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const { isEnabled, toggle } = React.useContext(SettingsModalContext)!;
 
   return (
-    <Tooltip disabled={isViewer} title="Settings" position="bottom">
+    <Tooltip disabled={!canEditCanvas} title="Settings" position="bottom">
       <IconButton
-        disabled={isViewer}
+        disabled={!canEditCanvas}
         active={isEnabled}
         preventFocusStyle
         variant={IconButtonVariant.OUTLINE}

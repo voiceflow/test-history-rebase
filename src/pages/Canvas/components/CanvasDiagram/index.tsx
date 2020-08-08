@@ -14,8 +14,8 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
-import { EditPermissionContext, MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode } from '@/pages/Skill/hooks';
+import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
 import { Coords } from '@/utils/geometry';
@@ -38,9 +38,9 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const focusThread = React.useContext(FocusThreadContext)!;
 
   const contextMenu = React.useContext(ContextMenuContext)!;
-  const { canEdit } = React.useContext(EditPermissionContext)!;
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
+  const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
@@ -96,8 +96,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   const startGroupSelection = React.useCallback<React.MouseEventHandler>(
-    (event) => canEdit && engine.groupSelection.start([event.clientX, event.clientY]),
-    [canEdit]
+    (event) => isEditingMode && engine.groupSelection.start([event.clientX, event.clientY]),
+    [isEditingMode]
   );
 
   const [, connectBlockDrop] = useDrop({

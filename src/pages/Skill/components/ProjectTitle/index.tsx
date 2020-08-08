@@ -1,8 +1,11 @@
 import React from 'react';
 
+import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
+import { usePermission } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -19,13 +22,11 @@ const validateTitle = (value: string) => {
 
 export type ProjectTitleProps = {
   title: string;
-  canEdit: boolean;
   onChange: (value: string) => void;
 };
 
 const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = ({
   title,
-  canEdit,
   onChange,
   lockResource,
   unlockResource,
@@ -33,6 +34,8 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
 }) => {
   const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const isPrototypingMode = usePrototypingMode();
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
 
   React.useEffect(() => {
@@ -48,7 +51,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
   };
 
   const onDoubleClick = (event: React.MouseEvent) => {
-    if (!isEditing && !isLocked && canEdit) {
+    if (!isEditing && !isLocked && !isPrototypingMode && canEditCanvas) {
       enableEditing();
       (event.target as HTMLInputElement).select();
       lockResource();
@@ -72,7 +75,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
         onChange={({ target }) => updateFormValue(target.value)}
         onBlur={onBlur}
         onKeyPress={handleEnterPress}
-        disabled={isLocked || !canEdit}
+        disabled={isLocked || !canEditCanvas}
       />
     </ProjectTitleContainer>
   );

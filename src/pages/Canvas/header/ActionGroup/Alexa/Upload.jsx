@@ -4,16 +4,17 @@ import { Tooltip } from 'react-tippy';
 import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Menu, { MenuItem } from '@/components/Menu';
+import { Permission } from '@/config/permissions';
 import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
-import { EditPermissionContext } from '@/pages/Skill/contexts';
+import { usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../components/UploadButton';
 
 function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVendor }) {
-  const { isViewer } = React.useContext(EditPermissionContext);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const state = AlexaPublish.ALEXA_STATES[stage];
 
   // show dropdown list for vendors
@@ -31,7 +32,7 @@ function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVen
     <Tooltip
       html={<div style={{ width: 180 }}>Test your Skill on your own Alexa device, or in the Alexa developer console</div>}
       position="bottom"
-      disabled={isViewer}
+      disabled={!canEditCanvas}
     >
       {multiVendor ? (
         <DropdownButton

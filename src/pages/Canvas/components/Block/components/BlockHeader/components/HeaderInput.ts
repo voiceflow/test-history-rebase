@@ -9,6 +9,7 @@ import {
   CANVAS_CREATING_LINK_CLASSNAME,
   CANVAS_MERGING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
+  CANVAS_THREAD_OPEN_CLASSNAME,
   NODE_ACTIVE_CLASSNAME,
 } from '@/pages/Canvas/constants';
 
@@ -64,8 +65,13 @@ const HeaderInput = styled(
     :active {
       background: transparent;
     }
+
     .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
       cursor: crosshair;
+    }
+
+    .${CANVAS_COMMENTING_ENABLED_CLASSNAME}.${CANVAS_THREAD_OPEN_CLASSNAME} & {
+      cursor: default;
     }
   }
 

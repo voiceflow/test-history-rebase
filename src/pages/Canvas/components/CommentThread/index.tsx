@@ -5,6 +5,7 @@ import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
 import { Vector } from '@/utils/geometry';
 
+import { CANVAS_THREAD_OPEN_CLASSNAME } from '../../constants';
 import { CommentIndicator, DragTarget, ThreadEditor } from './components';
 import { useThreadHandlers, useThreadInstance } from './hooks';
 
@@ -40,6 +41,14 @@ const CommentThread: React.FC = () => {
 
     instance.translate(new Vector([moveX, moveY]));
   }, []);
+
+  React.useEffect(() => {
+    if (!isFocused) return undefined;
+
+    engine.addClass(CANVAS_THREAD_OPEN_CLASSNAME);
+
+    return () => engine.removeClass(CANVAS_THREAD_OPEN_CLASSNAME);
+  }, [isFocused]);
 
   threadEntity.useInstance(instance);
 

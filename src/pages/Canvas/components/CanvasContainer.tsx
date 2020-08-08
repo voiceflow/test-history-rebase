@@ -15,7 +15,12 @@ import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { Callback, ConnectedProps } from '@/types';
 
-import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '../constants';
+import {
+  CANVAS_COMMENTING_ENABLED_CLASSNAME,
+  CANVAS_MARKUP_CREATING_CLASSNAME,
+  CANVAS_MARKUP_ENABLED_CLASSNAME,
+  CANVAS_THREAD_OPEN_CLASSNAME,
+} from '../constants';
 
 export const MARKUP_MODE_CURSORS: Record<MarkupModeType | MarkupShapeType, string> = {
   [MarkupModeType.TEXT]: 'text',
@@ -26,27 +31,31 @@ export const MARKUP_MODE_CURSORS: Record<MarkupModeType | MarkupShapeType, strin
   [MarkupModeType.IMAGE]: 'default',
 };
 
-const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null; isMarkupCreating: boolean; isCommentingMode: boolean }>`
+const Wrapper = styled.div<{ markupMode: MarkupModeType | MarkupShapeType | null }>`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
 
-  ${({ markupMode, isMarkupCreating }) =>
+  ${({ markupMode }) =>
     markupMode &&
-    isMarkupCreating &&
     css`
-      cursor: ${MARKUP_MODE_CURSORS[markupMode]};
-    `}
-
-  ${({ isCommentingMode }) =>
-    isCommentingMode &&
-    css`
-      cursor: crosshair;
-
-      ${Drawer} {
-        cursor: pointer;
+      &${CANVAS_MARKUP_CREATING_CLASSNAME} {
+        cursor: ${MARKUP_MODE_CURSORS[markupMode]};
       }
     `}
+
+
+  &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
+    cursor: crosshair;
+
+    ${Drawer} {
+      cursor: pointer;
+    }
+  }
+
+  &.${CANVAS_COMMENTING_ENABLED_CLASSNAME}.${CANVAS_THREAD_OPEN_CLASSNAME} {
+    cursor: default;
+  }
 `;
 
 const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children }) => {
@@ -91,8 +100,6 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
       })}
       markupMode={markupModeType}
-      isMarkupCreating={isMarkupCreating}
-      isCommentingMode={isCommentingMode}
       ref={ref}
     >
       {children}

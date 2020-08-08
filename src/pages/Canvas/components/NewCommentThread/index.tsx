@@ -5,6 +5,7 @@ import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/compon
 import { useThreadHandlers } from '@/pages/Canvas/components/CommentThread/hooks';
 import DragTarget from '@/pages/Canvas/components/DragTarget';
 import ThreadEditor from '@/pages/Canvas/components/ThreadEditor';
+import { CANVAS_THREAD_OPEN_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { Coords } from '@/utils/geometry';
@@ -41,6 +42,14 @@ const NewCommentThread: React.FC = () => {
 
     api.show(originRef.current.add([moveX, moveY], engine.canvas!.getOuterPlane()));
   }, []);
+
+  React.useEffect(() => {
+    if (!api.origin) return undefined;
+
+    engine.addClass(CANVAS_THREAD_OPEN_CLASSNAME);
+
+    return () => engine.removeClass(CANVAS_THREAD_OPEN_CLASSNAME);
+  }, [api.origin]);
 
   if (!api.origin) return null;
 

@@ -19,12 +19,17 @@ export type ThreadInstance = EntityInstance & {
 };
 
 class ThreadEntity extends ResourceEntity<Models.Thread, ThreadInstance> {
+  diagramID: string;
+
   get isFocused() {
     return this.engine.comment.isFocused(this.threadID);
   }
 
   constructor(engine: Engine, public threadID: string) {
     super(EntityType.THREAD, engine, engine.log.child(`thread<${threadID.slice(-6)}>`));
+
+    const { diagramID } = this.resolve();
+    this.diagramID = diagramID;
 
     this.log.debug(this.log.init('constructed thread'), this.log.slug(threadID));
   }

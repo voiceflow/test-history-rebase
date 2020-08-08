@@ -31,3 +31,6 @@ export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUC
 export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: 'new' }));
 
 export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: productID }));
+
+export const goToCanvasCommenting = (versionID: string, diagramID: string) =>
+  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${window.location.search}`);

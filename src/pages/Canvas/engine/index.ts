@@ -173,7 +173,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getDiagramByID = (diagramID: string) => this.select(Diagram.diagramByIDSelector)(diagramID);
 
-  isRootDiagram = (): boolean => this.select(Skill.isRootDiagramSelector);
+  isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
+
+  getDiagramID = () => this.select(Skill.activeDiagramIDSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 

@@ -9,7 +9,7 @@ import * as Skill from '@/ducks/skill';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 
-import { goTo, goToPrototype, goToPublish } from './actions';
+import { goTo, goToCanvasCommenting, goToPrototype, goToPublish } from './actions';
 
 const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
   const state = getState();
@@ -51,7 +51,7 @@ export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getStat
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
 
-  dispatch(goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${window.location.search}`));
+  dispatch(goToCanvasCommenting(versionID, diagramID));
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
@@ -64,6 +64,13 @@ export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getSta
   const versionID = Skill.activeSkillIDSelector(getState());
 
   dispatch(goToCanvas(versionID, diagramID));
+};
+
+export const goToDiagramCommenting = (diagramID: string): Thunk => async (dispatch, getState) => {
+  const versionID = Skill.activeSkillIDSelector(getState());
+
+  await switchRealtime(dispatch, getState, versionID, diagramID);
+  dispatch(goToCanvasCommenting(versionID, diagramID));
 };
 
 export const goToCurrentPrototype = (): Thunk => async (dispatch, getState) => {

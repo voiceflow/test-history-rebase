@@ -114,11 +114,18 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.log.debug('location saved', this.log.slug(threadID));
   }
 
-  centerThread(threadID: string) {
-    const coords = this.thread(threadID)?.instance?.getCoords();
+  async centerThread(threadID: string) {
+    const diagramID = this.engine.getDiagramID();
+    const thread = this.select(Thread.threadByIDSelector)(threadID);
 
-    if (!coords) return;
+    if (thread.diagramID !== diagramID) {
+      await this.dispatch(Router.goToDiagramCommenting(thread.diagramID));
+    }
 
+    const threadInstance = this.thread(threadID)?.instance;
+    if (!threadInstance) return;
+
+    const coords = threadInstance.getCoords();
     this.engine.center(this.engine.canvas!.fromCoords(coords));
 
     this.log.info('centered canvas on thread', this.log.slug(threadID));

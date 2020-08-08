@@ -27,8 +27,8 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
 
   const hasReplies = comments.length - 1;
 
-  const onFocus = React.useCallback(async () => {
-    engine.comment.centerThread(threadID);
+  const onClick = React.useCallback(async () => {
+    await engine.comment.centerThread(threadID);
 
     if (focusThread.focusedID === threadID) {
       focusThread.resetFocus();
@@ -38,7 +38,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   }, [focusThread.focusedID]);
 
   return (
-    <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onFocus}>
+    <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
       <FlexApart>
         <Commenter creatorID={user.creator_id} />
         {resolved && (

@@ -185,6 +185,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   stripe,
   checkChargeable,
   goToDashboard,
+  goToDashboardWithSearch,
   goToCanvas,
   updateCurrentWorkspace,
   createWorkspace,
@@ -207,10 +208,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow } = extractQueryParams(query);
   const firstStep = getFirstStep(flow, firstTime);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-
   const numberOfSteps = getNumberOfSteps(query, flow, firstTime);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
-
   const [state, actions] = useSmartReducer({
     selectableWorkspace: !!query.choose_workspace,
     usedSignupCoupon: false,
@@ -418,8 +417,12 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         1
       );
       if (firstTime) {
-        await goToCanvas(skill_id, diagram);
-        await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+        if (query.import) {
+          goToDashboardWithSearch(`/?import=${query.import}`);
+        } else {
+          await goToCanvas(skill_id, diagram);
+          await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
+        }
       } else {
         const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
         goToWorkspace(workspace.id);
@@ -530,6 +533,7 @@ const mapDispatchToProps = {
   goToCanvas: Router.goToCanvas,
   validateInvite: Workspace.validateInvite,
   goToDashboard: Router.goToDashboard,
+  goToDashboardWithSearch: Router.goToDashboardWithSearch,
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
   fetchWorkspaces: Workspace.fetchWorkspaces,
   createProject: Workspace.createProject,

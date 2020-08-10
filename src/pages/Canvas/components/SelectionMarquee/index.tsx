@@ -9,14 +9,13 @@ import { styleSelectionElement } from './constants';
 import { useSelectionMarqueeAPI } from './hooks';
 
 const SelectionMarquee: React.FC = () => {
-  const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const api = useSelectionMarqueeAPI();
 
   useMouseMove(({ clientX, clientY }) => {
     if (engine.groupSelection.isDrawing) {
       const origin = engine.groupSelection.mouseOrigin!;
-      const rootEl = ref.current!;
+      const rootEl = api.ref.current!;
 
       const nextSelection: Point = [clientX, clientY];
 
@@ -38,7 +37,7 @@ const SelectionMarquee: React.FC = () => {
 
   useRegistration(() => engine.groupSelection.register('selectionMarquee', api), [api]);
 
-  return <SelectionArea ref={ref} />;
+  return <SelectionArea ref={api.ref} />;
 };
 
 export default SelectionMarquee;

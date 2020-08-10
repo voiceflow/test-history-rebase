@@ -67,7 +67,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
       if (event.defaultPrevented || event.button === 2) return;
 
       if (isCommentingMode && !engine.comment.hasTarget) {
-        if (engine.comment.isCreating) {
+        if (engine.comment.isCreating || engine.comment.hasFocus) {
           engine.comment.reset();
         } else {
           focusThread.resetFocus();

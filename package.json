@@ -104,7 +104,7 @@
     "react-google-login": "^4.0.1",
     "react-helmet": "^5.2.1",
     "react-idle-timer": "^4.2.12",
-    "react-input-autosize": "^2.2.1",
+    "react-input-autosize": "^2.2.2",
     "react-intercom": "^1.0.15",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-mentions": "^4.0.1",

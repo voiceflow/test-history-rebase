@@ -53,7 +53,6 @@ const CommentThread: React.FC = () => {
   threadEntity.useInstance(instance);
 
   const origin = instance.getCoords().map(engine.canvas!.getOuterPlane());
-
   return (
     <DragTarget
       isTransform

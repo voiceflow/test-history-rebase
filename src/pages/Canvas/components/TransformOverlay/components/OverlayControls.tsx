@@ -272,72 +272,72 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
     [onResize, onRotate, onRedraw]
   );
 
-  React.useEffect(() => {
-    engine.transformation.registerTransformOverlay({
-      initialize: (transform) => {
-        const el = ref.current!;
+  React.useEffect(
+    () =>
+      engine.transformation.register('transformOverlay', {
+        initialize: (transform) => {
+          const el = ref.current!;
 
-        const rawOrigin = transform.origin.raw();
+          const rawOrigin = transform.origin.raw();
 
-        snapshot.current = transform;
-        position.current = rawOrigin;
-        rotation.current = transform.rotate;
-        size.current = [transform.width, transform.height];
-        zoom.current = 1;
+          snapshot.current = transform;
+          position.current = rawOrigin;
+          rotation.current = transform.rotate;
+          size.current = [transform.width, transform.height];
+          zoom.current = 1;
 
-        window.requestAnimationFrame(() => {
-          el.style.display = 'block';
-          el.style.left = `${rawOrigin[0]}px`;
-          el.style.top = `${rawOrigin[1]}px`;
-          el.style.width = `${transform.width}px`;
-          el.style.height = `${transform.height}px`;
-          el.style.transform = `rotate(${transform.rotate}rad)`;
-        });
-      },
+          window.requestAnimationFrame(() => {
+            el.style.display = 'block';
+            el.style.left = `${rawOrigin[0]}px`;
+            el.style.top = `${rawOrigin[1]}px`;
+            el.style.width = `${transform.width}px`;
+            el.style.height = `${transform.height}px`;
+            el.style.transform = `rotate(${transform.rotate}rad)`;
+          });
+        },
 
-      clearTransformations: () => {
-        const [width, height] = size.current!;
-        const [originX, originY] = position.current!;
-        const rotate = rotation.current!;
+        clearTransformations: () => {
+          const [width, height] = size.current!;
+          const [originX, originY] = position.current!;
+          const rotate = rotation.current!;
 
-        snapshot.current = {
-          origin: new Coords([originX, originY]),
-          width,
-          height,
-          rotate,
-          scale: 1,
-          invertX: false,
-          invertY: false,
-        };
-        zoom.current = 1;
-      },
+          snapshot.current = {
+            origin: new Coords([originX, originY]),
+            width,
+            height,
+            rotate,
+            scale: 1,
+            invertX: false,
+            invertY: false,
+          };
+          zoom.current = 1;
+        },
 
-      translate: ([moveX, moveY]) => {
-        const canvasZoom = engine.canvas!.getZoom();
+        translate: ([moveX, moveY]) => {
+          const canvasZoom = engine.canvas!.getZoom();
 
-        onPan([moveX * canvasZoom, moveY * canvasZoom]);
-      },
+          onPan([moveX * canvasZoom, moveY * canvasZoom]);
+        },
 
-      reset: () => {
-        const el = ref.current!;
+        reset: () => {
+          const el = ref.current!;
 
-        snapshot.current = null;
-        position.current = null;
-        size.current = null;
-        handlePosition.current = null;
-        lineVertex.current = null;
-        zoom.current = 0;
-        isRotating.current = false;
+          snapshot.current = null;
+          position.current = null;
+          size.current = null;
+          handlePosition.current = null;
+          lineVertex.current = null;
+          zoom.current = 0;
+          isRotating.current = false;
 
-        window.requestAnimationFrame(() => {
-          el.style.display = 'none';
-          el.style.transform = '';
-        });
-      },
-    });
-
-    return () => engine.transformation.registerTransformOverlay(null);
-  }, [onPan]);
+          window.requestAnimationFrame(() => {
+            el.style.display = 'none';
+            el.style.transform = '';
+          });
+        },
+      }),
+    [onPan]
+  );
 
   return (
     <Portal>

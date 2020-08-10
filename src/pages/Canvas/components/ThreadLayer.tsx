@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { RemoveIntercom } from '@/components/IntercomChat';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
@@ -34,6 +35,7 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnr
         </ThreadEntityProvider>
       ))}
       <NewCommentThread />
+      <RemoveIntercom />
     </>
   );
 };

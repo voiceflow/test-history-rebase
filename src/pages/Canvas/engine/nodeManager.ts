@@ -39,6 +39,7 @@ class NodeManager extends EngineConsumer {
       this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
 
       this.redrawNestedLinks(parentNodeID);
+      this.redrawNestedThreads(parentNodeID);
     },
 
     unmerge: (nodeID: string, position: Point, parentNode: Creator.ParentNodeDescriptor) => {
@@ -49,6 +50,7 @@ class NodeManager extends EngineConsumer {
       this.dispatch(Creator.unmergeNode(nodeID, position, parentNode));
 
       this.redrawNestedLinks(node.parentNode!);
+      this.redrawNestedThreads(node.parentNode!);
     },
 
     updateData: (nodeID: string, data: Partial<NodeData<unknown>>) => {
@@ -96,6 +98,7 @@ class NodeManager extends EngineConsumer {
       this.api(nodeID)?.instance?.translate?.(movement);
       this.updateOrigin(nodeID, movement);
       this.translateAllLinks(nodeID, movement);
+      this.translateAllThreads(nodeID, movement);
     },
 
     translateBaseOnOrigin: (nodeID: string, movement: Pair<number>, origin: Point) => {
@@ -486,6 +489,21 @@ class NodeManager extends EngineConsumer {
     });
   }
 
+  translateAllThreads(nodeID: string, movement: Pair<number>) {
+    const node = this.engine.getNodeByID(nodeID);
+
+    if (!node) return;
+
+    [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateThreads(combinedNodeID, movement));
+  }
+
+  translateThreads(nodeID: string, movement: Pair<number>) {
+    if (this.engine.comment.isActive) {
+      const movementVector = this.engine.canvas!.toVector(movement);
+      this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movementVector));
+    }
+  }
+
   async drag(nodeID: string, movement: Pair<number>) {
     if (this.engine.selection.isOneOfManyTargets(nodeID)) {
       const targets = this.engine.selection.getTargets();
@@ -550,6 +568,18 @@ class NodeManager extends EngineConsumer {
   redrawNestedLinks(parentNodeID: string) {
     const node = this.engine.getNodeByID(parentNodeID);
     node?.combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
+  }
+
+  redrawThreads(nodeID: string) {
+    this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.redrawThread(threadID));
+  }
+
+  redrawNestedThreads(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
+
+    if (!node) return;
+
+    [nodeID, ...node.combinedNodes].forEach((childNodeID) => this.redrawThreads(childNodeID));
   }
 
   updateBlockColor(nodeID: string, color: BlockVariant) {

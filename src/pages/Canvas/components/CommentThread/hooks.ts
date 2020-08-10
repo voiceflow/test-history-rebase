@@ -20,7 +20,6 @@ enum CommentState {
 const DOUBLE_CLICK_TIMEOUT = 175;
 
 export const useThreadCoords = () => {
-  // const engine = React.useContext(EngineContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const coords = threadEntity.useCoordinates();
 

@@ -6,7 +6,6 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 
 import CanvasViewers from './CanvasViewers';
@@ -38,21 +37,14 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   goToPrototype,
   goToPublish,
 }) => {
-  const markupTool = React.useContext(MarkupModeContext);
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
-
-  const disableAllModes = () => {
-    markupTool?.closeTool();
-  };
 
   const onChange = React.useCallback(
     (value) => {
       switch (value) {
         case 'prototype':
-          disableAllModes();
           return goToPrototype();
         case 'publish':
-          disableAllModes();
           return goToPublish();
         case 'canvas':
         default:
@@ -62,17 +54,9 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
     [goToDesign, goToPrototype, goToPublish]
   );
 
-  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => {
-    disableAllModes();
-    goToPrototype();
-  });
-  useHotKeys(Hotkey.DESIGN_PAGE, () => {
-    goToDesign();
-  });
-  useHotKeys(Hotkey.BUILD_PAGE, () => {
-    disableAllModes();
-    goToPublish();
-  });
+  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
+  useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
+  useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
 
   return (
     <>

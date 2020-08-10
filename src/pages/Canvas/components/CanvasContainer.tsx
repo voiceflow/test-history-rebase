@@ -11,7 +11,7 @@ import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
+import { useCommentingMode, useEditingMode, useMarkupMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { Callback, ConnectedProps } from '@/types';
 
@@ -63,14 +63,15 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
-  const { isCreating: isMarkupCreating, modeType: markupModeType, isOpen: markupOpen } = React.useContext(MarkupModeContext)!;
+  const { isCreating: isMarkupCreating, modeType: markupModeType } = React.useContext(MarkupModeContext)!;
   const isCommentingMode = useCommentingMode();
+  const isMarkupMode = useMarkupMode();
   const isEditingMode = useEditingMode();
 
   const activeModal = useActiveModal();
 
   const canDelete = isEditingMode && !activeModal;
-  const disableSpotlight = !isEditingMode || markupOpen || !!activeModal;
+  const disableSpotlight = !isEditingMode || isMarkupMode || !!activeModal;
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
   const deleteActive = React.useCallback<Callback>(() => canDelete && engine.removeActive(), [canDelete]);
@@ -96,7 +97,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
       id={Identifier.CANVAS_CONTAINER}
       className={cn({
         [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
-        [CANVAS_MARKUP_ENABLED_CLASSNAME]: markupOpen,
+        [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
       })}
       markupMode={markupModeType}

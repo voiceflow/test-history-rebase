@@ -3,9 +3,9 @@ import React from 'react';
 import client from '@/client';
 import Section from '@/components/Section';
 import { toast } from '@/components/Toast';
-import { setConfirm } from '@/ducks/modal';
-import { goToCanvas } from '@/ducks/router';
-import { activeProjectIDSelector } from '@/ducks/skill';
+import * as Modal from '@/ducks/modal';
+import * as Router from '@/ducks/router';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
@@ -80,12 +80,12 @@ function Backups({ projectID, setConfirm, toggle, goToCanvas }) {
 }
 
 const mapStateToProps = {
-  projectID: activeProjectIDSelector,
+  projectID: Skill.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
-  setConfirm,
-  goToCanvas,
+  setConfirm: Modal.setConfirm,
+  goToCanvas: Router.goToCanvas,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backups);

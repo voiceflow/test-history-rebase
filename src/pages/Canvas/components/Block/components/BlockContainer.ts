@@ -15,6 +15,7 @@ import {
   NODE_HOVERED_CLASSNAME,
   NODE_MERGE_TARGET_CLASSNAME,
   NODE_SELECTED_CLASSNAME,
+  NODE_THREAD_TARGET_CLASSNAME,
 } from '@/pages/Canvas/constants';
 import { ClassName, Identifier } from '@/styles/constants';
 
@@ -91,6 +92,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   .${NODE_SELECTED_CLASSNAME} &,
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
+  .${NODE_THREAD_TARGET_CLASSNAME} &,
   .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
     border-color: #5d9df5;
 

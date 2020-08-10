@@ -12,6 +12,7 @@ import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { preventDefault, stopPropagation } from '@/utils/dom';
+import { Coords } from '@/utils/geometry';
 
 export type InternalNodeInstance = NodeInstance & {
   ref: React.RefObject<HTMLElement>;
@@ -38,6 +39,11 @@ export const useNodeInstance = () => {
       ref,
       rename: () => engine.focus.set(nodeEntity.nodeID, { renameActiveRevision: cuid() }),
       getRect,
+      getThreadAnchorCoords: () => {
+        const rect = getRect();
+
+        return rect && new Coords([rect.x, rect.y]).onPlane(engine.canvas!.getPlane());
+      },
       getPosition: () => [0, 0],
       getCenterPoint: () => {
         const rect = getRect();

@@ -2,8 +2,7 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import { useCommentingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
@@ -18,21 +17,17 @@ const fadeConfig = {
 const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   const isPrototypingMode = usePrototypingMode();
   const isCommentingMode = useCommentingMode();
-  const markup: { isOpen: boolean; closeTool: () => void } | null = React.useContext(MarkupModeContext);
-  const show = isCommentingMode || markup?.isOpen || isPrototypingMode;
+  const isMarkupMode = useMarkupMode();
+  const show = isCommentingMode || isMarkupMode || isPrototypingMode;
 
-  let onClick: () => void;
   let modeText = '';
 
   if (isCommentingMode) {
     modeText = 'commenting';
-    onClick = goToDesign;
-  } else if (markup?.isOpen) {
+  } else if (isMarkupMode) {
     modeText = 'markup';
-    onClick = markup.closeTool;
   } else if (isPrototypingMode) {
     modeText = 'prototyping';
-    onClick = goToDesign;
   }
 
   return (
@@ -40,7 +35,7 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
       {show && (
         <CenterContainer>
           <FadeDownContainer {...fadeConfig}>
-            <Container onClick={() => onClick?.()}>
+            <Container onClick={goToDesign}>
               <KeyBubble>esc</KeyBubble> to exit {modeText}
             </Container>
           </FadeDownContainer>

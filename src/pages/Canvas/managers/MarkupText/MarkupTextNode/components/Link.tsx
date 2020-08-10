@@ -25,7 +25,7 @@ const Link: React.FC<LinkProps> = ({ href, children }) => {
     (e: React.MouseEvent) => {
       const withoutExtraKeys = !(e.metaKey || e.ctrlKey || e.shiftKey);
 
-      if (!engine.markup.isEnabled || withoutExtraKeys) {
+      if (!engine.markup.isActive || withoutExtraKeys) {
         e.stopPropagation();
         e.preventDefault();
       }

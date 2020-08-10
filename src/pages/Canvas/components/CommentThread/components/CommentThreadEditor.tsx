@@ -6,7 +6,7 @@ import { ThreadEntityContext } from '@/pages/Canvas/contexts';
 const CommentThreadEditor: React.FC = () => {
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const { thread } = threadEntity.useState((e) => ({
-    thread: e.resolve(),
+    thread: e.resolve().thread,
   }));
 
   return <ThreadEditor thread={thread} />;

@@ -59,6 +59,7 @@ export type NewLinkAPI = {
 export type NewCommentAPI = {
   show: (origin: Coords) => void;
   hide: () => void;
+  getOrigin: () => Coords | null;
 };
 
 export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {

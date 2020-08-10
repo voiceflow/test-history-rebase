@@ -17,18 +17,19 @@ const NewCommentThread: React.FC = () => {
   const originRef = useLinkedRef(api.origin);
   const engine = React.useContext(EngineContext)!;
 
-  const drag = React.useCallback((movement) => {
-    if (!originRef.current) return;
-
-    api.show(originRef.current.add(movement, engine.canvas!.getPlane()));
-  }, []);
-
   const handlers = useThreadHandlers(
     {
-      drag,
+      drag: (movement) => {
+        if (!originRef.current) return;
+
+        const nextOrigin = originRef.current.add(movement, engine.canvas!.getPlane());
+
+        api.show(nextOrigin);
+        engine.comment.updateCandidates(nextOrigin);
+      },
       click: () => engine.comment.resetCreating(),
     },
-    [api.origin]
+    []
   );
 
   useRegistration(() => engine.comment.register('newComment', api), [api]);
@@ -38,9 +39,10 @@ const NewCommentThread: React.FC = () => {
   useCanvasZoom((calculateMovement) => {
     if (!originRef.current) return;
 
-    const [moveX, moveY] = calculateMovement(originRef.current.map(engine.canvas!.getOuterPlane()));
+    const outerPlane = engine.canvas!.getOuterPlane();
+    const [moveX, moveY] = calculateMovement(originRef.current.map(outerPlane));
 
-    api.show(originRef.current.add([moveX, moveY], engine.canvas!.getOuterPlane()));
+    api.show(originRef.current.add([moveX, moveY], outerPlane));
   }, []);
 
   React.useEffect(() => {
@@ -61,7 +63,7 @@ const NewCommentThread: React.FC = () => {
         <CommentIndicator draggable tabIndex={-1} {...handlers}>
           1
         </CommentIndicator>
-        <ThreadEditor origin={api.origin} />
+        <ThreadEditor />
       </DragTarget>
     </>
   );

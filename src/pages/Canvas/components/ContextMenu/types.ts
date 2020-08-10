@@ -12,8 +12,6 @@ export type ContextMenuOption<T> = {
       engine: Engine;
       clipboard: ClipboardContextValue;
       isMarkupFeatureEnabled: boolean;
-      isMarkupModeEnabled: boolean;
-      isCommentingModeEnabled: boolean;
       isTemplate: boolean;
     }
   ) => boolean;

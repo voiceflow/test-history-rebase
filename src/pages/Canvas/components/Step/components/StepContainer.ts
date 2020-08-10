@@ -8,6 +8,7 @@ import {
   NODE_HIGHLIGHTED_CLASSNAME,
   NODE_HOVERED_CLASSNAME,
   NODE_MERGE_TARGET_CLASSNAME,
+  NODE_THREAD_TARGET_CLASSNAME,
 } from '@/pages/Canvas/constants';
 import { ClassName } from '@/styles/constants';
 
@@ -39,7 +40,8 @@ const StepContainer = styled(Flex)<StepContainerProps>`
   }
 
   .${ClassName.CANVAS_STEP}.${NODE_ACTIVE_CLASSNAME} &,
-  .${ClassName.CANVAS_STEP}.${NODE_HIGHLIGHTED_CLASSNAME} & {
+  .${ClassName.CANVAS_STEP}.${NODE_HIGHLIGHTED_CLASSNAME} &,
+  .${ClassName.CANVAS_STEP}.${NODE_THREAD_TARGET_CLASSNAME} & {
     ${({ theme, canHighlight }) =>
       canHighlight &&
       css`

@@ -77,7 +77,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     this.sourceNodeID = sourceNodeID;
     this.candidates = getCandidates(withoutValue(this.engine.getRootNodeIDs(), sourceNodeID).reverse(), this.engine);
 
-    this.log.debug('discoverd merge candidates', this.log.value(this.candidates.length));
+    this.log.debug('discovered merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 

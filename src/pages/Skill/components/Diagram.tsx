@@ -12,8 +12,7 @@ import { ManagerProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
 import { SettingsModalProvider } from '@/pages/Settings/contexts';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 
@@ -26,10 +25,10 @@ export type DiagramProps = RouteComponentProps & {
 };
 
 const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
-  const markupTool = React.useContext(MarkupModeContext);
   const eventualEngine = React.useContext(EventualEngineContext);
   const markupFeature = useFeature(FeatureFlag.MARKUP);
   const isPrototypingMode = usePrototypingMode();
+  const isMarkupMode = useMarkupMode();
 
   useTeardown(() => {
     eventualEngine?.get()?.teardown();
@@ -44,7 +43,7 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
 
           <TopPrompt />
 
-          {markupFeature.isEnabled && markupTool?.isOpen ? <MarkupMenu /> : <DesignMenu />}
+          {markupFeature.isEnabled && isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
 
           <CanvasControls />
 

@@ -19,6 +19,7 @@ export const NODE_SELECTED_CLASSNAME = `${ClassName.CANVAS_NODE}--selected`;
 export const NODE_FOCUSED_CLASSNAME = `${ClassName.CANVAS_NODE}--focused`;
 export const NODE_ACTIVE_CLASSNAME = `${ClassName.CANVAS_NODE}--active`;
 export const NODE_MERGE_TARGET_CLASSNAME = `${ClassName.CANVAS_NODE}--merge-target`;
+export const NODE_THREAD_TARGET_CLASSNAME = `${ClassName.CANVAS_NODE}--thread-target`;
 export const NODE_DRAGGING_CLASSNAME = `${ClassName.CANVAS_NODE}--dragging`;
 
 export const LINK_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_LINK}--highlighted`;

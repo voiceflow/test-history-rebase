@@ -26,7 +26,7 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
     this.candidates = getCandidates(
       Array.from(this.engine.nodes.keys()).filter((nodeID) => {
         const node = this.engine.getNodeByID(nodeID);
-        if (this.engine.markup.isEnabled) {
+        if (this.engine.markup.isActive) {
           return MARKUP_NODES.includes(node.type);
         }
         return ROOT_NODES.includes(node.type);

@@ -12,7 +12,9 @@ import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
+import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
+import * as Thread from '@/ducks/thread';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
@@ -42,7 +44,6 @@ import MarkupEngine from './markupEngine';
 import MergeEngine from './mergeEngine';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
-import PrototypeEngine from './prototypeEngine';
 import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
@@ -91,8 +92,6 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   comment = new CommentEngine(this);
 
-  prototype = new PrototypeEngine(this);
-
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 
   ports = new Map<string, { api: PortEntity }>();
@@ -128,6 +127,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
       this.dispatcher,
       this.markup,
       this.transformation,
+      this.comment,
     ];
   }
 
@@ -162,6 +162,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   hasLinksByPortID = (portID: string) => this.select(Creator.hasLinksByPortIDSelector)(portID);
 
   hasLinksByNodeID = (portID: string) => this.select(Creator.hasLinksByNodeIDSelector)(portID);
+
+  getThreadIDsByNodeID = (nodeID: string) => this.select(Thread.threadIDsByNodeIDSelector)(nodeID);
 
   getLinkIDsByPortID = (portID: string) => this.select(Creator.linkIDsByPortIDSelector)(portID);
 
@@ -225,6 +227,10 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   // canvas orchestration methods
 
+  disableAllModes() {
+    return this.store.dispatch(Router.goToCurrentCanvas());
+  }
+
   get isCanvasBusy() {
     return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup;
   }
@@ -259,6 +265,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   updateViewport(x: number, y: number, zoom: number) {
     this.emitter.emit(CanvasAction.IDLE);
     this.store.dispatch(Creator.updateViewport({ x, y, zoom }));
+    this.comment.generateCandidates();
   }
 
   panViewport(movement: Pair<number>) {

@@ -13,6 +13,7 @@ export const useNewCommentAPI = () => {
   return React.useMemo<InternalNewCommentAPI>(
     () => ({
       origin,
+      getOrigin: () => origin,
       show: (coords) => setOrigin(coords),
       hide: () => setOrigin(null),
     }),

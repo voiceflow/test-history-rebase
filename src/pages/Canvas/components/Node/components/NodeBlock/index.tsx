@@ -150,6 +150,12 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const onMouseDown = React.useCallback((event: React.MouseEvent) => {
     if (event.defaultPrevented || !engine.comment.isActive) return;
 
+    if (engine.comment.isCreating) {
+      engine.comment.resetCreating();
+    } else {
+      engine.comment.startThread();
+    }
+
     event.stopPropagation();
     event.nativeEvent.stopImmediatePropagation();
   }, []);

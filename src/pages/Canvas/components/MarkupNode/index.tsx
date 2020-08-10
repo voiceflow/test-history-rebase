@@ -10,7 +10,6 @@ import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTa
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
 import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { Container, NodeStyles } from './components';
@@ -23,7 +22,6 @@ const MarkupNode = () => {
   const instance = useMarkupInstance<HTMLDivElement>();
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
-  const markup = React.useContext(MarkupModeContext);
   const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
 
   const { node, data } = nodeEntity.useState((e) => {
@@ -36,15 +34,15 @@ const MarkupNode = () => {
   });
 
   const doubleClickHandler = () => {
-    if (canUseMarkup && !markup?.isOpen) {
-      markup?.openTool();
+    if (canUseMarkup && !engine.markup.isActive) {
+      engine.markup.activate();
       engine.setActive(node.id);
     }
   };
 
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
 
-  const skipClick = React.useCallback(() => !engine.markup.isEnabled, []);
+  const skipClick = React.useCallback(() => !engine.markup.isActive, []);
 
   // for optimization reason using query selector to filter click events if markup is not opened
   const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);

@@ -30,6 +30,8 @@ export const useVectorDragTranslate = <T extends HTMLElement>(ref: React.RefObje
     coords.current = nextCoords;
 
     updateTransform(ref, nextCoords.point);
+
+    return nextCoords;
   }, []);
 
 export const useEntityDrag = (

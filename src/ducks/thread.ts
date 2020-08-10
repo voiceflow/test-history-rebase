@@ -5,6 +5,7 @@ import commentAdapter from '@/client/adapters/comment';
 import threadAdapter from '@/client/adapters/thread';
 import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import { createAction, createRootSelector } from '@/ducks/utils';
 import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
@@ -88,8 +89,16 @@ export const resolvedThreads = createSelector([allThreadsSelector], (threads) =>
 
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.length);
 
-export const activeDiagramRootThreadIDsSelector = createSelector([allThreadsSelector, Skill.activeDiagramIDSelector], (threads, diagramID) =>
-  threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && !thread.nodeID).map(({ id }) => id)
+export const activeDiagramThreadIDsSelector = createSelector(
+  [allThreadsSelector, Skill.activeDiagramIDSelector, Creator.allNodeIDsSelector],
+  (threads, diagramID, nodeIDs) =>
+    threads
+      .filter((thread) => thread.diagramID === diagramID && !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
+      .map(({ id }) => id)
+);
+
+export const threadIDsByNodeIDSelector = createSelector([allThreadsSelector], (threads) => (nodeID: string) =>
+  threads.filter((thread) => thread.nodeID === nodeID).map(({ id }) => id)
 );
 
 export const hasUnreadCommentsSelector = createSelector([rootSelector], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);

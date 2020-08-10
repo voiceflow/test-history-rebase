@@ -15,13 +15,13 @@ const CommentThread: React.FC = () => {
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const instance = useThreadInstance<HTMLDivElement>();
   const { commentCount, isFocused } = threadEntity.useState((e) => ({
-    commentCount: e.resolve().comments.length,
+    commentCount: e.resolve().thread.comments.length,
     isFocused: e.isFocused,
   }));
 
   const { onDoubleClick, ...handlers } = useThreadHandlers({
-    drag: (movement) => instance.translate(engine.canvas!.toVector(movement)),
-    drop: () => engine.comment.dropThread(threadEntity.threadID),
+    drag: (movement) => engine.comment.dragThread(threadEntity.threadID, engine.canvas!.toVector(movement)),
+    drop: () => engine.comment.dropThread(),
     mousedown: () => engine.comment.setTarget(threadEntity.threadID),
     mouseup: () => engine.comment.setTarget(null),
     click: async () => {

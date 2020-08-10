@@ -10,8 +10,6 @@ import { connect, styled } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode } from '@/pages/Skill/hooks';
 import { buildVirtualElement } from '@/utils/dom';
 import { Coords } from '@/utils/geometry';
 
@@ -57,17 +55,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspac
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const markupFeature = useFeature(FeatureFlag.MARKUP);
-  const markupTool = React.useContext(MarkupModeContext);
-
-  const isCommentingModeEnabled = useCommentingMode();
 
   const optionProps = {
     engine,
     clipboard,
     isMarkupFeatureEnabled: !!markupFeature?.isEnabled,
-    isMarkupModeEnabled: !!markupTool?.isOpen,
     isTemplate: isTemplateWorkspace,
-    isCommentingModeEnabled,
   };
   const options =
     contextMenu.type && TARGET_OPTIONS[contextMenu.type]?.filter((option) => !option.shouldRender || option.shouldRender(contextMenu, optionProps));

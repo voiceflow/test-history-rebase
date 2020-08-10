@@ -20,6 +20,12 @@ export const rootNodeIDsSelector = createSelector([rootSelector], ({ rootNodeIDs
 
 export const isRootNodeSelector = createSelector([rootNodeIDsSelector], (rootNodeIDs) => (nodeID: string) => rootNodeIDs.includes(nodeID));
 
+export const allNodeIDsSelector = createSelector([rootSelector], ({ nodes }) => nodes.allKeys);
+
+export const stepNodeIDsSelector = createSelector([rootSelector, allNodeIDsSelector], ({ nodes }, nodeIDs) =>
+  nodeIDs.filter((nodeID) => !!getNormalizedByKey(nodes, nodeID).parentNode)
+);
+
 export const nodeByIDSelector = createSelector([rootSelector], ({ nodes }) => (nodeID: string) => getNormalizedByKey(nodes, nodeID));
 
 export const allNodesByIDsSelector = createSelector([rootSelector], ({ nodes }) => (nodeIDs: string[]) => getAllNormalizedByKeys(nodes, nodeIDs));

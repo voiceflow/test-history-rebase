@@ -93,7 +93,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
         scale: this.api.getZoom(),
       };
     },
-    fromCoords(coords: Coords) {
+    fromCoords(coords: Vector) {
       return coords.map(this.getPlane());
     },
     toCoords(point: Point) {

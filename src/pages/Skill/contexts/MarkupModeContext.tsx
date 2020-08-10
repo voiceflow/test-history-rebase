@@ -3,18 +3,16 @@ import React from 'react';
 import { toast } from '@/components/Toast';
 import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
-import { useEnableDisable, useTrackingEvents, useUpload } from '@/hooks';
+import { useDidUpdateEffect, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import { useMarkupMode } from '@/pages/Skill/hooks';
 import { imageSizeFromUrl } from '@/utils/file';
 
 const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'].join(', ');
 
 export type MarkupModeContextType = {
-  isOpen: boolean;
-  openTool: () => void;
   modeType: MarkupModeType | MarkupShapeType | null;
-  closeTool: () => void;
   isCreating: boolean;
   onAddImage: () => void;
   setModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
@@ -27,10 +25,11 @@ export const MarkupModeContext = React.createContext<MarkupModeContextType | nul
 export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
 export const MarkupModeProvider: React.FC = ({ children }) => {
+  const startTimeCache = React.useRef(0);
   const [modeType, setModeType] = React.useState<MarkupModeType | MarkupShapeType | null>(null);
   const [isCreating, setCreating] = React.useState(false);
-  const [isOpen, openTool, closeTool] = useEnableDisable(false);
   const eventualEngine = React.useContext(EventualEngineContext)!;
+  const isMarkupMode = useMarkupMode();
 
   const { isLoading: isUploadingImage, onUpload } = useUpload({
     fileType: 'image',
@@ -38,11 +37,6 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
   });
 
   const [trackEvents] = useTrackingEvents();
-
-  const startTimeCache = React.useRef(0);
-  const isOpenCache = React.useRef(isOpen);
-
-  isOpenCache.current = isOpen;
 
   const setCreatingModeType = (type: null | MarkupModeType | MarkupShapeType) => {
     setModeType(type);
@@ -113,34 +107,6 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     }
   }, []);
 
-  const onEnableMarkup = React.useCallback(() => {
-    if (isOpenCache.current) {
-      return;
-    }
-
-    eventualEngine.get()?.clearActivation();
-    eventualEngine.get()?.markup.enable();
-
-    openTool();
-
-    trackEvents.trackMarkupOpen();
-    setCreatingModeType(MarkupModeType.TEXT);
-
-    startTimeCache.current = Date.now();
-  }, []);
-
-  const onDisableMarkup = React.useCallback(() => {
-    if (!isOpenCache.current) return;
-
-    setCreatingModeType(null);
-
-    eventualEngine.get()?.markup.disable();
-
-    setCreating(false);
-    trackMarkupTime();
-    closeTool();
-  }, []);
-
   React.useEffect(() => {
     window.addEventListener('beforeunload', trackMarkupTime);
 
@@ -150,13 +116,29 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     };
   }, []);
 
+  useDidUpdateEffect(() => {
+    if (isMarkupMode) {
+      eventualEngine.get()?.clearActivation();
+
+      trackEvents.trackMarkupOpen();
+      setCreatingModeType(MarkupModeType.TEXT);
+
+      startTimeCache.current = Date.now();
+    } else {
+      eventualEngine.get()?.clearActivation();
+      eventualEngine.get()?.markup.reset();
+
+      setCreatingModeType(null);
+
+      setCreating(false);
+      trackMarkupTime();
+    }
+  }, [isMarkupMode]);
+
   return (
     <MarkupModeContext.Provider
       value={{
-        isOpen,
         modeType,
-        openTool: onEnableMarkup,
-        closeTool: onDisableMarkup,
         onAddImage,
         isCreating,
         setModeType,

@@ -72,12 +72,12 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
             inputProps={{
               inputRef,
               autoFocus: isEditing || inputRef.current,
-              onKeyDown: (e) => {
+              onKeyDown: async (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
                   onPost();
                 }
                 if (e.keyCode === 27) {
-                  engine.comment.disable();
+                  await engine.disableAllModes();
                 }
               },
             }}

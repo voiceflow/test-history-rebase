@@ -10,13 +10,13 @@ import { MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
   const isEditingMode = useEditingMode();
-  const { isOpen, modeType, onAddImage, setCreatingModeType } = React.useContext(MarkupModeContext)!;
+  const { modeType, onAddImage, setCreatingModeType } = React.useContext(MarkupModeContext)!;
 
   const isTextActive = modeType === MarkupModeType.TEXT;
 
   return (
     <>
-      <MenuContainer isOpen={isOpen} column>
+      <MenuContainer column>
         <MarkupButtonContainer title="Text">
           <MenuIcon
             large
@@ -33,7 +33,7 @@ const MarkupMenu: React.FC = () => {
         </MarkupButtonContainer>
       </MenuContainer>
 
-      {isOpen && isEditingMode && <RemoveIntercom />}
+      {isEditingMode && <RemoveIntercom />}
     </>
   );
 };

@@ -1,22 +1,15 @@
 import React from 'react';
 
 import { Comment, Thread } from '@/models';
-import { Either } from '@/types';
 import { preventDefault, stopPropagation } from '@/utils/dom';
-import { Coords } from '@/utils/geometry';
 
 import { CommentEditor, Container, NewComment, ReplySection } from './components';
 
-export type ThreadEditorProps = Either<
-  {
-    thread: Thread;
-  },
-  {
-    origin: Coords;
-  }
->;
+export type ThreadEditorProps = {
+  thread?: Thread;
+};
 
-const ThreadEditor: React.FC<ThreadEditorProps> = ({ origin, thread }) => {
+const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => {
   if (thread) {
     return (
       <Container draggable onDragStart={preventDefault()} onMouseDown={stopPropagation(null, true)} onClick={preventDefault()}>
@@ -30,7 +23,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ origin, thread }) => {
 
   return (
     <Container draggable onDragStart={preventDefault()} onMouseDown={stopPropagation(null, true)} onClick={preventDefault()}>
-      <NewComment origin={origin!} />
+      <NewComment />
     </Container>
   );
 };

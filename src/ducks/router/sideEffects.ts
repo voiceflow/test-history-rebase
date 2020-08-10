@@ -30,10 +30,13 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
   }
 };
 
-export const goToCanvas = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
+export const goToCanvas = (versionID: string, diagramID: string) =>
+  goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
+
+export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
   await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
 
-  dispatch(goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`));
+  dispatch(goToCanvas(versionID, diagramID));
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
@@ -49,21 +52,27 @@ export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getStat
   const versionID = Skill.activeSkillIDSelector(state);
   const diagramID = Skill.activeDiagramIDSelector(state);
 
-  await switchRealtime(dispatch, getState, versionID, diagramID);
-
   dispatch(goToCanvasCommenting(versionID, diagramID));
+};
+
+export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const diagramID = Skill.activeDiagramIDSelector(state);
+
+  dispatch(goTo(`${generatePath(Path.CANVAS_MARKUP, { versionID, diagramID })}${window.location.search}`));
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const skill = Skill.activeSkillSelector(getState()) as SkillModel;
 
-  dispatch(goToCanvas(skill.id, skill.rootDiagramID));
+  dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const versionID = Skill.activeSkillIDSelector(getState());
 
-  dispatch(goToCanvas(versionID, diagramID));
+  dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
 };
 
 export const goToDiagramCommenting = (diagramID: string): Thunk => async (dispatch, getState) => {

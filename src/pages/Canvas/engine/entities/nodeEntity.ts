@@ -10,6 +10,7 @@ import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
+import { Coords } from '@/utils/geometry';
 
 import { EntityType } from '../constants';
 import type { Engine } from '..';
@@ -25,6 +26,11 @@ export type NodeInstance = EntityInstance & {
    * get the current x and y position of this node on the canvas
    */
   getPosition: () => Point;
+
+  /**
+   * get the anchor coords for threads
+   */
+  getThreadAnchorCoords: () => Coords | null;
 
   /**
    * get the center point of the rendered node
@@ -110,6 +116,10 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     return this.engine.merge.targetNodeID === this.nodeID;
   }
 
+  get isThreadTarget() {
+    return this.engine.comment.isNodeTarget(this.nodeID);
+  }
+
   get isTransformTarget() {
     return this.engine.transformation.isTarget(this.nodeID);
   }
@@ -182,10 +192,15 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
 
     React.useEffect(() => engine.node.setOrigin(this.nodeID, [x, y]), [x, y]);
 
+    React.useEffect(() => {
+      engine.node.redrawNestedThreads(this.nodeID);
+    }, [parentNode]);
+
     // redraw links in parent block when unmounting
     useTeardown(() => {
       if (parentNode) {
         engine.node.redrawNestedLinks(parentNode);
+        engine.node.redrawNestedThreads(parentNode);
       }
     }, [parentNode]);
   }

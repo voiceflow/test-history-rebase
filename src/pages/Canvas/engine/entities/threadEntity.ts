@@ -1,5 +1,7 @@
 import React from 'react';
+import { createSelector } from 'reselect';
 
+import * as Creator from '@/ducks/creator';
 import * as Thread from '@/ducks/thread';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
@@ -15,10 +17,21 @@ export type ThreadInstance = EntityInstance & {
    */
   getCoords: () => Coords;
 
-  translate: (movement: Vector) => void;
+  translate: (movement: Vector) => Coords;
 };
 
-class ThreadEntity extends ResourceEntity<Models.Thread, ThreadInstance> {
+const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.threadByIDSelector], (getNode, getThread) => (threadID: string) => {
+  const thread = getThread(threadID);
+  const node = thread.nodeID ? getNode(thread.nodeID) : null;
+
+  return {
+    thread,
+    node,
+    parentNode: node?.parentNode ? getNode(node.parentNode) : null,
+  };
+});
+
+class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.Node | null }, ThreadInstance> {
   diagramID: string;
 
   get isFocused() {
@@ -28,29 +41,51 @@ class ThreadEntity extends ResourceEntity<Models.Thread, ThreadInstance> {
   constructor(engine: Engine, public threadID: string) {
     super(EntityType.THREAD, engine, engine.log.child(`thread<${threadID.slice(-6)}>`));
 
-    const { diagramID } = this.resolve();
-    this.diagramID = diagramID;
+    const { thread } = this.resolve();
+    this.diagramID = thread.diagramID;
 
     this.log.debug(this.log.init('constructed thread'), this.log.slug(threadID));
   }
 
   resolve() {
-    return this.engine.select(Thread.threadByIDSelector)(this.threadID);
+    return this.engine.select(threadEntitySelector)(this.threadID);
+  }
+
+  shouldUpdate() {
+    return !!this.resolve().thread;
   }
 
   useCoordinates() {
-    const { x, y } = this.useState((e) => {
-      const {
-        position: [posX, posY],
-      } = e.resolve();
+    const { x, y, nodeID, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index } = this.useState((e) => {
+      const { thread, node, parentNode } = e.resolve();
 
       return {
-        x: posX,
-        y: posY,
+        nodeID: thread.nodeID,
+        x: thread.position[0],
+        y: thread.position[1],
+        nodeX: node?.x,
+        nodeY: node?.y,
+        parentNodeID: node?.parentNode,
+        parentNodeX: parentNode?.x,
+        parentNodeY: parentNode?.y,
+        index: parentNode?.combinedNodes.indexOf(thread.nodeID!),
       };
     });
 
-    return React.useMemo(() => this.engine.canvas!.toCoords([x, y]).onPlane(this.engine.canvas!.getOuterPlane()), [x, y]);
+    return React.useMemo(() => {
+      if (nodeID) {
+        const node = this.engine.node.api(nodeID);
+        if (!node?.instance?.isReady()) {
+          return new Coords([0, 0]);
+        }
+
+        const anchorCoords = node.instance.getThreadAnchorCoords()!;
+
+        return anchorCoords.add([x, y]).onPlane(this.engine.canvas!.getOuterPlane());
+      }
+
+      return this.engine.canvas!.toCoords([x, y]).onPlane(this.engine.canvas!.getOuterPlane());
+    }, [nodeID, x, y, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index]);
   }
 
   useInstance(instance: ThreadInstance) {

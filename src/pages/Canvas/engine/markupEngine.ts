@@ -4,11 +4,14 @@ import type { FakeSelectionPlugin } from '@voiceflow/draft-js-fake-selection';
 import createFakeSelectionPlugin from '@voiceflow/draft-js-fake-selection';
 import type { StaticToolBarPlugin } from '@voiceflow/draft-js-static-toolbar-plugin';
 import createStaticToolbarPlugin from '@voiceflow/draft-js-static-toolbar-plugin';
+import { createMatchSelector } from 'connected-react-router';
 import cuid from 'cuid';
 import { EditorState, convertToRaw } from 'draft-js';
 import React from 'react';
 
+import { Path } from '@/config/routes';
 import { BlockType, TextAlignment } from '@/constants';
+import * as Router from '@/ducks/router';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import { NewShapeAPI } from '@/pages/Canvas/types';
@@ -27,16 +30,12 @@ class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
 
   pluginsByNodeID: Record<string, Plugins> = {};
 
-  isEnabled = false;
-
-  enable() {
-    this.isEnabled = true;
+  get isActive() {
+    return !!this.select(createMatchSelector(Path.CANVAS_MARKUP));
   }
 
-  disable() {
-    this.engine.clearActivation();
-
-    this.isEnabled = false;
+  activate() {
+    return this.dispatch(Router.goToCurrentCanvasMarkup());
   }
 
   async addTextNode() {
@@ -104,11 +103,7 @@ class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
   }
 
   reset() {
-    if (!this.isEnabled) return;
-
     this.components.newShape?.hide();
-
-    this.isEnabled = false;
   }
 }
 

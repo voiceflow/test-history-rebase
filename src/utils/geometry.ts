@@ -88,6 +88,10 @@ export class Vector {
       plane
     );
   }
+
+  toVector(): Vector {
+    return this;
+  }
 }
 
 export class Coords extends Vector {

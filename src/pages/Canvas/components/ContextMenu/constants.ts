@@ -47,8 +47,8 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Return to Home',
     value: CanvasAction.RETURN_TO_HOME,
-    shouldRender: (_, { isMarkupModeEnabled, isCommentingModeEnabled }) => {
-      return !(isMarkupModeEnabled || isCommentingModeEnabled);
+    shouldRender: (_, { engine }) => {
+      return !(engine.markup.isActive || engine.comment.isActive);
     },
   },
 ];

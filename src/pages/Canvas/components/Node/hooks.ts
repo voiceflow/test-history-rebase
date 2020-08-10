@@ -47,8 +47,8 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       blockRef,
       position,
       getRect,
-
       getPosition: () => position.current!,
+      getThreadAnchorCoords: () => engine.canvas!.toCoords(position.current!),
       getCenterPoint: () => {
         const node = engine.getNodeByID(nodeEntity.nodeID);
 

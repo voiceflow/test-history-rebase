@@ -3,25 +3,30 @@ import React from 'react';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
-import { ThreadEntityProvider } from '@/pages/Canvas/contexts';
+import { EngineContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
 import { CanvasRenderGate } from '@/pages/Canvas/gates';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
 import NewCommentThread from './NewCommentThread';
 
-const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs, updateUnreadComments }) => {
+const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnreadComments }) => {
+  const engine = React.useContext(EngineContext)!;
   const isCommentingMode = useCommentingMode();
 
   React.useEffect(() => {
     updateUnreadComments(false);
+
+    if (!isCommentingMode) {
+      engine.comment.reset();
+    }
   }, [isCommentingMode]);
 
   if (!isCommentingMode) return null;
 
   return (
     <>
-      {rootThreadIDs.map((threadID) => (
+      {threadIDs.map((threadID) => (
         <ThreadEntityProvider id={threadID} key={threadID}>
           <CanvasRenderGate>
             <CommentThread />
@@ -34,7 +39,7 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ rootThreadIDs, updat
 };
 
 const mapStateToProps = {
-  rootThreadIDs: Thread.activeDiagramRootThreadIDsSelector,
+  threadIDs: Thread.activeDiagramThreadIDsSelector,
 };
 
 const mapDispatchToProps = {

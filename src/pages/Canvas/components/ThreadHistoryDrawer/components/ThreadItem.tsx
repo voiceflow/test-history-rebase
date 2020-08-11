@@ -34,7 +34,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
       await focusThread.setFocus(threadID);
       await engine.comment.centerThread(threadID);
     }
-  }, [focusThread.focusedID]);
+  }, [focusThread.focusedID, threadID]);
 
   return (
     <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>

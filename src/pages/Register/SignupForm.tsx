@@ -16,7 +16,7 @@ import * as Query from '@/utils/query';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
-import { inviteEmailMatches, replaceSpaceWithPlus } from './utils';
+import { replaceSpaceWithPlus } from './utils';
 
 export type SignupFormProps = RouteComponentProps & {
   promo?: boolean;
@@ -41,9 +41,6 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
 
   const signupSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (query.invite && !inviteEmailMatches(query, email)) {
-      return;
-    }
 
     signup({
       name,

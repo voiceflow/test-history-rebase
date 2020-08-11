@@ -8,6 +8,7 @@ export * from './diagram';
 export * from './constants';
 export * from './actions';
 export * from './selectors';
+export * from './sideEffects';
 
 const creatorReducer = combineReducers({
   [Focus.FOCUS_STATE_KEY]: focus,

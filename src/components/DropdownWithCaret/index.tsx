@@ -14,6 +14,7 @@ type DropdownWithCaretProps = {
   color?: string;
   capitalized?: boolean;
   textVariant?: TextVariant;
+  alwaysBlue?: boolean;
 };
 
 const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
@@ -21,19 +22,22 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   textVariant = TextVariant.primary,
   menu,
   capitalized,
-  color,
+  color = '#6e849a',
   disabled,
   text,
   padding = '10px 25px',
+  alwaysBlue = false,
 }) => {
+  const inactiveColor = alwaysBlue ? '#5190e6' : color;
+
   return (
     <Dropdown placement={placement} menu={menu}>
       {(ref, onToggle, isOpen) => (
         <ButtonContainer variant={textVariant} disabled={disabled} padding={padding} isOpen={isOpen} onClick={onToggle} ref={ref}>
-          <TextContainer color={isOpen ? '#5190e6' : color} capitalized={capitalized}>
+          <TextContainer color={isOpen ? '#5190e6' : inactiveColor} capitalized={capitalized}>
             {text}
           </TextContainer>
-          <CaretIcon icon="caretDown" color={isOpen ? '5d9df5' : '#6e849a'} size={9} />
+          <CaretIcon icon="caretDown" color={isOpen ? '#5d9df5' : inactiveColor} size={9} />
         </ButtonContainer>
       )}
     </Dropdown>

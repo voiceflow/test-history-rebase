@@ -75,12 +75,10 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
             const parsed = queryString.parse(props.location.search);
             const inviteCode = parsed.invite_code;
             const email = parsed.email;
+            const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
+
             if (inviteCode) {
-              return authToken ? (
-                <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} />
-              ) : (
-                <Redirect to={`${Path.SIGNUP}?invite=${inviteCode}&email=${email}`} />
-              );
+              return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
             }
             const code = props.match.params.invite_code;
             return authToken ? (

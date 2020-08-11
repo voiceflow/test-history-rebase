@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { ConnectedProps } from '@/types';
@@ -10,7 +11,7 @@ import { ConnectedProps } from '@/types';
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateAccount }) => {
+const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateProfilePicture }) => {
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
@@ -20,7 +21,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateAcco
 
   const onContinue = () => {
     if (userImage) {
-      updateAccount({ image: userImage });
+      updateProfilePicture(userImage);
     }
     actions.setJoinWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
@@ -57,7 +58,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateAccount: Account.updateAccount,
+  updateProfilePicture: Creator.updateProfilePicture,
 };
 
 export type ConnectedJoinWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

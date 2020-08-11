@@ -8,6 +8,8 @@ const userClient = {
   findProjects: (userID) => fetch.get(`${USER_PATH}/${userID}/projects`),
 
   getVendors: () => fetch.get('session/vendor?all=true'),
+
+  updateProfilePicture: (url) => fetch.post('user/profilePictureURL', { url }),
 };
 
 export default userClient;

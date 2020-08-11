@@ -33,7 +33,7 @@ const toast = wrapWithMessage(Toastify.toast) as ToastMethod & Overwrite<Toastif
 toast.info = wrapWithMessage(Toastify.toast.info, 'info', '#5D9DF5');
 toast.error = wrapWithMessage(Toastify.toast.error, 'error', '#E91E63');
 toast.success = wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761');
-toast.warn = wrapWithMessage(Toastify.toast.warn, 'warning', '#e98e1e');
+toast.warn = wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813');
 
 const ToastGlobalStyles = createGlobalStyle`
   .Toastify {

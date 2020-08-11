@@ -88,6 +88,8 @@ const workspaceClient = {
   sendInvite: (workspaceID: string, email: string, role: UserRole) =>
     fetch.post<DBWorkspace.Member | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
+  getInviteLink: (workspaceID: string, role: UserRole) => fetch.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
+
   checkCoupon: (coupon: string) => fetch.get<{ data: string }>(`${WORKSPACES_PATH}/coupon/${coupon}`),
 };
 

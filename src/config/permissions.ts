@@ -4,6 +4,7 @@ export enum Permission {
   // workspace
   CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
   UPGRADE_WORKSPACE = 'workspace.UPGRADE',
+  INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
 
   // collaborator
   ADD_COLLABORATORS = 'collaborator.ADD',
@@ -48,6 +49,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
   [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN],
 };
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {

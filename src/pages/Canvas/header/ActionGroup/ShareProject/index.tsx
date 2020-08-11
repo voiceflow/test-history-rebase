@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
+import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
@@ -10,10 +11,14 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import InviteByLink from '@/pages/Collaborators/components/InviteByLink';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
+import { stopImmediatePropagation } from '@/utils/dom';
 
 import { ExportItem, MenuContainer, MenuItem } from './components';
+
+const Footer: any = ModalFooter;
 
 type ShareProjectProps = {
   render: boolean;
@@ -33,6 +38,10 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
+
+  const inviteByLinkFeature = useFeature(FeatureFlag.INVITE_BY_LINK);
+
   const [trackingEvents] = useTrackingEvents();
 
   const [state, stateApi] = useSmartReducerV2({
@@ -90,30 +99,37 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
       menu={() => (
         <MenuContainer>
           <FadeDownDelayedContainer>
-            <MenuItem
-              isAllowed={canSharePrototype}
-              loading={state.loadingTestableLink}
-              title="Testable Link"
-              description="Share your project with others for in browser prototyping."
-              onRedirect={openTestableLinksModal}
-              help="https://docs.voiceflow.com/#/quickstart/testable-links"
-              link={state.testableLink}
-              track={trackingEvents.trackActiveProjectTestableLinkShare}
-              onClick={onClickPrototype}
-            />
+            <span>
+              <MenuItem
+                isAllowed={canSharePrototype}
+                loading={state.loadingTestableLink}
+                title="Testable Link"
+                description="Share your project with others for in browser prototyping."
+                onRedirect={openTestableLinksModal}
+                help="https://docs.voiceflow.com/#/quickstart/testable-links"
+                link={state.testableLink}
+                track={trackingEvents.trackActiveProjectTestableLinkShare}
+                onClick={onClickPrototype}
+              />
 
-            <MenuItem
-              isAllowed={canShareProject}
-              loading={state.loadingImportToken}
-              title="Project Download"
-              description="Allow others to download this project to their own Voiceflow account."
-              onRedirect={openProjectDownloadModal}
-              help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
-              link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
-              track={trackingEvents.trackActiveProjectDownloadLinkShare}
-            />
+              <MenuItem
+                isAllowed={canShareProject}
+                loading={state.loadingImportToken}
+                title="Project Download"
+                description="Allow others to download this project to their own Voiceflow account."
+                onRedirect={openProjectDownloadModal}
+                help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
+                link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
+                track={trackingEvents.trackActiveProjectDownloadLinkShare}
+              />
 
-            {canvasExportFeature.isEnabled && <ExportItem onRedirect={openCanvasExportModal} />}
+              {canvasExportFeature.isEnabled && <ExportItem onRedirect={openCanvasExportModal} />}
+            </span>
+            {canInviteByLink && inviteByLinkFeature.isEnabled && (
+              <Footer onClick={stopImmediatePropagation()}>
+                <InviteByLink noIcon />
+              </Footer>
+            )}
           </FadeDownDelayedContainer>
         </MenuContainer>
       )}

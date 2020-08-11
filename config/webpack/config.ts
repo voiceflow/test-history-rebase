@@ -17,6 +17,7 @@ import {
   ff_promptEditor,
   ff_repromptEditor,
   ff_templates,
+  ff_inviteByLink,
   ff_workspaceCreationFlow,
   ga,
   intercom,
@@ -70,6 +71,7 @@ export const ENV = {
   FF_COMMENTING: ff_commenting && 'true',
   FF_BULK_UPLOAD: ff_bulkUpload && 'true',
   FF_WORKSPACE_CREATION_FLOW: ff_workspaceCreationFlow && 'true',
+  FF_INVITE_BY_LINK: ff_inviteByLink && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

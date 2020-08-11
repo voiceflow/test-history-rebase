@@ -5,7 +5,7 @@ import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
 import BodyContainer from './components/BodyContainer';
-import SeatSummary from './components/SeatSummary';
+import InviteByLink from './components/InviteByLink';
 import Collaborators from '.';
 
 const MODAL_TITLE = 'ADD COLLABORATORS';
@@ -34,7 +34,7 @@ function CollaboratorsModal() {
       </BodyContainer>
 
       <ModalFooter justifyContent="flex-start">
-        <SeatSummary />
+        <InviteByLink />
       </ModalFooter>
     </Modal>
   );

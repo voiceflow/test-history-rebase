@@ -5,8 +5,9 @@ import React, { Component } from 'react';
 
 import Header from '@/components/Header';
 import Button from '@/components/LegacyButton';
-import Image from '@/components/LegacyUpload/Image';
+import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as AccountDuck from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import { connect } from '@/hocs';
 
@@ -123,7 +124,7 @@ class Account extends Component {
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>
             <div className="mb-5 card d-flex flex-row p-4">
-              <Image className="icon-image large-icon mr-4" path="/user/profile/picture" image={user.image} update={this.uploadProfile} replace />
+              <UploadJustIcon image={user.image} update={this.props.updateProfilePicture} size="xlarge" className="mr-3" />
               <div className="helper-text super-center border-left pl-4">
                 <div className="col-0">
                   Name:
@@ -221,6 +222,7 @@ const mapDispatchToProps = {
   updateAccount: AccountDuck.updateAccount,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
+  updateProfilePicture: Creator.updateProfilePicture,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

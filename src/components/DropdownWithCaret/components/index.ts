@@ -34,11 +34,12 @@ ${({ variant, isOpen }) =>
       `}
 cursor: pointer;
 
+
 `;
 
 export const TextContainer = styled.div<{ capitalized?: boolean }>`
   display: inline-block;
-  margin-right: 13px;
+  margin-right: 10px;
 
   color: ${({ color = '#6e849a' }) => color};
   ${({ capitalized }) =>

@@ -9,6 +9,7 @@ export const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 export const COMMENTING_ENABLED = process.env.FF_COMMENTING === 'true';
 export const BULK_UPLOAD_ENABLED = process.env.FF_BULK_UPLOAD === 'true';
 export const WORKSPACE_CREATION_ENABLED = process.env.FF_WORKSPACE_CREATION_FLOW === 'true';
+export const INVITE_BY_LINK_ENABLED = process.env.FF_INVITE_BY_LINK === 'true';
 
 export enum FeatureFlag {
   MARKUP = 'markup',
@@ -17,6 +18,7 @@ export enum FeatureFlag {
   GADGETS = 'gadgets',
   COMMENTING = 'commenting',
   BULK_UPLOAD = 'bulk_upload',
+  INVITE_BY_LINK = 'invite_by_link',
   WORKSPACE_CREATION_FLOW = 'workspace_creation_flow',
 
   // permanent circuit breakers for vendor integrations
@@ -31,6 +33,7 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.COMMENTING]: COMMENTING_ENABLED,
   [FeatureFlag.BULK_UPLOAD]: BULK_UPLOAD_ENABLED,
   [FeatureFlag.WORKSPACE_CREATION_FLOW]: WORKSPACE_CREATION_ENABLED,
+  [FeatureFlag.INVITE_BY_LINK]: INVITE_BY_LINK_ENABLED,
 
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
 };

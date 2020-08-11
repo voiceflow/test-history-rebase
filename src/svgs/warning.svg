@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon/system/warning</title>
+    <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" stop-opacity="0.8" offset="0%"></stop>
             <stop stop-color="currentColor" offset="100%"></stop>
         </linearGradient>
-        <path d="M15.8819094,13.7018508 L8.75427036,1.43256318 C8.41876498,0.855812274 7.58123502,0.855812274 7.24572964,1.43256318 L0.118090585,13.7018508 C-0.217414792,14.2786017 0.20196693,15 0.872360946,15 L15.1276391,15 C15.7980331,15 16.2174148,14.2786017 15.8819094,13.7018508 L15.8819094,13.7018508 Z M7.96114552,5.44714175 C8.45145209,5.42446397 8.86219948,5.83756717 8.81717762,6.31809078 L8.44405123,10.2903784 C8.42369889,10.5116399 8.23621059,10.6808038 8.01233476,10.6808038 C7.78907566,10.6808038 7.59356977,10.5116399 7.57321742,10.2903784 L7.20255799,6.34260729 C7.15938634,5.88537437 7.49982562,5.46859369 7.96114552,5.44714175 L7.96114552,5.44714175 Z M7.99876652,12.808224 C7.54608096,12.808224 7.17912195,12.4441538 7.17912195,11.9942758 C7.17912195,11.5443979 7.54608096,11.1797148 7.99876652,11.1797148 C8.45145209,11.1797148 8.81841109,11.5443979 8.81841109,11.9942758 C8.81841109,12.4441538 8.45145209,12.808224 7.99876652,12.808224 L7.99876652,12.808224 Z" id="path-2"></path>
+        <path d="M14.6086957,8 C14.6086957,11.644 11.644,14.6086957 8,14.6086957 C4.356,14.6086957 1.39130435,11.644 1.39130435,8 C1.39130435,4.356 4.356,1.39130435 8,1.39130435 C11.644,1.39130435 14.6086957,4.356 14.6086957,8 M16,8 C16,3.58886957 12.4111304,0 8,0 C3.58886957,0 0,3.58886957 0,8 C0,12.4111304 3.58886957,16 8,16 C12.4111304,16 16,12.4111304 16,8" id="path-2"></path>
+        <path d="M1.18882981,2.18181818 C1.79132226,2.18181818 2.2797389,1.69340155 2.2797389,1.09090909 C2.2797389,0.488416637 1.79132226,0 1.18882981,0 C0.586337352,0 0.0979207151,0.488416637 0.0979207151,1.09090909 C0.0979207151,1.69340155 0.586337352,2.18181818 1.18882981,2.18181818 Z" id="path-3"></path>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="currentColor" stop-opacity="0.8" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M1.16120861,3.27272727 C1.10909292,3.27272727 1.05701489,3.274928 1.00519983,3.27931992 C0.206510584,3.34701806 -0.0711074657,3.91062119 0.015053806,4.53816275 L0.576750806,8.62919104 C0.627011502,8.99525662 0.720301555,9.27272727 1.18890637,9.27272727 C1.65751119,9.27272727 1.75080111,8.99525662 1.80106181,8.62919104 L2.36275881,4.53816275 C2.36834853,4.49745091 2.37114981,4.45653246 2.37114981,4.41558442 C2.37114981,3.78440184 2.01992741,3.27272727 1.21660413,3.27272727 L1.16120861,3.27272727 Z" id="path-5"></path>
     </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon/System/User-reply_Warning" transform="translate(0.000000, -1.000000)" fill-rule="nonzero">
-            <g id="alert">
-                <use fill="currentColor" xlink:href="#path-2"></use>
-                <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+    <g id="Icon/system/warning" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-22">
+            <rect id="Rectangle-2" x="0" y="0" width="16" height="16"></rect>
+            <g id="Group-21">
+                <g id="information">
+                    <use fill="#FFFFFF" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+                <g id="Group" transform="translate(8.311170, 7.545455) scale(1, -1) translate(-8.311170, -7.545455) translate(6.811170, 2.545455)">
+                    <g id="Path" transform="translate(1.188830, 1.090909) scale(1, -1) translate(-1.188830, -1.090909) ">
+                        <use fill="#FFFFFF" xlink:href="#path-3"></use>
+                        <use fill="url(#linearGradient-1)" xlink:href="#path-3"></use>
+                    </g>
+                    <g id="Path" transform="translate(1.185575, 6.272727) scale(1, -1) translate(-1.185575, -6.272727) ">
+                        <use fill="#FFFFFF" xlink:href="#path-5"></use>
+                        <use fill="url(#linearGradient-4)" xlink:href="#path-5"></use>
+                    </g>
+                </g>
             </g>
         </g>
     </g>

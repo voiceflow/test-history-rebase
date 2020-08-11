@@ -13,7 +13,7 @@ import * as Query from '@/utils/query';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
 import SocialLogin from './SocialLogin';
-import { inviteEmailMatches, replaceSpaceWithPlus } from './utils';
+import { replaceSpaceWithPlus } from './utils';
 
 export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
   const query = Query.parse(location.search);
@@ -31,9 +31,6 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
 
   const loginSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (query.invite && !inviteEmailMatches(query, email)) {
-      return;
-    }
     basicAuthLogin({
       email,
       password,

@@ -307,12 +307,13 @@ export const INTEGRATION_DATA_MODELS = {
   },
 };
 
+export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
+
 export enum PlanType {
   OLD_STARTER = 'old_starter',
   OLD_PRO = 'old_pro',
-  OLD_TEAM = 'old_team',
   OLD_ENTERPRISE = 'old_enterprise',
-
+  OLD_TEAM = 'old_team',
   STARTER = 'starter',
   EDUCATION = 'education',
   PRO = 'pro',
@@ -489,14 +490,6 @@ export const PLAN_TYPE_META = {
     label: 'Pro',
     color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
-  [PlanType.OLD_TEAM]: {
-    label: 'Team',
-    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
-  },
-  [PlanType.TEAM]: {
-    label: 'Team',
-    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
-  },
   [PlanType.OLD_ENTERPRISE]: {
     label: 'Enterprise',
     color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
@@ -504,6 +497,14 @@ export const PLAN_TYPE_META = {
   [PlanType.ENTERPRISE]: {
     label: 'Enterprise',
     color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
+  },
+  [PlanType.OLD_TEAM]: {
+    label: 'Team',
+    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
+  },
+  [PlanType.TEAM]: {
+    label: 'Team',
+    color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
 };
 

@@ -10,7 +10,6 @@ import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
-import StepHeading from '../StepHeading';
 import BillingDropdown from './components/BillingDropdown';
 import DiscountMessageContainer from './components/DiscountMessageContainer';
 import PriceBox from './components/PriceBox';
@@ -30,8 +29,11 @@ function SeatsAndBilling({
     if (period === BillingPeriod.MONTHLY) {
       discountMessage = 'You could be saving 20% with annual billing';
     } else if (period === BillingPeriod.ANNUALLY) {
-      const savings = (plan.pricing.MO.price - plan.pricing.YR.price) * 0.12 * seats;
-      discountMessage = `You're saving $${savings} with annual billing ✨`;
+      discountMessage = (
+        <span>
+          You're <span style={{ color: '#279745' }}>saving 20%</span> with annual billing ✨
+        </span>
+      );
     }
   } else {
     discountMessage = '--';
@@ -42,13 +44,12 @@ function SeatsAndBilling({
 
   return (
     <>
-      <StepHeading heading="2. Editors and billing" />
       <StepSection secondary>
         <FlexApart>
           <Flex>
             <SeatsInput errorMessage={seatError} hasError={!!seatError} onChange={setSeats} value={seats} />
             <SeatsBillingText>
-              <div>Editors</div>
+              <div>Editor Seats,</div>
               <Dropdown
                 options={[
                   {

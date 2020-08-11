@@ -30,7 +30,7 @@ const MEMBERS = [
   },
 ];
 
-const getProps: any = () => ({ permissionType: Permission.COMMENTING, placeholder: 'Comment or @mention', members: MEMBERS, plan: PlanType.TEAM });
+const getProps: any = () => ({ permissionType: Permission.COMMENTING, placeholder: 'Comment or @mention', members: MEMBERS, plan: PlanType.PRO });
 
 export default {
   title: 'Mention Editor',

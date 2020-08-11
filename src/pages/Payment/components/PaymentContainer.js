@@ -1,8 +1,6 @@
 import { css, styled } from '@/hocs';
 
 const PaymentContainer = styled.div`
-  min-height: 611px;
-
   ${({ isLoading }) =>
     !!isLoading &&
     css`

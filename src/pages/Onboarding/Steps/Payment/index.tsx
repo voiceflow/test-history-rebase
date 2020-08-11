@@ -109,7 +109,6 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
         menu: (
           <Menu>
             <MenuItem onClick={() => setSelectedPlan(PlanType.PRO)}>Pro Plan</MenuItem>
-            <MenuItem onClick={() => setSelectedPlan(PlanType.TEAM)}>Team Plan</MenuItem>
           </Menu>
         ),
       }

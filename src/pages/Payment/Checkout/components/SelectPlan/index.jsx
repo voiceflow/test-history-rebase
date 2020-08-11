@@ -2,23 +2,23 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
-import { PlanType } from '@/constants';
+import { PLAN_INFO_LINK, PlanType } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 
 import StepHeading from '../StepHeading';
-import PlanOptionCard from './PlanOptionCard';
+import PlanInfoCard from './PlanInfoCard';
 
 function SelectPlan({
   payment: {
     state: { plans, plan, period },
-    actions: { setPlan, showDetails },
+    actions: { setPlan },
   },
 }) {
   return (
     <>
       <StepHeading
-        heading="1. Select workspace plan"
+        heading="UPGRADE PLAN"
         actions={[
           {
             label: (
@@ -27,7 +27,7 @@ function SelectPlan({
                 <SvgIcon size={12} icon="next" style={{ display: 'inline-block', marginLeft: 7, marginBottom: -2 }} />
               </>
             ),
-            action: showDetails,
+            action: () => window.open(PLAN_INFO_LINK, '_blank'),
           },
         ]}
       />
@@ -36,7 +36,7 @@ function SelectPlan({
           {plans
             .filter(({ id }) => id !== PlanType.ENTERPRISE || id !== PlanType.OLD_ENTERPRISE)
             .map((option) => (
-              <PlanOptionCard key={option.id} plan={option} active={plan.id === option.id} selectPlan={setPlan} period={period} />
+              <PlanInfoCard key={option.id} plan={option} active={plan.id === option.id} selectPlan={setPlan} period={period} />
             ))}
         </Flex>
       </StepSection>

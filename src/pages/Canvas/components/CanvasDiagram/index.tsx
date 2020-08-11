@@ -41,11 +41,13 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
   const isEditingMode = useEditingMode();
+  const [draggedCanvas, setDraggedCanvas] = React.useState(false);
   const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
   const onDragStart = React.useCallback(
     (event: React.DragEvent) => {
+      setDraggedCanvas(true);
       if (isMarkupCreating && MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
         event.preventDefault();
         engine.clearActivation();
@@ -62,9 +64,20 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     engine.clearActivation();
   }, []);
 
-  const onMouseDown = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (event.defaultPrevented || event.button === 2) return;
+  const onClickCanvas = React.useCallback(
+    async (event: React.MouseEvent) => {
+      if (event.defaultPrevented || draggedCanvas) {
+        setDraggedCanvas(false);
+        return;
+      }
+
+      if (isMarkupCreating && !MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
+        if (markupModeType === MarkupModeType.TEXT) {
+          await engine.markup.addTextNode();
+        }
+
+        finishMarkupCreating();
+      }
 
       if (isCommentingMode && !engine.comment.hasTarget) {
         if (engine.comment.isCreating || engine.comment.hasFocus) {
@@ -75,22 +88,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         }
       }
     },
-    [isCommentingMode]
-  );
-
-  const onClickCanvas = React.useCallback(
-    async (event: React.MouseEvent) => {
-      if (event.defaultPrevented) return;
-
-      if (isMarkupCreating && !MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
-        if (markupModeType === MarkupModeType.TEXT) {
-          await engine.markup.addTextNode();
-        }
-
-        finishMarkupCreating();
-      }
-    },
-    [isCommentingMode, isMarkupCreating, markupModeType]
+    [isCommentingMode, isMarkupCreating, markupModeType, draggedCanvas]
   );
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
@@ -134,7 +132,6 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         viewport={viewport}
         onClick={onClickCanvas}
         onMouseUp={onMouseUp}
-        onMouseDown={onMouseDown}
         onChange={updateViewport}
         onPan={panViewport}
         onZoom={zoomViewport}

@@ -22,6 +22,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const blockRef = React.useRef<BlockAPI>(null);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const { name, variant, combinedNodes, lockOwner, isMergeTarget } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve();
 
@@ -147,8 +148,10 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
   const captureDropRef = React.useCallback((api: BlockAPI | null) => api && connectBlockDrop(api.ref.current!), [connectBlockDrop]);
 
-  const onMouseDown = React.useCallback((event: React.MouseEvent) => {
-    if (event.defaultPrevented || !engine.comment.isActive) return;
+  const onClick = React.useCallback((event: React.MouseEvent) => {
+    if (event.defaultPrevented || !engine.comment.isActive) {
+      return;
+    }
 
     if (engine.comment.isCreating) {
       engine.comment.resetCreating();
@@ -158,12 +161,6 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
     event.stopPropagation();
     event.nativeEvent.stopImmediatePropagation();
-  }, []);
-
-  const onClick = React.useCallback((event: React.MouseEvent) => {
-    if (event.defaultPrevented || !engine.comment.isActive) return;
-
-    event.preventDefault();
   }, []);
 
   const isDisabled = isHovered && hasLinkWarning;
@@ -188,7 +185,6 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
           lockOwner={lockOwner}
           ref={composeRefs(ref, blockRef, captureDropRef)}
           canEditTitle
-          onMouseDown={onMouseDown}
           onClick={onClick}
           {...hoverHandlers}
         >

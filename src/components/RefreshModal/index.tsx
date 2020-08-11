@@ -6,14 +6,15 @@ import Modal, { ModalFooter } from '@/components/Modal';
 import { IS_DEVELOPMENT } from '@/config';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
-import { useModals, useSetup } from '@/hooks';
+import { useModals, useScheduled, useSetup } from '@/hooks';
 import { BodyContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
+import Logger from '@/utils/logger';
+
+const log = Logger.child('refreshModal');
 
 const StyledModal = styled(Modal)`
   max-width: 392px;
 `;
-
-const INTERVAL = 600000; // 10 mins
 
 const RefreshModal: React.FC = () => {
   const pageCache = React.useRef<string>();
@@ -32,18 +33,24 @@ const RefreshModal: React.FC = () => {
     }
 
     pageCache.current = await fetchPage();
+  });
 
-    setInterval(async () => {
-      const nextPage = await fetchPage();
+  useScheduled(['8pm', '8am'], async () => {
+    if (!pageCache.current) return;
 
-      if (nextPage !== pageCache.current) {
-        open();
-        pageCache.current = nextPage;
+    log.info(log.pending('checking for new releases'));
 
-        // to speedup refresh
-        window.document.head.insertAdjacentHTML('beforeend', `<link rel="prerender" href="${window.location.href}" />`);
-      }
-    }, INTERVAL);
+    const nextPage = await fetchPage();
+
+    if (nextPage !== pageCache.current) {
+      pageCache.current = nextPage;
+
+      log.info(log.success('new release found!'));
+      open();
+
+      // to speedup refresh
+      window.document.head.insertAdjacentHTML('beforeend', `<link rel="prerender" href="${window.location.href}" />`);
+    }
   });
 
   return (

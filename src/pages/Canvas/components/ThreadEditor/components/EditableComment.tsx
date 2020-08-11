@@ -44,11 +44,11 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
   React.useEffect(() => {
     // TODO: figure out why this is needed
     // this is to render cursor at the end of the text
+
     if (inputRef.current) {
       const valueLength = inputRef.current.value.length;
 
       inputRef.current.setSelectionRange(valueLength, valueLength);
-      inputRef.current.focus();
     }
   }, [isEditing]);
 
@@ -71,7 +71,7 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
             onBlur={onBlur}
             inputProps={{
               inputRef,
-              autoFocus: isEditing || inputRef.current,
+              autoFocus: isEditing,
               onKeyDown: async (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
                   onPost();

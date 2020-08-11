@@ -219,16 +219,29 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const thread = this.select(Thread.threadByIDSelector)(threadID);
 
     if (thread.diagramID !== diagramID) {
-      await this.dispatch(Router.goToDiagramCommenting(thread.diagramID));
+      await this.dispatch(Router.goToDiagramCommenting(thread.diagramID, threadID));
+      return;
     }
 
     const threadInstance = this.thread(threadID)?.instance;
     if (!threadInstance) return;
 
-    const coords = threadInstance.getCoords();
-    this.engine.center(this.engine.canvas!.fromCoords(coords));
+    this.engine.center(this.engine.canvas!.fromCoords(threadInstance.getCoords()), false);
+    this.forceRedrawThreads();
 
-    this.log.info('centered canvas on thread', this.log.slug(threadID));
+    this.log.info(this.log.success('centered canvas on thread'), this.log.slug(threadID));
+  }
+
+  forceRedrawThreads() {
+    if (!this.isActive) return;
+
+    const plane = this.engine.canvas!.getOuterPlane();
+    const threads = this.select(Thread.activeDiagramThreadsSelector);
+
+    threads.forEach(({ id, position, nodeID }) => {
+      const thread = this.thread(id);
+      return thread?.instance?.forceRedraw(thread.calculateCoordinates(position, nodeID).onPlane(plane));
+    });
   }
 
   redrawThread(threadID: string) {

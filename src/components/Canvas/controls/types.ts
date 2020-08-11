@@ -22,12 +22,12 @@ export type MouseZoomAction = {
 
 export type ZoomAction = Either<TrackpadZoomAction, MouseZoomAction>;
 
-export type StartAnimateAction = {
-  type: ControlType.START_ANIMATE;
+export type StartInteraction = {
+  type: ControlType.START_INTERACTION;
 };
 
-export type EndAnimateAction = {
-  type: ControlType.END_ANIMATE;
+export type EndIneraction = {
+  type: ControlType.END_INTERACTION;
 };
 
 export type EndAction = {
@@ -57,8 +57,8 @@ export type PanAction = {
 
 export type ControlAction =
   | ZoomAction
-  | StartAnimateAction
-  | EndAnimateAction
+  | StartInteraction
+  | EndIneraction
   | EndAction
   | PanAction
   | ClickAction

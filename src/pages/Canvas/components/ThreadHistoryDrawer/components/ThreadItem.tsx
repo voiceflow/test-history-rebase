@@ -28,12 +28,11 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   const hasReplies = comments.length - 1;
 
   const onClick = React.useCallback(async () => {
-    await engine.comment.centerThread(threadID);
-
     if (focusThread.focusedID === threadID) {
       focusThread.resetFocus();
     } else {
       await focusThread.setFocus(threadID);
+      await engine.comment.centerThread(threadID);
     }
   }, [focusThread.focusedID]);
 

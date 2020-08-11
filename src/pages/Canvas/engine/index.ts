@@ -347,8 +347,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     if (startNode) {
       const [nodeID] = startNode;
 
-      this.node.center(nodeID);
+      this.node.center(nodeID, !this.comment.isActive);
       this.selection.replace([nodeID]);
+      this.comment.forceRedrawThreads();
       this.log.info(this.log.success('focused on the home block'));
     }
   }
@@ -366,15 +367,18 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     return new Coords(this.mousePosition.current!);
   }
 
-  center([centerX, centerY]: Point) {
+  center([centerX, centerY]: Point, animate = true) {
     const xOffset = window.innerWidth / 2;
     const yOffset = window.innerHeight / 2;
 
     const canvasAPI = this.canvas!;
+    const nextPosition: Point = [(xOffset - centerX) * 0.8, (yOffset - centerY - 100) * 0.8];
 
-    canvasAPI.applyTransition();
+    if (animate) {
+      canvasAPI.applyTransition();
+    }
     canvasAPI.setZoom(80);
-    canvasAPI.setPosition([(xOffset - centerX) * 0.8, (yOffset - centerY - 100) * 0.8]);
+    canvasAPI.setPosition(nextPosition);
   }
 
   async reset() {

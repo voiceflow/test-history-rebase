@@ -26,7 +26,7 @@ class TrackPadControls extends BaseControls {
     this.lastScale = 1;
     event.preventDefault();
 
-    this.handle({ type: ControlType.START_ANIMATE });
+    this.handle({ type: ControlType.START_INTERACTION });
   };
 
   gesturechange = (event: GestureEvent) => {
@@ -46,7 +46,7 @@ class TrackPadControls extends BaseControls {
 
   onAnimateCompleteEarly = () => {
     this.animateCompleteEarly = null;
-    this.handle({ type: ControlType.END_ANIMATE });
+    this.handle({ type: ControlType.END_INTERACTION });
   };
 
   wheel = preventDefault((event: WheelEvent & { wheelDeltaX?: number; wheelDeltaY?: number }) => {
@@ -157,7 +157,7 @@ class TrackPadControls extends BaseControls {
     if (this.animateCompleteEarly) {
       clearTimeout(this.animateCompleteEarly);
     } else {
-      this.handle({ type: ControlType.START_ANIMATE });
+      this.handle({ type: ControlType.START_INTERACTION });
     }
 
     this.animateCompleteEarly = setTimeout(this.onAnimateCompleteEarly, ANIMATION_TIMEOUT);

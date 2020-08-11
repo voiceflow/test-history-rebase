@@ -35,7 +35,7 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
 
   const elementInstance = useElementInstance(ref);
 
-  const translate = useVectorDragTranslate(ref, coords);
+  const [translate, updateCoords] = useVectorDragTranslate(ref, coords);
 
   return React.useMemo<InternalThreadInstance<T>>(
     () => ({
@@ -48,6 +48,7 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
       getCoords: () => coords.current!,
 
       translate,
+      forceRedraw: updateCoords,
     }),
     [elementInstance]
   );

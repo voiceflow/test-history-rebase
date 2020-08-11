@@ -1,4 +1,4 @@
-import { CANVAS_ANIMATING_CLASSNAME } from '@/components/Canvas/constants';
+import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
 import Flex from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
@@ -41,7 +41,7 @@ const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
       `}
   }
 
-  .${CANVAS_ANIMATING_CLASSNAME} & {
+  .${CANVAS_INTERACTING_CLASSNAME} & {
     pointer-events: none;
   }
 `;

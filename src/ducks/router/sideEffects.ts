@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import { generatePath } from 'react-router-dom';
 
 import client from '@/client';
@@ -9,7 +10,7 @@ import * as Skill from '@/ducks/skill';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 
-import { goTo, goToCanvasCommenting, goToPrototype, goToPublish } from './actions';
+import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, redirectToCanvasCommenting } from './actions';
 
 const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
   const state = getState();
@@ -55,6 +56,14 @@ export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getStat
   dispatch(goToCanvasCommenting(versionID, diagramID));
 };
 
+export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+  const diagramID = Skill.activeDiagramIDSelector(state);
+
+  dispatch(redirectToCanvasCommenting(versionID, diagramID));
+};
+
 export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
@@ -75,11 +84,11 @@ export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getSta
   dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
 };
 
-export const goToDiagramCommenting = (diagramID: string): Thunk => async (dispatch, getState) => {
+export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thunk => async (dispatch, getState) => {
   const versionID = Skill.activeSkillIDSelector(getState());
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
-  dispatch(goToCanvasCommenting(versionID, diagramID));
+  dispatch(goToCanvasCommenting(versionID, diagramID, `?${queryString.stringify({ thread: threadID })}`));
 };
 
 export const goToCurrentPrototype = (): Thunk => async (dispatch, getState) => {

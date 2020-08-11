@@ -89,13 +89,13 @@ export const resolvedThreads = createSelector([allThreadsSelector], (threads) =>
 
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.length);
 
-export const activeDiagramThreadIDsSelector = createSelector(
+export const activeDiagramThreadsSelector = createSelector(
   [allThreadsSelector, Skill.activeDiagramIDSelector, Creator.allNodeIDsSelector],
   (threads, diagramID, nodeIDs) =>
-    threads
-      .filter((thread) => thread.diagramID === diagramID && !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
-      .map(({ id }) => id)
+    threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
 );
+
+export const activeDiagramThreadIDsSelector = createSelector([activeDiagramThreadsSelector], (threads) => threads.map(({ id }) => id));
 
 export const threadIDsByNodeIDSelector = createSelector([allThreadsSelector], (threads) => (nodeID: string) =>
   threads.filter((thread) => thread.nodeID === nodeID).map(({ id }) => id)

@@ -1,4 +1,4 @@
-import { CANVAS_ANIMATING_CLASSNAME } from '@/components/Canvas/constants';
+import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
 import { styled } from '@/hocs';
 import { INDICATOR_DIAMETER } from '@/pages/Canvas/components/CommentThread/constants';
 
@@ -25,7 +25,7 @@ const ThreadEditorContainer = styled.div`
     border: none;
   }
 
-  .${CANVAS_ANIMATING_CLASSNAME} & {
+  .${CANVAS_INTERACTING_CLASSNAME} & {
     pointer-events: none;
   }
 `;

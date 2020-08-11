@@ -1,4 +1,4 @@
-import { CALL_HISTORY_METHOD, push } from 'connected-react-router';
+import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
 import { Path, RootRoute } from '@/config/routes';
@@ -8,6 +8,8 @@ import { Action } from '@/store/types';
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
 export const goTo = (path: string, state = null) => push(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
+
+export const redirectTo = (path: string, state = null) => replace(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
 
 export const goToHome = () => goTo('');
 
@@ -32,5 +34,8 @@ export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.PROD
 
 export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: productID }));
 
-export const goToCanvasCommenting = (versionID: string, diagramID: string) =>
-  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${window.location.search}`);
+export const goToCanvasCommenting = (versionID: string, diagramID: string, search = window.location.search) =>
+  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}${search}`);
+
+export const redirectToCanvasCommenting = (versionID: string, diagramID: string) =>
+  redirectTo(generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID }));

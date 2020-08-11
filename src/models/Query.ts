@@ -1,6 +1,6 @@
 import { BillingPeriod, PlanType } from '@/constants';
 
-export type Query = Query.Onboarding & Query.Dashboard & Query.Register;
+export type Query = Query.Onboarding & Query.Dashboard & Query.Register & Query.Canvas;
 
 export namespace Query {
   export type Onboarding = Partial<{
@@ -23,5 +23,9 @@ export namespace Query {
     name: string;
     coupon: string;
     invite: string;
+  }>;
+
+  export type Canvas = Partial<{
+    thread: string;
   }>;
 }

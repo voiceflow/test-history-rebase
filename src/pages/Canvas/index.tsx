@@ -31,7 +31,7 @@ const Canvas: React.FC = () => {
   const commenting = useFeature(FeatureFlag.COMMENTING);
 
   React.useEffect(() => {
-    if (engine.getRootNodeIDs().length === 1) {
+    if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
       engine.focusHome();
     }
   }, [engine]);

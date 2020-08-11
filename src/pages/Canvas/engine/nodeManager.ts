@@ -533,13 +533,13 @@ class NodeManager extends EngineConsumer {
     this.engine.transformation.reinitialize();
   }
 
-  center(nodeID: string) {
+  center(nodeID: string, animate = true) {
     const node = this.engine.getNodeByID(nodeID);
     const center = this.api(nodeID)?.instance?.getCenterPoint();
 
     if (!center || MARKUP_NODES.includes(node.type)) return;
 
-    this.engine.center(center);
+    this.engine.center(center, animate);
 
     this.log.info('centered canvas on node', this.log.slug(nodeID));
   }

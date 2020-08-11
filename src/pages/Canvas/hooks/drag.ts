@@ -7,7 +7,7 @@ import { noop } from '@/utils/functional';
 import { Coords, Vector } from '@/utils/geometry';
 import MouseMovement from '@/utils/mouseMovement';
 
-const updateTransform = <T extends HTMLElement>(ref: React.RefObject<T | null>, [x, y]: Point) => {
+export const updateTransform = <T extends HTMLElement>(ref: React.RefObject<T | null>, [x, y]: Point) => {
   const targetEl = ref.current!;
 
   window.requestAnimationFrame(() => {
@@ -24,15 +24,26 @@ export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T |
     updateTransform(ref, nextPosition);
   }, []);
 
-export const useVectorDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, coords: React.MutableRefObject<Coords>) =>
-  React.useCallback((movement: Vector) => {
-    const nextCoords = coords.current.add(movement);
+export const useVectorDragTranslate = <T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+  coords: React.MutableRefObject<Coords>
+): [(movement: Vector) => Coords, (coords: Coords) => void] => {
+  const update = React.useCallback((nextCoords: Coords) => {
     coords.current = nextCoords;
 
     updateTransform(ref, nextCoords.point);
+  }, []);
+
+  const translate = React.useCallback((movement: Vector) => {
+    const nextCoords = coords.current.add(movement);
+
+    update(nextCoords);
 
     return nextCoords;
   }, []);
+
+  return [translate, update];
+};
 
 export const useEntityDrag = (
   {

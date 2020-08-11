@@ -66,7 +66,7 @@ class SelectionEngine extends EngineConsumer {
   replace(targets: string[] = [], force = false) {
     const currentTargets = this.getTargets();
 
-    if ((!force && this.engine.isCanvasBusy) || hasIdenticalMembers(targets, currentTargets)) return;
+    if ((!force && this.engine.isCanvasBusy) || this.engine.comment.isActive || hasIdenticalMembers(targets, currentTargets)) return;
 
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();

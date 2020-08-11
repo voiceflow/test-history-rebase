@@ -1,10 +1,16 @@
+import * as ConnectedReactRouter from 'connected-react-router';
+import queryString from 'query-string';
 import React from 'react';
 import { createSelector } from 'reselect';
 
 import * as Creator from '@/ducks/creator';
+import * as Router from '@/ducks/router';
 import * as Thread from '@/ducks/thread';
+import { useSetup } from '@/hooks';
 import * as Models from '@/models';
+import { Query } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
+import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 
 import { EntityType } from '../constants';
@@ -18,6 +24,8 @@ export type ThreadInstance = EntityInstance & {
   getCoords: () => Coords;
 
   translate: (movement: Vector) => Coords;
+
+  forceRedraw: (nextCoords: Coords) => void;
 };
 
 const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.threadByIDSelector], (getNode, getThread) => (threadID: string) => {
@@ -55,6 +63,21 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
     return !!this.resolve().thread;
   }
 
+  calculateCoordinates(point: Point, nodeID: string | null) {
+    if (nodeID) {
+      const node = this.engine.node.api(nodeID);
+      if (!node?.instance?.isReady()) {
+        return new Coords([0, 0]);
+      }
+
+      const anchorCoords = node.instance.getThreadAnchorCoords()!;
+
+      return anchorCoords.add(point).onPlane(this.engine.canvas!.getOuterPlane());
+    }
+
+    return this.engine.canvas!.toCoords(point).onPlane(this.engine.canvas!.getOuterPlane());
+  }
+
   useCoordinates() {
     const { x, y, nodeID, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index } = this.useState((e) => {
       const { thread, node, parentNode } = e.resolve();
@@ -72,20 +95,17 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
       };
     });
 
-    return React.useMemo(() => {
-      if (nodeID) {
-        const node = this.engine.node.api(nodeID);
-        if (!node?.instance?.isReady()) {
-          return new Coords([0, 0]);
-        }
-
-        const anchorCoords = node.instance.getThreadAnchorCoords()!;
-
-        return anchorCoords.add([x, y]).onPlane(this.engine.canvas!.getOuterPlane());
-      }
-
-      return this.engine.canvas!.toCoords([x, y]).onPlane(this.engine.canvas!.getOuterPlane());
-    }, [nodeID, x, y, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index]);
+    return React.useMemo(() => this.calculateCoordinates([x, y], nodeID), [
+      nodeID,
+      x,
+      y,
+      parentNodeID,
+      nodeX,
+      nodeY,
+      parentNodeX,
+      parentNodeY,
+      index,
+    ]);
   }
 
   useInstance(instance: ThreadInstance) {
@@ -101,6 +121,17 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
         engine.expireThread(this.threadID, this.instanceID);
       };
     }, []);
+
+    useSetup(async () => {
+      const search = this.engine.select(ConnectedReactRouter.getSearch);
+      const query = queryString.parse(search) as Query.Canvas;
+
+      if (query.thread) {
+        this.engine.store.dispatch(Router.redirectToCurrentCanvasCommenting());
+        await engine.comment.setFocus(query.thread);
+        await engine.comment.centerThread(query.thread);
+      }
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import { Identifier } from '@/styles/constants';
 
 export const CANVAS_BUSY_CLASSNAME = `${Identifier.CANVAS}--busy`;
+export const CANVAS_INTERACTING_CLASSNAME = `${Identifier.CANVAS}--interacting`;
 export const CANVAS_ANIMATING_CLASSNAME = `${Identifier.CANVAS}--animating`;
 
 export const ZOOM_FACTOR = 100;
@@ -20,8 +21,8 @@ export enum ControlScheme {
 }
 
 export enum ControlType {
-  START_ANIMATE = 'START_ANIMATE',
-  END_ANIMATE = 'END_ANIMATE',
+  START_INTERACTION = 'START_INTERACTION',
+  END_INTERACTION = 'END_INTERACTION',
   SCALE = 'SCALE',
   PAN = 'PAN',
   CLICK = 'CLICK',

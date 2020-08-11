@@ -39,7 +39,7 @@ class MouseControls extends BaseControls {
 
       document.addEventListener('mousemove', this.mousemove);
 
-      this.handle({ type: ControlType.START_ANIMATE });
+      this.handle({ type: ControlType.START_INTERACTION });
     }
   };
 
@@ -66,7 +66,7 @@ class MouseControls extends BaseControls {
       this.isPanning = false;
 
       this.handle({ type: ControlType.END });
-      this.handle({ type: ControlType.END_ANIMATE });
+      this.handle({ type: ControlType.END_INTERACTION });
     } else if (this.isDragging) {
       this.isDragging = false;
 

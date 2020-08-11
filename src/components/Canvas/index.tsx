@@ -10,7 +10,14 @@ import { mouseEventOffset } from '@/utils/dom';
 import { CartesianPlane, Coords, Vector } from '@/utils/geometry';
 
 import { Container, RenderLayer } from './components';
-import { CANVAS_ANIMATING_CLASSNAME, CANVAS_BUSY_CLASSNAME, ControlScheme, ControlType, ZOOM_FACTOR } from './constants';
+import {
+  CANVAS_ANIMATING_CLASSNAME,
+  CANVAS_BUSY_CLASSNAME,
+  CANVAS_INTERACTING_CLASSNAME,
+  ControlScheme,
+  ControlType,
+  ZOOM_FACTOR,
+} from './constants';
 import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
@@ -201,6 +208,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     clearTimeout(this.applyTransitionTimeout);
 
+    this.props.removeClass?.(CANVAS_ANIMATING_CLASSNAME);
     this.applyTransitionTimeout = null;
 
     // sometimes in the test tool can be undefined
@@ -224,6 +232,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       clearTimeout(this.applyTransitionTimeout);
     }
 
+    this.props.addClass?.(CANVAS_ANIMATING_CLASSNAME);
     this.applyTransitionTimeout = setTimeout(this.onTransitionEnd, (duration + delay) * 1000 + 100);
 
     renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s`;
@@ -294,11 +303,11 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       case ControlType.MOUSE_UP:
         this.props.onMouseUp?.(control.event);
         break;
-      case ControlType.START_ANIMATE:
-        this.props.addClass?.(CANVAS_ANIMATING_CLASSNAME);
+      case ControlType.START_INTERACTION:
+        this.props.addClass?.(CANVAS_INTERACTING_CLASSNAME);
         break;
-      case ControlType.END_ANIMATE:
-        this.props.removeClass?.(CANVAS_ANIMATING_CLASSNAME);
+      case ControlType.END_INTERACTION:
+        this.props.removeClass?.(CANVAS_INTERACTING_CLASSNAME);
         break;
       case ControlType.END:
         this.onChange();

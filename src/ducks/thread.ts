@@ -43,9 +43,13 @@ export type AnyCommentingAction = UpdateUnreadComments | CRUD.AnyCRUDAction<Thre
 export const updateUnreadComments = (hasUnreadComments: boolean): UpdateUnreadComments =>
   createAction(CommentingAction.UPDATE_UNREAD_COMMENTS, hasUnreadComments);
 
-export const { add: addThread, update: updateThread, remove: removeThread, replace: replaceThreads } = CRUD.createCRUDActionCreators<Thread>(
-  STATE_KEY
-);
+export const {
+  add: addThread,
+  update: updateThread,
+  remove: removeThread,
+  removeMany: removeManyThreads,
+  replace: replaceThreads,
+} = CRUD.createCRUDActionCreators<Thread>(STATE_KEY);
 
 // reducers
 
@@ -185,6 +189,20 @@ export const deleteThread = (threadID: string): Thunk => async (dispatch, getSta
   try {
     await client.thread.delete(projectID, threadID);
     dispatch(removeThread(threadID));
+  } catch (e) {
+    toast.error('Something went wrong. Please try again');
+  }
+};
+
+export const deleteThreadsByNodeIDs = (nodeIDs: string[]): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const diagramID = Skill.activeDiagramIDSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
+  const threadIDs = nodeIDs.flatMap(threadIDsByNodeIDSelector(state));
+
+  try {
+    await client.thread.deleteThreadsByNodeIDs(projectID, diagramID, nodeIDs);
+    dispatch(removeManyThreads(threadIDs));
   } catch (e) {
     toast.error('Something went wrong. Please try again');
   }

@@ -14,6 +14,7 @@ import {
   denormalize,
   getNormalizedByKey,
   normalize,
+  removeAllNormalizedByKeys,
   removeNormalizedByKey,
   reorderKeys,
   updateNormalizedByKey,
@@ -39,6 +40,7 @@ export enum CRUDAction {
   CRUD_ADD_MANY = 'CRUD:ADD_MANY',
   CRUD_UPDATE = 'CRUD:UPDATE',
   CRUD_REMOVE = 'CRUD:REMOVE',
+  CRUD_REMOVE_MANY = 'CRUD:REMOVE_MANY',
   CRUD_REPLACE = 'CRUD:REPLACE',
   CRUD_REORDER = 'CRUD:REORDER',
   CRUD_MOVE = 'CRUD:MOVE',
@@ -54,13 +56,24 @@ export type CRUDPatch<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_UPDATE,
 
 export type CRUDRemove<M extends Meta = Meta> = Action<CRUDAction.CRUD_REMOVE, string, M>;
 
+export type CRUDRemoveMany<M extends Meta = Meta> = Action<CRUDAction.CRUD_REMOVE_MANY, string[], M>;
+
 export type CRUDReplace<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_REPLACE, T[], M>;
 
 export type CRUDReorder<M extends Meta = Meta> = Action<CRUDAction.CRUD_REORDER, string[], M>;
 
 export type CRUDMove<M extends Meta = Meta> = Action<CRUDAction.CRUD_MOVE, { from: string | number; to: string | number }, M>;
 
-export type AnyCRUDAction<T> = CRUDAdd<T> | CRUDAddMany<T> | CRUDPatch<T> | CRUDUpdate<T> | CRUDRemove | CRUDReplace<T> | CRUDReorder | CRUDMove;
+export type AnyCRUDAction<T> =
+  | CRUDAdd<T>
+  | CRUDAddMany<T>
+  | CRUDPatch<T>
+  | CRUDUpdate<T>
+  | CRUDRemove
+  | CRUDRemoveMany
+  | CRUDReplace<T>
+  | CRUDReorder
+  | CRUDMove;
 
 // reducers
 
@@ -82,6 +95,9 @@ export const crudUpdateReducer = <T, S extends CRUDState<T> = CRUDState<T>>(
 
 export const crudRemoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: key }: CRUDRemove) =>
   removeNormalizedByKey(state, key);
+
+export const crudRemoveManyReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: keys }: CRUDRemoveMany) =>
+  removeAllNormalizedByKeys(state, keys);
 
 export const crudReplaceReducer = <T, K extends GetKey<T> = (obj: T) => string>({ payload: values }: CRUDReplace<T>, getKey: K) =>
   normalize(values, getKey);
@@ -124,6 +140,8 @@ const createCRUDReducer: {
       return crudUpdateReducer(state, action);
     case CRUDAction.CRUD_REMOVE:
       return crudRemoveReducer(state, action);
+    case CRUDAction.CRUD_REMOVE_MANY:
+      return crudRemoveManyReducer(state, action);
     case CRUDAction.CRUD_REPLACE:
       return crudReplaceReducer(action, keyGetter);
     case CRUDAction.CRUD_REORDER:
@@ -185,6 +203,8 @@ export const updateModel = <T>(
 
 export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
 
+export const removeManyModels = (modelType: string) => (keys: string[]) => crudAction(modelType, CRUDAction.CRUD_REMOVE_MANY, keys);
+
 export const replaceModels = <T, M extends Meta = Meta>(modelType: string) => (values: T[], meta?: M) =>
   crudAction(modelType, CRUDAction.CRUD_REPLACE, values, meta);
 
@@ -198,6 +218,7 @@ export const createCRUDActionCreators = <T>(modelType: string) => ({
   addMany: addManyModels<T>(modelType),
   update: updateModel<T>(modelType),
   remove: removeModel(modelType),
+  removeMany: removeManyModels(modelType),
   replace: replaceModels<T>(modelType),
   reorder: reorderModels(modelType),
   move: moveModels(modelType),

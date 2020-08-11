@@ -30,6 +30,8 @@ export const nodeByIDSelector = createSelector([rootSelector], ({ nodes }) => (n
 
 export const allNodesByIDsSelector = createSelector([rootSelector], ({ nodes }) => (nodeIDs: string[]) => getAllNormalizedByKeys(nodes, nodeIDs));
 
+export const combinedNodeIDsSelector = createSelector([nodeByIDSelector], (getNode) => (nodeID: string) => getNode(nodeID).combinedNodes);
+
 export const allLinkIDsSelector = createSelector([rootSelector], ({ links }) => links.allKeys);
 
 export const allLinksSelector = createSelector([rootSelector], ({ links }) => denormalize(links));

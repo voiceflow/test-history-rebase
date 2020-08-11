@@ -19,6 +19,9 @@ const threadClient = {
   },
 
   delete: (projectID: string, threadID: string) => fetch.delete(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`),
+
+  deleteThreadsByNodeIDs: (projectID: string, diagramID: string, nodeIDs: string[]) =>
+    fetch.delete(`${COMMENTING_PATH}/${projectID}/diagram/${diagramID}/node/threads`, { node_ids: nodeIDs }),
 };
 
 export default threadClient;

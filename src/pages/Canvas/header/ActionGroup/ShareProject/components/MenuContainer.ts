@@ -5,6 +5,7 @@ const MenuContainer = styled(Menu)`
   /* to override default Popovercontainer width styling */
   max-width: 456px;
   width: 456px;
+  max-height: 500px;
 `;
 
 export default MenuContainer;

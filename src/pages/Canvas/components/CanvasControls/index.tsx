@@ -36,7 +36,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const isMarkupMode = useMarkupMode();
 
   const eventualEngine = React.useContext(EventualEngineContext)!;
-  const markupFeature = useFeature(FeatureFlag.MARKUP);
   const commentingFeature = useFeature(FeatureFlag.COMMENTING);
 
   const onZoomIn = React.useCallback(() => {
@@ -138,17 +137,16 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
               {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
             </Box>
           )}
-          {markupFeature.isEnabled && (
-            <CanvasControlButton
-              {...CanvasControlMeta[CanvasControl.MARKUP]}
-              iconProps={{
-                active: isMarkupMode,
-                icon: isMarkupMode ? 'close' : 'editName',
-                size: isMarkupMode ? 14 : 16,
-              }}
-              onClick={toggleMarkup}
-            />
-          )}
+
+          <CanvasControlButton
+            {...CanvasControlMeta[CanvasControl.MARKUP]}
+            iconProps={{
+              active: isMarkupMode,
+              icon: isMarkupMode ? 'close' : 'editName',
+              size: isMarkupMode ? 14 : 16,
+            }}
+            onClick={toggleMarkup}
+          />
         </>
       )}
       <ControlContainer>

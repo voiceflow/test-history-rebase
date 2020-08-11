@@ -35,7 +35,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
 
-  const canvasExportFeature = useFeature(FeatureFlag.CANVAS_EXPORT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
@@ -123,7 +122,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 track={trackingEvents.trackActiveProjectDownloadLinkShare}
               />
 
-              {canvasExportFeature.isEnabled && <ExportItem onRedirect={openCanvasExportModal} />}
+              <ExportItem onRedirect={openCanvasExportModal} />
             </span>
             {canInviteByLink && inviteByLinkFeature.isEnabled && (
               <Footer onClick={stopImmediatePropagation()}>

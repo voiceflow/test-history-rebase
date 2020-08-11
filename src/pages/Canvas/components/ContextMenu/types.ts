@@ -11,7 +11,6 @@ export type ContextMenuOption<T> = {
     props: {
       engine: Engine;
       clipboard: ClipboardContextValue;
-      isMarkupFeatureEnabled: boolean;
       isTemplate: boolean;
     }
   ) => boolean;

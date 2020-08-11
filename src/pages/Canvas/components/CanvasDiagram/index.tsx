@@ -3,10 +3,8 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
-import { FeatureFlag } from '@/config/features';
 import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -33,7 +31,6 @@ type ConnectedCanvasDiagramProps = {
 };
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
-  const markup = useFeature(FeatureFlag.MARKUP);
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
 
@@ -145,7 +142,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
       >
         <LinkLayer />
         <NodeLayer />
-        {markup.isEnabled && <MarkupLayer />}
+        <MarkupLayer />
         <MergeLayer />
         <SelectionMarquee />
       </Canvas>

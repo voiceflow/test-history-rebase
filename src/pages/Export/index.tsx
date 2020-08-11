@@ -5,7 +5,6 @@ import React from 'react';
 import client from '@/client';
 import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
-import { FeatureFlag } from '@/config/features';
 import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
@@ -13,7 +12,6 @@ import { ProjectLoadingGate } from '@/gates';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { connect, styled, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useFeature } from '@/hooks';
 import { Node } from '@/models';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import DragTarget from '@/pages/Canvas/components/DragTarget';
@@ -84,7 +82,6 @@ const MockRealtimeGate: React.FC<{ children: () => React.ReactElement }> = ({ ch
 
 const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string) => void }> = ({ diagramID, initialize }) => {
   const engine = useEngine();
-  const markup = useFeature(FeatureFlag.MARKUP);
 
   React.useEffect(() => {
     initialize(diagramID);
@@ -99,7 +96,7 @@ const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string
           <CanvasProviders engine={engine}>
             <ExportStyle />
             <ExportCanvasDiagram onRegister={registerCanvas}>
-              {markup.isEnabled && <MarkupLayer />}
+              <MarkupLayer />
               <LinkLayer />
               <NodeLayer />
             </ExportCanvasDiagram>

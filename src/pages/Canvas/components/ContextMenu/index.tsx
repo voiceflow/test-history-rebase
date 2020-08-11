@@ -2,12 +2,10 @@ import React from 'react';
 import { Popper } from 'react-popper';
 
 import NestedMenu from '@/components/NestedMenu';
-import { FeatureFlag } from '@/config/features';
 import { CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine';
 import { buildVirtualElement } from '@/utils/dom';
@@ -54,12 +52,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspac
   const contextMenu = React.useContext(ContextMenuContext)!;
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
-  const markupFeature = useFeature(FeatureFlag.MARKUP);
 
   const optionProps = {
     engine,
     clipboard,
-    isMarkupFeatureEnabled: !!markupFeature?.isEnabled,
     isTemplate: isTemplateWorkspace,
   };
   const options =

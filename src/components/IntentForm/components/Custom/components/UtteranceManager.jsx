@@ -9,13 +9,12 @@ import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import Utterance from '@/components/Utterance';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable, useFeature, useModals, usePermission } from '@/hooks';
+import { useEnableDisable, useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { stopPropagation } from '@/utils/dom';
@@ -29,7 +28,6 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
 
   const utteranceRef = React.useRef();
 
-  const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
@@ -94,11 +92,9 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
       header="Utterances"
       initialOpen={intent.inputs.length === 0}
       infix={
-        bulkUploadFeature.isEnabled ? (
-          <TippyTooltip title="Bulk Import">
-            <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
-          </TippyTooltip>
-        ) : null
+        <TippyTooltip title="Bulk Import">
+          <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+        </TippyTooltip>
       }
       count={intent.inputs.length}
       tooltip={<UtterancesTooltip />}

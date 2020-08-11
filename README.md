@@ -256,13 +256,11 @@ yarn start --ff_someFeature
 
 #### Available Flags and Environment Variables
 
-- `ff_canvasExport` / `VF_APP_CANVAS_EXPORT`: enable canvas export feature
-- `ff_markup` / `VF_APP_FF_MARKUP`: enable canvas markup feature
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
-- `ff_repromptEditor` / `VF_APP_FF_REPROMPT_EDITOR`: enable reprompt editor
 - `ff_commenting` / `VF_APP_FF_COMMENTING`: commenting
-- `ff_bulkUpload` / `VF_APP_FF_BULK_UPLOAD`: slots and utterances bulk upload
 - `ff_workspaceCreationFlow` / `VF_APP_FF_WORKSPACE_CREATION_FLOW`: new create workspace flow
+- `ff_inviteByLink` / `VF_APP_FF_INVITE_BY_LINK`: invite new users to a project with a link
+- `ff_templates` / `VF_APP_FF_TEMPLATES`: access a workspace of cloneable template projects
 
 
 ### Environment variable overrides

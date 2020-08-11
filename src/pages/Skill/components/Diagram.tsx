@@ -1,9 +1,8 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
-import { useFeature, useTeardown } from '@/hooks';
+import { useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
@@ -26,7 +25,6 @@ export type DiagramProps = RouteComponentProps & {
 
 const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
   const eventualEngine = React.useContext(EventualEngineContext);
-  const markupFeature = useFeature(FeatureFlag.MARKUP);
   const isPrototypingMode = usePrototypingMode();
   const isMarkupMode = useMarkupMode();
 
@@ -43,7 +41,7 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
 
           <TopPrompt />
 
-          {markupFeature.isEnabled && isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
+          {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
 
           <CanvasControls />
 

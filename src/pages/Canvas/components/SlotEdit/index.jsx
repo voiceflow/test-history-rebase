@@ -12,12 +12,11 @@ import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
 import * as Slot from '@/ducks/slot';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
-import { useDidUpdateEffect, useFeature, useModals } from '@/hooks';
+import { useDidUpdateEffect, useModals } from '@/hooks';
 import { activeSlotTypes } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';
@@ -54,7 +53,6 @@ function SlotEdit({
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
 
-  const bulkUploadFeature = useFeature(FeatureFlag.BULK_UPLOAD);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(type);
   const [slotName, setSlotName] = React.useState(() => removeTrailingUnderscores(formatIntentName(name)));
@@ -181,11 +179,9 @@ function SlotEdit({
         variant="tertiary"
         header="Slot Type"
         infix={
-          bulkUploadFeature.isEnabled ? (
-            <TippyTooltip title="Bulk Import">
-              <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
-            </TippyTooltip>
-          ) : null
+          <TippyTooltip title="Bulk Import">
+            <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
+          </TippyTooltip>
         }
       >
         <Select

@@ -29,13 +29,10 @@ declare module 'webpack-nano/argv' {
     userflow: boolean;
 
     // feature flags
-    ff_bulkUpload: boolean;
-    ff_canvasExport: boolean;
     ff_commenting: boolean;
     ff_gadgets: boolean;
-    ff_markup: boolean;
-    ff_promptEditor: boolean;
-    ff_repromptEditor: boolean;
+    ff_workspaceCreationFlow: boolean;
+    ff_inviteByLink: boolean;
     ff_templates: boolean;
   }>;
 

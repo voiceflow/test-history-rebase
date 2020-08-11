@@ -40,9 +40,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Paste',
     value: CanvasAction.PASTE,
-    shouldRender: (_, { isMarkupFeatureEnabled }) => {
-      return isMarkupFeatureEnabled && !!localStorage.getItem(CLIPBOARD_DATA_KEY);
-    },
+    shouldRender: () => !!localStorage.getItem(CLIPBOARD_DATA_KEY),
   },
   {
     label: 'Return to Home',

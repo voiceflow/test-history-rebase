@@ -30,7 +30,7 @@
     "@types/recompose": "^0.30.7",
     "@types/sinon": "^7.5.2",
     "@types/sinon-chai": "^3.2.3",
-    "@types/styled-components": "^5.1.1",
+    "@types/styled-components": "^5.1.2",
     "@types/styled-system": "^5.1.9",
     "@voiceflow/apl-renderer": "^1.0.0",
     "@voiceflow/common": "^6.2.3",

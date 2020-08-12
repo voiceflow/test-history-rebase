@@ -52,11 +52,12 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
                   {plan ? (
                     <MenuItem disabled capitalize teamItem>
                       {PLAN_TYPE_META[plan].label} Plan
-                      {(plan === PlanType.STARTER || plan === PlanType.OLD_STARTER) && (
-                        <>
-                          &nbsp;-&nbsp; <ClickableText onClick={openUpgrade}>Upgrade</ClickableText>
-                        </>
-                      )}
+                      <>
+                        &nbsp;-&nbsp;{' '}
+                        <ClickableText onClick={openUpgrade}>
+                          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? <span>Upgrade</span> : <span>Manage</span>}
+                        </ClickableText>
+                      </>
                     </MenuItem>
                   ) : (
                     <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>

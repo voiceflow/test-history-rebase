@@ -9,6 +9,8 @@ export const CaretIcon = styled(SvgIcon)`
 
 export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; disabled?: boolean; variant: TextVariant }>`
   cursor: pointer;
+  display: inline-block;
+
 ${({ variant, isOpen }) =>
   variant === TextVariant.secondary &&
   !isOpen &&

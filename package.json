@@ -293,7 +293,7 @@
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^4.2.1",
     "webpack-nano": "^1.0.0",
-    "webpack-plugin-serve": "^0.12.0",
+    "webpack-plugin-serve": "^1.0.1",
     "webpackbar": "^3.2.0"
   },
   "husky": {

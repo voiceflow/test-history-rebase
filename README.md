@@ -261,25 +261,29 @@ yarn start --ff_someFeature
 - `ff_workspaceCreationFlow` / `VF_APP_FF_WORKSPACE_CREATION_FLOW`: new create workspace flow
 - `ff_inviteByLink` / `VF_APP_FF_INVITE_BY_LINK`: invite new users to a project with a link
 - `ff_templates` / `VF_APP_FF_TEMPLATES`: access a workspace of cloneable template projects
-
+- `ff_dataRefactor` / `VF_APP_FF_DATA_REFACTOR`: amazon/google jobs publish system
 
 ### Environment variable overrides
-To properly decouple code from configuration, certain configuration variables can be overriden at runtime. 
-This is accomplished by injecting these variables into the `window` global variable in `public/static.js`. 
+
+To properly decouple code from configuration, certain configuration variables can be overriden at runtime.
+This is accomplished by injecting these variables into the `window` global variable in `public/static.js`.
 The dockerfile entrypoint is a script that checks for container environment variables prefixed with `VF_OVERRIDE` and populates `public/static.js`.
-The override logic is written in `src/config/index.ts`; if the override on a given variable is populated, then it will override the target variable. 
-NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by the startup script.   
+The override logic is written in `src/config/index.ts`; if the override on a given variable is populated, then it will override the target variable.
+NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by the startup script.
 
 ## Previewing in a Development Environment
 
 #### Preparations
-Make sure your `envcli` utility is properly set up by following the [envcli readme](https://github.com/voiceflow/envcli).  
+
+Make sure your `envcli` utility is properly set up by following the [envcli readme](https://github.com/voiceflow/envcli).
 
 #### Previewing
+
 ```bash
 envcli preview
 ```
-Follow the interactive prompt for environment creation (if applicable). The command will output a CircleCI link that you can follow to see the deployment status of the `creator-app` in your environment. 
+
+Follow the interactive prompt for environment creation (if applicable). The command will output a CircleCI link that you can follow to see the deployment status of the `creator-app` in your environment.
 
 ## Editor Configuration
 

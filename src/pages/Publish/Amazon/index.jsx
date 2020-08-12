@@ -2,10 +2,14 @@
 import React, { useEffect, useState } from 'react';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
+import { FeatureFlag } from '@/config/features';
+import { JobStatus } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
+import { PublishContext } from '@/pages/Skill/contexts';
 
 import PublishAmazonForm from './Form';
 
@@ -13,14 +17,28 @@ export function PublishAmazon(props) {
   const { stage, amazon, isLocked, checkAmazonAccount, syncVendors, resetAlexaUpload, publish } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
+  const { job, publish: publishV2, cancel } = React.useContext(PublishContext);
+
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   const onPublish = () => {
     setOpen(true);
-    publish({ submit: true });
+    dataRefactor.isEnabled ? publishV2() : publish({ submit: true });
   };
 
-  useEffect(() => setClose(AlexaPublish.ALEXA_STATES[stage].end), [stage]);
+  useEffect(() => {
+    if (dataRefactor.isEnabled && job && job.status === JobStatus.FINISHED) {
+      setClose(true);
+    } else if (!dataRefactor.isEnabled) {
+      setClose(AlexaPublish.ALEXA_STATES[stage].end);
+    }
+  }, [stage, job?.status]);
 
   useEffect(() => {
+    if (dataRefactor.isEnabled) {
+      return;
+    }
+
     if (!amazon) {
       (async () => {
         await checkAmazonAccount();
@@ -34,8 +52,8 @@ export function PublishAmazon(props) {
   return (
     <>
       <PublishAmazonForm isLocked={isLocked} publish={onPublish} />
-      <Modal isOpen={open} onClosed={resetAlexaUpload} centered contentClassName="overflow-hidden">
-        {close && <ModalHeader toggle={() => setOpen(false)} header={AlexaPublish.ALEXA_STATES[stage]?.description} />}
+      <Modal isOpen={open} onClosed={dataRefactor.isEnabled ? cancel : resetAlexaUpload} centered contentClassName="overflow-hidden">
+        {close && <ModalHeader toggle={() => setOpen(false)} />}
         <UploadAlexa />
       </Modal>
     </>

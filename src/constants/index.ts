@@ -557,3 +557,10 @@ export enum InteractionModelTabType {
   INTENTS = 'intents',
   VARIABLES = 'variables',
 }
+
+export enum JobStatus {
+  IDLE = 'IDLE',
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+  FINISHED = 'FINISHED',
+}

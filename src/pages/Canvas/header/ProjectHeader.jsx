@@ -14,7 +14,8 @@ import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { projectViewerCountSelector } from '@/store/selectors';
 
-import ActionGroup, { GroupContainer } from './ActionGroup';
+import ActionGroup from './ActionGroup';
+import { GroupContainer } from './ActionGroup/components';
 import PlatformToggle from './PlatformToggle';
 
 const getStateLabel = (state) => {

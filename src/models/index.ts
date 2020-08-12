@@ -27,6 +27,7 @@ export * from './Query';
 export * from './Speak';
 export * from './Comment';
 export * from './Thread';
+export * from './Job';
 
 export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;
 

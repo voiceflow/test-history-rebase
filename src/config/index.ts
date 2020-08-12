@@ -144,3 +144,6 @@ export const USERFLOW_DASHBOARD_FLOW_ID = process.env.USERFLOW_DASHBOARD_FLOW_ID
 
 // canvas export
 export const CANVAS_EXPORT_ENDPOINT = window.VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT || process.env.CANVAS_EXPORT_ENDPOINT!;
+
+// platform services
+export const ALEXA_SERVICE_ENDPOINT = process.env.ALEXA_SERVICE_ENDPOINT!;

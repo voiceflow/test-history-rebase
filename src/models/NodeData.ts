@@ -27,6 +27,16 @@ export type BlockNodeData<T> = NodeData<T> & {
 };
 
 export namespace NodeData {
+  export type Start = {
+    name: string;
+    blockColor: string;
+  };
+
+  export type Combined = {
+    name: string;
+    blockColor: string;
+  };
+
   export type Code = {
     code: string;
   };
@@ -94,7 +104,6 @@ export namespace NodeData {
     randomize: boolean;
     dialogs: {
       content?: string;
-      id: string;
       type: DialogType;
       voice?: string;
       url?: string;

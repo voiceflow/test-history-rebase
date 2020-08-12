@@ -72,7 +72,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
   dispatch(Creator.saveHistory());
 };
 
-export const loadSkill = (versionID: string, diagramID: string): Thunk<unknown> => async (dispatch) => {
+export const loadSkill = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch) => {
   const [body] = await Promise.all([
     client.skill.get(versionID),
     dispatch(Diagram.loadDiagramsForSkill(versionID)),

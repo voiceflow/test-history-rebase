@@ -7,6 +7,7 @@ import display from './display';
 import feature from './feature';
 import file from './file';
 import onboarding from './onboarding';
+import platformServices from './platformServices';
 import product from './product';
 import project from './project';
 import projectList from './projectList';
@@ -23,6 +24,7 @@ import zapier from './zapier';
 export * from './onboarding';
 
 const client = {
+  ...platformServices,
   session,
   analytics,
   diagram,

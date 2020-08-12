@@ -8,12 +8,15 @@ import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { LOGROCKET_ENABLED } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { RootRoute } from '@/config/routes';
 import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Display from '@/ducks/display';
+import * as Feature from '@/ducks/feature';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as ProjectList from '@/ducks/projectList';
@@ -119,6 +122,7 @@ const createRealtimeResourceUpdateMiddleware = <T>(
 const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) => {
   const state = store.getState();
   const viewers = activeDiagramViewersSelector(state);
+  const isDataRefactorEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.DATA_REFACTOR);
   const isLibraryRole = Workspace.isLibraryRoleSelector(state);
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
@@ -132,7 +136,11 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
     try {
       store.dispatch(Creator.setDiagramState(DiagramState.SAVING));
 
-      await store.dispatch(Diagram.saveActiveDiagram());
+      if (isDataRefactorEnabled) {
+        await store.dispatch(DiagramV2.saveActiveDiagram());
+      } else {
+        await store.dispatch(Diagram.saveActiveDiagram());
+      }
 
       store.dispatch(Creator.setDiagramState(DiagramState.SAVED));
     } catch (err) {

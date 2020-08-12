@@ -2,13 +2,9 @@ import React from 'react';
 
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
-import ShareProject from '@/pages/Canvas/header/ActionGroup/ShareProject';
-import UploadProjectButton from '@/pages/Canvas/header/ActionGroup/components/UploadProjectButton';
-import { SubHeaderItem } from '@/pages/Dashboard/Header/components';
-import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
+import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
-import CanvasSettingsButton from '../ActionGroup/components/CanvasSettingsButton';
-import { GroupContainer } from '../ActionGroup/styled';
+import { CanvasSettingsButton, GroupContainer, ShareProject, UploadProjectButton } from '../ActionGroup/components';
 import PrototypeTimer from './PrototypeTimer';
 import { SeparatorDot } from './styled';
 

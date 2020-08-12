@@ -34,6 +34,7 @@ declare module 'webpack-nano/argv' {
     ff_workspaceCreationFlow: boolean;
     ff_inviteByLink: boolean;
     ff_templates: boolean;
+    ff_dataRefactor: boolean;
   }>;
 
   export = argv;

@@ -47,8 +47,10 @@ export const AmazonLoginButton = (props) => {
           if (response.error) {
             throw new Error();
           }
-          await createAmazonSession(response.code);
-          onSuccess();
+
+          const account = await createAmazonSession(response.code);
+
+          onSuccess(account);
         } catch (err) {
           onFail();
         }

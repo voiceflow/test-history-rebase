@@ -9,8 +9,8 @@ import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import * as Models from '@/models';
 import { loadSkill } from '@/store/sideEffects';
+import { loadVersion } from '@/store/sideEffectsV2';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import CommentingUpdates from './ComentingUpdates';
@@ -22,6 +22,7 @@ export type ProjectLoadingGateProps = {
 
 const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoadingGateProps> = ({
   isProjectLoaded,
+  loadProjectV2,
   loadProject,
   joinProjectChannel,
   loadThreads,
@@ -29,10 +30,11 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
   children,
 }) => {
   const commenting = useFeature(FeatureFlag.COMMENTING);
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
-      const skill = (await loadProject()) as Models.Skill;
+      const skill = await (dataRefactor.isEnabled ? loadProjectV2() : loadProject());
 
       if (commenting.isEnabled && skill.projectID) {
         // TODO: move this into loadProject once FF removed
@@ -41,6 +43,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 
       await joinProjectChannel(skill.projectID);
     } catch (e) {
+      console.error(e);
       setError(e);
     }
   }, [loadProject, loadThreads, joinProjectChannel, setError]);
@@ -60,6 +63,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
+  loadProjectV2: loadVersion,
   loadProject: loadSkill,
   setError: Modal.setError,
   joinProjectChannel: Project.setupProjectSocketConnection,
@@ -68,7 +72,7 @@ const mapDispatchToProps = {
 
 // eslint-disable-next-line no-shadow
 const mergeProps = (
-  ...[{ activeSkill }, { loadProject, joinProjectChannel, setError, loadThreads }, { versionID, diagramID }]: MergeArguments<
+  ...[{ activeSkill }, { loadProject, loadProjectV2, joinProjectChannel, setError, loadThreads }, { versionID, diagramID }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
     ProjectLoadingGateProps
@@ -78,6 +82,7 @@ const mergeProps = (
   loadThreads,
   isProjectLoaded: !!activeSkill && activeSkill.id === versionID,
   loadProject: () => loadProject(versionID, diagramID),
+  loadProjectV2: () => loadProjectV2(versionID, diagramID),
   joinProjectChannel: (projectID = activeSkill.projectID) => joinProjectChannel(projectID),
 });
 

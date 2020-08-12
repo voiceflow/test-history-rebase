@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import moment from 'moment';
 
+export const getCurrentTimestamp = () => Math.floor(Date.now() / 1000);
+
 export const getTimeDuration = (pastTime: string) => {
   const diff = moment().utc().diff(pastTime);
 

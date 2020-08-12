@@ -1,14 +1,8 @@
 import React from 'react';
 
-import UploadProjectButton from '@/pages/Canvas/header/ActionGroup/components/UploadProjectButton';
-import { SubHeaderItem } from '@/pages/Dashboard/Header/components';
-import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
+import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
-import ShareProject from './ShareProject';
-import CanvasSettingsButton from './components/CanvasSettingsButton';
-import { GroupContainer } from './styled';
-
-export { GroupContainer } from './styled';
+import { CanvasSettingsButton, GroupContainer, ShareProject, UploadProjectButton } from './components';
 
 function ActionGroup() {
   return (
@@ -19,9 +13,11 @@ function ActionGroup() {
           <CanvasSettingsButton />
         </SubHeaderItem>{' '}
       </GroupContainer>
+
       <GroupContainer>
         <ShareProject render />
       </GroupContainer>
+
       <UploadProjectButton />
     </>
   );

@@ -12,11 +12,10 @@ import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
-import ResourcesHeaderButton from '@/pages/Dashboard/Header/components/ResourcesHeaderButton';
+import { Numbered, ResourcesHeaderButton, SubHeaderItem, UpdateBubble } from '@/pages/Dashboard/Header/components';
 import { stopPropagation } from '@/utils/dom';
 
 import UpdatesPopover from '../UpdatesPopover';
-import { Numbered, SubHeaderItem, UpdateBubble } from './components';
 
 const DEFAULT_MESSAGE = [
   {

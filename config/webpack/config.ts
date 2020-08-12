@@ -10,6 +10,7 @@ import {
   debugSocket,
   env,
   ff_commenting,
+  ff_dataRefactor,
   ff_gadgets,
   ff_inviteByLink,
   ff_templates,
@@ -62,6 +63,7 @@ export const ENV = {
   FF_COMMENTING: ff_commenting && 'true',
   FF_WORKSPACE_CREATION_FLOW: ff_workspaceCreationFlow && 'true',
   FF_INVITE_BY_LINK: ff_inviteByLink && 'true',
+  FF_DATA_REFACTOR: ff_dataRefactor && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

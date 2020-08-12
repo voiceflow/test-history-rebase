@@ -1,22 +1,22 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { activePlatformSelector } from '@/ducks/skill';
-import { connect } from '@/hocs';
-import Alexa from '@/pages/Canvas/header/ActionGroup/Alexa/index';
-import Google from '@/pages/Canvas/header/ActionGroup/Google/index';
+import { useFeature } from '@/hooks';
+import { createPlatformComponent } from '@/utils/platform';
 
-type UploadProjectButtonType = {
-  platform: PlatformType;
-};
+import Alexa from './Alexa';
+import AlexaUploadButtonV2 from './AlexaUploadButtonV2';
+import Google from './Google';
 
-const UploadProjectButton: React.FC<UploadProjectButtonType> = ({ platform }) => {
-  const PlatformButton = platform === PlatformType.ALEXA ? Alexa : Google;
-  return <PlatformButton />;
-};
+const UploadButton = createPlatformComponent('UploadButton', {
+  // eslint-disable-next-line react/display-name
+  [PlatformType.ALEXA]: () => {
+    const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
-const mapStateToProps = {
-  platform: activePlatformSelector,
-};
+    return dataRefactor.isEnabled ? <AlexaUploadButtonV2 /> : <Alexa />;
+  },
+  [PlatformType.GOOGLE]: Google,
+});
 
-export default connect(mapStateToProps)(UploadProjectButton);
+export default UploadButton;

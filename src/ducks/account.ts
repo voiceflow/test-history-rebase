@@ -5,7 +5,7 @@ import client from '@/client';
 import { setError } from '@/ducks/modal';
 import { Account } from '@/models';
 import { Action, RootReducer, Thunk } from '@/store/types';
-import { NullableRecord } from '@/types';
+import { Nullable, NullableRecord } from '@/types';
 
 import { createAction, createRootSelector, duckLogger } from './utils';
 
@@ -119,10 +119,12 @@ export const getVendors = (): Thunk => async (dispatch, getState) => {
   }
 };
 
-export const createAmazonSession = (code: string): Thunk => async (dispatch) => {
+export const createAmazonSession = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
   try {
     const amazon = (await client.session.amazon.linkAccount(code)) || null;
     dispatch(updateAccount({ amazon }));
+
+    return amazon;
   } catch (err) {
     log.error(err);
     throw err;

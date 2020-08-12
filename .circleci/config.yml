@@ -151,15 +151,15 @@ jobs:
             chmod +x /usr/local/bin/docker-compose
       - run:
           name: Clone Database
-          command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/database ~/database
+          command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/database-cli ~/database-cli
       - run:
           name: Clone Creator API
           command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/creator-api ~/creator-api
       - run:
           name: Setup Database
-          working_directory: ~/database
+          working_directory: ~/database-cli
           command: |
-            yarn install --frozen-lockfile
+            yarn install --frozen-lockfile --ignore-engines
             yarn init:e2e
       - run:
           name: Setup Creator API

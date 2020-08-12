@@ -72,7 +72,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
 };
 
 const mapStateToProps = {
-  user: Workspace.workspaceMemberSelector,
+  user: Workspace.anyWorkspaceMemberSelector,
 };
 
 const mergeProps = (...[{ user: userSelector }, , { comments }]: MergeArguments<typeof mapStateToProps, {}, ThreadItemProps>) => ({

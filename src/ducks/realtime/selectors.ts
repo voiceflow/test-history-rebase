@@ -107,7 +107,7 @@ export const isResourceLockedSelector = createSelector([resourceLockOwnerTabIDSe
 );
 
 export const diagramViewersLookupSelector = createSelector(
-  [realtimeLocksSelector, Workspace.workspaceMemberSelector],
+  [realtimeLocksSelector, Workspace.activeWorkspaceMemberSelector],
   (locks, getWorkspaceMember) => {
     if (!locks) {
       return {};

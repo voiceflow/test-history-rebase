@@ -54,14 +54,22 @@ export const allWorkspaceIdsSelector = createSelector([rootSelector], ({ allIds 
 
 export const allWorkspacesSelector = createSelector([rootSelector], ({ allIds, byId }) => allIds.map((workspaceID) => byId[workspaceID]));
 
-export const workspaceMemberSelector = createSelector([activeWorkspaceMembersSelector], (members) => (creatorID: string) =>
+export const activeWorkspaceMemberSelector = createSelector([activeWorkspaceMembersSelector], (members) => (creatorID: string) =>
   members?.find((member) => String(member.creator_id) === creatorID) || null
 );
 
-export const hasWorkspaceMemberSelector = createSelector([workspaceMemberSelector], (getMember) => (creatorID: string) => !!getMember(creatorID));
+export const anyWorkspaceMemberSelector = createSelector([allWorkspacesSelector], (workspaces) => (creatorID: string) => {
+  const allAvailableMembers = workspaces.flatMap((workspace) => workspace.members);
+
+  return allAvailableMembers.find((member) => String(member.creator_id) === creatorID) || null;
+});
+
+export const hasWorkspaceMemberSelector = createSelector([activeWorkspaceMemberSelector], (getMember) => (creatorID: string) =>
+  !!getMember(creatorID)
+);
 
 export const distinctWorkspaceMemberSelector = createSelector(
-  [workspaceMemberSelector],
+  [activeWorkspaceMemberSelector],
   (getWorkspaceMember) => (creatorID: string, tabID: string) => {
     const workspaceMember = getWorkspaceMember(creatorID);
 
@@ -70,7 +78,7 @@ export const distinctWorkspaceMemberSelector = createSelector(
 );
 
 export const userRoleSelector = createSelector(
-  [workspaceMemberSelector, userIDSelector],
+  [activeWorkspaceMemberSelector, userIDSelector],
   (getMember, creatorID) => getMember(String(creatorID))?.role
 );
 

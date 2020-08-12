@@ -5,24 +5,37 @@ import * as ColorUtils from '@/utils/colors';
 
 import suite from './_suite';
 
-const WORKSPACE_ID = 'abc';
 const MEMBER = { name: 'Tim', creator_id: 456, role: UserRole.ADMIN };
 const MEMBERS = [{ name: 'Jane', creator_id: 123, role: UserRole.EDITOR }, MEMBER, { name: 'Eric', creator_id: 789, role: UserRole.VIEWER }];
 const SEAT_LIMITS = { editor: 10 };
 const WORKSPACE = {
+  id: 'abc',
   name: 'Personal',
   seats: 4,
   plan: 'pro',
   members: MEMBERS,
   seatLimits: SEAT_LIMITS,
 } as Models.Workspace;
+const OTHER_WORKSPACE = {
+  id: 'def',
+  name: 'Team',
+  seats: 4,
+  plan: 'pro',
+  members: [{ name: 'Joey', creator_id: 786, role: UserRole.VIEWER }],
+} as Models.Workspace;
+const SIMPLE_WORKSPACE = {
+  id: 'mno',
+  name: 'demo',
+  members: [] as any,
+} as Models.Workspace;
 const MOCK_STATE: Workspace.WorkspaceState = {
-  activeWorkspaceID: WORKSPACE_ID,
+  activeWorkspaceID: WORKSPACE.id,
   byId: {
-    abc: WORKSPACE,
-    def: { name: 'Team' } as Models.Workspace,
+    [WORKSPACE.id]: WORKSPACE,
+    [OTHER_WORKSPACE.id]: OTHER_WORKSPACE,
+    [SIMPLE_WORKSPACE.id]: SIMPLE_WORKSPACE,
   },
-  allIds: ['abc', 'def'],
+  allIds: [WORKSPACE.id, OTHER_WORKSPACE.id, SIMPLE_WORKSPACE.id],
 };
 
 suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStorage, describeReducer, describeSelectors }) => {
@@ -55,7 +68,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
   describeSelectors(({ select, createState }) => {
     describe('activeWorkspaceIDSelector()', () => {
       it('should select the active workspace ID', () => {
-        expect(select(Workspace.activeWorkspaceIDSelector)).to.eq(WORKSPACE_ID);
+        expect(select(Workspace.activeWorkspaceIDSelector)).to.eq(WORKSPACE.id);
       });
     });
 
@@ -92,7 +105,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
 
     describe('workspaceByIDSelector()', () => {
       it('should select a workspace by ID', () => {
-        expect(select(Workspace.workspaceByIDSelector)(WORKSPACE_ID)).to.eq(WORKSPACE);
+        expect(select(Workspace.workspaceByIDSelector)(WORKSPACE.id)).to.eq(WORKSPACE);
       });
     });
 
@@ -102,7 +115,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
 
       it('should select an empty array if no members listed', () => {
-        expect(select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eql([]);
+        expect(select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: SIMPLE_WORKSPACE.id }))).to.eql([]);
       });
     });
 
@@ -130,21 +143,31 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
 
     describe('allWorkspacesSelector()', () => {
       it('should select all workspaces', () => {
-        expect(select(Workspace.allWorkspacesSelector)).to.eql([WORKSPACE, { name: 'Team' }]);
+        expect(select(Workspace.allWorkspacesSelector)).to.eql([WORKSPACE, OTHER_WORKSPACE, SIMPLE_WORKSPACE]);
       });
     });
 
-    describe('workspaceMemberSelector()', () => {
+    describe('activeWorkspaceMemberSelector()', () => {
       it('should select a member from the active workspace by creator ID', () => {
-        expect(select(Workspace.workspaceMemberSelector)('456')).to.eq(MEMBER);
+        expect(select(Workspace.activeWorkspaceMemberSelector)('456')).to.eq(MEMBER);
       });
 
-      it('should return null if no member matches', () => {
-        expect(select(Workspace.workspaceMemberSelector)('999')).to.be.null;
+      it('should return null if no member matches for active workspace', () => {
+        expect(select(Workspace.activeWorkspaceMemberSelector)('999')).to.be.null;
       });
 
       it('should return null members list', () => {
-        expect(select(Workspace.workspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))('999')).to.be.null;
+        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))('999')).to.be.null;
+      });
+    });
+
+    describe('anyWorkspaceMemberSelector()', () => {
+      it('should select a member from the active workspace by creator ID', () => {
+        expect(select(Workspace.anyWorkspaceMemberSelector)('456')).to.eq(MEMBER);
+      });
+
+      it('should return null if no member matches in all workspaces', () => {
+        expect(select(Workspace.anyWorkspaceMemberSelector)('999')).to.be.null;
       });
     });
 

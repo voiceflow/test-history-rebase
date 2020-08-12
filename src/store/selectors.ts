@@ -73,7 +73,7 @@ export const isOnlyViewerSelector = createSelector(projectViewerCountSelector, (
  */
 export const diagramViewersSelector = createSelector(
   Realtime.realtimeLocksSelector,
-  Workspace.workspaceMemberSelector,
+  Workspace.activeWorkspaceMemberSelector,
   (locks, getWorkspaceMember) => (diagramID: string) => {
     if (!locks || !diagramID) {
       return [];

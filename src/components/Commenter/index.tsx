@@ -30,7 +30,7 @@ export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ 
 };
 
 const mapStateToProps = {
-  user: Workspace.workspaceMemberSelector,
+  user: Workspace.anyWorkspaceMemberSelector,
 };
 
 // eslint-disable-next-line no-empty-pattern

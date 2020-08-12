@@ -6,7 +6,7 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole, WORKSPACES_LIMIT } from '@/constants';
+import { BillingPeriod, ModalType, PlanType, PlatformType, PromoType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
@@ -32,9 +32,26 @@ export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
   return members.length + 1;
 };
 
+export enum OnboardingType {
+  create = 'create_workspace',
+  join = 'join_workpsace',
+  student = 'student',
+}
+
+export enum SpecificFlowType {
+  login_vanilla_new = 'login_vanilla_new',
+  login_student_new = 'login_student_new',
+  login_payment_new = 'login_payment_new',
+  login_student_existing = 'login_student_existing',
+  login_invite = 'login_invite',
+  create_workspace = 'create_workspace',
+}
+
 export type OnboardingContextProps = {
   state: {
     selectableWorkspace: boolean;
+    specificFlowType: SpecificFlowType;
+    flow: OnboardingType;
     stepStack: StepID[];
     currentStepID: StepID;
     numberOfSteps: number;
@@ -95,6 +112,8 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
   },
   state: {
     selectableWorkspace: false,
+    flow: OnboardingType.create,
+    specificFlowType: SpecificFlowType.create_workspace,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
@@ -118,40 +137,62 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-export enum OnboardingType {
-  create = 'create_workspace',
-  join = 'join_workpsace',
-}
-
-const getFirstStep = (flow: OnboardingType, firstTime: boolean) => {
-  if (!firstTime) {
+const getFirstStep = (flow: OnboardingType, isLoginFlow: boolean, isFirstSession: boolean) => {
+  if (!isLoginFlow) {
     return OnboardingType.create;
   }
+
   switch (flow) {
     case OnboardingType.create:
       return StepID.WELCOME;
     case OnboardingType.join:
       return StepID.JOIN_WORKSPACE;
+    case OnboardingType.student:
+      return isFirstSession ? StepID.WELCOME : StepID.PAYMENT;
     default:
       return StepID.WELCOME;
   }
 };
 
-const getNumberOfSteps = (query: any, flow: OnboardingType, firstTime: boolean) => {
-  if (!firstTime) {
-    return 3;
-  }
+const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
   if (flow === OnboardingType.join) {
-    return 1;
+    return SpecificFlowType.login_invite;
   }
-  if (!query?.ob_payment) {
-    return 4;
+  if (flow === OnboardingType.student && !isFirstSession) {
+    return SpecificFlowType.login_student_existing;
   }
-
-  return 5;
+  if (!loginFlow) {
+    return SpecificFlowType.create_workspace;
+  }
+  if (loginFlow && isFirstSession && flow === OnboardingType.student) {
+    return SpecificFlowType.login_student_new;
+  }
+  if (query?.ob_payment) {
+    return SpecificFlowType.login_payment_new;
+  }
+  return SpecificFlowType.login_vanilla_new;
 };
 
-const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite }: Query) => {
+const getNumberOfSteps = (specificFlowType: SpecificFlowType) => {
+  switch (specificFlowType) {
+    case SpecificFlowType.login_invite:
+      return 1;
+    case SpecificFlowType.login_student_existing:
+      return 1;
+    case SpecificFlowType.create_workspace:
+      return 3;
+    case SpecificFlowType.login_student_new:
+      return 5;
+    case SpecificFlowType.login_payment_new:
+      return 5;
+    case SpecificFlowType.login_vanilla_new:
+      return 4;
+    default:
+      return 4;
+  }
+};
+
+const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo }: Query) => {
   const configurations = {
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
@@ -166,17 +207,24 @@ const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite }: Query) =>
     configurations.period = ob_period;
   }
 
+  if (!!promo && promo === PromoType.STUDENT) {
+    configurations.plan = PlanType.STUDENT;
+    configurations.flow = OnboardingType.student;
+    configurations.period = BillingPeriod.MONTHLY;
+  }
+
   return configurations;
 };
 
 type OnboardingProviderProps = {
   query: Query;
+  firstLogin: boolean;
   numberOfSteps?: number;
   children: React.ReactNode;
   stripe: any;
   checkChargeable: (data: any) => void;
   trackInvitationAccepted: (workspaceId: string) => void;
-  firstTime: boolean;
+  isLoginFlow: boolean;
 };
 
 const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
@@ -191,11 +239,13 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   createWorkspace,
   sendInvite,
   fetchWorkspaces,
+  firstLogin,
   validateInvite,
   createProject,
   workspaces,
-  firstTime,
+  isLoginFlow,
   trackInvitationAccepted,
+  workspaceById,
   account,
   currentWorkspaceID,
   updateWorkspaceName,
@@ -206,13 +256,18 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const { plan, period, couponCode, flow } = extractQueryParams(query);
-  const firstStep = getFirstStep(flow, firstTime);
+  const isFirstSession = firstLogin;
+  const firstStep = getFirstStep(flow, isLoginFlow, isFirstSession);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const numberOfSteps = getNumberOfSteps(query, flow, firstTime);
+  const specificFlowType = getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
+
+  const numberOfSteps = getNumberOfSteps(specificFlowType);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
   const [state, actions] = useSmartReducer({
-    selectableWorkspace: !!query.choose_workspace,
+    selectableWorkspace: !!query.choose_workspace || specificFlowType === SpecificFlowType.login_student_existing,
     usedSignupCoupon: false,
+    flow,
+    specificFlowType,
     workspaceId: '',
     stepStack: [firstStep],
     createWorkspaceMeta: {},
@@ -229,7 +284,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     numberOfSteps,
     onboardingComplete: false,
     sendingRequests: false,
-    justCreatingWorkspace: !firstTime,
+    justCreatingWorkspace: !isLoginFlow,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
@@ -313,12 +368,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     if (sendingRequests) return;
     setSendingRequests(true);
 
-    const isOnLastStep = stepStack.length === numberOfSteps;
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
-
-    if (workspaces.length >= WORKSPACES_LIMIT || !isOnLastStep) {
-      return null;
-    }
 
     const name = createWorkspaceMeta.workspaceName;
     const workspaceImage = createWorkspaceMeta.workspaceImage;
@@ -337,9 +387,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     let workspace;
     let userWorkspaces: any;
 
-    const selectedWorkspaceID = paymentMeta.selectedWorkspaceID;
+    const selectedWorkspaceID = paymentMeta.selectedWorkspaceId;
     if (selectedWorkspaceID) {
-      workspace = workspaces[selectedWorkspaceID];
+      workspace = workspaceById(selectedWorkspaceID);
     }
     if (!workspace) {
       try {
@@ -392,7 +442,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
-    if (firstTime) {
+    if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
         name: userName!,
         role,
@@ -404,7 +454,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     if (selectedWorkspaceID) {
-      goToDashboard();
+      goToWorkspace(selectedWorkspaceID);
       toastNotif.success('Successfully updated workspace');
       setSendingRequests(false);
       return;
@@ -416,7 +466,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         { name: ONBOARDING_PROJECT_NAME, locales: ['en-US'], platform: PlatformType.ALEXA },
         1
       );
-      if (firstTime) {
+
+      if (isLoginFlow) {
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
@@ -480,11 +531,11 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         return;
       }
 
-      if (firstTime) {
+      if (isLoginFlow) {
         dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
       }
 
-      if (workspaceID && firstTime) {
+      if (workspaceID && isLoginFlow) {
         trackingEvents.trackOnboardingComplete({ skip: false, workspaceID });
       }
     };
@@ -494,7 +545,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   }, [isFinalizing]);
 
   React.useEffect(() => {
-    if (cache.current.stepStack.length < stepStack.length && firstTime) {
+    if (cache.current.stepStack.length < stepStack.length && isLoginFlow) {
       const prevStepID: StepID = cache.current.stepStack[0];
 
       dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
@@ -523,7 +574,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
 const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
+  workspaceById: Workspace.workspaceByIDSelector,
   account: Account.userSelector,
+  firstLogin: Account.isFirstLoginSelector,
   currentWorkspaceID: Workspace.activeWorkspaceIDSelector,
 };
 

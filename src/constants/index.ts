@@ -315,10 +315,14 @@ export enum PlanType {
   OLD_ENTERPRISE = 'old_enterprise',
   OLD_TEAM = 'old_team',
   STARTER = 'starter',
-  EDUCATION = 'education',
+  STUDENT = 'student',
   PRO = 'pro',
   TEAM = 'team',
   ENTERPRISE = 'enterprise',
+}
+
+export enum PromoType {
+  STUDENT = 'student',
 }
 
 export const RESPONSE_COLOR_CODES = {
@@ -478,8 +482,8 @@ export const PLAN_TYPE_META = {
     label: 'Starter',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
-  [PlanType.EDUCATION]: {
-    label: 'Education',
+  [PlanType.STUDENT]: {
+    label: 'Student',
     color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
   },
   [PlanType.OLD_PRO]: {

@@ -14,11 +14,13 @@ export type AccountState = NullableRecord<Account> & {
   admin: number;
   amazon: Account.Amazon | null;
   google: Account.Google | null;
+  first_login: boolean;
 };
 
 export const STATE_KEY = 'account';
 export const INITIAL_STATE: AccountState = {
   loading: false,
+  first_login: false,
   email: null,
   name: null,
   creator_id: null,
@@ -76,6 +78,8 @@ export default accountReducer;
 export const userSelector = createRootSelector(STATE_KEY);
 
 export const userIDSelector = createSelector([userSelector], ({ creator_id }) => creator_id);
+
+export const isFirstLoginSelector = createSelector([userSelector], ({ first_login }) => first_login);
 
 export const userEmailSelector = createSelector([userSelector], ({ email }) => email);
 

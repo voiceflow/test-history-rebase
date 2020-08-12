@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType } from '@/constants';
+import { BillingPeriod, PlanType, PromoType } from '@/constants';
 
 export type Query = Query.Onboarding & Query.Dashboard & Query.Register & Query.Canvas;
 
@@ -7,8 +7,10 @@ export namespace Query {
     ob_plan: PlanType;
     ob_coupon: any;
     ob_period: BillingPeriod;
+    ob_payment: boolean;
     invite: string;
     choose_workspace: boolean;
+    promo: PromoType;
   }>;
 
   export type Dashboard = Partial<{

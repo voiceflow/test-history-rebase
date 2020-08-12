@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Dropdown, { DropdownPlacement } from '@/components/Dropdown';
-import { ButtonContainer, CaretIcon, TextContainer } from '@/components/DropdownWithCaret/components';
+import { ButtonContainer, CaretIcon, DisabledWrapper, TextContainer } from '@/components/DropdownWithCaret/components';
 
 import { TextVariant } from './types';
 
@@ -23,7 +23,7 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   menu,
   capitalized,
   color = '#6e849a',
-  disabled,
+  disabled = false,
   text,
   padding = '10px 25px',
   alwaysBlue = false,
@@ -33,12 +33,14 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   return (
     <Dropdown placement={placement} menu={menu}>
       {(ref, onToggle, isOpen) => (
-        <ButtonContainer variant={textVariant} disabled={disabled} padding={padding} isOpen={isOpen} onClick={onToggle} ref={ref}>
-          <TextContainer color={isOpen ? '#5190e6' : inactiveColor} capitalized={capitalized}>
-            {text}
-          </TextContainer>
-          <CaretIcon icon="caretDown" color={isOpen ? '#5d9df5' : inactiveColor} size={9} />
-        </ButtonContainer>
+        <DisabledWrapper disabled={disabled}>
+          <ButtonContainer variant={textVariant} disabled={disabled} padding={padding} isOpen={isOpen} onClick={onToggle} ref={ref}>
+            <TextContainer color={isOpen ? '#5190e6' : color} capitalized={capitalized}>
+              {text}
+            </TextContainer>
+            <CaretIcon icon="caretDown" color={isOpen ? '5d9df5' : inactiveColor} size={9} />
+          </ButtonContainer>
+        </DisabledWrapper>
       )}
     </Dropdown>
   );

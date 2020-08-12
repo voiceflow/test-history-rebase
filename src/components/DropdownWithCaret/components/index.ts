@@ -8,6 +8,7 @@ export const CaretIcon = styled(SvgIcon)`
 `;
 
 export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; disabled?: boolean; variant: TextVariant }>`
+  cursor: pointer;
 ${({ variant, isOpen }) =>
   variant === TextVariant.secondary &&
   !isOpen &&
@@ -32,7 +33,6 @@ ${({ variant, isOpen }) =>
       css`
         pointer-events: none;
       `}
-cursor: pointer;
 
 
 `;
@@ -46,5 +46,13 @@ export const TextContainer = styled.div<{ capitalized?: boolean }>`
     capitalized &&
     css`
       text-transform: uppercase;
+    `}
+`;
+
+export const DisabledWrapper = styled.span<{ disabled: boolean }>`
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      cursor: not-allowed;
     `}
 `;

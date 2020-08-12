@@ -13,14 +13,17 @@ import Menu, { MenuItem } from '@/components/Menu';
 import { CardElement } from '@/components/Stripe';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
-import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
+import { toast } from '@/components/Toast';
+import { BillingPeriod, PERIOD_NAME, PlanType, UserRole } from '@/constants';
+import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { OnboardingContext, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
+import { OnboardingContext, OnboardingType, SpecificFlowType, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
 import { OnboardingProps } from '@/pages/Onboarding/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
+import { ConnectedProps } from '@/types';
 
 import {
   BubbleTextContainer,
@@ -39,12 +42,10 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const PeriodDropdown: any = BillingDropdown;
-
-const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) => {
+const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, creatorID, workspaceSelector }) => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
-  const { sendingRequests, selectableWorkspace } = state;
+  const { sendingRequests, selectableWorkspace, flow, specificFlowType } = state;
   const { collaborators } = state.addCollaboratorMeta;
 
   const numberOfSeats = getNumberOfEditorSeats(collaborators);
@@ -61,6 +62,7 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
   const [selectedWorkspaceId, setSelectedWorkspaceId] = React.useState('');
   const workspaceComplete = !selectableWorkspace || (selectableWorkspace && !!selectedWorkspaceId);
   const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError && workspaceComplete;
+  const periodDisabled = flow === OnboardingType.student;
 
   const onContinue = async () => {
     actions.setPaymentMeta({
@@ -72,7 +74,11 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
     });
 
     actions.stepForward(null);
-    actions.finishCreateOnboarding();
+  };
+
+  const isWorkspaceAdmin = (workspaceID: string) => {
+    const targetWorkspaceMembers = workspaceSelector(workspaceID).members;
+    return targetWorkspaceMembers.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
   };
 
   const handleStripeOnChange = ({ error }: any) => {
@@ -118,7 +124,16 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
           <Menu>
             {workspaces!.map((workspace) => {
               return (
-                <MenuItem key={workspace.id} onClick={() => setSelectedWorkspaceId(workspace.id)}>
+                <MenuItem
+                  key={workspace.id}
+                  onClick={() => {
+                    if (isWorkspaceAdmin(workspace.id)) {
+                      setSelectedWorkspaceId(workspace.id);
+                    } else {
+                      toast.error('You are not the Admin of this workspace');
+                    }
+                  }}
+                >
                   {workspace.name}
                 </MenuItem>
               );
@@ -134,6 +149,7 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
           <DropdownWithCaret
             text={dropdownConfig.text}
             capitalized
+            disabled={specificFlowType === SpecificFlowType.login_student_new}
             textVariant={TextVariant.secondary}
             placement="bottom-end"
             menu={dropdownConfig.menu}
@@ -157,11 +173,20 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
                 ]}
                 placement="bottom-start"
               >
-                {(ref, onToggle, isOpen) => (
-                  <PeriodDropdown ref={ref} onClick={onToggle} isOpen={isOpen}>
+                {(ref: React.Ref<any>, onToggle: any, isOpen: boolean) => (
+                  <BillingDropdown
+                    disabled={periodDisabled}
+                    ref={ref}
+                    onClick={() => {
+                      if (!periodDisabled) {
+                        onToggle();
+                      }
+                    }}
+                    isOpen={isOpen}
+                  >
                     Billed {PERIOD_NAME[paymentPeriod]}
                     <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : ''} size={7} />
-                  </PeriodDropdown>
+                  </BillingDropdown>
                 )}
               </Dropdown>
             </PeriodDropdownContainer>
@@ -212,5 +237,9 @@ const Payment: React.FC<OnboardingProps> = ({ workspaces, workspaceSelector }) =
 const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
   workspaceSelector: Workspace.workspaceByIDSelector,
+  creatorID: Account.userIDSelector,
 };
+
+type ConnectedPaymentProps = ConnectedProps<typeof mapStateToProps>;
+
 export default connect(mapStateToProps)(Payment);

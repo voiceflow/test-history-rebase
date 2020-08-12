@@ -12,5 +12,5 @@ export type OnboardingProps = {
   location?: any;
   firstTime?: boolean;
   workspaces?: Workspace[];
-  workspaceSelector?: (id: string) => Workspace;
+  creatorID?: number;
 };

@@ -59,7 +59,7 @@ const CreateWorkspace: React.FC = () => {
 
       <FlexCenter>
         <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
-          Create Workspace
+          Continue
         </Button>
       </FlexCenter>
     </Container>

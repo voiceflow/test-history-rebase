@@ -53,12 +53,12 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
 };
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
-  [Permission.CANVAS_MARKUP]: [PlanType.EDUCATION, PlanType.PRO, PlanType.OLD_PRO, PlanType.ENTERPRISE, PlanType.TEAM, PlanType.OLD_TEAM],
-  [Permission.CANVAS_EXPORT]: [PlanType.EDUCATION, PlanType.PRO, PlanType.OLD_PRO, PlanType.ENTERPRISE, PlanType.TEAM, PlanType.OLD_TEAM],
-  [Permission.COMMENTING]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.ENTERPRISE, PlanType.TEAM, PlanType.OLD_TEAM],
-  [Permission.BULK_UPLOAD]: [PlanType.EDUCATION, PlanType.PRO, PlanType.OLD_PRO, PlanType.ENTERPRISE, PlanType.TEAM, PlanType.OLD_TEAM],
+  [Permission.CANVAS_MARKUP]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.SHARE_PROTOTYPE]: [
-    PlanType.EDUCATION,
+    PlanType.STUDENT,
     PlanType.OLD_STARTER,
     PlanType.PRO,
     PlanType.OLD_PRO,
@@ -68,7 +68,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.OLD_ENTERPRISE,
   ],
   [Permission.SHARE_PROJECT]: [
-    PlanType.EDUCATION,
+    PlanType.STUDENT,
     PlanType.OLD_STARTER,
     PlanType.PRO,
     PlanType.OLD_PRO,

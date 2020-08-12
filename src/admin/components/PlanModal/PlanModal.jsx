@@ -130,7 +130,7 @@ class PlanModal extends React.Component {
 
             <Select
               value={workspace.plan || PlanType.STARTER}
-              options={[PlanType.STARTER, PlanType.EDUCATION, PlanType.PRO, PlanType.ENTERPRISE]}
+              options={[PlanType.STARTER, PlanType.STUDENT, PlanType.PRO, PlanType.ENTERPRISE]}
               getOptionLabel={_.upperFirst}
               onSelect={this.updatePlan}
             />

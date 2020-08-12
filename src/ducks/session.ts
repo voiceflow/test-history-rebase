@@ -196,8 +196,8 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
   const location = ConnectedReactRouter.getLocation(state);
   const search = queryString.parse(location.search);
 
-  // Show join workspace onboarding on first login of an invite
-  if (search.invite && user.first_login) {
+  // Show join workspace onboarding on first login of an invite or with a workspace promo
+  if ((search.invite && user.first_login) || search.promo) {
     dispatch(goToOnboarding());
   } else if (search.invite || !user.first_login) {
     dispatch(goToDashboardWithSearch(location.search));

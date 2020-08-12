@@ -12,11 +12,10 @@ import { OnboardingDataProps, OnboardingProps } from './types';
 
 export const Onboarding: React.FC<OnboardingProps> = ({ data, location, firstTime = true }) => {
   const query = queryString.parse(location?.search);
-
   return (
     <div>
       <OuterContainer>
-        <OnboardingProvider firstTime={firstTime} query={query}>
+        <OnboardingProvider isLoginFlow={firstTime} query={query}>
           <InnerContainer>
             <Header />
             <CurrentStep data={data} />

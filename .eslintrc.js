@@ -35,6 +35,7 @@ module.exports = {
     'lodash/prefer-lodash-chain': 'off',
     'import/no-named-as-default': 'off',
     'import/extensions': 'off',
+    'import/no-cycle': 'off',
     'require-jsdoc': 'off',
     'valid-jsdoc': 'off',
     'filenames/match-regex': 'off',
@@ -71,7 +72,6 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/no-static-element-interactions': 'warn',
     'promise/catch-or-return': 'warn',
-    'import/no-cycle': 'warn',
     'react/display-name': 'warn',
   },
   settings: {

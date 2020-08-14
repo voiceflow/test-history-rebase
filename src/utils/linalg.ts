@@ -59,13 +59,13 @@ export const rotateCoordsCW = (pos: Coords, axis: Coords, angle: number) => {
   const rotatedMappedPos = new Coords(applyCCWRotationMatrix(mappedPos.point, angle), mappedPos.plane);
 
   /**
-   * We determine the displacement needed to move `pos` to `mappedPos` within the coordinate
+   * We determine the displacement needed to move `mappedPos` to `rotatedMappedPos` within the coordinate
    * system with `axis` as its origin...
    */
   const delta = rotatedMappedPos.sub(mappedPos);
 
   /**
-   * ...and conveniently, this displacement vector allows us to compute `mappedPos` within the
+   * ...and conveniently, this displacement vector allows us to compute `rotatedMappedPos` within the
    * original coordinate system of `pos`.
    */
   return pos.add(delta);

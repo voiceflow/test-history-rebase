@@ -105,6 +105,8 @@ const defaultRotateOptions = { rotation: RotationDirection.CW };
  * To use this function, ensure that `pos` and `axis` are part of the same coordinate system, e.g,
  * the browser viewport's coordinate system.
  *
+ * Relevant chapters from "Essence of Linear Algebra" are chapters 1-4.
+ *
  * @param pos The point that we want to rotate
  * @param axis The axis of rotation for `pos`
  * @param angle The amount (in radians) that we rotate

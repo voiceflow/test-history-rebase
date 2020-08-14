@@ -11,8 +11,8 @@ import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { ConnectedProps, Pair, Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
-import { getCenter, rotateCoordsCW } from '@/utils/linalg';
 import { getRotation } from '@/utils/math';
+import { getCenter, rotateCoords } from '@/utils/rotation';
 
 import { HandlePosition, TEXT_WIDTH_HANDLES } from '../constants';
 import { useCurried } from '../hooks';
@@ -152,7 +152,7 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
         // TODO - Refactor resize to use Coords so we don't need to manually convert
         const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
         const nextTopleft = new Coords([nextLeft, nextTop]);
-        const rotatedNextTopleft = rotateCoordsCW(nextTopleft, rotationAxis, curRotation);
+        const rotatedNextTopleft = rotateCoords(nextTopleft, rotationAxis, curRotation);
         const rotationOffset = rotatedNextTopleft.sub(nextTopleft).raw();
 
         engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);

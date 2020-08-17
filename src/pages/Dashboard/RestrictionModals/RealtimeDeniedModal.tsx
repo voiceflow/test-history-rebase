@@ -12,7 +12,7 @@ const RealtimeDeniedModal: React.FC = () => {
       icon="/team-feature.svg"
       bodyContent={
         <>
-          A teammate is actively editing this project. Real-time collaboration is a <BoldText>Team</BoldText> feature, please upgrade your plan to
+          A teammate is actively editing this project. Real-time collaboration is a <BoldText>Pro</BoldText> feature, please upgrade your plan to
           continue.
         </>
       }

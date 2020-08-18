@@ -26,6 +26,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   const { text, created } = comments[0];
 
   const hasReplies = comments.length - 1;
+  const hasMultipleReplies = comments.length > 2;
 
   const onClick = React.useCallback(async () => {
     if (focusThread.focusedID === threadID) {
@@ -61,7 +62,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
         {!!hasReplies && (
           <Flex>
             <Text color="#8da2b5" mr={8} fontSize={13}>
-              {hasReplies} reply
+              {hasReplies} {hasMultipleReplies ? 'replies' : 'reply'}
             </Text>
             <SvgIcon icon="forward" size={14} color="#8da2b5" />
           </Flex>

@@ -57,7 +57,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
 
   const handleCopyLink = () => {
     const numberOfUsedEditorSeats = usedEditorSeats;
-    toast.success('Link copied to your clipboard, this link expires in 24 hours.');
+    toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
     if (numberOfUsedEditorSeats >= numberOfSeats! && linkInvitePermission === UserRole.EDITOR) {
       toast.warn(inviteLimitMessage, {

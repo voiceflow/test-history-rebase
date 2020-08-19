@@ -1,5 +1,6 @@
 import { cardStyles } from '@/components/Card';
 import { css, styled } from '@/hocs';
+import { SlideDown } from '@/styles/animations';
 
 const MAX_VISIBLE_ITEMS = 7.5;
 
@@ -34,8 +35,8 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   line-height: 18px;
   list-style: none;
   overflow: hidden;
-  animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
-  transform-origin: top;
+
+  ${SlideDown}
 
   ${({ nativeScrollbar }) => nativeScrollbar && nativeScrollbarsStyle}
 

@@ -44,3 +44,8 @@ export const SlideContainer = styled.div`
 export const SlideDelayedContainer = styled.div`
   ${SlideDelayed}
 `;
+
+export const SlideDown = css`
+  animation: fadein ${ANIMATION_SPEED}s ease, movein ${ANIMATION_SPEED}s ease, scaleY 0.1s ease;
+  transform-origin: top;
+`;

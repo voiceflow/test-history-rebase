@@ -1,11 +1,6 @@
 import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
 import { css, styled } from '@/hocs';
-import {
-  CANVAS_DRAGGING_CLASSNAME,
-  CANVAS_MARKUP_ENABLED_CLASSNAME,
-  CANVAS_MARKUP_TRANSFORMING_CLASSNAME,
-  NODE_FOCUSED_CLASSNAME,
-} from '@/pages/Canvas/constants';
+import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
 
 export const Container = styled.div<{ activated: boolean }>`
   border: solid 1px transparent;
@@ -24,7 +19,7 @@ export const Container = styled.div<{ activated: boolean }>`
     pointer-events: none;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}):not(.${CANVAS_MARKUP_TRANSFORMING_CLASSNAME}) &:not(:focus-within):hover  {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover  {
     border: solid 1px #5d9df5;
   }
 

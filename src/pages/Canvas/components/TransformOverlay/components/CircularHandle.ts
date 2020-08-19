@@ -2,8 +2,8 @@ import { styled } from '@/hocs';
 
 const CircularHandle = styled.div`
   position: absolute;
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background: #fff;
   z-index: 109;
   pointer-events: all;

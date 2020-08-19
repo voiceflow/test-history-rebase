@@ -1,6 +1,6 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const BubbleText = styled.span`
+const BubbleText = styled.span<{ clickable?: boolean }>`
   padding: 4px 8px;
   border-radius: 6px;
   color: white;
@@ -12,6 +12,12 @@ const BubbleText = styled.span`
   border-radius: 20px;
   text-transform: uppercase;
   box-shadow: 0 1px 2px 0 rgba(17, 49, 96, 0.24);
+
+  ${({ clickable }) =>
+    clickable &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 export default BubbleText;

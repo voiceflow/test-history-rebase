@@ -1,12 +1,12 @@
 import React from 'react';
 
-import BubbleText from '@/components/BubbleText';
 import Dropdown from '@/components/Dropdown';
 import { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
+import PlanBubble from '@/components/PlanBubble';
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
-import { PLAN_TYPE_META, PlanType, WORKSPACES_LIMIT } from '@/constants';
+import { WORKSPACES_LIMIT } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -73,12 +73,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
           </WorkspacesDropdown>
         )}
       </Dropdown>
-      {!isTemplateWorkspace && (
-        <BubbleText color={PLAN_TYPE_META[plan!].color}>
-          {/* This is the only place we want to show 'Free' */}
-          {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : PLAN_TYPE_META[plan!].label}
-        </BubbleText>
-      )}
+      {!isTemplateWorkspace && <PlanBubble plan={plan!} />}
     </>
   );
 };

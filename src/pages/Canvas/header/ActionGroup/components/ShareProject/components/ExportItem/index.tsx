@@ -1,11 +1,11 @@
 import React from 'react';
 
-import BubbleText from '@/components/BubbleText';
 import Button, { ButtonVariant } from '@/components/Button';
+import PlanBubble from '@/components/PlanBubble';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
 import { Permission } from '@/config/permissions';
-import { ExportFormat, PLAN_TYPE_META, PlanType } from '@/constants';
+import { ExportFormat, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { usePermission, useTrackingEvents } from '@/hooks';
@@ -47,7 +47,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRe
       <div>
         <Header>
           <span>Export</span>
-          {!canExport && <BubbleText color={PLAN_TYPE_META[PlanType.PRO].color}>Pro</BubbleText>}
+          {!canExport && <PlanBubble plan={PlanType.PRO} />}
         </Header>
 
         <Description mb={16}>

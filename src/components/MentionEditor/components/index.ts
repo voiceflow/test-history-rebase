@@ -12,7 +12,7 @@ export const mentionEditorStyle = {
     borderRadius: '5px',
     list: {
       width: '254px',
-      heiht: '184px',
+      maxHeight: '350px',
       padding: '8px 0',
       overflowY: 'auto',
       borderRadius: '5px',

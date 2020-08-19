@@ -31,7 +31,6 @@ export const getScaleTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [0, 0],
   };
 };
 
@@ -61,7 +60,6 @@ export const getCenteredScaleTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [(nextWidth - transform.width) / 2, (nextHeight - transform.height) / 2],
   };
 };
 
@@ -89,7 +87,6 @@ export const getStretchTransformations = (
     shift: [shiftX, shiftY],
     position: [nextLeft, nextTop],
     size: [nextWidth, nextHeight],
-    shiftOverlay: [0, 0],
   };
 };
 
@@ -102,11 +99,13 @@ export const getResizeTransformations = (
   event: MouseEvent,
   isCentered?: boolean
 ) => {
+  const [originX, originY] = transform.origin.point;
+
   const invertX = X_INVERTED_HANDLES.includes(handle);
   const invertY = Y_INVERTED_HANDLES.includes(handle);
   const preserveRatio = SCALE_HANDLES.includes(handle);
-  const right = transform.originX + transform.width;
-  const bottom = transform.originY + transform.height;
+  const right = originX + transform.width;
+  const bottom = originY + transform.height;
   let moveX = event.movementX;
   let moveY = event.movementY;
 
@@ -116,12 +115,12 @@ export const getResizeTransformations = (
     moveX = 0;
   } else if (preserveRatio) {
     if (isCentered) {
-      const transformOrigin: Point = [transform.originX + transform.width / 2, transform.originY + transform.height / 2];
+      const transformOrigin: Point = [originX + transform.width / 2, originY + transform.height / 2];
 
       return getCenteredScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY], invertX, invertY);
     }
 
-    const transformOrigin: Point = [invertX ? right : transform.originX, invertY ? bottom : transform.originY];
+    const transformOrigin: Point = [invertX ? right : originX, invertY ? bottom : originY];
 
     return getScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY], invertX, invertY);
   }

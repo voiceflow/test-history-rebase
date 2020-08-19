@@ -53,8 +53,8 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
     this.engine.node.api(this.getTarget()!)?.instance?.snapshot?.();
   }
 
-  scaleTarget(scale: Pair<number>, shift: Pair<number>) {
-    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift);
+  scaleTarget(scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) {
+    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift, rotation, rotationOffset);
   }
 
   scaleTextTarget(maxWidth: number) {

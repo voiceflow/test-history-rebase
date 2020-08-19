@@ -16,10 +16,16 @@ export const applyRotation = (length: number, rotation: number): Pair<number> =>
 
 // eslint-disable-next-line import/prefer-default-export
 export const getRotation = (offsetX: number, offsetY: number) => {
-  const angle = Math.atan(offsetX / offsetY);
+  // x / y instead of y / x because our initial arm is the positive y-axis not
+  // positive x-axis and we need to rotate clockwise not counter-clockwise.
+  let angle = Math.atan(offsetX / offsetY);
 
-  const radians = offsetY > 0 ? angle : Math.PI + angle;
+  // If we're in the 2nd or 3rd quadrant, then make the necessary adjustments.
+  angle = offsetY > 0 ? angle : Math.PI + angle;
+
+  // If we're in the 4th quadrant, then make the angle positive.
+  angle = angle < 0 ? 2 * Math.PI + angle : angle;
 
   // eslint-disable-next-line no-restricted-globals
-  return isNaN(radians) ? 0 : radians;
+  return isNaN(angle) ? 0 : angle;
 };

@@ -10,7 +10,9 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle, useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { ConnectedProps, Pair, Point } from '@/types';
+import { Coords, Vector } from '@/utils/geometry';
 import { getRotation } from '@/utils/math';
+import { getCenter, rotateCoords } from '@/utils/rotation';
 
 import { HandlePosition, TEXT_WIDTH_HANDLES } from '../constants';
 import { useCurried } from '../hooks';
@@ -38,6 +40,7 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
   const snapshot = React.useRef<MarkupTransform | null>(null);
   const position = React.useRef<Point | null>(null);
   const size = React.useRef<Pair<number> | null>(null);
+  const rotation = React.useRef<number | null>(null);
   const isRotating = React.useRef(false);
   const zoom = React.useRef(0);
   const engine = React.useContext(EngineContext)!;
@@ -117,38 +120,42 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
       const transform = snapshot.current!;
       const [width, height] = size.current!;
       const [left, top] = position.current!;
-      const [mouseX, mouseY] = mousePosition;
+      const mousePos = new Coords(mousePosition);
+      const curRotation = rotation.current!;
       const isTextNode = nodeType === BlockType.MARKUP_TEXT;
 
-      const result = getResizeTransformations(transform, handle, [left, top], [width, height], [mouseX, mouseY], event, isTextNode);
+      const result = getResizeTransformations(transform, handle, [left, top], [width, height], mousePos.raw(), event, isTextNode);
       let [nextLeft, nextTop] = result.position;
       let [nextWidth, nextHeight] = result.size;
 
       if (isTextNode) {
         if (TEXT_WIDTH_HANDLES.includes(handle)) {
-          engine.transformation.scaleTextTarget(Math.abs(mouseX - nextLeft));
+          engine.transformation.scaleTextTarget(Math.abs(mousePos.raw()[0] - nextLeft));
         } else {
-          const halfWidth = transform.width / 2;
-          const halfHeight = transform.height / 2;
-          const originX = transform.originX + halfWidth;
-          const originY = transform.originY + halfHeight;
+          const transformSize = new Vector([transform.width, transform.height]);
+          const origin = transform.origin.add(transformSize.scalarDiv(2));
 
-          const diffX = Math.abs(mouseX - originX);
-          const diffY = Math.abs(mouseY - originY);
+          const diff = mousePos.sub(origin).applyElementwise(Math.abs);
+          const scale = diff.div(transformSize.scalarDiv(2));
 
-          const scaleX = diffX / halfWidth;
-          const scaleY = diffY / halfHeight;
-          const scale = Math.max(scaleX, scaleY);
+          const maxScale = Math.max(...scale.point);
 
-          nextWidth = transform.width * scale;
-          nextHeight = transform.height * scale;
-          nextLeft = originX - nextWidth / 2;
-          nextTop = originY - nextHeight / 2;
+          const nextSize = transformSize.scalarMul(maxScale);
+          const nextTopleft = origin.sub(nextSize.scalarDiv(2));
 
-          engine.transformation.scaleTarget([scale, scale], [0, 0]);
+          [nextLeft, nextTop] = nextTopleft.raw();
+          [nextWidth, nextHeight] = transformSize.scalarMul(maxScale).raw();
+
+          engine.transformation.scaleTarget([maxScale, maxScale], [0, 0], curRotation, [0, 0]);
         }
       } else {
-        engine.transformation.scaleTarget(result.scale, result.shift);
+        // TODO - Refactor resize to use Coords so we don't need to manually convert
+        const rotationAxis = new Coords(getCenter([nextLeft, nextTop], [nextWidth, nextHeight]));
+        const nextTopleft = new Coords([nextLeft, nextTop]);
+        const rotatedNextTopleft = rotateCoords(nextTopleft, rotationAxis, curRotation);
+        const rotationOffset = rotatedNextTopleft.sub(nextTopleft).raw();
+
+        engine.transformation.scaleTarget(result.scale, result.shift, curRotation, rotationOffset);
       }
 
       position.current = [nextLeft, nextTop];
@@ -165,15 +172,19 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
   );
 
   const onRotate = React.useCallback(() => {
-    const mousePosition = engine.mousePosition.current!;
     const el = ref.current!;
     const transform = snapshot.current!;
-    const [mouseX, mouseY] = mousePosition;
-    const centerX = transform.originX + transform.width / 2;
-    const centerY = transform.originY + transform.height / 2;
+
+    const transformSize = new Vector([transform.width, transform.height]);
+
+    const [centerX, centerY] = transform.origin.add(transformSize.scalarDiv(2)).point;
+    const [mouseX, mouseY] = engine.mousePosition.current!;
+
     const deltaX = mouseX - centerX;
     const deltaY = centerY - mouseY;
     const rotate = getRotation(deltaX, deltaY);
+
+    rotation.current = rotate;
 
     engine.transformation.rotateTarget(rotate);
     window.requestAnimationFrame(() => {
@@ -187,17 +198,17 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
     const el = ref.current!;
     const vertex = lineVertex.current!;
     const transform = snapshot.current!;
-    const [mouseX, mouseY] = mousePosition;
+    const mousePos = new Coords(mousePosition);
 
     if (vertex === 'terminal') {
-      const originX = transform.originX + (transform.invertX ? transform.width : 0);
-      const originY = transform.originY + (transform.invertY ? transform.height : 0);
-      const deltaX = mouseX - originX;
-      const deltaY = mouseY - originY;
-      const width = Math.abs(deltaX);
-      const height = Math.abs(deltaY);
+      const origin = transform.origin.add([transform.invertX ? transform.width : 0, transform.invertY ? transform.height : 0]);
+      const delta = mousePos.sub(origin);
 
-      engine.transformation.moveVertices([deltaX / canvasZoom, deltaY / canvasZoom], [0, 0]);
+      const [width, height] = delta.applyElementwise(Math.abs).raw();
+      const [originX, originY] = origin.raw();
+      const [mouseX, mouseY] = mousePos.raw();
+
+      engine.transformation.moveVertices(delta.scalarDiv(canvasZoom).raw(), [0, 0]);
       window.requestAnimationFrame(() => {
         el.style.left = `${Math.min(originX, mouseX)}px`;
         el.style.top = `${Math.min(originY, mouseY)}px`;
@@ -205,14 +216,14 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
         el.style.height = `${height}px`;
       });
     } else {
-      const terminalX = transform.originX + (transform.invertX ? 0 : transform.width);
-      const terminalY = transform.originY + (transform.invertY ? 0 : transform.height);
-      const deltaX = mouseX - terminalX;
-      const deltaY = mouseY - terminalY;
-      const width = Math.abs(deltaX);
-      const height = Math.abs(deltaY);
+      const terminal = transform.origin.add([transform.invertX ? 0 : transform.width, transform.invertY ? 0 : transform.height]);
+      const delta = mousePos.sub(terminal);
+      const [width, height] = delta.applyElementwise(Math.abs).raw();
 
-      engine.transformation.moveVertices([-deltaX / canvasZoom, -deltaY / canvasZoom], [transform.width - width, transform.height - height]);
+      const [terminalX, terminalY] = terminal.raw();
+      const [mouseX, mouseY] = mousePos.raw();
+
+      engine.transformation.moveVertices(delta.scalarMul(-1).scalarDiv(canvasZoom).raw(), [transform.width - width, transform.height - height]);
       window.requestAnimationFrame(() => {
         el.style.left = `${Math.min(terminalX, mouseX)}px`;
         el.style.top = `${Math.min(terminalY, mouseY)}px`;
@@ -267,15 +278,18 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
         initialize: (transform) => {
           const el = ref.current!;
 
+          const rawOrigin = transform.origin.raw();
+
           snapshot.current = transform;
-          position.current = [transform.originX, transform.originY];
+          position.current = rawOrigin;
+          rotation.current = transform.rotate;
           size.current = [transform.width, transform.height];
           zoom.current = 1;
 
           window.requestAnimationFrame(() => {
             el.style.display = 'block';
-            el.style.left = `${transform.originX}px`;
-            el.style.top = `${transform.originY}px`;
+            el.style.left = `${rawOrigin[0]}px`;
+            el.style.top = `${rawOrigin[1]}px`;
             el.style.width = `${transform.width}px`;
             el.style.height = `${transform.height}px`;
             el.style.transform = `rotate(${transform.rotate}rad)`;
@@ -285,13 +299,13 @@ const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsP
         clearTransformations: () => {
           const [width, height] = size.current!;
           const [originX, originY] = position.current!;
+          const rotate = rotation.current!;
 
           snapshot.current = {
-            originX,
-            originY,
+            origin: new Coords([originX, originY]),
             width,
             height,
-            rotate: 0,
+            rotate,
             scale: 1,
             invertX: false,
             invertY: false,

@@ -2,13 +2,13 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 
-import { OverlayControls, ResizeHandle } from './components';
-// import { OverlayControls, ResizeHandle, RotateHandle, VertexHandle } from './components';
+import { OverlayControls, ResizeHandle, RotateHandle } from './components';
+// import { OverlayControls, ResizeHandle, VertexHandle } from './components';
 import { SCALE_HANDLES } from './constants';
 
 const TransformOverlay = () => (
   <OverlayControls>
-    {({ nodeType, onResizeStart }) => {
+    {({ nodeType, onResizeStart, onRotateStart }) => {
       // {({ nodeType, data, onResizeStart, onRotateStart, onDragVertex }) => {
       if (nodeType === BlockType.MARKUP_TEXT) {
         return (
@@ -44,7 +44,7 @@ const TransformOverlay = () => (
             {SCALE_HANDLES.map((handle) => (
               <ResizeHandle position={handle} onDragStart={onResizeStart(handle)} key={handle} />
             ))}
-            {/* <RotateHandle onDragStart={onRotateStart} /> */}
+            <RotateHandle onDragStart={onRotateStart} />
           </>
         );
       }

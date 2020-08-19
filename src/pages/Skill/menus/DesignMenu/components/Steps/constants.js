@@ -106,6 +106,12 @@ export const ROOT_SECTIONS = [
         iconColor: getManager(BlockType.INTEGRATION).getIconColor({ selectedIntegration: IntegrationType.ZAPIER }),
         factoryData: { selectedIntegration: IntegrationType.ZAPIER },
       },
+      {
+        type: BlockType.CODE,
+        icon: 'power',
+        label: 'Custom Code',
+        iconColor: getManager(BlockType.CODE).iconColor,
+      },
     ],
   },
 ];
@@ -122,12 +128,6 @@ const SHARED_PLATFORM_STEPS = {
     icon: 'logs',
     label: 'Card',
     iconColor: getManager(BlockType.CARD).iconColor,
-  },
-  CODE: {
-    type: BlockType.CODE,
-    icon: 'power',
-    label: 'Custom Code',
-    iconColor: getManager(BlockType.CODE).iconColor,
   },
 };
 
@@ -156,7 +156,6 @@ export const PLATFORM_SECTION = {
         label: 'Cancel Purchase',
         iconColor: getManager(BlockType.CANCEL_PAYMENT).iconColor,
       },
-      SHARED_PLATFORM_STEPS.CODE,
       {
         type: BlockType.REMINDER,
         icon: 'reminder',
@@ -194,6 +193,6 @@ export const PLATFORM_SECTION = {
         iconColor: getManager(BlockType.DIRECTIVE).iconColor,
       },
     ],
-    [PlatformType.GOOGLE]: [SHARED_PLATFORM_STEPS.STREAM, SHARED_PLATFORM_STEPS.CARD, SHARED_PLATFORM_STEPS.CODE],
+    [PlatformType.GOOGLE]: [SHARED_PLATFORM_STEPS.STREAM, SHARED_PLATFORM_STEPS.CARD],
   },
 };

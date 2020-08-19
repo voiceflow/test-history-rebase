@@ -133,7 +133,7 @@ const SHARED_PLATFORM_STEPS = {
 
 export const PLATFORM_SECTION = {
   type: Section.PLATFORM,
-  label: 'Platform',
+  label: 'Channel',
   steps: {
     [PlatformType.ALEXA]: [
       SHARED_PLATFORM_STEPS.STREAM,

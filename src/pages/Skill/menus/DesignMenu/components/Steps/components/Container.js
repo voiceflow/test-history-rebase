@@ -10,6 +10,7 @@ const Container = styled.div`
     color: #62778c;
     height: 30px;
     font-size: 13px;
+    user-select: none;
   }
 
   ${CollapsableContainer} {

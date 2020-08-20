@@ -7,9 +7,11 @@ import Section, { SectionToggleVariant } from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
+import { FeatureFlag } from '@/config/features';
 import { activeSkillSelector, getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
+import { saveAlexaSettings, saveInvocationName, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useSyncedSmartReducer, useTeardown } from '@/hooks';
+import { useDebouncedCallback, useFeature, useSyncedSmartReducer, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { arrayStringReplace } from '@/utils/string';
 
@@ -23,7 +25,7 @@ import {
   SAVE_SETTINGS_DEBOUNCE_DELAY,
 } from './constants';
 
-function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
+function Basic({ meta, skill, getImportToken, saveSkillSettings, saveAlexaSettings, saveInvocationName, saveProjectName }) {
   const { invName: invNameMeta, resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta } = meta;
   const { name: nameSkill } = skill;
   const initialInvocationName = React.useMemo(() => invNameMeta);
@@ -93,8 +95,17 @@ function Basic({ meta, skill, getImportToken, saveSkillSettings }) {
       invName: val,
     });
 
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   const saveSettings = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
-    await saveSkillSettings(data);
+    if (dataRefactor.isEnabled) {
+      const { name, invName, ...meta } = data;
+      saveProjectName(name);
+      saveInvocationName(invName);
+      saveAlexaSettings(meta, ['repeat', 'session']);
+    } else {
+      await saveSkillSettings(data);
+    }
   });
 
   const updateData = React.useCallback(
@@ -245,6 +256,9 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
+  saveAlexaSettings,
+  saveInvocationName,
+  saveProjectName,
   saveSkillSettings,
   getImportToken,
 };

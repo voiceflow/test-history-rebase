@@ -6,15 +6,17 @@ import { Alert } from 'reactstrap';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
+import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
+import { useCanvasTracking, useEnableDisable, useFeature, usePermission } from '@/hooks';
 import Business from '@/pages/Business';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
@@ -46,11 +48,15 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   activePage,
   activeSkill,
   goToDashboard,
+  saveProjectNameV2,
   updateProjectName,
   isOnlyViewer,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+  const projectNameChange = dataRefactor.isEnabled ? saveProjectNameV2 : updateProjectName;
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -87,7 +93,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
       )}
       <PublishProvider>
         <Page
-          header={<ProjectTitle title={activeSkill.name} onChange={updateProjectName} />}
+          header={<ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
           userMenu={false}
           canScroll={false}
           subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
@@ -121,6 +127,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
+  saveProjectNameV2: SkillV2.saveProjectName,
   goToDashboard: Router.goToDashboard,
   updateProjectName: Project.updateProjectName,
   updateSkillName: SkillDuck.saveSkillSettings,

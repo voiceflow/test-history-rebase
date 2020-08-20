@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import client from '@/client';
+import client from '@/clientV2';
 import { FeatureFlag } from '@/config/features';
 import { JobStatus, PlatformType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';

@@ -1,9 +1,9 @@
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';
 import { Skill } from '@/models';
-import { AlexaVersion } from '@/modelsV2';
 
 import alexaVersionAdapter from './alexa';
 

@@ -41,7 +41,6 @@ export default merge(commonConfig, {
               'pages/Canvas/managers/Integration/zapier.png',
               '**/types.ts',
               'models/**/*',
-              'modelsV2/**/*',
 
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',

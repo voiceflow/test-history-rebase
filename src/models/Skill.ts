@@ -51,8 +51,8 @@ export type FullSkill = Skill & {
       live: boolean;
     };
   };
-  meta: Partial<{
-    created: string;
+  meta: {
+    created?: string;
     summary: string;
     description: string;
     keywords: string;
@@ -75,16 +75,26 @@ export type FullSkill = Skill & {
     alexa_interfaces: null;
     repeat: number;
     google_versions: any;
-    settings: any;
+    settings: {
+      customInterface?: boolean;
+    };
     invName: string;
     smallIcon: string;
     largeIcon: string;
-    resumePrompt: any;
-    errorPrompt: any;
+    resumePrompt: {
+      voice: string;
+      content: string;
+      follow_content?: string;
+      follow_voice?: string;
+    };
+    errorPrompt: {
+      voice: string;
+      content: string;
+    };
     alexaEvents: string;
     accountLinking: any;
     privacyPolicy: string;
     termsAndCond: string;
     updatesDescription: string;
-  }>;
+  };
 };

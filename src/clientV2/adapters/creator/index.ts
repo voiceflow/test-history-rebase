@@ -1,14 +1,16 @@
-import { DiagramNode, NodeID } from '@voiceflow/api-sdk';
+import { Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { MARKUP_NODES, PlatformType } from '@/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
-import { DBCreatorDiagram } from '@/modelsV2';
 import { Normalized, denormalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
 
 import nodeAdapter from './node';
 import { isBlock } from './utils';
+
+// we will be doing a patch request
+export type DBCreatorDiagram = Omit<Diagram, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,

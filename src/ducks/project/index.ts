@@ -2,7 +2,7 @@ import client from '@/client';
 import { Project } from '@/models';
 import { Thunk } from '@/store/types';
 
-import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
+import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '../utils/crud';
 
 export const STATE_KEY = 'project';
 

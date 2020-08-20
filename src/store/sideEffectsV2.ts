@@ -37,7 +37,8 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const DBproject = await clientV2.api.project.get(version.projectID);
 
   const project = projectAdapter.fromDB(DBproject);
-  const skill = versionAdapter.fromDB(version, { platform: DBproject.platform as PlatformType });
+  // use the project name instead of the version name
+  const skill = versionAdapter.fromDB({ ...version, name: project.name }, { platform: DBproject.platform as PlatformType });
 
   dispatch(Creator.resetCreator());
 

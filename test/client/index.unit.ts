@@ -4,7 +4,6 @@ import client from '@/client';
 suite('Client - Root', ({ expect }) => {
   it('should have expected keys', () => {
     expect(Object.keys(client)).to.have.members([
-      'alexaService',
       'session',
       'analytics',
       'diagram',

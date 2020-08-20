@@ -8,6 +8,7 @@ import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { FeatureFlag } from '@/config/features';
 import { activeProjectIDSelector, saveMeta, skillMetaSelector } from '@/ducks/skill';
+import { saveAlexaSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useFeature, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -15,9 +16,10 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import { Settings, SkillEventsErrorMessage } from './components';
 import { ERROR_PROMPT_OPTIONS, SAVE_SETTINGS_DEBOUNCE_DELAY } from './constants';
 
-function Advanced({ meta, saveMeta }) {
+function Advanced({ meta, saveMeta, saveAlexaSettings }) {
   const { errorPrompt: propErrorPrompt, alexaEvents: propAlexaEvents } = meta;
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
   const [alexaEventError, setAlexaEventError] = React.useState(null);
@@ -44,7 +46,11 @@ function Advanced({ meta, saveMeta }) {
 
   const updateData = React.useCallback((settingsObject) => {
     try {
-      saveSettings(settingsObject);
+      if (dataRefactor.isEnabled) {
+        saveAlexaSettings(settingsObject, ['error', 'events']);
+      } else {
+        saveSettings(settingsObject);
+      }
     } catch (err) {
       toast.error('Settings Save Error');
     }
@@ -141,6 +147,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   saveMeta,
+  saveAlexaSettings,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advanced);

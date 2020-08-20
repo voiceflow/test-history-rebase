@@ -163,6 +163,28 @@ To enable realtime debugging:
 yarn start --debugRealtime
 ```
 
+#### Canvas Debugging
+
+To enable all canvas debugging:
+
+```sh
+yarn start --debugCanvas
+# or
+VF_APP_DEBUG_CANVAS='true'
+```
+
+**Canvas Crosshair**
+
+Show an overlay of a crosshair with coordinates relative to the window to help with debugging / developing position-sentitive elements.
+
+To enable:
+
+```sh
+yarn start --canvasCrosshair
+# or
+VF_APP_CANVAS_CROSSHAIR='true'
+```
+
 #### Logging
 
 When running locally the log level will automatically be set to `info`, in production it will be set to `error`.

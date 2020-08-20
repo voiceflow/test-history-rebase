@@ -16,6 +16,8 @@ declare module 'webpack-nano/argv' {
     debugNet: boolean;
     debugRealtime: boolean;
     debugSocket: boolean;
+    debugCanvas: boolean;
+    canvasCrosshair: boolean;
 
     // logging
     logFilter: string;
@@ -35,6 +37,7 @@ declare module 'webpack-nano/argv' {
     ff_inviteByLink: boolean;
     ff_templates: boolean;
     ff_dataRefactor: boolean;
+    ff_projectSplitting: boolean;
   }>;
 
   export = argv;

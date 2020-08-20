@@ -70,6 +70,9 @@ export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DE
 
 export const DEBUG_REALTIME = !IS_PRODUCTION && !!process.env.DEBUG_REALTIME;
 
+export const DEBUG_CANVAS = !IS_PRODUCTION && !!process.env.DBEUG_CANVAS;
+export const CANVAS_CROSSHAIR_ENABLED = DEBUG_CANVAS || (!IS_PRODUCTION && !!process.env.CANVAS_CROSSHAIR);
+
 // realtime
 export const REALTIME_CURSOR_ENABLED = IS_PRODUCTION || DEBUG_REALTIME;
 

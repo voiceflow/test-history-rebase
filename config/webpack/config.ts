@@ -3,7 +3,9 @@
 import branch from 'git-branch';
 import {
   action,
+  canvasCrosshair,
   debug,
+  debugCanvas,
   debugHttp,
   debugNet,
   debugRealtime,
@@ -49,6 +51,9 @@ export const ENV = {
   LOG_LEVEL: logLevel || '',
   LOG_FILTER: logFilter || '',
 
+  // canvas
+  CANVAS_CROSSHAIR: canvasCrosshair && 'true',
+
   // analytics
   GA_ENABLED: ga && 'true',
   TRACKING_ENABLED: tracking && 'true',
@@ -74,6 +79,7 @@ export const ENV = {
     ? {
         DEBUG_NETWORK: true,
         DEBUG_REALTIME: true,
+        DEBUG_CANVAS: true,
         LOG_LEVEL: logLevel === 'trace' ? logLevel : 'debug',
       }
     : {
@@ -81,5 +87,6 @@ export const ENV = {
         DEBUG_HTTP: debugHttp ? true : '',
         DEBUG_SOCKET: debugSocket ? true : '',
         DEBUG_REALTIME: debugRealtime ? true : '',
+        DEBUG_CANVAS: debugCanvas ? true : '',
       }),
 };

@@ -3,6 +3,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
+import Crosshair from '@/components/Crosshair';
 import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
@@ -145,6 +146,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         <MarkupLayer />
         <MergeLayer />
         <SelectionMarquee />
+        <Crosshair portal color="red" withCoords />
+        <Crosshair onCanvas />
       </Canvas>
       <TransformOverlay />
     </>

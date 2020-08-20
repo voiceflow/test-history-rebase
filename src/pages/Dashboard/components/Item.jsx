@@ -13,7 +13,7 @@ import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
-import { ModalType } from '@/constants';
+import { ModalType, PLATFORM_APP_NAME } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
 import { useFeature, useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
@@ -43,6 +43,7 @@ export function Item(props) {
     onRemove,
     avatarUrl,
     isDragging,
+    platform,
     version_id,
     onDuplicate,
     connectDragSource,
@@ -54,6 +55,8 @@ export function Item(props) {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
+  const projectSplitting = useFeature(FeatureFlag.PROJECT_SPLITTING);
+
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`;
   const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length];
@@ -127,7 +130,10 @@ export function Item(props) {
         <ProjectNameWrapper>
           <ProjectTitleDetails>
             <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
-            <ProjectTitleCaption>{map(language, (l) => getHumanLanguageName(l)).join(', ')}</ProjectTitleCaption>
+            <ProjectTitleCaption>
+              {projectSplitting.isEnabled && <span>{PLATFORM_APP_NAME[platform]} - </span>}
+              {map(language, (l) => getHumanLanguageName(l)).join(', ')}
+            </ProjectTitleCaption>
           </ProjectTitleDetails>
 
           <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>

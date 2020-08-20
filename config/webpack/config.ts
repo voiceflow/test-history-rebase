@@ -13,6 +13,7 @@ import {
   ff_dataRefactor,
   ff_gadgets,
   ff_inviteByLink,
+  ff_projectSplitting,
   ff_templates,
   ff_workspaceCreationFlow,
   ga,
@@ -64,6 +65,7 @@ export const ENV = {
   FF_WORKSPACE_CREATION_FLOW: ff_workspaceCreationFlow && 'true',
   FF_INVITE_BY_LINK: ff_inviteByLink && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
+  FF_PROJECT_SPLITTING: ff_projectSplitting && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

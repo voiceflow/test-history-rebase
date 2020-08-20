@@ -1,3 +1,5 @@
+import { PlatformType } from '@/constants';
+
 export type Project = {
   id: string;
   name: string;
@@ -26,6 +28,7 @@ export type DBProject = {
   diagram: string;
   locales: string[];
   module: string;
+  platform: PlatformType;
   reference: boolean;
   created: string;
   islive: boolean;

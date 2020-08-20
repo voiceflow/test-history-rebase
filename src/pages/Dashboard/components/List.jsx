@@ -177,6 +177,7 @@ export function List(props) {
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagramID}
+                              platform={project.platform}
                               onDrop={onDropProject}
                               onMove={onMoveProject}
                               onToggleDragging={setMoving}

@@ -49,6 +49,11 @@ export const ProductType = {
 
 export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE];
 
+export const PLATFORM_APP_NAME = <Record<PlatformType, string>>{
+  [PlatformType.ALEXA]: 'Alexa Skill',
+  [PlatformType.GOOGLE]: 'Google Action',
+};
+
 export const BuiltInVariable = {
   SESSIONS: 'sessions',
   USER_ID: 'user_id',

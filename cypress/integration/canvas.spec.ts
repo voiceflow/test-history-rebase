@@ -18,7 +18,7 @@ context('Canvas', () => {
   it('has a home block', () => {
     canvasPage.el.node.should('have.length', 1);
     canvasPage.el.homeBlock.should('be.visible');
-    canvasPage.el.homeBlock.find('.vf-canvas__block__section__title').first().should('be.visible').should('have.text', 'Home');
+    canvasPage.el.homeBlock.find('.vf-canvas__block__section__title').first().should('be.visible').should('have.text', 'Start');
   });
 
   it('drag block on canvas', () => {

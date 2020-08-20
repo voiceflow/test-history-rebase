@@ -1,7 +1,7 @@
 import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
 import { styled } from '@/hocs';
 import { INDICATOR_DIAMETER } from '@/pages/Canvas/components/CommentThread/constants';
-import { SlideDown } from '@/styles/animations';
+import { FadeDownDelayedContainer, SlideDown } from '@/styles/animations';
 
 const ThreadEditorContainer = styled.div`
   position: absolute;
@@ -16,13 +16,15 @@ const ThreadEditorContainer = styled.div`
 
   cursor: initial;
 
-  & > * {
-    padding: 20px 18px;
-    border-top: 1px solid #eaeff4;
-  }
+  & > ${FadeDownDelayedContainer} {
+    & > * {
+      padding: 20px 18px;
+      border-top: 1px solid #eaeff4;
+    }
 
-  & > :first-child {
-    border: none;
+    & > :first-child {
+      border: none;
+    }
   }
 
   .${CANVAS_INTERACTING_CLASSNAME} & {

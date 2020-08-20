@@ -2,6 +2,8 @@ import React from 'react';
 
 import Text from '@/components/Text';
 
+import { Container } from './components';
+
 const MENTION_MARKUP_REGEX = /(\[@[^\]]+])\(user:\d+\)/g;
 const MENTION_REGEX = /(@[^\]]+)/g;
 
@@ -24,7 +26,7 @@ const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
     [formattedText]
   );
 
-  return !text ? null : <div>{styledText}</div>;
+  return !text ? null : <Container>{styledText}</Container>;
 };
 
 export default CommentPreview;

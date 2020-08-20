@@ -10,25 +10,21 @@ export type ThreadEditorProps = {
   thread?: Thread;
 };
 
-const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => {
-  if (thread) {
-    return (
-      <Container draggable onDragStart={preventDefault()} onMouseDown={stopPropagation(null, true)} onClick={preventDefault()}>
-        <FadeDownDelayedContainer>
+const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => (
+  <Container draggable onDragStart={preventDefault()} onMouseDown={stopPropagation(null, true)} onClick={preventDefault()}>
+    <FadeDownDelayedContainer>
+      {thread ? (
+        <>
           {thread.comments.map((comment: Comment, index: number) => (
             <CommentEditor key={comment.id} comment={comment} showResolve={index === 0} />
           ))}
           <ReplySection threadID={thread.id} />
-        </FadeDownDelayedContainer>
-      </Container>
-    );
-  }
-
-  return (
-    <Container draggable onDragStart={preventDefault()} onMouseDown={stopPropagation(null, true)} onClick={preventDefault()}>
-      <NewComment />
-    </Container>
-  );
-};
+        </>
+      ) : (
+        <NewComment />
+      )}
+    </FadeDownDelayedContainer>
+  </Container>
+);
 
 export default ThreadEditor;

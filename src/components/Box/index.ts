@@ -15,7 +15,7 @@ import {
   typography,
 } from 'styled-system';
 
-import { flexStyles } from '@/components/Flex';
+import { flexApartStyles, flexStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 export type BoxProps = ColorProps &
@@ -32,6 +32,10 @@ export const Box = styled.div<BoxProps>(space, color, layout, position, flexbox,
 
 export const Flex = styled(Box)`
   ${flexStyles}
+`;
+
+export const FlexApart = styled(Box)`
+  ${flexApartStyles}
 `;
 
 export const ButtonBox = styled(Box)`

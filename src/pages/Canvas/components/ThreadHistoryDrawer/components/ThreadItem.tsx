@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Box from '@/components/Box';
+import Box, { FlexApart } from '@/components/Box';
 import CommentPreview from '@/components/CommentPreview';
 import Commenter from '@/components/Commenter';
 import Duration from '@/components/Duration';
-import Flex, { FlexApart } from '@/components/Flex';
+import Flex from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
@@ -39,7 +39,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
 
   return (
     <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
-      <FlexApart>
+      <FlexApart height={42}>
         <Commenter creatorID={user.creator_id} />
         {resolved && (
           <TippyTooltip title="Mark Unresolved" distance={1}>

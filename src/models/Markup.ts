@@ -12,7 +12,7 @@ export namespace Markup {
       textAlignment: TextAlignment;
       scale: number;
       rotate: number;
-      width: number | null;
+      overrideWidth: number | null /* Used to implement horizontal + vertical resizing of Markup Text */;
     };
 
     export type Image = {

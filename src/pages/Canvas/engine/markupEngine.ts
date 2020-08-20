@@ -44,7 +44,7 @@ class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
       textAlignment: TextAlignment.LEFT,
       scale: 1,
       rotate: 0,
-      width: null,
+      overrideWidth: null,
     };
 
     const nodeID = await this.engine.node.add(

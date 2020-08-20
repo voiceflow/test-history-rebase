@@ -19,10 +19,10 @@ const Container = styled.div<ContainerProps>`
       border: 1px solid transparent;
     `}
 
-  ${({ isText, scale, maxWidth }) =>
+  ${({ isText, scale, maxWidth, rotate }) =>
     isText &&
     css`
-      transform: scale(${scale});
+      transform: rotate(${rotate}rad) scale(${scale});
 
       ${maxWidth !== null &&
       css`

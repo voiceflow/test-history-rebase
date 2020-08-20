@@ -19,10 +19,13 @@ export const getScaleTransformations = (
   const scaleX = maxWidth / transform.width;
   const scaleY = maxHeight / transform.height;
   const maxScale = Math.max(0, Math.max(scaleX, scaleY));
+
   const nextWidth = transform.width * maxScale;
   const nextHeight = transform.height * maxScale;
+
   const shiftX = invertX ? width - nextWidth : 0;
   const shiftY = invertY ? height - nextHeight : 0;
+
   const nextLeft = left + shiftX;
   const nextTop = top + shiftY;
 
@@ -39,19 +42,21 @@ export const getCenteredScaleTransformations = (
   [originX, originY]: Point,
   [left, top]: Point,
   [width, height]: Pair<number>,
-  [mouseX, mouseY]: Pair<number>,
-  invertX: boolean,
-  invertY: boolean
+  [mouseX, mouseY]: Pair<number>
 ): AxialTransformation => {
-  const maxWidth = Math.abs(mouseX - originX) * 2;
-  const maxHeight = Math.abs(mouseY - originY) * 2;
-  const scaleX = maxWidth / transform.width;
-  const scaleY = maxHeight / transform.height;
+  const newWidth = Math.abs(mouseX - originX) * 2;
+  const newHeight = Math.abs(mouseY - originY) * 2;
+
+  const scaleX = newWidth / transform.width;
+  const scaleY = newHeight / transform.height;
   const maxScale = Math.max(0, Math.max(scaleX, scaleY));
+
   const nextWidth = transform.width * maxScale;
   const nextHeight = transform.height * maxScale;
-  const shiftX = invertX ? width - nextWidth : 0;
-  const shiftY = invertY ? height - nextHeight : 0;
+
+  const shiftX = (width - nextWidth) / 2;
+  const shiftY = (height - nextHeight) / 2;
+
   const nextLeft = left + shiftX;
   const nextTop = top + shiftY;
 
@@ -75,10 +80,13 @@ export const getStretchTransformations = (
   const deltaY = invertY ? -moveY : moveY;
   const nextWidth = Math.max(0, width + deltaX);
   const nextHeight = Math.max(0, height + deltaY);
+
   const shiftX = invertX ? moveX : 0;
   const shiftY = invertY ? moveY : 0;
+
   const nextLeft = left + shiftX;
   const nextTop = top + shiftY;
+
   const scaleX = nextWidth / transform.width;
   const scaleY = nextHeight / transform.height;
 
@@ -117,7 +125,7 @@ export const getResizeTransformations = (
     if (isCentered) {
       const transformOrigin: Point = [originX + transform.width / 2, originY + transform.height / 2];
 
-      return getCenteredScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY], invertX, invertY);
+      return getCenteredScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY]);
     }
 
     const transformOrigin: Point = [invertX ? right : originX, invertY ? bottom : originY];

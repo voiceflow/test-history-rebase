@@ -6,8 +6,9 @@ import { useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
-import { Coords } from '@/utils/geometry';
+import { Coords, Vector } from '@/utils/geometry';
 import { getRotation } from '@/utils/math';
+import { getCenter } from '@/utils/rotation';
 
 import { MarkupShapeInstance, ResizableMarkupNodeData } from './types';
 import { isLine, isResizableShape, isShape, isText } from './utils';
@@ -17,6 +18,22 @@ export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance
   shapeRef: React.RefObject<MarkupShapeInstance>;
 };
 
+/**
+ * Returns an interface for manipulating a Markup Node, e.g, an Image node or a Text Node. Markup's
+ * rendering logic has roughly the following steps:
+ *
+ *    1. Execute a "transformation" function like `.rotate()` or `.scale()`
+ *
+ *    2. During exeution, track the changes caused by the transformation, which is stored in
+ *       refs like `rotation.current` and `scale.current`
+ *
+ *    3. When the transformation is complete, `applyTransformation()` is invoked to reset all
+ *       refs and publish the effects of the transformation to the Redux store.
+ *
+ * There may be some variation in the details of steps 1-3 depending on the type of Markup that
+ * is being operated on.
+ *
+ */
 export const useMarkupInstance = <T extends HTMLElement>() => {
   const shapeRef = React.useRef<MarkupShapeInstance>(null);
   const nodeEntity = React.useContext(NodeEntityContext)!;
@@ -35,24 +52,47 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
   const textWidth = React.useRef<number | null>(null);
   const nodeInstance = useNodeInstance<T>();
 
+  /**
+   * Returns an object containing information about the final state, such as size and position, of the
+   * markup overlay at the end of a transformation like resizing.
+   */
   const getTransform = React.useCallback(() => {
     const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
     const zoom = engine.canvas!.getZoom();
-    const rect = transformRef.current!.getBoundingClientRect();
     const position = engine.node.api(nodeEntity.nodeID)!.instance!.getPosition();
     const [left, top] = engine.canvas!.reverseMapPoint(engine.canvas!.reverseTransformPoint(position, true));
 
     if (isText(data)) {
-      const scaledWidth = data.width ? data.width * data.scale : rect.width;
+      // Get the Ref to the actual Node.
+      const el = transformRef.current!;
+
+      // Determine the final width and height of the Node after the transformation has completed.
+      const scaledWidth = data.overrideWidth ? data.overrideWidth : el.offsetWidth;
+      const [finalWidth, finalHeight] = [scaledWidth * data.scale * zoom, el.offsetHeight * data.scale * zoom];
+
+      // Now compute the position of the top-left corner of the Node, after scaling is applied, but before any
+      // rotations are applied.
+
+      // 1 - Get the position and size of the bounding box (not the same thing as the Node).
+      const { left: clientLeft, top: clientTop, width: clientWidth, height: clientHeight } = el.getBoundingClientRect();
+
+      // 2 - Compute the center of the bounding box, which has the same value as the center of the Node.
+      const centerPoint = new Coords(getCenter([clientLeft, clientTop], [clientWidth, clientHeight]));
+
+      // 3 - Now compute a vector to calculate the top-left corner from the center point.
+      const vecToTopleft = new Vector([finalWidth, finalHeight]).scalarDiv(2).scalarMul(-1);
+
+      // 4 - Now compute the final top-left corner of the Node.
+      const origin = centerPoint.add(vecToTopleft);
 
       return {
-        width: scaledWidth,
-        height: rect.height,
+        width: finalWidth,
+        height: finalHeight,
         rotate: data.rotate,
-        scale: data.scale,
+        scale: 1,
         invertX: false,
         invertY: false,
-        origin: new Coords([rect.left, rect.top]),
+        origin,
       };
     }
 
@@ -114,6 +154,10 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           transformEl.style.height = `${data.height}px`;
         });
       },
+      /**
+       * Used at the end of a transformation to publish the final state of the node into
+       * the Redux store.
+       */
       applyTransformations: () => {
         const data = engine.getDataByNodeID<any>(nodeEntity.nodeID);
         const [scaleX, scaleY] = scale.current!;
@@ -133,18 +177,68 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         } else if (data.type === BlockType.MARKUP_TEXT) {
           engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, {
             scale: scaleX,
-            ...(maxWidth !== null && { width: maxWidth }),
+            rotate: angle % (2 * Math.PI),
+            ...(maxWidth !== null && { overrideWidth: maxWidth }),
           });
         }
       },
+      /**
+       * Accumulates the effects of a rotation operation and applies the changes so far as a style
+       * to the Node.
+       */
       rotate: (angle) => {
         const transformEl = transformRef.current!;
-
         rotation.current = angle;
+
+        const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
+        const curScale = (data as Markup.NodeData.Text).scale;
+
+        const isTextNode = data.type === BlockType.MARKUP_TEXT;
+
+        if (isTextNode) {
+          /**
+           * We need to track the current scaling on the Markup Text, even if it's not relevant to the rotation
+           * operation, because of how we've implemented scaling for Markup Text.
+           *
+           * Markup Text relies on the CSS animations defined in this `.rotate()` function and the `.scale()`
+           * function. There is no prop, which when passed into a Markup Text React component, controls the
+           * height and width of the Markup Text, unlike Markup Image. The scaling of a Markup Text is entirely
+           * reliant on the CSS styling, `scale(...)`
+           *
+           * This is problematic because when you set a `transform` CSS property, it overwrites previous
+           * transformations. Therefore, we need to apply not only a `rotate(...)` transform for Markup Text but
+           * also a `scale(...)` transform in `rotate(...)`, so that both resizing and rotation is properly applied
+           * on Markup Text.
+           *
+           * Additionally, `useMarkupInstance` implements `applyTransformation()` by resetting the amount of scaling to `[1,1]`,
+           * then publishing to the Redux store. If you attempt to do two consecutive rotations, `applyTransformations()`
+           * causes the scaling on the Markup Text to get reset and the Redux data to be set to the wrong value of 1.
+           *
+           * We need manually set `scale.current` here as a hack to ensure that `applyTransformation()` doesnt'
+           * send the wrong data for Markup Text.
+           *
+           * $TODO - Need to either separate Markup Text logic to its own specialization of `useMarkupInstance` to avoid
+           *         interweaving logic for Markup Text and Images, or come up with a better generalization.
+           *
+           */
+          scale.current = [curScale, curScale];
+        }
+
+        /**
+         * As mentioned above, the Markup Text's scaling logic is "CSS-driven" in that we must have the correct
+         * styling on the Markup Text node at all times to ensure the transformation applies. This is why we
+         * must also apply the `scale(...)` transformation in addition to `rotate(...)` in Markup Text, so that
+         * transformations get applied during and after a resize/rotation.
+         *
+         * Markup Images does not need this because it is "props-driven". The Markup Images can pull the current
+         * width and height from the Redux store and receive it as props for its rendering. The CSS styling is
+         * only needed to render Markup Imaegs during a resize.
+         */
+        const transformation = `${isTextNode ? `scale(${curScale}, ${curScale})` : ''} rotate(${angle}rad)`;
 
         window.requestAnimationFrame(() => {
           transformEl.style.transformOrigin = 'center';
-          transformEl.style.transform = `rotate(${angle}rad)`;
+          transformEl.style.transform = transformation;
         });
       },
       // moveVertices: ([offsetX, offsetY], [shiftX, shiftY]) => {
@@ -161,12 +255,21 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           shapeEl?.setHeadAttribute?.('orient', `${rotate}rad`);
         });
       },
+      /**
+       * Accumulates the effects of a scaling operation and applies the changes so far as a style to
+       * the Node.
+       */
       scale: ([scaleX, scaleY], [offsetX, offsetY], rotate, [rotationOffsetX, rotationOffsetY]) => {
         const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
         const transformEl = transformRef.current!;
         const zoom = engine.canvas!.getZoom();
         const isTextNode = data.type === BlockType.MARKUP_TEXT;
 
+        /**
+         * Need this custom logic for Markup Text because Text is "CSS-driven" (see the comment in `.rotate(...)`)
+         * and we need to always apply an appropriate `scale(...)` transformation to ensure resizing is properly
+         * applied on Markup Text.
+         */
         const nextScaleX = scaleX * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
         const nextScaleY = scaleY * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
 
@@ -179,11 +282,32 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           if (!isTextNode) {
             transformEl.style.transformOrigin = 'left top';
           }
+
+          // A number of transformations are applied here
+          //
+          //  - scale(...)      - This is what applies the actual resizing while we drag a handle
+          //
+          //  - rotate(...)     - This MUST be included, otherwise, any existing rotations get overwritten
+          //                      causing the node to snap back to a rotation of 0.
+          //
+          //  - translate(...)  - `transformEl.style.transformOrigin = "left top"` causes the scaling to occur
+          //                      at the original, unrotated top-left corner of the node. This can cause the
+          //                      markup node to be offset from the overlay if the node has been rotated.
+          //                      We MUST translate node, so that the `transformOrigin` corresponds with the
+          //                      top-left corner of the rotated Markup Overlay.
+          //
+          //                      This issue currently only appears for Markup Images since Markup Text is
+          //                      transformed relative to its center-point.
+
           transformEl.style.transform = `translate(${rotationOffsetX / zoom}px, ${
             rotationOffsetY / zoom
           }px) scale(${nextScaleX}, ${nextScaleY}) rotate(${(data as ResizableMarkupNodeData).rotate}rad)`;
         });
       },
+      /**
+       * Accumulates the effects of a special case of the scaling operation, when we drag the horizontal handles
+       * of a Markup Text node and applies the changes so far as a style to the Node.
+       */
       scaleText: (maxWidth: number) => {
         const transformEl = transformRef.current!;
         const { data } = nodeEntity.resolve<Markup.NodeData.Text>();

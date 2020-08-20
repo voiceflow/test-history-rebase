@@ -77,7 +77,7 @@ const MarkupNode = () => {
             isText={nodeEntity.nodeType === BlockType.MARKUP_TEXT}
             rotate={(data as ResizableMarkupNodeData).rotate || 0}
             scale={(data as Markup.NodeData.Text).scale ?? 1}
-            maxWidth={(data as Markup.NodeData.Text).width ?? null}
+            maxWidth={(data as Markup.NodeData.Text).overrideWidth ?? null}
             ref={instance.transformRef}
           >
             <NodeComponent ref={instance.blockRef} node={node} data={data as any} />

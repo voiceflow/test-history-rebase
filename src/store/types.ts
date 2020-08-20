@@ -1,3 +1,6 @@
+import * as Redux from 'redux';
+import { Assign } from 'utility-types';
+
 import type { State } from '@/ducks/_root';
 
 // dispatch
@@ -12,11 +15,12 @@ export type Dispatcher<A extends any[]> = (...args: A) => Dispatchable;
 
 // store
 
-export type Store = {
-  getState(): State;
-  dispatch<D extends Dispatchable>(dipatchable: D): DispatchResult<D>;
-  subscribe(handler: () => void): () => void;
-};
+export type Store = Assign<
+  Redux.Store<State, any>,
+  {
+    dispatch<D extends Dispatchable>(dipatchable: D): DispatchResult<D>;
+  }
+>;
 
 export type StoreMiddlewareAPI = {
   dispatch: <D extends Dispatchable>(dispatchable: D) => DispatchResult<D>;

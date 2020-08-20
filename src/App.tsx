@@ -36,7 +36,7 @@ import PaymentModal from '@/pages/Payment/PaymentModal';
 import { compose } from '@/utils/functional';
 
 import Routes from './Routes';
-import { withGlobalProviders } from './contexts/GlobalProviders';
+import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 
 const App = () => {
   useSessionTracking();
@@ -76,4 +76,4 @@ export default compose(
   hot,
   withGlobalProviders,
   withBatchLoadingGate(SocketLoadingGate, AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate)
-)(App);
+)(App) as React.FC<GlobalProvidersProps>;

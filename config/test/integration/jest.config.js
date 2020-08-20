@@ -17,7 +17,6 @@ module.exports = {
   },
   transform: {
     '^.+\\.svg$': '<rootDir>/config/test/integration/transforms/svg',
-    '^.+\\.story\\.[jt]sx$': '@storybook/addon-storyshots/injectFileName',
     '^.+\\.jsx?$': 'babel-jest',
     '^.+\\.tsx?$': 'ts-jest',
   },

@@ -1,11 +1,14 @@
 import { ConnectedRouter } from 'connected-react-router';
+import { History } from 'history';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { Persistor } from 'redux-persist';
 import { ThemeProvider } from 'styled-components';
 
 import { IS_PRODUCTION_ENV } from '@/config';
 import { MaintenanceGate } from '@/gates';
+import { Store } from '@/store/types';
 import theme from '@/styles/theme';
 
 import { DragProvider } from './DragContext';
@@ -18,7 +21,13 @@ import { OverlayProvider } from './OverlayContext';
 import StoreProvider from './StoreProvider';
 import { TextEditorVariablesPopoverProvider } from './TextEditorVariablesPopoverContext';
 
-const GlobalProviders = ({ history, store, persistor, children }) => {
+export type GlobalProvidersProps = {
+  history: History;
+  store: Store;
+  persistor: Persistor;
+};
+
+const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, children }) => {
   const renderApp = () => (
     <ConnectedRouter history={history}>
       <LifecycleProvider history={history}>{children}</LifecycleProvider>
@@ -54,8 +63,13 @@ const GlobalProviders = ({ history, store, persistor, children }) => {
 export default GlobalProviders;
 
 // eslint-disable-next-line react/display-name
-export const withGlobalProviders = (Component) => ({ history, store, persistor, ...props }) => (
+export const withGlobalProviders = <T extends object>(Component: React.FC<T>) => ({
+  history,
+  store,
+  persistor,
+  ...props
+}: T & GlobalProvidersProps) => (
   <GlobalProviders history={history} store={store} persistor={persistor}>
-    <Component {...props} />
+    <Component {...(props as T)} />
   </GlobalProviders>
 );

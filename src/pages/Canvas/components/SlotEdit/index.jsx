@@ -28,6 +28,10 @@ import CustomLine from './components/CustomLine';
 import ValueSynonymsSection from './components/ValueSynonymsSection';
 import { generateSlotInput, mergeSlotInputs } from './utils';
 
+const UNSUPPORTED_CUSTOM_VALUE_SLOTS = ['Date', 'Duration', 'Number', 'Ordinal', 'PhoneNumber', 'SearchQuery', 'Time', 'AMAZON.FOUR_DIGIT_NUMBER'];
+
+const isUnsupportedCustomSlotValues = (slotType) => UNSUPPORTED_CUSTOM_VALUE_SLOTS.includes(slotType);
+
 const FlexModalFooter = styled(ModalFooter)`
   ${flexApartStyles}
   flex-direction: row-reverse;
@@ -52,15 +56,12 @@ function SlotEdit({
 
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
-
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(type);
   const [slotName, setSlotName] = React.useState(() => removeTrailingUnderscores(formatIntentName(name)));
   const [customLines, setCustomLines] = React.useState(inputs);
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
-
   const nameRef = React.useRef(null);
-
   const onCustomLineChange = React.useCallback((index, data) => setCustomLines(replace(customLines, index, { ...customLines[index], ...data })), [
     customLines,
   ]);
@@ -134,7 +135,13 @@ function SlotEdit({
   };
 
   React.useEffect(() => {
-    setSlotName(removeTrailingUnderscores(formatIntentName(name)));
+    if (isUnsupportedCustomSlotValues(slotType)) {
+      setCustomLines([]);
+    }
+  }, [slotType]);
+
+  React.useEffect(() => {
+    setSlotName(formatIntentName(name));
   }, [name]);
 
   React.useEffect(() => {
@@ -194,19 +201,21 @@ function SlotEdit({
           getOptionLabel={(optionValue) => slotTypesMap[optionValue]?.label}
         />
 
-        <ValueSynonymsSection dividers={false}>
-          {customLines.map((line, index) => (
-            <CustomLine
-              key={line.id}
-              value={line}
-              remove={() => removeCustomLine(index)}
-              onBlur={isInteraction && updateSlot}
-              onChange={(data) => onCustomLineChange(index, data)}
-              removeDisabled={slotType === CUSTOM_SLOT_TYPE && customLines.length <= 1}
-            />
-          ))}
-          <ClickableText onClick={addCustomLine}>Add custom value</ClickableText>
-        </ValueSynonymsSection>
+        {!isUnsupportedCustomSlotValues(slotType) && (
+          <ValueSynonymsSection dividers={false}>
+            {customLines.map((line, index) => (
+              <CustomLine
+                key={line.id}
+                value={line}
+                remove={() => removeCustomLine(index)}
+                onBlur={isInteraction && updateSlot}
+                onChange={(data) => onCustomLineChange(index, data)}
+                removeDisabled={slotType === CUSTOM_SLOT_TYPE && customLines.length <= 1}
+              />
+            ))}
+            <ClickableText onClick={addCustomLine}>Add custom value</ClickableText>
+          </ValueSynonymsSection>
+        )}
       </Section>
 
       <Section dividers={false} variant="tertiary" header="Slot Color">

@@ -1,3 +1,5 @@
+import { AlexaProject, AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
+
 import clientV2 from '@/clientV2';
 import creatorAdapter from '@/clientV2/adapters/creator';
 import projectAdapter from '@/clientV2/adapters/project';
@@ -34,11 +36,11 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 // eslint-disable-next-line import/prefer-default-export
 export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch) => {
   const version = await clientV2.api.version.get(versionID);
-  const DBproject = await clientV2.api.project.get(version.projectID);
+  const dbProject = await clientV2.api.project.get<AlexaProjectData, AlexaProjectMemberData>(version.projectID);
 
-  const project = projectAdapter.fromDB(DBproject);
+  const project = projectAdapter.fromDB(dbProject as AlexaProject);
   // use the project name instead of the version name
-  const skill = versionAdapter.fromDB({ ...version, name: project.name }, { platform: DBproject.platform as PlatformType });
+  const skill = versionAdapter.fromDB({ ...version, name: project.name }, { platform: dbProject.platform as PlatformType });
 
   dispatch(Creator.resetCreator());
 

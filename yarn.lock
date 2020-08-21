@@ -4573,6 +4573,20 @@
   dependencies:
     "@voiceflow/api-sdk" "^1.4.11"
 
+"@voiceflow/api-sdk@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.5.2.tgz#97e400c7abd9bdaa7380fc05a01af743f7f0f39a"
+  integrity sha512-KNRTG+lDtMvoJSCbCSmTcQUhUJJRUPWRefWB9DO+HsmqoNikbK7EiAwhlt9NPPIY2SOScWGt3tdiajxQgCNrBg==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.1.10"
+    atob "^2.1.2"
+    axios "^0.19.2"
+    core-js "^3.6.5"
+    io-ts "^2.2.8"
+    regenerator-runtime "^0.13.5"
+    superstruct "^0.10.12"
+
 "@voiceflow/api-sdk@^1.4.11":
   version "1.4.11"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.4.11.tgz#8501d812163c82c27dd333c46173e4117f74d6c6"
@@ -4695,6 +4709,18 @@
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/@voiceflow/logger/-/logger-1.1.10.tgz#cb4700029ef411e46fbbbe51ac8493d7b5056d8c"
   integrity sha512-FgFf9PnGNjcjkmC/LZtGTzWubP7qxccPLNbcux6mmelMOpAtXUOLg5V3MUSwgflOOSn7BPyl9X6yqZLK8RPMKg==
+  dependencies:
+    "@types/express-pino-logger" "^4.0.2"
+    "@types/pino" "^6.3.0"
+    "@voiceflow/pino-pretty" "^3.5.0"
+    "@zerollup/ts-transform-paths" "^1.7.18"
+    express-pino-logger "^4.0.0"
+    pino "^5.14.0"
+
+"@voiceflow/logger@^1.1.10":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/logger/-/logger-1.2.0.tgz#0076497941d67581061a3d62ee5d087f2d59667c"
+  integrity sha512-q7hXY8beYL/nf7L4U7epQfpwv0w281fTOFvSeXWRrR62/ad+0nUq/6+MMEVuuVG9nVhunyFrb4n6zTWJVA4WRw==
   dependencies:
     "@types/express-pino-logger" "^4.0.2"
     "@types/pino" "^6.3.0"

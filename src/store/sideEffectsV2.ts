@@ -1,11 +1,10 @@
-import { AlexaProject, AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
-
 import clientV2 from '@/clientV2';
 import creatorAdapter from '@/clientV2/adapters/creator';
 import projectAdapter from '@/clientV2/adapters/project';
 import versionAdapter from '@/clientV2/adapters/version';
 import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Diagram from '@/ducks/diagramV2';
 // import * as Integration from '@/ducks/integration';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
@@ -35,12 +34,12 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
 // eslint-disable-next-line import/prefer-default-export
 export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch) => {
-  const version = await clientV2.api.version.get(versionID);
-  const dbProject = await clientV2.api.project.get<AlexaProjectData, AlexaProjectMemberData>(version.projectID);
+  const [dbVersion] = await Promise.all([clientV2.api.version.get(versionID), dispatch(Diagram.loadVersionDiagrams(versionID))] as const);
+  const dbProject = await clientV2.api.project.get(dbVersion.projectID);
 
-  const project = projectAdapter.fromDB(dbProject as AlexaProject);
+  const project = projectAdapter.fromDB(dbProject);
   // use the project name instead of the version name
-  const skill = versionAdapter.fromDB({ ...version, name: project.name }, { platform: dbProject.platform as PlatformType });
+  const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
 
   dispatch(Creator.resetCreator());
 

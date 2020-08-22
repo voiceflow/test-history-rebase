@@ -1,9 +1,9 @@
-import { AlexaProject } from '@voiceflow/alexa-types';
+import { Project as DBProject } from '@voiceflow/api-sdk';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { Project } from '@/models';
 
-const projectAdapter = createAdapter<AlexaProject, Project>(
+const projectAdapter = createAdapter<DBProject<Record<string, unknown>, Record<string, unknown>>, Project>(
   ({ _id, name, devVersion, created }) => ({
     id: _id,
     name,

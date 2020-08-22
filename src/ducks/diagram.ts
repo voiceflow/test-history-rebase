@@ -165,7 +165,7 @@ export const saveDiagram = (skillID: string, diagramID: string, data: string): T
   const diagramRequest = {
     skill: skillID,
     sub_diagrams: JSON.stringify(subDiagramIDs),
-    title: diagram.name,
+    title: diagram?.name ?? 'Name',
     variables,
     data,
     ...(lastTimestamp && { lastTimestamp }),

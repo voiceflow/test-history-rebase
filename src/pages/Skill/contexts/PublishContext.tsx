@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import client from '@/clientV2';
 import { FeatureFlag } from '@/config/features';
 import { JobStatus, PlatformType } from '@/constants';
-import * as Diagram from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagramV2';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useFeature, useSetup, useTeardown } from '@/hooks';
@@ -30,7 +30,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const [job, setJob] = React.useState<Nullable<AlexaJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
-  const skillID = useSelector(Skill.activeSkillIDSelector);
+  const projectID = useSelector(Skill.activeProjectIDSelector);
   const dispatch = useDispatch();
 
   const service = getPlatformValue(platform, {
@@ -38,18 +38,18 @@ export const PublishProvider: React.FC = ({ children }) => {
   });
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.getPublishStatus(skillID);
+    const currentJob = await service?.getPublishStatus(projectID);
 
     setJob(currentJob || null);
-  }, [skillID, service]);
+  }, [projectID, service]);
 
   const publish = React.useCallback(async () => {
     await dispatch(Diagram.saveActiveDiagram());
 
-    const result = await service?.publish(skillID);
+    const result = await service?.publish(projectID);
 
     setJob(result?.job || null);
-  }, [skillID, service]);
+  }, [projectID, service]);
 
   const updateCurrentStage = React.useCallback(
     async (data: unknown) => {
@@ -57,17 +57,17 @@ export const PublishProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await service?.updatePublishStage(skillID, job.stage.type, data);
+      await service?.updatePublishStage(projectID, job.stage.type, data);
       await getJob(); // to fetch updated status
     },
-    [skillID, service, job?.stage.type]
+    [projectID, service, job?.stage.type]
   );
 
   const cancel = React.useCallback(async () => {
-    await service?.cancelPublish(skillID);
+    await service?.cancelPublish(projectID);
 
     setJob(null);
-  }, [skillID, service]);
+  }, [projectID, service]);
 
   const stopPulling = React.useCallback(() => {
     clearTimeout(pullTimeout.current);
@@ -83,11 +83,11 @@ export const PublishProvider: React.FC = ({ children }) => {
       return;
     }
 
-    // stop pulling when skillID/platform changed
+    // stop pulling when projectID/platform changed
     stopPulling();
 
     getJob();
-  }, [skillID, getJob]);
+  }, [projectID, getJob]);
 
   useDidUpdateEffect(() => {
     if (!dataRefactor.isEnabled) {

@@ -35,6 +35,7 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
       name: 'Intent',
       alexa: { intent: null, mappings: [] },
       google: { intent: null, mappings: [] },
+      general: { intent: null, mappings: [] },
     },
   }),
 };

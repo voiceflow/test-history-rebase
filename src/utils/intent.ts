@@ -65,6 +65,7 @@ export const GOOGLE_BUILT_INS = constants.intents.BUILT_IN_INTENTS_GOOGLE.map(in
 export const BUILT_IN_INTENTS = {
   [PlatformType.ALEXA]: ALEXA_BUILT_INS,
   [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
+  [PlatformType.GENERAL]: [],
 };
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);

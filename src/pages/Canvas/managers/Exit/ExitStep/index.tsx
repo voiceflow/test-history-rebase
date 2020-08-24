@@ -7,6 +7,7 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 const PLATFORM_LABELS = {
   [PlatformType.ALEXA]: 'Skill',
   [PlatformType.GOOGLE]: 'Google Action',
+  [PlatformType.GENERAL]: 'Project',
 };
 
 export type ExitStepProps = {

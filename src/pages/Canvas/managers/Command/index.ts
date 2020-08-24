@@ -34,6 +34,12 @@ const CommandManager: NodeConfig<NodeData.Command> = {
         mappings: [],
         resume: true,
       },
+      general: {
+        intent: null,
+        diagramID: null,
+        mappings: [],
+        resume: true,
+      },
     },
   }),
 };

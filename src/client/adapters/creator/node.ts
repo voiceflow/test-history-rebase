@@ -15,7 +15,7 @@ const sortStreamPorts = (ports: Port[]) => {
 
       return acc;
     },
-    { alexa: [], google: [] }
+    { alexa: [], google: [], general: [] }
   );
 
   return [...google, ...alexa];

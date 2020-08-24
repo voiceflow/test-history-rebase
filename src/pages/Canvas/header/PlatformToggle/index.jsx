@@ -5,7 +5,7 @@ import Flex, { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import { Link } from '@/components/Text';
-import { PLATFORMS, PlatformType } from '@/constants';
+import { PLATFORMS, PLATFORM_META, PlatformType } from '@/constants';
 
 export const PLATFORM_LABELS = {
   [PlatformType.ALEXA]: 'Amazon Alexa',
@@ -21,6 +21,7 @@ function PlatformToggle({ platform, onToggle, disabled }) {
       menu={
         <Menu noBottomPadding>
           {PLATFORMS.map((platformType) => {
+            if (PLATFORM_META[platformType].hidden) return;
             return (
               <MenuItem
                 onClick={() => {

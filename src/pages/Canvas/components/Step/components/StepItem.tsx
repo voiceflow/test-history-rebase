@@ -28,7 +28,7 @@ const Item: React.FC<ItemProps> = ({
 
   return (
     <Container>
-      <IconContainer>{icon && <SvgIcon icon={icon} size={16} color={iconColor} />}</IconContainer>
+      <IconContainer>{icon && <SvgIcon icon={icon} size={18} color={iconColor} />}</IconContainer>
       <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
         <StepLabelText onClick={onClick} multiline={multilineLabel} lineClamp={labelLineClamp}>
           {label || placeholder}

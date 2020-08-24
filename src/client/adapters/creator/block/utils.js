@@ -2,7 +2,7 @@ import _isString from 'lodash/isString';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { PLATFORMS, RepromptType } from '@/constants';
+import { PLATFORMS, PLATFORM_META, RepromptType } from '@/constants';
 
 export const createBlockAdapter = createSimpleAdapter;
 
@@ -43,6 +43,9 @@ export const repromptAdapter = {
 export const platformDependentAdapter = (adapter) => {
   const perKeyAdapter = (transform, incoming) => (data) =>
     PLATFORMS.reduce((acc, key) => {
+      if (PLATFORM_META[key].hidden) {
+        return acc;
+      }
       acc[key] = transform(data[key]);
       if (data.reprompt) {
         acc.reprompt = incoming ? repromptAdapter.fromDB(data.reprompt) : repromptAdapter.toDB(data.reprompt);

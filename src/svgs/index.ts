@@ -14,6 +14,7 @@ export { default as arrow } from './arrow.svg';
 export { default as arrowRight } from './arrow-right.svg';
 export { default as arrowLeft } from './arrow-left.svg';
 export { default as alexa } from './alexa.svg';
+export { default as amazonAlexa } from './amazon-alexa.svg';
 
 // b
 export { default as ban } from './ban.svg';
@@ -70,12 +71,14 @@ export { default as flows } from './flows.svg';
 export { default as folderLight } from './folder-light.svg';
 export { default as forward } from './forward.svg';
 export { default as filledCheck } from './filled-check.svg';
+export { default as flag } from './flag.svg';
 
 // g
 export { default as globe } from './images/globe.svg';
 export { default as google } from './brands/google.svg';
 export { default as grid } from './grid.svg';
 export { default as googleSheets } from './google-sheets.svg';
+export { default as googleAssistant } from './google-assistant.svg';
 export { default as greater } from './greater.svg';
 
 // h

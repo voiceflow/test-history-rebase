@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { constants } from '@voiceflow/common';
 
+import { Icon } from '@/svgs/types';
+
 export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
@@ -39,6 +41,7 @@ export enum SessionType {
 export enum PlatformType {
   ALEXA = 'alexa',
   GOOGLE = 'google',
+  GENERAL = 'general',
 }
 
 export const ProductType = {
@@ -47,7 +50,22 @@ export const ProductType = {
   SUBSCRIPTION: 'SUBSCRIPTION',
 };
 
-export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE];
+export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
+
+export const PLATFORM_META: Record<PlatformType, { icon: Icon; hidden: boolean }> = {
+  [PlatformType.ALEXA]: {
+    icon: 'amazonAlexa',
+    hidden: false,
+  },
+  [PlatformType.GOOGLE]: {
+    icon: 'googleAssistant',
+    hidden: false,
+  },
+  [PlatformType.GENERAL]: {
+    icon: 'inFlow',
+    hidden: true,
+  },
+};
 
 export const PLATFORM_APP_NAME = <Record<PlatformType, string>>{
   [PlatformType.ALEXA]: 'Alexa Skill',

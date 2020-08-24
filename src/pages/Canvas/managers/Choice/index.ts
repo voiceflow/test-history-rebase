@@ -45,6 +45,11 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
             intent: null,
             mappings: [],
           },
+          general: {
+            id: cuid.slug(),
+            intent: null,
+            mappings: [],
+          },
         },
       ],
       reprompt: null,

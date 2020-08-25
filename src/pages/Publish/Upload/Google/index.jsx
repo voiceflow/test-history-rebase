@@ -8,6 +8,7 @@ import RenderingError from '../common/RenderingError';
 import GoogleError from './GoogleError';
 import GetGoogleLogin from './GoogleLogin';
 import NoDialogFlow from './NoDialogFlow';
+import UpdateInvocation from './UpdateInvocation';
 import UploadSuccess from './UploadSuccess';
 
 export const UploadGoogle = (props) => {
@@ -18,6 +19,8 @@ export const UploadGoogle = (props) => {
   switch (stage) {
     case GOOGLE_STAGES.GOOGLE_LOGIN:
       return <GetGoogleLogin />;
+    case GOOGLE_STAGES.INVALID_INVOCATION_NAME:
+      return <UpdateInvocation />;
     case GOOGLE_STAGES.CHECK_DIALOGFLOW:
       return <IndefiniteLoading message="Checking Dialogflow" />;
     case GOOGLE_STAGES.NO_DIALOGFLOW:

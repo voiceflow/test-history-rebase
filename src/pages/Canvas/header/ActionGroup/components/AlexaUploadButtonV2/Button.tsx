@@ -47,7 +47,6 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
 
   const onPublish = () => {
     onClick();
-
     publish();
   };
 

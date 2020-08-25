@@ -9,7 +9,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 
-import { createPublishStateSelector, createUploadStep, log } from './utils';
+import { createPublishStateSelector, createUploadStep, invNameError, log } from './utils';
 
 export const PLATFORM = PlatformType.GOOGLE;
 
@@ -24,6 +24,10 @@ export const GOOGLE_STATES = {
   },
   GOOGLE_LOGIN: {
     description: 'Google Login',
+    end: true,
+  },
+  INVALID_INVOCATION_NAME: {
+    description: 'Update invalid invocation name',
     end: true,
   },
   NO_DIALOGFLOW: {
@@ -141,7 +145,7 @@ export const uploadSuccess = () =>
     dispatch(updateGoogleStage(GOOGLE_STAGES.UPLOAD_SUCCESS));
   });
 
-// STEP 4
+// STEP 5
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const projectID = Skill.activeProjectIDSelector(getState());
@@ -157,10 +161,11 @@ export const submitProject = (newVersionId) =>
     }
   });
 
-// STEP 3
+// STEP 4
 export const renderProject = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
+
     const projectID = Skill.activeProjectIDSelector(state);
     const { googleID } = publishStateSelector(state);
 
@@ -176,7 +181,7 @@ export const renderProject = () =>
     }
   });
 
-// STEP 2.2 Link Dialogflow Cred
+// STEP 3.2 Link Dialogflow Cred
 export const linkDialogflowCredential = (token) =>
   uploadStep(async (dispatch, getState) => {
     const projectID = Skill.activeProjectIDSelector(getState());
@@ -193,7 +198,7 @@ export const linkDialogflowCredential = (token) =>
     }
   });
 
-// STEP 2.1 Load Dialogflow Cred
+// STEP 3.1 Load Dialogflow Cred
 export const loadDialogflow = () =>
   uploadStep(async (dispatch, getState) => {
     const projectID = Skill.activeProjectIDSelector(getState());
@@ -209,10 +214,12 @@ export const loadDialogflow = () =>
     return checkToken;
   });
 
-// STEP 2 - check that the project is linked to a dialogflow project
+// STEP 3 - check that the project is linked to a dialogflow project
 export const checkDialogflow = () =>
   uploadStep(async (dispatch, getState) => {
-    const { options } = publishStateSelector(getState());
+    const state = getState();
+
+    const { options } = publishStateSelector(state);
 
     // if options check is disabled, do not show this stage but still run
     if (options.check !== false) {
@@ -226,6 +233,19 @@ export const checkDialogflow = () =>
     dispatch(renderProject());
   });
 
+// Step 2 Check Invocation Name
+export const checkInvocationName = () =>
+  uploadStep(async (dispatch, getState) => {
+    const state = getState();
+
+    const locales = Skill.activeLocalesSelector(state);
+    const invName = Skill.invNameSelector(state);
+    if (invNameError(invName, locales)) {
+      return dispatch(updateGoogleStage(GOOGLE_STAGES.INVALID_INVOCATION_NAME));
+    }
+    dispatch(checkDialogflow());
+  });
+
 // STEP 1 - check that user is logged in with valid google account
 export const GoogleLogin = () =>
   uploadStep((dispatch, getState) => {
@@ -233,7 +253,7 @@ export const GoogleLogin = () =>
       return dispatch(updateGoogleStage(GOOGLE_STAGES.GOOGLE_LOGIN));
     }
 
-    dispatch(checkDialogflow());
+    dispatch(checkInvocationName());
   });
 
 // start the publishing process and set option parameters

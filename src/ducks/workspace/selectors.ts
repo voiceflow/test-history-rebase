@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import { Permission, hasRolePermission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
+import * as Skill from '@/ducks/skill';
 import { createRootSelector } from '@/ducks/utils';
 import { Workspace } from '@/models';
 import { NonNullableRecord } from '@/types';
@@ -85,3 +86,9 @@ export const userRoleSelector = createSelector(
 export const isLibraryRoleSelector = createSelector([userRoleSelector], (role) => role === UserRole.LIBRARY);
 
 export const hasTemplateWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
+
+export const workspaceByProjectIDSelector = createSelector([allWorkspacesSelector, Skill.activeProjectIDSelector], (workspaces, projectID) => {
+  return workspaces.find(({ boards }) => {
+    return boards.find(({ projects }) => projects.includes(projectID));
+  });
+});

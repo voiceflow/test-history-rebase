@@ -44,7 +44,7 @@ export const updateUnreadComments = (hasUnreadComments: boolean): UpdateUnreadCo
   createAction(CommentingAction.UPDATE_UNREAD_COMMENTS, hasUnreadComments);
 
 export const {
-  add: addThread,
+  prepend: prependThread,
   update: updateThread,
   remove: removeThread,
   removeMany: removeManyThreads,
@@ -117,6 +117,14 @@ export const loadThreads = (projectID: string): Thunk<Thread[]> => async (dispat
   return threads;
 };
 
+export const loadThread = (projectID: string, threadID: string): Thunk<Thread> => async (dispatch) => {
+  const thread: Thread = await client.thread.fetchThread(projectID, threadID);
+
+  dispatch(updateThread(thread.id, thread));
+
+  return thread;
+};
+
 // Thread CRUD
 
 export const createThread = ({
@@ -148,7 +156,7 @@ export const createThread = ({
   try {
     const thread = await client.thread.create(projectID, generatedThread);
 
-    dispatch(addThread(thread.id!, thread));
+    dispatch(prependThread(thread.id!, thread));
 
     return thread;
   } catch (e) {
@@ -270,7 +278,7 @@ export const handleNewThread = (payload: { projectID: string; created: DBThread 
 
   if (creatorID === thread.creatorID) return;
 
-  dispatch(addThread(thread.id, thread));
+  dispatch(prependThread(thread.id, thread));
   dispatch(updateUnreadComments(true));
 };
 

@@ -9,6 +9,9 @@ const threadClient = {
   find: (projectID: string) =>
     fetch.get<{ threads: DBThread[] }>(`${COMMENTING_PATH}/${projectID}/threads`).then(({ threads }) => threadAdapter.mapFromDB(threads)),
 
+  fetchThread: (projectID: string, threadID: string) =>
+    fetch.get<{ thread: DBThread }>(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`).then(({ thread }) => threadAdapter.fromDB(thread)),
+
   create: (projectID: string, data: NewThread) =>
     fetch.post<DBThread>(`${COMMENTING_PATH}/${projectID}/threads`, threadAdapter.toDB((data as unknown) as Thread)).then(threadAdapter.fromDB),
 

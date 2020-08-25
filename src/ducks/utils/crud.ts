@@ -10,6 +10,7 @@ import {
   ObjectWithId,
   addAllNormalizedByKeys,
   addNormalizedByKey,
+  addToStartNormalizedByKey,
   defaultGetKey,
   denormalize,
   getNormalizedByKey,
@@ -44,11 +45,14 @@ export enum CRUDAction {
   CRUD_REPLACE = 'CRUD:REPLACE',
   CRUD_REORDER = 'CRUD:REORDER',
   CRUD_MOVE = 'CRUD:MOVE',
+  CRUD_PREPEND = 'CRUD:PREPEND',
 }
 
 export type CRUDAdd<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_ADD, { key: string; value: T }, M>;
 
 export type CRUDAddMany<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_ADD_MANY, T[], M>;
+
+export type CRUDPrepend<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_PREPEND, { key: string; value: T }, M>;
 
 export type CRUDUpdate<T, M extends Meta = Meta> = Action<CRUDAction.CRUD_UPDATE, { key: string; value: T; patch?: false }, M>;
 
@@ -67,6 +71,7 @@ export type CRUDMove<M extends Meta = Meta> = Action<CRUDAction.CRUD_MOVE, { fro
 export type AnyCRUDAction<T> =
   | CRUDAdd<T>
   | CRUDAddMany<T>
+  | CRUDPrepend<T>
   | CRUDPatch<T>
   | CRUDUpdate<T>
   | CRUDRemove
@@ -87,6 +92,9 @@ export const crudAddManyReducer = <T, K extends GetKey<T> = (obj: T) => string, 
   { payload: values }: CRUDAddMany<T>,
   getKey: K
 ) => addAllNormalizedByKeys(state, values, getKey);
+
+export const crudPrependReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state: S, { payload: { key, value } }: CRUDPrepend<T>) =>
+  addToStartNormalizedByKey(state, key, value);
 
 export const crudUpdateReducer = <T, S extends CRUDState<T> = CRUDState<T>>(
   state: S,
@@ -134,6 +142,8 @@ const createCRUDReducer: {
   switch (action.type) {
     case CRUDAction.CRUD_ADD:
       return crudAddReducer(state, action);
+    case CRUDAction.CRUD_PREPEND:
+      return crudPrependReducer(state, action);
     case CRUDAction.CRUD_ADD_MANY:
       return crudAddManyReducer(state, action, keyGetter);
     case CRUDAction.CRUD_UPDATE:
@@ -194,6 +204,8 @@ export const addModel = <T>(modelType: string) => (key: string, value: T) => cru
 
 export const addManyModels = <T>(modelType: string) => (values: T[]) => crudAction(modelType, CRUDAction.CRUD_ADD_MANY, values);
 
+export const prependModel = <T>(modelType: string) => (key: string, value: T) => crudAction(modelType, CRUDAction.CRUD_PREPEND, { key, value });
+
 export const updateModel = <T>(
   modelType: string
 ): {
@@ -216,6 +228,7 @@ export const moveModels = (modelType: string) => (from: string | number, to: str
 export const createCRUDActionCreators = <T>(modelType: string) => ({
   add: addModel<T>(modelType),
   addMany: addManyModels<T>(modelType),
+  prepend: prependModel<T>(modelType),
   update: updateModel<T>(modelType),
   remove: removeModel(modelType),
   removeMany: removeManyModels(modelType),

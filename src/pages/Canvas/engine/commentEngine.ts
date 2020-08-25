@@ -59,7 +59,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.focusTarget = threadID;
 
     if (threadID) {
-      await this.dispatch(Thread.loadThreads(this.select(Skill.activeProjectIDSelector)));
+      await this.dispatch(Thread.loadThread(this.select(Skill.activeProjectIDSelector), threadID));
       this.redrawThread(threadID);
       this.log.info(this.log.success('set comment focus'), this.log.slug(threadID));
     }

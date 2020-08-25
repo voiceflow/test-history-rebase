@@ -3,7 +3,8 @@ import axios from 'axios';
 
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
 import { AlexaStageType } from '@/constants/platforms';
-import { AlexaJob } from '@/models';
+import { AlexaJob, PrototypeJob } from '@/models';
+import { Nullable } from '@/types';
 
 import { PublishService } from './types';
 
@@ -13,6 +14,12 @@ export type AlexaService = PublishService<AlexaJob.AnyJob, AlexaStageType> & {
   updateSettings: (versionID: string, settings: Partial<AlexaSettings>) => Promise<void>;
 
   updatePublishing: (versionID: string, settings: Partial<AlexaPublishing>) => Promise<void>;
+
+  renderPrototype: (projectID: string) => Promise<{ job: PrototypeJob.AnyJob; projectID: string }>;
+
+  cancelRenderPrototype: (projectID: string) => Promise<void>;
+
+  getRenderPrototypeStatus: (projectID: string) => Promise<Nullable<PrototypeJob.AnyJob>>;
 };
 
 const alexaServiceClient: AlexaService = {
@@ -24,6 +31,12 @@ const alexaServiceClient: AlexaService = {
 
   updatePublishStage: (projectID, stage, data) =>
     axios.post(`${ALEXA_SERVICE_ENDPOINT}/publish/${projectID}/update-stage`, { stage, data }).then((res) => res.data),
+
+  renderPrototype: (projectID) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/prototype/${projectID}/render`).then((res) => res.data),
+
+  cancelRenderPrototype: (projectID) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/prototype/${projectID}/cancel`).then((res) => res.data),
+
+  getRenderPrototypeStatus: (projectID) => axios.get(`${ALEXA_SERVICE_ENDPOINT}/prototype/${projectID}/status`).then((res) => res.data),
 
   updatePlatformData: (versionID, platformData) => axios.patch(`${ALEXA_SERVICE_ENDPOINT}/version/${versionID}`, platformData),
 

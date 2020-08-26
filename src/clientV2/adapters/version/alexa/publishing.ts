@@ -1,6 +1,6 @@
 import { AlexaPublishing, defaultAlexaPublishing } from '@voiceflow/alexa-types';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
+import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
 
 type SkillPublishing = Pick<
@@ -22,6 +22,7 @@ type SkillPublishing = Pick<
   | 'termsAndCond'
   | 'privacyPolicy'
   | 'invName'
+  | 'locales'
 >;
 
 const alexaPublishingAdapter = createAdapter<AlexaPublishing, SkillPublishing>(
@@ -43,13 +44,15 @@ const alexaPublishingAdapter = createAdapter<AlexaPublishing, SkillPublishing>(
       termsAndConditions,
       privacyPolicy,
       invocationName,
+      locales,
+      updatesDescription,
     } = defaultAlexaPublishing(publishing);
 
     return {
       summary,
       description,
       keywords,
-      invocations: { value: invocations || [] },
+      invocations,
       category,
       purchase: hasPurchase,
       personal,
@@ -63,10 +66,52 @@ const alexaPublishingAdapter = createAdapter<AlexaPublishing, SkillPublishing>(
       termsAndCond: termsAndConditions,
       privacyPolicy,
       invName: invocationName,
+      locales,
+      updatesDescription,
     };
   },
-  () => {
-    throw new AdapterNotImplementedError();
+  (skillPublishing) => {
+    const {
+      summary,
+      description,
+      keywords,
+      invocations,
+      category,
+      purchase: hasPurchase,
+      personal,
+      copa: forChildren,
+      ads: hasAds,
+      export: forExport,
+      instructions,
+      stage,
+      smallIcon,
+      largeIcon,
+      termsAndCond: termsAndConditions,
+      privacyPolicy,
+      invName: invocationName,
+      locales,
+    } = skillPublishing;
+
+    return {
+      summary,
+      description,
+      keywords,
+      invocations,
+      category,
+      hasPurchase,
+      personal,
+      forChildren,
+      hasAds,
+      forExport,
+      instructions,
+      stage,
+      smallIcon,
+      largeIcon,
+      termsAndConditions,
+      privacyPolicy,
+      invocationName,
+      locales,
+    } as any;
   }
 );
 

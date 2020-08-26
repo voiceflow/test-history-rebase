@@ -39,6 +39,8 @@ const amazonAdaptor = {
 
     if (invocations && invocations.value) {
       resInvocations = invocations.value;
+    } else if (Array.isArray(invocations)) {
+      resInvocations = invocations;
     }
 
     if (!Array.isArray(resInvocations) || resInvocations.length === 0) {
@@ -82,7 +84,7 @@ const amazonAdaptor = {
       invocations: state.invocations,
       smallIcon: state.smallIcon,
       largeIcon: state.largeIcon,
-      category: state.category && state.category.value ? state.category.value : null,
+      category: _.isString(state.category) ? state.category : state.category?.value,
       copa: state.copa,
       privacyPolicy: !_.isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
       termsAndCond: state.termsAndCond,
@@ -93,7 +95,7 @@ const amazonAdaptor = {
       instructions: form.instructions,
     },
   }),
-  toDb: (state, form) => ({
+  toDB: (state, form) => ({
     name: form.name,
     locales: JSON.stringify(state.locales),
     inv_name: form.invName,
@@ -104,10 +106,31 @@ const amazonAdaptor = {
     invocations: state.invocations,
     small_icon: state.smallIcon,
     large_icon: state.largeIcon,
-    category: state.category && state.category.value ? state.category.value : null,
+    category: _.isString(state.category) ? state.category : state.category?.value,
     copa: state.copa,
     privacy_policy: !_.isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
     terms_and_cond: state.termsAndCond,
+    purchase: state.purchase,
+    personal: state.personal,
+    ads: state.ads,
+    export: state.export,
+    instructions: form.instructions,
+  }),
+  toDBV2: (state, form) => ({
+    name: form.name,
+    locales: state.locales,
+    invName: form.invName,
+    summary: form.summary,
+    description: form.description,
+    updatesDescription: form.updatesDescription,
+    keywords: form.keywords,
+    invocations: state.invocations,
+    smallIcon: state.smallIcon,
+    largeIcon: state.largeIcon,
+    category: _.isString(state.category) ? state.category : state.category?.value,
+    copa: state.copa,
+    privacyPolicy: !_.isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
+    termsAndCond: state.termsAndCond,
     purchase: state.purchase,
     personal: state.personal,
     ads: state.ads,

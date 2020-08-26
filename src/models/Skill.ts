@@ -56,9 +56,8 @@ export type FullSkill = Skill & {
     summary: string;
     description: string;
     keywords: string;
-    invocations: {
-      value: string[];
-    };
+    invocations: string[];
+    locales: string[];
     category: string | null;
     purchase: boolean;
     personal: boolean;

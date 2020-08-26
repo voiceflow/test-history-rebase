@@ -7,6 +7,8 @@ import { compose } from 'redux';
 import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
+import clientV2 from '@/clientV2';
+import alexaPublishingAdapterV2 from '@/clientV2/adapters/version/alexa/publishing';
 import Checkbox from '@/components/Checkbox';
 import { FlexCenter } from '@/components/Flex';
 import { FormTextBox } from '@/components/Form/TextBox';
@@ -20,6 +22,7 @@ import Toggle from '@/components/Toggle';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import * as Project from '@/ducks/project';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -44,35 +47,52 @@ class Skill extends Component {
     saving: false,
   };
 
-  componentDidMount() {
-    const { skillID } = this.props;
-    axios
-      .get(`/skill/${skillID}?verbose=1`)
-      .then((res) => {
-        const skill = amazonFormAdapter.fromDB(res.data);
-        this.setState(
-          {
-            loaded: true,
-            ...skill,
-          },
-          this.updateTerms
-        );
+  async componentDidMount() {
+    const { skillID, dataRefactorEnabled } = this.props;
 
-        this.invNameCache = skill.invName;
+    let skill;
+    let projectName;
+    let projectID;
 
-        this.props.initialize({
-          name: skill.name,
-          summary: skill.summary,
-          description: skill.description,
-          keywords: skill.keywords,
-          inv_name: skill.invName,
-          instructions: skill.instructions,
-        });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+    if (dataRefactorEnabled) {
+      // read version publishing info
+      const version = await clientV2.api.version.get(skillID);
+      projectID = version.projectID;
+
+      const dbProject = await clientV2.api.project.get(version.projectID);
+      const publishing = version.platformData.publishing;
+
+      skill = alexaPublishingAdapterV2.fromDB(publishing);
+      projectName = dbProject.name;
+    } else {
+      const { data } = await axios.get(`/skill/${skillID}?verbose=1`);
+
+      skill = amazonFormAdapter.fromDB(data);
+      projectName = skill.name;
+    }
+
+    this.setState(
+      {
+        loaded: true,
+        projectID,
+        name: projectName,
+        ...skill,
+      },
+      this.updateTerms
+    );
+
+    this.invNameCache = skill.invName;
+
+    this.props.initialize({
+      name: projectName,
+      summary: skill.summary,
+      description: skill.description,
+      keywords: skill.keywords,
+      inv_name: skill.invName,
+      instructions: skill.instructions,
+    });
+
+    return Promise.resolve();
   }
 
   onRadio = (type, value) => {
@@ -142,11 +162,10 @@ class Skill extends Component {
   };
 
   save = async () => {
-    const { skillID, updateSkill, updateSkillMeta } = this.props;
+    const { skillID, updateSkill, updateSkillMeta, updateProjectName, dataRefactorEnabled } = this.props;
     const amazonFormObj = this.getFormValueObj();
     const formState = this.state;
 
-    const toDbProperties = amazonFormAdapter.toDb(formState, amazonFormObj);
     const toStoreProperties = amazonFormAdapter.toStore(formState, amazonFormObj);
 
     if (!amazonFormObj.name) {
@@ -154,7 +173,19 @@ class Skill extends Component {
     }
 
     try {
-      await axios.patch(`/skill/${skillID}?publish=true`, toDbProperties);
+      if (dataRefactorEnabled) {
+        // convert snake case prop names to camel case, e.g. inv_name => envName
+        const publishingForm = amazonFormAdapter.toDBV2(formState, amazonFormObj);
+        const publishing = alexaPublishingAdapterV2.toDB(publishingForm);
+
+        await clientV2.alexaService.updatePublishing(skillID, publishing);
+        await clientV2.api.project.update(formState.projectID, { name: publishingForm.name });
+
+        updateProjectName(formState.projectID, publishingForm.name);
+      } else {
+        const toDbProperties = amazonFormAdapter.toDB(formState, amazonFormObj);
+        await axios.patch(`/skill/${skillID}?publish=true`, toDbProperties);
+      }
       updateSkillMeta(toStoreProperties.meta);
       updateSkill(toStoreProperties.skill);
     } catch (err) {
@@ -248,6 +279,7 @@ class Skill extends Component {
         {saving && <SvgIcon icon="loader" spin inline ml="s" />}
       </>
     );
+    const selectedCategory = category ? AMAZON_CATEGORIES.find((ac) => ac.value === category) : null;
 
     blocks.push({
       title: 'Basic Skill Info',
@@ -347,7 +379,7 @@ class Skill extends Component {
               menuPortalTarget={document.body}
               classNamePrefix="select-box"
               name="category"
-              value={category}
+              value={selectedCategory}
               onChange={this.handleSelection}
               options={AMAZON_CATEGORIES}
             />
@@ -724,6 +756,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   updateSkill: SkillDuck.updateActiveSkill,
   updateSkillMeta: SkillDuck.updateSkillMeta,
+  updateProjectName: Project.updateProjectName,
   setError: Modal.setError,
 };
 

@@ -51,7 +51,7 @@ export function PublishAmazon(props) {
 
   return (
     <>
-      <PublishAmazonForm isLocked={isLocked} publish={onPublish} />
+      <PublishAmazonForm isLocked={isLocked} publish={onPublish} dataRefactorEnabled={!!dataRefactor.isEnabled} />
       <Modal isOpen={open} onClosed={dataRefactor.isEnabled ? cancel : resetAlexaUpload} centered contentClassName="overflow-hidden">
         {close && <ModalHeader toggle={() => setOpen(false)} />}
         <UploadAlexa />

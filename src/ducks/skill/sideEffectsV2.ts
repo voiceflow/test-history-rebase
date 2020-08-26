@@ -17,9 +17,9 @@ export const saveInvocationName = (invocationName: string): Thunk => async (disp
   if (meta.invName === invocationName) return;
 
   // update all the invocation examples when invocation name changes
-  const invocations = arrayStringReplace(meta.invName, invocationName, meta.invocations.value);
+  const invocations = arrayStringReplace(meta.invName, invocationName, meta.invocations);
 
-  dispatch(updateSkillMeta({ invName: invocationName, invocations: { value: invocations } }));
+  dispatch(updateSkillMeta({ invName: invocationName, invocations }));
   await clientV2.alexaService.updatePublishing(versionID, { invocationName, invocations });
 };
 

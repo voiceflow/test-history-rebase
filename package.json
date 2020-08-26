@@ -85,7 +85,7 @@
     "react-input-autosize": "^2.2.2",
     "react-intercom": "^1.0.15",
     "react-json-view": "github:groovy-tunes/react-json-view",
-    "react-mentions": "^4.0.1",
+    "react-mentions": "^4.0.2",
     "react-popper": "^1.3.3",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.0.0",

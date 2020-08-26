@@ -61,7 +61,7 @@
     "polished": "^3.6.5",
     "prettysize": "^2.0.0",
     "prop-types": "^15.7.2",
-    "query-string": "^6.4.2",
+    "query-string": "^6.13.1",
     "randomstring": "^1.1.5",
     "rc-slider": "^9.2.4",
     "react": "^16.13.1",

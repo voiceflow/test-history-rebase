@@ -97,6 +97,15 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
+    const stepMap = nodeList.reduce<Record<NodeID, NodeID>>((acc, node) => {
+      if (node.combinedNodes) {
+        for (let i = 1; i < node.combinedNodes.length; i++) {
+          acc[node.combinedNodes[i - 1]] = node.combinedNodes[i];
+        }
+      }
+      return acc;
+    }, {});
+
     return {
       _id: diagramID,
       offsetX: viewport.x,
@@ -106,7 +115,10 @@ const creatorAdapter = createSimpleAdapter<
       nodes: nodeList.reduce<Record<string, DiagramNode>>(
         (acc, node) => ({
           ...acc,
-          [node.id]: nodeAdapter.toDB({ node, data: data[node.id], ports: node.ports.out.map((portID) => ports.byKey[portID]) }, { portToTargets }),
+          [node.id]: nodeAdapter.toDB(
+            { node, data: data[node.id], ports: node.ports.out.map((portID) => ports.byKey[portID]) },
+            { portToTargets, stepMap }
+          ),
         }),
         {}
       ),

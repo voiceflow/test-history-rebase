@@ -13,7 +13,7 @@ const nodeAdapter = createAdapter<
   DiagramNode,
   { node: Node; data: NodeData<unknown>; ports: Port[] },
   [{ parentNode: NodeID | void; links: Link[] }],
-  [{ portToTargets: Record<string, NodeID> }]
+  [{ portToTargets: Record<string, NodeID>; stepMap: Record<NodeID, NodeID> }]
 >(
   (dbNode, { parentNode, links }) => {
     const data = nodeDataAdpater.fromDB(dbNode.data, dbNode);
@@ -82,7 +82,7 @@ const nodeAdapter = createAdapter<
       ports,
     };
   },
-  ({ node, data, ports }, { portToTargets }) => {
+  ({ node, data, ports }, { portToTargets, stepMap }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
     const diagramNode: DiagramNode = {
       nodeID: node.id,
@@ -94,7 +94,7 @@ const nodeAdapter = createAdapter<
     if (node.ports.out.length > 0) {
       diagramNode.data.ports = node.ports.out.map<DBPort>((portID) => ({
         type: portMap[portID]?.label || '',
-        target: portToTargets[portID] || null,
+        target: portToTargets[portID] || stepMap[node.id] || null,
       }));
     }
 

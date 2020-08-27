@@ -1,7 +1,9 @@
+import type { SlotMapping } from '@voiceflow/alexa-types';
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
+
 import {
   BlockType,
   CardType,
-  ChoiceElseType,
   DialogType,
   DisplayType,
   ExpressionType,
@@ -50,20 +52,24 @@ export namespace NodeData {
     permissions: string[];
   };
 
+  export type NoMatches = {
+    randomize: boolean;
+    reprompts: SpeakData[];
+  };
+
+  export type InteractionChoice = {
+    id: string;
+    intent: string | null;
+    mappings: SlotMapping[];
+  };
+
+  export type InteractionElse = NoMatches & { type: InteractionElseType };
+
   export type Interaction = {
-    choices: Record<
-      PlatformType,
-      {
-        id: string;
-        intent: string | null;
-        mappings: { variable: string | null; slot: string | null }[];
-      }
-    >[];
-    else: {
-      type: ChoiceElseType;
-      randomize: boolean;
-      reprompts: SpeakData[];
-    };
+    name: string;
+    else: InteractionElse;
+    choices: Record<PlatformType, InteractionChoice>[];
+    reprompt: Reprompt | null;
   };
 
   export type Choice = {
@@ -95,10 +101,7 @@ export namespace NodeData {
     voice?: string | null;
   };
 
-  export type Capture = {
-    variable: string | null;
-    slot: string | null;
-  };
+  export type Capture = SlotMapping;
 
   export type Speak = {
     randomize: boolean;

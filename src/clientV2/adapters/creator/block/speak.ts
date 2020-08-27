@@ -1,5 +1,5 @@
 import { Voice } from '@voiceflow/alexa-types';
-import { StepData } from '@voiceflow/alexa-types/lib/nodes/speak';
+import { StepData } from '@voiceflow/alexa-types/build/nodes/speak';
 
 import { DialogType } from '@/constants';
 import { NodeData } from '@/models';

@@ -1,6 +1,6 @@
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import React from 'react';
 
-import { ChoiceElseType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as Intent from '@/ducks/intent';
 import { connect } from '@/hocs';
@@ -47,7 +47,7 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, elsePor
 const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
-  const isPath = data.else.type === ChoiceElseType.PATH;
+  const isPath = data.else.type === InteractionElseType.PATH;
 
   const choices = React.useMemo(
     () =>

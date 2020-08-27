@@ -1,11 +1,11 @@
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import React from 'react';
 
-import { ChoiceElseType } from '@/constants';
 import { NodeData, SpeakData } from '@/models';
 
 const useCachedUpdate = (
   onChange: (newState: Partial<NodeData.Interaction>) => any,
-  type: ChoiceElseType,
+  type: InteractionElseType,
   randomize: boolean,
   reprompts: SpeakData[]
 ) => {

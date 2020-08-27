@@ -1,8 +1,8 @@
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { ChoiceElseType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { Node, NodeData } from '@/models';
@@ -21,11 +21,11 @@ import useCachedUpdate from './hooks/useCachedUpdate';
 const MAX_REPROMPTS = 3;
 const ELSE_OPTIONS = [
   {
-    id: ChoiceElseType.PATH,
+    id: InteractionElseType.PATH,
     label: <RadiobuttonText label="Path" />,
   },
   {
-    id: ChoiceElseType.REPROMPT,
+    id: InteractionElseType.REPROMPT,
     label: <RadiobuttonText label="Reprompts" />,
   },
 ];
@@ -45,7 +45,7 @@ const RepromptResponseForm: React.FC<NodeEditorPropsType<NodeData.Interaction> &
 
   const handleChangeType = React.useCallback(
     (newType) => {
-      if (newType === ChoiceElseType.REPROMPT && elseLinkID) {
+      if (newType === InteractionElseType.REPROMPT && elseLinkID) {
         // When we switch to reprompt, clean up any links to avoid null reference bugs.
         engine.link.remove(elseLinkID);
       }
@@ -61,7 +61,7 @@ const RepromptResponseForm: React.FC<NodeEditorPropsType<NodeData.Interaction> &
           <RadioGroup options={ELSE_OPTIONS} checked={type} onChange={handleChangeType} />
         </FormControl>
       </Section>
-      {type === ChoiceElseType.REPROMPT && (
+      {type === InteractionElseType.REPROMPT && (
         <SpeakItemList
           platform={platform}
           changeRandomize={changeRandomize}

@@ -1,14 +1,14 @@
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import React from 'react';
 
 import Section from '@/components/Section';
 import { Text } from '@/components/Text';
-import { ChoiceElseType } from '@/constants';
 
 import { ChoiceManagerEditors } from '../subeditors';
 
 export type ElseResponseProps = {
   pushToPath: any;
-  editorStatus: ChoiceElseType;
+  editorStatus: InteractionElseType;
 };
 
 const TYPE: ChoiceManagerEditors = 'repromptResponse';
@@ -26,7 +26,7 @@ const ElseResponse: React.FC<ElseResponseProps> = ({ pushToPath, editorStatus })
   return (
     <Section
       header={<Text fontWeight="normal">Else</Text>}
-      infix={<div>{editorStatus === ChoiceElseType.PATH ? 'Path' : 'Reprompt'}</div>}
+      infix={<div>{editorStatus === InteractionElseType.PATH ? 'Path' : 'Reprompt'}</div>}
       tooltipProps={{ helpTitle: null, helpMessage: null }}
       status="Empty"
       isLink

@@ -1,8 +1,9 @@
+import { ElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import cuid from 'cuid';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { createAdapter } from '@/client/adapters/utils';
-import { ChoiceElseType, DialogType } from '@/constants';
+import { DialogType } from '@/constants';
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { createBlockAdapter, repromptAdapter, slotMappingAdapter } from './utils';
@@ -15,7 +16,7 @@ const getChoiceByIndex = (choices, index) => ({
 
 // For backwards compatibility with old Choice block
 const createElseDataDefaults = () => ({
-  type: ChoiceElseType.PATH,
+  type: ElseType.PATH,
   randomize: false,
   reprompts: [],
 });

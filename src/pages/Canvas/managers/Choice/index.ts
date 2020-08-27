@@ -1,6 +1,7 @@
+import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 import cuid from 'cuid';
 
-import { BlockType, ChoiceElseType, DialogType } from '@/constants';
+import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
@@ -54,7 +55,7 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
       ],
       reprompt: null,
       else: {
-        type: ChoiceElseType.PATH,
+        type: InteractionElseType.PATH,
         randomize: false,
         reprompts: [
           {

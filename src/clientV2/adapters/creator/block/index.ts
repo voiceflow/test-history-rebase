@@ -4,6 +4,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
 
 import blockDataAdapter from './block';
+import interactionAdapter from './interaction';
 import speakAdapter from './speak';
 
 const emptyAdapter = createSimpleAdapter(
@@ -41,7 +42,7 @@ const blockAdapter = {
   [BlockType.IF]: emptyAdapter,
   [BlockType.INTEGRATION]: emptyAdapter,
   [BlockType.INTENT]: emptyAdapter,
-  [BlockType.CHOICE]: emptyAdapter,
+  [BlockType.CHOICE]: interactionAdapter,
   [BlockType.PAYMENT]: emptyAdapter,
   [BlockType.PERMISSION]: emptyAdapter,
   [BlockType.ACCOUNT_LINKING]: emptyAdapter,

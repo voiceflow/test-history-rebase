@@ -4566,17 +4566,17 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.1.1.tgz#10c3ef45b1fdccdd43dc86ac7938616d3c57eb22"
-  integrity sha512-1MMWJjMtBmbOrTt1bjYyfGgQopoB3TzOUyCQ0lZuvVOjuefxrG6I8Ifz/HBsXbvTXbK3p3++4vtxP8tLIWU4LQ==
+"@voiceflow/alexa-types@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.1.6.tgz#ff91bb031bf4f686495b4d02c5ea6d6e8053d169"
+  integrity sha512-qfCurPxcnlbDjPtALUCyqr41EHes4Qw+fhR6LGsy4Nbt0o0EotBVTAZ3OCHUHlIkcaGB+9ny9ZNEtDMMvc07og==
   dependencies:
-    "@voiceflow/api-sdk" "^1.4.11"
+    "@voiceflow/api-sdk" "1.5.1"
 
-"@voiceflow/api-sdk@1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.5.2.tgz#97e400c7abd9bdaa7380fc05a01af743f7f0f39a"
-  integrity sha512-KNRTG+lDtMvoJSCbCSmTcQUhUJJRUPWRefWB9DO+HsmqoNikbK7EiAwhlt9NPPIY2SOScWGt3tdiajxQgCNrBg==
+"@voiceflow/api-sdk@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.5.1.tgz#6b818e58d8accea50bae3bfd04598efad12d6c89"
+  integrity sha512-IPNvmOyUIESSrhW6OKwsJsycwvsqOk9qu5bClYMqCwSNvJ96Plz1X07KVyZ12gIpYjVctSvm+Lre2sVIPVdeDg==
   dependencies:
     "@types/atob" "^2.1.2"
     "@voiceflow/logger" "^1.1.10"
@@ -4587,13 +4587,13 @@
     regenerator-runtime "^0.13.5"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@^1.4.11":
-  version "1.4.11"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.4.11.tgz#8501d812163c82c27dd333c46173e4117f74d6c6"
-  integrity sha512-E171N8cSN5uan9mqx58CuK3pLAkNS5rv/dtfQ/PqY91Phm/k/sMNl7N3k78grfAE74GGCgqszjTMOH3iETQrLw==
+"@voiceflow/api-sdk@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.5.2.tgz#97e400c7abd9bdaa7380fc05a01af743f7f0f39a"
+  integrity sha512-KNRTG+lDtMvoJSCbCSmTcQUhUJJRUPWRefWB9DO+HsmqoNikbK7EiAwhlt9NPPIY2SOScWGt3tdiajxQgCNrBg==
   dependencies:
     "@types/atob" "^2.1.2"
-    "@voiceflow/logger" "^1.1.1"
+    "@voiceflow/logger" "^1.1.10"
     atob "^2.1.2"
     axios "^0.19.2"
     core-js "^3.6.5"
@@ -4704,18 +4704,6 @@
   integrity sha512-+u6hecCseDXGePpU7H2KgUwZ/dHWGUNjNCAe6rOCUcMXu7sYIn2ioo++/QgnVaXsvanf3GDIdXBZimYgOSW7jQ==
   dependencies:
     current-git-branch "^1.1.0"
-
-"@voiceflow/logger@^1.1.1":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@voiceflow/logger/-/logger-1.1.10.tgz#cb4700029ef411e46fbbbe51ac8493d7b5056d8c"
-  integrity sha512-FgFf9PnGNjcjkmC/LZtGTzWubP7qxccPLNbcux6mmelMOpAtXUOLg5V3MUSwgflOOSn7BPyl9X6yqZLK8RPMKg==
-  dependencies:
-    "@types/express-pino-logger" "^4.0.2"
-    "@types/pino" "^6.3.0"
-    "@voiceflow/pino-pretty" "^3.5.0"
-    "@zerollup/ts-transform-paths" "^1.7.18"
-    express-pino-logger "^4.0.0"
-    pino "^5.14.0"
 
 "@voiceflow/logger@^1.1.10":
   version "1.2.0"

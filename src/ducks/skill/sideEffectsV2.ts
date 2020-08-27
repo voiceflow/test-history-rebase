@@ -1,8 +1,13 @@
+import { AlexaVersionData } from '@voiceflow/alexa-types';
 import _pick from 'lodash/pick';
 
 import clientV2 from '@/clientV2';
+import { alexaIntentAdapter } from '@/clientV2/adapters/intent';
+import slotAdapter from '@/clientV2/adapters/slot';
 import alexaSettingsAdapter, { SkillSettings } from '@/clientV2/adapters/version/alexa/settings';
+import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';
+import * as Slot from '@/ducks/slot';
 import { Thunk } from '@/store/types';
 import { arrayStringReplace } from '@/utils/string';
 
@@ -45,8 +50,14 @@ export const saveAlexaSettings = (settings: Partial<SkillSettings>, properties?:
   dispatch(updateSkillMeta(settings));
 };
 
-export const saveIntentsAndSlots = (): Thunk => async () => {
-  //TODO: add intents
+export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
+  const state = getState();
+  const skillID = Skill.activeSkillIDSelector(state);
+
+  const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
+  const intents = alexaIntentAdapter.mapToDB(Intent.allIntentsSelector(state));
+
+  await clientV2.api.version.updatePlatformData<AlexaVersionData>(skillID, { slots, intents });
 };
 
 export const saveVariables = (): Thunk => async (_dispatch, getState) => {

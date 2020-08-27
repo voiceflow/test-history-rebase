@@ -22,6 +22,7 @@ import * as Product from '@/ducks/product';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
+import { saveIntentsAndSlots } from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
 import * as User from '@/ducks/user';
 import { CRUDAction } from '@/ducks/utils/crud';
@@ -117,6 +118,22 @@ const createRealtimeResourceUpdateMiddleware = <T>(
 
     prevState = currentState;
   };
+};
+
+const createFeatureFlaggedMiddleware = (
+  feature: FeatureFlag,
+  featureFlaggedMiddleware: StoreMiddleware,
+  fallbackMiddleware?: StoreMiddleware
+): StoreMiddleware => (store) => (next) => (action) => {
+  const state = store.getState();
+
+  const isFeatureEnabled = Feature.isFeatureEnabledSelector(state)(feature);
+
+  if (isFeatureEnabled) {
+    return featureFlaggedMiddleware(store)(next)(action);
+  }
+
+  return fallbackMiddleware ? fallbackMiddleware(store)(next)(action) : next(action);
 };
 
 const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) => {
@@ -217,7 +234,11 @@ const createMiddleware = (history: History) => {
     creatorHistoryMiddleware,
     creatorResetMiddleware,
     cleanupDisplayMiddleware,
-    createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents),
+    createFeatureFlaggedMiddleware(
+      FeatureFlag.DATA_REFACTOR,
+      createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), saveIntentsAndSlots),
+      createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents)
+    ),
     createAutosaveMiddleware(Skill.activePlatformSelector, savePlatformAndActiveDiagram, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createAutosaveMiddleware(VariableSet.activeDiagramVariables, VariableSet.saveActiveDiagramVariables, [

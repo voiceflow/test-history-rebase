@@ -4,6 +4,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
 
 import blockDataAdapter from './block';
+import codeAdapter from './code';
 import flowAdapter from './flow';
 import interactionAdapter from './interaction';
 import setAdapter from './set';
@@ -37,7 +38,7 @@ const blockAdapter = {
   [BlockType.CAPTURE]: emptyAdapter,
   [BlockType.CARD]: emptyAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,
-  [BlockType.CODE]: emptyAdapter,
+  [BlockType.CODE]: codeAdapter,
   [BlockType.DISPLAY]: emptyAdapter,
   [BlockType.EXIT]: emptyAdapter,
   [BlockType.FLOW]: flowAdapter,

@@ -44,7 +44,7 @@
     "immutability-helper": "^2.9.0",
     "immutable": "3.8.2",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "lodash-es": "^4.17.15",
     "loglevel": "^1.6.8",
     "logrocket": "^1.0.9",

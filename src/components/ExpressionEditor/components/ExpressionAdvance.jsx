@@ -1,3 +1,4 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import cn from 'classnames';
 import _isObject from 'lodash/isObject';
 import React from 'react';
@@ -5,7 +6,6 @@ import React from 'react';
 import { matchVariables } from '@/components/TextEditor/plugins/variables/utils/fromTextConvertor';
 import { VariableTag } from '@/components/VariableTag';
 import VariablesInput from '@/components/VariablesInput';
-import { ExpressionType } from '@/constants';
 
 import FormContainer from './FormContainer';
 import OperatorButton from './OperatorButton';

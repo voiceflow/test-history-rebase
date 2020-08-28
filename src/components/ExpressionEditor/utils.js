@@ -1,4 +1,4 @@
-import { ExpressionType } from '@/constants';
+import { ExpressionType } from '@voiceflow/alexa-types';
 
 export const evolveValue = (expression, type) => {
   const originalType = expression.type;

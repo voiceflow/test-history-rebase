@@ -1,6 +1,5 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import React from 'react';
-
-import { ExpressionType } from '@/constants';
 
 import { MAX_DEPTH } from '../constants';
 import ExpressionAdvance from './ExpressionAdvance';

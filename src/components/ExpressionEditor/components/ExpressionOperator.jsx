@@ -1,7 +1,7 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
-import { ExpressionType } from '@/constants';
 import { styled } from '@/hocs';
 
 const Wrapper = styled.span`

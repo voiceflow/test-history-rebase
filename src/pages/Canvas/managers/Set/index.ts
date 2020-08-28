@@ -1,6 +1,7 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import cuid from 'cuid';
 
-import { BlockType, ExpressionType } from '@/constants';
+import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';

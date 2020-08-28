@@ -1,8 +1,8 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import cn from 'classnames';
 import React from 'react';
 
 import Input from '@/components/Input';
-import { ExpressionType } from '@/constants';
 
 import FormContainer from './FormContainer';
 import OperatorButton from './OperatorButton';

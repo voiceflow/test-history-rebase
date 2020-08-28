@@ -1,6 +1,6 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import React from 'react';
 
-import { ExpressionType } from '@/constants';
 import { swallowEvent } from '@/utils/dom';
 
 import { evolveExpression } from '../utils';

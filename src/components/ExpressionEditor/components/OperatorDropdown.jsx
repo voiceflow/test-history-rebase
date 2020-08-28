@@ -1,8 +1,8 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import Portal from '@/components/Portal';
-import { ExpressionType } from '@/constants';
 import { useDismissable } from '@/hooks/dismiss';
 import { swallowEvent } from '@/utils/dom';
 

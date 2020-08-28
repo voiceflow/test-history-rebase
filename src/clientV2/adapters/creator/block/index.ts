@@ -6,6 +6,7 @@ import { BlockType } from '@/constants';
 import blockDataAdapter from './block';
 import flowAdapter from './flow';
 import interactionAdapter from './interaction';
+import setAdapter from './set';
 import speakAdapter from './speak';
 
 const emptyAdapter = createSimpleAdapter(
@@ -49,7 +50,7 @@ const blockAdapter = {
   [BlockType.ACCOUNT_LINKING]: emptyAdapter,
   [BlockType.RANDOM]: emptyAdapter,
   [BlockType.REMINDER]: emptyAdapter,
-  [BlockType.SET]: emptyAdapter,
+  [BlockType.SET]: setAdapter,
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.STREAM]: emptyAdapter,
   [BlockType.USER_INFO]: emptyAdapter,

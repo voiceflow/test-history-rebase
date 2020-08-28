@@ -1,8 +1,8 @@
+import { ExpressionType } from '@voiceflow/alexa-types';
 import cuid from 'cuid';
 import _isObject from 'lodash/isObject';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import { ExpressionType } from '@/constants';
 
 import { createAdapter } from './utils';
 

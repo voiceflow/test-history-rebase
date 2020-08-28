@@ -1,17 +1,7 @@
-import type { SlotMapping } from '@voiceflow/alexa-types';
+import { ExpressionType, SlotMapping } from '@voiceflow/alexa-types';
 import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 
-import {
-  BlockType,
-  CardType,
-  DialogType,
-  DisplayType,
-  ExpressionType,
-  IntegrationType,
-  PermissionType,
-  PlatformType,
-  RepromptType,
-} from '@/constants';
+import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { UserType } from '@/models/Integration';
 import { SpeakData } from '@/models/Speak';
@@ -141,12 +131,44 @@ export namespace NodeData {
     }[];
   };
 
-  export type Expression = {
-    depth: number;
+  export type GenericExpression<T extends ExpressionType, V> = {
     id: string;
-    type: ExpressionType;
-    value: Expression[] | string | null;
+    type: T;
+    value: V;
+    depth: number;
   };
+
+  export type ExpressionTuple = [Expression, Expression];
+
+  // can't use generic here due tu recursion type issue
+  export type NotExpression = { type: ExpressionType.NOT; value: Expression; depth: number; id: string };
+  export type OrExpression = GenericExpression<ExpressionType.OR, ExpressionTuple>;
+  export type AndExpression = GenericExpression<ExpressionType.AND, ExpressionTuple>;
+  export type LessExpression = GenericExpression<ExpressionType.LESS, ExpressionTuple>;
+  export type PlusExpression = GenericExpression<ExpressionType.PLUS, ExpressionTuple>;
+  export type MinusExpression = GenericExpression<ExpressionType.MINUS, ExpressionTuple>;
+  export type TimesExpression = GenericExpression<ExpressionType.TIMES, ExpressionTuple>;
+  export type ValueExpression = GenericExpression<ExpressionType.VALUE, string>;
+  export type DivideExpression = GenericExpression<ExpressionType.DIVIDE, ExpressionTuple>;
+  export type EqualsExpression = GenericExpression<ExpressionType.EQUALS, ExpressionTuple>;
+  export type GreaterExpression = GenericExpression<ExpressionType.GREATER, ExpressionTuple>;
+  export type AdvancedExpression = GenericExpression<ExpressionType.ADVANCE, string>;
+  export type VariableExpression = GenericExpression<ExpressionType.VARIABLE, string>;
+
+  export type Expression =
+    | NotExpression
+    | OrExpression
+    | AndExpression
+    | LessExpression
+    | PlusExpression
+    | MinusExpression
+    | TimesExpression
+    | ValueExpression
+    | DivideExpression
+    | EqualsExpression
+    | GreaterExpression
+    | AdvancedExpression
+    | VariableExpression;
 
   export type Set = {
     sets: {

@@ -22,7 +22,7 @@ const ErrorTooltipContainer = styled.div`
   width: 150px;
 `;
 
-function SeatsInput({
+const SeatsInput = ({
   payment: {
     state: { focus },
   },
@@ -30,13 +30,14 @@ function SeatsInput({
   hasError,
   onChange,
   value,
-}) {
+}) => {
+  const initialValue = React.useMemo(() => value ?? 0, []);
   const inputRef = React.useRef(null);
   const errorTooltip = errorMessage ? <ErrorTooltipContainer>{errorMessage}</ErrorTooltipContainer> : null;
   const [hasFocus, setHasFocus] = React.useState(false);
   const [fetchingResponse, setFetchingResponse] = React.useState(false);
   const updateSeats = (e) => {
-    onChange(parseInt(Math.min(Math.max(e.target.value, 0), 99), 10).toString());
+    onChange(parseInt(Math.min(Math.max(e.target.value, initialValue), 99), 10).toString());
   };
 
   React.useEffect(() => {
@@ -72,6 +73,6 @@ function SeatsInput({
       />
     </Tooltip>
   );
-}
+};
 
 export default withPayment(SeatsInput);

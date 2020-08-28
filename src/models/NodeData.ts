@@ -124,6 +124,8 @@ export namespace NodeData {
 
   export type Flow = {
     diagramID: string | null;
+    inputs?: { from: string | null; to: string | null }[];
+    outputs?: { from: string | null; to: string | null }[];
   };
 
   export type Reminder = {

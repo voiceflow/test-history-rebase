@@ -7,14 +7,13 @@ import nodeAdapter from '@/client/adapters/creator/node';
 import nodeDataAdapter from '@/client/adapters/creator/nodeData';
 import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { addDiagrams, diagramsByIDsSelector } from '@/ducks/diagram';
+import { addDiagrams, diagramsByIDsSelector, loadDiagramVariables } from '@/ducks/diagram';
 import { displaysByIDsSelector, loadDisplaysForSkill } from '@/ducks/display';
 import { addIntents, allSlotsIDsByIntentIDsSelector, intentsByIDsSelector } from '@/ducks/intent';
 import { loadProductsForSkill, productsByIDsSelector } from '@/ducks/product';
 import { activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { addSlots, findSlotsByIDsSelector } from '@/ducks/slot';
 import { setCanvasInfo } from '@/ducks/user';
-import { loadVariableSetForDiagram } from '@/ducks/variableSet';
 import { DBNode, Diagram, Display, Intent, Link, Node, NodeData, Port, Product, Slot } from '@/models';
 import * as Clipboard from '@/utils/clipboard';
 import { base64, synchronous as synchronousCrypto } from '@/utils/crypto';
@@ -149,7 +148,7 @@ class ClipboardEngine extends EngineConsumer {
       await Promise.all<any>([
         this.dispatch(loadDisplaysForSkill(skillID)),
         this.dispatch(loadProductsForSkill(skillID)),
-        ...diagrams.map((diagram) => this.dispatch(loadVariableSetForDiagram(newDiagrams[diagram.id]))),
+        ...diagrams.map((diagram) => this.dispatch(loadDiagramVariables(newDiagrams[diagram.id]))),
       ]);
 
       return newNodes;

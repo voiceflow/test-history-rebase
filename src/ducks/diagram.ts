@@ -2,20 +2,24 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
+import clientV2 from '@/clientV2';
+import { IS_TEST } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
+import { creatorDiagramIDSelector } from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import { CreatorDiagram, Diagram } from '@/models';
 import { Thunk } from '@/store/types';
-import { hasIdenticalMembers } from '@/utils/array';
+import { append, hasIdenticalMembers, unique, withoutValue } from '@/utils/array';
 import { isLinkedCommandNode, isLinkedeFlowNode } from '@/utils/node';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import * as Creator from './creator';
+import * as Feature from './feature';
 import { lastRealtimeTimestampSelector } from './realtime';
 import { goToDiagram, goToRootDiagram } from './router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from './skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
-import { loadVariableSetForDiagram, variablesByDiagramIDSelector } from './variableSet';
 import { viewportByIDSelector } from './viewport';
 
 export type StructuredFlow = {
@@ -78,6 +82,10 @@ export const {
   key: allDiagramIDsSelector,
 } = createCRUDSelectors<Diagram>(STATE_KEY);
 
+export const activeDiagramSelector = createSelector([diagramByIDSelector, creatorDiagramIDSelector], (getDiagram, activeDiagramID) =>
+  activeDiagramID ? getDiagram(activeDiagramID) : null
+);
+
 export const subDiagramsByIDSelector = createSelector([diagramByIDSelector], (getDiagram) => (diagramID: string) =>
   getDiagram(diagramID)?.subDiagrams || []
 );
@@ -125,7 +133,7 @@ export const loadUpdatedDiagram = (diagramID: string, name: string): Thunk => as
   const diagram = await client.diagram.get(diagramID);
 
   dispatch(addDiagram(diagramID, { ...diagram, name }));
-  dispatch(loadVariableSetForDiagram(diagramID));
+  dispatch(loadDiagramVariables(diagramID));
 };
 
 export const updateSubDiagrams = (diagramID: string): Thunk<string[]> => async (dispatch, getState) => {
@@ -158,7 +166,6 @@ export const saveDiagram = (skillID: string, diagramID: string, data: string): T
   const state = getState();
   const lastTimestamp = lastRealtimeTimestampSelector(state);
   const diagram = diagramByIDSelector(state)(diagramID);
-  const variables = variablesByDiagramIDSelector(state)(diagramID);
 
   const subDiagramIDs = await dispatch(updateSubDiagrams(diagramID));
 
@@ -166,7 +173,7 @@ export const saveDiagram = (skillID: string, diagramID: string, data: string): T
     skill: skillID,
     sub_diagrams: JSON.stringify(subDiagramIDs),
     title: diagram?.name ?? 'Name',
-    variables,
+    variables: diagram.variables,
     data,
     ...(lastTimestamp && { lastTimestamp }),
   };
@@ -277,4 +284,64 @@ export const renameDiagram = (diagramID: string, name: string): Thunk => async (
   await client.diagram.rename(diagramID, name);
 
   dispatch(loadDiagramsForSkill(skillID));
+};
+
+// Diagram Variables
+export const diagramVariablesSelector = createSelector([diagramByIDSelector], (getDiagram) => (diagramID: string) =>
+  getDiagram(diagramID)?.variables || []
+);
+
+export const activeDiagramVariables = createSelector([creatorDiagramIDSelector, diagramVariablesSelector], (diagramID, variablesByDiagramID) =>
+  variablesByDiagramID(diagramID!)
+);
+
+export const updateDiagramVariables = (diagramID: string, variables: string[], meta?: any) => updateDiagram(diagramID, { variables }, true, meta);
+
+export const removeDiagramVariable = (diagramID: string, variable: string): Thunk => async (dispatch, getState) => {
+  const variables = diagramVariablesSelector(getState())(diagramID);
+  dispatch(updateDiagramVariables(diagramID, withoutValue(variables, variable)));
+};
+
+export const addDiagramVariable = (diagramID: string, variable: string): Thunk => async (dispatch, getState) => {
+  const variables = diagramVariablesSelector(getState())(diagramID);
+  dispatch(updateDiagramVariables(diagramID, unique(append(variables, variable))));
+};
+
+export const loadDiagramVariables = (diagramID: string): Thunk<string[]> => async (dispatch, getState) => {
+  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
+  // TODO: no longer need to load diagram variables individually in the future
+  if (isDataRefactorEnabled) {
+    const { variables } = await clientV2.api.diagram.get<{ variables: string[] }>(diagramID, ['variables']);
+    dispatch(updateDiagramVariables(diagramID, variables));
+    return variables;
+  }
+
+  const variables = await client.diagram.findVariables(diagramID);
+  dispatch(updateDiagramVariables(diagramID, variables));
+
+  return variables;
+};
+
+export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getState) => {
+  const state = getState();
+  const variables = diagramVariablesSelector(state)(diagramID);
+
+  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
+  if (isDataRefactorEnabled) {
+    await clientV2.api.diagram.update(diagramID, { variables });
+    return;
+  }
+
+  const remoteDiagramVariables = await client.diagram.findVariables(diagramID);
+
+  if (!hasIdenticalMembers(remoteDiagramVariables, variables)) {
+    await client.diagram.updateVariables(diagramID, variables);
+  }
+};
+
+export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {
+  const diagramID = creatorDiagramIDSelector(getState());
+  if (!diagramID) return;
+
+  await dispatch(saveDiagramVariables(diagramID));
 };

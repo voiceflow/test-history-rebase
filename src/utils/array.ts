@@ -1,3 +1,5 @@
+export const unique = <T>(items: T[]) => Array.from(new Set(items));
+
 export const without = <T>(items: T[], index: number) => (index === -1 ? items : [...items.slice(0, index), ...items.slice(index + 1)]);
 
 export const withoutValue = <T>(items: T[], value: T) => without(items, items.indexOf(value));

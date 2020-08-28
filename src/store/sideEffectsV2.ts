@@ -8,6 +8,7 @@ import slotAdapter from '@/clientV2/adapters/slot';
 import versionAdapter from '@/clientV2/adapters/version';
 import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as DiagramReducer from '@/ducks/diagram';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 // import * as Integration from '@/ducks/integration';
@@ -15,7 +16,6 @@ import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
-import * as VariableSet from '@/ducks/variableSet';
 import * as Viewport from '@/ducks/viewport';
 import * as Models from '@/models';
 
@@ -31,7 +31,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
   const creator = creatorAdapter.fromDB(DBDiagram, platform);
 
-  dispatch(VariableSet.replaceVariableSetDiagram(diagramID, variables));
+  dispatch(DiagramReducer.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
   dispatch(Realtime.updateLastTimestamp(modified));

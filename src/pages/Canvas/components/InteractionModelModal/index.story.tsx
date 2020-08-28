@@ -310,11 +310,16 @@ const createStory = () =>
           },
         },
       },
-      variableSet: {
-        umzQgfv9WKOv5ReRB1nfZbm8cj6jq9fC: [],
-        ExkS1H5GKJg7PeZPeO0rOiCVql3NCCL4: [],
-        dxbhjuUEEpEyodBbdUBVt5aV0ysrlzZq: ['new'],
-        B70Fb1TZQYgZ6EZqGfRjr3mrkD5lJAaH: ['aaaa', 'bbb'],
+      diagrams: {
+        allKeys: ['umzQgfv9WKOv5ReRB1nfZbm8cj6jq9fC'],
+        byKey: {
+          umzQgfv9WKOv5ReRB1nfZbm8cj6jq9fC: {
+            id: 'umzQgfv9WKOv5ReRB1nfZbm8cj6jq9fC',
+            name: 'flow',
+            variables: ['aaaa', 'bbb'],
+            subDiagrams: [],
+          },
+        },
       },
     }),
     withModalContext(ModalType.INTERACTION_MODEL),

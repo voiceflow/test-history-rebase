@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as VariableSet from '@/ducks/variableSet';
+import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
 
@@ -61,17 +61,17 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
 };
 
 const mapStateToProps = {
-  flowVariables: VariableSet.variablesByDiagramIDSelector,
+  flowVariables: Diagram.diagramVariablesSelector,
   activeVariables: allVariablesSelector,
 };
 
 const mapDispatchToProps = {
-  addVariableToDiagramAndSave: VariableSet.addVariableToDiagramAndSave,
+  addVariableToDiagram: Diagram.addDiagramVariable,
 };
 
-const mergeProps = ({ flowVariables: getVariables }, { addVariableToDiagramAndSave }, { diagramID }) => ({
+const mergeProps = ({ flowVariables: getVariables }, { addVariableToDiagram }, { diagramID }) => ({
   flowVariables: getVariables(diagramID),
-  addVariableToFlow: (name) => addVariableToDiagramAndSave(diagramID, name),
+  addVariableToFlow: (name) => addVariableToDiagram(diagramID, name),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(MappingVariables);

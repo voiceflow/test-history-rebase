@@ -10,7 +10,6 @@ import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
-import * as VariableSet from '@/ducks/variableSet';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import { getAlternativeColor } from '@/utils/colors';
@@ -18,7 +17,7 @@ import { getSlotTypes } from '@/utils/slot';
 
 export const activeDiagramVariablesSelector = createSelector(
   Skill.activeDiagramIDSelector,
-  VariableSet.variablesByDiagramIDSelector,
+  Diagram.diagramVariablesSelector,
   (diagramID, getVariables) => getVariables(diagramID)
 );
 

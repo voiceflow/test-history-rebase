@@ -28,7 +28,6 @@ import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
 import userSetting, * as UserSetting from '@/ducks/user';
-import variableSet, * as VariableSet from '@/ducks/variableSet';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
 
@@ -51,7 +50,6 @@ const getCombinedReducer = (history: History) =>
     [Display.STATE_KEY]: display,
     [Product.STATE_KEY]: product,
     [Project.STATE_KEY]: project,
-    [VariableSet.STATE_KEY]: variableSet,
     [Skill.STATE_KEY]: skill,
     [Intent.STATE_KEY]: intent,
     [Slot.STATE_KEY]: slot,

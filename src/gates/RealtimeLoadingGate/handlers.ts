@@ -8,7 +8,6 @@ import * as GooglePublish from '@/ducks/publish/google';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
-import * as VariableSet from '@/ducks/variableSet';
 import * as Models from '@/models';
 import { ActionPayload, AnyAction, Dispatch, GetState } from '@/store/types';
 
@@ -35,9 +34,13 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
       await dispatch(Diagram.loadDiagramsForSkill(skillID, meta));
     }
   },
-  [Realtime.ResourceType.VARIABLES]: (data: { globalSet: string[]; variableSet: Record<string, string[]> }, meta: object) => {
-    dispatch(Skill.replaceGlobalVariables(data.globalSet, meta));
-    dispatch(VariableSet.replaceVariableSet(data.variableSet, meta));
+  [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {
+    dispatch(Skill.replaceGlobalVariables(data, meta));
+  },
+  [Realtime.ResourceType.DIAGRAM]: (data: Models.Diagram | null, meta: object) => {
+    if (data) {
+      dispatch(Diagram.updateDiagram(data.id, { ...data }, true, meta));
+    }
   },
 });
 

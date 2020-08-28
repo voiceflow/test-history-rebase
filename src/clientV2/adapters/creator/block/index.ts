@@ -4,6 +4,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
 
 import blockDataAdapter from './block';
+import flowAdapter from './flow';
 import interactionAdapter from './interaction';
 import speakAdapter from './speak';
 
@@ -38,7 +39,7 @@ const blockAdapter = {
   [BlockType.CODE]: emptyAdapter,
   [BlockType.DISPLAY]: emptyAdapter,
   [BlockType.EXIT]: emptyAdapter,
-  [BlockType.FLOW]: emptyAdapter,
+  [BlockType.FLOW]: flowAdapter,
   [BlockType.IF]: emptyAdapter,
   [BlockType.INTEGRATION]: emptyAdapter,
   [BlockType.INTENT]: emptyAdapter,

@@ -7,8 +7,8 @@ import InfoIcon from '@/components/InfoIcon';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
+import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
-import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 import { Thunk } from '@/store/types';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -107,7 +107,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   addVariable: Skill.addGlobalVariable as (variable: string) => Thunk,
-  addFlowVariable: VariableSet.addVariableToDiagramAndSave,
+  addFlowVariable: Diagram.addDiagramVariable,
 };
 
 const mergeProps = (...[{ diagramID }, { addFlowVariable }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({

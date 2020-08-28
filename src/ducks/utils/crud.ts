@@ -27,6 +27,7 @@ export type CRUDState<T> = Normalized<T>;
 
 export type Meta = {
   modelType?: string;
+  receivedAction?: boolean;
 };
 
 export const INITIAL_STATE: CRUDState<any> = {
@@ -206,12 +207,12 @@ export const addManyModels = <T>(modelType: string) => (values: T[]) => crudActi
 
 export const prependModel = <T>(modelType: string) => (key: string, value: T) => crudAction(modelType, CRUDAction.CRUD_PREPEND, { key, value });
 
-export const updateModel = <T>(
+export const updateModel = <T, M extends Meta = Meta>(
   modelType: string
 ): {
-  (key: string, value: Partial<T>, patch: true): CRUDPatch<T>;
-  (key: string, value: T, patch?: false): CRUDUpdate<T>;
-} => (key: string, value: any, patch = false) => crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: patch as any });
+  (key: string, value: Partial<T>, patch: true, meta?: M): CRUDPatch<T>;
+  (key: string, value: T, patch?: false, meta?: M): CRUDUpdate<T>;
+} => (key: string, value: any, patch = false, meta?: M) => crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: patch as any }, meta);
 
 export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
 

@@ -4,8 +4,8 @@ import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { BUILT_IN_VARIABLES } from '@/constants';
+import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
-import * as VariableSet from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import * as Selectors from '@/store/selectors';
@@ -196,8 +196,8 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   removeGlobalVariable: Skill.removeGlobalVariable,
   replaceGlobalVariables: Skill.replaceGlobalVariables,
-  removeVariableFromDiagram: VariableSet.removeVariableFromDiagram,
-  replaceVariableSetDiagram: VariableSet.replaceVariableSetDiagram,
+  removeVariableFromDiagram: Diagram.removeDiagramVariable,
+  replaceVariableSetDiagram: Diagram.updateDiagramVariables,
 };
 
 const mergeProps = (

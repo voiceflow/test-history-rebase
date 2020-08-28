@@ -11,6 +11,7 @@ export enum LockType {
 }
 
 export enum ResourceType {
+  DIAGRAM = 'diagram',
   VARIABLES = 'variables',
   INTENTS = 'intents',
   SLOTS = 'slots',

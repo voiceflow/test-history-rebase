@@ -7,6 +7,7 @@ const diagramAdapter = createAdapter<DBDiagram, Diagram>(
     id,
     name,
     subDiagrams: (sub_diagrams && JSON.parse(sub_diagrams)) || [],
+    variables: [],
   }),
   ({ id, name, subDiagrams }) => ({
     id,

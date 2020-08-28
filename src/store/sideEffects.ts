@@ -13,7 +13,6 @@ import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
-import * as VariableSet from '@/ducks/variableSet';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
@@ -65,7 +64,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
     variables,
   } = await client.diagram.getData(diagramID, platform);
 
-  dispatch(VariableSet.replaceVariableSetDiagram(diagramID, variables));
+  dispatch(Diagram.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, viewport));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
   dispatch(Realtime.updateLastTimestamp(timestamp));

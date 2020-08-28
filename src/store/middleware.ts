@@ -22,11 +22,10 @@ import * as Product from '@/ducks/product';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
-import { saveIntentsAndSlots } from '@/ducks/skill/sideEffectsV2';
+import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
 import * as User from '@/ducks/user';
 import { CRUDAction } from '@/ducks/utils/crud';
-import * as VariableSet from '@/ducks/variableSet';
 import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
 import { isLinkedeDisplayNode } from '@/utils/node';
@@ -75,6 +74,7 @@ const createAutosaveMiddleware = (
 
     if (
       activeSkill &&
+      !action.meta?.receivedAction && // do not autosave on realtime updates
       !AUTOSAVE_IGNORED_ACTIONS.includes(action.type) &&
       !blacklist.includes(action.type) &&
       !shallowequal(prevState, currentState) &&
@@ -236,14 +236,21 @@ const createMiddleware = (history: History) => {
     cleanupDisplayMiddleware,
     createFeatureFlaggedMiddleware(
       FeatureFlag.DATA_REFACTOR,
-      createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), saveIntentsAndSlots),
+      createAutosaveMiddleware(
+        createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
+        SkillV2.saveIntentsAndSlots
+      ),
       createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents)
     ),
     createAutosaveMiddleware(Skill.activePlatformSelector, savePlatformAndActiveDiagram, [Skill.SkillAction.SET_ACTIVE_SKILL]),
-    createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
-    createAutosaveMiddleware(VariableSet.activeDiagramVariables, VariableSet.saveActiveDiagramVariables, [
-      VariableSet.REPLACE_VARIABLE_SET_DIAGRAM,
+    createFeatureFlaggedMiddleware(
+      FeatureFlag.DATA_REFACTOR,
+      createAutosaveMiddleware(Skill.globalVariablesSelector, SkillV2.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+      createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL])
+    ),
+    createAutosaveMiddleware(Diagram.activeDiagramVariables, Diagram.saveActiveDiagramVariables, [
       Creator.CreatorAction.INITIALIZE_CREATOR,
+      Creator.CreatorAction.RESET_CREATOR,
     ]),
     createAutosaveMiddleware(ProjectList.allProjectListsSelector, Workspace.saveActiveWorkspaceProjectLists),
     createRealtimeResourceUpdateMiddleware(
@@ -264,19 +271,15 @@ const createMiddleware = (history: History) => {
     ]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.INTENTS, Intent.allIntentsSelector),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.SLOTS, Slot.allSlotsSelector),
-    createRealtimeResourceUpdateMiddleware(
-      Realtime.ResourceType.VARIABLES,
-      createStructuredSelector({
-        variableSet: VariableSet.variableSetSelector,
-        globalSet: Skill.globalVariablesSelector,
-      }),
-      [
-        Skill.SkillAction.SET_ACTIVE_SKILL,
-        VariableSet.REPLACE_VARIABLE_SET_DIAGRAM,
-        Creator.CreatorAction.INITIALIZE_CREATOR,
-        Creator.CreatorAction.RESET_CREATOR,
-      ]
-    ),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, Skill.globalVariablesSelector, [
+      Skill.SkillAction.SET_ACTIVE_SKILL,
+      Creator.CreatorAction.INITIALIZE_CREATOR,
+      Creator.CreatorAction.RESET_CREATOR,
+    ]),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DIAGRAM, Diagram.activeDiagramSelector, [
+      Creator.CreatorAction.INITIALIZE_CREATOR,
+      Creator.CreatorAction.RESET_CREATOR,
+    ]),
   ];
 
   if (LOGROCKET_ENABLED) {

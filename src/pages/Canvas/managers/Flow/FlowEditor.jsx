@@ -3,7 +3,6 @@ import React from 'react';
 import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
-import { loadVariableSetForDiagram } from '@/ducks/variableSet';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -18,7 +17,7 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
     if (diagram?.id) {
       loadFlowVariables(diagram.id);
     }
-  }, [diagram]);
+  }, [diagram?.id]);
 
   const emptyMapping = React.useCallback(() => {
     onChange({ inputs: [], outputs: [] });
@@ -62,7 +61,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,
-  loadFlowVariables: loadVariableSetForDiagram,
+  loadFlowVariables: Diagram.loadDiagramVariables,
 };
 
 const mergeProps = ({ diagramByID }, { goToDiagram }, { data }) => ({

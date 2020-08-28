@@ -2,10 +2,13 @@ import cuid from 'cuid';
 import React from 'react';
 
 import Select from '@/components/Select';
+import { FeatureFlag } from '@/config/features';
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 
 import MissingFlowMessage from './MissingFlowMessage';
 
@@ -19,9 +22,23 @@ const buildOptions = (diagrams) =>
       label: diagram.name,
     }));
 
-function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, diagramID, goToDiagram, saveActiveDiagram, enterOnCreate = true }) {
+function Flow({
+  onChange,
+  diagrams,
+  diagram,
+  updateSubDiagrams,
+  createDiagram,
+  diagramID,
+  goToDiagram,
+  saveActiveDiagram,
+  enterOnCreate = true,
+  createDiagramV2,
+  saveActiveDiagramV2,
+}) {
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
-  const [options, setOptions] = React.useState(() => buildOptions(diagrams));
+  const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
 
   const setSelectedDiagram = React.useCallback((diagramID) => onChange({ diagramID, inputs: [], outputs: [] }), [onChange]);
@@ -31,7 +48,9 @@ function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, d
   const updateDiagram = React.useCallback(
     (diagramID) => {
       setSelectedDiagram(diagramID);
-      updateSubDiagrams();
+      if (!dataRefactor.isEnabled) {
+        updateSubDiagrams();
+      }
     },
     [setSelectedDiagram, updateSubDiagrams]
   );
@@ -46,22 +65,41 @@ function Flow({ onChange, diagrams, diagram, updateSubDiagrams, createDiagram, d
   );
 
   const onCreate = React.useCallback(
-    async (label) => {
+    async (name) => {
+      if (dataRefactor.isEnabled) {
+        await saveActiveDiagramV2();
+        const newDiagramID = await createDiagramV2(name);
+
+        setValue(generateDiagramValue({ id: newDiagramID, name }));
+        setSelectedDiagram(newDiagramID);
+        if (enterOnCreate) {
+          goToDiagram(newDiagramID);
+        }
+        return;
+      }
+
       const diagramID = cuid();
-      await createDiagram(diagramID, label);
+      await createDiagram(diagramID, name);
       await updateSubDiagrams();
       await saveActiveDiagram();
 
-      const newValue = { value: diagramID, label };
-      const optionValue = generateDiagramValue(newValue);
-      setOptions([...options, { value: optionValue, label }]);
-      setValue(optionValue);
+      setValue(generateDiagramValue({ id: diagramID, name }));
       setSelectedDiagram(diagramID);
       if (enterOnCreate) {
         goToDiagram(diagramID);
       }
     },
-    [createDiagram, updateSubDiagrams, saveActiveDiagram, options, setSelectedDiagram, goToDiagram]
+    [
+      createDiagram,
+      updateSubDiagrams,
+      saveActiveDiagram,
+      options,
+      setSelectedDiagram,
+      goToDiagram,
+      createDiagramV2,
+      saveActiveDiagramV2,
+      enterOnCreate,
+    ]
   );
 
   return (
@@ -90,7 +128,9 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   createDiagram: Diagram.createDiagram,
+  createDiagramV2: DiagramV2.createNewDiagram,
   saveActiveDiagram: Diagram.saveActiveDiagram,
+  saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
   updateSubDiagrams: Diagram.updateSubDiagrams,
   goToDiagram: Router.goToDiagram,
 };

@@ -4,13 +4,12 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import InviteByLink from '@/pages/Collaborators/components/InviteByLink';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -38,8 +37,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
-
-  const inviteByLinkFeature = useFeature(FeatureFlag.INVITE_BY_LINK);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -124,7 +121,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
               <ExportItem onRedirect={openCanvasExportModal} />
             </span>
-            {canInviteByLink && inviteByLinkFeature.isEnabled && (
+            {canInviteByLink && (
               <Footer onClick={stopImmediatePropagation()}>
                 <InviteByLink noIcon />
               </Footer>

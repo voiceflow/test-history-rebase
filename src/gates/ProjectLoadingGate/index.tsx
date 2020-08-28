@@ -29,14 +29,13 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
   setError,
   children,
 }) => {
-  const commenting = useFeature(FeatureFlag.COMMENTING);
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
       const skill = await (dataRefactor.isEnabled ? loadProjectV2() : loadProject());
 
-      if (commenting.isEnabled && skill.projectID) {
+      if (skill.projectID) {
         // TODO: move this into loadProject once FF removed
         await loadThreads(skill.projectID);
       }

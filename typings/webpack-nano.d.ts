@@ -31,11 +31,7 @@ declare module 'webpack-nano/argv' {
     userflow: boolean;
 
     // feature flags
-    ff_commenting: boolean;
     ff_gadgets: boolean;
-    ff_workspaceCreationFlow: boolean;
-    ff_inviteByLink: boolean;
-    ff_templates: boolean;
     ff_dataRefactor: boolean;
     ff_projectSplitting: boolean;
   }>;

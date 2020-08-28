@@ -54,7 +54,6 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
-  const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
   const projectSplitting = useFeature(FeatureFlag.PROJECT_SPLITTING);
 
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
@@ -75,7 +74,7 @@ export function Item(props) {
       ]
     : [];
 
-  if (canCloneProject && templatesFeature.isEnabled) {
+  if (canCloneProject) {
     const cloneOption = {
       value: 'clone',
       label: 'Clone Project',

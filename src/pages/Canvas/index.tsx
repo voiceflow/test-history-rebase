@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useFeature, useSetup } from '@/hooks';
+import { useSetup } from '@/hooks';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
@@ -28,7 +27,6 @@ import useEngine from './engine';
 
 const Canvas: React.FC = () => {
   const engine = useEngine();
-  const commenting = useFeature(FeatureFlag.COMMENTING);
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
@@ -46,12 +44,8 @@ const Canvas: React.FC = () => {
         <RealtimeOverlay />
         <EditSidebar />
         <Spotlight />
-        {commenting.isEnabled && (
-          <>
-            <ThreadLayer />
-            <ThreadHistoryDrawer />
-          </>
-        )}
+        <ThreadLayer />
+        <ThreadHistoryDrawer />
       </Container>
 
       <ShortcutsModal />

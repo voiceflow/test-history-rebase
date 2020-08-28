@@ -5,12 +5,9 @@ import { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
 import PlanBubble from '@/components/PlanBubble';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
-import { WORKSPACES_LIMIT } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -31,18 +28,13 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   goTo,
   plan,
 }) => {
-  const templatesFeature = useFeature(FeatureFlag.TEMPLATES);
-  const workspaceCreationFeature = useFeature(FeatureFlag.WORKSPACE_CREATION_FLOW);
-  const workspacesWithoutTemplates = workspaces.filter((workspace) => !workspace.templates);
-  const filteredWorkspaces = templatesFeature.isEnabled ? workspaces : workspacesWithoutTemplates;
-
   return (
     <>
       <Dropdown
         menu={
           <Menu maxHeight={600} maxVisibleItems={15}>
             <>
-              {filteredWorkspaces.map((workspace) => {
+              {workspaces.map((workspace) => {
                 const active = workspace.id === activeWorkspace.id;
                 return (
                   <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
@@ -53,14 +45,11 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
                   </MenuItem>
                 );
               })}
-              {(workspaceCreationFeature.isEnabled || filteredWorkspaces.length < WORKSPACES_LIMIT) && (
-                <>
-                  <MenuItem divider />
-                  <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
-                    Create New Workspace
-                  </MenuItem>
-                </>
-              )}
+
+              <MenuItem divider />
+              <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
+                Create New Workspace
+              </MenuItem>
             </>
           </Menu>
         }

@@ -11,13 +11,9 @@ import {
   debugRealtime,
   debugSocket,
   env,
-  ff_commenting,
   ff_dataRefactor,
   ff_gadgets,
-  ff_inviteByLink,
   ff_projectSplitting,
-  ff_templates,
-  ff_workspaceCreationFlow,
   ga,
   intercom,
   logFilter,
@@ -64,11 +60,7 @@ export const ENV = {
   USERFLOW_ENABLED: userflow && 'true',
 
   // feature flags
-  FF_TEMPLATES: ff_templates && 'true',
   FF_GADGETS: ff_gadgets && 'true',
-  FF_COMMENTING: ff_commenting && 'true',
-  FF_WORKSPACE_CREATION_FLOW: ff_workspaceCreationFlow && 'true',
-  FF_INVITE_BY_LINK: ff_inviteByLink && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
   FF_PROJECT_SPLITTING: ff_projectSplitting && 'true',
 

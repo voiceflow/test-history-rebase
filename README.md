@@ -279,11 +279,8 @@ yarn start --ff_someFeature
 #### Available Flags and Environment Variables
 
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
-- `ff_commenting` / `VF_APP_FF_COMMENTING`: commenting
-- `ff_workspaceCreationFlow` / `VF_APP_FF_WORKSPACE_CREATION_FLOW`: new create workspace flow
-- `ff_inviteByLink` / `VF_APP_FF_INVITE_BY_LINK`: invite new users to a project with a link
-- `ff_templates` / `VF_APP_FF_TEMPLATES`: access a workspace of cloneable template projects
 - `ff_dataRefactor` / `VF_APP_FF_DATA_REFACTOR`: amazon/google jobs publish system
+- `ff_projectSplitting` / `VF_APP_FF_PROJECT_SPLITTING`: split project channels
 
 ### Environment variable overrides
 

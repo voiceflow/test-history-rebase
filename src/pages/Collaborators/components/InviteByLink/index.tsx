@@ -4,14 +4,11 @@ import workspaceClient from '@/client/workspace';
 import Button, { ButtonVariant } from '@/components/Button';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import Menu, { MenuItem } from '@/components/Menu';
-import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
-import { ModalType, PlanType, UserRole } from '@/constants';
+import { ModalType, UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals } from '@/hooks';
+import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 
@@ -33,14 +30,12 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
   usedEditorSeats,
   numberOfSeats,
   activeWorkspaceID,
-  plan,
   noIcon = false,
 }) => {
   const [linkInvitePermission, setLinkInvitePermission] = React.useState<UserRole.EDITOR | UserRole.VIEWER>(UserRole.EDITOR);
   const [inviteCode, setInviteCode] = React.useState('');
   const [inviteLink, setInviteLink] = React.useState('');
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
-  const inviteByLinkFeature = useFeature(FeatureFlag.INVITE_BY_LINK);
 
   React.useEffect(() => {
     const getInviteLink = async () => {
@@ -73,16 +68,6 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
     setLinkInvitePermission(permission);
   };
 
-  if (!inviteByLinkFeature.isEnabled) {
-    return (
-      <Container>
-        {plan !== PlanType.ENTERPRISE && plan !== PlanType.OLD_ENTERPRISE && (
-          <ClickableText onClick={openPaymentsModal}>Upgrade Workspace</ClickableText>
-        )}
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <DropdownContainer>
@@ -110,11 +95,8 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
 
 const mapStateToProps = {
   activeWorkspaceID: Workspace.activeWorkspaceIDSelector,
-  seatLimits: Workspace.seatLimitsSelector,
-  members: Workspace.activeWorkspaceMembersSelector,
   numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
   usedEditorSeats: Workspace.usedEditorSeatsSelector,
-  plan: planTypeSelector,
 };
 
 type ConnectedSeatSummaryProps = ConnectedProps<typeof mapStateToProps>;

@@ -3,14 +3,13 @@ import React from 'react';
 import Box from '@/components/Box';
 import IconButton from '@/components/IconButton';
 import Tooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import * as Thread from '@/ducks/thread';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
+import { useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useCommentingMode, useMarkupMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
@@ -36,7 +35,6 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   const isMarkupMode = useMarkupMode();
 
   const eventualEngine = React.useContext(EventualEngineContext)!;
-  const commentingFeature = useFeature(FeatureFlag.COMMENTING);
 
   const onZoomIn = React.useCallback(() => {
     eventualEngine.get()?.canvas?.applyTransition();
@@ -123,20 +121,18 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
       <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
       {showHintFeatures && (
         <>
-          {commentingFeature.isEnabled && (
-            <Box position="relative">
-              <CanvasControlButton
-                {...CanvasControlMeta[CanvasControl.COMMENTING]}
-                iconProps={{
-                  active: isCommentingMode,
-                  icon: isCommentingMode ? 'close' : 'comment',
-                  size: isCommentingMode ? 14 : 16,
-                }}
-                onClick={toggleCommenting}
-              />
-              {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
-            </Box>
-          )}
+          <Box position="relative">
+            <CanvasControlButton
+              {...CanvasControlMeta[CanvasControl.COMMENTING]}
+              iconProps={{
+                active: isCommentingMode,
+                icon: isCommentingMode ? 'close' : 'comment',
+                size: isCommentingMode ? 14 : 16,
+              }}
+              onClick={toggleCommenting}
+            />
+            {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
+          </Box>
 
           <CanvasControlButton
             {...CanvasControlMeta[CanvasControl.MARKUP]}

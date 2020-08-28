@@ -13,7 +13,6 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
@@ -24,7 +23,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
@@ -84,7 +83,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     }
   }, []);
 
-  const templatesWorkspaceFeature = useFeature(FeatureFlag.TEMPLATES);
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
@@ -179,7 +177,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   }, []);
 
   useSetup(() => {
-    if (props.hasTemplatesWorkspace && templatesWorkspaceFeature.isEnabled) {
+    if (props.hasTemplatesWorkspace) {
       Userflow.track(Userflow.Event.DASHBOARD_VISITED);
     }
   });

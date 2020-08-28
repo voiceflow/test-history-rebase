@@ -73,7 +73,6 @@ const MarkupNode = () => {
         {NodeComponent && (
           <Container
             onDoubleClick={doubleClickHandler}
-            isShape={nodeEntity.nodeType === BlockType.MARKUP_SHAPE}
             isText={nodeEntity.nodeType === BlockType.MARKUP_TEXT}
             rotate={(data as ResizableMarkupNodeData).rotate || 0}
             scale={(data as Markup.NodeData.Text).scale ?? 1}

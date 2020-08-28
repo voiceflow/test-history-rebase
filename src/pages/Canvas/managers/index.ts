@@ -20,7 +20,6 @@ import IfManager from './If';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
 import MarkupImageManager from './MarkupImage';
-import MarkupShapeManager from './MarkupShape';
 import MarkupTextManager from './MarkupText';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
@@ -65,7 +64,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.DEPRECATED]: DeprecatedManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
-  [BlockType.MARKUP_SHAPE]: MarkupShapeManager,
 };
 
 const MANAGERS = Object.values(MANAGERS_BY_TYPE);

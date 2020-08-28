@@ -5,7 +5,6 @@ import { MarkupModeType } from '@/constants';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 
-// import { AddShapesMenu, MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 import { MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
@@ -25,9 +24,6 @@ const MarkupMenu: React.FC = () => {
             active={isTextActive}
           />
         </MarkupButtonContainer>
-        {/* <MarkupButtonContainer title="Shapes">
-          <AddShapesMenu />
-        </MarkupButtonContainer> */}
         <MarkupButtonContainer title="Image">
           <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
         </MarkupButtonContainer>

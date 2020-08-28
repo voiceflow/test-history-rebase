@@ -1,11 +1,8 @@
-import moize from 'moize';
 import React from 'react';
 
 import { preventDefault } from '@/utils/dom';
 
-export const useCurried = <T extends (...args: any[]) => (...args: any[]) => void>(callback: T, deps: any[] = []): T =>
-  React.useMemo(() => moize(callback), deps);
-
+// eslint-disable-next-line import/prefer-default-export
 export const useSwallowZoom = <T extends HTMLElement>() => {
   const ref = React.useRef<T>(null);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { BlockType, MarkupModeType, MarkupShapeType } from '@/constants';
+import { BlockType, MarkupModeType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
 import { useDidUpdateEffect, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
@@ -12,13 +12,13 @@ const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'].join(', ');
 
 export type MarkupModeContextType = {
-  modeType: MarkupModeType | MarkupShapeType | null;
+  modeType: MarkupModeType | null;
   isCreating: boolean;
   onAddImage: () => void;
-  setModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
+  setModeType: (value: MarkupModeType | null) => void;
   finishCreating: () => void;
   isUploadingImage: boolean;
-  setCreatingModeType: (value: MarkupModeType | MarkupShapeType | null) => void;
+  setCreatingModeType: (value: MarkupModeType | null) => void;
 };
 
 export const MarkupModeContext = React.createContext<MarkupModeContextType | null>(null);
@@ -26,7 +26,7 @@ export const { Consumer: MarkupModeConsumer } = MarkupModeContext;
 
 export const MarkupModeProvider: React.FC = ({ children }) => {
   const startTimeCache = React.useRef(0);
-  const [modeType, setModeType] = React.useState<MarkupModeType | MarkupShapeType | null>(null);
+  const [modeType, setModeType] = React.useState<MarkupModeType | null>(null);
   const [isCreating, setCreating] = React.useState(false);
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const isMarkupMode = useMarkupMode();
@@ -38,15 +38,12 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   const [trackEvents] = useTrackingEvents();
 
-  const setCreatingModeType = (type: null | MarkupModeType | MarkupShapeType) => {
-    setModeType(type);
-    setCreating(!!type);
+  const setCreatingModeType = (type: MarkupModeType | null) => {
+    const isNextCreating = !!type;
 
-    if (type) {
-      eventualEngine.get()?.canvas?.setBusy(true);
-    } else {
-      eventualEngine.get()?.canvas?.setBusy(false);
-    }
+    setModeType(type);
+    setCreating(isNextCreating);
+    eventualEngine.get()?.canvas?.setBusy(isNextCreating);
   };
 
   const finishCreating = () => setCreatingModeType(null);

@@ -1,4 +1,4 @@
-import { BlockType, MARKUP_NODES } from '@/constants';
+import { MARKUP_NODES } from '@/constants';
 import { CANVAS_MARKUP_TRANSFORMING_CLASSNAME } from '@/pages/Canvas/constants';
 import { TransformOverlayAPI } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
@@ -26,9 +26,6 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
   initialize(nodeID: string) {
     if (this.isTarget(nodeID)) return;
 
-    const node = this.engine.getNodeByID(nodeID);
-    if (node.type === BlockType.MARKUP_SHAPE) return;
-
     const transform = this.engine.node.api(nodeID)?.instance?.getTransform?.();
     if (!transform) return;
 
@@ -47,26 +44,26 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
     this.components.transformOverlay?.initialize(transform);
   }
 
+  resizeOverlay(height: number) {
+    this.components.transformOverlay?.resize(height);
+  }
+
   start() {
     this.isTransforming = true;
 
-    this.engine.node.api(this.getTarget()!)?.instance?.snapshot?.();
+    this.engine.node.api(this.getTarget()!)?.instance?.prepareForTransformation?.();
   }
 
   scaleTarget(scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) {
     this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift, rotation, rotationOffset);
   }
 
-  scaleTextTarget(maxWidth: number) {
-    this.engine.node.api(this.getTarget()!)?.instance?.scaleText?.(maxWidth);
+  scaleTextTarget(maxWidth: number, shift: Pair<number>) {
+    this.engine.node.api(this.getTarget()!)?.instance?.scaleText?.(maxWidth, shift);
   }
 
   rotateTarget(angle: number) {
     this.engine.node.api(this.getTarget()!)?.instance?.rotate?.(angle);
-  }
-
-  moveVertices(offset: Pair<number>, shift: Pair<number>) {
-    this.engine.node.api(this.getTarget()!)?.instance?.moveVertices?.(offset, shift);
   }
 
   complete() {

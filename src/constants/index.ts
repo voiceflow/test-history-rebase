@@ -2,6 +2,7 @@
 import { constants } from '@voiceflow/common';
 
 import { Icon } from '@/svgs/types';
+import { Pair } from '@/types';
 
 export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
@@ -18,6 +19,8 @@ export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 export const HOVER_THROTTLE_TIMEOUT = 24;
 
 export const WORKSPACES_LIMIT = 3;
+
+export const ZERO_VECTOR: Pair<number> = [0, 0];
 
 export enum BlockCategoryType {
   BASIC = 'basic',
@@ -130,7 +133,6 @@ export enum BlockType {
 
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',
-  MARKUP_SHAPE = 'markup_shape',
 }
 
 export enum PermissionType {
@@ -514,24 +516,15 @@ export const PLAN_TYPE_META = {
   },
 };
 
-export enum MarkupShapeType {
-  RECTANGLE = 'rectangle',
-  CIRCLE = 'circle',
-  LINE = 'line',
-  ARROW = 'arrow',
-}
-
 export enum MarkupModeType {
   TEXT = 'text',
   IMAGE = 'image',
 }
 
-export const MARKUP_SHAPES = [MarkupShapeType.RECTANGLE, MarkupShapeType.CIRCLE, MarkupShapeType.LINE, MarkupShapeType.ARROW];
-
 export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
 export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
 
-export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE, BlockType.MARKUP_SHAPE];
+export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
 
 export const COPY_NODES = [...MARKUP_NODES, BlockType.COMBINED];
 

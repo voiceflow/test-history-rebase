@@ -62,7 +62,6 @@ const blockAdapter = {
   // markup
   [BlockType.MARKUP_TEXT]: emptyAdapter,
   [BlockType.MARKUP_IMAGE]: emptyAdapter,
-  [BlockType.MARKUP_SHAPE]: emptyAdapter,
 };
 
 export default blockAdapter;

@@ -12,10 +12,6 @@ export const Container = styled.div`
       z-index: 3;
     }
 
-    &--${BlockType.MARKUP_SHAPE} {
-      z-index: 2;
-    }
-
     &--${BlockType.MARKUP_IMAGE} {
       z-index: 1;
     }

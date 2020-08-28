@@ -49,11 +49,6 @@ export type NodeInstance = EntityInstance & {
   translate?: (movement: Pair<number>) => void;
 
   /**
-   * create a snapshot of the current markup node size for use when transforming
-   */
-  snapshot?: () => void;
-
-  /**
    * only Markup nodes expose a rect for transformation
    */
   getTransform?: () => MarkupTransform;
@@ -69,14 +64,16 @@ export type NodeInstance = EntityInstance & {
   scale?: (scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) => void;
 
   /**
-   * only line and arrow Markup shapes can have their vertices moved
-   */
-  moveVertices?: (offset: Pair<number>, shift: Pair<number>) => void;
-
-  /**
    * only Markup nodes can be scaled
    */
-  scaleText?: (width: number) => void;
+  scaleText?: (width: number, shift: Pair<number>) => void;
+
+  /**
+   * prepare the node for transformation
+   *
+   * only Markup nodes can be transformed
+   */
+  prepareForTransformation?: () => void;
 
   /**
    * apply any outstanding transformations

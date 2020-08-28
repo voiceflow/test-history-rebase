@@ -86,13 +86,9 @@ export type RealtimeLinkOverlayAPI = {
 export type TransformOverlayAPI = {
   initialize: (transform: MarkupTransform) => void;
   translate: (movement: Pair<number>) => void;
+  resize: (height: number) => void;
   clearTransformations: () => void;
   reset: () => void;
-};
-
-export type NewShapeAPI = {
-  show: (origin: Point) => void;
-  hide: () => void;
 };
 
 export type SelectionMarqueeAPI = {

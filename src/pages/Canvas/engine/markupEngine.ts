@@ -14,8 +14,6 @@ import { BlockType, TextAlignment } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { NewShapeAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
 
 import { EngineConsumer } from './utils';
 
@@ -25,7 +23,7 @@ type Plugins = {
   fakeSelectionPlugin: FakeSelectionPlugin;
 };
 
-class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
+class MarkupEngine extends EngineConsumer {
   log = this.engine.log.child('markup');
 
   pluginsByNodeID: Record<string, Plugins> = {};
@@ -67,16 +65,6 @@ class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
     this.engine.focus.set(nodeID);
   }
 
-  async createShapeNode() {
-    this.components.newShape?.show(this.engine.getCanvasMousePosition());
-  }
-
-  async addShapeNode(point: Point, nodeData: NodeData<Markup.NodeData.Shape>) {
-    await this.engine.node.add(BlockType.MARKUP_SHAPE, this.engine.canvas!.toCoords(point), nodeData, cuid());
-
-    this.components.newShape?.hide();
-  }
-
   useSetupPlugins(nodeID: string, { anchorOptions }: { anchorOptions: AnchorPluginConfig }) {
     const plugins = React.useMemo(
       () => ({
@@ -100,10 +88,6 @@ class MarkupEngine extends EngineConsumer<{ newShape: NewShapeAPI }> {
 
   getPluginsByNodeID(nodeID: string) {
     return this.pluginsByNodeID[nodeID];
-  }
-
-  reset() {
-    this.components.newShape?.hide();
   }
 }
 

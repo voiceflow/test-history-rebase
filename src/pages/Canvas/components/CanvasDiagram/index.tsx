@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
-import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_SHAPES, MarkupModeType, MarkupShapeType } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -43,18 +43,9 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onDragStart = React.useCallback(
-    (event: React.DragEvent) => {
-      setDraggedCanvas(true);
-      if (isMarkupCreating && MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
-        event.preventDefault();
-        engine.clearActivation();
-
-        engine.markup.createShapeNode();
-      }
-    },
-    [isMarkupCreating, markupModeType]
-  );
+  const onDragStart = React.useCallback(() => {
+    setDraggedCanvas(true);
+  }, [isMarkupCreating, markupModeType]);
 
   const onMouseUp = React.useCallback((event: MouseEvent) => {
     if (event.defaultPrevented || engine.isCanvasBusy) return;
@@ -69,10 +60,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         return;
       }
 
-      if (isMarkupCreating && !MARKUP_SHAPES.includes(markupModeType as MarkupShapeType)) {
-        if (markupModeType === MarkupModeType.TEXT) {
-          await engine.markup.addTextNode();
-        }
+      if (isMarkupCreating && markupModeType === MarkupModeType.TEXT) {
+        await engine.markup.addTextNode();
 
         finishMarkupCreating();
       }

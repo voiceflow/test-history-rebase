@@ -7,15 +7,13 @@ import { InternalNodeInstance } from '@/pages/Canvas/components/Node/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
-import { getRotation } from '@/utils/math';
 import { getCenter } from '@/utils/rotation';
 
-import { MarkupShapeInstance, ResizableMarkupNodeData } from './types';
-import { isLine, isResizableShape, isShape, isText } from './utils';
+import { ResizableMarkupNodeData } from './types';
+import { isResizableShape, isText } from './utils';
 
 export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance<T> & {
   transformRef: React.RefObject<T>;
-  shapeRef: React.RefObject<MarkupShapeInstance>;
 };
 
 /**
@@ -35,7 +33,6 @@ export type InternalMarkupInstance<T extends HTMLElement> = InternalNodeInstance
  *
  */
 export const useMarkupInstance = <T extends HTMLElement>() => {
-  const shapeRef = React.useRef<MarkupShapeInstance>(null);
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { width, height } = nodeEntity.useState((e) => {
     const { data } = e.resolve<ResizableMarkupNodeData>();
@@ -51,6 +48,21 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
   const transformRef = React.useRef<T>(null);
   const textWidth = React.useRef<number | null>(null);
   const nodeInstance = useNodeInstance<T>();
+  const heightCache = React.useRef<number | null>(null);
+
+  const resizeObserver = React.useMemo(
+    () =>
+      new ResizeObserver((entries) =>
+        entries.forEach((entry) => {
+          const nextHeight = entry.contentRect.height;
+          if (nextHeight !== heightCache.current) {
+            engine.transformation.resizeOverlay(nextHeight);
+            heightCache.current = nextHeight;
+          }
+        })
+      ),
+    []
+  );
 
   /**
    * Returns an object containing information about the final state, such as size and position, of the
@@ -89,26 +101,10 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         width: finalWidth,
         height: finalHeight,
         rotate: data.rotate,
-        scale: 1,
+        scale: data.scale,
         invertX: false,
         invertY: false,
         origin,
-      };
-    }
-
-    if (isShape(data) && isLine(data)) {
-      const { offsetX, offsetY } = data;
-      const diffX = offsetX * zoom;
-      const diffY = offsetY * zoom;
-
-      return {
-        width: Math.abs(diffX),
-        height: Math.abs(diffY),
-        rotate: 0,
-        scale: 1,
-        invertX: offsetX < 0,
-        invertY: offsetY < 0,
-        origin: new Coords([left + Math.min(0, diffX), top + Math.min(0, diffY)]),
       };
     }
 
@@ -141,18 +137,14 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
     () => ({
       ...nodeInstance,
       transformRef,
-      shapeRef,
       getTransform,
-      snapshot: () => {
-        if (nodeEntity.nodeType !== BlockType.MARKUP_SHAPE) return;
-
-        const { data } = nodeEntity.resolve<ResizableMarkupNodeData>();
-        const transformEl = transformRef.current!;
-
-        window.requestAnimationFrame(() => {
-          transformEl.style.width = `${data.width}px`;
-          transformEl.style.height = `${data.height}px`;
-        });
+      /**
+       * Used prepare the local state for transformation.
+       */
+      prepareForTransformation: () => {
+        if (nodeEntity.nodeType === BlockType.MARKUP_TEXT) {
+          resizeObserver.observe(transformRef.current!);
+        }
       },
       /**
        * Used at the end of a transformation to publish the final state of the node into
@@ -164,6 +156,11 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
         const angle = rotation.current;
         const maxWidth = textWidth.current;
 
+        if (nodeEntity.nodeType === BlockType.MARKUP_TEXT) {
+          resizeObserver.disconnect();
+          heightCache.current = null;
+        }
+
         scale.current = [1, 1];
         rotation.current = 0;
         textWidth.current = null;
@@ -174,7 +171,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
             height: data.height * scaleY,
             rotate: angle % (2 * Math.PI),
           });
-        } else if (data.type === BlockType.MARKUP_TEXT) {
+        } else if (isText(data)) {
           engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, {
             scale: scaleX,
             rotate: angle % (2 * Math.PI),
@@ -192,6 +189,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
 
         const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
         const curScale = (data as Markup.NodeData.Text).scale;
+        const maxWidth = (data as Markup.NodeData.Text).overrideWidth;
 
         const isTextNode = data.type === BlockType.MARKUP_TEXT;
 
@@ -222,6 +220,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
            *
            */
           scale.current = [curScale, curScale];
+          textWidth.current = maxWidth;
         }
 
         /**
@@ -241,25 +240,12 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           transformEl.style.transform = transformation;
         });
       },
-      // moveVertices: ([offsetX, offsetY], [shiftX, shiftY]) => {
-      moveVertices: ([offsetX, offsetY]) => {
-        const shapeEl = shapeRef.current;
 
-        const rotate = getRotation(offsetY, offsetX);
-
-        window.requestAnimationFrame(() => {
-          // shapeEl?.setAttribute('x1', String(shiftX));
-          // shapeEl?.setAttribute('y1', String(shiftY));
-          shapeEl?.setLineAttribute?.('x2', String(offsetX));
-          shapeEl?.setLineAttribute?.('y2', String(offsetY));
-          shapeEl?.setHeadAttribute?.('orient', `${rotate}rad`);
-        });
-      },
       /**
        * Accumulates the effects of a scaling operation and applies the changes so far as a style to
        * the Node.
        */
-      scale: ([scaleX, scaleY], [offsetX, offsetY], rotate, [rotationOffsetX, rotationOffsetY]) => {
+      scale: ([scaleX, scaleY], [shiftX, shiftY], rotate, [rotationOffsetX, rotationOffsetY]) => {
         const { data } = nodeEntity.resolve<Markup.AnyNodeData>();
         const transformEl = transformRef.current!;
         const zoom = engine.canvas!.getZoom();
@@ -272,11 +258,13 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
          */
         const nextScaleX = scaleX * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
         const nextScaleY = scaleY * (isTextNode ? (data as Markup.NodeData.Text).scale : 1);
+        const maxWidth = isTextNode ? (data as Markup.NodeData.Text).overrideWidth : null;
 
         scale.current = [nextScaleX, nextScaleY];
+        textWidth.current = maxWidth;
         rotation.current = rotate;
 
-        engine.node.translate(nodeEntity.nodeID, [offsetX / zoom, offsetY / zoom]);
+        engine.node.translate(nodeEntity.nodeID, [shiftX / zoom, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
           if (!isTextNode) {
@@ -304,20 +292,31 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           }px) scale(${nextScaleX}, ${nextScaleY}) rotate(${(data as ResizableMarkupNodeData).rotate}rad)`;
         });
       },
+
       /**
        * Accumulates the effects of a special case of the scaling operation, when we drag the horizontal handles
        * of a Markup Text node and applies the changes so far as a style to the Node.
        */
-      scaleText: (maxWidth: number) => {
+      scaleText: (maxWidth: number, [shiftX, shiftY]: Pair<number>) => {
         const transformEl = transformRef.current!;
         const { data } = nodeEntity.resolve<Markup.NodeData.Text>();
         const zoom = engine.canvas!.getZoom();
 
+        const currWidth = textWidth.current ?? data.overrideWidth;
         const nextWidth = maxWidth / data.scale / zoom;
+        const diffX = nextWidth - (currWidth ?? 0);
+        const scaleDiff = (1 - data.scale) / 2;
+        const scaleShiftX = diffX * -scaleDiff;
 
         textWidth.current = nextWidth;
+        scale.current = [data.scale, data.scale];
+        rotation.current = data.rotate;
+
+        engine.node.translate(nodeEntity.nodeID, [shiftX / zoom + scaleShiftX, shiftY / zoom]);
 
         window.requestAnimationFrame(() => {
+          // need to reset the min-width if this is the first time the container is being resized to clear the default
+          transformEl.style.minWidth = '0';
           transformEl.style.width = `${nextWidth}px`;
         });
       },

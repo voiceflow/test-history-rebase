@@ -2,7 +2,6 @@ import { css, styled } from '@/hocs';
 import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type ContainerProps = {
-  isShape: boolean;
   isText: boolean;
   rotate: number;
   scale: number;
@@ -13,21 +12,18 @@ const Container = styled.div<ContainerProps>`
   position: absolute;
   transform: ${({ rotate }) => `rotate(${rotate}rad)`};
 
-  ${({ isShape }) =>
-    isShape &&
-    css`
-      border: 1px solid transparent;
-    `}
-
   ${({ isText, scale, maxWidth, rotate }) =>
     isText &&
     css`
       transform: rotate(${rotate}rad) scale(${scale});
 
-      ${maxWidth !== null &&
-      css`
-        width: ${maxWidth}px;
-      `}
+      ${maxWidth === null
+        ? css`
+            min-width: 330px;
+          `
+        : css`
+            width: ${maxWidth}px;
+          `}
     `}
 
   .${CANVAS_MARKUP_CREATING_CLASSNAME} & {

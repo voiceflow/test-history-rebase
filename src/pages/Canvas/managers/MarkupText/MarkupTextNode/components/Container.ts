@@ -5,7 +5,6 @@ import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSE
 export const Container = styled.div<{ activated: boolean }>`
   border: solid 1px transparent;
 
-  min-width: 330px;
   min-height: 30px;
 
   /* default text editor styles */

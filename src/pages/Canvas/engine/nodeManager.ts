@@ -300,9 +300,12 @@ class NodeManager extends EngineConsumer {
 
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
       const allNodeIDs = [removeNodeID, ...this.select(Creator.combinedNodeIDsSelector)(removeNodeID)];
+
+      await this.engine.comment.handleNodesDelete(allNodeIDs);
+
       await this.engine.realtime.sendUpdate(Realtime.removeNode(removeNodeID));
       this.internal.remove(removeNodeID);
-      await this.engine.comment.deleteThreadsByNodeIDs(allNodeIDs);
+
       this.engine.saveHistory();
 
       this.log.info(this.log.success('remove node'), this.log.slug(removeNodeID));
@@ -314,9 +317,12 @@ class NodeManager extends EngineConsumer {
 
     return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
       const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
+
+      await this.engine.comment.handleNodesDelete(allNodeIDs);
+
       await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
       this.internal.removeMany(removableNodeIDs);
-      await this.engine.comment.deleteThreadsByNodeIDs(allNodeIDs);
+
       this.engine.saveHistory();
 
       this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));

@@ -204,6 +204,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (!thread?.instance) return;
 
     const coords = thread.instance.getCoords().onPlane(this.engine.canvas!.getPlane());
+
     if (targetNodeID) {
       const offset = this.getCoordsRelativeToNode(coords, targetNodeID);
       if (!offset) return;
@@ -214,6 +215,26 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
 
     this.log.debug('location saved', this.log.slug(threadID));
+  }
+
+  async moveThreadToCanvas(threadID: string) {
+    const thread = this.select(Thread.threadByIDSelector)(threadID);
+    const node = this.engine.node.api(thread.nodeID!);
+
+    if (!node?.instance?.isReady()) return;
+
+    const anchorCoords = node.instance.getThreadAnchorCoords()!;
+    const coords = anchorCoords.add(thread.position);
+
+    await this.dispatch(Thread.updateThreadData(threadID, { nodeID: null, position: coords.point }));
+
+    this.log.debug('new thread location saved', this.log.slug(threadID));
+  }
+
+  async handleNodesDelete(nodeIDs: string[]) {
+    const threadIDs = nodeIDs.flatMap(this.select(Thread.threadIDsByNodeIDSelector));
+
+    await Promise.all(threadIDs.map((threadID) => this.moveThreadToCanvas(threadID)));
   }
 
   async centerThread(threadID: string) {

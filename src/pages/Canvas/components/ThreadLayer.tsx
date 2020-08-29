@@ -15,6 +15,7 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnr
   const engine = React.useContext(EngineContext)!;
   const isCommentingMode = useCommentingMode();
   const focusThread = React.useContext(FocusThreadContext)!;
+
   React.useEffect(() => {
     updateUnreadComments(false);
     if (!isCommentingMode) {

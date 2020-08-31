@@ -205,7 +205,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-named-asset-import": "^0.3.0",
     "babel-plugin-require-context-hook": "^1.0.0",
-    "babel-plugin-styled-components": "^1.10.6",
+    "babel-plugin-styled-components": "^1.11.1",
     "babel-plugin-webpack-alias-7": "^0.1.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",

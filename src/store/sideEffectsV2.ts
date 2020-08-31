@@ -1,6 +1,6 @@
 import { AlexaVersionData } from '@voiceflow/alexa-types';
 
-import clientV2 from '@/clientV2';
+import clientV2, { getPlatformService } from '@/clientV2';
 import creatorAdapter from '@/clientV2/adapters/creator';
 import { alexaIntentAdapter } from '@/clientV2/adapters/intent';
 import projectAdapter from '@/clientV2/adapters/project';
@@ -13,6 +13,7 @@ import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 // import * as Integration from '@/ducks/integration';
 import * as Project from '@/ducks/project';
+import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
@@ -20,7 +21,19 @@ import * as Viewport from '@/ducks/viewport';
 import * as Models from '@/models';
 
 import { Thunk } from './types';
-// import { storeLogger } from './utils';
+
+export const copyProject = (projectID: string, workspaceID: string, listID: string): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const project = Project.projectByIDSelector(state)(projectID);
+  if (!project) throw new Error();
+
+  const service = getPlatformService(project.platform);
+  const copiedProject = projectAdapter.fromDB(await service.copyProject(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` }));
+
+  dispatch(Project.addProject(copiedProject.id, copiedProject));
+
+  if (listID) dispatch(ProjectList.addProjectToList(listID, copiedProject.id));
+};
 
 export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();

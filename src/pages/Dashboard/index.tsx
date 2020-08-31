@@ -13,6 +13,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
@@ -23,9 +24,10 @@ import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffects';
+import { copyProject as copyProjectV2 } from '@/store/sideEffectsV2';
 import { ConnectedProps } from '@/types';
 import * as Userflow from '@/vendors/userflow';
 
@@ -83,6 +85,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     }
   }, []);
 
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
@@ -100,11 +103,15 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       }
       toggleLoadingModal(true);
 
-      await props.copyProject(projectId, props.workspaceID!, boardId);
+      if (dataRefactor.isEnabled) {
+        await props.copyProjectV2(projectId, props.workspaceID!, boardId);
+      } else {
+        await props.copyProject(projectId, props.workspaceID!, boardId);
+      }
 
       toggleLoadingModal(false);
     },
-    [props.projects, props.workspace, props.workspaceID, props.copyProject]
+    [props.projects, props.workspace, props.workspaceID, props.copyProject, props.copyProjectV2]
   );
 
   const onDeleteProject = React.useCallback(
@@ -328,6 +335,7 @@ const mapDispatchToProps = {
   createNewList: ProjectList.createNewList,
   deleteProject: ProjectList.deleteProjectFromList,
   copyProject,
+  copyProjectV2,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
   deleteList: ProjectList.deleteProjectList,

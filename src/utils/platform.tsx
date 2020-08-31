@@ -57,5 +57,8 @@ export const getPlatformValue = <T extends any>(
 ) => {
   platformMissingValuesWarn(platformValues, "couldn't find platform values:", skipWarning);
 
-  return platform in platformValues ? platformValues[platform] : defaultValue;
+  const value = platform in platformValues ? platformValues[platform] : defaultValue;
+  if (!value) throw new Error('no value for platform');
+
+  return value;
 };

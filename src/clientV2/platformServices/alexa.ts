@@ -38,6 +38,8 @@ const alexaServiceClient: AlexaService = {
 
   getRenderPrototypeStatus: (projectID) => axios.get(`${ALEXA_SERVICE_ENDPOINT}/prototype/${projectID}/status`).then((res) => res.data),
 
+  copyProject: (projectID, data) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/project/${projectID}/copy`, data).then((res) => res.data),
+
   updatePlatformData: (versionID, platformData) => axios.patch(`${ALEXA_SERVICE_ENDPOINT}/version/${versionID}`, platformData),
 
   updateSettings: (versionID, settings) => axios.patch(`${ALEXA_SERVICE_ENDPOINT}/version/${versionID}/settings`, settings),

@@ -1,16 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import client from '@/clientV2';
+import { getPlatformService } from '@/clientV2';
 import { FeatureFlag } from '@/config/features';
-import { JobStatus, PlatformType } from '@/constants';
+import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useFeature, useSetup, useTeardown } from '@/hooks';
 import { AlexaJob } from '@/models';
 import { Nullable } from '@/types';
-import { getPlatformValue } from '@/utils/platform';
 
 export type PublishContextValue = {
   job: Nullable<AlexaJob.AnyJob>;
@@ -33,9 +32,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Skill.activeProjectIDSelector);
   const dispatch = useDispatch();
 
-  const service = getPlatformValue(platform, {
-    [PlatformType.ALEXA]: client.alexaService,
-  });
+  const service = getPlatformService(platform);
 
   const getJob = React.useCallback(async () => {
     const currentJob = await service?.getPublishStatus(projectID);

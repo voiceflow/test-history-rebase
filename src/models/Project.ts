@@ -12,6 +12,7 @@ export type Project = {
   versionID: string;
   smallIcon: string | null;
   largeIcon: string | null;
+  platform: PlatformType;
 };
 
 export namespace Project {

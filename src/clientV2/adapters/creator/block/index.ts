@@ -6,6 +6,7 @@ import { BlockType } from '@/constants';
 import blockDataAdapter from './block';
 import codeAdapter from './code';
 import flowAdapter from './flow';
+import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import setAdapter from './set';
 import speakAdapter from './speak';
@@ -44,7 +45,7 @@ const blockAdapter = {
   [BlockType.FLOW]: flowAdapter,
   [BlockType.IF]: emptyAdapter,
   [BlockType.INTEGRATION]: emptyAdapter,
-  [BlockType.INTENT]: emptyAdapter,
+  [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.PAYMENT]: emptyAdapter,
   [BlockType.PERMISSION]: emptyAdapter,

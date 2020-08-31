@@ -199,7 +199,7 @@ export namespace NodeData {
     }[];
   };
 
-  export type Intent = Record<PlatformType, { intent: string | null; mappings: unknown[] }>;
+  export type Intent = Record<PlatformType, { intent: string | null; mappings: SlotMapping[] }>;
 
   export type Event = {
     requestName: string;

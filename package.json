@@ -98,7 +98,7 @@
     "react-tippy": "1.4.0",
     "react-toastify": "^5.1.1",
     "react-toggle": "^4.1.1",
-    "react-virtualized": "^9.21.2",
+    "react-virtualized": "^9.22.2",
     "reactstrap": "^6.5.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",

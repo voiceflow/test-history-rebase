@@ -61,7 +61,9 @@ const creatorAdapter = createSimpleAdapter<
         return;
       }
 
-      rootNodeIDs.push(node.id);
+      if (Array.isArray(dbNode.coords) && dbNode.coords.length === 2) {
+        rootNodeIDs.push(node.id);
+      }
     };
 
     Object.values(diagram.nodes).forEach(registerNode);

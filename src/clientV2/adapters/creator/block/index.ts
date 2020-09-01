@@ -8,6 +8,7 @@ import codeAdapter from './code';
 import flowAdapter from './flow';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
+import promptAdapter from './prompt';
 import setAdapter from './set';
 import speakAdapter from './speak';
 
@@ -59,7 +60,7 @@ const blockAdapter = {
   [BlockType.DEPRECATED]: emptyAdapter,
   [BlockType.DIRECTIVE]: emptyAdapter,
   [BlockType.EVENT]: emptyAdapter,
-  [BlockType.PROMPT]: emptyAdapter,
+  [BlockType.PROMPT]: promptAdapter,
   // markup
   [BlockType.MARKUP_TEXT]: emptyAdapter,
   [BlockType.MARKUP_IMAGE]: emptyAdapter,

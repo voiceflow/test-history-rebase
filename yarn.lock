@@ -4543,10 +4543,10 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.5.0.tgz#3e21188d9bfb3d30701dcb5d6976de9ec70ad430"
-  integrity sha512-7zI6xzdBDRYv2YEgEF3GOQnSMhDN6JQyePQpNOsJHGNYoq47n6Pw7HN/uKOeLGnHj+CeVZEVhpypa8/uwCH+gw==
+"@voiceflow/alexa-types@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.8.0.tgz#38aff8f07861d8b1f227daa077cee635cdba919e"
+  integrity sha512-hNZw+AyWxsbpYzYNz2Jm0BuVi4GC7BhyoIr0ch7Gs448Ia+6J8pKwfL4W7m2CVsGVb2ykxOENFVshaPuwtsbMw==
   dependencies:
     "@voiceflow/api-sdk" "1.5.1"
 

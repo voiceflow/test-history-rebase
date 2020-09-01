@@ -251,7 +251,7 @@
     "jest-styled-components": "^7.0.2",
     "jest-svg-transformer": "^1.0.0",
     "jsdom-global": "^3.0.2",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^10.2.13",
     "mini-css-extract-plugin": "0.4.3",
     "mocha": "^8.0.1",
     "mocha-suite": "^1.0.11",
@@ -304,13 +304,11 @@
   "license": "UNLICENSED",
   "lint-staged": {
     "package.json": [
-      "fixpack",
-      "git add"
+      "fixpack"
     ],
     "**/*.{js,ts,jsx,tsx}": [
       "eslint --fix",
-      "prettier-eslint --write",
-      "git add"
+      "prettier-eslint --write"
     ],
     "**/*.css": [
       "prettier-stylelint"

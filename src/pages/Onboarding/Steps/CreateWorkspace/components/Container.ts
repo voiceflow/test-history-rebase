@@ -1,9 +1,22 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
+import { FadeLeftContainer } from '@/styles/animations';
 
-const Container = styled.div`
-  width: 480px;
+const Container = styled(FadeLeftContainer)<{ width?: number; textAlign?: string }>`
+  ${({ width }) =>
+    width
+      ? css`
+          width: ${width}px;
+        `
+      : css`
+          width: 480px;
+        `};
+
+  ${({ textAlign = 'center' }) =>
+    css`
+      text-align: ${textAlign};
+    `};
+
   padding-top: 65px;
-  text-align: center;
 `;
 
 export default Container;

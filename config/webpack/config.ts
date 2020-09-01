@@ -15,6 +15,7 @@ import {
   ff_gadgets,
   ff_inviteByLink,
   ff_projectSplitting,
+  ff_projectCreationFlow,
   ff_templates,
   ff_workspaceCreationFlow,
   ga,
@@ -66,6 +67,7 @@ export const ENV = {
   FF_GADGETS: ff_gadgets && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
   FF_PROJECT_SPLITTING: ff_projectSplitting && 'true',
+  FF_PROJECT_CREATION_FLOW: ff_projectCreationFlow && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

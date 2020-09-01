@@ -5,7 +5,7 @@ const WorkspaceNameInput = styled(Input)`
   border: 1px solid rgb(210, 218, 226);
   text-align: center;
   box-shadow: rgba(17, 49, 96, 0.06) 0px 0px 3px 0px;
-  width: 360px;
+  width: 420px;
   height: 57px;
   border-radius: 5px;
   font-size: 18px;

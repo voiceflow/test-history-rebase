@@ -1,12 +1,14 @@
 import queryString from 'query-string';
 import React from 'react';
 
+import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
+import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { CurrentStep, Header, InnerContainer, OuterContainer } from './components';
+import { CurrentStep, Header } from './components';
 import { OnboardingProvider } from './context';
 import { OnboardingDataProps, OnboardingProps } from './types';
 

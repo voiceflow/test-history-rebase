@@ -7,6 +7,10 @@ Cypress.Commands.add('shouldBeOn', (page) => {
   cy.location('pathname').should('be.onRoute', page);
 });
 
+Cypress.Commands.add('awaitLoaded', () => {
+  cy.get('.vf-loader').should('not.be.visible');
+});
+
 Cypress.Commands.add('setup', () => {
   cy.removeTestAccount();
   cy.createTestAccount();

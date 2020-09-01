@@ -1,4 +1,4 @@
-import canvasPage from '../pages/canvas';
+import canvasPage from '../../pages/canvas';
 
 context('Canvas', () => {
   beforeEach(() => {
@@ -8,8 +8,13 @@ context('Canvas', () => {
   });
   afterEach(() => cy.teardown());
 
+  it('opens canvas', () => {
+    cy.shouldBeOn(canvasPage);
+    cy.awaitLoaded();
+  });
+
   it('open settings', () => {
-    canvasPage.openSettings();
+    canvasPage.el.projectSettings.click();
 
     canvasPage.el.modal.should('be.visible');
     canvasPage.el.modalTitle.should('have.text', 'Project Settings');

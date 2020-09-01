@@ -4,6 +4,8 @@ import Button from '@/components/Button';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '../components';
 
+const ModalComponent: React.FC<any> = Modal;
+
 export type DefaultModalProps = {
   open?: boolean;
   noPadding?: boolean;
@@ -16,7 +18,7 @@ export type DefaultModalProps = {
 
 const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => {
   return (
-    <Modal isOpen={open} toggle={toggle}>
+    <ModalComponent isOpen={open} toggle={toggle}>
       <ModalHeader toggle={toggle} header={header} />
       <ModalBody
         style={{
@@ -38,7 +40,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, conte
           )}
         </ModalFooter>
       )}
-    </Modal>
+    </ModalComponent>
   );
 };
 

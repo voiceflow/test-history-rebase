@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React from 'react';
 
 import Box from '@/components/Box';
@@ -11,8 +12,9 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useHotKeys, useModals, usePermission, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { COMMENTING_CONTROL_CLASSNAME, MARKUP_CONTROL_CLASSNAME } from '@/pages/Canvas/constants';
 import { useCommentingMode, useMarkupMode } from '@/pages/Skill/hooks';
-import { Identifier } from '@/styles/constants';
+import { ClassName, Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { CanvasControlButton, Container, ControlContainer, UnreadCommentsIndicator, ZoomContainer } from './components';
@@ -124,6 +126,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
           <Box position="relative">
             <CanvasControlButton
               {...CanvasControlMeta[CanvasControl.COMMENTING]}
+              className={cn(ClassName.CANVAS_CONTROL, COMMENTING_CONTROL_CLASSNAME)}
               iconProps={{
                 active: isCommentingMode,
                 icon: isCommentingMode ? 'close' : 'comment',
@@ -136,6 +139,7 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
 
           <CanvasControlButton
             {...CanvasControlMeta[CanvasControl.MARKUP]}
+            className={cn(ClassName.CANVAS_CONTROL, MARKUP_CONTROL_CLASSNAME)}
             iconProps={{
               active: isMarkupMode,
               icon: isMarkupMode ? 'close' : 'editName',

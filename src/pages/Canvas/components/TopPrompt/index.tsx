@@ -4,6 +4,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useCommentingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownContainer } from '@/styles/animations';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { CenterContainer, Container, KeyBubble } from './components';
@@ -35,7 +36,7 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
       {show && (
         <CenterContainer>
           <FadeDownContainer {...fadeConfig}>
-            <Container onClick={goToDesign}>
+            <Container id={Identifier.ESCAPE_MODE_PROMPT} onClick={goToDesign}>
               <KeyBubble>esc</KeyBubble> to exit {modeText}
             </Container>
           </FadeDownContainer>

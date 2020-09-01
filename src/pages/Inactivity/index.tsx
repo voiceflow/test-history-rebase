@@ -20,6 +20,8 @@ const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: num
   );
 };
 
+const ModalComponent: React.FC<any> = Modal;
+
 export type InactivityModalProps = {
   open: boolean;
   onActive: Callback;
@@ -27,7 +29,7 @@ export type InactivityModalProps = {
 
 const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => {
   return (
-    <Modal isOpen={open} toggle={onActive}>
+    <ModalComponent isOpen={open} toggle={onActive}>
       <ModalHeader toggle={onActive} header="INACTIVITY" />
       <ModalBody>
         <BodyContainer>
@@ -43,7 +45,7 @@ const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalP
           Dismiss
         </Button>
       </ModalFooter>
-    </Modal>
+    </ModalComponent>
   );
 };
 

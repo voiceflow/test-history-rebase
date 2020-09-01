@@ -13,6 +13,8 @@ export enum Identifier {
   BLOCK_EDITOR = 'vf-block-editor',
   CANVAS_HOME_BUTTON = 'vf-canvas__home-button',
   ADD_COLLABORATORS = 'vf-add-collaborators',
+  THREAD_HISTORY_DRAWER = 'vf-thread-history-drawer',
+  ESCAPE_MODE_PROMPT = 'vf-escape-mode-prompt',
 }
 
 export enum ClassName {
@@ -31,7 +33,10 @@ export enum ClassName {
   CANVAS_STEP = 'vf-canvas__step',
   CANVAS_PORT = 'vf-canvas__port',
   CANVAS_LINK = 'vf-canvas__link',
+  CANVAS_CONTROL = 'vf-canvas__control',
   FLOW_MENU_ITEM = 'vf-flow-menu__item',
   STEP_MENU_ITEM = 'vf-step-menu__item',
   DROPDOWN = 'vf-dropdown',
+  SVG_ICON = 'vf-svg-icon',
+  MODAL = 'vf-modal',
 }

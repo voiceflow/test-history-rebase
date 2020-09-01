@@ -1,6 +1,7 @@
 /* eslint-disable promise/catch-or-return */
 
 export const TOKEN_KEY = 'token';
+export const CREATOR_ID_KEY = 'creatorID';
 export const TAB_ID_KEY = 'tabID';
 export const TEAM_ID_KEY = 'teamID';
 export const PROJECT_ID_KEY = 'projectID';

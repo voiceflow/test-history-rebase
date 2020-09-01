@@ -10,15 +10,16 @@ import ControlContainer from './ControlContainer';
 type CanvasControlButtonTypes = Partial<CanvasControlMetaProps> & {
   onClick: () => void;
   iconProps?: any;
+  className?: string;
 };
 
-const CanvasControlButton: React.FC<CanvasControlButtonTypes> = ({ title, permission, hotkey, onClick, icon, iconProps }) => {
+const CanvasControlButton: React.FC<CanvasControlButtonTypes> = ({ title, permission, hotkey, onClick, icon, iconProps, className }) => {
   const [canUseControlButton] = usePermission(permission);
 
   if (!canUseControlButton) return null;
 
   return (
-    <ControlContainer>
+    <ControlContainer className={className}>
       <Tooltip distance={6} title={title} position="top" hotkey={hotkey}>
         <IconButton icon={icon} onClick={onClick} {...iconProps} />
       </Tooltip>

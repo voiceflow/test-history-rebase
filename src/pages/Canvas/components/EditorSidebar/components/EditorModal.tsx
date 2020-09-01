@@ -8,6 +8,8 @@ import { NodeData } from '@/models';
 import EditorModalBody from './EditorModalBody';
 import EditorModalHeader from './EditorModalHeader';
 
+const ModalComponent: React.FC<any> = Modal;
+
 export type EditorModalProps = {
   disableModalMode?: () => void;
   data: NodeData<any>;
@@ -15,10 +17,10 @@ export type EditorModalProps = {
 };
 
 const EditorModal: React.FC<EditorModalProps> = ({ disableModalMode, editor, data }) => (
-  <Modal toggle={disableModalMode} isOpen onClosed={disableModalMode} size="lg">
+  <ModalComponent toggle={disableModalMode} isOpen onClosed={disableModalMode} size="lg">
     <EditorModalHeader style={{ paddingBottom: '0' }} toggle={disableModalMode} header={`${data.name} Settings`} />
     <EditorModalBody>{editor}</EditorModalBody>
-  </Modal>
+  </ModalComponent>
 );
 
 const mapStateToProps = {

@@ -28,6 +28,11 @@ declare namespace Cypress {
     createTestAccount(): Chainable;
 
     /**
+     * create the active test account to a specific plan
+     */
+    upgradeTestAccount(plan: 'pro'): Chainable;
+
+    /**
      * remove existing test account
      */
     removeTestAccount(): Chainable;
@@ -61,6 +66,11 @@ declare namespace Cypress {
      * assert the active page based off of path matching
      */
     shouldBeOn(page: PageModel): Chainable;
+
+    /**
+     * await for all loaders on the page to resolve
+     */
+    awaitLoaded(): Chainable;
   }
 
   interface Chainer<Subject> {

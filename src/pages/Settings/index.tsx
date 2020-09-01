@@ -9,6 +9,8 @@ import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOve
 import { ButtonGroupRouterContainer } from './components';
 import { SETTINGS_ROUTES, SettingsRoute } from './constants';
 
+const ModalComponent: React.FC<any> = Modal;
+
 export type SettingsModalProps = {
   open?: boolean;
   type?: SettingsRoute;
@@ -26,7 +28,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, toggle, type = Sett
   }, [open]);
 
   return (
-    <Modal isOpen={open} toggle={toggle}>
+    <ModalComponent isOpen={open} toggle={toggle}>
       <LockedResourceOverlay type={Realtime.ResourceType.SETTINGS} disabled={!open}>
         {({ forceUpdateKey }) => (
           <>
@@ -44,7 +46,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, toggle, type = Sett
           </>
         )}
       </LockedResourceOverlay>
-    </Modal>
+    </ModalComponent>
   );
 };
 

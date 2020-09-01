@@ -27,7 +27,7 @@ const ActionContainer = styled(Flex)`
   white-space: nowrap;
 `;
 
-const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, helpLink }) => {
+const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, helpLink, className }) => {
   const { toggle } = useModals(modalType);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
@@ -42,7 +42,7 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
   };
 
   return (
-    <StyledModal id={modalType} title={header} isSmall>
+    <StyledModal id={modalType} className={className} title={header} isSmall>
       <Box width="100%">
         <BodyContainer column>
           <img src={icon} alt="plan restriction" height={80} />

@@ -3,7 +3,7 @@ import cuid from 'cuid';
 
 import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
 import signupPage from '../../pages/signup';
-import { SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
+import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
 
 const API_URL = 'https://localhost:8080';
 
@@ -53,7 +53,13 @@ Cypress.Commands.add('createTestAccount', () => {
     },
   }).then((res) => {
     SESSION_CONTEXT.set(TOKEN_KEY, res.body.token);
+    SESSION_CONTEXT.set(CREATOR_ID_KEY, res.body.user.creator_id);
   });
+});
+
+Cypress.Commands.add('upgradeTestAccount', (plan: 'pro') => {
+  const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
+  cy.exec(`${PSQL} -c "UPDATE teams SET plan='${plan}' WHERE creator_id=${creatorID}"`);
 });
 
 Cypress.Commands.add('removeTestAccount', () => {

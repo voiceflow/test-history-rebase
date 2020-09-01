@@ -1,10 +1,14 @@
+import cn from 'classnames';
 import React from 'react';
-import styled, { css } from 'styled-components';
+
+import { css, styled } from '@/hocs';
+import { ClassName } from '@/styles/constants';
 
 type LoaderProps = {
   isMd?: boolean;
   color?: string;
   borderLess?: boolean;
+  className?: string;
 };
 
 const spinnerStyles = css<LoaderProps>`
@@ -32,8 +36,8 @@ export const LoadCircle = styled.span<LoaderProps>`
   animation: spin 1s linear infinite;
 `;
 
-const Loader: React.FC<LoaderProps> = (props) => (
-  <LoadContainer {...props}>
+const Loader: React.FC<LoaderProps> = ({ className, ...props }) => (
+  <LoadContainer className={cn(ClassName.LOADER, className)} {...props}>
     <LoadCircle color={props.color} />
   </LoadContainer>
 );

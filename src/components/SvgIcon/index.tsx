@@ -1,7 +1,9 @@
+import cn from 'classnames';
 import _isString from 'lodash/isString';
 import React from 'react';
 
 import { IS_TEST } from '@/config';
+import { ClassName } from '@/styles/constants';
 import * as ICONS from '@/svgs';
 import { Icon } from '@/svgs/types';
 
@@ -20,7 +22,10 @@ export type IconProps = Partial<SvgIconContainerProps> & {
   className?: string;
 };
 
-const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, IconProps> = ({ icon, size = 16, color = 'currentColor', ...props }, ref) => {
+const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, IconProps> = (
+  { icon, size = 16, color = 'currentColor', className, ...props },
+  ref
+) => {
   let IconElement: React.ComponentType;
 
   if (_isString(icon)) {
@@ -38,7 +43,7 @@ const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, IconProps> = ({ i
   }
 
   return (
-    <Container size={size} color={color} {...props} ref={ref}>
+    <Container className={cn(ClassName.SVG_ICON, `${ClassName.SVG_ICON}--${icon}`, className)} size={size} color={color} {...props} ref={ref}>
       <IconElement />
     </Container>
   );

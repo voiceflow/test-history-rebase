@@ -11,6 +11,7 @@ import { connect } from '@/hocs';
 import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { useCommentingMode } from '@/pages/Skill/hooks';
+import { Identifier } from '@/styles/constants';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
 import { ConnectedProps } from '@/types';
@@ -43,6 +44,7 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedT
 
   return (
     <Drawer
+      id={Identifier.THREAD_HISTORY_DRAWER}
       scrollable
       width={theme.components.historyDrawer.width}
       open={isCommentingMode}

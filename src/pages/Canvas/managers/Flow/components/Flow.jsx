@@ -86,7 +86,7 @@ function Flow({
       setValue(generateDiagramValue({ id: diagramID, name }));
       setSelectedDiagram(diagramID);
       if (enterOnCreate) {
-        goToDiagram(diagramID);
+        await goToDiagram(diagramID);
       }
     },
     [

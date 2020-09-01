@@ -75,13 +75,13 @@ export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) =
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const skill = Skill.activeSkillSelector(getState()) as SkillModel;
 
-  dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
+  await dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const versionID = Skill.activeSkillIDSelector(getState());
 
-  dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
+  await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
 };
 
 export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thunk => async (dispatch, getState) => {
@@ -91,13 +91,13 @@ export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thu
   dispatch(goToCanvasCommenting(versionID, diagramID, `?${queryString.stringify({ thread: threadID })}`));
 };
 
-export const goToCurrentPrototype = (): Thunk => async (dispatch, getState) => {
+export const goToCurrentPrototype = (): SyncThunk => (dispatch, getState) => {
   const versionID = Skill.activeSkillIDSelector(getState());
 
   dispatch(goToPrototype(versionID));
 };
 
-export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
+export const goToActivePlatformPublish = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
   const platform = Skill.activePlatformSelector(state);

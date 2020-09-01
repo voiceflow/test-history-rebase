@@ -219,7 +219,12 @@ const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) =>
     const creatorDiagramID = Creator.creatorDiagramIDSelector(state);
     const pathnameRegexp = new RegExp(`\\/${RootRoute.PROJECT}\\/[^\\/]+\\/canvas\\/[^\\/]+`);
 
-    if (!isRealtimeConnected && creatorDiagramID && action.payload.location.pathname.match(pathnameRegexp)) {
+    if (
+      !isRealtimeConnected &&
+      creatorDiagramID &&
+      action.payload.location.pathname.match(pathnameRegexp) &&
+      !state.router.location.pathname.match(pathnameRegexp) // do not reset when navigating between flows on template workspace
+    ) {
       store.dispatch(Creator.resetCreator());
     }
   }

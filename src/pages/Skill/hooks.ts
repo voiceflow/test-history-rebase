@@ -11,6 +11,14 @@ export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path
 
 export const useMarkupMode = () => !!useRouteMatch(Path.CANVAS_MARKUP);
 
+export const useAnyModeOpen = () => {
+  const isCommentingMode = useCommentingMode();
+  const isPrototypingMode = usePrototypingMode();
+  const isMarkupMode = useMarkupMode();
+
+  return isCommentingMode || isPrototypingMode || isMarkupMode;
+};
+
 export const useEditingMode = () => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isCommentingMode = useCommentingMode();

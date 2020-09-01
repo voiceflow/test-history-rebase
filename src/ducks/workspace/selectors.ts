@@ -83,7 +83,14 @@ export const userRoleSelector = createSelector(
   (getMember, creatorID) => getMember(String(creatorID))?.role
 );
 
+export const isViewerRoleSelector = createSelector([userRoleSelector], (role) => role === UserRole.VIEWER);
+
 export const isLibraryRoleSelector = createSelector([userRoleSelector], (role) => role === UserRole.LIBRARY);
+
+export const isViewerOrLibraryRoleSelector = createSelector(
+  [isViewerRoleSelector, isLibraryRoleSelector],
+  (isViewer, isLibrary) => isViewer || isLibrary
+);
 
 export const hasTemplateWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
 

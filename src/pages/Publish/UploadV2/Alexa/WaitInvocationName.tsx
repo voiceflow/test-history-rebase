@@ -8,6 +8,7 @@ import { BlockText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { invNameError } from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
+import { saveInvocationName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { AlexaJob, Job } from '@/models';
@@ -16,7 +17,7 @@ import { ConnectedProps, Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../shared';
 
-const WaitInvocationName: React.FC<WaitInvocationNameProps> = ({ locales, invocationName, updateInvocationName }) => {
+const WaitInvocationName: React.FC<WaitInvocationNameProps> = ({ locales, invocationName, saveInvocationName }) => {
   const { job, updateCurrentStage } = React.useContext(PublishContext)!;
 
   const [state, api] = useSmartReducerV2({
@@ -41,7 +42,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps> = ({ locales, invoca
 
     try {
       // save the name to backend and redux
-      await updateInvocationName(state.name);
+      await saveInvocationName(state.name);
       await updateCurrentStage(state.name);
     } catch (err) {
       console.error(err);
@@ -101,7 +102,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateInvocationName: Skill.updateInvName,
+  saveInvocationName,
 };
 
 type WaitInvocationNameProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -4,6 +4,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
 
 import blockDataAdapter from './block';
+import captureAdapter from './capture';
 import codeAdapter from './code';
 import flowAdapter from './flow';
 import intentAdapter from './intent';
@@ -37,7 +38,7 @@ const blockAdapter = {
   [BlockType.COMMENT]: emptyAdapter,
   // user defined
   [BlockType.CANCEL_PAYMENT]: emptyAdapter,
-  [BlockType.CAPTURE]: emptyAdapter,
+  [BlockType.CAPTURE]: captureAdapter,
   [BlockType.CARD]: emptyAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,
   [BlockType.CODE]: codeAdapter,

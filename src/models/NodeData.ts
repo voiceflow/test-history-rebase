@@ -91,7 +91,12 @@ export namespace NodeData {
     voice?: string | null;
   };
 
-  export type Capture = SlotMapping;
+  export type Capture = {
+    slot: string | null;
+    variable: string | null;
+    examples: string[];
+    reprompt: Reprompt | null;
+  };
 
   export type Speak = {
     randomize: boolean;

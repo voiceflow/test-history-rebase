@@ -33,9 +33,10 @@ const CaptureManager: NodeConfig<NodeData.Capture> = {
     },
     data: {
       name: 'Capture',
-      variable: null,
       slot: null,
+      variable: null,
       examples: [],
+      reprompt: null,
     },
   }),
 };

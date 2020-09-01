@@ -17,6 +17,8 @@ const UploadButton = createPlatformComponent('UploadButton', {
     return dataRefactor.isEnabled ? <AlexaUploadButtonV2 /> : <Alexa />;
   },
   [PlatformType.GOOGLE]: Google,
+  // eslint-disable-next-line lodash/prefer-constant
+  [PlatformType.GENERAL]: () => null,
 });
 
 export default UploadButton;

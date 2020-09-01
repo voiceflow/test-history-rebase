@@ -5,13 +5,14 @@ import { ActionCreators } from 'redux-undo';
 import client from '@/client';
 import Button from '@/components/Button';
 import Text from '@/components/Text';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { DiagramState, ModalType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals, usePermission } from '@/hooks';
+import { useFeature, useModals, usePermission } from '@/hooks';
 import { projectViewerCountSelector } from '@/store/selectors';
 
 import ActionGroup from './ActionGroup';
@@ -34,6 +35,7 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
   const hasViewers = projectViewerCount > 1;
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
+  const projectSplitting = useFeature(FeatureFlag.PROJECT_SPLITTING);
 
   const openCloneModal = async () => {
     const importToken = await client.project.getImportToken(projectId);
@@ -56,15 +58,17 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
         {getStateLabel(diagramState)}
       </Text>
 
-      <ContentContainer>
-        {hasViewers ? (
-          <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
-            {toggle}
-          </Tooltip>
-        ) : (
-          toggle
-        )}
-      </ContentContainer>
+      {!projectSplitting.isEnabled && (
+        <ContentContainer>
+          {hasViewers ? (
+            <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
+              {toggle}
+            </Tooltip>
+          ) : (
+            toggle
+          )}
+        </ContentContainer>
+      )}
 
       <ActionGroup />
     </>

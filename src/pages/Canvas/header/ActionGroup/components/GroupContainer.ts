@@ -7,6 +7,10 @@ const GroupContainer = styled.div`
   height: 100%;
   padding: 0 24px;
   border-left: 1px solid #eaeff4;
+
+  :last-child {
+    padding-right: 0;
+  }
 `;
 
 export default GroupContainer;

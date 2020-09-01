@@ -5,7 +5,7 @@ import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
+import { ModalType, PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -28,6 +28,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   render,
   getImportToken,
   sharePrototype,
+  platform,
   renderPrototype,
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
@@ -132,7 +133,12 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     >
       {(ref, onToggle, isOpen) => (
         <Tooltip title="Share Project">
-          <Button ref={ref} variant={ButtonVariant.SECONDARY} onClick={wrapToggleShare(isOpen, onToggle)} isActive={isOpen}>
+          <Button
+            ref={ref}
+            variant={platform === PlatformType.GENERAL ? ButtonVariant.PRIMARY : ButtonVariant.SECONDARY}
+            onClick={wrapToggleShare(isOpen, onToggle)}
+            isActive={isOpen}
+          >
             Share
           </Button>
         </Tooltip>
@@ -142,6 +148,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 };
 
 const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
   meta: Skill.skillMetaSelector,
 };
 

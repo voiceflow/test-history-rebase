@@ -32,7 +32,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Skill.activeProjectIDSelector);
   const dispatch = useDispatch();
 
-  const service = getPlatformService(platform);
+  const service = dataRefactor.isEnabled ? getPlatformService(platform) : null;
 
   const getJob = React.useCallback(async () => {
     const currentJob = await service?.getPublishStatus(projectID);

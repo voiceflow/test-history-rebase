@@ -1,6 +1,8 @@
+import * as PopperJS from '@popperjs/core';
+import composeRefs from '@seznam/compose-react-refs';
 import _isFunction from 'lodash/isFunction';
 import React, { Fragment } from 'react';
-import { Manager, Popper, PopperProps, RefHandler, Reference } from 'react-popper';
+import { Manager, Popper, Reference } from 'react-popper';
 
 import Menu, { MenuOption, MenuProps } from '@/components/Menu';
 import Portal from '@/components/Portal';
@@ -13,7 +15,7 @@ export { PopoverContainer } from './components';
 
 const DEFAULT_PORTAL_NODE = document.body;
 
-export type DropdownPlacement = PopperProps['placement'];
+export type DropdownPlacement = PopperJS.Placement;
 
 export type DropdownProps<T> = {
   menu?: React.ReactNode | ((onToggle: () => void) => void);
@@ -23,7 +25,7 @@ export type DropdownProps<T> = {
   options?: MenuOption<T>[];
   onSelect?: MenuProps<T>['onSelect'];
   noScroll?: boolean;
-  children: (ref: RefHandler, onToggle: () => void, isOpen: boolean) => React.ReactNode;
+  children: (ref: React.Ref<any>, onToggle: () => void, isOpen: boolean) => React.ReactNode;
   maxHeight?: number | string;
   placement?: DropdownPlacement;
   autoWidth?: boolean;
@@ -72,18 +74,15 @@ const Dropdown = <T extends any = undefined>({
         <Wrapper {...wrapperProps}>
           <Popper
             placement={placement}
-            modifiers={{
-              hide: { enabled: false },
-              autoSizing: { enabled: true, fn: onComputedStyle, order: 840 },
-              preventOverflow: { enabled: false },
-            }}
+            modifiers={[
+              { name: 'hide', enabled: false },
+              { name: 'computeStyle', enabled: true, options: { fn: onComputedStyle, order: 840 } },
+              { name: 'preventOverflow', enabled: false },
+            ]}
           >
             {({ ref, style, placement }) => (
               <PopoverContainer
-                ref={(container) => {
-                  ref(container);
-                  containerRef.current = container;
-                }}
+                ref={composeRefs(ref, containerRef)}
                 style={
                   // eslint-disable-next-line no-nested-ternary
                   portal

@@ -37,7 +37,13 @@ function OperatorDropdown({ depth, children, update, className }) {
 
       {open && (
         <Portal portalNode={document.body}>
-          <Popper placement="bottom-end" modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}>
+          <Popper
+            placement="bottom-end"
+            modifiers={[
+              { name: 'offset', options: { offset: [0, 5] } },
+              { name: 'preventOverflow', options: { boundary: document.body } },
+            ]}
+          >
             {({ ref, style }) => (
               <ExpressionMenu ref={ref} style={style}>
                 {menuGroups.map((group, index) => (

@@ -1,5 +1,5 @@
+import * as PopperJS from '@popperjs/core';
 import React from 'react';
-import { PopperProps } from 'react-popper';
 
 import Icon from '@/components/SvgIcon';
 import TutorialTooltip from '@/components/TutorialTooltip';
@@ -26,7 +26,7 @@ export const IconContainer = styled.div<IconContainerProps>`
 `;
 
 export type InfoIconProps = {
-  placement?: PopperProps['placement'];
+  placement?: PopperJS.Placement;
   tooltipProps?: any;
 };
 

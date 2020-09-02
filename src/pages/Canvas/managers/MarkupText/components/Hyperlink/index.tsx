@@ -51,7 +51,7 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
 
   const [localLink, setLocalLink] = React.useState(link);
 
-  const popperRef = React.useRef<HTMLElement>(null);
+  const popperRef = React.useRef<HTMLElement | null>(null);
 
   const onClose = () => {
     setTimeout(() => {
@@ -105,13 +105,12 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
       {open && (
         <Portal portalNode={document.body}>
           <Popper
-            innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              popperRef.current = node;
-            }}
+            innerRef={popperRef}
             placement="bottom-start"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
+            modifiers={[
+              { name: 'offset', options: { offset: [0, 5] } },
+              { name: 'preventOverflow', options: { boundary: document.body } },
+            ]}
           >
             {({ ref, style }) => (
               <PopoverContainer ref={ref} style={style}>

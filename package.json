@@ -155,7 +155,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/loglevel": "^1.6.3",
     "@types/logrocket-react": "^3.0.0",
-    "@types/markdown-to-jsx": "^6.11.0",
+    "@types/markdown-to-jsx": "^6.11.2",
     "@types/mini-css-extract-plugin": "^0.9.1",
     "@types/mousetrap": "^1.6.3",
     "@types/number-to-words": "^1.2.0",

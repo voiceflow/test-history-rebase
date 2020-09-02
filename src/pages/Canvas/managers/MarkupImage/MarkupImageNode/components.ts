@@ -25,6 +25,10 @@ export const Container = styled.div.attrs<ContainerProps>(({ width, height }) =>
     border: solid 1px #5d9df5;
   }
 
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
+    cursor: grab;
+  }
+
   ${({ activated }) =>
     activated &&
     css`

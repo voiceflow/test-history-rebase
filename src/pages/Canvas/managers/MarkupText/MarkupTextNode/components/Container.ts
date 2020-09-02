@@ -22,11 +22,18 @@ export const Container = styled.div<{ activated: boolean }>`
     border: solid 1px #5d9df5;
   }
 
+
+
    ${({ activated }) =>
-     activated &&
-     css`
-       border: solid 1px #5d9df5;
-     `}
+     activated
+       ? css`
+           border: solid 1px #5d9df5;
+         `
+       : css`
+           .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
+             cursor: grab;
+           }
+         `}
 
   .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
     border: solid 1px transparent !important;

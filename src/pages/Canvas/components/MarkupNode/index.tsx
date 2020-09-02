@@ -12,7 +12,7 @@ import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
-import { Container, NodeStyles } from './components';
+import { Border, Container, NodeStyles } from './components';
 import { useMarkupInstance } from './hooks';
 import { ResizableMarkupNodeData } from './types';
 
@@ -80,6 +80,11 @@ const MarkupNode = () => {
             ref={instance.transformRef}
           >
             <NodeComponent ref={instance.blockRef} node={node} data={data as any} />
+
+            <Border.Left />
+            <Border.Right />
+            <Border.Top />
+            <Border.Bottom />
           </Container>
         )}
       </NodeDragTarget>

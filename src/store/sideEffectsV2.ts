@@ -38,16 +38,16 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
 export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const DBDiagram = await clientV2.api.diagram.get(diagramID);
+  const { diagram: DBDiagram, timestamp } = await clientV2.api.diagram.getRTC(diagramID);
 
-  const { offsetX: x, offsetY: y, zoom, modified, variables } = DBDiagram;
+  const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;
 
   const creator = creatorAdapter.fromDB(DBDiagram, platform);
 
   dispatch(DiagramReducer.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
-  dispatch(Realtime.updateLastTimestamp(modified));
+  dispatch(Realtime.updateLastTimestamp(timestamp));
   dispatch(Creator.saveHistory());
 };
 

@@ -114,16 +114,22 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
   }, []);
 
   useDidUpdateEffect(() => {
+    const engine = eventualEngine.get();
     if (isMarkupMode) {
-      eventualEngine.get()?.clearActivation();
+      const hasFocus = engine?.markup.hasFocus;
+      if (!hasFocus) {
+        engine?.clearActivation();
+      }
 
       trackEvents.trackMarkupOpen();
-      setCreatingModeType(MarkupModeType.TEXT);
+      if (!hasFocus) {
+        setCreatingModeType(MarkupModeType.TEXT);
+      }
 
       startTimeCache.current = Date.now();
     } else {
-      eventualEngine.get()?.clearActivation();
-      eventualEngine.get()?.markup.reset();
+      engine?.clearActivation();
+      engine?.markup.reset();
 
       setCreatingModeType(null);
 

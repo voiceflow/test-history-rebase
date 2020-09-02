@@ -10,7 +10,7 @@ import { EditorState, convertToRaw } from 'draft-js';
 import React from 'react';
 
 import { Path } from '@/config/routes';
-import { BlockType, TextAlignment } from '@/constants';
+import { BlockType, MARKUP_NODES, TextAlignment } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
@@ -30,6 +30,15 @@ class MarkupEngine extends EngineConsumer {
 
   get isActive() {
     return !!this.select(createMatchSelector(Path.CANVAS_MARKUP));
+  }
+
+  get hasFocus() {
+    if (!this.engine.focus.hasTarget) return false;
+
+    const nodeID = this.engine.focus.getTarget()!;
+    const node = this.engine.getNodeByID(nodeID);
+
+    return !!node && MARKUP_NODES.includes(node.type);
   }
 
   activate() {

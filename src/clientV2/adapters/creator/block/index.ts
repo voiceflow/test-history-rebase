@@ -10,6 +10,7 @@ import flowAdapter from './flow';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
+import randomAdapter from './random';
 import setAdapter from './set';
 import speakAdapter from './speak';
 
@@ -52,7 +53,7 @@ const blockAdapter = {
   [BlockType.PAYMENT]: emptyAdapter,
   [BlockType.PERMISSION]: emptyAdapter,
   [BlockType.ACCOUNT_LINKING]: emptyAdapter,
-  [BlockType.RANDOM]: emptyAdapter,
+  [BlockType.RANDOM]: randomAdapter,
   [BlockType.REMINDER]: emptyAdapter,
   [BlockType.SET]: setAdapter,
   [BlockType.SPEAK]: speakAdapter,

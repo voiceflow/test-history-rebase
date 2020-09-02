@@ -6,7 +6,7 @@ import { FullSkill } from '@/models';
 
 export type SkillSettings = Pick<
   FullSkill['meta'],
-  'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt'
+  'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'alexa_permissions'
 >;
 
 export const restartAdapter = createAdapter<AlexaSettings['session'], Pick<SkillSettings, 'restart' | 'resumePrompt'>>(
@@ -73,7 +73,7 @@ export const RepeatMap = {
 
 const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, accountLinking, customInterface, events } = defaultAlexaSettings(settings);
+    const { error, session, repeat, accountLinking, customInterface, events, permissions } = defaultAlexaSettings(settings);
     return {
       repeat: RepeatMap[repeat],
       accountLinking,
@@ -81,17 +81,19 @@ const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
       settings: {
         customInterface,
       },
+      alexa_permissions: permissions,
       errorPrompt: errorPromptAdapter.fromDB(error),
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat, accountLinking, alexaEvents, settings: { customInterface = false } = {} }) => ({
+  ({ resumePrompt, errorPrompt, restart, repeat, accountLinking, alexaEvents, alexa_permissions, settings: { customInterface = false } = {} }) => ({
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
     accountLinking,
     events: alexaEvents?.trim() || null,
     customInterface,
+    permissions: alexa_permissions,
   })
 );
 

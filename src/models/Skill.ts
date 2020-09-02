@@ -70,7 +70,7 @@ export type FullSkill = Skill & {
     preview: boolean;
     fulfillment: any;
     access_token_variable: null;
-    alexa_permissions: null;
+    alexa_permissions: string[];
     alexa_interfaces: null;
     repeat: number;
     google_versions: any;

@@ -7,6 +7,7 @@ import blockDataAdapter from './block';
 import captureAdapter from './capture';
 import codeAdapter from './code';
 import flowAdapter from './flow';
+import ifAdapter from './if';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
@@ -46,7 +47,7 @@ const blockAdapter = {
   [BlockType.DISPLAY]: emptyAdapter,
   [BlockType.EXIT]: emptyAdapter,
   [BlockType.FLOW]: flowAdapter,
-  [BlockType.IF]: emptyAdapter,
+  [BlockType.IF]: ifAdapter,
   [BlockType.INTEGRATION]: emptyAdapter,
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,

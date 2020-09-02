@@ -196,12 +196,7 @@ export namespace NodeData {
   };
 
   export type If = {
-    expressions: {
-      depth: number;
-      id: string;
-      type: ExpressionType;
-      value: Expression[] | string | null;
-    }[];
+    expressions: Expression[];
   };
 
   export type Intent = Record<PlatformType, { intent: string | null; mappings: SlotMapping[] }>;

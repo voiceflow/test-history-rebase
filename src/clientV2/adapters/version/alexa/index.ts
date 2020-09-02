@@ -35,7 +35,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill>(
       preview: false,
       fulfillment: {},
       access_token_variable: null,
-      alexa_permissions: null,
+      alexa_permissions: [],
       alexa_interfaces: null,
       google_versions: null,
       updatesDescription: '',

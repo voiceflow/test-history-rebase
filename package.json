@@ -38,7 +38,7 @@
     "draft-js": "^0.11.2",
     "draft-js-plugins-editor": "3.0.0",
     "draft-js-plugins-utils": "^2.0.3",
-    "eventemitter3": "^4.0.0",
+    "eventemitter3": "^4.0.7",
     "file-saver": "^2.0.2",
     "history": "^4.9.0",
     "idb-keyval": "^3.2.0",

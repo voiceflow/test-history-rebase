@@ -20,6 +20,8 @@ export const isErrorStateSelector = createSelector([rootSelector], ({ errorState
 
 export const lastRealtimeTimestampSelector = createSelector([rootSelector], ({ lastTimestamp }) => lastTimestamp);
 
+export const rtctimestampSelector = createSelector(lastRealtimeTimestampSelector, (rtctimestamp) => rtctimestamp?.toString() || '');
+
 export const isNodeLockedSelector = createSelector([realtimeLocksSelector], (locks) => (lockType: AnyNodeLock, nodeID: string) =>
   !!locks?.blocks[lockType]?.[nodeID]
 );

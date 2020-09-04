@@ -16,7 +16,7 @@ import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import * as Creator from './creator';
 import * as Feature from './feature';
-import { lastRealtimeTimestampSelector } from './realtime';
+import { lastRealtimeTimestampSelector, rtctimestampSelector } from './realtime';
 import { goToDiagram, goToRootDiagram } from './router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from './skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
@@ -328,7 +328,8 @@ export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getS
 
   const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
   if (isDataRefactorEnabled) {
-    await clientV2.api.diagram.update(diagramID, { variables });
+    const rtctimestamp = rtctimestampSelector(state);
+    await clientV2.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
     return;
   }
 

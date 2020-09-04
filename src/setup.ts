@@ -2,6 +2,7 @@ import axios from 'axios';
 import { History } from 'history';
 
 import { GLOBAL_HEADERS } from './client/fetch';
+import voiceflowAPI from './clientV2/api';
 import { API_ENDPOINT, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
@@ -17,6 +18,13 @@ const setupApp = (history: History, browserID: string, tabID: string) => {
   axios.defaults.headers.common.tabid = tabID;
   GLOBAL_HEADERS.set('browserid', browserID);
   GLOBAL_HEADERS.set('tabid', tabID);
+
+  voiceflowAPI.fetch.setOptions({
+    headers: {
+      browserid: browserID,
+      tabid: tabID,
+    },
+  });
 
   LogRocket.initialize((sessionURL) => {
     // add session URL to all outgoing HTTP requests

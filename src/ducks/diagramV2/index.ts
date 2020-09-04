@@ -7,6 +7,7 @@ import { getCurrentTimestamp } from '@/utils/time';
 import { userIDSelector } from '../account';
 import * as Creator from '../creator';
 import * as DiagramReducer from '../diagram';
+import { rtctimestampSelector } from '../realtime';
 import { goToDiagram, goToRootDiagram } from '../router';
 import { activeDiagramIDSelector, activeSkillIDSelector } from '../skill';
 import { viewportByIDSelector } from '../viewport';
@@ -53,9 +54,9 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
   return { ...diagram, variables };
 };
 
-export const saveActiveDiagram = (): Thunk => async (dispatch) => {
+export const saveActiveDiagram = (): Thunk => async (dispatch, getState) => {
   const { _id, ...activeDiagram } = dispatch(adaptActiveDiagram());
-  await clientV2.api.diagram.update(_id, activeDiagram);
+  await clientV2.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(_id, activeDiagram);
 };
 
 export const createNewDiagram = (name: string, diagram: PrimativeDiagram = DEFAULT_DIAGRAM): Thunk<string> => async (dispatch, getState) => {
@@ -101,7 +102,7 @@ export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getS
   const state = getState();
   const versionID = activeSkillIDSelector(state);
 
-  await clientV2.api.diagram.delete(diagramID);
+  await clientV2.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(state) } }).delete(diagramID);
   await dispatch(loadVersionDiagrams(versionID));
 
   // if the user is on the deleted diagram, redirect to roott
@@ -111,7 +112,7 @@ export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getS
   }
 };
 
-export const renameDiagram = (diagramID: string, name: string): Thunk => async (dispatch) => {
+export const renameDiagram = (diagramID: string, name: string): Thunk => async (dispatch, getState) => {
   dispatch(DiagramReducer.updateDiagram(diagramID, { name }, true));
-  await clientV2.api.diagram.update(diagramID, { name });
+  await clientV2.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(diagramID, { name });
 };

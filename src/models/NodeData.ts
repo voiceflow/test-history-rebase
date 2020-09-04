@@ -1,4 +1,5 @@
 import { ExpressionType, SlotMapping } from '@voiceflow/alexa-types';
+import { APIBodyType, APIKeyVal } from '@voiceflow/alexa-types/build/nodes/api';
 import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 
 import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
@@ -235,13 +236,13 @@ export namespace NodeData {
   };
 
   export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
-    headers?: { key: [] | string; val: string }[];
     url?: string;
-    mapping?: { path: string | []; var: string | null }[];
-    bodyInputData?: string;
-    body?: { key: string | []; val: string }[];
-    parameters?: { key: string | []; val: string }[];
+    body?: APIKeyVal[];
+    headers?: APIKeyVal[];
+    mapping?: { path: string; var: string | null }[];
     content?: string;
+    parameters?: APIKeyVal[];
+    bodyInputType?: APIBodyType;
   };
 
   export type GoogleSheets = IntegrationDefaultProps<IntegrationType.GOOGLE_SHEETS> & {

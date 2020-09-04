@@ -1,4 +1,5 @@
 import { DiagramNode, NodeID, Port as DBPort } from '@voiceflow/api-sdk';
+import _isFunction from 'lodash/isFunction';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
@@ -84,9 +85,12 @@ const nodeAdapter = createAdapter<
   },
   ({ node, data, ports }, { portToTargets, stepMap }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
+    const getNodeType = DB_BLOCK_TYPE_FROM_APP[node.type];
+    const type = _isFunction(getNodeType) ? getNodeType(data) : getNodeType || node.type;
+
     const diagramNode: DiagramNode = {
       nodeID: node.id,
-      type: DB_BLOCK_TYPE_FROM_APP[node.type] || node.type,
+      type,
       coords: node.parentNode ? undefined : [node.x, node.y],
       data: nodeDataAdpater.toDB(data),
     };

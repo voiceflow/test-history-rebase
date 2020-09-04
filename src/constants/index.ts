@@ -1,8 +1,13 @@
 /* eslint-disable camelcase */
+import { IntegrationType } from '@voiceflow/alexa-types';
+import { APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
 import { constants } from '@voiceflow/common';
 
+import { NodeData } from '@/models';
 import { Icon } from '@/svgs/types';
 import { Pair } from '@/types';
+
+export { IntegrationType } from '@voiceflow/alexa-types';
 
 export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
@@ -238,12 +243,6 @@ export const KeyCodes = {
   ENTER: 13,
 };
 
-export enum IntegrationType {
-  CUSTOM_API = 'Custom API',
-  GOOGLE_SHEETS = 'Google Sheets',
-  ZAPIER = 'Zapier',
-}
-
 export const IntegrationActionType: Record<string, { [key: string]: string }> = {
   CUSTOM_API: {
     GET: 'Make a GET Request',
@@ -264,29 +263,24 @@ export const IntegrationActionType: Record<string, { [key: string]: string }> = 
 };
 
 const EMPTY_KEY_VALUE_ITEM = {
-  key: [],
+  key: '',
   val: '',
 };
 
 // Integration default data models
 export const INTEGRATION_DATA_MODELS = {
   CUSTOM_API: {
-    name: IntegrationType.CUSTOM_API,
-    selectedIntegration: IntegrationType.CUSTOM_API,
-    headers: [EMPTY_KEY_VALUE_ITEM],
     url: '',
-    mapping: [
-      {
-        path: [],
-        var: null,
-      },
-    ],
-    bodyInputType: 'formData',
     body: [EMPTY_KEY_VALUE_ITEM],
-    parameters: [EMPTY_KEY_VALUE_ITEM],
+    name: IntegrationType.CUSTOM_API,
+    headers: [EMPTY_KEY_VALUE_ITEM],
+    mapping: [{ path: '', var: null }],
     content: '',
+    parameters: [EMPTY_KEY_VALUE_ITEM],
+    bodyInputType: APIBodyType.FORM_DATA,
     selectedAction: IntegrationActionType.CUSTOM_API.GET,
-  },
+    selectedIntegration: IntegrationType.CUSTOM_API,
+  } as NodeData.CustomApi,
   GOOGLE_SHEETS: {
     name: IntegrationType.GOOGLE_SHEETS,
     selectedIntegration: IntegrationType.GOOGLE_SHEETS,

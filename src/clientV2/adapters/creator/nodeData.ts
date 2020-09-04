@@ -1,4 +1,5 @@
 import { DiagramNode } from '@voiceflow/api-sdk';
+import _isFunction from 'lodash/isFunction';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
@@ -11,7 +12,9 @@ const log = creatorLogger.child('node-data');
 
 const nodeDataAdapter = createSimpleAdapter<DiagramNode['data'], NodeData<unknown>, [DiagramNode]>(
   (dbData, dbNode) => {
-    let type = APP_BLOCK_TYPE_FROM_DB[dbNode.type] || dbNode.type;
+    const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbNode.type];
+
+    let type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbNode.type;
 
     if (!isSupportedBlockType(type)) {
       type = BlockType.DEPRECATED;

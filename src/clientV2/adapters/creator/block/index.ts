@@ -1,13 +1,18 @@
 /* eslint-disable camelcase */
 
+import { NodeType } from '@voiceflow/alexa-types';
+import { DiagramNode } from '@voiceflow/api-sdk';
+
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { BlockType } from '@/constants';
+import { BlockType, IntegrationType } from '@/constants';
+import { NodeData } from '@/models';
 
 import blockDataAdapter from './block';
 import captureAdapter from './capture';
 import codeAdapter from './code';
 import flowAdapter from './flow';
 import ifAdapter from './if';
+import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
@@ -22,15 +27,26 @@ const emptyAdapter = createSimpleAdapter(
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
-export const APP_BLOCK_TYPE_FROM_DB = BLOCK_TYPE_MAPPING.reduce<Record<string, BlockType>>((acc, [key, value]) => {
-  acc[key] = value;
-  return acc;
-}, {});
+export const APP_BLOCK_TYPE_FROM_DB: Record<string, BlockType | ((data: DiagramNode['data']) => BlockType)> = {
+  ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
+  [NodeType.API]: BlockType.INTEGRATION,
+  [NodeType.ZAPIER]: BlockType.INTEGRATION,
+  [NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
+};
 
-export const DB_BLOCK_TYPE_FROM_APP = BLOCK_TYPE_MAPPING.reduce<Partial<Record<BlockType, string>>>((acc, [key, value]) => {
-  acc[value] = key;
-  return acc;
-}, {});
+export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>) => string)>> = {
+  ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
+  [BlockType.INTEGRATION]: (data: NodeData.Integration) => {
+    switch (data.selectedIntegration) {
+      case IntegrationType.ZAPIER:
+        return NodeType.ZAPIER;
+      case IntegrationType.GOOGLE_SHEETS:
+        return NodeType.GOOGLE_SHEETS;
+      default:
+        return NodeType.API;
+    }
+  },
+};
 
 const blockAdapter = {
   // internal
@@ -48,7 +64,7 @@ const blockAdapter = {
   [BlockType.EXIT]: emptyAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.IF]: ifAdapter,
-  [BlockType.INTEGRATION]: emptyAdapter,
+  [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.PAYMENT]: emptyAdapter,

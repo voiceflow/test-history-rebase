@@ -13,7 +13,7 @@ export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
 };
 
 const ColorSelect: React.FC<ColorSelectProps> = ({ color, onChange, onClose, onShow }) => {
-  const popperRef = React.useRef<HTMLElement | null>(null);
+  const popperRef = React.useRef<HTMLElement>(null);
 
   const [open, toggleOpen] = useDismissable(false, onClose, false, popperRef);
 
@@ -34,12 +34,13 @@ const ColorSelect: React.FC<ColorSelectProps> = ({ color, onChange, onClose, onS
       {open && (
         <Portal portalNode={document.body}>
           <Popper
-            innerRef={popperRef}
+            innerRef={(node) => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              popperRef.current = node;
+            }}
             placement="bottom-start"
-            modifiers={[
-              { name: 'offset', options: { offset: [0, 5] } },
-              { name: 'preventOverflow', options: { boundary: document.body } },
-            ]}
+            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
           >
             {({ ref, style }) => (
               <div ref={ref} style={style}>

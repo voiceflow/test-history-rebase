@@ -1,6 +1,5 @@
-import * as PopperJS from '@popperjs/core';
 import React from 'react';
-import { Manager, Reference } from 'react-popper';
+import { Manager, PopperProps, Reference } from 'react-popper';
 
 import Flex from '@/components/Flex';
 import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
@@ -58,7 +57,7 @@ export type SelectProps<O, V> = {
   onSelect: (value: V, optionsPath: number[]) => void;
   disabled?: boolean;
   withIcon?: boolean;
-  placement?: PopperJS.Placement;
+  placement?: PopperProps['placement'];
   autoWidth?: boolean;
   fullWidth?: boolean;
   clearable?: false | never;
@@ -209,11 +208,11 @@ const Select = <O, V = O>({
       return data;
     };
 
-    return [
-      { name: 'hide', enabled: false },
-      { name: 'computeStyles', enabled: true, options: { fn: onComputedStyle, order: 840 } },
-      { name: 'preventOverflow', enabled: false },
-    ];
+    return {
+      hide: { enabled: false },
+      autoSizing: { enabled: true, fn: onComputedStyle, order: 840 },
+      preventOverflow: { enabled: false },
+    };
   }, [inputWrapperRef, placement]);
 
   const onUpdateOptionsToRender = React.useCallback(

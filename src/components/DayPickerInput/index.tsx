@@ -19,7 +19,7 @@ export type DayPickerInputProps = {
 };
 
 const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
-  const dayPickerRef = React.useRef<HTMLDivElement | null>(null);
+  const dayPickerRef = React.useRef<HTMLDivElement>(null);
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function }>(null);
 
   const [isShown, onShow, onHide] = useEnableDisable(false);
@@ -99,12 +99,13 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
       {isShown && (
         <Portal>
           <Popper
-            innerRef={dayPickerRef}
+            innerRef={(node) => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              dayPickerRef.current = node;
+            }}
             placement="bottom-start"
-            modifiers={[
-              { name: 'offset', options: { offset: [0, 5] } },
-              { name: 'preventOverflow', options: { boundary: document.body } },
-            ]}
+            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
           >
             {({ ref, style, placement }) => (
               <DayPickerContainer ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>

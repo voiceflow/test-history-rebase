@@ -19,7 +19,7 @@ export default function Tooltip({ anchorRenderer, placement = 'auto-end', childr
       <Reference>{({ ref }) => anchorRenderer({ ref, isOpen, onToggle })}</Reference>
       {isOpen && (
         <Portal portalNode={portalNode}>
-          <Popper modifiers={[{ name: 'preventOverflow', options: { padding: 19, boundary: rootNode } }]} placement={placement}>
+          <Popper modifiers={{ preventOverflow: { padding: 19, boundariesElement: rootNode } }} placement={placement}>
             {({ ref, style, placement }) => (
               <div ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
                 <SlideContainer onClick={stopPropagation(null, true)}>

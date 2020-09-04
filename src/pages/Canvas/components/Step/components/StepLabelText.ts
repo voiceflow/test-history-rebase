@@ -9,17 +9,16 @@ export type StepLabelTextProps = {
 };
 
 const StepLabelText = styled.div<StepLabelTextProps>`
-
-${overflowTextStyles}
- ${({ multiline, lineClamp = 3 }) =>
-   multiline &&
-   css`
-     display: -webkit-box;
-     max-height: ${LINE_HEIGHT * lineClamp}px;
-     white-space: normal;
-     -webkit-box-orient: vertical;
-     -webkit-line-clamp: ${lineClamp};
-   `}
+  ${overflowTextStyles}
+  ${({ multiline, lineClamp = 3 }) =>
+    multiline &&
+    css`
+      display: -webkit-box;
+      max-height: ${LINE_HEIGHT * lineClamp}px;
+      white-space: normal;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: ${lineClamp};
+    `}
 
 
   ${({ onClick }) =>

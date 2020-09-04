@@ -10,12 +10,12 @@ const ItemContainer = styled(Flex)`
   height: 45px;
   padding: 0 16px;
   margin-bottom: 10px;
-  
+
   position: relative;
 
   border-radius: 5px;
   background-color: #fff;
-  
+
   box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.12), 0 0 0 1px rgba(17, 49, 96, 0.04);
   cursor: grab;
   ${transition('background-image', 'box-shadow', 'transform')}
@@ -41,28 +41,25 @@ const ItemContainer = styled(Flex)`
     opacity: 0;
     ${transition('opacity')}
   }
-  
+
   &:hover {
-    box-shadow: 0 2px 3px 0 rgba(17,49,96,0.12), 0 0 0 1px rgba(17,49,96,0.04);
-    
+    box-shadow: 0 2px 3px 0 rgba(17, 49, 96, 0.12), 0 0 0 1px rgba(17, 49, 96, 0.04);
+
     ${ItemDotsIconContainer} {
       opacity: 1;
     }
   }
-  
-   ${({ isClicked }) =>
-     isClicked &&
-     css`
-       transition: transform 0s;
-       transform: rotate(-2deg);
-     `}
+
+  ${({ isClicked }) =>
+    isClicked &&
+    css`
+      transition: transform 0s;
+      transform: rotate(-2deg);
+    `}
 
   &:active {
- 
     cursor: grabbing;
   }
-  
-  
 `;
 
 export default ItemContainer;

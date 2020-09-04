@@ -19,7 +19,7 @@ const Container = styled(FlexCenter)`
   text-align: center;
   cursor: pointer;
   ${transition('background', 'color', 'border-color', 'background-color')}
-  
+
   &:active, &:focus {
     outline: none;
   }

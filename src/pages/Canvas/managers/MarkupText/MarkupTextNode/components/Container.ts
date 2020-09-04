@@ -18,22 +18,20 @@ export const Container = styled.div<{ activated: boolean }>`
     pointer-events: none;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover  {
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover {
     border: solid 1px #5d9df5;
   }
 
-
-
-   ${({ activated }) =>
-     activated
-       ? css`
-           border: solid 1px #5d9df5;
-         `
-       : css`
-           .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
-             cursor: grab;
-           }
-         `}
+  ${({ activated }) =>
+    activated
+      ? css`
+          border: solid 1px #5d9df5;
+        `
+      : css`
+          .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
+            cursor: grab;
+          }
+        `}
 
   .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
     border: solid 1px transparent !important;

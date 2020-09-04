@@ -20,10 +20,10 @@ const BillingDropdown = styled.div<{ disabled: boolean; error?: boolean; isOpen:
     `}
 
    ${({ isOpen }) =>
-     isOpen &&
-     css`
-       color: #5d9df5;
-     `}
+    isOpen &&
+    css`
+      color: #5d9df5;
+    `}
 
   ${SvgIcon.Container} {
     display: inline-block;

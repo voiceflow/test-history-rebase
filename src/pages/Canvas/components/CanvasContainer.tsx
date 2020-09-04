@@ -40,7 +40,6 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
       }
     `}
 
-
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
     cursor: crosshair;
 

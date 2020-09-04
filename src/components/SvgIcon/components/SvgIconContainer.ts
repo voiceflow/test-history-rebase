@@ -31,7 +31,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
   color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant].color) || color};
 
   ${false};
-  
+
   ${({ rotation }) =>
     _isNumber(rotation) &&
     css`

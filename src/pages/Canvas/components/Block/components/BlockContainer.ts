@@ -69,9 +69,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   ${transition('opacity')}
 
-  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${
-  ClassName.CANVAS_NODE
-}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
+  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
     border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
@@ -107,7 +105,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     cursor: not-allowed;
   }
 
-  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME})  {
+  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) {
     & {
       ${disabledStyles}
     }
@@ -118,7 +116,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   }
 
   .${CANVAS_MARKUP_ENABLED_CLASSNAME} & {
-    pointer-events: none !important
+    pointer-events: none !important;
   }
 
   ${MemberIcon} {

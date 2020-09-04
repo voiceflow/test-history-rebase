@@ -11,12 +11,12 @@ export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; d
   cursor: pointer;
   display: inline-block;
 
-${({ variant, isOpen }) =>
-  variant === TextVariant.secondary &&
-  !isOpen &&
-  css`
-    color: #62778c;
-  `}
+  ${({ variant, isOpen }) =>
+    variant === TextVariant.secondary &&
+    !isOpen &&
+    css`
+      color: #62778c;
+    `}
 
   ${({ isOpen }) =>
     isOpen &&
@@ -25,18 +25,16 @@ ${({ variant, isOpen }) =>
     `}
 
    ${({ padding }) =>
-     padding &&
-     css`
-       padding: ${padding};
-     `}
+    padding &&
+    css`
+      padding: ${padding};
+    `}
 
     ${({ disabled }) =>
-      disabled &&
-      css`
-        pointer-events: none;
-      `}
-
-
+    disabled &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 export const TextContainer = styled.div<{ capitalized?: boolean }>`

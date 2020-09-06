@@ -119,7 +119,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
                 track={trackingEvents.trackActiveProjectDownloadLinkShare}
               />
-
               <ExportItem onRedirect={openCanvasExportModal} />
             </span>
             {canInviteByLink && (

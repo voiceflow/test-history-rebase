@@ -5,11 +5,14 @@ import randomstring from 'randomstring';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import { toast } from '@/components/Toast';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
+import { DataTypes, download } from '@/utils/dom';
 
 import { createPublishStateSelector, createUploadStep, invNameError, log } from './utils';
 
@@ -192,8 +195,22 @@ export const publishStateSelector = createPublishStateSelector(PLATFORM);
 export const publishStageSelector = createSelector(publishStateSelector, ({ stage }) => stage);
 const uploadStep = createUploadStep(PLATFORM);
 
+const handleExport = (newVersionId) =>
+  uploadStep(async (dispatch) => {
+    let skillJSON;
+    try {
+      skillJSON = await client.skill.exportSkill(newVersionId);
+      toast.success('Code successfully exported ');
+      dispatch(updateAlexaStage(ALEXA_STAGES.IDLE));
+      download(`VF-Project-${newVersionId}.json`, JSON.stringify(skillJSON), DataTypes.JSON);
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong when exporting, please try again later.');
+    }
+  });
+
 // STEP 8 (optional)
-export const submitForReview = () =>
+export const submitForReview = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     const skillID = Skill.activeSkillIDSelector(state);
@@ -206,6 +223,7 @@ export const submitForReview = () =>
       await axios.post(`/amazon/${skillID}/${amznID}/certify`, { workspaceID });
       dispatch(updatePublishInfo({ review: true }));
       dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
+      await handleExport(newVersionId);
     } catch (err) {
       log.error(err);
       let errorMessage = 'Certification Error \n';
@@ -222,13 +240,14 @@ export const submitForReview = () =>
   });
 
 // UPLOAD SUCCESS
-export const uploadSuccess = () =>
+export const uploadSuccess = (newVersionId) =>
   uploadStep(async (dispatch) => {
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOAD_SUCCESS));
+    await handleExport(newVersionId);
   });
 
 // STEP 7
-export const enableSkill = () =>
+export const enableSkill = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     const { amznID } = publishInfoSelector(state);
@@ -239,11 +258,11 @@ export const enableSkill = () =>
     } catch (err) {
       log.error(err);
     }
-    dispatch(uploadSuccess());
+    dispatch(uploadSuccess(newVersionId));
   });
 
 // STEP 6
-export const checkInteractionModel = () =>
+export const checkInteractionModel = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     // get submit option
@@ -279,24 +298,30 @@ export const checkInteractionModel = () =>
 
     dispatch(updateAlexa({ locale: success || locales[0] }));
     if (options.submit) {
-      dispatch(submitForReview());
+      dispatch(submitForReview(newVersionId));
     } else if (success) {
-      dispatch(enableSkill());
+      dispatch(enableSkill(newVersionId));
     } else {
-      dispatch(uploadSuccess());
+      dispatch(uploadSuccess(newVersionId));
     }
   });
 
 // STEP 5
 export const submitProject = (newVersionId) =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = Skill.activeProjectIDSelector(getState());
-    const workspaceID = Workspace.activeWorkspaceIDSelector(getState());
+    const state = getState();
+    const projectID = Skill.activeProjectIDSelector(state);
+    const workspaceID = Workspace.activeWorkspaceIDSelector(state);
+    const { options } = publishStateSelector(state);
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOADING_ALEXA));
     try {
       const { data: amznID } = await axios.post(`/project/${projectID}/version/${newVersionId}/alexa`, { workspaceID });
       dispatch(updatePublishInfo({ amznID }));
-      dispatch(checkInteractionModel());
+      if (options?.export) {
+        dispatch(handleExport(newVersionId));
+      } else {
+        dispatch(checkInteractionModel(newVersionId));
+      }
     } catch (err) {
       if (err?.response?.status === 403) {
         // No Vendor ID/Amazon Developer Account
@@ -328,11 +353,15 @@ export const submitProject = (newVersionId) =>
 // STEP 4
 export const renderProject = () =>
   uploadStep(async (dispatch, getState) => {
-    const projectID = Skill.activeProjectIDSelector(getState());
+    const state = getState();
+    const projectID = Skill.activeProjectIDSelector(state);
 
     dispatch(updateAlexaStage(ALEXA_STAGES.RENDERING));
     try {
-      await dispatch(Diagram.saveActiveDiagram());
+      // check if we are on the canvas
+      if (Creator.creatorDiagramIDSelector(state)) {
+        await dispatch(Diagram.saveActiveDiagram());
+      }
       const {
         new_skill: { skill_id: newVersionId },
       } = (await axios.post(`/project/${projectID}/render`, { platform: 'alexa' })).data;

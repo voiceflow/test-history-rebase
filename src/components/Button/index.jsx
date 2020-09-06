@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
 
+import Icon from '@/components/SvgIcon';
 import { ClassName } from '@/styles/constants';
 
 import { PrimaryButton, SecondaryButton, TertiaryButton } from './components';
@@ -14,12 +15,12 @@ const BUTTON_VARIANTS = {
   [ButtonVariant.TERTIARY]: TertiaryButton,
 };
 
-function Button({ variant, className, children, ...props }, ref) {
+function Button({ variant, className, loading = false, children, ...props }, ref) {
   const Component = BUTTON_VARIANTS[variant] || PrimaryButton;
 
   return (
-    <Component className={cn(ClassName.BUTTON, className)} ref={ref} {...props}>
-      {children}
+    <Component loading={loading} className={cn(ClassName.BUTTON, className)} ref={ref} {...props}>
+      {loading ? <Icon icon="publishSpin" size={24} spin /> : children}
     </Component>
   );
 }

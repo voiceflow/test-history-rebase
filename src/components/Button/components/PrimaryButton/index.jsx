@@ -4,10 +4,10 @@ import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Icon, Label } from './components';
 
-function PrimaryButton({ icon, children, iconProps, ...props }) {
+function PrimaryButton({ icon, children, iconProps, loading, ...props }) {
   return (
     <Container {...props}>
-      <Label>{children}</Label>
+      <Label loading={loading}>{children}</Label>
       {icon && (
         <Icon>
           <SvgIcon icon={icon} color="#FFF" size={16} {...iconProps} />

@@ -26,6 +26,8 @@ const skillClient = {
   findAccountLinking: (skillID: string) => fetch.get<{ account_linking: AccountLinking }>(`link_account/template/${skillID}`),
 
   restore: (versionID: string) => fetch.post<{ skill_id: string; diagram: string }>(`${SKILL_PATH}/${versionID}/restore`),
+
+  exportSkill: (versionID: string) => fetch.get<any>(`${SKILL_PATH}/${versionID}/export`),
 };
 
 export default skillClient;

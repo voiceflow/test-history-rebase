@@ -13,20 +13,19 @@ import { Identifier } from '@/styles/constants';
 
 import UploadButton from '../UploadButton';
 
-function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVendor }) {
+function Upload({ stage, publish, vendors, setPopup, vendorID, amazon, updateVendor, label, options }) {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const state = AlexaPublish.ALEXA_STATES[stage];
 
   // show dropdown list for vendors
   const multiVendor = vendors.length > 1 && state.end;
 
-  const action = () => (state.end ? publish() : setPopup((open) => !open));
+  const action = () => (state.end ? publish(options) : setPopup((open) => !open));
+
   const needsLogin = !amazon;
   const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
-  let text = 'Upload to Alexa';
-  if (needsLogin) {
-    text = 'Connect to Alexa';
-  }
+
+  const text = label ?? (needsLogin ? 'Connect to Alexa' : 'Upload to Alexa');
 
   return (
     <Tooltip

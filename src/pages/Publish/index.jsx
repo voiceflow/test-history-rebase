@@ -5,15 +5,18 @@ import { NavLink, Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Flex from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import { PublishRoute } from '@/config/routes';
+import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 
 import PublishAmazon from './Amazon';
+import Export from './Export';
 import PublishGoogle from './Google';
 import Container from './components/PublishContainer';
 import PlatformContainer from './components/PublishPlatformContainer';
@@ -27,26 +30,22 @@ const updateLink = (link, versionID) => {
 const TABS = [
   {
     // eslint-disable-next-line react/display-name
-    display: () => (
-      <Flex>
-        <SvgIcon icon="amazon" mr="s" />
-        Alexa
-      </Flex>
-    ),
+    display: () => <Flex>Amazon Alexa</Flex>,
     link: `/${PublishRoute.ALEXA}`,
     exact: true,
   },
   {
     // eslint-disable-next-line react/display-name
-    display: () => (
-      <Flex>
-        <SvgIcon icon="google" mr="s" />
-        Google
-      </Flex>
-    ),
+    display: () => <Flex>Google Assistant</Flex>,
     link: `/${PublishRoute.GOOGLE}`,
   },
 ];
+
+const CODE_EXPORT_TAB = {
+  // eslint-disable-next-line react/display-name
+  display: () => <Flex>Code Export</Flex>,
+  link: `/${PublishRoute.EXPORT}`,
+};
 
 function Publish(props) {
   const {
@@ -54,15 +53,23 @@ function Publish(props) {
     history,
     skillID,
     location,
+    platform,
     ...ownProps
   } = props;
+
+  const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
+  let tabOptions = TABS;
+
+  if (codeExport.isEnabled && platform === PlatformType.ALEXA) {
+    tabOptions = [...tabOptions, CODE_EXPORT_TAB];
+  }
 
   return (
     <LockedResourceOverlay type={Realtime.ResourceType.PUBLISH}>
       {({ lockOwner, prevOwner, forceUpdateKey }) => (
         <Container>
           <Sidebar>
-            {TABS.map((tab, i) => (
+            {tabOptions.map((tab, i) => (
               <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
                 {tab.display(i)}
               </SidebarItem>
@@ -86,6 +93,14 @@ function Publish(props) {
                 skillID={skillID}
                 component={PublishGoogle}
                 isLocked={!!lockOwner || !!prevOwner}
+              />
+              <PrivateRoute
+                {...ownProps}
+                key={forceUpdateKey}
+                path={`${path}/${PublishRoute.EXPORT}`}
+                skillID={skillID}
+                component={Export}
+                isLocked={false}
               />
             </Switch>
           </PlatformContainer>

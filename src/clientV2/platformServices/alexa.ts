@@ -3,12 +3,20 @@ import axios from 'axios';
 
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
 import { AlexaStageType } from '@/constants/platforms';
-import { AlexaJob, PrototypeJob } from '@/models';
+import { AlexaExportJob, AlexaPublishJob, PrototypeJob } from '@/models';
 import { Nullable } from '@/types';
 
 import { PublishService } from './types';
 
-export type AlexaService = PublishService<AlexaJob.AnyJob, AlexaStageType> & {
+export type AlexaService = PublishService<AlexaPublishJob.AnyJob, AlexaStageType> & {
+  export: (projectID: string) => Promise<{ job: AlexaExportJob.AnyJob; projectID: string }>;
+
+  cancelExport: (projectID: string) => Promise<void>;
+
+  getExportStatus: (projectID: string) => Promise<Nullable<AlexaExportJob.AnyJob>>;
+
+  updateExportStage: (projectID: string, stage: AlexaStageType, data: unknown) => Promise<void>;
+
   updatePlatformData: (versionID: string, platformData: Partial<AlexaVersionData>) => Promise<void>;
 
   updateSettings: (versionID: string, settings: Partial<AlexaSettings>) => Promise<void>;
@@ -31,6 +39,15 @@ const alexaServiceClient: AlexaService = {
 
   updatePublishStage: (projectID, stage, data) =>
     axios.post(`${ALEXA_SERVICE_ENDPOINT}/publish/${projectID}/update-stage`, { stage, data }).then((res) => res.data),
+
+  export: (projectID) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/export/${projectID}`).then((res) => res.data),
+
+  cancelExport: (projectID) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/export/${projectID}/cancel`).then((res) => res.data),
+
+  getExportStatus: (projectID) => axios.get(`${ALEXA_SERVICE_ENDPOINT}/export/${projectID}/status`).then((res) => res.data),
+
+  updateExportStage: (projectID, stage, data) =>
+    axios.post(`${ALEXA_SERVICE_ENDPOINT}/export/${projectID}/update-stage`, { stage, data }).then((res) => res.data),
 
   renderPrototype: (projectID) => axios.post(`${ALEXA_SERVICE_ENDPOINT}/prototype/${projectID}/render`).then((res) => res.data),
 

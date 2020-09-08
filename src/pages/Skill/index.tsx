@@ -30,7 +30,7 @@ import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
-import { MarkupModeProvider, PublishProvider } from './contexts';
+import { ExportProvider, MarkupModeProvider, PublishProvider } from './contexts';
 
 export type SkillProps = RouteComponentProps;
 
@@ -92,29 +92,31 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
         </>
       )}
       <PublishProvider>
-        <Page
-          header={<ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
-          userMenu={false}
-          canScroll={false}
-          subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-          onNavigateBack={goToDashboard}
-        >
-          <Switch>
-            <PrivateRoute
-              path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-              component={Diagram}
-              diagramID={diagramID}
-            />
+        <ExportProvider>
+          <Page
+            header={<ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
+            userMenu={false}
+            canScroll={false}
+            subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+            onNavigateBack={goToDashboard}
+          >
+            <Switch>
+              <PrivateRoute
+                path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
+                component={Diagram}
+                diagramID={diagramID}
+              />
 
-            <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
+              <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
 
-            <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
+              <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-            <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
+              <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
 
-            <Redirect to={Path.PROJECT_CANVAS} />
-          </Switch>
-        </Page>
+              <Redirect to={Path.PROJECT_CANVAS} />
+            </Switch>
+          </Page>
+        </ExportProvider>
       </PublishProvider>
     </MarkupModeProvider>
   );

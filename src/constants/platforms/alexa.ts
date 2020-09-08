@@ -8,7 +8,7 @@ export enum AlexaStageType {
   WAIT_INVOCATION_NAME = 'WAIT_INVOCATION_NAME',
 }
 
-export enum AlexaJobErrorType {
+export enum AlexaPublishJobErrorType {
   RENDERING = 'RENDERING',
   ENABLING_SKILL = 'ENABLING_SKILL',
   SUBMITTING_PROJECT = 'SUBMITTING_PROJECT',
@@ -16,7 +16,11 @@ export enum AlexaJobErrorType {
   CHECKING_INTERACTION_MODEL_STATUS = 'CHECKING_INTERACTION_MODEL_STATUS',
 }
 
-export enum AlexaJobSuccessType {
+export enum AlexaPublishJobSuccessType {
   UPLOAD = 'UPLOAD',
   SUBMIT = 'SUBMIT',
+}
+
+export enum AlexaExportJobSuccessType {
+  DOWNLOAD = 'DOWNLOAD',
 }

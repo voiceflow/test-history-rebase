@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AlexaStageType } from '@/constants/platforms';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 
 import { LoaderStage, ProgressStage } from '../shared';
 import ErrorStage from './ErrorStage';
@@ -10,24 +10,31 @@ import WaitAccountStage from './WaitAccountStage';
 import WaitInvocationName from './WaitInvocationName';
 import WaitVendorsStage from './WaitVendorsStage';
 
-export const Alexa = () => {
-  const { job } = React.useContext(PublishContext)!;
+type AlexaProps = {
+  export?: boolean;
+};
 
-  switch (job?.stage.type) {
+export const Alexa: React.FC<AlexaProps> = (props) => {
+  const exportContextValue = React.useContext(ExportContext)!;
+  const publishContextValue = React.useContext(PublishContext)!;
+
+  const contextValue = props.export ? exportContextValue : publishContextValue;
+
+  switch (contextValue.job?.stage.type) {
     case AlexaStageType.IDLE:
       return <LoaderStage />;
     case AlexaStageType.PROGRESS:
-      return <ProgressStage progress={job.stage.data.progress}>{job.stage.data.message}</ProgressStage>;
+      return <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>;
     case AlexaStageType.ERROR:
-      return <ErrorStage />;
+      return <ErrorStage stage={contextValue.job.stage} />;
     case AlexaStageType.SUCCESS:
-      return <SuccessStage />;
+      return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_ACCOUNT:
-      return <WaitAccountStage />;
+      return <WaitAccountStage updateCurrentStage={contextValue.updateCurrentStage} />;
     case AlexaStageType.WAIT_VENDORS:
-      return <WaitVendorsStage />;
+      return <WaitVendorsStage cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_INVOCATION_NAME:
-      return <WaitInvocationName />;
+      return <WaitInvocationName stage={contextValue.job.stage} updateCurrentStage={contextValue.updateCurrentStage} />;
 
     default:
       return null;

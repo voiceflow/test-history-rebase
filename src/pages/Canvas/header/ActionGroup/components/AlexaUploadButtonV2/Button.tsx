@@ -11,7 +11,7 @@ import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -22,12 +22,14 @@ const PartialMenuItem = MenuItem as React.ComponentType<Partial<React.ComponentP
 const AnyDropdownButton = DropdownButton as React.ComponentType<any>;
 
 type ButtonProps = {
+  export?: boolean;
   onClick: () => void;
 };
 
-const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, updateVendor }) => {
+const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, updateVendor, export: isExport }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const { job, publish } = React.useContext(PublishContext)!;
+  const publishContext = React.useContext(PublishContext)!;
+  const exportContext = React.useContext(ExportContext)!;
 
   // show dropdown list for vendors
   const multiVendor = vendors.length > 1;
@@ -35,19 +37,30 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
   const needsLogin = !amazon;
 
   const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
-  const buttonLabel = needsLogin ? 'Connect to Alexa' : 'Upload to Alexa';
+  const buttonLabel = (isExport && 'Export') || (needsLogin ? 'Connect to Alexa' : 'Upload to Alexa');
+
+  const job = isExport ? exportContext.job : publishContext.job;
+
+  const exportOrPublish = () => {
+    if (isExport) {
+      exportContext.export();
+    } else {
+      publishContext.publish();
+    }
+  };
 
   const onPublishVendor = async (nextVendorID: string) => {
     onClick();
 
     await updateVendor(nextVendorID);
 
-    publish();
+    exportOrPublish();
   };
 
   const onPublish = () => {
     onClick();
-    publish();
+
+    exportOrPublish();
   };
 
   return (

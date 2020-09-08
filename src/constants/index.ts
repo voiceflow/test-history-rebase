@@ -553,3 +553,10 @@ export enum JobStatus {
   PENDING = 'PENDING',
   FINISHED = 'FINISHED',
 }
+
+export enum JobBuiltinStageType {
+  IDLE = 'IDLE',
+  ERROR = 'ERROR',
+  SUCCESS = 'SUCCESS',
+  PROGRESS = 'PROGRESS',
+}

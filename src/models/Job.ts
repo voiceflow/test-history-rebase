@@ -1,5 +1,11 @@
 import { JobStatus } from '@/constants';
-import { AlexaJobErrorType, AlexaJobSuccessType, AlexaStageType, PrototypeStageType } from '@/constants/platforms';
+import {
+  AlexaExportJobSuccessType,
+  AlexaPublishJobErrorType,
+  AlexaPublishJobSuccessType,
+  AlexaStageType,
+  PrototypeStageType,
+} from '@/constants/platforms';
 
 export type JobStage<T extends string = string, D extends object = object> = {
   type: T;
@@ -12,14 +18,16 @@ export type Job<S extends JobStage = JobStage> = {
   status: JobStatus;
 };
 
-export namespace AlexaJob {
+export type JobStageData<S extends JobStage> = S extends JobStage<string, infer D> ? D : never;
+
+export namespace AlexaPublishJob {
   export type IdleStage = JobStage<AlexaStageType.IDLE, Record<string, unknown>>;
 
   export type ErrorStage = JobStage<
     AlexaStageType.ERROR,
     {
       message: string;
-      errorType: AlexaJobErrorType;
+      errorType: AlexaPublishJobErrorType;
       error?: string;
     }
   >;
@@ -30,7 +38,7 @@ export namespace AlexaJob {
       message: string;
       amazonID: string;
       versionID: string;
-      successType: AlexaJobSuccessType;
+      successType: AlexaPublishJobSuccessType;
       rootDiagramID: string;
       succeededLocale: string | null;
       submittedForReview?: boolean;
@@ -50,6 +58,31 @@ export namespace AlexaJob {
   export type WaitVendorsStage = JobStage<AlexaStageType.WAIT_VENDORS>;
 
   export type WaitInvocationNameStage = JobStage<AlexaStageType.WAIT_INVOCATION_NAME, { error: string }>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+}
+
+export namespace AlexaExportJob {
+  export type IdleStage = AlexaPublishJob.IdleStage;
+
+  export type ErrorStage = AlexaPublishJob.ErrorStage;
+
+  export type SuccessStage = JobStage<
+    AlexaStageType.SUCCESS,
+    {
+      data: string;
+      fileName: string;
+      successType: AlexaExportJobSuccessType;
+    }
+  >;
+
+  export type ProgressStage = AlexaPublishJob.ProgressStage;
+
+  export type WaitAccountStage = AlexaPublishJob.WaitAccountStage;
+
+  export type WaitVendorsStage = AlexaPublishJob.WaitVendorsStage;
+
+  export type WaitInvocationNameStage = AlexaPublishJob.WaitInvocationNameStage;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
 }

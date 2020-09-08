@@ -18,7 +18,6 @@ export * from './ProjectList';
 export * from './Skill';
 export * from './Template';
 export * from './Link';
-export * from './Integration';
 export * from './Intent';
 export * from './Slot';
 export * from './Workspace';

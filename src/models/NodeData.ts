@@ -1,10 +1,10 @@
-import { ExpressionType, SlotMapping } from '@voiceflow/alexa-types';
+import { ExpressionType, IntegrationUser, SlotMapping } from '@voiceflow/alexa-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/alexa-types/build/nodes/api';
+import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/alexa-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 
 import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
-import { UserType } from '@/models/Integration';
 import { SpeakData } from '@/models/Speak';
 
 export type NodeData<T> = T & {
@@ -231,8 +231,8 @@ export namespace NodeData {
   };
 
   export type IntegrationDefaultProps<T extends IntegrationType> = {
-    selectedIntegration: T;
     selectedAction?: string;
+    selectedIntegration: T;
   };
 
   export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
@@ -246,20 +246,20 @@ export namespace NodeData {
   };
 
   export type GoogleSheets = IntegrationDefaultProps<IntegrationType.GOOGLE_SHEETS> & {
-    user?: {};
-    spreadsheet?: { value: string; label: string } | null;
-    sheet?: { value: string; label: string } | null;
-    header_column?: string | null;
-    match_value?: [];
-    row_value?: [];
-    row_number?: [];
-    mapping?: { path: string | []; var: string }[];
-    start_row?: [];
-    end_row?: [];
+    user?: IntegrationUser;
+    sheet?: GoogleSheetsValueLabel | null;
+    mapping?: GoogleSheetsMapping[];
+    end_row?: string;
+    start_row?: string;
+    row_values?: string[];
+    row_number?: string;
+    spreadsheet: GoogleSheetsSpreadsheet | null;
+    match_value?: string;
+    header_column?: GoogleSheetsValueLabel | null;
   };
 
   export type Zapier = IntegrationDefaultProps<IntegrationType.ZAPIER> & {
-    user?: UserType;
+    user?: IntegrationUser;
     value?: string;
   };
 

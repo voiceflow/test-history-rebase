@@ -244,15 +244,6 @@ export const KeyCodes = {
   ENTER: 13,
 };
 
-export const IntegrationActionType = {
-  GOOGLE_SHEETS: {
-    RETRIEVE_DATA: 'Retrieve Data',
-    CREATE_DATA: 'Create Data',
-    UPDATE_DATA: 'Update Data',
-    DELETE_DATA: 'Delete Data',
-  },
-} as const;
-
 const EMPTY_KEY_VALUE_ITEM = {
   key: '',
   val: '',

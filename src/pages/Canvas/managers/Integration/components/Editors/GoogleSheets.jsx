@@ -1,7 +1,7 @@
+import { GoogleSheetsActionType } from '@voiceflow/alexa-types/build/nodes/googleSheets';
 import _ from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 
-import { IntegrationActionType } from '@/constants';
 import { setError } from '@/ducks/modal';
 import { activeSkillCreatorIDSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -32,13 +32,13 @@ const Step = {
 const SelectGoogleSheetNextStep = (data) => {
   let nextStep = '';
   switch (data.selectedAction) {
-    case IntegrationActionType.GOOGLE_SHEETS.RETRIEVE_DATA:
+    case GoogleSheetsActionType.RETRIEVE_DATA:
       nextStep = Step.RETRIEVE_SETTINGS;
       break;
-    case IntegrationActionType.GOOGLE_SHEETS.CREATE_DATA || IntegrationActionType.GOOGLE_SHEETS.UPDATE_DATA:
+    case GoogleSheetsActionType.CREATE_DATA || GoogleSheetsActionType.UPDATE_DATA:
       nextStep = Step.CREATE_UPDATE_SETTINGS;
       break;
-    case IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA:
+    case GoogleSheetsActionType.DELETE_DATA:
       nextStep = Step.DELETE_SETTINGS;
       break;
     default:
@@ -104,7 +104,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
               />
               {hasSelectedSheet && (
                 <>
-                  {data.selectedAction === IntegrationActionType.GOOGLE_SHEETS.RETRIEVE_DATA && (
+                  {data.selectedAction === GoogleSheetsActionType.RETRIEVE_DATA && (
                     <>
                       <RetrieveSettings
                         headers_list={headers_list}
@@ -125,8 +125,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
                     </>
                   )}
 
-                  {(data.selectedAction === IntegrationActionType.GOOGLE_SHEETS.CREATE_DATA ||
-                    data.selectedAction === IntegrationActionType.GOOGLE_SHEETS.UPDATE_DATA) && (
+                  {(data.selectedAction === GoogleSheetsActionType.CREATE_DATA || data.selectedAction === GoogleSheetsActionType.UPDATE_DATA) && (
                     <WithValues
                       headers_list={headers_list}
                       data={data}
@@ -136,7 +135,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
                       openNextStep={setStep(Step.TEST_SECTION)}
                     />
                   )}
-                  {data.selectedAction === IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA && (
+                  {data.selectedAction === GoogleSheetsActionType.DELETE_DATA && (
                     <DeleteSettings
                       data={data}
                       onChange={onChange}

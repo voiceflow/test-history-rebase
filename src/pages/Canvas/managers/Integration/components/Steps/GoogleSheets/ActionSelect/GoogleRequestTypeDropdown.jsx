@@ -1,6 +1,5 @@
+import { GoogleSheetsActionType } from '@voiceflow/alexa-types/build/nodes/googleSheets';
 import React from 'react';
-
-import { IntegrationActionType } from '@/constants';
 
 import SquareButton from '../../components/SquareButton';
 import DropdownHeader from '../../components/StepDropdown';
@@ -14,23 +13,23 @@ function GoogleRequestType({ data, onChange, isOpened, toggle, openNextStep }) {
   return (
     <DropdownHeader headerText="I want to" headerSuffixText={data.selectedAction} isOpened={isOpened} toggle={toggle}>
       <SquareButton
-        onClick={() => setRequestType(IntegrationActionType.GOOGLE_SHEETS.RETRIEVE_DATA)}
-        text={IntegrationActionType.GOOGLE_SHEETS.RETRIEVE_DATA}
+        onClick={() => setRequestType(GoogleSheetsActionType.RETRIEVE_DATA)}
+        text={GoogleSheetsActionType.RETRIEVE_DATA}
         tooltip="Retrieve a Single Row from a Spreadsheet"
       />
       <SquareButton
-        onClick={() => setRequestType(IntegrationActionType.GOOGLE_SHEETS.CREATE_DATA)}
-        text={IntegrationActionType.GOOGLE_SHEETS.CREATE_DATA}
+        onClick={() => setRequestType(GoogleSheetsActionType.CREATE_DATA)}
+        text={GoogleSheetsActionType.CREATE_DATA}
         tooltip="Create a Row in a Spreadsheet"
       />
       <SquareButton
-        onClick={() => setRequestType(IntegrationActionType.GOOGLE_SHEETS.UPDATE_DATA)}
-        text={IntegrationActionType.GOOGLE_SHEETS.UPDATE_DATA}
+        onClick={() => setRequestType(GoogleSheetsActionType.UPDATE_DATA)}
+        text={GoogleSheetsActionType.UPDATE_DATA}
         tooltip="Update an Existing Row in a Spreadsheet"
       />
       <SquareButton
-        onClick={() => setRequestType(IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA)}
-        text={IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA}
+        onClick={() => setRequestType(GoogleSheetsActionType.DELETE_DATA)}
+        text={GoogleSheetsActionType.DELETE_DATA}
         tooltip="Delete Rows in a Spreadsheet"
       />
     </DropdownHeader>

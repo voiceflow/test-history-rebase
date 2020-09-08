@@ -1,20 +1,18 @@
+import { APIActionType } from '@voiceflow/alexa-types/build/nodes/api';
 import React from 'react';
 
 import Section from '@/components/Section';
 import SelectInputGroup from '@/components/SelectInputGroup';
-import { IntegrationActionType } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-const { CUSTOM_API } = IntegrationActionType;
-
-const OPTIONS = [CUSTOM_API.GET, CUSTOM_API.POST, CUSTOM_API.PUT, CUSTOM_API.DELETE, CUSTOM_API.PATCH];
+const OPTIONS = [APIActionType.GET, APIActionType.POST, APIActionType.PUT, APIActionType.DELETE, APIActionType.PATCH];
 
 const OPTIONS_MAP = {
-  [CUSTOM_API.GET]: 'GET',
-  [CUSTOM_API.POST]: 'POST',
-  [CUSTOM_API.PUT]: 'PUT',
-  [CUSTOM_API.DELETE]: 'DELETE',
-  [CUSTOM_API.PATCH]: 'PATCH',
+  [APIActionType.GET]: 'GET',
+  [APIActionType.POST]: 'POST',
+  [APIActionType.PUT]: 'PUT',
+  [APIActionType.DELETE]: 'DELETE',
+  [APIActionType.PATCH]: 'PATCH',
 };
 
 function RequestTypeStep({ url, selectedAction, onChange }) {
@@ -34,7 +32,7 @@ function RequestTypeStep({ url, selectedAction, onChange }) {
 
   React.useEffect(() => {
     if (!selectedAction) {
-      onChangeAction(CUSTOM_API.GET);
+      onChangeAction(APIActionType.GET);
     }
   }, [onChangeAction, selectedAction]);
 
@@ -42,7 +40,7 @@ function RequestTypeStep({ url, selectedAction, onChange }) {
     <Section>
       <FormControl label="Request URL" contentBottomUnits={0}>
         <SelectInputGroup
-          value={selectedAction || CUSTOM_API.GET}
+          value={selectedAction || APIActionType.GET}
           options={OPTIONS}
           onSelect={onChangeAction}
           inputValue={url}

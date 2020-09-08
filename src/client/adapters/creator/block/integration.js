@@ -1,5 +1,7 @@
+import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
+
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import { INTEGRATION_DATA_MODELS, IntegrationActionType, IntegrationType } from '@/constants';
+import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';
 
 import { createBlockAdapter } from './utils';
 
@@ -56,7 +58,7 @@ const addGoogleSheetsData = (dataModel, actionData, integrationsData, selectedIn
 };
 
 const addZapierData = (dataModel, actionData, integrationsData, selectedIntegration) => {
-  dataModel.selectedAction = IntegrationActionType.ZAPIER.START_A_ZAP;
+  dataModel.selectedAction = ZapierActionType.START_A_ZAP;
   dataModel.value = textEditorContentAdapter.fromDB(actionData?.value);
   dataModel.user = integrationsData[selectedIntegration]?.user || ZAPIER_DEFAULTS.user;
 };

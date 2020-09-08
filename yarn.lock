@@ -4566,26 +4566,12 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@1.12.1":
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.12.1.tgz#9f323ab7f02afea266ea053861a7b1b3938fc38a"
-  integrity sha512-9ji7cjwlk/+d2dzipM1uszWxg/KmObGYKBn3EEPmHqcnjz2GLvzqYMla4VpkBrI5z29hSqulIySCjizEw1bKNw==
+"@voiceflow/alexa-types@1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.14.0.tgz#d60a5408ce965f09e6e9abf7945a60e76602cf6b"
+  integrity sha512-xiwCV+TsauTbkWBjiA2Q+89+scTjCUssojHJAcknGJnQ4SV5XbWCqoBDbTe14Y3W7Bk0R8oQlNIkj07/NbZKSA==
   dependencies:
-    "@voiceflow/api-sdk" "1.5.5"
-
-"@voiceflow/api-sdk@1.5.5":
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.5.5.tgz#cc1d2509c674c24a9d4f8cdb11cef99ad1ec5a0f"
-  integrity sha512-TWpIKE+E+q+F3HkrI9ZX+mXpPxf8a8XawbaqnpeDZ9ImFgUweJuJkVWUC+IUM3g3B33ikCzZZ5dzp8/N10TUTw==
-  dependencies:
-    "@types/atob" "^2.1.2"
-    "@voiceflow/logger" "^1.1.10"
-    atob "^2.1.2"
-    axios "^0.19.2"
-    core-js "^3.6.5"
-    io-ts "^2.2.8"
-    regenerator-runtime "^0.13.5"
-    superstruct "^0.10.12"
+    "@voiceflow/api-sdk" "1.7.0"
 
 "@voiceflow/api-sdk@1.7.0":
   version "1.7.0"

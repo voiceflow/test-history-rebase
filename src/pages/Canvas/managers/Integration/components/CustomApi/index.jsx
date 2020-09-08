@@ -1,6 +1,6 @@
+import { APIActionType } from '@voiceflow/alexa-types/build/nodes/api';
 import React from 'react';
 
-import { IntegrationActionType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
@@ -11,14 +11,12 @@ import RequestTabs from './components/RequestTabs';
 import RequestType from './components/RequestType';
 import TestModal from './components/TestModal';
 
-const { CUSTOM_API } = IntegrationActionType;
-
 const mappingFactory = () => ({ path: [], var: null });
 
 function CustomApiEditor({ data, onChange }) {
   const [testModalOpened, openTestModal, closeTestModal] = useEnableDisable(false);
   const { url, body, content, mapping, bodyInputType, headers, parameters, selectedAction } = data;
-  const isGet = CUSTOM_API.GET === selectedAction;
+  const isGet = APIActionType.GET === selectedAction;
 
   return (
     <Content
@@ -28,7 +26,7 @@ function CustomApiEditor({ data, onChange }) {
             content: isGet ? <MapDataToVarsHelp /> : <AddDataAndVarsToBodyHelp />,
           }}
           options={[{ label: 'Test Request', disabled: !data.url, onClick: openTestModal }]}
-          tutorialTitle={CUSTOM_API.isGet ? 'How to Transform JSON data into a Variable' : 'How to Add Static Data and Variables to Body'}
+          tutorialTitle={isGet ? 'How to Transform JSON data into a Variable' : 'How to Add Static Data and Variables to Body'}
         />
       }
     >

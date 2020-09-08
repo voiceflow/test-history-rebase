@@ -1,3 +1,4 @@
+import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
 import { utils } from '@voiceflow/common';
 import update from 'immutability-helper';
 import _ from 'lodash';
@@ -24,7 +25,7 @@ const SERVICES_MAP = {
     [IntegrationActionType.GOOGLE_SHEETS.DELETE_DATA]: IntegrationsService.googleSheets.deleteData,
   },
   [IntegrationType.ZAPIER]: {
-    [IntegrationActionType.ZAPIER.START_A_ZAP]: IntegrationsService.zapier.createMessage,
+    [ZapierActionType.START_A_ZAP]: IntegrationsService.zapier.createMessage,
   },
 };
 

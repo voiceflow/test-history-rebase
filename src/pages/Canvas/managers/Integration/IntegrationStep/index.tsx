@@ -1,7 +1,8 @@
+import { APIActionType } from '@voiceflow/alexa-types/build/nodes/api';
 import React from 'react';
 
 import { Icon } from '@/components/SvgIcon';
-import { IntegrationActionType, IntegrationType } from '@/constants';
+import { IntegrationType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
@@ -10,13 +11,13 @@ import { ICON, ICON_COLOR } from '../constants';
 
 const getAction = (action: string | undefined) => {
   switch (action) {
-    case IntegrationActionType.CUSTOM_API.POST:
+    case APIActionType.POST:
       return 'POST';
-    case IntegrationActionType.CUSTOM_API.PUT:
+    case APIActionType.PUT:
       return 'PUT';
-    case IntegrationActionType.CUSTOM_API.DELETE:
+    case APIActionType.DELETE:
       return 'DELETE';
-    case IntegrationActionType.CUSTOM_API.PATCH:
+    case APIActionType.PATCH:
       return 'PATCH';
     default:
       return 'GET';

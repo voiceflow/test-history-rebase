@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { IntegrationType } from '@voiceflow/alexa-types';
-import { APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
+import { APIActionType, APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
+import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
 import { constants } from '@voiceflow/common';
 
 import { NodeData } from '@/models';
@@ -243,24 +244,14 @@ export const KeyCodes = {
   ENTER: 13,
 };
 
-export const IntegrationActionType: Record<string, { [key: string]: string }> = {
-  CUSTOM_API: {
-    GET: 'Make a GET Request',
-    POST: 'Make a POST Request',
-    PUT: 'Make a PUT Request',
-    DELETE: 'Make a DELETE Request',
-    PATCH: 'Make a PATCH Request',
-  },
+export const IntegrationActionType = {
   GOOGLE_SHEETS: {
     RETRIEVE_DATA: 'Retrieve Data',
     CREATE_DATA: 'Create Data',
     UPDATE_DATA: 'Update Data',
     DELETE_DATA: 'Delete Data',
   },
-  ZAPIER: {
-    START_A_ZAP: 'Start a Zap',
-  },
-};
+} as const;
 
 const EMPTY_KEY_VALUE_ITEM = {
   key: '',
@@ -278,7 +269,7 @@ export const INTEGRATION_DATA_MODELS = {
     content: '',
     parameters: [EMPTY_KEY_VALUE_ITEM],
     bodyInputType: APIBodyType.FORM_DATA,
-    selectedAction: IntegrationActionType.CUSTOM_API.GET,
+    selectedAction: APIActionType.GET,
     selectedIntegration: IntegrationType.CUSTOM_API,
   } as NodeData.CustomApi,
   GOOGLE_SHEETS: {
@@ -299,10 +290,10 @@ export const INTEGRATION_DATA_MODELS = {
   ZAPIER: {
     name: IntegrationType.ZAPIER,
     user: {},
+    value: '',
+    selectedAction: ZapierActionType.START_A_ZAP,
     selectedIntegration: IntegrationType.ZAPIER,
-    selectedAction: IntegrationActionType.ZAPIER.START_A_ZAP,
-    value: [],
-  },
+  } as NodeData.Zapier,
 };
 
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';

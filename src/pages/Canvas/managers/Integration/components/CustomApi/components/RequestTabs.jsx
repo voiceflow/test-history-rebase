@@ -1,8 +1,8 @@
+import { APIActionType } from '@voiceflow/alexa-types/build/nodes/api';
 import React from 'react';
 import { TabContent, TabPane } from 'reactstrap';
 
 import Tabs from '@/components/Tabs';
-import { IntegrationActionType } from '@/constants';
 
 import RequestBody from './RequestBody';
 import RequestHeaders from './RequestHeaders';
@@ -25,7 +25,7 @@ const getTabs = (headers, parameters, selectedAction) => [
     value: IntegrationTab.HEADERS,
     label: `${IntegrationTab.HEADERS} ${headers.length > 1 ? `(${headers.length})` : ''}`,
   },
-  ...(selectedAction !== IntegrationActionType.CUSTOM_API.GET
+  ...(selectedAction !== APIActionType.GET
     ? [
         {
           value: IntegrationTab.BODY,
@@ -56,7 +56,7 @@ function RequestTabs({ headers, body, content, bodyInputType, parameters, select
         </TabPane>
 
         <TabPane tabId={IntegrationTab.BODY}>
-          {selectedAction !== IntegrationActionType.CUSTOM_API.GET && (
+          {selectedAction !== APIActionType.GET && (
             <RequestBody onChange={onChange} body={body} content={content} bodyInputType={bodyInputType} factory={keyPairFactory} />
           )}
         </TabPane>

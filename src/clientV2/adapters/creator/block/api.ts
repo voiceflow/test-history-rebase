@@ -5,7 +5,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const interactionAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
+const apiAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
   ({ url, body, headers, mappings, content, selectedAction, params, bodyType }) => ({
     url,
     body,
@@ -40,4 +40,4 @@ const interactionAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
   })
 );
 
-export default interactionAdapter;
+export default apiAdapter;

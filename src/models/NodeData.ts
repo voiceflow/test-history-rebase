@@ -260,7 +260,7 @@ export namespace NodeData {
 
   export type Zapier = IntegrationDefaultProps<IntegrationType.ZAPIER> & {
     user?: UserType;
-    value?: [] | string;
+    value?: string;
   };
 
   export type Integration = CustomApi | GoogleSheets | Zapier;

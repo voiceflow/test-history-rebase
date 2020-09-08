@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
 import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
+import { goToOnboarding } from '@/ducks/router';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -21,7 +22,7 @@ const PAGES_MATCHES = {
   onboarding: [Path.ONBOARDING],
 };
 
-function Workspace({ workspaces }) {
+function Workspace({ workspaces, goToOnboarding }) {
   const projectCreationFlow = useFeature(FeatureFlag.PROJECT_CREATION_FLOW);
 
   const newProjectComponent = projectCreationFlow.isEnabled ? NewProject : Templates;
@@ -41,11 +42,9 @@ function Workspace({ workspaces }) {
             incredible voice experiences
           </span>
           <br />
-          <Link to={Path.NEW_WORKSPACE} className="no-underline">
-            <Button id="createWorkspace" isPrimary className="mt-4">
-              New Workspace
-            </Button>
-          </Link>
+          <Button id="createWorkspace" isPrimary className="mt-4" onClick={goToOnboarding}>
+            New Workspace
+          </Button>
         </div>
       </div>
     );
@@ -63,6 +62,10 @@ const mapStateToProps = {
   workspaces: allWorkspacesSelector,
 };
 
+const mapDispatchToProps = {
+  goToOnboarding,
+};
+
 export default compose(
   withBatchLoadingGate([
     WorkspacesLoadingGate,
@@ -75,5 +78,5 @@ export default compose(
       };
     },
   ]),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Workspace);

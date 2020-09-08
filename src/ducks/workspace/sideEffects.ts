@@ -4,7 +4,7 @@ import { PlatformType, UserRole } from '@/constants';
 import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
-import { goToDashboard } from '@/ducks/router/actions';
+import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Template from '@/ducks/template';
 import * as Tracking from '@/ducks/tracking';
 import { DBProject, DBWorkspace, Workspace } from '@/models';
@@ -31,7 +31,11 @@ export const removeWorkspace = (workspaceID: string): Thunk => async (dispatch, 
   // default to the first existing team
   const newWorkspace = state.allIds.length > 0 ? state.allIds[0] : undefined;
 
-  dispatch(updateCurrentWorkspace(newWorkspace));
+  if (!newWorkspace) {
+    dispatch(goToWorkspace());
+  } else {
+    dispatch(updateCurrentWorkspace(newWorkspace));
+  }
   dispatch(updateWorkspaces(state));
 };
 

@@ -15,7 +15,7 @@ export const goToHome = () => goTo('');
 
 export const goToLogin = () => goTo(RootRoute.LOGIN);
 
-export const goToWorkspace = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
+export const goToWorkspace = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
 
 export const goToDashboard = () => goTo(RootRoute.DASHBOARD);
 

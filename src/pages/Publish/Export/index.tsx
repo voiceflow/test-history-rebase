@@ -35,7 +35,7 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform }) => {
           <Text>
             Upload to <PlatformText>{platform}</PlatformText> and generate an executable project version to run on your own infrastructure.
             <LinkContainer>
-              <a href="https://docs.voiceflow.com/#/platform/the-canvas?id=code-export" target="_blank" rel="noreferrer">
+              <a href="https://github.com/voiceflow/alexa-client#configurations" target="_blank" rel="noreferrer">
                 Learn More
               </a>
             </LinkContainer>

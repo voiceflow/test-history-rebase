@@ -13,7 +13,7 @@ import { Nullable } from '@/types';
 export type ExportContextValue = {
   job: Nullable<AlexaExportJob.AnyJob>;
   cancel: () => Promise<void>;
-  export: () => Promise<void>;
+  start: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 };
 
@@ -38,7 +38,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     setJob(currentJob || null);
   }, [projectID, service]);
 
-  const exportData = React.useCallback(async () => {
+  const start = React.useCallback(async () => {
     const result = await service?.export(projectID);
 
     setJob(result?.job || null);
@@ -96,7 +96,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  return <ExportContext.Provider value={{ job, cancel, export: exportData, updateCurrentStage }}>{children}</ExportContext.Provider>;
+  return <ExportContext.Provider value={{ job, cancel, start, updateCurrentStage }}>{children}</ExportContext.Provider>;
 };
 
 export const withExport = withContext(ExportContext, 'export');

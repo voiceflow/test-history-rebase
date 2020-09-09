@@ -33,3 +33,10 @@ export const waitJobFinished = async <J extends Job>({
 
   return check();
 };
+
+export const isRunning = (job: Nullable<Job<any>>) =>
+  job?.status === JobStatus.ACTIVE || job?.status === JobStatus.PENDING || job?.status === JobStatus.IDLE;
+
+export const isNotify = (job: Nullable<Job<any>>) => job?.status === JobStatus.PENDING || job?.status === JobStatus.FINISHED;
+
+export const isReady = (job: Nullable<Job<any>>) => job?.status === JobStatus.FINISHED || !job;

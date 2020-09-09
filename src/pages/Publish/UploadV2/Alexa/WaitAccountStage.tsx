@@ -4,14 +4,15 @@ import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import { useSmartReducerV2 } from '@/hooks';
 import { Account } from '@/models';
-import { PublishContext } from '@/pages/Skill/contexts';
 import { Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../shared';
 
-const WaitAccountStage: React.FC = () => {
-  const { updateCurrentStage } = React.useContext(PublishContext)!;
+type WaitAccountStageProps = {
+  updateCurrentStage: (data: unknown) => void;
+};
 
+const WaitAccountStage: React.FC<WaitAccountStageProps> = ({ updateCurrentStage }) => {
   const [state, api] = useSmartReducerV2({
     error: false,
     loading: false,

@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { JobStatus } from '@/constants';
 import { useToggle } from '@/hooks';
 import { Alexa } from '@/pages/Publish/UploadV2';
 import { PublishContext } from '@/pages/Skill/contexts';
+import { isNotify, isReady, isRunning } from '@/utils/job';
 
 import UploadPopup from '../UploadPopup';
 import Button from './Button';
 
 const AlexaUploadButton = () => {
-  const { job, cancel } = React.useContext(PublishContext)!;
+  const { job, cancel, publish } = React.useContext(PublishContext)!;
 
   const [opened, onToggle] = useToggle();
 
@@ -19,14 +19,23 @@ const AlexaUploadButton = () => {
   }, [cancel]);
 
   React.useEffect(() => {
-    if (!opened && job?.status === JobStatus.PENDING) {
+    if (!opened && isNotify(job)) {
       onToggle(true);
     }
   }, [opened, job?.status]);
 
+  const onClick = () => {
+    if (isReady(job)) {
+      publish();
+      onToggle(false);
+    } else {
+      onToggle();
+    }
+  };
+
   return (
     <>
-      <Button onClick={onToggle} />
+      <Button onClick={onClick} isActive={isRunning(job)} />
 
       <UploadPopup open={opened} onClose={onClose}>
         <Alexa />

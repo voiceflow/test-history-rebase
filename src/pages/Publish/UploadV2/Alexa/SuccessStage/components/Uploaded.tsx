@@ -8,19 +8,19 @@ import { BlockText, Link, Text } from '@/components/Text';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { AlexaJob, Job } from '@/models';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { AlexaPublishJob, JobStageData } from '@/models';
 import { ConnectedProps } from '@/types';
 
 import { StageContainer } from '../../../shared';
 import Video from './Video';
 
-const Uploaded: React.FC<UploadedProps> = ({ locales, userID, invocationName }) => {
-  const {
-    stage: {
-      data: { amazonID, succeededLocale },
-    },
-  } = React.useContext(PublishContext)!.job as Job<AlexaJob.SuccessStage>;
+type UploadedProps = {
+  stageData: JobStageData<AlexaPublishJob.SuccessStage>;
+};
+
+const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, userID, invocationName }) => {
+  const { succeededLocale, amazonID } = stageData;
+
   const firstSession = React.useMemo(() => localStorage.getItem(`is_first_session_${userID}`) !== 'false', []);
 
   React.useEffect(() => {
@@ -99,6 +99,6 @@ const mapStateToProps = {
   invocationName: Skill.invNameSelector,
 };
 
-export type UploadedProps = ConnectedProps<typeof mapStateToProps>;
+export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(Uploaded);
+export default connect(mapStateToProps)(Uploaded) as React.FC<UploadedProps>;

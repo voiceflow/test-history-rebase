@@ -6,12 +6,10 @@ import DropdownButton from '@/components/DropdownButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
-import { JobStatus } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { PublishContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -23,32 +21,21 @@ const AnyDropdownButton = DropdownButton as React.ComponentType<any>;
 
 type ButtonProps = {
   onClick: () => void;
+  isActive: boolean;
+  label?: string;
 };
 
-const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, updateVendor }) => {
+const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, updateVendor, isActive, label }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const { job, publish } = React.useContext(PublishContext)!;
 
   // show dropdown list for vendors
-  const multiVendor = vendors.length > 1;
+  const showVendors = vendors.length > 1 && !isActive;
 
   const needsLogin = !amazon;
 
-  const buttonIcon = needsLogin ? 'rocket' : 'publishSpin';
-  const buttonLabel = needsLogin ? 'Connect to Alexa' : 'Upload to Alexa';
+  const buttonLabel = label || (needsLogin ? 'Connect to Alexa' : 'Upload to Alexa');
 
-  const onPublishVendor = async (nextVendorID: string) => {
-    onClick();
-
-    await updateVendor(nextVendorID);
-
-    publish();
-  };
-
-  const onPublish = () => {
-    onClick();
-    publish();
-  };
+  const buttonIcon = isActive ? 'publishSpin' : 'rocket';
 
   return (
     <TippyTooltip
@@ -56,7 +43,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
       position="bottom"
       disabled={!canEditCanvas}
     >
-      {multiVendor ? (
+      {showVendors ? (
         <AnyDropdownButton
           id={Identifier.UPLOAD}
           menu={
@@ -65,18 +52,21 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
               <PartialMenuItem divider />
 
               {vendors.map(({ id, name }) => (
-                <PartialMenuItem key={id} onClick={() => onPublishVendor(id)}>
+                <PartialMenuItem key={id} onClick={updateVendor}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </PartialMenuItem>
               ))}
             </PartialMenu>
           }
+          buttonProps={{
+            onClick,
+          }}
           dropdownProps={{ selfDismiss: true }}
         >
           {buttonLabel}
         </AnyDropdownButton>
       ) : (
-        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} onClick={onPublish} isUploading={job?.status === JobStatus.ACTIVE}>
+        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive}>
           {buttonLabel}
         </UploadButton>
       )}

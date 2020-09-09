@@ -11,18 +11,26 @@ import * as Skill from '@/ducks/skill';
 import { saveInvocationName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
-import { AlexaJob, Job } from '@/models';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { ConnectedProps, Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../shared';
 
-const WaitInvocationName: React.FC<WaitInvocationNameProps> = ({ locales, invocationName, saveInvocationName }) => {
-  const { job, updateCurrentStage } = React.useContext(PublishContext)!;
+type WaitInvocationNameProps = {
+  stage: AlexaExportJob.WaitInvocationNameStage | AlexaPublishJob.WaitInvocationNameStage;
+  updateCurrentStage: (data: unknown) => void;
+};
 
+const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameConnectedProps> = ({
+  stage,
+  locales,
+  invocationName,
+  saveInvocationName,
+  updateCurrentStage,
+}) => {
   const [state, api] = useSmartReducerV2({
     name: invocationName as string,
-    error: (job! as Job<AlexaJob.WaitInvocationNameStage>).stage.data.error as Nullable<string>,
+    error: stage.data.error as Nullable<string>,
     loading: false,
   });
 
@@ -105,6 +113,6 @@ const mapDispatchToProps = {
   saveInvocationName,
 };
 
-type WaitInvocationNameProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type WaitInvocationNameConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(WaitInvocationName);
+export default connect(mapStateToProps, mapDispatchToProps)(WaitInvocationName) as React.FC<WaitInvocationNameProps>;

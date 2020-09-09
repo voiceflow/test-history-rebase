@@ -1,13 +1,14 @@
 import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
-import { PublishContext } from '@/pages/Skill/contexts';
 
 import { ButtonContainer, ButtonLink, Description, StageContainer } from '../shared';
 
-const WaitVendorsStage: React.FC = () => {
-  const { cancel } = React.useContext(PublishContext)!;
+type WaitVendorsStageProps = {
+  cancel: () => void;
+};
 
+const WaitVendorsStage: React.FC<WaitVendorsStageProps> = ({ cancel }) => {
   return (
     <StageContainer>
       <img src="/Support.svg" alt="" />

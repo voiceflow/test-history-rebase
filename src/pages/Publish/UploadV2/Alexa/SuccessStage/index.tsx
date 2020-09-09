@@ -1,15 +1,26 @@
 import React from 'react';
 
-import { AlexaJobSuccessType } from '@/constants/platforms';
-import { AlexaJob, Job } from '@/models';
-import { PublishContext } from '@/pages/Skill/contexts';
+import { AlexaExportJobSuccessType, AlexaPublishJobSuccessType } from '@/constants/platforms';
+import { AlexaExportJob, AlexaPublishJob } from '@/models';
 
-import { Submitted, Uploaded } from './components';
+import { Download, Submitted, Uploaded } from './components';
 
-const SuccessStage: React.FC = () => {
-  const { stage } = React.useContext(PublishContext)!.job as Job<AlexaJob.SuccessStage>;
+type SuccessStageProps = {
+  stage: AlexaExportJob.SuccessStage | AlexaPublishJob.SuccessStage;
+  cancel: () => void;
+};
 
-  return stage.data.successType === AlexaJobSuccessType.SUBMIT ? <Submitted /> : <Uploaded />;
+const SuccessStage: React.FC<SuccessStageProps> = ({ stage, cancel }) => {
+  switch (stage.data.successType) {
+    case AlexaPublishJobSuccessType.SUBMIT:
+      return <Submitted />;
+    case AlexaPublishJobSuccessType.UPLOAD:
+      return <Uploaded stageData={stage.data} />;
+    case AlexaExportJobSuccessType.DOWNLOAD:
+      return <Download cancel={cancel} stageData={stage.data} />;
+    default:
+      return null;
+  }
 };
 
 export default SuccessStage;

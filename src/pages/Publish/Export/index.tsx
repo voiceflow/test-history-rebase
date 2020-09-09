@@ -1,12 +1,18 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useFeature, useToggle } from '@/hooks';
 import Upload from '@/pages/Canvas/header/ActionGroup/components/Alexa/Upload';
+import UploadV2 from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadButtonV2/Button';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
+import { Alexa } from '@/pages/Publish/UploadV2';
+import { ExportContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
+import { isNotify, isReady, isRunning } from '@/utils/job';
 
 import { ActionContainer, ContentContainer, ContentSection, LinkContainer, PlatformText, SpacingSection, Text } from '../components';
 import Section from '../components/Section';
@@ -16,17 +22,42 @@ const Stages = AlexaPublish.ALEXA_STAGES as any;
 const States = AlexaPublish.ALEXA_STATES as any;
 
 const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, toggleOpen] = useToggle(false);
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+  const { cancel, job, start } = React.useContext(ExportContext)!;
+
+  const onClose = () => {
+    toggleOpen(false);
+
+    if (dataRefactor.isEnabled) {
+      cancel();
+    }
+  };
 
   React.useEffect(() => {
     const stageState = States[alexaPublish.stage];
 
     if (alexaPublish.stage === Stages.IDLE) {
-      setOpen(false);
+      toggleOpen(false);
     } else if (stageState.end) {
-      setOpen(true);
+      toggleOpen(true);
     }
   }, [alexaPublish.stage, alexaPublish.id]);
+
+  const exportV2Click = () => {
+    if (isReady(job)) {
+      start();
+      toggleOpen(false);
+    } else {
+      toggleOpen();
+    }
+  };
+
+  React.useEffect(() => {
+    if (dataRefactor.isEnabled && isNotify(job)) {
+      toggleOpen(true);
+    }
+  }, [job?.status]);
 
   return (
     <ContentContainer>
@@ -40,10 +71,16 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform }) => {
               </a>
             </LinkContainer>
           </Text>
+
           <ActionContainer>
-            <UploadComponent setPopup={setOpen} label="Export" options={{ export: true }} />
-            <UploadPopup open={open} onClose={() => setOpen(false)}>
-              <UploadAlexa />
+            {dataRefactor.isEnabled ? (
+              <UploadV2 isActive={isRunning(job)} onClick={exportV2Click} label="Export" />
+            ) : (
+              <UploadComponent setPopup={toggleOpen} label="Export" options={{ export: true }} />
+            )}
+
+            <UploadPopup open={!isReady(job) && open} onClose={onClose}>
+              {dataRefactor.isEnabled ? <Alexa export /> : <UploadAlexa />}
             </UploadPopup>
           </ActionContainer>
         </Section>

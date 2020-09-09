@@ -1,49 +1,45 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getPlatformService } from '@/clientV2';
 import { FeatureFlag } from '@/config/features';
 import { JobStatus } from '@/constants';
-import * as Diagram from '@/ducks/diagramV2';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useFeature, useSetup, useTeardown } from '@/hooks';
-import { AlexaPublishJob } from '@/models';
+import { useDidUpdateEffect, useFeature, useTeardown } from '@/hooks';
+import { AlexaExportJob } from '@/models';
 import { Nullable } from '@/types';
 
-export type PublishContextValue = {
-  job: Nullable<AlexaPublishJob.AnyJob>;
+export type ExportContextValue = {
+  job: Nullable<AlexaExportJob.AnyJob>;
   cancel: () => Promise<void>;
-  publish: () => Promise<void>;
+  start: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 };
 
-export const PublishContext = React.createContext<Nullable<PublishContextValue>>(null);
-export const { Consumer: PublishConsumer } = PublishContext;
+export const ExportContext = React.createContext<Nullable<ExportContextValue>>(null);
+export const { Consumer: ExportConsumer } = ExportContext;
 
-const PULL_TIMEOUT = 3000; // 3s
+const PULL_TIMEOUT = 1500; // 1.5s
 
-export const PublishProvider: React.FC = ({ children }) => {
+export const ExportProvider: React.FC = ({ children }) => {
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const pullTimeout = React.useRef<number>();
-  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
   const projectID = useSelector(Skill.activeProjectIDSelector);
-  const dispatch = useDispatch();
 
   const service = dataRefactor.isEnabled ? getPlatformService(platform) : null;
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.getPublishStatus(projectID);
+    const currentJob = await service?.getExportStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, service]);
 
-  const publish = React.useCallback(async () => {
-    await dispatch(Diagram.saveActiveDiagram());
-
-    const result = await service?.publish(projectID);
+  const start = React.useCallback(async () => {
+    const result = await service?.export(projectID);
 
     setJob(result?.job || null);
   }, [projectID, service]);
@@ -54,14 +50,14 @@ export const PublishProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await service?.updatePublishStage(projectID, job.stage.type, data);
+      await service?.updateExportStage(projectID, job.stage.type, data);
       await getJob(); // to fetch updated status
     },
     [projectID, service, job?.stage.type]
   );
 
   const cancel = React.useCallback(async () => {
-    await service?.cancelPublish(projectID);
+    await service?.cancelExport(projectID);
 
     setJob(null);
   }, [projectID, service]);
@@ -71,20 +67,6 @@ export const PublishProvider: React.FC = ({ children }) => {
 
     pullTimeout.current = undefined;
   }, []);
-
-  // eslint-disable-next-line lodash/prefer-constant
-  useSetup(dataRefactor.isEnabled ? getJob : () => null);
-
-  useDidUpdateEffect(() => {
-    if (!dataRefactor.isEnabled) {
-      return;
-    }
-
-    // stop pulling when projectID/platform changed
-    stopPulling();
-
-    getJob();
-  }, [projectID, getJob]);
 
   useDidUpdateEffect(() => {
     if (!dataRefactor.isEnabled) {
@@ -110,10 +92,11 @@ export const PublishProvider: React.FC = ({ children }) => {
   }, [job?.status, getJob]);
 
   useTeardown(() => {
+    cancel();
     stopPulling();
   });
 
-  return <PublishContext.Provider value={{ job, cancel, publish, updateCurrentStage }}>{children}</PublishContext.Provider>;
+  return <ExportContext.Provider value={{ job, cancel, start, updateCurrentStage }}>{children}</ExportContext.Provider>;
 };
 
-export const withPublish = withContext(PublishContext, 'publish');
+export const withExport = withContext(ExportContext, 'export');

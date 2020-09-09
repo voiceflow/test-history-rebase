@@ -209,6 +209,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
           workspaceID={props.workspaceID}
           workspace={props.workspace}
           fetchBoards={loadLists}
+          loadingProjects={loading}
         />
 
         {LOCKED && (

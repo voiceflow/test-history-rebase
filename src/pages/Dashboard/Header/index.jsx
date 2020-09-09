@@ -7,14 +7,14 @@ import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
 import UpgradeButton from './UpgradeButton';
 
-const DashboardHeader = ({ user, history, handleFilterText, workspaces, workspaceID, workspace: activeWorkspace, fetchBoards }) => {
+const DashboardHeader = ({ user, loadingProjects, history, handleFilterText, workspaces, workspaceID, workspace: activeWorkspace, fetchBoards }) => {
   return (
     <Header
       withLogo
       logoAssetPath={activeWorkspace.image}
       disableLogoClick
       history={history}
-      leftRenderer={() => <LeftNavSection workspaces={workspaces} activeWorkspace={activeWorkspace} />}
+      leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} workspaces={workspaces} activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}
       centerRenderer={() => <UpgradeButton />}
       subHeaderRenderer={() => (

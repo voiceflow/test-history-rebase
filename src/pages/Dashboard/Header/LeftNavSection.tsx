@@ -11,8 +11,10 @@ import { connect } from '@/hocs';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+import { noop } from '@/utils/functional';
 
 type LeftNavSectionProps = {
+  loadingProjects: boolean;
   workspaces: { templates: boolean; id: string; name: string }[];
   activeWorkspace: {
     name: string;
@@ -24,6 +26,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   workspaces,
   activeWorkspace,
   isTemplateWorkspace,
+  loadingProjects,
   goToWorkspace,
   goTo,
   plan,
@@ -56,7 +59,13 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
         placement="bottom-start"
       >
         {(ref, onToggle) => (
-          <WorkspacesDropdown id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
+          <WorkspacesDropdown
+            loading={loadingProjects}
+            id="workspaceDropdown"
+            className={`${ClassName.DROPDOWN}--active-workspace`}
+            onClick={loadingProjects ? noop : onToggle}
+            ref={ref}
+          >
             <div>{activeWorkspace.name}</div>
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>

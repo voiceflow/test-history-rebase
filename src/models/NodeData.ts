@@ -270,6 +270,8 @@ export namespace NodeData {
     [IntegrationType.CUSTOM_API]: CustomApi;
     [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   };
+
+  export type Exit = {};
 }
 
 export namespace DBNodeData {

@@ -10,6 +10,7 @@ import { NodeData } from '@/models';
 import blockDataAdapter from './block';
 import captureAdapter from './capture';
 import codeAdapter from './code';
+import exitAdapter from './exit';
 import flowAdapter from './flow';
 import ifAdapter from './if';
 import integrationAdapter from './integration';
@@ -61,7 +62,7 @@ const blockAdapter = {
   [BlockType.CHOICE_OLD]: emptyAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.DISPLAY]: emptyAdapter,
-  [BlockType.EXIT]: emptyAdapter,
+  [BlockType.EXIT]: exitAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.IF]: ifAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,

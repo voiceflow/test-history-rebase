@@ -10,6 +10,7 @@ import { NodeData } from '@/models';
 import blockDataAdapter from './block';
 import captureAdapter from './capture';
 import codeAdapter from './code';
+import directiveAdapter from './directive';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
 import ifAdapter from './if';
@@ -78,7 +79,7 @@ const blockAdapter = {
   [BlockType.STREAM]: emptyAdapter,
   [BlockType.USER_INFO]: emptyAdapter,
   [BlockType.DEPRECATED]: emptyAdapter,
-  [BlockType.DIRECTIVE]: emptyAdapter,
+  [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.EVENT]: emptyAdapter,
   [BlockType.PROMPT]: promptAdapter,
   // markup

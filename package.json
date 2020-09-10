@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@seznam/compose-react-refs": "^1.0.4",
-    "@voiceflow/alexa-types": "1.16.0",
+    "@voiceflow/alexa-types": "1.20.0",
     "@voiceflow/api-sdk": "1.7.0",
     "@voiceflow/apl-renderer": "^1.0.0",
     "@voiceflow/common": "^6.2.3",

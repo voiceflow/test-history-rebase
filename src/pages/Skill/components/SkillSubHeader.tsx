@@ -3,6 +3,7 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
 import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -36,6 +37,7 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   goToDesign,
   goToPrototype,
   goToPublish,
+  isViewerOrLibraryRole,
 }) => {
   const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
@@ -56,7 +58,7 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
 
   useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
-  useHotKeys(Hotkey.BUILD_PAGE, () => goToPublish());
+  useHotKeys(Hotkey.BUILD_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 
   return (
     <>
@@ -68,12 +70,16 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   );
 };
 
+const mapStateToProps = {
+  isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
+};
+
 const mapDispatchToProps = {
   goToDesign: Router.goToCurrentCanvas,
   goToPrototype: Router.goToCurrentPrototype,
   goToPublish: Router.goToActivePlatformPublish,
 };
 
-type ConnecteedeSkillSubHeaderProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnecteedeSkillSubHeaderProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(SkillSubHeader) as React.FC<SkillSubHeaderProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(SkillSubHeader) as React.FC<SkillSubHeaderProps>;

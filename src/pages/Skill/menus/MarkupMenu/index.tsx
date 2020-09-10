@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { Flex } from '@/components/Box';
 import { RemoveIntercom } from '@/components/IntercomChat';
+import Tooltip from '@/components/TippyTooltip';
 import { MarkupModeType } from '@/constants';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 
-import { MarkupButtonContainer, MenuContainer, MenuIcon } from './components';
+import { MenuContainer, MenuIcon } from './components';
 
 const MarkupMenu: React.FC = () => {
   const isEditingMode = useEditingMode();
@@ -16,17 +18,21 @@ const MarkupMenu: React.FC = () => {
   return (
     <>
       <MenuContainer column>
-        <MarkupButtonContainer title="Text">
-          <MenuIcon
-            large
-            icon="textAutoResize"
-            onClick={() => setCreatingModeType(isTextActive ? null : MarkupModeType.TEXT)}
-            active={isTextActive}
-          />
-        </MarkupButtonContainer>
-        <MarkupButtonContainer title="Image">
-          <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
-        </MarkupButtonContainer>
+        <Flex mb={16}>
+          <Tooltip distance={6} title="Text" position="right">
+            <MenuIcon
+              large
+              icon="textAutoResize"
+              onClick={() => setCreatingModeType(isTextActive ? null : MarkupModeType.TEXT)}
+              active={isTextActive}
+            />
+          </Tooltip>
+        </Flex>
+        <Flex mb={16}>
+          <Tooltip distance={6} title="Image" position="right">
+            <MenuIcon large icon="markupImage" onClick={onAddImage} active={modeType === MarkupModeType.IMAGE} />
+          </Tooltip>
+        </Flex>
       </MenuContainer>
 
       {isEditingMode && <RemoveIntercom />}

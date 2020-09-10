@@ -9,6 +9,7 @@ import { NodeData } from '@/models';
 
 import blockDataAdapter from './block';
 import captureAdapter from './capture';
+import cardAdapter from './card';
 import codeAdapter from './code';
 import directiveAdapter from './directive';
 import exitAdapter from './exit';
@@ -59,7 +60,7 @@ const blockAdapter = {
   // user defined
   [BlockType.CANCEL_PAYMENT]: emptyAdapter,
   [BlockType.CAPTURE]: captureAdapter,
-  [BlockType.CARD]: emptyAdapter,
+  [BlockType.CARD]: cardAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.DISPLAY]: emptyAdapter,

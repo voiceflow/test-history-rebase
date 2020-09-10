@@ -226,10 +226,7 @@ export const ReminderType = {
   SCHEDULED: 'scheduled',
 };
 
-export enum CardType {
-  SIMPLE = 'simple',
-  STANDARD = 'standard',
-}
+export { CardType } from '@voiceflow/alexa-types/build/nodes/card';
 
 export enum DialogType {
   AUDIO = 'audio',

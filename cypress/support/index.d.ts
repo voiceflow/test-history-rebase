@@ -38,9 +38,19 @@ declare namespace Cypress {
     removeTestAccount(): Chainable;
 
     /**
+     * remove all threads associated with the test account
+     */
+    removeTestThreads(): Chainable;
+
+    /**
      * create a new project
      */
     createProject(): Chainable;
+
+    /**
+     * create a new thread
+     */
+    createThread(text: string): Chainable;
 
     /**
      * wait for canvas animation to complete

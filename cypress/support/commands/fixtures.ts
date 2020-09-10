@@ -1,5 +1,5 @@
 /* eslint-disable promise/no-nesting */
-import { DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, SKILL_ID_KEY, TEAM_ID_KEY } from './session';
+import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, SKILL_ID_KEY, TEAM_ID_KEY } from './session';
 
 const API_URL = 'https://localhost:8080';
 
@@ -26,5 +26,21 @@ Cypress.Commands.add('createProject', () => {
         SESSION_CONTEXT.set(DIAGRAM_ID_KEY, diagramID);
       });
     });
+  });
+});
+
+Cypress.Commands.add('createThread', (text: string) => {
+  const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
+  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+  const diagramID = SESSION_CONTEXT.get(DIAGRAM_ID_KEY);
+
+  cy.request('POST', `${API_URL}/commenting/project/${projectID}/threads`, {
+    position: [-460, 600],
+    resolved: false,
+    project_id: projectID,
+    diagram_id: diagramID,
+    node_id: null,
+    creator_id: creatorID,
+    comments: [{ text, mentions: [], creator_id: creatorID }],
   });
 });

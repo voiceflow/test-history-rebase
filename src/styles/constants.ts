@@ -39,4 +39,5 @@ export enum ClassName {
   DROPDOWN = 'vf-dropdown',
   SVG_ICON = 'vf-svg-icon',
   MODAL = 'vf-modal',
+  THREAD_EDITOR = 'vf-thread-editor',
 }

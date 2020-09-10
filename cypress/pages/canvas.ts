@@ -46,6 +46,30 @@ export default {
         get historyDrawer() {
           return cy.get('#vf-thread-history-drawer');
         },
+        get thread() {
+          return cy.get('.vf-canvas__thread');
+        },
+        get threadIndicator() {
+          return cy.get('.vf-canvas__thread__indicator');
+        },
+        get newThreadEditor() {
+          return cy.get('.vf-thread-editor--new');
+        },
+        get newTreadEditorInput() {
+          return this.newThreadEditor.find('.mentionInput textarea');
+        },
+        get threadEditor() {
+          return cy.get('.vf-thread-editor:not(.vf-thread-editor--new)');
+        },
+        get threadReply() {
+          return cy.get('.vf-thread-editor__reply');
+        },
+        get threadEditorInput() {
+          return this.threadEditor.find('.mentionInput textarea');
+        },
+        get threadComments() {
+          return this.threadEditor.find('.vf-thread-editor__comment-editor');
+        },
       },
 
       meta: {

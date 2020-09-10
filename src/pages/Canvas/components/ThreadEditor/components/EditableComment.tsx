@@ -8,6 +8,7 @@ import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Callback } from '@/types';
 
+import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
 import ThreadEditorHeader, { ThreadEditorHeaderProps } from './ThreadEditorHeader';
 import { PartialComment } from './types';
 
@@ -60,9 +61,9 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
   };
 
   return (
-    <Box>
+    <Box className={COMMENT_EDITOR_CLASSNAME}>
       <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
-      <Box mt={12}>
+      <Box className={COMMENT_CLASSNAME} mt={12}>
         {isEditing ? (
           <MentionEditor
             onChange={(text, mentions) => setComment({ text, mentions })}

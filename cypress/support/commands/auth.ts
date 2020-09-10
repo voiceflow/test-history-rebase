@@ -66,3 +66,10 @@ Cypress.Commands.add('removeTestAccount', () => {
   SESSION_CONTEXT.clear();
   cy.exec(`${PSQL} -c "DELETE FROM creators WHERE email='${TEST_EMAIL}'"`);
 });
+
+Cypress.Commands.add('removeTestThreads', () => {
+  const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
+
+  SESSION_CONTEXT.clear();
+  cy.exec(`${PSQL} -c "DELETE FROM threads WHERE creator_id=${creatorID}"`);
+});

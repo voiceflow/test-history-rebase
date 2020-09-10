@@ -25,6 +25,7 @@ export namespace Query {
     name: string;
     coupon: string;
     invite: string;
+    code: string /* Referral code */;
   }>;
 
   export type Canvas = Partial<{

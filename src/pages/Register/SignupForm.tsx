@@ -39,7 +39,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
     return false;
   };
 
-  const signupSubmit = (event: React.FormEvent) => {
+  const signupSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     signup({
@@ -47,9 +47,11 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
       email,
       password,
       coupon: coupon.toLowerCase(),
+      referralCode: query.code,
     }).catch((err) => {
       setSignupError(err.body.data);
     });
+
     return false;
   };
 

@@ -40,6 +40,8 @@ export enum EventName {
   ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',
   ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 
+  REFERRAL_SIGNUP = 'Referral Signup',
+
   EXPORT_BUTTON_CLICK = 'Export Button Click',
 
   UPGRADE = 'Upgrade',

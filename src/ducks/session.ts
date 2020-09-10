@@ -12,6 +12,7 @@ import client from '@/client';
 import { ROOT_DOMAIN } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
+import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
@@ -20,7 +21,6 @@ import * as Cookies from '@/utils/cookies';
 import * as LogRocket from '@/vendors/logRocket';
 import * as Userflow from '@/vendors/userflow';
 
-import * as Account from './account';
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
 import { compositeReducer, createAction, createRootSelector, duckLogger } from './utils';
 

@@ -200,6 +200,8 @@ export namespace NodeData {
     expressions: Expression[];
   };
 
+  export type AccountLinking = {};
+
   export type Intent = Record<PlatformType, { intent: string | null; mappings: SlotMapping[] }>;
 
   export type Event = {

@@ -7,10 +7,12 @@ import Section from '@/components/Section';
 import Select from '@/components/Select';
 import { Spinner } from '@/components/Spinner';
 import SubHeaderTabs from '@/components/Tabs';
-import { setError } from '@/ducks/modal';
-import { getAccountLinking, saveAccountLinking } from '@/ducks/skill';
+import { FeatureFlag } from '@/config/features';
+import * as Modal from '@/ducks/modal';
+import * as Skill from '@/ducks/skill';
+import * as SkillEffectsV2 from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
-import { useSmartReducer } from '@/hooks';
+import { useFeature, useSmartReducer } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { Client, Domain, HelpTooltip, Scope, SpinnerContainer } from './components';
@@ -22,25 +24,30 @@ const TAB_COMPONENTS = {
   domain: Domain,
 };
 
-function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isOpen, setError }) {
+function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isOpen, setError, getAccountLinkingV2, saveAccountLinkingV2 }) {
   const [activeTab, setActiveTab] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
   const [state, actions] = useSmartReducer(EMPTY_ACCOUNT_DATA);
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const stateRef = React.useRef();
   const TabComponent = TAB_COMPONENTS[activeTab] || Client;
 
+  const getLinking = dataRefactor.isEnabled ? getAccountLinkingV2 : getAccountLinking;
+  const saveLinking = dataRefactor.isEnabled ? saveAccountLinkingV2 : saveAccountLinking;
+
   const save = React.useCallback(async () => {
     try {
-      await saveAccountLinking(stateRef.current);
+      await saveLinking(stateRef.current);
     } catch (err) {
       setError({ message: 'Unable to save template' });
     }
-  }, [saveAccountLinking, setError]);
+  }, [saveLinking, setError]);
 
   const getState = React.useCallback(async () => {
     try {
-      const accountLinking = await getAccountLinking();
+      const accountLinking = await getLinking();
+
       if (!_.isEmpty(accountLinking) && !_.isNull(accountLinking)) {
         actions.set(accountLinking);
       } else {
@@ -50,7 +57,7 @@ function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isO
     } catch (err) {
       setError({ message: 'Unable to Retrieve Account Linking Info' });
     }
-  }, [getAccountLinking, actions, setError]);
+  }, [getLinking, actions, setError]);
 
   React.useEffect(() => {
     stateRef.current = state;
@@ -60,7 +67,7 @@ function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isO
     // TODO figure out why returning save does not work for effect cleanup
     if (isOpen) {
       getState();
-    } else {
+    } else if (stateRef.current) {
       save();
     }
   }, [isOpen]);
@@ -161,9 +168,11 @@ function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isO
 }
 
 const mapDispatchToProps = {
-  setError,
-  saveAccountLinking,
-  getAccountLinking,
+  setError: Modal.setError,
+  getAccountLinking: Skill.getAccountLinking,
+  saveAccountLinking: Skill.saveAccountLinking,
+  getAccountLinkingV2: SkillEffectsV2.getAccountLinking,
+  saveAccountLinkingV2: SkillEffectsV2.saveAccountLinking,
 };
 
 export default connect(null, mapDispatchToProps)(AccountLinkingEditor);

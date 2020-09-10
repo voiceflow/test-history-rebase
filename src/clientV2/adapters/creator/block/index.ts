@@ -7,6 +7,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 
+import accountLinkingAdapter from './accountLinking';
 import blockDataAdapter from './block';
 import captureAdapter from './capture';
 import cardAdapter from './card';
@@ -72,7 +73,7 @@ const blockAdapter = {
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.PAYMENT]: emptyAdapter,
   [BlockType.PERMISSION]: emptyAdapter,
-  [BlockType.ACCOUNT_LINKING]: emptyAdapter,
+  [BlockType.ACCOUNT_LINKING]: accountLinkingAdapter,
   [BlockType.RANDOM]: randomAdapter,
   [BlockType.REMINDER]: emptyAdapter,
   [BlockType.SET]: setAdapter,

@@ -1,4 +1,4 @@
-import { AlexaVersionData } from '@voiceflow/alexa-types';
+import { AccountLinking, AlexaVersionData } from '@voiceflow/alexa-types';
 import _pick from 'lodash/pick';
 
 import clientV2 from '@/clientV2';
@@ -11,20 +11,20 @@ import * as Slot from '@/ducks/slot';
 import { Thunk } from '@/store/types';
 import { arrayStringReplace } from '@/utils/string';
 
-import { skillMetaSelector, updateSkillMeta } from './meta';
+import * as Meta from './meta';
 import * as Skill from './skill';
 
 export const saveInvocationName = (invocationName: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
 
-  const meta = skillMetaSelector(state);
+  const meta = Meta.skillMetaSelector(state);
   if (meta.invName === invocationName) return;
 
   // update all the invocation examples when invocation name changes
   const invocations = arrayStringReplace(meta.invName, invocationName, meta.invocations);
 
-  dispatch(updateSkillMeta({ invName: invocationName, invocations }));
+  dispatch(Meta.updateSkillMeta({ invName: invocationName, invocations }));
   await clientV2.alexaService.updatePublishing(versionID, { invocationName, invocations });
 };
 
@@ -47,7 +47,7 @@ export const saveAlexaSettings = (settings: Partial<SkillSettings>, properties?:
   // only certain adapted properties as specified by "properties"
   const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
   await clientV2.alexaService.updateSettings(skillID, properties ? _pick(alexaSettings, properties) : alexaSettings);
-  dispatch(updateSkillMeta(settings));
+  dispatch(Meta.updateSkillMeta(settings));
 };
 
 export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
@@ -66,4 +66,22 @@ export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   const global = Skill.globalVariablesSelector(state);
 
   await clientV2.api.version.update(skillID, { variables: global });
+};
+
+export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = Skill.activeSkillIDSelector(state);
+
+  await clientV2.alexaService.updateSettings(skillID, { accountLinking });
+
+  dispatch(Meta.updateAccountLinking(accountLinking));
+};
+
+export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dispatch, getState) => {
+  const state = getState();
+  const skillID = Skill.activeSkillIDSelector(state);
+
+  const { platformData } = await clientV2.api.version.get<{ platformData: AlexaVersionData }>(skillID, ['platformData']);
+
+  return platformData.settings.accountLinking;
 };

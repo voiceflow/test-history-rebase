@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { PLATFORM_META, Platform } from '@/pages/NewProject/Steps/constants';
+import { PlatformType } from '@/constants';
+import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 
 import NameAndImage from './Steps/NameAndImage';
 import PlatformSelect from './Steps/PlatformSelect';
@@ -13,7 +14,7 @@ export enum StepID {
 }
 
 type StepMetaProps = {
-  title: (platform?: Platform) => string;
+  title: (platform?: PlatformType) => string;
   component: React.FC;
 };
 
@@ -29,7 +30,7 @@ export const StepMeta = <Record<StepID, StepMetaProps>>{
     component: PlatformSelect,
   },
   [StepID.PROJECT_SETTINGS]: {
-    title: (platform: Platform) => `${PLATFORM_META[platform].platformAppType} Settings`,
+    title: (platform: PlatformType) => `${PLATFORM_META[platform].platformAppType} Settings`,
     component: ProjectSettings,
   },
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IS_DEVELOPMENT } from '@/config';
 import { PlatformType } from '@/constants';
-import { activePlatformSelector } from '@/ducks/skill';
+import { activePlatformSelector } from '@/ducks/skill/skill';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 

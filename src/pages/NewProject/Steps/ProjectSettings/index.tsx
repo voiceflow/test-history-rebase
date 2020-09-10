@@ -4,10 +4,13 @@ import Button, { ButtonVariant } from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
 import Input from '@/components/Input';
+import Icon from '@/components/SvgIcon';
+import { PlatformType } from '@/constants';
 import { invNameError } from '@/ducks/publish/utils';
-import { PLATFORM_META, Platform } from '@/pages/NewProject/Steps/constants';
+import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
+import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 
@@ -16,19 +19,23 @@ import { SectionDescription, SectionErrorMessage, SectionTitle } from '../compon
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 type PlatformSettingsProps = {
-  selectedPlatform: Platform;
+  selectedPlatform: PlatformType;
   invocationName: string;
   setInvocationName: (name: string) => void;
   selectedLocales: string[];
   setSelectedLocales: (locales: string[]) => void;
+  finalizeCreation: () => void;
+  creatingSkill: boolean;
 };
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   selectedPlatform,
   setInvocationName,
+  creatingSkill,
   invocationName,
   selectedLocales,
   setSelectedLocales,
+  finalizeCreation,
 }) => {
   const displayName = selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ');
   const invocationError = invocationName && invNameError(invocationName, selectedLocales);
@@ -75,9 +82,17 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         </SectionDescription>
       </FieldsContainer>
       <FlexCenter>
-        <Button variant={ButtonVariant.PRIMARY} disabled={!canContinue}>
-          Create Project
-        </Button>
+        {creatingSkill ? (
+          <>
+            <LoadingButton variant="primary" square>
+              <Icon icon="publishSpin" size={24} spin />
+            </LoadingButton>
+          </>
+        ) : (
+          <Button variant={ButtonVariant.PRIMARY} disabled={!canContinue} onClick={finalizeCreation}>
+            Create Project
+          </Button>
+        )}
       </FlexCenter>
     </Container>
   );

@@ -79,6 +79,7 @@ export const PLATFORM_META: Record<PlatformType, { icon: Icon; hidden: boolean }
 export const PLATFORM_APP_NAME = <Record<PlatformType, string>>{
   [PlatformType.ALEXA]: 'Alexa Skill',
   [PlatformType.GOOGLE]: 'Google Action',
+  [PlatformType.GENERAL]: 'General Project',
 };
 
 export const BuiltInVariable = {

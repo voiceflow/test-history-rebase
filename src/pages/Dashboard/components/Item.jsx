@@ -130,7 +130,11 @@ export function Item(props) {
           <ProjectTitleDetails>
             <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
             <ProjectTitleCaption>
-              {projectSplitting.isEnabled && <span>{PLATFORM_APP_NAME[platform]} - </span>}
+              {projectSplitting.isEnabled && (
+                <span>
+                  {PLATFORM_APP_NAME[platform]} {!!language.length && '-'}{' '}
+                </span>
+              )}
               {map(language, (l) => getHumanLanguageName(l)).join(', ')}
             </ProjectTitleCaption>
           </ProjectTitleDetails>

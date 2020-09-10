@@ -3,10 +3,11 @@ import { toast } from '@/components/Toast';
 import { PlatformType, UserRole } from '@/constants';
 import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
-import * as ProjectList from '@/ducks/projectList';
+import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
-import * as Template from '@/ducks/template';
-import * as Tracking from '@/ducks/tracking';
+import { allTemplatesSelector, loadTemplates } from '@/ducks/template';
+import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
+
 import { DBProject, DBWorkspace, Workspace } from '@/models';
 import { ActionPayload, SyncThunk, Thunk } from '@/store/types';
 
@@ -190,7 +191,7 @@ export const sendInvite = (email: string, permissionType: UserRole, showToast = 
 
     if (newMember) {
       dispatch(updateWorkspace(currentWorkspaceID, { members: [...currentMembers, newMember] }));
-      dispatch(Tracking.trackInvitationSent(currentWorkspaceID, email));
+      dispatch(trackInvitationSent(currentWorkspaceID, email));
     }
 
     if (showToast) {
@@ -229,7 +230,7 @@ export const cancelInvite = (email: string): Thunk => async (dispatch, getState)
     const currentMembers = activeWorkspaceMembersSelector(state);
 
     await client.workspace.cancelInvite(workspaceID, email);
-    dispatch(Tracking.trackInvitationCancelled(workspaceID, email));
+    dispatch(trackInvitationCancelled(workspaceID, email));
 
     const updatedMembers = currentMembers.filter((member) => member.email !== email);
     dispatch(updateWorkspace(workspaceID, { members: updatedMembers }));
@@ -290,8 +291,8 @@ export interface NewProjectOptions {
 }
 
 export const createProject = (workspaceID: string, project: NewProjectOptions, templateIndex = 0): Thunk<DBProject> => async (dispatch, getState) => {
-  await dispatch(Template.loadTemplates());
-  const templates = Template.allTemplatesSelector(getState());
+  await dispatch(loadTemplates());
+  const templates = allTemplatesSelector(getState());
   const templateID = templates[templateIndex]?.id;
 
   // onboarding failsafe
@@ -330,5 +331,5 @@ export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, get
 
   if (!workspaceID) return;
 
-  await dispatch(ProjectList.saveProjectListsForWorkspace(workspaceID));
+  await dispatch(saveProjectListsForWorkspace(workspaceID));
 };

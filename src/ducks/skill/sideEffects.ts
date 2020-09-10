@@ -1,13 +1,20 @@
 import fileSaver from 'file-saver';
+import { generatePath } from 'react-router-dom';
 
 import client from '@/client';
 import intentAdapter from '@/client/adapters/intent';
 import skillMetaAdapter from '@/client/adapters/skill/meta';
 import slotAdapter from '@/client/adapters/slot';
 import { toast } from '@/components/Toast';
-import { ExportFormat, VALID_VARIABLE_NAME } from '@/constants';
+import { Path } from '@/config/routes';
+import { ExportFormat, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
 import { allIntentsSelector } from '@/ducks/intent/selectors';
+import { addProjectToList } from '@/ducks/projectList/actions';
+import { goTo } from '@/ducks/router/actions';
 import { allSlotsSelector } from '@/ducks/slot';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
+import { createProject } from '@/ducks/workspace/sideEffects';
+import { Skill } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getAuthCookie, getByName } from '@/utils/cookies';
 
@@ -71,6 +78,42 @@ export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   const global = globalVariablesSelector(state);
 
   await client.skill.update(skillID, { global });
+};
+
+export const saveSkillMeta = (meta: {}, targetSkillId: string): Thunk => async (_dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+  await client.skill.saveMetaData(meta, skillID || targetSkillId);
+  updateSkillMeta(meta);
+};
+
+export const createSkill = (platform: PlatformType, projectData: Partial<Skill>, projectMeta: {}, listID?: string): Thunk => async (
+  dispatch,
+  getState
+) => {
+  const state = getState();
+  const workspaceID = activeWorkspaceIDSelector(state);
+
+  try {
+    const project = await dispatch(
+      createProject(workspaceID!, {
+        name: projectData.name!,
+        locales: platform === PlatformType.GENERAL ? [] : projectData.locales!,
+        platform: platform!,
+      })
+    );
+
+    const { project_id, skill_id } = project;
+
+    if (listID) {
+      await dispatch(addProjectToList(listID, project_id));
+    }
+
+    await dispatch(saveSkillMeta({ ...projectMeta }, skill_id));
+    dispatch(goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID: skill_id, diagram: project_id })}${window.location.search}`));
+  } catch (err) {
+    toast.error('Error creating project, please try again later or contact support.');
+  }
 };
 
 export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getState) => {

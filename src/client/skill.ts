@@ -27,6 +27,8 @@ const skillClient = {
 
   restore: (versionID: string) => fetch.post<{ skill_id: string; diagram: string }>(`${SKILL_PATH}/${versionID}/restore`),
 
+  saveMetaData: (meta: any, skillID: string) => fetch.patch(`${SKILL_PATH}/${skillID}?publish=true`, meta),
+
   exportSkill: (versionID: string) => fetch.get<any>(`${SKILL_PATH}/${versionID}/export`),
 };
 

@@ -9,7 +9,7 @@ import MANAGERS from '@/pages/Canvas/managers';
 
 import { Container, Select } from './components';
 
-export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, ...INTERNAL_NODES, ...MARKUP_NODES];
+export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, BlockType.CHOICE_OLD, ...INTERNAL_NODES, ...MARKUP_NODES];
 
 const BLOCK_TYPES = [
   ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label, labelV2 }) => ({

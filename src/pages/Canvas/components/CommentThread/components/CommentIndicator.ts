@@ -1,13 +1,11 @@
 import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
 import Flex from '@/components/Flex';
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 import { INDICATOR_DIAMETER } from '../constants';
 
 const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
   position: absolute;
-  transform: translate(-50%, -50%) scale(1);
-  transition: all 0.3s ease-in-out;
   justify-content: center;
   width: ${INDICATOR_DIAMETER}px;
   height: ${INDICATOR_DIAMETER}px;
@@ -20,6 +18,9 @@ const CommentIndicator = styled(Flex)<{ isFocused?: boolean }>`
   font-weight: 600;
 
   cursor: pointer;
+
+  transform: translate(-50%, -50%) scale(1);
+  ${transition('transform')};
 
   :before {
     content: '';

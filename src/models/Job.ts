@@ -28,7 +28,8 @@ export namespace AlexaPublishJob {
     {
       message: string;
       errorType: AlexaPublishJobErrorType;
-      error?: string;
+      error?: any;
+      amazonError?: boolean;
     }
   >;
 

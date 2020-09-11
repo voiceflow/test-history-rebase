@@ -142,7 +142,7 @@ function AccountLinkingEditor({ data, saveAccountLinking, getAccountLinking, isO
               <FormControl label="Access Token Expiration">
                 <Input
                   value={state.defaultTokenExpirationInSeconds}
-                  onChange={(e) => handleInputUpdate('defaultTokenExpirationInSeconds', e.target.value)}
+                  onChange={(e) => handleInputUpdate('defaultTokenExpirationInSeconds', +e.target.value)}
                 />
               </FormControl>
               <FormControl label="Client Authentication Scheme" contentBottomUnits={0}>

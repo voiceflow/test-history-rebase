@@ -32,7 +32,6 @@ const ReminderManager: NodeConfig<NodeData.Reminder> = {
       minutes: '',
       seconds: '',
       recurrenceBool: false,
-      recurrence: {},
     },
   }),
 };

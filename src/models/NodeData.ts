@@ -125,7 +125,16 @@ export namespace NodeData {
   };
 
   export type Reminder = {
+    name: string;
+    reminderType: string;
     text: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+    date?: string;
+    timezone?: string;
+    recurrence?: { byDay?: string; freq: string };
+    recurrenceBool: boolean;
   };
 
   export type UserInfo = {

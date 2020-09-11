@@ -1,7 +1,7 @@
 import { NoMatches, Prompt, Voice } from '@voiceflow/alexa-types';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
-import { DialogType, RepromptType } from '@/constants';
+import { DialogType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
 import { NodeData } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
@@ -46,3 +46,7 @@ export const noMatchAdapter = createAdapter<NoMatches, NodeData.NoMatches>(
     reprompts: noMatchRepromptAdapter.mapToDB(reprompts),
   })
 );
+
+export const transformVariablesToReadable = (text: string) => text.replace(SLOT_REGEXP, '{$1}').trim();
+export const transformVariablesFromReadableWithoutTrim = (text: string) => text.replace(VARIABLE_STRING_REGEXP, '{{[$1].$1}}');
+export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();

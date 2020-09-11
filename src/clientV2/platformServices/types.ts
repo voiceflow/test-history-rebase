@@ -1,9 +1,5 @@
-import { Project } from '@voiceflow/api-sdk';
-
 import { Job } from '@/models';
 import { Nullable } from '@/types';
-
-type GeneralProject = Project<Record<string, unknown>, Record<string, unknown>>;
 
 export interface PublishService<J extends Job, S extends string> {
   publish: (projectID: string) => Promise<{ job: J; projectID: string }>;
@@ -13,6 +9,14 @@ export interface PublishService<J extends Job, S extends string> {
   getPublishStatus: (projectID: string) => Promise<Nullable<J>>;
 
   updatePublishStage: (projectID: string, stage: S, data: unknown) => Promise<void>;
+}
 
-  copyProject: (projectID: string, data?: Partial<GeneralProject>) => Promise<GeneralProject>;
+export interface ExportService<J extends Job, S extends string> {
+  export: (projectID: string) => Promise<{ job: J; projectID: string }>;
+
+  cancelExport: (projectID: string) => Promise<void>;
+
+  getExportStatus: (projectID: string) => Promise<Nullable<J>>;
+
+  updateExportStage: (projectID: string, stage: S, data: unknown) => Promise<void>;
 }

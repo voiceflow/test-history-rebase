@@ -20,7 +20,7 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
     dispatch(Skill.updateSkillMeta(data.meta, meta));
     dispatch(Skill.updateActiveSkill({ name: data.skillName }, meta));
   },
-  [Realtime.ResourceType.PUBLISH]: (data: unknown, meta: object) => {
+  [Realtime.ResourceType.PUBLISH]: (data: any, meta: Record<string, unknown>) => {
     const platform = Skill.activePlatformSelector(getState());
     dispatch(platform === PlatformType.ALEXA ? AlexaPublish.updatePublishInfo(data, meta) : GooglePublish.updatePublishInfo(data, meta));
   },

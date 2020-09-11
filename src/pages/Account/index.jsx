@@ -6,8 +6,11 @@ import React, { Component } from 'react';
 import Header from '@/components/Header';
 import Button from '@/components/LegacyButton';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { FeatureFlag } from '@/config/features';
 import * as AccountDuck from '@/ducks/account';
+import { getAmazonAccountV2, unlinkAmazonAccountV2 } from '@/ducks/account/sideEffectsV2';
 import * as Creator from '@/ducks/creator';
+import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import { connect } from '@/hocs';
 
@@ -18,15 +21,15 @@ class Account extends Component {
   };
 
   componentDidMount = () => {
-    const { checkAmazonAccount, checkGoogleAccount } = this.props;
+    const { checkAmazonAccount, getAmazonAccountV2, checkGoogleAccount, isFeatureEnabled } = this.props;
     // eslint-disable-next-line promise/catch-or-return
-    checkAmazonAccount().then(() => this.setState({ amazonStatus: true }));
+    (isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? getAmazonAccountV2() : checkAmazonAccount()).then(() => this.setState({ amazonStatus: true }));
     // eslint-disable-next-line promise/catch-or-return
     checkGoogleAccount().then(() => this.setState({ googleStatus: true }));
   };
 
   resetAmazon = () => {
-    const { setConfirm, deleteAmazonAccount } = this.props;
+    const { setConfirm, isFeatureEnabled, deleteAmazonAccount, unlinkAmazonAccountV2 } = this.props;
     setConfirm({
       text: (
         <>
@@ -37,7 +40,7 @@ class Account extends Component {
       warning: true,
       confirm: async () => {
         this.setState({ amazonStatus: false });
-        await deleteAmazonAccount();
+        await (isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? unlinkAmazonAccountV2() : deleteAmazonAccount());
         this.setState({ amazonStatus: true });
       },
     });
@@ -212,12 +215,15 @@ class Account extends Component {
 
 const mapStateToProps = {
   user: AccountDuck.userSelector,
+  isFeatureEnabled: Feature.isFeatureEnabledSelector,
 };
 
 const mapDispatchToProps = {
   checkAmazonAccount: AccountDuck.checkAmazonAccount,
+  getAmazonAccountV2,
   checkGoogleAccount: AccountDuck.checkGoogleAccount,
   deleteAmazonAccount: AccountDuck.deleteAmazonAccount,
+  unlinkAmazonAccountV2,
   deleteGoogleAccount: AccountDuck.deleteGoogleAccount,
   updateAccount: AccountDuck.updateAccount,
   setConfirm: Modal.setConfirm,

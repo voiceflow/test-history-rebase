@@ -5,6 +5,7 @@ import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { FeatureFlag } from '@/config/features';
 import { JobStatus } from '@/constants';
 import * as Account from '@/ducks/account';
+import { syncSelectedVendor } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
@@ -14,7 +15,7 @@ import { PublishContext } from '@/pages/Skill/contexts';
 import PublishAmazonForm from './Form';
 
 export function PublishAmazon(props) {
-  const { stage, amazon, isLocked, checkAmazonAccount, syncVendors, resetAlexaUpload, publish } = props;
+  const { stage, amazon, isLocked, checkAmazonAccount, syncVendors, resetAlexaUpload, publish, syncSelectedVendor } = props;
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const { job, publish: publishV2, cancel } = React.useContext(PublishContext);
@@ -36,6 +37,8 @@ export function PublishAmazon(props) {
 
   useEffect(() => {
     if (dataRefactor.isEnabled) {
+      syncSelectedVendor();
+
       return;
     }
 
@@ -68,6 +71,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   resetAlexaUpload: AlexaPublish.resetAlexaUpload,
   checkAmazonAccount: Account.checkAmazonAccount,
+  syncSelectedVendor,
   syncVendors: AlexaPublish.syncVendors,
   publish: AlexaPublish.publish,
 };

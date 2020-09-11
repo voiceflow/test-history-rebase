@@ -178,7 +178,7 @@ class Skill extends Component {
         const publishingForm = amazonFormAdapter.toDBV2(formState, amazonFormObj);
         const publishing = alexaPublishingAdapterV2.toDB(publishingForm);
 
-        await clientV2.alexaService.updatePublishing(skillID, publishing);
+        await clientV2.alexaService.updateVersionPublishing(skillID, publishing);
         await clientV2.api.project.update(formState.projectID, { name: publishingForm.name });
 
         updateProjectName(formState.projectID, publishingForm.name);

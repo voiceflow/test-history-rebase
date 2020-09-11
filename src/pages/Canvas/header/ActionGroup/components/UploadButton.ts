@@ -5,10 +5,17 @@ import { css, styled } from '@/hocs';
 import { Spin } from '@/styles/animations';
 
 export type UploadButtonProps = {
+  isVendors?: boolean;
   isUploading?: boolean;
 };
 
 const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
+  ${({ isVendors }) =>
+    isVendors &&
+    css`
+      min-width: 135px;
+    `}
+
   ${({ isUploading }) =>
     isUploading &&
     css`

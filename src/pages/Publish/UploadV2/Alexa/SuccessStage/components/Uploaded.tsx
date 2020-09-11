@@ -101,4 +101,4 @@ const mapStateToProps = {
 
 export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(Uploaded) as React.FC<UploadedProps>;
+export default connect(mapStateToProps, null)(Uploaded) as React.FC<UploadedProps>;

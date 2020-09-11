@@ -1,24 +1,42 @@
 import React from 'react';
 import { Alert } from 'reactstrap';
 
-import client from '@/client';
 import Button from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Input from '@/components/Input';
 import Menu, { MenuItem } from '@/components/Menu';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
+import { updateSelectedVendor, updateVendorSkillID } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 
-function Migrate({ amznID, amazonAccount, projectID, updateVendor, updatePublishInfo, vendorID, onError, onSuccess }) {
+function Migrate({
+  amznID,
+  amazonAccount,
+  projectID,
+  updateVendor,
+  updateAmznId,
+  vendorID,
+  onError,
+  onSuccess,
+  updateSelectedVendor,
+  updateVendorSkillID,
+}) {
   const [newAmznID, setNewAmznID] = React.useState('');
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const updateSkillID = async () => {
     try {
-      const returnAmznID = await client.project.updateAmznId(projectID, vendorID, newAmznID);
-      updatePublishInfo({ amznID: returnAmznID });
+      if (dataRefactor.isEnabled) {
+        await updateVendorSkillID(projectID, vendorID, newAmznID);
+      } else {
+        await updateAmznId(projectID, vendorID, newAmznID);
+      }
+
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error?.response?.data?.data));
@@ -62,7 +80,7 @@ function Migrate({ amznID, amazonAccount, projectID, updateVendor, updatePublish
               <MenuItem disabled>Select Vendor</MenuItem>
               <MenuItem divider />
               {vendors.map(({ id, name }) => (
-                <MenuItem key={id} onClick={() => updateVendor(id)}>
+                <MenuItem key={id} onClick={() => (dataRefactor.isEnabled ? updateSelectedVendor(id) : updateVendor(id))}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </MenuItem>
               ))}
@@ -88,8 +106,10 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updatePublishInfo: AlexaPublish.updatePublishInfo,
+  updateAmznId: Account.updateAmznId,
   updateVendor: AlexaPublish.updateVendor,
+  updateVendorSkillID,
+  updateSelectedVendor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Migrate);

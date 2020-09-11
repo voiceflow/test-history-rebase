@@ -25,7 +25,7 @@ export const saveInvocationName = (invocationName: string): Thunk => async (disp
   const invocations = arrayStringReplace(meta.invName, invocationName, meta.invocations);
 
   dispatch(Meta.updateSkillMeta({ invName: invocationName, invocations }));
-  await clientV2.alexaService.updatePublishing(versionID, { invocationName, invocations });
+  await clientV2.alexaService.updateVersionPublishing(versionID, { invocationName, invocations });
 };
 
 export const saveProjectName = (name: string): Thunk => async (dispatch, getState) => {
@@ -46,7 +46,7 @@ export const saveAlexaSettings = (settings: Partial<SkillSettings>, properties?:
 
   // only certain adapted properties as specified by "properties"
   const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
-  await clientV2.alexaService.updateSettings(skillID, properties ? _pick(alexaSettings, properties) : alexaSettings);
+  await clientV2.alexaService.updateVersionSettings(skillID, properties ? _pick(alexaSettings, properties) : alexaSettings);
   dispatch(Meta.updateSkillMeta(settings));
 };
 
@@ -72,7 +72,7 @@ export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state);
 
-  await clientV2.alexaService.updateSettings(skillID, { accountLinking });
+  await clientV2.alexaService.updateVersionSettings(skillID, { accountLinking });
 
   dispatch(Meta.updateAccountLinking(accountLinking));
 };

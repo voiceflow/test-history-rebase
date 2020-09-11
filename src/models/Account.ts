@@ -1,3 +1,5 @@
+import { AmazonProfile, AmazonVendor } from '@voiceflow/alexa-types';
+
 export type Account = {
   email: string;
   name: string;
@@ -14,21 +16,9 @@ export type LockOwner = Account & {
 export namespace Account {
   export type Amazon = {
     token: string;
-    profile: {
-      user_id: string;
-      name: string;
-      email: string;
-    };
-    vendors: Amazon.Vendor[];
+    profile: AmazonProfile;
+    vendors: AmazonVendor[];
   };
-
-  export namespace Amazon {
-    export type Vendor = {
-      id: string;
-      name: string;
-      roles: string[];
-    };
-  }
 
   export type Google = {
     token: string;

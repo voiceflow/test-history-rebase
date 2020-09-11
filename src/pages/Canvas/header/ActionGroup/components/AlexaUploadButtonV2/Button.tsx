@@ -7,6 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import * as Account from '@/ducks/account';
+import { updateSelectedVendor } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
@@ -25,7 +26,7 @@ type ButtonProps = {
   label?: string;
 };
 
-const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, updateVendor, isActive, label }) => {
+const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, isActive, label, updateSelectedVendor }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   // show dropdown list for vendors
@@ -52,7 +53,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
               <PartialMenuItem divider />
 
               {vendors.map(({ id, name }) => (
-                <PartialMenuItem key={id} onClick={updateVendor}>
+                <PartialMenuItem key={id} onClick={() => updateSelectedVendor(id)}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </PartialMenuItem>
               ))}
@@ -66,7 +67,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
           {buttonLabel}
         </AnyDropdownButton>
       ) : (
-        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive}>
+        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} isVendors={vendors.length > 1} onClick={onClick} isUploading={isActive}>
           {buttonLabel}
         </UploadButton>
       )}
@@ -81,7 +82,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateVendor: AlexaPublish.updateVendor,
+  updateSelectedVendor,
 };
 
 type ConnectedButtonProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

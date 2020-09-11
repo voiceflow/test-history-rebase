@@ -8,7 +8,7 @@ import { Workspace } from '@/models';
 import { NonNullableRecord } from '@/types';
 import { getAlternativeColor } from '@/utils/colors';
 
-import { userIDSelector } from '../account';
+import { userIDSelector } from '../account/selectors';
 import { STATE_KEY } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);

@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 
 import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
+import { linkAmazonAccountV2 } from '@/ducks/account/sideEffectsV2';
+import { useFeature } from '@/hooks';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {
@@ -33,7 +36,10 @@ const AmazonLoad = () =>
   });
 
 export const AmazonLoginButton = (props) => {
-  const { onLoad, onFail, onSuccess, createAmazonSession } = props;
+  const { onLoad, onFail, onSuccess, createAmazonSession, linkAmazonAccountV2 } = props;
+
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   useEffect(() => {
     AmazonLoad();
   }, []);
@@ -48,7 +54,7 @@ export const AmazonLoginButton = (props) => {
             throw new Error();
           }
 
-          const account = await createAmazonSession(response.code);
+          const account = await (dataRefactor.isEnabled ? linkAmazonAccountV2(response.code) : createAmazonSession(response.code));
 
           onSuccess(account);
         } catch (err) {
@@ -76,6 +82,7 @@ AmazonLoginButton.propTypes = {
 
 const mapDispatchToProps = {
   createAmazonSession: Account.createAmazonSession,
+  linkAmazonAccountV2,
 };
 
 export default connect(null, mapDispatchToProps)(AmazonLoginButton);

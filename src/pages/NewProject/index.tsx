@@ -55,7 +55,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
         const project = await createProject({ platform: selectedPlatform!, name, image, listID });
         // TODO: in the future make new project parameters much more platform specific
         if (selectedPlatform === PlatformType.ALEXA) {
-          clientV2.alexaService.updatePublishing(project.versionID, {
+          clientV2.alexaService.updateVersionPublishing(project.versionID, {
             invocationName,
             invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
             locales: selectedLocales as any,

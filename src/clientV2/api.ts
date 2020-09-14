@@ -1,11 +1,22 @@
 import Voiceflow from '@voiceflow/api-sdk';
+import axios from 'axios';
 
 import { API_ENDPOINT } from '@/config';
+import { PlatformType } from '@/constants';
 
 export const voiceflow = new Voiceflow({
   clientKey: 'CREATOR_APP',
   apiEndpoint: `${API_ENDPOINT}/v2`,
 });
 
+const creatorAPI = {
+  template: {
+    getPlatformTemplate: (platform: PlatformType) => axios.get(`${API_ENDPOINT}/v2/templates/${platform}`).then((res) => res.data as string | null),
+  },
+};
+
 // authorization will rely on the cookie
-export default voiceflow.generatePublicClient();
+export default {
+  ...voiceflow.generatePublicClient(),
+  ...creatorAPI,
+};

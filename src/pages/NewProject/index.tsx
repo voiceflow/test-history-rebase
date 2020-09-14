@@ -1,14 +1,17 @@
 import React from 'react';
 
+import clientV2 from '@/clientV2';
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import CreationHeader from '@/components/CreationSteps/components/Header';
 import { FlexCenter } from '@/components/Flex';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, useFeature } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
@@ -21,6 +24,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   computedMatch,
   goToDashboard,
   createSkill,
+  goToCanvas,
+  createProject,
 }) => {
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
@@ -30,11 +35,12 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [invocationName, setInvocationName] = React.useState('');
   const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
   const [selectedLocales, setSelectedLocales] = React.useState([LOCALE_MAP[0].value]);
-  const [creatingSkill, setCreatingSkill] = React.useState(false);
+  const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep: React.FC<any> = StepMeta[currentStep].component;
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const finalizeCreation = async () => {
-    setCreatingSkill(true);
+    setCreatingProject(true);
     const projectData = {
       name,
       locales: selectedPlatform === PlatformType.GENERAL ? [] : selectedLocales,
@@ -45,9 +51,23 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     const projectMeta = { inv_name: invocationName, large_icon: image };
 
     try {
-      await createSkill(selectedPlatform!, projectData, projectMeta, listID);
+      if (dataRefactor.isEnabled) {
+        const project = await createProject({ platform: selectedPlatform!, name, image, listID });
+        // TODO: in the future make new project parameters much more platform specific
+        if (selectedPlatform === PlatformType.ALEXA) {
+          clientV2.alexaService.updatePublishing(project.versionID, {
+            invocationName,
+            invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+            locales: selectedLocales as any,
+            largeIcon: image,
+          });
+        }
+        goToCanvas(project.versionID);
+      } else {
+        await createSkill(selectedPlatform!, projectData, projectMeta, listID);
+      }
     } finally {
-      setCreatingSkill(false);
+      setCreatingProject(false);
     }
   };
 
@@ -95,7 +115,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 
         <FlexCenter>
           <CurrentStep
-            creatingSkill={creatingSkill}
+            creatingProject={creatingProject}
             invocationName={invocationName}
             setInvocationName={setInvocationName}
             selectedLocales={selectedLocales}
@@ -117,7 +137,9 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 
 const mapDispatchToPrpos = {
   goToDashboard: Router.goToDashboard,
+  goToCanvas: Router.goToCanvas,
   createSkill: Skill.createSkill,
+  createProject: ProjectV2.createProject,
 };
 
 type ConnectedNewProjectProps = ConnectedProps<{}, typeof mapDispatchToPrpos>;

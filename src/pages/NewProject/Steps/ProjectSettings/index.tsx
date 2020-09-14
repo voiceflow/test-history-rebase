@@ -25,13 +25,13 @@ type PlatformSettingsProps = {
   selectedLocales: string[];
   setSelectedLocales: (locales: string[]) => void;
   finalizeCreation: () => void;
-  creatingSkill: boolean;
+  creatingProject: boolean;
 };
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   selectedPlatform,
   setInvocationName,
-  creatingSkill,
+  creatingProject,
   invocationName,
   selectedLocales,
   setSelectedLocales,
@@ -82,7 +82,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         </SectionDescription>
       </FieldsContainer>
       <FlexCenter>
-        {creatingSkill ? (
+        {creatingProject ? (
           <>
             <LoadingButton variant="primary" square>
               <Icon icon="publishSpin" size={24} spin />

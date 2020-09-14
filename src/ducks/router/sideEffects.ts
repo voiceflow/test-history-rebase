@@ -31,7 +31,7 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
   }
 };
 
-export const goToCanvas = (versionID: string, diagramID: string) =>
+export const goToCanvas = (versionID: string, diagramID?: string) =>
   goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
 export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {

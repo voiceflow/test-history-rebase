@@ -108,8 +108,10 @@ context('Canvas - Commenting', () => {
           .type('this is my reply!')
           .type('{ctrl}{enter}');
 
+        commentingMode.el.threadComments.should('have.length', 2);
+        commentingMode.el.threadReply.should('be.visible');
+
         commentingMode.el.threadComments //
-          .should('have.length', 2)
           .eq(1)
           .find('.vf-thread-editor__comment')
           .should('contain.text', 'this is my reply!');

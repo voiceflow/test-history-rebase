@@ -24,6 +24,9 @@ export default {
     get homeBlock() {
       return cy.get('.vf-canvas__block--home');
     },
+    get settingsPage() {
+      return cy.get('#vf-settings-page');
+    },
     get canvas() {
       return cy.get('#vf-canvas');
     },

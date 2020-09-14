@@ -17,10 +17,13 @@ const PageContent = styled.main<PageContentProps>`
     `}
 
   ${({ canScroll = true }) =>
-    !canScroll &&
-    css`
-      overflow: hidden;
-    `}
+    canScroll
+      ? css`
+          overflow: auto;
+        `
+      : css`
+          overflow: hidden;
+        `}
 `;
 
 export default PageContent;

@@ -6,11 +6,13 @@ import UserMenu from '@/components/Header/components/UserMenu';
 import SvgIcon from '@/components/SvgIcon';
 import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 
-import { Container, Content, Header, HeaderContainer, HeaderPortalContainer, SubHeader } from './components';
+import { Container, Content, Header, HeaderContainer, HeaderPortalContainer, NavigateBackTextContainer, SubHeader } from './components';
 
 export { Container };
 
 export const HeaderContext = React.createContext<React.RefObject<HTMLElement> | null>(null);
+
+const BackButtonComp: React.FC<any> = BackButton;
 
 export type PageProps = {
   header: React.ReactNode;
@@ -19,9 +21,19 @@ export type PageProps = {
   canScroll?: boolean;
   scrollHorizontal?: boolean;
   userMenu?: boolean;
+  navigateBackText?: string;
 };
 
-const Page: React.FC<PageProps> = ({ header, subHeader, scrollHorizontal, canScroll = true, userMenu = true, onNavigateBack, children }) => {
+const Page: React.FC<PageProps> = ({
+  header,
+  navigateBackText,
+  subHeader,
+  scrollHorizontal,
+  canScroll = true,
+  userMenu = true,
+  onNavigateBack,
+  children,
+}) => {
   const headerRef = React.useRef<HTMLDivElement>(null);
 
   return (
@@ -30,9 +42,10 @@ const Page: React.FC<PageProps> = ({ header, subHeader, scrollHorizontal, canScr
         <HeaderContainer>
           <Header>
             {onNavigateBack && (
-              <BackButton onClick={onNavigateBack}>
+              <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
                 <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
-              </BackButton>
+                {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
+              </BackButtonComp>
             )}
             <HeaderPortalContainer ref={headerRef}>{header}</HeaderPortalContainer>
             {userMenu && <UserMenu />}

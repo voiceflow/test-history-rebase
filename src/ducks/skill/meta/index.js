@@ -70,6 +70,7 @@ export const saveMeta = (settings) => async (dispatch, getState) => {
   const skillID = activeSkillIDSelector(state);
 
   await client.skill.update(skillID, skillMetaAdapter.toDB(settings));
+
   dispatch(updateSkillMeta(settings));
 };
 

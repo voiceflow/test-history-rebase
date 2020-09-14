@@ -60,6 +60,7 @@ export const BackButton = styled.span`
   cursor: pointer;
   opacity: 0.8;
   transition: opacity 0.15s ease;
+  border-right: ${({ hasBackText }) => (hasBackText ? 'solid 1px #eaeff4' : 'none')};
 
   &:hover {
     opacity: 1;

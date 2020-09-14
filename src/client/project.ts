@@ -13,6 +13,7 @@ export type ProjectVersion = {
   skill_id: string;
   published_platform: PlatformType;
   created: string;
+  platform: PlatformType;
 };
 
 const projectClient = {

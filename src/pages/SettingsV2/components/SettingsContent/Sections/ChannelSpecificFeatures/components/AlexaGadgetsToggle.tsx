@@ -7,6 +7,7 @@ import { activePlatformSelector, saveMeta, settingsSelector, updateSettings } fr
 import { saveAlexaSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature, useTeardown } from '@/hooks';
+import { Alexa } from '@/pages/SettingsV2/components/ContentDescriptors';
 
 type Settings = {
   customInterface?: boolean;
@@ -20,7 +21,7 @@ type SettingsProps = {
   saveAlexaSettings: typeof saveAlexaSettings;
 };
 
-const Settings: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta, saveAlexaSettings }) => {
+const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta, saveAlexaSettings }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
@@ -36,8 +37,10 @@ const Settings: React.FC<SettingsProps> = ({ platform, settings, updateSettings,
     <>
       {platform === PlatformType.ALEXA && gadgets.isEnabled && (
         <UncontrolledSection
-          header="Custom Interface"
-          isDividerNested
+          emptyChildren
+          contentPrefix={Alexa.Gadgets}
+          header="Alexa Gadgets"
+          headerToggle
           isCollapsed={!settings.customInterface}
           onClick={() => updateSettings({ customInterface: !settings.customInterface })}
           variant={SectionVariant.SECONDARY}
@@ -59,4 +62,4 @@ const mapDispatchToProps = {
   saveAlexaSettings,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(AlexaGadgets);

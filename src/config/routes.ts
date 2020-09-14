@@ -23,6 +23,7 @@ export enum ProjectRoute {
   TOOLS = 'tools',
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
+  SETTINGS = 'settings',
 }
 
 export enum CanvasRoute {
@@ -95,6 +96,7 @@ export const Path = {
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
+  PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
 
   CANVAS_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),

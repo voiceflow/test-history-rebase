@@ -26,6 +26,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   variant?: string;
   fullHeight?: boolean;
   placeholder?: string;
+  hasBorder?: boolean;
 };
 
 export default styled(AceEditor).attrs({
@@ -39,6 +40,14 @@ export default styled(AceEditor).attrs({
     fullHeight &&
     css`
       height: 100% !important;
+    `}
+
+  ${({ hasBorder = false }) =>
+    hasBorder &&
+    css`
+      border-radius: 5px;
+      box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
+      border: solid 1px #d4d9e6;
     `}
 
   .ace_custom_variable {
@@ -65,7 +74,7 @@ export default styled(AceEditor).attrs({
   .ace_gutter {
     background: #fdfdfd !important;
     color: #8da2b5 !important;
-    border-right: 1px solid #eaeff4;
+    border-right: 1px solid #dfe3ed;
   }
 
   .ace_utterance {

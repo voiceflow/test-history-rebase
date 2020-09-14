@@ -19,6 +19,7 @@ export type SectionContainerProps = {
   isDividerNested?: boolean;
   isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
+  headerToggle?: boolean;
 };
 
 export const draggingStyles = css`
@@ -98,6 +99,12 @@ const SectionContainer = styled.div<SectionContainerProps>`
             font-weight: ${isCollapsed ? 'normal' : '600'};
             color: #62778c;
           `;
+        case SectionVariant.QUATERNARY:
+          return css`
+            color: #62778c;
+            font-weight: 600;
+            font-size: 15px;
+          `;
         case SectionVariant.PRIMARY:
         default:
           return css`
@@ -107,12 +114,11 @@ const SectionContainer = styled.div<SectionContainerProps>`
     }}
   }
 
-  ${({ variant }) => {
+  ${({ variant, headerToggle }) => {
     if (variant === SectionVariant.TERTIARY) {
       return css`
         ${Header} {
           height: ${units(5)}px;
-        }
 
         ${ContentContainer} {
           padding-bottom: ${units(2)}px;
@@ -124,6 +130,23 @@ const SectionContainer = styled.div<SectionContainerProps>`
       return css`
         ${Header} {
           padding-bottom: 11px;
+        }
+      `;
+    }
+
+    if (variant === SectionVariant.QUATERNARY) {
+      if (headerToggle) {
+        return css`
+          ${Header} {
+            padding-bottom: 16px;
+            padding-top: 25px;
+          }
+        `;
+      }
+      return css`
+        ${Header} {
+          padding-bottom: 10px;
+          padding-top: 25px;
         }
       `;
     }

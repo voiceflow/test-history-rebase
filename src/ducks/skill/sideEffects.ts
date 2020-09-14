@@ -30,13 +30,22 @@ import {
 } from './skill';
 
 // eslint-disable-next-line import/prefer-default-export
-export const saveSkillSettings = <T extends { name: string }>(settings: T): Thunk => async (dispatch, getState) => {
-  const { name, ...meta } = settings;
+export const saveSkillSettings = <T extends { name: string; locales?: string[] }>(settings: T): Thunk => async (dispatch, getState) => {
+  const { name, locales, ...meta } = settings;
   const state = getState();
   const skillID = activeSkillIDSelector(state)!;
 
+  const newSkillData = {
+    name,
+    locales,
+  };
+
+  if (!locales) {
+    delete newSkillData.locales;
+  }
+
   await client.skill.update(skillID, skillMetaAdapter.toDB(settings));
-  dispatch(updateActiveSkill({ name }));
+  dispatch(updateActiveSkill(newSkillData));
   dispatch(updateSkillMeta(meta));
 };
 
@@ -80,7 +89,7 @@ export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   await client.skill.update(skillID, { global });
 };
 
-export const saveSkillMeta = (meta: {}, targetSkillId: string): Thunk => async (_dispatch, getState) => {
+export const saveSkillMeta = (meta: {}, targetSkillId = ''): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
   await client.skill.saveMetaData(meta, skillID || targetSkillId);

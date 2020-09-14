@@ -10,7 +10,7 @@ import * as Skill from '@/ducks/skill';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 
-import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, redirectToCanvasCommenting } from './actions';
+import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, goToSettings, redirectToCanvasCommenting } from './actions';
 
 const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
   const state = getState();
@@ -97,7 +97,13 @@ export const goToCurrentPrototype = (): SyncThunk => (dispatch, getState) => {
   dispatch(goToPrototype(versionID));
 };
 
-export const goToActivePlatformPublish = (): SyncThunk => (dispatch, getState) => {
+export const goToCurrentSettings = (): Thunk => async (dispatch, getState) => {
+  const versionID = Skill.activeSkillIDSelector(getState());
+
+  dispatch(goToSettings(versionID));
+};
+
+export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
   const platform = Skill.activePlatformSelector(state);

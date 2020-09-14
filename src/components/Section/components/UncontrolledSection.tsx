@@ -48,6 +48,9 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isDraggingPreview?: boolean;
   customContentStyling?: CSSProperties;
   headerVariant?: HeaderVariant;
+  contentPrefix?: React.FC | string;
+  contentSuffix?: React.FC | string;
+  emptyChildren?: boolean;
 };
 
 const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, UncontrolledSectionProps> = (
@@ -79,19 +82,24 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     isDraggingPreview = false,
     customContentStyling,
     headerVariant,
+    emptyChildren,
+    contentPrefix = React.Fragment,
+    contentSuffix = React.Fragment,
     ...props
   },
   ref
 ) => {
   const hasHeader = !!(prefix || suffix || header || tooltip || dropdown || status || count || collapseVariant || isLink);
   const clickHandler = onClick || (headerToggle ? toggle : undefined);
-
+  const ContentPrefixComponent = contentPrefix;
+  const ContentSuffixComponent = contentSuffix;
   return (
     <Container
       ref={ref}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
       dividers={dividers}
+      headerToggle={headerToggle}
       className={className}
       isCollapsed={isCollapsed}
       variant={variant}
@@ -106,7 +114,13 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
             <HeaderContent>
               {prefix && <FixNode fixNode={prefix} color="#787878" />}
               {header && (
-                <HeaderLabel disabled={disabled} variant={headerVariant}>
+                <HeaderLabel
+                  isCollapsed={!!isCollapsed}
+                  hasToggle={!!headerToggle}
+                  disabled={disabled}
+                  variant={headerVariant}
+                  sectionVariant={variant}
+                >
                   {header}
                 </HeaderLabel>
               )}
@@ -130,9 +144,11 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
           )}
         </Header>
       )}
-      {children && (
+      {(children || emptyChildren) && (
         <ContentContainer noHeader={!hasHeader} style={customContentStyling}>
+          <ContentPrefixComponent />
           <Collapse isOpen={!isCollapsed}>{_.isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
+          <ContentSuffixComponent />
         </ContentContainer>
       )}
     </Container>

@@ -13,7 +13,7 @@ import { connect } from '@/hocs';
 import { useDebouncedCallback, useFeature, useTeardown } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-import { Settings, SkillEventsErrorMessage } from './components';
+import { AlexaGadgets, SkillEventsErrorMessage } from './components';
 import { ERROR_PROMPT_OPTIONS, SAVE_SETTINGS_DEBOUNCE_DELAY } from './constants';
 
 function Advanced({ meta, saveMeta, saveAlexaSettings }) {
@@ -113,7 +113,7 @@ function Advanced({ meta, saveMeta, saveAlexaSettings }) {
           </>
         )}
       </Section>
-      {gadgets && <Settings />}
+      {gadgets && <AlexaGadgets />}
       <Section header="Skill Events" variant="secondary" isDividerNested opened>
         {alexaEventError && (
           <SkillEventsErrorMessage>

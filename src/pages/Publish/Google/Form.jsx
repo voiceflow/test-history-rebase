@@ -46,7 +46,7 @@ const LOCALE_DISPLAY_NAMES = {
   [L.UK]: 'Ukranian (uk)',
 };
 
-const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
+export const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
   return { value: GOOGLE_LOCALES[key], name: LOCALE_DISPLAY_NAMES[GOOGLE_LOCALES[key]] };
 });
 

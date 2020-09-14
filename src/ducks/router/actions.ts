@@ -25,6 +25,8 @@ export const goToOnboarding = () => goTo(`${RootRoute.ONBOARDING}${window.locati
 
 export const goToPrototype = (versionID: string) => goTo(generatePath(Path.PROJECT_PROTOTYPE, { versionID }));
 
+export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
+
 export const goToPublish = (versionID: string, platform: PlatformType) =>
   goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platform}` : ''}`);
 

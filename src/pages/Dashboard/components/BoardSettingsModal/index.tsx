@@ -58,7 +58,7 @@ export const BoardSettingsModal: React.FC<BoardSettingsModalProps & ConnectedBoa
 
   return (
     <Modal isOpen={isOpened} toggle={toggle} className="upgrade-modal">
-      <ModalHeader toggle={toggle} header="Workspace Settings" />
+      <ModalHeader toggle={toggle} header="Workspace AlexaGadgetsToggle" />
 
       <ModalBody className="px-45 pt-0 overflow-hidden">
         <div className="mb-3">

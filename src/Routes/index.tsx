@@ -12,6 +12,7 @@ import LoginForm from '@/pages/Register/LoginForm';
 import Reset from '@/pages/Register/Reset';
 import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
+import Settings from '@/pages/SettingsV2';
 import { ConnectedProps } from '@/types';
 
 import PrivateRoute from './PrivateRoute';
@@ -64,6 +65,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
         <PrivateRoute path={LegacyPath.PROJECT_EXPORT} component={Export} />
+        <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />
         <PrivateRoute path={LegacyPath.PROJECT_VERSION} component={Skill} />
 
         <PrivateRoute path={Path.ACCOUNT} name="Account" component={Account} />

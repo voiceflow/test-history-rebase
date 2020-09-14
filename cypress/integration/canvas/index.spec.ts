@@ -15,9 +15,7 @@ context('Canvas', () => {
 
   it('open settings', () => {
     canvasPage.el.projectSettings.click();
-
-    canvasPage.el.modal.should('be.visible');
-    canvasPage.el.modalTitle.should('have.text', 'Project Settings');
+    canvasPage.el.settingsPage.should('have.length', 1);
   });
 
   it('has a home block', () => {

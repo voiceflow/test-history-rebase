@@ -1,4 +1,4 @@
-import { AccountLinking, DBDiagram, DBDisplay, DBProduct, DBSkill, ToDBSkill } from '@/models';
+import { AccountLinking, DBDiagram, DBDisplay, DBProduct, DBProject, DBSkill, ToDBSkill } from '@/models';
 
 import diagramAdapter from './adapters/diagram';
 import displayAdapter from './adapters/display';
@@ -27,9 +27,12 @@ const skillClient = {
 
   restore: (versionID: string) => fetch.post<{ skill_id: string; diagram: string }>(`${SKILL_PATH}/${versionID}/restore`),
 
-  saveMetaData: (meta: any, skillID: string) => fetch.patch(`${SKILL_PATH}/${skillID}?publish=true`, meta),
-
   exportSkill: (versionID: string) => fetch.get<any>(`${SKILL_PATH}/${versionID}/export`),
+
+  saveMetaData: (meta: Partial<DBProject>, skillID: string) => fetch.patch(`${SKILL_PATH}/${skillID}?publish=true`, meta),
+
+  updateGooglePublishInfo: (versionID: string, googlePublishInfo: { main_locale: string }) =>
+    fetch.patch(`${SKILL_PATH}/${versionID}?platform=google&publish=true`, { google_publish_info: googlePublishInfo }),
 };
 
 export default skillClient;

@@ -3,6 +3,8 @@ import _noop from 'lodash/noop';
 import React from 'react';
 
 import client from '@/client';
+import clientV2 from '@/clientV2';
+import creatorAdapterV2 from '@/clientV2/adapters/creator';
 import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
 import { MARKUP_NODES, ROOT_NODES } from '@/constants';
@@ -130,9 +132,11 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
 
-  const {
-    data: { viewport, ...creator },
-  } = await client.diagram.getData(diagramID, platform);
+  // dataRefactor / FeatureFlag.DATA_REFACTOR doesn't apply in the export size, base it on ObjectId instead
+  const { viewport, ...creator } =
+    diagramID.length === 24
+      ? creatorAdapterV2.fromDB(await clientV2.api.diagram.get(diagramID), platform)
+      : (await client.diagram.getData(diagramID, platform)).data;
 
   const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
   const offsets = findCanvasExportOffsets(nodesWithCoordinates);

@@ -19,9 +19,15 @@ export default merge(
         ? []
         : [
             new ForkTSCheckerWebpackPlugin({
-              tsconfig: path.resolve(__dirname, '../../../tsconfig.build.json'),
-              checkSyntacticErrors: true,
-              compilerOptions: { skipLibCheck: true },
+              typescript: {
+                configFile: path.resolve(__dirname, '../../../tsconfig.build.json'),
+                configOverwrite: {
+                  compilerOptions: { skipLibCheck: true },
+                },
+                diagnosticOptions: {
+                  syntactic: false,
+                },
+              },
             }),
           ]),
       new HtmlWebpackPlugin({

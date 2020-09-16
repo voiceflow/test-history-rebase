@@ -25,7 +25,10 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
       <FlexCenter>
         <div>
           <QuestionContainer>What channel do you want to create for?</QuestionContainer>
-          <InstructionContainer>Select between Amazon Alexa, Google Assistant, or a general design & prototyping project type.</InstructionContainer>
+          <InstructionContainer>
+            Select between Amazon Alexa, or Google Assistant
+            {/*or a general design & prototyping project type.*/}
+          </InstructionContainer>
         </div>
       </FlexCenter>
       <PlatformCardsContainer>

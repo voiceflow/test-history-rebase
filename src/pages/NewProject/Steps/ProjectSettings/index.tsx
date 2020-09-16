@@ -4,6 +4,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { FlexCenter } from '@/components/Flex';
 import Input from '@/components/Input';
+import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { invNameError } from '@/ducks/publish/utils';
@@ -11,6 +12,8 @@ import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
+import { FORMATTED_LOCALES } from '@/pages/Publish/Google/Form';
+import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/SettingsV2/components/SettingsContent/Sections/Basic';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 
@@ -26,6 +29,8 @@ type PlatformSettingsProps = {
   setSelectedLocales: (locales: string[]) => void;
   finalizeCreation: () => void;
   creatingProject: boolean;
+  mainLanguage: string;
+  setMainLanguage: (val: string) => void;
 };
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
@@ -36,10 +41,12 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   selectedLocales,
   setSelectedLocales,
   finalizeCreation,
+  mainLanguage,
+  setMainLanguage,
 }) => {
   const displayName = selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ');
   const invocationError = invocationName && invNameError(invocationName, selectedLocales);
-  const canContinue = !invocationError && !!selectedLocales.length;
+  const canContinue = !invocationError && (!!selectedLocales.length || !!mainLanguage);
   const InvocationDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].invocationDescription!;
   const LanguageDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].localesDescription!;
 
@@ -63,20 +70,31 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       </FieldsContainer>
       <FieldsContainer>
         <SectionTitle>{PLATFORM_META[selectedPlatform].localesText}</SectionTitle>
-        <UnTypedDropdownMultiselect
-          placeholder={`Select ${PLATFORM_META[selectedPlatform].localesText}`}
-          buttonLabel="Unselect All"
-          buttonClick={() => setSelectedLocales([])}
-          options={LOCALE_MAP}
-          autoWidth
-          onSelect={(val: string) => {
-            const newLocales = selectedLocales.includes(val) ? without(selectedLocales, selectedLocales.indexOf(val)) : [...selectedLocales, val];
-            setSelectedLocales(newLocales);
-          }}
-          selectedItems={selectedLocales}
-          selectedValue={displayName}
-          withCaret
-        />
+        {selectedPlatform === PlatformType.GOOGLE ? (
+          <Select
+            placeholder="Language"
+            value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
+            options={FORMATTED_LOCALES}
+            onSelect={setMainLanguage}
+            getOptionValue={(option) => option?.value}
+            renderOptionLabel={(option) => option.name}
+          />
+        ) : (
+          <UnTypedDropdownMultiselect
+            placeholder={`Select ${PLATFORM_META[selectedPlatform].localesText}`}
+            buttonLabel="Unselect All"
+            buttonClick={() => setSelectedLocales([])}
+            options={LOCALE_MAP}
+            autoWidth
+            onSelect={(val: string) => {
+              const newLocales = selectedLocales.includes(val) ? without(selectedLocales, selectedLocales.indexOf(val)) : [...selectedLocales, val];
+              setSelectedLocales(newLocales);
+            }}
+            selectedItems={selectedLocales}
+            selectedValue={displayName}
+            withCaret
+          />
+        )}
         <SectionDescription>
           <LanguageDescriptionComponent />
         </SectionDescription>

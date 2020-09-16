@@ -7,6 +7,7 @@ export type Skill = {
   name: string;
   id: string;
   locales: string[];
+  mainLocale?: string;
   creatorID: number;
   projectID: string;
   rootDiagramID: string;

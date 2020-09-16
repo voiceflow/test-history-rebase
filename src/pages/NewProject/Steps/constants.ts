@@ -76,7 +76,7 @@ export const PLATFORM_META: PlatformMetaProps = {
     description: 'Design, prototype and publish Google Actions for Google Assistant.',
     invocationDescription: GoogleInvocationName,
     localesDescription: GoogleLanguage,
-    localesText: 'Languages',
+    localesText: 'Language',
     features: [PlatformFeature.DESIGN_AND_PROTO, PlatformFeature.PUBLISH],
     platformName: PlatformType.GOOGLE,
     platform: PlatformType.GOOGLE,
@@ -100,4 +100,4 @@ export const PLATFORM_META: PlatformMetaProps = {
   },
 };
 
-export const PLATFORM_META_ARRAY = [PLATFORM_META[PlatformType.ALEXA], PLATFORM_META[PlatformType.GOOGLE], PLATFORM_META[PlatformType.GENERAL]];
+export const PLATFORM_META_ARRAY = [PLATFORM_META[PlatformType.ALEXA], PLATFORM_META[PlatformType.GOOGLE]];

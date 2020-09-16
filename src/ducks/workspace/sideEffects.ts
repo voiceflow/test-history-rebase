@@ -7,7 +7,6 @@ import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import { allTemplatesSelector, loadTemplates } from '@/ducks/template';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
-
 import { DBProject, DBWorkspace, Workspace } from '@/models';
 import { ActionPayload, SyncThunk, Thunk } from '@/store/types';
 
@@ -288,6 +287,7 @@ export interface NewProjectOptions {
   name: string;
   locales: string[];
   platform: PlatformType;
+  mainLocale?: string;
 }
 
 export const createProject = (workspaceID: string, project: NewProjectOptions, templateIndex = 0): Thunk<DBProject> => async (dispatch, getState) => {

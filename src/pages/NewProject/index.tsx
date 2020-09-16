@@ -1,3 +1,4 @@
+import { constants } from '@voiceflow/common';
 import React from 'react';
 
 import clientV2 from '@/clientV2';
@@ -18,6 +19,8 @@ import { noop } from '@/utils/functional';
 
 import { StepID, StepMeta } from './constants';
 
+const { GOOGLE_LOCALES } = constants.locales;
+
 const NUMBER_OF_STEPS = 3;
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
@@ -35,6 +38,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [invocationName, setInvocationName] = React.useState('');
   const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
   const [selectedLocales, setSelectedLocales] = React.useState([LOCALE_MAP[0].value]);
+  // For Google only
+  const [mainLanguage, setMainLanguage] = React.useState(GOOGLE_LOCALES.EN);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep: React.FC<any> = StepMeta[currentStep].component;
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
@@ -45,6 +50,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
       name,
       locales: selectedPlatform === PlatformType.GENERAL ? [] : selectedLocales,
       platform: selectedPlatform!,
+      mainLocale: mainLanguage,
     };
     const listID = computedMatch?.params?.listID;
 
@@ -115,6 +121,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 
         <FlexCenter>
           <CurrentStep
+            mainLanguage={mainLanguage}
+            setMainLanguage={setMainLanguage}
             creatingProject={creatingProject}
             invocationName={invocationName}
             setInvocationName={setInvocationName}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const GoogleLanguage: React.FC = () => {
-  return <span>Choose one or more languages your Google Action will support. This can be changed later.</span>;
+  return <span>Choose the language your Google Action will support. This can be changed later.</span>;
 };
 
 export const AmazonLanguage: React.FC = () => {

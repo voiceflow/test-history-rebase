@@ -37,6 +37,7 @@ declare module '@voiceflow/common' {
       LOCALES: {
         US: string;
       };
+      GOOGLE_LOCALES: any;
     };
   }
 }

@@ -89,10 +89,10 @@ export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   await client.skill.update(skillID, { global });
 };
 
-export const saveSkillMeta = (meta: {}, targetSkillId = ''): Thunk => async (_dispatch, getState) => {
+export const saveSkillMeta = (meta: {}, targetSkillId?: string): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const skillID = activeSkillIDSelector(state);
-  await client.skill.saveMetaData(meta, skillID || targetSkillId);
+  await client.skill.saveMetaData(meta, (skillID || targetSkillId)!);
   updateSkillMeta(meta);
 };
 
@@ -109,6 +109,7 @@ export const createSkill = (platform: PlatformType, projectData: Partial<Skill>,
         name: projectData.name!,
         locales: platform === PlatformType.GENERAL ? [] : projectData.locales!,
         platform: platform!,
+        mainLocale: projectData?.mainLocale,
       })
     );
 

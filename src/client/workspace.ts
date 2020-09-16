@@ -30,6 +30,7 @@ const workspaceClient = {
       name: string;
       locales: string[];
       platform: PlatformType;
+      mainLocale?: string;
     }
   ) => fetch.post<DBProject>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/copy/module/${moduleID}`, project),
 

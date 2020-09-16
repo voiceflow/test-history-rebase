@@ -4,12 +4,13 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import InviteByLink from '@/pages/Collaborators/components/InviteByLink';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -30,6 +31,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   sharePrototype,
   platform,
   renderPrototype,
+  renderPrototypeV2,
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
@@ -47,9 +49,15 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     loadingTestableLink: false,
   });
 
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   const onClickPrototype = () => {
     if (render) {
-      renderPrototype();
+      if (dataRefactor.isEnabled) {
+        renderPrototypeV2({ aborted: false });
+      } else {
+        renderPrototype();
+      }
     }
   };
 
@@ -155,6 +163,7 @@ const mapDispatchToProps = {
   getImportToken: Skill.getImportToken,
   sharePrototype: Prototype.sharePrototype,
   renderPrototype: Prototype.renderPrototype,
+  renderPrototypeV2: Prototype.renderPrototypeV2,
 };
 
 type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

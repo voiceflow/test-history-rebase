@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
-import { BillingPeriod, ModalType, PlanType, UserRole } from '@/constants';
+import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/constants';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
@@ -142,7 +142,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
       const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
       let numberOfSeats = seats;
-      if (plan === PlanType.STARTER) {
+      if (numberOfSeats === UNLIMITED_EDITORS_CONST) {
         const editorCount = workspace.members.filter(({ role }) => role === UserRole.EDITOR || role === UserRole.ADMIN).length;
         numberOfSeats = editorCount;
       }

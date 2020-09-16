@@ -297,10 +297,12 @@ export enum PlanType {
   PRO = 'pro',
   TEAM = 'team',
   ENTERPRISE = 'enterprise',
+  CREATOR = 'creator',
 }
 
 export enum PromoType {
   STUDENT = 'student',
+  CREATOR = 'creator',
 }
 
 export const RESPONSE_COLOR_CODES = {
@@ -451,6 +453,8 @@ export enum DisplayType {
   ADVANCED = 'advanced',
 }
 
+export const UNLIMITED_EDITORS_CONST = 100;
+
 export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {
     label: 'Starter',
@@ -487,6 +491,10 @@ export const PLAN_TYPE_META = {
   [PlanType.TEAM]: {
     label: 'Team',
     color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
+  },
+  [PlanType.CREATOR]: {
+    label: 'Creator',
+    color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
   },
 };
 

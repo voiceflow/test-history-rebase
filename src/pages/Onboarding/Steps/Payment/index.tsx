@@ -19,7 +19,7 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { OnboardingContext, OnboardingType, SpecificFlowType, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
+import { OnboardingContext, SpecificFlowType, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
 import { OnboardingProps } from '@/pages/Onboarding/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
@@ -45,7 +45,7 @@ export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, creatorID, workspaceSelector }) => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
-  const { sendingRequests, selectableWorkspace, flow, specificFlowType } = state;
+  const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
   const { collaborators } = state.addCollaboratorMeta;
 
   const numberOfSeats = getNumberOfEditorSeats(collaborators);
@@ -62,7 +62,6 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
   const [selectedWorkspaceId, setSelectedWorkspaceId] = React.useState('');
   const workspaceComplete = !selectableWorkspace || (selectableWorkspace && !!selectedWorkspaceId);
   const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError && workspaceComplete;
-  const periodDisabled = flow === OnboardingType.student;
 
   const onContinue = async () => {
     actions.setPaymentMeta({
@@ -104,6 +103,8 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
     },
     [setPrice, setCouponError, setPriceError, setCouponError, selectedPlan]
   );
+
+  const isPromoPlanCreation = specificFlowType === SpecificFlowType.login_student_new || specificFlowType === SpecificFlowType.login_creator_new;
 
   React.useEffect(() => {
     getPrice(selectedPlan!, numberOfSeats, paymentPeriod, coupon);
@@ -149,7 +150,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
           <DropdownWithCaret
             text={dropdownConfig.text}
             capitalized
-            disabled={specificFlowType === SpecificFlowType.login_student_new}
+            disabled={isPromoPlanCreation}
             textVariant={TextVariant.secondary}
             placement="bottom-end"
             menu={dropdownConfig.menu}
@@ -175,10 +176,10 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
               >
                 {(ref: React.Ref<any>, onToggle: any, isOpen: boolean) => (
                   <BillingDropdown
-                    disabled={periodDisabled}
+                    disabled={hasFixedPeriod}
                     ref={ref}
                     onClick={() => {
-                      if (!periodDisabled) {
+                      if (!hasFixedPeriod) {
                         onToggle();
                       }
                     }}

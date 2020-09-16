@@ -77,7 +77,15 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.ENTERPRISE,
     PlanType.OLD_ENTERPRISE,
   ],
-  [Permission.MANAGE_BILLING]: [PlanType.STARTER, PlanType.OLD_STARTER, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM],
+  [Permission.MANAGE_BILLING]: [
+    PlanType.STARTER,
+    PlanType.OLD_STARTER,
+    PlanType.PRO,
+    PlanType.OLD_PRO,
+    PlanType.TEAM,
+    PlanType.OLD_TEAM,
+    PlanType.CREATOR,
+  ],
 };
 
 export const hasRolePermission = (permission: Permission, role: UserRole) =>

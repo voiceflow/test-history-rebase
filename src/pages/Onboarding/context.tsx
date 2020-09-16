@@ -36,6 +36,7 @@ export enum OnboardingType {
   create = 'create_workspace',
   join = 'join_workpsace',
   student = 'student',
+  creator = 'creator',
 }
 
 export enum SpecificFlowType {
@@ -45,6 +46,8 @@ export enum SpecificFlowType {
   login_student_existing = 'login_student_existing',
   login_invite = 'login_invite',
   create_workspace = 'create_workspace',
+  login_creator_new = 'login_creator_new',
+  login_creator_existing = 'login_creator_existing',
 }
 
 export type OnboardingContextProps = {
@@ -80,6 +83,7 @@ export type OnboardingContextProps = {
     sendingRequests: boolean;
     workspaceId: string;
     justCreatingWorkspace: boolean;
+    hasFixedPeriod: boolean;
   };
   actions: {
     stepBack: () => null;
@@ -132,6 +136,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     sendingRequests: false,
     workspaceId: '',
     justCreatingWorkspace: false,
+    hasFixedPeriod: false,
   },
 });
 
@@ -147,6 +152,7 @@ const getFirstStep = (flow: OnboardingType, isLoginFlow: boolean, isFirstSession
       return StepID.WELCOME;
     case OnboardingType.join:
       return StepID.JOIN_WORKSPACE;
+    case OnboardingType.creator:
     case OnboardingType.student:
       return isFirstSession ? StepID.WELCOME : StepID.PAYMENT;
     default:
@@ -161,11 +167,17 @@ const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: bool
   if (flow === OnboardingType.student && !isFirstSession) {
     return SpecificFlowType.login_student_existing;
   }
+  if (flow === OnboardingType.creator && !isFirstSession) {
+    return SpecificFlowType.login_creator_existing;
+  }
   if (!loginFlow) {
     return SpecificFlowType.create_workspace;
   }
   if (loginFlow && isFirstSession && flow === OnboardingType.student) {
     return SpecificFlowType.login_student_new;
+  }
+  if (loginFlow && isFirstSession && flow === OnboardingType.creator) {
+    return SpecificFlowType.login_creator_new;
   }
   if (query?.ob_payment) {
     return SpecificFlowType.login_payment_new;
@@ -178,10 +190,12 @@ const getNumberOfSteps = (specificFlowType: SpecificFlowType) => {
     case SpecificFlowType.login_invite:
       return 1;
     case SpecificFlowType.login_student_existing:
+    case SpecificFlowType.login_creator_existing:
       return 1;
     case SpecificFlowType.create_workspace:
       return 3;
     case SpecificFlowType.login_student_new:
+    case SpecificFlowType.login_creator_new:
       return 5;
     case SpecificFlowType.login_payment_new:
       return 5;
@@ -199,18 +213,25 @@ const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo }: Qu
     couponCode: ob_coupon || '',
     flow: invite ? OnboardingType.join : OnboardingType.create,
   };
+
   if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
     configurations.plan = ob_plan;
-  }
-
-  if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
-    configurations.period = ob_period;
   }
 
   if (!!promo && promo === PromoType.STUDENT) {
     configurations.plan = PlanType.STUDENT;
     configurations.flow = OnboardingType.student;
     configurations.period = BillingPeriod.MONTHLY;
+  }
+
+  if (!!promo && promo === PromoType.CREATOR) {
+    configurations.plan = PlanType.CREATOR;
+    configurations.flow = OnboardingType.creator;
+    configurations.period = BillingPeriod.MONTHLY;
+  }
+
+  if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
+    configurations.period = ob_period;
   }
 
   return configurations;
@@ -256,15 +277,21 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const { plan, period, couponCode, flow } = extractQueryParams(query);
+  const hasFixedPeriod = !!query.ob_period;
   const isFirstSession = firstLogin;
   const firstStep = getFirstStep(flow, isLoginFlow, isFirstSession);
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const specificFlowType = getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
-
   const numberOfSteps = getNumberOfSteps(specificFlowType);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
+
+  const selectableWorkspaceInPayment =
+    !!query.choose_workspace ||
+    specificFlowType === SpecificFlowType.login_student_existing ||
+    specificFlowType === SpecificFlowType.login_creator_existing;
+
   const [state, actions] = useSmartReducer({
-    selectableWorkspace: !!query.choose_workspace || specificFlowType === SpecificFlowType.login_student_existing,
+    selectableWorkspace: selectableWorkspaceInPayment,
     usedSignupCoupon: false,
     flow,
     specificFlowType,
@@ -285,6 +312,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     onboardingComplete: false,
     sendingRequests: false,
     justCreatingWorkspace: !isLoginFlow,
+    hasFixedPeriod,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;

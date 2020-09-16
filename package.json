@@ -326,7 +326,7 @@
     "build:admin": "wp --action admin --prod",
     "build:dev": "patch-package && wp",
     "build:e2e": "patch-package && wp --instrument",
-    "commit": "git-cz",
+    "commit": "cz",
     "cypress": "cypress open",
     "cypress:ci": "cypress run --env CI=true --config defaultCommandTimeout=20000",
     "cypress:run": "cypress run",

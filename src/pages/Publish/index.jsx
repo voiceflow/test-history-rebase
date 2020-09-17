@@ -27,20 +27,19 @@ const updateLink = (link, versionID) => {
   return link.replace(':versionID', versionID);
 };
 
-const TABS = [
-  {
+const TABS = {
+  [PlatformType.ALEXA]: {
     // eslint-disable-next-line react/display-name
     display: () => <Flex>Amazon Alexa</Flex>,
     link: `/${PublishRoute.ALEXA}`,
     exact: true,
   },
-  {
+  [PlatformType.GOOGLE]: {
     // eslint-disable-next-line react/display-name
     display: () => <Flex>Google Assistant</Flex>,
     link: `/${PublishRoute.GOOGLE}`,
   },
-];
-
+};
 const CODE_EXPORT_TAB = {
   // eslint-disable-next-line react/display-name
   display: () => <Flex>Code Export</Flex>,
@@ -58,7 +57,7 @@ function Publish(props) {
   } = props;
 
   const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
-  let tabOptions = TABS;
+  let tabOptions = [TABS[platform]];
 
   if (codeExport.isEnabled && platform === PlatformType.ALEXA) {
     tabOptions = [...tabOptions, CODE_EXPORT_TAB];

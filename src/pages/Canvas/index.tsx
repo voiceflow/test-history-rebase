@@ -8,8 +8,6 @@ import InteractionModelModal from '@/pages/Canvas/components/InteractionModelMod
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
-import SettingsModal from '@/pages/Settings';
-import { SettingsModalConsumer } from '@/pages/Settings/contexts';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -54,10 +52,6 @@ const Canvas: React.FC = () => {
       <BulkImportSlots />
       <BulkImportUtterances />
       <InteractionModelModal />
-
-      <SettingsModalConsumer>
-        {(modal) => <SettingsModal open={modal?.isEnabled} type={modal?.type} toggle={modal?.toggle} setType={modal?.setType} />}
-      </SettingsModalConsumer>
 
       <CanvasNotifications />
     </CanvasProviders>

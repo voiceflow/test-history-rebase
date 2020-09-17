@@ -17,6 +17,7 @@ const creatorAPI = {
     createInfo: (versionID: string, diagramID: string, variables: Record<string, any>) =>
       axios.post(`${API_ENDPOINT}/v2/versions/${versionID}/test`, { diagramID, variables }).then((res) => res.data as string),
   },
+  restoreBackup: (projectID: string, versionID: string) => axios.post(`${API_ENDPOINT}/v2/projects/${projectID}/restore/${versionID}`),
 };
 
 // authorization will rely on the cookie

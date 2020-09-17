@@ -10,7 +10,6 @@ import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
-import { SettingsModalProvider } from '@/pages/Settings/contexts';
 import { useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
@@ -36,23 +35,21 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
     <>
       {!isPrototypingMode && <DiagramSync diagramID={diagramID} />}
       <ManagerProvider value={getManager as any}>
-        <SettingsModalProvider>
-          <CanvasHeader />
+        <CanvasHeader />
 
-          <TopPrompt />
+        <TopPrompt />
 
-          {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
+        {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
 
-          <CanvasControls />
+        <CanvasControls />
 
-          <FlowControls />
+        <FlowControls />
 
-          <MarkupImageLoading />
+        <MarkupImageLoading />
 
-          <Canvas />
+        <Canvas />
 
-          <PrototypeSidebar />
-        </SettingsModalProvider>
+        <PrototypeSidebar />
       </ManagerProvider>
     </>
   );

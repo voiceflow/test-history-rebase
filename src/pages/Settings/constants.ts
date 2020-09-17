@@ -1,28 +1,83 @@
-import AdvancedSettings from '@/pages/Settings/Advanced';
-import BackupSettings from '@/pages/Settings/Backups';
-import BasicSettings from '@/pages/Settings/Basic';
+import React from 'react';
 
-export enum SettingsRoute {
-  BASIC = 'basic',
-  ADVANCED = 'advanced',
-  DISCOVERY = 'discovery',
-  BACKUPS = 'backups',
+import { PlatformType } from '@/constants';
+
+import { Alexa, General, Google, Universal } from './components/ContentDescriptors';
+
+export enum SettingSections {
+  BASIC = 'Basic',
+  GLOBAL_CONVERSATION_LOGIC = 'Global Conversation Logic',
+  CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
+  DANGER_ZONE = 'Danger Zone',
 }
 
-export const SETTINGS_ROUTES = [
-  {
-    value: SettingsRoute.BASIC,
-    label: 'Basic',
-    component: BasicSettings,
+export enum SettingsTabsType {
+  GENERAL = 'general',
+  VERSIONS = 'versions',
+}
+
+export type PlatformSettingsMetaProps = {
+  name: string;
+  sections: SettingSections[];
+  descriptors: {
+    projectName: React.FC | string;
+    invocationName: React.FC | string;
+    localesDescriptor: React.FC | string;
+    continuePrevious: React.FC | string;
+    allowRepeat: React.FC | string;
+    gadgets?: React.FC | string;
+    events?: React.FC | string;
+    repeatDialog?: any;
+    repeatEverything?: any;
+  };
+  tabs: SettingsTabsType[];
+  localeText?: string;
+};
+
+export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMetaProps>>{
+  [PlatformType.ALEXA]: {
+    name: 'Alexa',
+    sections: [
+      SettingSections.BASIC,
+      SettingSections.GLOBAL_CONVERSATION_LOGIC,
+      SettingSections.CHANNEL_SPECIFIC_FEATURES,
+      SettingSections.DANGER_ZONE,
+    ],
+    descriptors: {
+      projectName: Alexa.ProjectName,
+      invocationName: Alexa.InvocationName,
+      localesDescriptor: Alexa.Locales,
+      continuePrevious: Universal.ContinuePrevious,
+      allowRepeat: Universal.AllowRepeat,
+      gadgets: Alexa.Gadgets,
+      events: Alexa.Events,
+      repeatDialog: General.RepeatDialog,
+      repeatEverything: General.RepeatEverything,
+    },
+    tabs: [SettingsTabsType.GENERAL, SettingsTabsType.VERSIONS],
+    localeText: 'Locales',
   },
-  {
-    value: SettingsRoute.ADVANCED,
-    label: 'Advanced',
-    component: AdvancedSettings,
+  [PlatformType.GOOGLE]: {
+    name: 'Google',
+    sections: [SettingSections.BASIC, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
+    descriptors: {
+      projectName: Google.ProjectName,
+      invocationName: Google.InvocationName,
+      localesDescriptor: Google.Locales,
+      continuePrevious: Universal.ContinuePrevious,
+      allowRepeat: Universal.AllowRepeat,
+      repeatDialog: General.RepeatDialog,
+      repeatEverything: General.RepeatEverything,
+    },
+    tabs: [SettingsTabsType.GENERAL, SettingsTabsType.VERSIONS],
+    localeText: 'Language',
   },
-  {
-    value: SettingsRoute.BACKUPS,
-    label: 'Backups',
-    component: BackupSettings,
+  [PlatformType.GENERAL]: {
+    name: 'General',
+    sections: [SettingSections.BASIC, SettingSections.DANGER_ZONE],
+    descriptors: {
+      projectName: General.ProjectName,
+    },
+    tabs: [SettingsTabsType.GENERAL],
   },
-];
+};

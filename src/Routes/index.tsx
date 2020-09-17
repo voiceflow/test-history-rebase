@@ -12,7 +12,7 @@ import LoginForm from '@/pages/Register/LoginForm';
 import Reset from '@/pages/Register/Reset';
 import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
-import Settings from '@/pages/SettingsV2';
+import Settings from '@/pages/Settings';
 import { ConnectedProps } from '@/types';
 
 import PrivateRoute from './PrivateRoute';

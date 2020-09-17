@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { ModalFooter } from '@/components/LegacyModal';
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -17,9 +19,11 @@ function UpdatePlan({
     state: { hasPricing, loading },
   },
 }) {
+  const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
+
   return (
     <>
-      <Container disabled={loading.checkout}>
+      <Container disabled={loading.checkout} invalid={!isAllowed}>
         <FadeLeftContainer>
           <SelectPlan />
           <PlanDetailsContainer disabled={!hasPricing}>

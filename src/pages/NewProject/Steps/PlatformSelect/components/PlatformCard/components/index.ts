@@ -42,6 +42,7 @@ export const PlatformDescription = styled.div`
   text-align: left;
   color: #62778c;
   margin-top: 10px;
+  min-height: 45px;
   margin-bottom: 24px;
 `;
 

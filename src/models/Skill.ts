@@ -14,6 +14,8 @@ export type Skill = {
   diagramID: string;
   platform: PlatformType;
   globalVariables: string[];
+  image?: string;
+  invocation?: string;
 };
 
 export type DBSkill = {

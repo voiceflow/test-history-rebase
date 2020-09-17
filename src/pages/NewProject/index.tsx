@@ -51,10 +51,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
       locales: selectedPlatform === PlatformType.GENERAL ? [] : selectedLocales,
       platform: selectedPlatform!,
       mainLocale: mainLanguage,
+      invocation: invocationName,
+      image,
     };
     const listID = computedMatch?.params?.listID;
-
-    const projectMeta = { inv_name: invocationName, large_icon: image };
 
     try {
       if (dataRefactor.isEnabled) {
@@ -70,7 +70,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
         }
         goToCanvas(project.versionID);
       } else {
-        await createSkill(selectedPlatform!, projectData, projectMeta, listID);
+        await createSkill(selectedPlatform!, projectData, listID);
       }
     } finally {
       setCreatingProject(false);

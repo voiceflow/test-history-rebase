@@ -96,10 +96,7 @@ export const saveSkillMeta = (meta: {}, targetSkillId?: string): Thunk => async 
   updateSkillMeta(meta);
 };
 
-export const createSkill = (platform: PlatformType, projectData: Partial<Skill>, projectMeta: {}, listID?: string): Thunk => async (
-  dispatch,
-  getState
-) => {
+export const createSkill = (platform: PlatformType, projectData: Partial<Skill>, listID?: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const workspaceID = activeWorkspaceIDSelector(state);
 
@@ -110,6 +107,8 @@ export const createSkill = (platform: PlatformType, projectData: Partial<Skill>,
         locales: platform === PlatformType.GENERAL ? [] : projectData.locales!,
         platform: platform!,
         mainLocale: projectData?.mainLocale,
+        inv_name: projectData?.invocation,
+        image: projectData?.image,
       })
     );
 
@@ -119,7 +118,6 @@ export const createSkill = (platform: PlatformType, projectData: Partial<Skill>,
       await dispatch(addProjectToList(listID, project_id));
     }
 
-    await dispatch(saveSkillMeta({ ...projectMeta }, skill_id));
     dispatch(goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID: skill_id, diagram: project_id })}${window.location.search}`));
   } catch (err) {
     toast.error('Error creating project, please try again later or contact support.');

@@ -288,6 +288,8 @@ export interface NewProjectOptions {
   locales: string[];
   platform: PlatformType;
   mainLocale?: string;
+  inv_name?: string;
+  image?: string;
 }
 
 export const createProject = (workspaceID: string, project: NewProjectOptions, templateIndex = 0): Thunk<DBProject> => async (dispatch, getState) => {

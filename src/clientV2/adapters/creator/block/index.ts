@@ -9,6 +9,7 @@ import { NodeData } from '@/models';
 
 import accountLinkingAdapter from './accountLinking';
 import blockDataAdapter from './block';
+import cancelPayment from './cancelPayment';
 import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
@@ -63,7 +64,7 @@ const blockAdapter = {
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.COMMENT]: emptyAdapter,
   // user defined
-  [BlockType.CANCEL_PAYMENT]: emptyAdapter,
+  [BlockType.CANCEL_PAYMENT]: cancelPayment,
   [BlockType.CAPTURE]: captureAdapter,
   [BlockType.CARD]: cardAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,

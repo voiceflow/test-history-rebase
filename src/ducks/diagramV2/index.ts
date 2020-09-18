@@ -2,6 +2,7 @@ import clientV2 from '@/clientV2';
 import creatorAdapterV2 from '@/clientV2/adapters/creator';
 import { CreatorDiagram } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
+import { getCurrentTimestamp } from '@/utils/time';
 
 import { userIDSelector } from '../account';
 import * as Creator from '../creator';
@@ -67,6 +68,7 @@ export const createNewDiagram = (name: string, diagram: PrimativeDiagram = DEFAU
     creatorID,
     name,
     ...diagram,
+    modified: getCurrentTimestamp(),
   });
 
   dispatch(DiagramReducer.addDiagram(diagramID, { name, id: diagramID, subDiagrams: [], variables: [] }));

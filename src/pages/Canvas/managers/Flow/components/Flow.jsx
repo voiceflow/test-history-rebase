@@ -40,7 +40,6 @@ function Flow({
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
   const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
-
   const setSelectedDiagram = React.useCallback((diagramID) => onChange({ diagramID, inputs: [], outputs: [] }), [onChange]);
 
   const flowDoesNotExist = diagramID && !diagram;
@@ -102,6 +101,12 @@ function Flow({
     ]
   );
 
+  const validateCreate = (name) => {
+    options.forEach((flow) => {
+      if (flow.label.toLowerCase() === name.toLowerCase()) throw new Error('Flow name already in use, choose a different name.');
+    });
+  };
+
   return (
     <>
       <Select
@@ -111,6 +116,7 @@ function Flow({
         onCreate={onCreate}
         creatable
         searchable
+        validateCreate={validateCreate}
         clearable={value}
         getOptionValue={(option) => option?.value}
         getOptionLabel={(optionValue) => optionsMap[optionValue]?.label}

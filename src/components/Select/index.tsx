@@ -4,6 +4,7 @@ import { Manager, PopperProps, Reference } from 'react-popper';
 import Flex from '@/components/Flex';
 import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
 import Portal from '@/components/Portal';
+import { toast } from '@/components/Toast';
 import { useCache, useDidUpdateEffect } from '@/hooks';
 import { Nullable } from '@/types';
 
@@ -104,6 +105,7 @@ export type SelectProps<O, V> = {
   multiLevelDropdown?: boolean;
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;
+  validateCreate?: (val: string) => boolean;
 } & (
   | {
       creatable: true;
@@ -162,6 +164,7 @@ const Select = <O, V = O>({
   multiLevelDropdown,
   showNotMatchedOptions,
   createInputPlaceholder,
+  validateCreate,
 }: SelectProps<O, V>) => {
   const optionLabel = getOptionLabel(value) || '';
 
@@ -315,8 +318,14 @@ const Select = <O, V = O>({
 
   const onCreateItem = React.useCallback(
     (label: string) => {
-      onCreate?.(label);
-      onHideMenu();
+      try {
+        validateCreate?.(label);
+        onCreate?.(label);
+        onHideMenu();
+      } catch (error) {
+        toast.warn(error?.message || error?.toString?.() || 'something went wrong');
+        console.error(error);
+      }
     },
     [onCreate, onHideMenu]
   );

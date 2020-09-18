@@ -119,7 +119,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
       return css`
         ${Header} {
           height: ${units(5)}px;
-
+        }
         ${ContentContainer} {
           padding-bottom: ${units(2)}px;
         }

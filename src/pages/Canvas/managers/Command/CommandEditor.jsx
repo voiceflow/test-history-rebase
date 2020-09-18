@@ -2,7 +2,7 @@ import React from 'react';
 
 import IntentForm, { HelpTooltip as IntentTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import Section from '@/components/Section';
+import Section, { SectionVariant } from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Router from '@/ducks/router';
@@ -51,11 +51,11 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
         />
       }
     >
-      <Section variant="tertiary" header="Flow" tooltip={<FlowTooltip />}>
+      <Section variant={SectionVariant.TERTIARY} header="Flow" tooltip={<FlowTooltip />}>
         <Flow data={{ ...data, ...data[platform] }} diagram={diagram} onChange={onChangeData} isCommand enterOnCreate={false} />
       </Section>
 
-      <Section variant="tertiary" header="Intent" tooltip={<IntentTooltip />}>
+      <Section variant={SectionVariant.TERTIARY} header="Intent" tooltip={<IntentTooltip />}>
         <IntentSelect intent={intent} onChange={({ intent }) => onChangeData({ intent })} />
       </Section>
       <IntentForm intent={intent} pushToPath={pushToPath} />

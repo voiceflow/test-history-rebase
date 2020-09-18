@@ -19,6 +19,7 @@ import ifAdapter from './if';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
+import permissionAdapter from './permission';
 import promptAdapter from './prompt';
 import randomAdapter from './random';
 import reminderAdapter from './reminder';
@@ -73,7 +74,7 @@ const blockAdapter = {
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.PAYMENT]: emptyAdapter,
-  [BlockType.PERMISSION]: emptyAdapter,
+  [BlockType.PERMISSION]: permissionAdapter,
   [BlockType.ACCOUNT_LINKING]: accountLinkingAdapter,
   [BlockType.RANDOM]: randomAdapter,
   [BlockType.REMINDER]: reminderAdapter,

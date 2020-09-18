@@ -13,7 +13,7 @@ import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
 import { FORMATTED_LOCALES } from '@/pages/Publish/Google/Form';
-import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/SettingsV2/components/SettingsContent/Sections/Basic';
+import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Settings/components/SettingsContent/Sections/Basic';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 

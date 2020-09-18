@@ -4,9 +4,9 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const ExitBlockAdapter = createBlockAdapter<StepData, NodeData.Exit>(
+const exitAdapter = createBlockAdapter<StepData, NodeData.Exit>(
   () => ({}),
   () => ({})
 );
 
-export default ExitBlockAdapter;
+export default exitAdapter;

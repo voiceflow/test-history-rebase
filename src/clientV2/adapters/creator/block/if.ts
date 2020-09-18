@@ -5,7 +5,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const ifBlockAdapter = createBlockAdapter<IfData, NodeData.If>(
+const ifAdapter = createBlockAdapter<IfData, NodeData.If>(
   ({ expressions }) => ({
     expressions: expressionAdapter.mapFromDB(expressions),
   }),
@@ -14,4 +14,4 @@ const ifBlockAdapter = createBlockAdapter<IfData, NodeData.If>(
   })
 );
 
-export default ifBlockAdapter;
+export default ifAdapter;

@@ -1,14 +1,15 @@
+import { PermissionType } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import ProductSelect from '@/components/ProductSelect';
 import VariableSelect from '@/components/VariableSelect';
-import { PERMISSIONS_WITH_VARIABLE_MAPS, PermissionType, ProductType } from '@/constants';
+import { PERMISSIONS_WITH_VARIABLE_MAPS, ProductType } from '@/constants';
 import * as Product from '@/ducks/product';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const PermissionInfo = ({ permission, onChange, getProduct }) => {
-  const isProductPermission = permission.selected === PermissionType.PRODUCT;
+  const isProductPermission = permission.selected === PermissionType.UNOFFICIAL_PRODUCT;
   const isMappable = permission.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(permission.selected);
 
   const updateVariable = React.useCallback((mapTo) => onChange({ mapTo }), [onChange]);

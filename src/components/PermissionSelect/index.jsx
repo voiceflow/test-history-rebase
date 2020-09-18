@@ -1,7 +1,8 @@
+import { PermissionType } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import Select from '@/components/Select';
-import { PERMISSIONS, PERMISSION_LABELS, PermissionType } from '@/constants';
+import { PERMISSIONS, PERMISSION_LABELS } from '@/constants';
 
 const PermissionSelect = ({ value, onChange, disabledOptions }) => (
   <Select
@@ -12,7 +13,7 @@ const PermissionSelect = ({ value, onChange, disabledOptions }) => (
     }))}
     optionsFilter={(options) => ({
       filteredOptions: options.filter(
-        (option) => option.value === value || option.value === PermissionType.PRODUCT || !disabledOptions.includes(option.value)
+        (option) => option.value === value || option.value === PermissionType.UNOFFICIAL_PRODUCT || !disabledOptions.includes(option.value)
       ),
       matchedOptions: [],
     })}

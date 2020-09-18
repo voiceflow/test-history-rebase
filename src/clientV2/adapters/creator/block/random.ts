@@ -4,9 +4,9 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const codeDataAdapter = createBlockAdapter<StepData, NodeData.Random>(
+const randomAdapter = createBlockAdapter<StepData, NodeData.Random>(
   ({ paths, noDuplicates }) => ({ paths, noDuplicates }),
   ({ paths, noDuplicates }) => ({ paths, noDuplicates })
 );
 
-export default codeDataAdapter;
+export default randomAdapter;

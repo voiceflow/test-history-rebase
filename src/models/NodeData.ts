@@ -1,9 +1,9 @@
-import { ExpressionType, IntegrationUser, SlotMapping } from '@voiceflow/alexa-types';
+import { ExpressionType, IntegrationUser, PermissionType, SlotMapping } from '@voiceflow/alexa-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/alexa-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/alexa-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
 
-import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PermissionType, PlatformType, RepromptType } from '@/constants';
+import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { SpeakData } from '@/models/Speak';
 
@@ -137,13 +137,15 @@ export namespace NodeData {
     recurrenceBool: boolean;
   };
 
+  export type UserInfoPermission = {
+    id: string;
+    mapTo: string | null;
+    product: string | null;
+    selected: PermissionType | null;
+  };
+
   export type UserInfo = {
-    permissions: {
-      id: string;
-      selected: PermissionType | null;
-      mapTo: string | null;
-      product: string | null;
-    }[];
+    permissions: UserInfoPermission[];
   };
 
   export type GenericExpression<T extends ExpressionType, V> = {

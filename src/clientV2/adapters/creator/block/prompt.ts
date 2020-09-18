@@ -4,7 +4,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter, noMatchAdapter, repromptAdapter } from './utils';
 
-const interactionAdapter = createBlockAdapter<StepData, NodeData.Prompt>(
+const promptAdapter = createBlockAdapter<StepData, NodeData.Prompt>(
   ({ reprompt, noMatches }) => ({
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
     noMatchReprompt: noMatchAdapter.fromDB(noMatches),
@@ -16,4 +16,4 @@ const interactionAdapter = createBlockAdapter<StepData, NodeData.Prompt>(
   })
 );
 
-export default interactionAdapter;
+export default promptAdapter;

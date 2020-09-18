@@ -5,11 +5,11 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const interactionAdapter = createBlockAdapter<StepData, NodeData.Permission>(
+const permissionAdapter = createBlockAdapter<StepData, NodeData.Permission>(
   ({ permissions }) => ({ permissions }),
   ({ permissions }) => ({
     permissions: (permissions?.map((permission) => permission.trim()).filter(Boolean) as PermissionType[]) ?? [],
   })
 );
 
-export default interactionAdapter;
+export default permissionAdapter;

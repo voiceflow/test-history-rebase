@@ -5,7 +5,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const zapierAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
+const googleSheetsAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
   ({ user, sheet, endRow, mapping, startRow, rowNumber, rowValues, matchValue, spreadsheet, headerColumn, selectedAction }) => ({
     user,
     sheet,
@@ -48,4 +48,4 @@ const zapierAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
   })
 );
 
-export default zapierAdapter;
+export default googleSheetsAdapter;

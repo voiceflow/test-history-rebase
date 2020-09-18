@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { IntegrationType } from '@voiceflow/alexa-types';
+import { IntegrationType, PermissionType } from '@voiceflow/alexa-types';
 import { APIActionType, APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
 import { constants } from '@voiceflow/common';
@@ -142,75 +142,60 @@ export enum BlockType {
   MARKUP_IMAGE = 'markup_image',
 }
 
-export enum PermissionType {
-  USER_EMAIL = 'alexa::profile:email:read',
-  USER_NAME = 'alexa::profile:name:read',
-  USER_PHONE = 'alexa::profile:mobile_number:read',
-  USER_PERSON = 'alexa::person_id:read',
-  USER_GEOLOCATION = 'alexa::devices:all:geolocation:read',
-  REMINDERS = 'alexa::alerts:reminders:skill:readwrite',
-  LISTS_READ = 'alexa::household:lists:read',
-  LISTS_WRITE = 'alexa::household:lists:write',
-  NOTIFICATIONS = 'alexa::devices:all:notifications:write',
-  ACCOUNT_LINKING = 'UNOFFICIAL::account_linking',
-  PRODUCT = 'UNOFFICIAL::product',
-  ISP = 'UNOFFICIAL::isp',
-}
-
 export const PERMISSIONS = [
   {
     name: 'User Email',
-    value: PermissionType.USER_EMAIL,
+    value: PermissionType.ALEXA_PROFILE_EMAIL_READ,
     variableMap: true,
   },
   {
     name: 'User Name',
-    value: PermissionType.USER_NAME,
+    value: PermissionType.ALEXA_PROFILE_NAME_READ,
     variableMap: true,
   },
   {
     name: 'User Phone Number',
-    value: PermissionType.USER_PHONE,
+    value: PermissionType.ALEXA_PROFILE_MOBILE_NUMBER_READ,
     variableMap: true,
   },
   {
     name: 'Location Services',
-    value: PermissionType.USER_GEOLOCATION,
+    value: PermissionType.ALEXA_DEVICES_ALL_GEOLOCATION_READ,
     variableMap: true,
   },
   {
     name: 'Reminders',
-    value: PermissionType.REMINDERS,
+    value: PermissionType.ALEXA_ALERTS_REMINDERS_SKILL_READ_WRITE,
   },
   {
     name: 'Lists Read',
-    value: PermissionType.LISTS_READ,
+    value: PermissionType.ALEXA_HOUSEHOLD_LISTS_READ,
   },
   {
     name: 'Lists Write',
-    value: PermissionType.LISTS_WRITE,
+    value: PermissionType.ALEXA_HOUSEHOLD_LISTS_WRITE,
   },
   {
     name: 'Notifications',
-    value: PermissionType.NOTIFICATIONS,
+    value: PermissionType.ALEXA_DEVICES_ALL_NOTIFICATIONS_WRITE,
   },
   {
     name: 'Skill Personalization',
-    value: PermissionType.USER_PERSON,
+    value: PermissionType.ALEXA_PERSON_ID_READ,
     variableMap: true,
   },
   {
     name: 'Account Linking',
-    value: PermissionType.ACCOUNT_LINKING,
+    value: PermissionType.UNOFFICIAL_ACCOUNT_LINKING,
     variableMap: true,
   },
   {
     name: 'Product',
-    value: PermissionType.PRODUCT,
+    value: PermissionType.UNOFFICIAL_PRODUCT,
   },
   {
     name: 'ISP',
-    value: PermissionType.ISP,
+    value: PermissionType.UNOFFICIAL_PRODUCT,
   },
   // Removed for now, amazon pay permissions broken
 ];

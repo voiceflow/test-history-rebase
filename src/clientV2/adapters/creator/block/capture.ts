@@ -4,7 +4,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter, repromptAdapter } from './utils';
 
-const captureBlockAdapter = createBlockAdapter<StepData, NodeData.Capture>(
+const captureAdapter = createBlockAdapter<StepData, NodeData.Capture>(
   ({ slot, variable, reprompt, slotInputs }) => ({
     slot,
     variable,
@@ -19,4 +19,4 @@ const captureBlockAdapter = createBlockAdapter<StepData, NodeData.Capture>(
   })
 );
 
-export default captureBlockAdapter;
+export default captureAdapter;

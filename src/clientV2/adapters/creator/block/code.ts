@@ -4,9 +4,9 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const codeDataAdapter = createBlockAdapter<CodeData, NodeData.Code>(
+const codeAdapter = createBlockAdapter<CodeData, NodeData.Code>(
   ({ code }) => ({ code }),
   ({ code }) => ({ code })
 );
 
-export default codeDataAdapter;
+export default codeAdapter;

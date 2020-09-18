@@ -6,7 +6,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const setBlockAdapter = createBlockAdapter<StepData, NodeData.Set>(
+const setAdapter = createBlockAdapter<StepData, NodeData.Set>(
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       id: cuid.slug(),
@@ -22,4 +22,4 @@ const setBlockAdapter = createBlockAdapter<StepData, NodeData.Set>(
   })
 );
 
-export default setBlockAdapter;
+export default setAdapter;

@@ -25,6 +25,7 @@ import randomAdapter from './random';
 import reminderAdapter from './reminder';
 import setAdapter from './set';
 import speakAdapter from './speak';
+import userInfoAdapter from './userInfo';
 
 const emptyAdapter = createSimpleAdapter(
   () => ({}),
@@ -81,7 +82,7 @@ const blockAdapter = {
   [BlockType.SET]: setAdapter,
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.STREAM]: emptyAdapter,
-  [BlockType.USER_INFO]: emptyAdapter,
+  [BlockType.USER_INFO]: userInfoAdapter,
   [BlockType.DEPRECATED]: emptyAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.EVENT]: emptyAdapter,

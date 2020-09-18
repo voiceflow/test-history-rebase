@@ -13,6 +13,7 @@ import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
 import directiveAdapter from './directive';
+import eventAdapter from './event';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
 import ifAdapter from './if';
@@ -85,7 +86,7 @@ const blockAdapter = {
   [BlockType.USER_INFO]: userInfoAdapter,
   [BlockType.DEPRECATED]: emptyAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
-  [BlockType.EVENT]: emptyAdapter,
+  [BlockType.EVENT]: eventAdapter,
   [BlockType.PROMPT]: promptAdapter,
   // markup
   [BlockType.MARKUP_TEXT]: emptyAdapter,

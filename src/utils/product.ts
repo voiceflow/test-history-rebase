@@ -1,6 +1,7 @@
+import { Locale, ProductType } from '@voiceflow/alexa-types';
+import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
 import moment from 'moment';
 
-import { ProductType } from '@/constants';
 import { DBProduct, Product } from '@/models';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
 
@@ -44,38 +45,48 @@ export const formatMarketPlaces = (marketPlaces: Record<string, Product.MarketPl
 
 // db to app
 
-export const parseMarketPlaces = (allPlaces: Record<string, DBProduct.Pricing>, distributionCountries: string[]) =>
-  Object.keys(allPlaces).reduce(
-    (acc, place) => ({
-      ...acc,
-      [place]: {
-        ...allPlaces[place].defaultPriceListing,
-        releaseDate: allPlaces[place].releaseDate,
-        countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === place)!.countries.filter((country) =>
-          distributionCountries.includes(country)
-        ),
-      },
-    }),
-    {}
-  );
+export const parseMarketPlaces = (
+  allPlaces: Partial<Record<string, DBProduct.Pricing>>,
+  distributionCountries: string[]
+): Record<string, Product.MarketPlace> =>
+  Object.keys(allPlaces).reduce((acc, placeKey) => {
+    const place = allPlaces[placeKey];
 
-export const parseLocales = (locales: Record<string, DBProduct.LocalePublishingInformation>, privacyAndCompliance: DBProduct.PrivacyAndCompliance) =>
-  Object.keys(locales).reduce<MergedLocale>(
-    (acc, locale) => ({
-      ...acc,
-      summary: locales[locale].summary,
-      description: locales[locale].description,
-      phrases: locales[locale].examplePhrases,
-      keywords: locales[locale].keywords || [],
-      smallIconUri: locales[locale].smallIconUri || null,
-      largeIconUri: locales[locale].largeIconUri || null,
-      cardDescription: locales[locale].customProductPrompts.boughtCardDescription || null,
-      purchasePrompt: locales[locale].customProductPrompts.purchasePromptDescription || null,
-      privacyPolicyUrl: privacyAndCompliance.locales[locale].privacyPolicyUrl || null,
-      purchasePromptVoice: locales[locale].customProductPrompts.purchasePromptDescriptionVoice || null,
-    }),
-    {} as MergedLocale
-  );
+    return !place
+      ? acc
+      : Object.assign(acc, {
+          [placeKey]: {
+            ...place.defaultPriceListing,
+            releaseDate: place.releaseDate,
+            countries: MarketPlaceAvailability.find(({ marketPlace }) => marketPlace === placeKey)!.countries.filter((country) =>
+              distributionCountries.includes(country)
+            ),
+          },
+        });
+  }, {});
+
+export const parseLocales = (
+  locales: Partial<Record<Locale, DBProduct.LocalePublishingInformation>>,
+  privacyAndCompliance: DBProduct.PrivacyAndCompliance
+) =>
+  (Object.keys(locales) as Locale[]).reduce<MergedLocale>((acc, locale) => {
+    const localeData = locales[locale];
+
+    return !localeData
+      ? acc
+      : Object.assign(acc, {
+          summary: localeData.summary,
+          description: localeData.description,
+          phrases: localeData.examplePhrases,
+          keywords: localeData.keywords || [],
+          smallIconUri: localeData.smallIconUri || null,
+          largeIconUri: localeData.largeIconUri || null,
+          cardDescription: localeData.customProductPrompts.boughtCardDescription || null,
+          purchasePrompt: localeData.customProductPrompts.purchasePromptDescription || null,
+          privacyPolicyUrl: privacyAndCompliance.locales[locale]?.privacyPolicyUrl || null,
+          purchasePromptVoice: localeData.customProductPrompts.purchasePromptDescriptionVoice || null,
+        });
+  }, {} as MergedLocale);
 
 // product status check
 
@@ -94,18 +105,18 @@ export const getMissingDataInfo = (product: Product) => {
   !product.privacyPolicyUrl && missingInfo.push('Privacy policy URL is missing');
   !product.testingInstructions && missingInfo.push('Testing Information is missing');
 
+  const marketPlacesKeys = Object.keys(product.marketPlaces) as MarketPlace[];
+
   // marketplace
-  Object.keys(product.marketPlaces).length === 0 && missingInfo.push('Atleast one marketplace is required');
+  marketPlacesKeys.length === 0 && missingInfo.push('Atleast one marketplace is required');
 
   // pricing and countries
-  Object.keys(product.marketPlaces).length > 0 &&
-    Object.keys(product.marketPlaces).map(
+  marketPlacesKeys.length > 0 &&
+    marketPlacesKeys.map(
       (place) => product.marketPlaces[place].countries.length === 0 && missingInfo.push(`Please select atleast one country for ${place}`)
     );
-  Object.keys(product.marketPlaces).length > 0 &&
-    Object.keys(product.marketPlaces).map(
-      (place) => product.marketPlaces[place].price === 0 && missingInfo.push(`Please add minimum pricing value for ${place}`)
-    );
+  marketPlacesKeys.length > 0 &&
+    marketPlacesKeys.map((place) => product.marketPlaces[place].price === 0 && missingInfo.push(`Please add minimum pricing value for ${place}`));
 
   return missingInfo;
 };
@@ -118,7 +129,7 @@ export const isProductComplete = (product: Product) => {
     product.testingInstructions &&
     product.taxCategory &&
     Object.keys(product.marketPlaces).length > 0 &&
-    Object.keys(product.marketPlaces).filter((place) => product.marketPlaces[place].countries.length === 0).length === 0 &&
+    (Object.keys(product.marketPlaces) as MarketPlace[]).filter((place) => product.marketPlaces[place].countries.length === 0).length === 0 &&
     product.summary &&
     product.smallIconUri &&
     product.largeIconUri &&

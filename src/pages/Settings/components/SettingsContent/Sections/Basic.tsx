@@ -1,3 +1,4 @@
+import { Locale } from '@voiceflow/alexa-types';
 import React, { ChangeEvent, useEffect } from 'react';
 
 import client from '@/client';
@@ -57,7 +58,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const initialInvocationName = React.useMemo(() => invName, [invName]);
   const [newInvocation, setNewInvocation] = React.useState(invName);
   const [newProjectName, setNewProjectName] = React.useState(name);
-  const [selectedLocales, setSelectedLocales] = React.useState<string[]>(locales || []);
+  const [selectedLocales, setSelectedLocales] = React.useState<Locale[]>(locales || []);
   const [mainLanguage, setMainLanguage] = React.useState<string>(publishInfo?.google?.main_locale);
   const displayName = selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ');
   const { descriptors, localeText } = platformMeta;
@@ -75,7 +76,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     if (dataRefactor.isEnabled) {
       saveProjectName(newProjectName);
       saveInvocationName(newInvocation);
-      saveLocales(selectedLocales);
+      saveLocales(selectedLocales as [Locale, ...Locale[]]);
     } else {
       // Legacy, to be removed after data refactor is merged / enabled
       if (initialInvocationName !== newInvocation) {
@@ -103,7 +104,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           buttonClick={() => setSelectedLocales([])}
           options={LOCALE_MAP}
           autoWidth
-          onSelect={(val: string) => {
+          onSelect={(val: Locale) => {
             const newLocales = selectedLocales.includes(val) ? without(selectedLocales, selectedLocales.indexOf(val)) : [...selectedLocales, val];
             setSelectedLocales(newLocales);
           }}

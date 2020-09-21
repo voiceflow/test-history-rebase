@@ -4,8 +4,11 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
+import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
-import { productByIDSelector, updateProduct, uploadProduct } from '@/ducks/product';
+import * as Feature from '@/ducks/feature';
+import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -61,20 +64,26 @@ function SelectedProduct({ product, onClick, updateProduct }) {
 }
 
 const mapStateToProps = {
-  product: productByIDSelector,
+  product: Product.productByIDSelector,
+  isFeatureEnabled: Feature.isFeatureEnabledSelector,
 };
 
 const mapDispatchToProps = {
-  updateProduct,
-  uploadProduct,
+  updateProduct: Product.updateProduct,
+  uploadProduct: Product.uploadProduct,
+  uploadProductV2: ProductV2.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProduct }, { productID }) => ({
-  product: productByIDSelector(productID),
-  updateProduct: (values) => {
-    updateProduct(productID, values);
-    uploadProduct(productID);
-  },
-});
+const mergeProps = ({ product: productByIDSelector, isFeatureEnabled }, { updateProduct, uploadProduct, uploadProductV2 }, { productID }) => {
+  const isDataRefactorEnabled = isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
+
+  return {
+    product: productByIDSelector(productID),
+    updateProduct: (values) => {
+      updateProduct(productID, values);
+      isDataRefactorEnabled ? uploadProductV2(productID) : uploadProduct(productID);
+    },
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SelectedProduct);

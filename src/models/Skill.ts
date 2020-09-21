@@ -1,3 +1,5 @@
+import { Locale } from '@voiceflow/alexa-types';
+
 import { PlatformType } from '@/constants';
 
 import { DBIntent } from './Intent';
@@ -6,7 +8,7 @@ import { DBSlot } from './Slot';
 export type Skill = {
   name: string;
   id: string;
-  locales: string[];
+  locales: Locale[];
   mainLocale?: string;
   creatorID: number;
   projectID: string;
@@ -27,7 +29,7 @@ export type DBSkill = {
   platform: PlatformType;
   live: boolean;
   review: boolean;
-  locales: string[];
+  locales: Locale[];
   google_publish_info: unknown;
   global?: string[];
   amzn_id?: string;

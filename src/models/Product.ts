@@ -1,14 +1,17 @@
+import { Locale, ProductType } from '@voiceflow/alexa-types';
+import { MarketPlace, SubscriptionPaymentFrequency } from '@voiceflow/alexa-types/build/project/product';
+
 export type Product = {
-  id: number;
+  id: string;
   skill: string;
-  type: string;
+  type: ProductType;
   name: string;
-  version: string;
+  version: '1.0';
   referenceName: string;
   summary: string;
   description: string;
-  marketPlaces: Record<string, Product.MarketPlace>;
-  locales: string[];
+  marketPlaces: Record<MarketPlace, Product.MarketPlace>;
+  locales: Locale[];
   phrases: string[];
   keywords: string[];
   purchasableState: string | null;
@@ -16,7 +19,7 @@ export type Product = {
   largeIconUri: string | null;
   testingInstructions: string | null;
   cardDescription: string | null;
-  subscriptionFrequency: string | null;
+  subscriptionFrequency: SubscriptionPaymentFrequency | null;
   privacyPolicyUrl: string | null;
   trialPeriodDays: string | null;
   taxCategory: string | null;
@@ -34,12 +37,12 @@ export namespace Product {
 }
 
 export type DBProduct = {
-  id: number;
+  id: string;
   name: string;
   skill: string;
   data: {
-    type: string;
-    version: string;
+    type: ProductType;
+    version: '1.0';
     referenceName: string;
     privacyAndCompliance: DBProduct.PrivacyAndCompliance;
     publishingInformation: DBProduct.PublishingInformation;
@@ -51,7 +54,7 @@ export type DBProduct = {
 
 export namespace DBProduct {
   export type PrivacyAndCompliance = {
-    locales: Record<string, LocalePrivacyAndCompliance>;
+    locales: Partial<Record<Locale, LocalePrivacyAndCompliance>>;
   };
 
   export type LocalePrivacyAndCompliance = {
@@ -64,7 +67,7 @@ export namespace DBProduct {
     taxInformation: {
       category?: string | null;
     };
-    locales: Record<string, LocalePublishingInformation>;
+    locales: Record<Locale, LocalePublishingInformation>;
   };
 
   export type LocalePublishingInformation = {
@@ -91,7 +94,7 @@ export namespace DBProduct {
   };
 
   export type SubscriptionInformation = {
-    subscriptionPaymentFrequency?: string | null;
+    subscriptionPaymentFrequency?: SubscriptionPaymentFrequency | null;
     subscriptionTrialPeriodDays?: string | null;
   };
 }

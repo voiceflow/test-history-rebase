@@ -1,4 +1,6 @@
-import { DEFAULT_PRODUCT_PHRASE, NEW_PRODUCT_ID, ProductType } from '@/constants';
+import { ProductType } from '@voiceflow/alexa-types';
+
+import { DEFAULT_PRODUCT_PHRASE, NEW_PRODUCT_ID } from '@/constants';
 import Locales, { MarketPlaceAvailability } from '@/services/LocaleMap';
 
 export const getSelectedLocales = (locales: string[] = []) =>
@@ -18,11 +20,11 @@ export const getDefaultAvailability = () =>
   );
 
 export const createNewProduct = (locales: string[]) => ({
-  id: NEW_PRODUCT_ID as any,
-  version: '1.0',
+  id: NEW_PRODUCT_ID,
   type: ProductType.ENTITLEMENT,
   name: '',
+  version: '1.0',
   phrases: [DEFAULT_PRODUCT_PHRASE],
-  marketPlaces: getDefaultAvailability(),
   locales: getSelectedLocales(locales).map(({ value }) => value),
+  marketPlaces: getDefaultAvailability(),
 });

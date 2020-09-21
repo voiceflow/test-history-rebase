@@ -1,9 +1,9 @@
-import { PermissionType } from '@voiceflow/alexa-types';
+import { PermissionType, ProductType } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import ProductSelect from '@/components/ProductSelect';
 import VariableSelect from '@/components/VariableSelect';
-import { PERMISSIONS_WITH_VARIABLE_MAPS, ProductType } from '@/constants';
+import { PERMISSIONS_WITH_VARIABLE_MAPS } from '@/constants';
 import * as Product from '@/ducks/product';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';

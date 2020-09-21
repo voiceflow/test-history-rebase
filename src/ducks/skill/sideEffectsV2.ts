@@ -1,4 +1,4 @@
-import { AccountLinking, AlexaVersionData } from '@voiceflow/alexa-types';
+import { AccountLinking, AlexaVersionData, Locale } from '@voiceflow/alexa-types';
 import _pick from 'lodash/pick';
 
 import clientV2, { getPlatformService } from '@/clientV2';
@@ -86,13 +86,13 @@ export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dis
   return platformData.settings.accountLinking;
 };
 
-export const saveLocales = (locales: string[]): Thunk => async (dispatch, getState) => {
+export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dispatch, getState) => {
   if (locales.length === 0) return;
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
   const versionID = Skill.activeSkillIDSelector(state);
 
   const service = getPlatformService(platform);
-  await service?.updateVersionPublishing(versionID, { locales: locales as any });
+  await service?.updateVersionPublishing(versionID, { locales });
   dispatch(Skill.updateActiveSkill({ locales }));
 };

@@ -1,4 +1,6 @@
 declare module '@voiceflow/common' {
+  import { Locale } from '@voiceflow/alexa-types';
+
   type PlatformMap<T> = Record<'alexa' | 'google', T>;
 
   namespace utils {
@@ -35,7 +37,7 @@ declare module '@voiceflow/common' {
 
     const locales: {
       LOCALES: {
-        US: string;
+        US: Locale.EN_US;
       };
       GOOGLE_LOCALES: any;
     };

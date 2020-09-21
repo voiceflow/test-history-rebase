@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-shadow */
+import { ProductType } from '@voiceflow/alexa-types';
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,7 +12,6 @@ import Button from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import { ProductType } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { parentCtrlSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';

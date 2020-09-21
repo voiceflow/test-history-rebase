@@ -6,9 +6,12 @@ import { Tooltip } from 'react-tippy';
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import { copyProduct, deleteProduct } from '@/ducks/product';
-import { goToEditProduct } from '@/ducks/router';
-import { activeSkillIDSelector } from '@/ducks/skill';
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
+import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
+import * as Router from '@/ducks/router';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { PRODUCT_TYPES } from '@/pages/Business/Product/GuidedSteps/PricingModel';
 import LocaleMap from '@/services/LocaleMap';
@@ -105,19 +108,30 @@ ProductCard.proptypes = {
 };
 
 const mapStateToProps = {
-  skillID: activeSkillIDSelector,
+  skillID: Skill.activeSkillIDSelector,
+  isFeatureEnabled: Feature.isFeatureEnabledSelector,
 };
 
 const mapDispatchToProps = {
-  copyProduct,
-  deleteProduct,
-  goToEditProduct,
+  copyProduct: Product.copyProduct,
+  copyProductV2: ProductV2.copyProduct,
+  deleteProduct: Product.deleteProduct,
+  deleteProductV2: ProductV2.deleteProduct,
+  goToEditProduct: Router.goToEditProduct,
 };
 
-const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => ({
-  copyProduct: () => copyProduct(skillID, productID),
-  deleteProduct: () => deleteProduct(skillID, productID),
-  goToEditProduct: () => goToEditProduct(skillID, productID),
-});
+const mergeProps = (
+  { skillID, isFeatureEnabled },
+  { copyProduct, copyProductV2, deleteProduct, deleteProductV2, goToEditProduct },
+  { productID }
+) => {
+  const isDataRefactorEnabled = isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
+
+  return {
+    copyProduct: () => (isDataRefactorEnabled ? copyProductV2(productID) : copyProduct(skillID, productID)),
+    deleteProduct: () => (isDataRefactorEnabled ? deleteProductV2(productID) : deleteProduct(skillID, productID)),
+    goToEditProduct: () => goToEditProduct(skillID, productID),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProductCard);

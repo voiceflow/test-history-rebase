@@ -53,12 +53,6 @@ export enum PlatformType {
   GENERAL = 'general',
 }
 
-export const ProductType = {
-  ENTITLEMENT: 'ENTITLEMENT',
-  CONSUMABLE: 'CONSUMABLE',
-  SUBSCRIPTION: 'SUBSCRIPTION',
-};
-
 export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
 
 export const PLATFORM_META: Record<PlatformType, { icon: Icon; hidden: boolean }> = {

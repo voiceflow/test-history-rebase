@@ -5,8 +5,11 @@ import React, { PureComponent } from 'react';
 
 import GuidedSteps from '@/components/GuidedSteps';
 import SvgIcon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import { NEW_PRODUCT_ID } from '@/constants';
+import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
+import * as ProductV2 from '@/ducks/productV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
@@ -189,23 +192,35 @@ ProductEditPage.propTypes = {
 
 const mapStateToProps = {
   product: Product.productByIDSelector,
+  isFeatureEnabled: Feature.isFeatureEnabledSelector,
 };
 
 const mapDispatchToProps = {
   goToProducts: Router.goToProducts,
   createProduct: Product.createProduct,
+  createProductV2: ProductV2.createProduct,
   cancelProduct: Product.cancelProduct,
+  cancelProductV2: ProductV2.cancelProduct,
   uploadProduct: Product.uploadProduct,
+  uploadProductV2: ProductV2.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { match, skillID }) => {
+const mergeProps = (
+  { product: productByIDSelector, isFeatureEnabled },
+  { goToProducts, uploadProduct, uploadProductV2, cancelProduct, cancelProductV2, createProduct, createProductV2 },
+  { match, skillID }
+) => {
   const productID = match.params.id;
+
+  const isDataRefactorEnabled = isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
 
   return {
     productID,
     product: productByIDSelector(productID) || {},
     goToProducts: () => goToProducts(skillID),
-    uploadProduct: () => uploadProduct(productID),
+    uploadProduct: () => (isDataRefactorEnabled ? uploadProductV2(productID) : uploadProduct(productID)),
+    cancelProduct: isDataRefactorEnabled ? cancelProductV2 : cancelProduct,
+    createProduct: isDataRefactorEnabled ? createProductV2 : createProduct,
   };
 };
 

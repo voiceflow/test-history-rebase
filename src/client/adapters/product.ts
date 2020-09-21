@@ -1,6 +1,6 @@
+import { Locale, ProductType } from '@voiceflow/alexa-types';
 import cuid from 'cuid';
 
-import { ProductType } from '@/constants';
 import { DBProduct, Product } from '@/models';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
@@ -35,7 +35,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       referenceName,
       purchasableState: purchasableState || null,
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
-      locales: Object.keys(publishingInformation.locales),
+      locales: Object.keys(publishingInformation.locales) as Locale[],
       testingInstructions: testingInstructions || null,
       taxCategory: publishingInformation.taxInformation.category || null,
       subscriptionFrequency: subscriptionInformation.subscriptionPaymentFrequency || null,

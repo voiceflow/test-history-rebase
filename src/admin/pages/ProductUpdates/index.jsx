@@ -65,7 +65,6 @@ class ProductUpdates extends Component {
                 id="details"
                 placeholder="Checkout new **features** of [Voiceflow Creator](https://creator.voiceflow.com)"
                 onChange={this.handleChange}
-                maxLength={150}
               />
             </FormGroup>
           </Form>

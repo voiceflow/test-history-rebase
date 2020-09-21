@@ -176,6 +176,13 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     dispatch(Account.updateAccount(user));
 
     await dispatch(identifyUser(user));
+
+    const location = ConnectedReactRouter.getLocation(state);
+    const search = queryString.parse(location?.search);
+
+    if (search?.promo) {
+      dispatch(goToOnboarding());
+    }
   } catch (err) {
     await dispatch(resetSession());
   }
@@ -195,7 +202,6 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
 
   const location = ConnectedReactRouter.getLocation(state);
   const search = queryString.parse(location.search);
-
   // Show join workspace onboarding on first login of an invite or with a workspace promo
   if ((search.invite && user.first_login) || search.promo) {
     dispatch(goToOnboarding());

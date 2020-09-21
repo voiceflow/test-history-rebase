@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 
 import Header from '@/components/Header';
 import Button from '@/components/LegacyButton';
+import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { FeatureFlag } from '@/config/features';
 import * as AccountDuck from '@/ducks/account';
@@ -12,6 +13,7 @@ import { getAmazonAccountV2, unlinkAmazonAccountV2 } from '@/ducks/account/sideE
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
+import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
 class Account extends Component {
@@ -119,10 +121,10 @@ class Account extends Component {
     const {
       user,
       user: { amazon, google },
+      goToDashboard,
     } = this.props;
     return (
-      <>
-        <Header withLogo history={this.props.history} />
+      <Page header={<Header history={this.props.history} />} userMenu={false} navigateBackText="Back" onNavigateBack={goToDashboard}>
         <div id="app" className="pt-6">
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>
@@ -208,7 +210,7 @@ class Account extends Component {
             </div>
           </div>
         </div>
-      </>
+      </Page>
     );
   }
 }
@@ -229,6 +231,7 @@ const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
   updateProfilePicture: Creator.updateProfilePicture,
+  goToDashboard: Router.goToDashboard,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

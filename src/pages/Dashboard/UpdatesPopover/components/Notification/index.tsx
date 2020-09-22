@@ -3,6 +3,7 @@ import Markdown from 'markdown-to-jsx';
 import moment from 'moment';
 import React from 'react';
 
+import { Link } from '@/components/Text';
 import * as Notifications from '@/ducks/notifications';
 
 import { Container, TimeContainer } from './components';
@@ -30,7 +31,16 @@ const Notification: React.FC<NotificationProps> = ({ data: { details, created, i
   <Container>
     {isNew && <p className={cn('d-inline-block mb-0 ', CLASS_MAPPINGS[type].class)}>&bull; {CLASS_MAPPINGS[type].label}:&nbsp;</p>}
 
-    <Markdown style={{ marginRight: '4px' }}>{details}</Markdown>
+    <Markdown
+      options={{
+        overrides: {
+          a: Link,
+        },
+      }}
+      style={{ marginRight: '4px' }}
+    >
+      {details}
+    </Markdown>
 
     <TimeContainer>{created ? moment(created).fromNow() : ''}</TimeContainer>
   </Container>

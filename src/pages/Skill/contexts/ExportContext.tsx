@@ -56,17 +56,19 @@ export const ExportProvider: React.FC = ({ children }) => {
     [projectID, service, job?.stage.type]
   );
 
-  const cancel = React.useCallback(async () => {
-    await service?.cancelExport(projectID);
-
-    setJob(null);
-  }, [projectID, service]);
-
   const stopPulling = React.useCallback(() => {
     clearTimeout(pullTimeout.current);
 
     pullTimeout.current = undefined;
   }, []);
+
+  const cancel = React.useCallback(async () => {
+    stopPulling();
+
+    await service?.cancelExport(projectID);
+
+    setJob(null);
+  }, [projectID, service]);
 
   useDidUpdateEffect(() => {
     if (!dataRefactor.isEnabled) {

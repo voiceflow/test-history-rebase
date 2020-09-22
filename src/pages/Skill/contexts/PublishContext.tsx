@@ -60,17 +60,19 @@ export const PublishProvider: React.FC = ({ children }) => {
     [projectID, service, job?.stage.type]
   );
 
-  const cancel = React.useCallback(async () => {
-    await service?.cancelPublish(projectID);
-
-    setJob(null);
-  }, [projectID, service]);
-
   const stopPulling = React.useCallback(() => {
     clearTimeout(pullTimeout.current);
 
     pullTimeout.current = undefined;
   }, []);
+
+  const cancel = React.useCallback(async () => {
+    stopPulling();
+
+    await service?.cancelPublish(projectID);
+
+    setJob(null);
+  }, [projectID, service]);
 
   // eslint-disable-next-line lodash/prefer-constant
   useSetup(dataRefactor.isEnabled ? getJob : () => null);

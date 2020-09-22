@@ -41,6 +41,7 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
 
       if (query.invite) {
         const newWorkspaceID = await validateInvite(query.invite);
+        const inviteSource = query.email ? 'email' : 'link';
 
         if (!newWorkspaceID) return;
 
@@ -59,7 +60,7 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
           ),
         });
 
-        trackInvitationAccepted(newWorkspaceID);
+        trackInvitationAccepted(newWorkspaceID, inviteSource);
 
         history.push({ search: '' });
       }
@@ -135,7 +136,7 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (...[{ email }, { trackInvitationAccepted }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  trackInvitationAccepted: (workspaceID: string) => trackInvitationAccepted(workspaceID, email!),
+  trackInvitationAccepted: (workspaceID: string, source: string) => trackInvitationAccepted(workspaceID, email!, source),
 });
 
 type ConnectedWorkspacesLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

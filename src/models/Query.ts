@@ -9,6 +9,7 @@ export namespace Query {
     ob_period: BillingPeriod;
     ob_payment: boolean;
     invite: string;
+    email: string;
     choose_workspace: boolean;
     promo: PromoType;
   }>;

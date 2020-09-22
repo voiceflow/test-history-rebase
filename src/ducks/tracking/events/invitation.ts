@@ -2,10 +2,11 @@ import client from '@/client';
 
 import { EventName } from '../constants';
 
-const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email: string) => () =>
+const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email?: string, source?: string) => () =>
   client.analytics.track(eventName, {
     teamhashed: ['invitation_workspace_id'],
     properties: {
+      source,
       invitation_email: email,
       invitation_workspace_id: workspaceID,
     },

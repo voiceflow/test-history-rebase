@@ -9,6 +9,7 @@ import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlanType, PlatformType, PromoType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
+import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
@@ -378,6 +379,8 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
   const finishJoiningWorkspace = async () => {
     const newWorkspaceID = await validateInvite(query.invite || '');
+    const inviteSource = query.email ? 'email' : 'link';
+
     if (!newWorkspaceID) {
       toastNotif.error('Error joining workspace');
     } else {
@@ -385,7 +388,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       updateCurrentWorkspace(newWorkspaceID);
 
       goToDashboard();
-      trackInvitationAccepted(newWorkspaceID);
+      trackInvitationAccepted(newWorkspaceID, query.email, inviteSource);
       setOnboardingComplete(true);
 
       toastNotif.success('Successfully joined workspace');
@@ -621,6 +624,7 @@ const mapDispatchToProps = {
   updateWorkspaceName: Workspace.updateWorkspaceName,
   updateWorkspaceImage: Workspace.updateWorkspaceImage,
   goToWorkspace: Router.goToWorkspace,
+  trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

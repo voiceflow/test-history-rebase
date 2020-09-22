@@ -14,7 +14,7 @@ function PaymentModal() {
   const { isOpened, toggle, data } = useModals(ModalType.PAYMENT);
 
   return (
-    <Modal className={`${ClassName.MODAL}--payment`} modalname="plan" isOpen={isOpened} toggle={toggle} isAllowed={isAllowed}>
+    <Modal className={`${ClassName.MODAL}--payment`} modalname="plan" isOpen={isOpened} toggle={toggle} notAllowed={!isAllowed}>
       <Payment focus={data?.focus} />
     </Modal>
   );

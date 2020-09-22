@@ -55,12 +55,6 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
 
           <ActionContainer>
             <ButtonContainer>
-              <Button variant="tertiary" onClick={onToggle}>
-                Cancel
-              </Button>
-            </ButtonContainer>
-
-            <ButtonContainer>
               <Button onClick={onUnlock}>Unlock</Button>
             </ButtonContainer>
           </ActionContainer>

@@ -4,16 +4,13 @@ import { compose } from 'recompose';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { goToOnboarding } from '@/ducks/router';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useFeature } from '@/hooks';
 import Dashboard from '@/pages/Dashboard';
 import NewProject from '@/pages/NewProject';
-import Templates from '@/pages/Templates';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 const PAGES_MATCHES = {
@@ -23,10 +20,6 @@ const PAGES_MATCHES = {
 };
 
 function Workspace({ workspaces, goToOnboarding }) {
-  const projectCreationFlow = useFeature(FeatureFlag.PROJECT_CREATION_FLOW);
-
-  const newProjectComponent = projectCreationFlow.isEnabled ? NewProject : Templates;
-
   if (workspaces.length === 0) {
     return (
       <div className="h-100 d-flex justify-content-center">
@@ -52,7 +45,7 @@ function Workspace({ workspaces, goToOnboarding }) {
 
   return (
     <Switch>
-      <PrivateRoute exact path={[Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:listID`]} component={newProjectComponent} />
+      <PrivateRoute exact path={[Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:listID`]} component={NewProject} />
       <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD]} component={Dashboard} />
     </Switch>
   );

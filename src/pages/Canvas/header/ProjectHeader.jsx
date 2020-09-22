@@ -1,23 +1,16 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
-import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
 import Button from '@/components/Button';
 import Text from '@/components/Text';
-import { FeatureFlag } from '@/config/features';
-import { Permission } from '@/config/permissions';
-import { DiagramState, ModalType, PlatformType } from '@/constants';
+import { DiagramState, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission } from '@/hooks';
-import { projectViewerCountSelector } from '@/store/selectors';
+import { useModals } from '@/hooks';
 
 import ActionGroup from './ActionGroup';
-import { GroupContainer } from './ActionGroup/components';
-import PlatformToggle from './PlatformToggle';
 
 const getStateLabel = (state) => {
   switch (state) {
@@ -31,20 +24,13 @@ const getStateLabel = (state) => {
   }
 };
 
-const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplateWorkspace, projectId, diagramState }) => {
-  const hasViewers = projectViewerCount > 1;
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+const ProjectHeader = ({ isTemplateWorkspace, projectId, diagramState }) => {
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
-  const projectSplitting = useFeature(FeatureFlag.PROJECT_SPLITTING);
 
   const openCloneModal = async () => {
     const importToken = await client.project.getImportToken(projectId);
     openImportModal({ importToken, cloning: true });
   };
-
-  const ContentContainer = diagramState === DiagramState.IDLE ? React.Fragment : GroupContainer;
-
-  const toggle = <PlatformToggle platform={platform} onToggle={togglePlatform} disabled={hasViewers || !canEditCanvas} />;
 
   return isTemplateWorkspace ? (
     <Button onClick={openCloneModal} icon="flows" iconProps={{ size: 13 }}>
@@ -58,41 +44,17 @@ const ProjectHeader = ({ platform, togglePlatform, projectViewerCount, isTemplat
         {getStateLabel(diagramState)}
       </Text>
 
-      {!projectSplitting.isEnabled && (
-        <ContentContainer>
-          {hasViewers ? (
-            <Tooltip title="Unable to switch the platform with other active users viewing the project." theme="warning" position="bottom">
-              {toggle}
-            </Tooltip>
-          ) : (
-            toggle
-          )}
-        </ContentContainer>
-      )}
-
       <ActionGroup />
     </>
   );
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
-  projectViewerCount: projectViewerCountSelector,
   isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
   projectId: Skill.activeProjectIDSelector,
   diagramState: Creator.diagramStateSelector,
 };
 
-const mapDispatchToProps = {
-  togglePlatform: Skill.setActivePlatform,
-  clearHistory: ActionCreators.clearHistory,
-};
+const mapDispatchToProps = {};
 
-const mergeProps = ({ platform }, { togglePlatform, clearHistory }) => ({
-  togglePlatform: () => {
-    togglePlatform(platform === PlatformType.GOOGLE ? PlatformType.ALEXA : PlatformType.GOOGLE);
-    clearHistory();
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectHeader);

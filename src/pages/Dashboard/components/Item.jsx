@@ -10,12 +10,11 @@ import Avatar from '@/components/Avatar';
 import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import { ModalType, PLATFORM_APP_NAME } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
-import { useFeature, useModals, usePermission } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { stopPropagation } from '@/utils/dom';
@@ -54,7 +53,6 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
-  const projectSplitting = useFeature(FeatureFlag.PROJECT_SPLITTING);
 
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`;
@@ -130,11 +128,9 @@ export function Item(props) {
           <ProjectTitleDetails>
             <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
             <ProjectTitleCaption>
-              {projectSplitting.isEnabled && (
-                <span>
-                  {PLATFORM_APP_NAME[platform]} {!!language.length && '-'}{' '}
-                </span>
-              )}
+              <span>
+                {PLATFORM_APP_NAME[platform]} {!!language.length && '-'}{' '}
+              </span>
               {map(language, (l) => getHumanLanguageName(l)).join(', ')}
             </ProjectTitleCaption>
           </ProjectTitleDetails>

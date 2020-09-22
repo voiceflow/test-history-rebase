@@ -33,7 +33,6 @@ declare module 'webpack-nano/argv' {
     // feature flags
     ff_gadgets: boolean;
     ff_dataRefactor: boolean;
-    ff_projectSplitting: boolean;
   }>;
 
   export = argv;

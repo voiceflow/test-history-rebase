@@ -14,8 +14,6 @@ import {
   ff_codeExport,
   ff_dataRefactor,
   ff_gadgets,
-  ff_projectCreationFlow,
-  ff_projectSplitting,
   ga,
   intercom,
   logFilter,
@@ -64,8 +62,6 @@ export const ENV = {
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
-  FF_PROJECT_SPLITTING: ff_projectSplitting && 'true',
-  FF_PROJECT_CREATION_FLOW: ff_projectCreationFlow && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
 
   API_HOST: 'localhost',

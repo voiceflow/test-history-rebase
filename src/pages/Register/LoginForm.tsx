@@ -5,6 +5,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -17,11 +18,9 @@ import { replaceSpaceWithPlus } from './utils';
 
 export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
   const query = Query.parse(location.search);
-  const [loginError, setLoginError] = React.useState<string | false | null>(null);
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email) : '');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
-  let timeout: number | undefined;
 
   const openRegister = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -36,18 +35,10 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
       password,
     }).catch((error) => {
       const errText = _.get(error, ['body', 'data']) || false;
-      setLoginError(errText);
+      toast.error(errText);
     });
     return false;
   };
-
-  React.useEffect(() => {
-    timeout = setTimeout(() => {
-      setLoginError(false);
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  });
 
   return (
     <AuthenticationContainer>
@@ -105,14 +96,6 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
           </div>
         </Form>
         <SocialLogin entryText="Or sign in with" light />
-        {loginError && (
-          <div className="errorContainer row">
-            <div className="col-1">
-              <img src="/error.svg" alt="" />
-            </div>
-            <div className="col-11">{loginError}</div>
-          </div>
-        )}
       </AuthBox>
     </AuthenticationContainer>
   );

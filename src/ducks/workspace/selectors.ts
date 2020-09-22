@@ -9,9 +9,7 @@ import { NonNullableRecord } from '@/types';
 import { getAlternativeColor } from '@/utils/colors';
 
 import { userIDSelector } from '../account/selectors';
-import { STATE_KEY } from './constants';
-
-const TEMPLATES_ADMIN_ID = 36745;
+import { STATE_KEY, TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);
 
@@ -82,10 +80,19 @@ export const distinctWorkspaceMemberSelector = createSelector(
 
 export const userRoleSelector = createSelector(
   [activeWorkspaceMemberSelector, activeWorkspaceSelector, userIDSelector],
-  (getMember, workspace, creatorID) =>
+  (getMember, workspace, creatorID) => {
     // template workspace has empty members array since the volume can be very high
-    // eslint-disable-next-line no-nested-ternary
-    workspace?.templates ? (creatorID === TEMPLATES_ADMIN_ID ? UserRole.ADMIN : UserRole.LIBRARY) : getMember(String(creatorID))?.role
+    if (workspace?.templates && creatorID) {
+      if (creatorID === TEMPLATES_ADMIN_ID) {
+        return UserRole.ADMIN;
+      }
+      if (TEMPLATES_EDITORS_ID.includes(creatorID)) {
+        return UserRole.EDITOR;
+      }
+      return UserRole.LIBRARY;
+    }
+    return getMember(String(creatorID))?.role;
+  }
 );
 
 export const isViewerRoleSelector = createSelector([userRoleSelector], (role) => role === UserRole.VIEWER);

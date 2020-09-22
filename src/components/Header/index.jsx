@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
+import { ModalType } from '@/constants';
+import { useModals } from '@/hooks';
 import LeftIcon from '@/svgs/arrow-left.svg';
 
 import {
@@ -32,6 +34,8 @@ function Header({
   disableLogoClick,
   logoAssetPath,
 }) {
+  const { open: openWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
+
   return (
     <HeaderContainer>
       <PrimaryHeader isBackClick={onBackClick}>
@@ -41,7 +45,7 @@ function Header({
             src={logoAssetPath || '/logo_bubble_Small.png'}
             alt="logo"
             draggable="false"
-            onClick={() => (disableLogoClick ? null : history.push('/'))}
+            onClick={() => (disableLogoClick ? null : openWorkspaceSettings())}
           />
         )}
         {onBackClick && (

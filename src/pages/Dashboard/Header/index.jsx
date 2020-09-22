@@ -12,7 +12,6 @@ const DashboardHeader = ({ user, loadingProjects, history, handleFilterText, wor
     <Header
       withLogo
       logoAssetPath={activeWorkspace.image}
-      disableLogoClick
       history={history}
       leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} workspaces={workspaces} activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}

@@ -1,3 +1,4 @@
+import { ProjectPrivacy } from '@voiceflow/api-sdk';
 import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
@@ -7,6 +8,7 @@ import Tooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PlatformType } from '@/constants';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -30,8 +32,10 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   getImportToken,
   sharePrototype,
   platform,
+  projectID,
   renderPrototype,
   renderPrototypeV2,
+  updateProjectPrivacy,
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
@@ -77,6 +81,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   const loadImportToken = async () => {
+    if (dataRefactor.isEnabled) {
+      stateApi.loadingImportToken.set(false);
+      return;
+    }
+
     if (meta?.importToken) {
       return;
     }
@@ -86,6 +95,12 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     await getImportToken();
 
     stateApi.loadingImportToken.set(false);
+  };
+
+  const onClickImport = () => {
+    if (dataRefactor.isEnabled) {
+      updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
+    }
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
@@ -124,8 +139,9 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 description="Allow others to download this project to their own Voiceflow account."
                 onRedirect={openProjectDownloadModal}
                 help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
-                link={`${window.location.origin}/dashboard?import=${meta?.importToken}`}
+                link={`${window.location.origin}/dashboard?import=${dataRefactor.isEnabled ? projectID : meta?.importToken}`}
                 track={trackingEvents.trackActiveProjectDownloadLinkShare}
+                onClick={onClickImport}
               />
               <ExportItem onRedirect={openCanvasExportModal} />
             </span>
@@ -157,6 +173,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,
   meta: Skill.skillMetaSelector,
+  projectID: Skill.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -164,6 +181,7 @@ const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
   renderPrototype: Prototype.renderPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
+  updateProjectPrivacy: ProjectV2.updateProjectPrivacy,
 };
 
 type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -1,5 +1,6 @@
 import { AlexaProjectData, AlexaProjectMemberData, AlexaVersionData } from '@voiceflow/alexa-types';
 
+import client from '@/client';
 import clientV2, { getPlatformService } from '@/clientV2';
 import creatorAdapter from '@/clientV2/adapters/creator';
 import { alexaIntentAdapter } from '@/clientV2/adapters/intent';
@@ -19,9 +20,29 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
+import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 
 import { Thunk } from './types';
+
+export const importProject = (projectID: string, workspaceID: string): Thunk<Models.Project> => async (dispatch, getState) => {
+  const project = await clientV2.api.project.get(projectID);
+
+  const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
+
+  const service = getPlatformService(project.platform as PlatformType);
+  const copiedProject = projectAdapter.fromDB(await service.copyProject(project._id, { teamID: workspaceID }));
+
+  if (activeWorkspaceID === workspaceID) {
+    dispatch(Project.addProject(copiedProject.id, copiedProject));
+    await dispatch(ProjectList.addProjectToDefaultList(copiedProject.id));
+  } else {
+    const projectLists = await client.projectList.find(workspaceID);
+    dispatch(ProjectList.addToListInWorkspace(workspaceID, projectLists, copiedProject.id));
+  }
+
+  return copiedProject;
+};
 
 export const copyProject = (projectID: string, workspaceID: string, listID: string): Thunk => async (dispatch, getState) => {
   const state = getState();

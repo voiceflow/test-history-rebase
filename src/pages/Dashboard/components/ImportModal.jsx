@@ -1,6 +1,5 @@
 import './ImportModal.css';
 
-import jwt from 'jsonwebtoken';
 import React, { useMemo, useState } from 'react';
 
 import { StatusCode } from '@/client/fetch';
@@ -16,6 +15,7 @@ import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
 import { useModals, useTrackingEvents } from '@/hooks';
 import { importProject } from '@/store/sideEffects';
+import { importProject as importProjectV2 } from '@/store/sideEffectsV2';
 
 import { ImportSelect } from './ModalComponents';
 
@@ -24,7 +24,7 @@ const allowedToClone = (workspace, creatorId) => {
   return hasPermission(Permission.MANAGE_PROJECTS, creatorRole, null);
 };
 
-function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWorkspace, creatorId }) {
+function ImportModal({ importProject, importProjectV2, workspaces, workspaceByIDSelector, goToWorkspace, creatorId }) {
   const [trackEvents] = useTrackingEvents();
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
   const [targetWorkspace, setTargetWorkspace] = useState(workspaceOptions[0]);
@@ -32,7 +32,6 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { importToken, cloning = false } = data;
-  const { projectName } = React.useMemo(() => (importToken ? jwt.decode(importToken) : { projectName: 'Project' }), [importToken]);
 
   React.useEffect(() => {
     setTargetWorkspace(workspaceOptions[0]);
@@ -49,7 +48,10 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
       try {
         close();
         openLoadingModal();
-        const importedProject = await importProject(workspaceId, importToken, true);
+        const importedProject = await (importToken.length === 24
+          ? importProjectV2(importToken, workspaceId)
+          : importProject(workspaceId, importToken, true));
+
         if (cloning) {
           trackEvents.trackProjectClone({
             template_id: importedProject.id,
@@ -63,7 +65,8 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
           goToWorkspace(workspaceId);
           openProjectLimitModal({ message: 'Project limitations is reached' });
         } else {
-          toast.error(e);
+          console.error(e);
+          toast.error('unable to access project');
         }
 
         return;
@@ -79,7 +82,7 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
   };
   return (
     <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
-      <ModalHeader toggle={toggle} header={cloning ? `Clone ${projectName}` : `Copy ${projectName}`}></ModalHeader>
+      <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
       <ModalBody padding="0 32px 32px 32px">
         <ImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}
@@ -111,6 +114,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   importProject,
+  importProjectV2,
   goToWorkspace,
 };
 

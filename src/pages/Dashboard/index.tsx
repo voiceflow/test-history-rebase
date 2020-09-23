@@ -64,23 +64,22 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     if (query) {
       importToken = query.import;
 
-      if (importToken) {
-        try {
-          const result = jwt.decode(importToken) as Models.Project.ImportToken;
-          if (!result.projectId || !result.projectName) {
-            throw new Error('Unexpected JWT content');
-          }
-          openImportModal({ importToken });
-          props.history.replace({ search: '' });
-        } catch (e) {
-          importToken = null;
-          props.history.replace({ search: '' });
-          props.setError('Bad Import Link');
-        }
-      }
+      props.history.replace({ search: '' });
+      if (!importToken) return;
 
-      if (query.plan) {
-        props.history.replace({ search: '' });
+      if (importToken.length === 24) {
+        openImportModal({ importToken });
+        return;
+      }
+      try {
+        const result = jwt.decode(importToken) as Models.Project.ImportToken;
+        if (!result.projectId || !result.projectName) {
+          throw new Error('Unexpected JWT content');
+        }
+        openImportModal({ importToken });
+      } catch (e) {
+        importToken = null;
+        props.setError('Bad Import Link');
       }
     }
   }, []);

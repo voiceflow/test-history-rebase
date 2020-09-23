@@ -8,7 +8,7 @@ import { Project } from '@/models';
 export { default as productAdapter } from './product';
 
 const projectAdapter = createAdapter<DBProject<AlexaProjectData, AlexaProjectMemberData>, Project>(
-  ({ _id, name, devVersion, created, platform }) => ({
+  ({ _id, name, devVersion, created, platform, privacy }) => ({
     id: _id,
     name,
     isLive: false,
@@ -21,6 +21,7 @@ const projectAdapter = createAdapter<DBProject<AlexaProjectData, AlexaProjectMem
     versionID: devVersion!,
     smallIcon: null,
     largeIcon: null,
+    privacy,
   }),
   () => {
     throw new AdapterNotImplementedError();

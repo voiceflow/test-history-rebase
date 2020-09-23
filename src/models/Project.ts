@@ -1,3 +1,5 @@
+import { ProjectPrivacy } from '@voiceflow/api-sdk';
+
 import { PlatformType } from '@/constants';
 
 export type Project = {
@@ -13,6 +15,7 @@ export type Project = {
   smallIcon: string | null;
   largeIcon: string | null;
   platform: PlatformType;
+  privacy?: ProjectPrivacy;
 };
 
 export namespace Project {

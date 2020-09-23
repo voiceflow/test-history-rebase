@@ -1,4 +1,5 @@
 import { AlexaProject, AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
+import { ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import client from '@/client';
 import clientV2, { getPlatformService } from '@/clientV2';
@@ -87,5 +88,14 @@ export const createProject = ({ platform, name, image, listID }: createProjectPa
   } catch (err) {
     toast.error('Error creating project, please try again later or contact support.');
     throw new Error('error creating project');
+  }
+};
+
+export const updateProjectPrivacy = (projectID: string, privacy: ProjectPrivacy): Thunk => async (dispatch, getState) => {
+  const project = projectByIDSelector(getState())(projectID);
+
+  if (project.privacy !== privacy) {
+    await clientV2.api.project.update(projectID, { privacy });
+    dispatch(updateProject(projectID, { privacy }, true));
   }
 };

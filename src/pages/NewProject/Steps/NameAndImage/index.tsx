@@ -32,7 +32,7 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, image, setIm
       </FlexCenter>
 
       <FlexCenter>
-        <IconUpload image={image} update={setImage} size="large" ref={iconUploadRef} />
+        <IconUpload image={image} update={setImage} size="large" ref={iconUploadRef} endpoint="/image/large_icon" />
       </FlexCenter>
 
       <LabelContainer>

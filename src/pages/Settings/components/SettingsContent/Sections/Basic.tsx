@@ -35,6 +35,13 @@ type BasicProps = {
   platform: PlatformType;
 };
 
+type newSettingsDataProps = {
+  name: string;
+  invName: string;
+  locales: Locale[];
+  invocations?: string[];
+};
+
 const sectionStyling = {
   paddingBottom: '24px',
 };
@@ -66,11 +73,10 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const saveSettings = async () => {
-    const newSettingsData = {
+    const newSettingsData: newSettingsDataProps = {
       name: newProjectName,
       invName: newInvocation,
       locales: selectedLocales,
-      invocations: [''],
     };
 
     if (dataRefactor.isEnabled) {

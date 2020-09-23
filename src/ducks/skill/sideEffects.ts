@@ -31,7 +31,10 @@ import {
 } from './skill';
 
 // eslint-disable-next-line import/prefer-default-export
-export const saveSkillSettings = <T extends { name: string; locales?: Locale[] }>(settings: T): Thunk => async (dispatch, getState) => {
+export const saveSkillSettings = <T extends { name: string; locales?: Locale[]; invocations?: string[] }>(settings: T): Thunk => async (
+  dispatch,
+  getState
+) => {
   const { name, locales, ...meta } = settings;
   const state = getState();
   const skillID = activeSkillIDSelector(state)!;

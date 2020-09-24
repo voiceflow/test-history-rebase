@@ -1,9 +1,11 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import AudioUpload from '@/components/Upload/AudioUpload';
+import VariablesInput from '@/components/VariablesInput';
 import { DialogType, PlatformType } from '@/constants';
 import { SSMLData, SpeakData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -13,6 +15,8 @@ import { compose } from '@/utils/functional';
 import { ObjectWithId } from '@/utils/normalized';
 
 import AudioIcon from './AudioIcon';
+
+const VariablesInputComponent: React.FC<any> = VariablesInput;
 
 export type SpeakItemProps = {
   item: ObjectWithId & SpeakData;
@@ -64,6 +68,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
 
   const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);
   const updateAudio = React.useCallback((url) => onUpdate({ url }), [onUpdate]);
+  const updateDesc = React.useCallback(({ text: desc }) => onUpdate({ desc }), [onUpdate]);
   const updateVoice = React.useCallback(
     (value) => {
       onUpdate({ voice: value });
@@ -99,7 +104,14 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
               onChangeVoice={updateVoice}
             />
           ) : (
-            <AudioUpload audio={item.url} update={updateAudio} />
+            <>
+              <AudioUpload audio={item.url} update={updateAudio} />
+              {!isAlexa && item.url && (
+                <Box mt={12}>
+                  <VariablesInputComponent value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />
+                </Box>
+              )}
+            </>
           )}
         </FormControl>
       )}

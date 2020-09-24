@@ -13,7 +13,7 @@ const speakItemFactory = (type: DialogType) => ({
   type,
   id: cuid.slug(),
   open: true,
-  ...(type === DialogType.VOICE ? { voice: 'Alexa', content: '' } : { url: '' }),
+  ...(type === DialogType.VOICE ? { voice: 'Alexa', content: '' } : { url: '', desc: '' }),
 });
 
 export type NoMatchesListProps = {

@@ -27,6 +27,7 @@ export const repromptAdapter = {
           audio: type === RepromptType.TEXT ? null : reprompt.content,
           content: type === RepromptType.TEXT ? textEditorContentAdapter.fromDB(content) : '',
           voice: type === RepromptType.TEXT ? reprompt.voice : null,
+          desc: reprompt.desc || '',
         }
       : null;
   },
@@ -36,6 +37,7 @@ export const repromptAdapter = {
           content: reprompt.type === RepromptType.TEXT ? textEditorContentAdapter.toDB(reprompt.content) : reprompt.audio,
           voice: reprompt.type === RepromptType.TEXT ? reprompt.voice : 'audio',
           type: reprompt.type,
+          desc: reprompt.type === RepromptType.TEXT ? undefined : reprompt.desc || undefined,
         }
       : null,
 };

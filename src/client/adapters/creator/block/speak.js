@@ -9,12 +9,13 @@ import { createBlockAdapter } from './utils';
 const speakBlockAdapter = createBlockAdapter(
   ({ randomize, dialogs }) => ({
     randomize,
-    dialogs: dialogs.map(({ audio, voice, rawContent }) => ({
+    dialogs: dialogs.map(({ audio, voice, desc = '', rawContent }) => ({
       id: cuid.slug(),
       ...(_isString(audio)
         ? {
             type: DialogType.AUDIO,
             url: audio,
+            desc,
           }
         : {
             type: DialogType.VOICE,
@@ -30,6 +31,7 @@ const speakBlockAdapter = createBlockAdapter(
       ...(dialog.type === DialogType.AUDIO
         ? {
             audio: dialog.url || '',
+            ...(dialog.desc && { desc: dialog.desc }),
           }
         : {
             voice: dialog.voice,

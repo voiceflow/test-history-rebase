@@ -7,6 +7,7 @@ export type DBAudioData = {
 export type AudioData = {
   type: DialogType.AUDIO;
   url: string;
+  desc?: string;
 };
 
 export type DBSSMLData = {

@@ -231,8 +231,9 @@ export namespace NodeData {
 
   export type Display = {
     displayType?: DisplayType;
-    displayID?: string | null;
+    displayID?: string | null | undefined;
     dataSource?: string;
+    document?: string;
     aplCommands?: string;
     backgroundImage?: string | null;
     splashHeader?: string;

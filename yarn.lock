@@ -4585,27 +4585,13 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@1.26.0":
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.26.0.tgz#0269b2d980ccd68c61cafa7296e5883416c038ee"
-  integrity sha512-Kj8EOaogE+1hvBCY0n4Z2470JcTXZ8XP8jZv7XP7Ejm1IUTH5Fi4QCLzidCxj0DQJVauarO7Qd6G7MRKK9rcpw==
+"@voiceflow/alexa-types@1.27.3":
+  version "1.27.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.27.3.tgz#9dbc03dadc52419bb30567552046247c8a23fc6b"
+  integrity sha512-zOtObHBfckfh3IdT3WFaImMJXRgkFwAK+fBAEB5DIz2OjxfyLuB3p9HqN09zct1DmRnBOBFD1fLgzrw//Aw/4A==
   dependencies:
-    "@voiceflow/api-sdk" "1.7.0"
+    "@voiceflow/api-sdk" "1.9.2"
     ask-smapi-model "^1.11.0"
-
-"@voiceflow/api-sdk@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.7.0.tgz#d99080d6731fcd1268d68c00605b30c798edd785"
-  integrity sha512-cZO13zfFBInGabZ6RBwrEs7RAXpBc9EWPZYBS48gBW4U42T28dvexcNPz6kmOXCl+3ip0MlnGZk+YuB44wBO9A==
-  dependencies:
-    "@types/atob" "^2.1.2"
-    "@voiceflow/logger" "^1.1.10"
-    atob "^2.1.2"
-    axios "^0.19.2"
-    core-js "^3.6.5"
-    io-ts "^2.2.8"
-    regenerator-runtime "^0.13.5"
-    superstruct "^0.10.12"
 
 "@voiceflow/api-sdk@1.9.2":
   version "1.9.2"

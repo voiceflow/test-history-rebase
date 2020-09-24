@@ -1,16 +1,18 @@
 import React from 'react';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import client from '@/clientV2';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
+import { FeatureFlag } from '@/config/features';
 import { DisplayType, ModalType } from '@/constants';
 import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useFeature, useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
-import { AdvancedEditor, Footer, SplashEditor } from './components';
+import { AdvancedEditor, AdvancedEditorV2, Footer, SplashEditor, SplashEditorV2 } from './components';
 import { VERSIONS } from './constants';
 
 const DISPLAY_OPTIONS = [
@@ -25,28 +27,46 @@ const DISPLAY_OPTIONS = [
 ];
 
 function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, selected, onChange, duplicateDisplay }) {
-  const { migrating, displayType, backgroundImage, splashHeader, displayID, datasource, aplCommands, jsonFileName, version } = data;
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
+  const {
+    migrating,
+    displayType,
+    backgroundImage,
+    splashHeader,
+    displayID,
+    dataSource,
+    document: documentData,
+    aplCommands,
+    jsonFileName,
+    version,
+  } = data;
   const { open: openModal } = useModals(ModalType.DISPLAY_PREVIEW);
   const cache = React.useRef({ migrating, onChange, version });
   cache.current = { ...cache.current, version, migrating, onChange };
 
+  // avoid preview for SPLASH when datarefactor enabled as we do not have document
   const canCreatePreview =
     (displayType === DisplayType.SPLASH && (!!splashHeader || backgroundImage)) || (displayType === DisplayType.ADVANCED && jsonFileName);
 
   const openPreviewModal = async () => {
-    const { document } = selected;
     const apl = aplCommands || '';
-    const data = datasource || '';
-    const documentData = document;
+    let data = dataSource || '';
+    let selectedDocument = !dataRefactor.isEnabled ? selected.document : documentData;
 
-    openModal({ apl, data, documentData });
+    if (dataRefactor.isEnabled && displayType === DisplayType.SPLASH) {
+      ({ document: selectedDocument, datasource: data } = await client.alexaService.getDisplayWithDatasource(splashHeader, backgroundImage));
+    }
+
+    openModal({ apl, data, documentData: selectedDocument });
   };
 
   const changeDisplayType = (type) => {
     const resetDataObject = {
       displayType: type,
       splashHeader: textEditorContentAdapter.fromDB(null),
-      datasource: null,
+      dataSource: null,
+      document: null,
       backgroundImage: null,
       jsonFileName: null,
     };
@@ -59,16 +79,21 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
         cache.current.onChange({ migrating: true });
 
         let newDisplayID;
+        let newDisplayType = displayType;
 
         // Only duplicate if the legacy display block is not empty
-        if (displayID) {
+        if (!dataRefactor.isEnabled && displayID) {
           newDisplayID = await duplicateDisplay(displayID, skillID);
         }
 
+        if (!dataRefactor.isEnabled) {
+          newDisplayType = displayID ? DisplayType.ADVANCED : DisplayType.SPLASH;
+        }
+
         cache.current.onChange({
-          displayType: displayID ? DisplayType.ADVANCED : DisplayType.SPLASH,
+          displayType: newDisplayType,
           displayID: newDisplayID,
-          jsonFileName: newDisplayID,
+          jsonFileName: dataRefactor.isEnabled ? jsonFileName : newDisplayID,
           version: VERSIONS.EDITORS_REDESIGN,
         });
       }
@@ -95,7 +120,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
         </FormControl>
       </Section>
 
-      {displayType === DisplayType.SPLASH ? (
+      {displayType === DisplayType.SPLASH && !dataRefactor.isEnabled && (
         <SplashEditor
           skillID={skillID}
           createDisplay={createDisplay}
@@ -105,10 +130,22 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
           displayID={displayID}
           updateDisplay={updateDisplayData}
         />
-      ) : (
+      )}
+      {displayType === DisplayType.SPLASH && dataRefactor.isEnabled && (
+        <SplashEditorV2
+          skillID={skillID}
+          createDisplay={createDisplay}
+          splashHeader={splashHeader}
+          onChange={onChange}
+          backgroundImage={backgroundImage}
+          displayID={displayID}
+          updateDisplay={updateDisplayData}
+        />
+      )}
+      {displayType === DisplayType.ADVANCED && !dataRefactor.isEnabled && (
         <AdvancedEditor
           display={selected}
-          datasource={datasource}
+          datasource={dataSource}
           aplCommands={aplCommands}
           createDisplay={createDisplay}
           updateDisplay={updateDisplayData}
@@ -116,6 +153,17 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
           skillID={skillID}
           jsonFileName={jsonFileName}
           onChange={onChange}
+        />
+      )}
+      {displayType === DisplayType.ADVANCED && dataRefactor.isEnabled && (
+        <AdvancedEditorV2
+          datasource={dataSource}
+          aplCommands={aplCommands}
+          createDisplay={createDisplay}
+          updateDisplay={updateDisplayData}
+          jsonFileName={jsonFileName}
+          onChange={onChange}
+          document={documentData}
         />
       )}
     </Content>

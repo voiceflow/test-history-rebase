@@ -1,4 +1,5 @@
 import exportService from './export';
+import handlersService from './handlers';
 import projectService from './project';
 import prototypeService from './prototype';
 import publishService from './publish';
@@ -12,6 +13,7 @@ const alexaServiceClient = {
   ...publishService,
   ...sessionService,
   ...versionService,
+  ...handlersService,
 };
 
 export default alexaServiceClient;

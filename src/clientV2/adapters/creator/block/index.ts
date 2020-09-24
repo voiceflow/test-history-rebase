@@ -15,6 +15,7 @@ import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
 import directiveAdapter from './directive';
+import displayAdapter from './display';
 import eventAdapter from './event';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
@@ -73,7 +74,7 @@ const blockAdapter = {
   [BlockType.CARD]: cardAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,
   [BlockType.CODE]: codeAdapter,
-  [BlockType.DISPLAY]: emptyAdapter,
+  [BlockType.DISPLAY]: displayAdapter,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.IF]: ifAdapter,

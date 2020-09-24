@@ -1,6 +1,7 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { DraftHandleValue, EditorState, RichUtils } from 'draft-js';
 import type BaseDraftJSEditor from 'draft-js-plugins-editor';
+import _last from 'lodash/last';
 import React from 'react';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
@@ -15,7 +16,8 @@ import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/t
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 
-import { getRawContent } from '../utils';
+import { FontWeight, InlineStylePrefix } from '../constants';
+import { getInlineStylePrefixAndValue, getRawContent, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
@@ -77,11 +79,14 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   const keyBindingFn = React.useCallback(
     (e: React.KeyboardEvent) => {
+      const getEditorState = pluginsObj.toolbarPlugin.store.getItem<() => EditorState>('getEditorState');
+      const resetEditorState = pluginsObj.toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState');
+
       // delete
       if (e.keyCode === 127 || e.keyCode === 8) {
         deleteHandler({
-          getEditorState: pluginsObj.toolbarPlugin.store.getItem<() => EditorState>('getEditorState'),
-          setEditorState: pluginsObj.toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState'),
+          getEditorState,
+          setEditorState: resetEditorState,
         })(e);
 
         return 'handled';
@@ -90,6 +95,33 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       // esc
       if (e.keyCode === 27) {
         editorRef.current?.blur();
+      }
+
+      const state = getEditorState();
+
+      // bold
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        const fontWeightStyle = _last(getSelectionPrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT));
+        const fontWeight = (getInlineStylePrefixAndValue(fontWeightStyle)[1] as FontWeight) || FontWeight.REGULAR;
+        const newFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
+
+        resetEditorState(togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT, newFontWeight));
+
+        return 'change-inline-style';
+      }
+
+      // italic
+      if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+        resetEditorState(RichUtils.toggleInlineStyle(state, 'ITALIC'));
+
+        return 'italic';
+      }
+
+      // underline
+      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+        resetEditorState(RichUtils.toggleInlineStyle(state, 'UNDERLINE'));
+
+        return 'underline';
       }
 
       return null;

@@ -210,7 +210,7 @@ const handleExport = (newVersionId) =>
   });
 
 // STEP 8 (optional)
-export const submitForReview = (newVersionId) =>
+export const submitForReview = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     const skillID = Skill.activeSkillIDSelector(state);
@@ -223,7 +223,6 @@ export const submitForReview = (newVersionId) =>
       await axios.post(`/amazon/${skillID}/${amznID}/certify`, { workspaceID });
       dispatch(updatePublishInfo({ review: true }));
       dispatch(updateAlexaStage(ALEXA_STAGES.SUBMIT_SUCCESS));
-      await handleExport(newVersionId);
     } catch (err) {
       log.error(err);
       let errorMessage = 'Certification Error \n';
@@ -240,14 +239,13 @@ export const submitForReview = (newVersionId) =>
   });
 
 // UPLOAD SUCCESS
-export const uploadSuccess = (newVersionId) =>
+export const uploadSuccess = () =>
   uploadStep(async (dispatch) => {
     dispatch(updateAlexaStage(ALEXA_STAGES.UPLOAD_SUCCESS));
-    await handleExport(newVersionId);
   });
 
 // STEP 7
-export const enableSkill = (newVersionId) =>
+export const enableSkill = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     const { amznID } = publishInfoSelector(state);
@@ -258,11 +256,11 @@ export const enableSkill = (newVersionId) =>
     } catch (err) {
       log.error(err);
     }
-    dispatch(uploadSuccess(newVersionId));
+    dispatch(uploadSuccess());
   });
 
 // STEP 6
-export const checkInteractionModel = (newVersionId) =>
+export const checkInteractionModel = () =>
   uploadStep(async (dispatch, getState) => {
     const state = getState();
     // get submit option
@@ -298,11 +296,11 @@ export const checkInteractionModel = (newVersionId) =>
 
     dispatch(updateAlexa({ locale: success || locales[0] }));
     if (options.submit) {
-      dispatch(submitForReview(newVersionId));
+      dispatch(submitForReview());
     } else if (success) {
-      dispatch(enableSkill(newVersionId));
+      dispatch(enableSkill());
     } else {
-      dispatch(uploadSuccess(newVersionId));
+      dispatch(uploadSuccess());
     }
   });
 
@@ -320,7 +318,7 @@ export const submitProject = (newVersionId) =>
       if (options?.export) {
         dispatch(handleExport(newVersionId));
       } else {
-        dispatch(checkInteractionModel(newVersionId));
+        dispatch(checkInteractionModel());
       }
     } catch (err) {
       if (err?.response?.status === 403) {

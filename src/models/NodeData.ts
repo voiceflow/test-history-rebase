@@ -200,11 +200,13 @@ export namespace NodeData {
   };
 
   export type Stream = {
-    audio: string;
-    iconImage: string | null;
-    backgroundImage: string | null;
-    customPause: boolean;
     loop: boolean;
+    audio: string;
+    title: string | null;
+    iconImage: string | null;
+    customPause: boolean;
+    description: string | null;
+    backgroundImage: string | null;
   };
 
   export type If = {

@@ -1,14 +1,14 @@
-import { DiagramNode, NodeID, Port as DBPort } from '@voiceflow/api-sdk';
+import { DiagramNode, NodeID } from '@voiceflow/api-sdk';
 import _isFunction from 'lodash/isFunction';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { BlockType } from '@/constants';
 import { Link, Node, NodeData, Port } from '@/models';
 
-import { DB_BLOCK_TYPE_FROM_APP } from './block';
+import { DB_BLOCK_TYPE_FROM_APP, defaultPortAdapter, portsAdapter } from './block';
 import { IN_PORT_KEY, OUT_PORT_KEY } from './constants';
 import nodeDataAdpater from './nodeData';
-import { getInPortID, getLinkID, getOutPortID, isBlock, isStep } from './utils';
+import { generateInPort, getInPortID, getLinkID, isBlock, isStep } from './utils';
 
 const nodeAdapter = createAdapter<
   DiagramNode,
@@ -34,27 +34,21 @@ const nodeAdapter = createAdapter<
       },
     };
 
-    const registerPort = ({ portID, label = null, target = null }: { portID: string; label?: string | null; target?: NodeID | null }) => {
-      ports.push({
-        id: portID,
-        nodeID: dbNode.nodeID,
-        label,
-        platform: null,
-        virtual: false,
-      });
-      if (portID.endsWith(OUT_PORT_KEY)) {
-        node.ports.out.push(portID);
+    const registerPort = (port: Port, target?: NodeID | null) => {
+      ports.push(port);
+      if (port.id.endsWith(OUT_PORT_KEY)) {
+        node.ports.out.push(port.id);
       }
-      if (portID.endsWith(IN_PORT_KEY)) {
-        node.ports.in.push(portID);
+      if (port.id.endsWith(IN_PORT_KEY)) {
+        node.ports.in.push(port.id);
       }
 
       if (target) {
         links.push({
-          id: getLinkID(portID, target),
+          id: getLinkID(port.id, target),
           source: {
             nodeID: node.id,
-            portID,
+            portID: port.id,
           },
           target: {
             nodeID: target,
@@ -66,15 +60,13 @@ const nodeAdapter = createAdapter<
 
     if (isBlock(dbNode)) {
       if (data.type === BlockType.COMBINED) {
-        registerPort({ portID: getInPortID(node.id) });
+        registerPort(generateInPort(node.id));
       }
       node.combinedNodes = dbNode.data.steps;
     }
     if (isStep(dbNode)) {
-      registerPort({ portID: getInPortID(node.id) });
-      dbNode.data.ports.forEach((port, index) => {
-        registerPort({ portID: getOutPortID(node.id, index), label: port.type, target: port.target });
-      });
+      registerPort(generateInPort(node.id));
+      (portsAdapter[node.type] || defaultPortAdapter).fromDB(dbNode.data.ports, dbNode).forEach(({ port, target }) => registerPort(port, target));
     }
 
     return {
@@ -96,10 +88,13 @@ const nodeAdapter = createAdapter<
     };
 
     if (node.ports.out.length > 0) {
-      diagramNode.data.ports = node.ports.out.map<DBPort>((portID) => ({
-        type: portMap[portID]?.label || '',
-        target: portToTargets[portID] || stepMap[node.id] || null,
-      }));
+      diagramNode.data.ports = (portsAdapter[type] || defaultPortAdapter).toDB(
+        node.ports.out.map((portID) => ({
+          port: portMap[portID],
+          target: portToTargets[portID] || stepMap[node.id] || null,
+        })),
+        node
+      );
     }
 
     if ([BlockType.COMBINED, BlockType.START].includes(node.type)) {

@@ -2,6 +2,7 @@ import { Block, DiagramNode, Step } from '@voiceflow/api-sdk';
 
 import { adapterLogger } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
+import { Port } from '@/models';
 
 import { IN_PORT_KEY, OUT_PORT_KEY } from './constants';
 
@@ -24,3 +25,16 @@ export const isBlock = (node: DiagramNode): node is Block => {
 export const isStep = (node: DiagramNode): node is Step => {
   return Array.isArray(node.data.ports);
 };
+
+export const generateInPort = (nodeID: string, { platform = null, virtual = false, label = '' }: Partial<Port> = {}): Port => ({
+  platform,
+  virtual,
+  label,
+  id: getInPortID(nodeID),
+  nodeID,
+});
+
+export const generateOutPort = (nodeID: string, index: number, port: Partial<Port>): Port => ({
+  ...generateInPort(nodeID, port),
+  id: getOutPortID(nodeID, index),
+});

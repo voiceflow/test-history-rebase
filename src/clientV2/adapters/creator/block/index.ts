@@ -7,6 +7,7 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 
+import { generateOutPort } from '../utils';
 import accountLinkingAdapter from './accountLinking';
 import blockDataAdapter from './block';
 import cancelPayment from './cancelPayment';
@@ -21,14 +22,16 @@ import ifAdapter from './if';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
-import permissionAdapter from './permission';
 import paymentAdapter from './payment';
+import permissionAdapter from './permission';
 import promptAdapter from './prompt';
 import randomAdapter from './random';
 import reminderAdapter from './reminder';
 import setAdapter from './set';
 import speakAdapter from './speak';
+import streamAdapter, { streamPortsAdapter } from './stream';
 import userInfoAdapter from './userInfo';
+import { PortsAdapter } from './utils';
 
 const emptyAdapter = createSimpleAdapter(
   () => ({}),
@@ -84,7 +87,7 @@ const blockAdapter = {
   [BlockType.REMINDER]: reminderAdapter,
   [BlockType.SET]: setAdapter,
   [BlockType.SPEAK]: speakAdapter,
-  [BlockType.STREAM]: emptyAdapter,
+  [BlockType.STREAM]: streamAdapter,
   [BlockType.USER_INFO]: userInfoAdapter,
   [BlockType.DEPRECATED]: emptyAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
@@ -93,6 +96,19 @@ const blockAdapter = {
   // markup
   [BlockType.MARKUP_TEXT]: emptyAdapter,
   [BlockType.MARKUP_IMAGE]: emptyAdapter,
+};
+
+export const portsAdapter: Record<string, PortsAdapter> = {
+  [BlockType.STREAM]: streamPortsAdapter,
+};
+
+export const defaultPortAdapter: PortsAdapter = {
+  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target })),
+  fromDB: (ports, node) =>
+    ports.map((port, index) => ({
+      port: generateOutPort(node.nodeID, index, { label: port.type }),
+      target: port.target,
+    })),
 };
 
 export default blockAdapter;

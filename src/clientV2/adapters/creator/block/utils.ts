@@ -1,11 +1,17 @@
 import { NoMatches, Prompt, Voice } from '@voiceflow/alexa-types';
+import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
 import { DialogType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
-import { NodeData } from '@/models';
+import { Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
 export const createBlockAdapter = createSimpleAdapter;
+
+export type PortsAdapter = {
+  toDB: (ports: { port: Port; target: string | null }[], node: Node) => DBPort[];
+  fromDB: (ports: DBPort[], node: DBNode) => { port: Port; target: string | null }[];
+};
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
 export const repromptAdapter = createAdapter<Prompt, NodeData.Reprompt>(

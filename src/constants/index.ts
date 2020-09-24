@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { IntegrationType, PermissionType } from '@voiceflow/alexa-types';
+import { IS_VARIABLE_REGEXP, IntegrationType, PermissionType, READABLE_VARIABLE_REGEXP } from '@voiceflow/alexa-types';
 import { APIActionType, APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
 import { constants } from '@voiceflow/common';
@@ -8,7 +8,7 @@ import { NodeData } from '@/models';
 import { Icon } from '@/svgs/types';
 import { Pair } from '@/types';
 
-export { IntegrationType } from '@voiceflow/alexa-types';
+export { IntegrationType, SLOT_REGEXP } from '@voiceflow/alexa-types';
 
 export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
@@ -399,9 +399,8 @@ export const SPACE_REGEXP = / /g;
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
-export const SLOT_REGEXP = /{{\[([^ .[\]{}]*?)]\.([^ .[\]{}]*?)}}/g;
-export const VARIABLE_REGEXP = /^{.*}$/;
-export const VARIABLE_STRING_REGEXP = /{([^ .[\]{}]*?)}/g;
+export const VARIABLE_REGEXP = IS_VARIABLE_REGEXP;
+export const VARIABLE_STRING_REGEXP = READABLE_VARIABLE_REGEXP;
 
 export const FILTERED_AMAZON_INTENTS = [
   'ScrollUpIntent',

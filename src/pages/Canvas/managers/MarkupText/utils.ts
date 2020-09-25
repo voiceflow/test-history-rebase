@@ -1,4 +1,4 @@
-import { ContentBlock, EditorState, Modifier, convertToRaw } from 'draft-js';
+import { ContentBlock, EditorState, Modifier, SelectionState, convertToRaw } from 'draft-js';
 
 import { InlineStylePrefix } from './constants';
 
@@ -55,9 +55,30 @@ export const getPrefixedStyleAtOffset = (block: ContentBlock, prefix: InlineStyl
   return null;
 };
 
+export const getFullTextSelection = (editorState: EditorState) => {
+  const currentContent = editorState.getCurrentContent();
+  const blockMap = currentContent.getBlockMap();
+  const lastBlock = blockMap.last();
+  const firstBlock = blockMap.first();
+  const lastBlockKey = lastBlock.getKey();
+  const firstBlockKey = firstBlock.getKey();
+  const lengthOfLastBlock = lastBlock.getLength();
+
+  return new SelectionState({
+    focusKey: lastBlockKey,
+    anchorKey: firstBlockKey,
+    focusOffset: lengthOfLastBlock,
+    anchorOffset: 0,
+  });
+};
+
 export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix) => {
-  const currentSelection = editorState.getSelection();
   const inlineStyles: string[] = [];
+  let currentSelection = editorState.getSelection();
+
+  if (currentSelection.isCollapsed()) {
+    currentSelection = getFullTextSelection(editorState);
+  }
 
   const start = currentSelection.getStartOffset();
   const end = currentSelection.getEndOffset();
@@ -89,12 +110,13 @@ export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix
 };
 
 export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix, value: string) => {
-  const selection = editorState.getSelection();
+  let selection = editorState.getSelection();
+  const isCollapsed = selection.isCollapsed();
 
   const inlineStyles = getSelectionPrefixedInlineStyle(editorState, prefix);
 
-  if (selection.isCollapsed()) {
-    return editorState;
+  if (isCollapsed) {
+    selection = getFullTextSelection(editorState);
   }
 
   let newContent = editorState.getCurrentContent();

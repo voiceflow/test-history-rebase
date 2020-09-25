@@ -201,6 +201,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   }, [isFocused]);
 
   const blockAPI = useBlockAPI();
+
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
   return (

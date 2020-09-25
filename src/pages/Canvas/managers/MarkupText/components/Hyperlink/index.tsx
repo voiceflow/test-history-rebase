@@ -9,6 +9,7 @@ import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
+import { getFullTextSelection } from '../../utils';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
@@ -32,18 +33,31 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
   const editorState = getEditorState();
 
   const [entityKey, link] = React.useMemo(() => {
-    if (!editorState) {
+    let state = editorState;
+
+    if (!state) {
       return [null, ''] as const;
     }
 
-    const key = utils.getCurrentEntityKey(editorState);
+    const selection = state.getSelection();
+
+    if (selection.isCollapsed()) {
+      const content = state.getCurrentContent();
+      const firstBlock = content.getFirstBlock();
+      const length = firstBlock.getLength();
+
+      if (selection.getFocusOffset() === length) {
+        state = EditorState.acceptSelection(state, getFullTextSelection(state));
+      }
+    }
+
+    const key = utils.getCurrentEntityKey(state);
 
     if (key === null) {
       return [null, ''] as const;
     }
 
     const contentState = editorState.getCurrentContent();
-
     const entity = contentState.getEntity(key);
 
     return [key, (entity.getData()?.url || '') as string];
@@ -73,6 +87,14 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
   const onBlur = () => {
     let state = getEditorState();
 
+    const selection = state.getSelection();
+    const prevEditorState = selection;
+    const isCollapsed = selection.isCollapsed();
+
+    if (isCollapsed) {
+      state = EditorState.acceptSelection(state, getFullTextSelection(state));
+    }
+
     if (!link) {
       state = createLinkAtSelection(state, localLink);
     } else if (!localLink) {
@@ -81,6 +103,10 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
       const content = state.getCurrentContent().mergeEntityData(entityKey, { url: localLink });
 
       state = EditorState.forceSelection(EditorState.push(editorState, content, 'apply-entity'), editorState.getSelection());
+    }
+
+    if (isCollapsed) {
+      state = EditorState.acceptSelection(state, prevEditorState);
     }
 
     setEditorState(state);
@@ -93,7 +119,7 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
   };
 
   React.useEffect(() => {
-    if (editorState?.getSelection().getHasFocus()) {
+    if (getEditorState()?.getSelection().getHasFocus()) {
       setLocalLink(link);
     }
   }, [link]);

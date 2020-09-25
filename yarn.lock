@@ -4654,10 +4654,10 @@
     draft-js "^0.10.1 || ^0.11.0"
     draft-js-plugins-utils "2.0.2"
 
-"@voiceflow/draft-js-buttons@^3.3.16":
-  version "3.3.16"
-  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-buttons/-/draft-js-buttons-3.3.16.tgz#cfeb808f92b999ab6837b1c6aa1cdee60dc1d161"
-  integrity sha512-vCXSa/lkGDIMjx+H0chOcB3SUquTdokAX0Sl71LX4XXvDdscsDQJEx8Y4zE6U9P/A9GvmywI+4TlMMp0di7ljw==
+"@voiceflow/draft-js-buttons@3.3.17":
+  version "3.3.17"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-buttons/-/draft-js-buttons-3.3.17.tgz#985855d7f4daedcc55b812ad126821243b90a0d2"
+  integrity sha512-yDhMgn3fQLbs1sW+NzJ31PjxL5AMqZE/JfEaGnK2Psx+pNQh6wlGw8V90NDe74EqM30ZZ4REDBlwcGoDRwLpkw==
 
 "@voiceflow/draft-js-fake-selection@3.3.34":
   version "3.3.34"

@@ -132,7 +132,7 @@ const Select = <O, V = O>({
   prefix,
   onClose,
   grouped,
-  options,
+  options = [],
   minWidth = true,
   disabled,
   onSelect,

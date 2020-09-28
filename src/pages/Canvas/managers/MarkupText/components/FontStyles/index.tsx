@@ -81,6 +81,7 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
           onSelect={onChangeFontFamily}
           minWidth={false}
           getOptionLabel={(value) => FONTS_LABELS[value!]}
+          optionsMaxSize={Object.values(Font).length}
         />
       }
       rightColumn={
@@ -92,6 +93,7 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
           onSelect={onChangeFontWeight}
           minWidth={false}
           getOptionLabel={(value) => FONT_WEIGHTS_LABELS[value!]}
+          optionsMaxSize={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily].length}
         />
       }
     />

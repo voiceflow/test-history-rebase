@@ -189,7 +189,7 @@ export const PERMISSIONS = [
   },
   {
     name: 'ISP',
-    value: PermissionType.UNOFFICIAL_PRODUCT,
+    value: PermissionType.UNOFFICIAL_ISP,
   },
   // Removed for now, amazon pay permissions broken
 ];

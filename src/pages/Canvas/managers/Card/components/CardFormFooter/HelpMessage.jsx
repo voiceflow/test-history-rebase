@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
 
-const HELP_LINK = 'https://developer.amazon.com/en-US/docs/alexa/custom-skills/include-a-card-in-your-skills-response.html';
+const HELP_LINK = 'https://docs.voiceflow.com/#/alexa/card-block';
 
 export default function HelpMessage() {
   return (

@@ -81,7 +81,7 @@ function IfEditor({ data, onChange, focusedNode }) {
               helpMessage: (
                 <>
                   Check out this{' '}
-                  <a href="https://docs.voiceflow.com/#/blocks/if-block" target="_blank" rel="noopener noreferrer">
+                  <a href="https://docs.voiceflow.com/#/steps/condition" target="_blank" rel="noopener noreferrer">
                     doc
                   </a>{' '}
                   that goes over using IF blocks inside Voiceflow.

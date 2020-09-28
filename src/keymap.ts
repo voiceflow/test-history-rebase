@@ -22,6 +22,8 @@ export enum Hotkey {
   OPEN_MARKUP = 'OPEN_MARKUP',
   OPEN_COMMENTING = 'OPEN_COMMENTING',
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
+  SELECT_IMAGE_MARKUP = 'SELECT_IMAGE_MARKUP',
+  SELECT_TEXT_MARKUP = 'SELECT_TEXT_MARKUP',
 }
 
 /**
@@ -52,6 +54,8 @@ const HOTKEY_MAPPING = {
   [Hotkey.OPEN_MARKUP]: ['a'],
   [Hotkey.OPEN_COMMENTING]: ['c'],
   [Hotkey.CLOSE_CANVAS_MODE]: ['esc'],
+  [Hotkey.SELECT_IMAGE_MARKUP]: ['i'],
+  [Hotkey.SELECT_TEXT_MARKUP]: ['t'],
 };
 
 export default HOTKEY_MAPPING;

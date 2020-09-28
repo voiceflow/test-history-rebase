@@ -24,12 +24,12 @@ const CanvasNotificationsContainer = styled.div`
     transition: transform 300ms ease-out, opacity 200ms ease-in;
   }
 
-  .fade-leave {
+  .fade-exit {
     transform: translateY(0%);
     opacity: 1;
   }
 
-  .fade-leave.fade-leave-active {
+  .fade-exit.fade-exit-active {
     transform: translateY(-100%);
     opacity: 0.01;
     transition: transform 300ms ease-in, opacity 200ms ease-in;

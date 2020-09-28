@@ -16,13 +16,13 @@ export * from './components';
 
 export { Icon };
 
-export type IconProps = Partial<SvgIconContainerProps> & {
+export type SvgIconProps = Partial<SvgIconContainerProps> & {
   icon: Icon | React.ComponentType;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;
 };
 
-const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, IconProps> = (
+const SvgIcon: React.ForwardRefRenderFunction<HTMLSpanElement, SvgIconProps> = (
   { icon, size = 16, color = 'currentColor', className, ...props },
   ref
 ) => {

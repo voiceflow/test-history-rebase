@@ -1,9 +1,12 @@
-import { css } from 'styled-components';
+import { css } from '@/hocs';
 
 export const BUTTON_HEIGHT = 42;
 
-// eslint-disable-next-line xss/no-mixed-html
-export const clickableStyles = css`
+export type ClickableProps = {
+  disabled?: boolean;
+};
+
+export const clickableStyles = css<ClickableProps>`
   ${({ disabled }) =>
     disabled
       ? css`

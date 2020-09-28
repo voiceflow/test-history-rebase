@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import Select from 'react-select';
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/async';
 
 import { setError } from '@/ducks/modal';
 import { styled } from '@/hocs';

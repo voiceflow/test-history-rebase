@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SvgIcon, { IconProps } from '@/components/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@/components/SvgIcon';
 import { Either } from '@/types';
 
 import { ActionContainer, Container, OutlineContainer, SubtleContainer } from './components';
@@ -11,12 +11,12 @@ import { IconButtonVariant } from './types';
 
 export { Container, IconButtonVariant };
 
-export type IconButtonProps = Pick<IconProps, 'icon' | 'size'> &
+export type IconButtonProps = Pick<SvgIconProps, 'icon' | 'size'> &
   Either<ContainerProps, OutlineContainerProps> & {
     variant?: IconButtonVariant;
     onClick?: React.ReactEventHandler;
     onBlur?: React.ReactEventHandler;
-    iconProps?: Omit<IconProps, 'icon' | 'size'>;
+    iconProps?: Omit<SvgIconProps, 'icon' | 'size'>;
     id?: string;
     disabled?: boolean;
     hoverColor?: string;

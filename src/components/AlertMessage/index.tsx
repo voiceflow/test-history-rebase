@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
-import SvgIcon, { Icon, IconProps } from '@/components/SvgIcon';
+import SvgIcon, { Icon, SvgIconProps } from '@/components/SvgIcon';
 
 import { Container, ContainerProps } from './components';
 import { MESSAGE_VARIANTS, Variant } from './constants';
@@ -11,7 +11,7 @@ export { Variant as AlertMessageVariant } from './constants';
 export type AlertMessageProps = ContainerProps & {
   icon?: Icon;
   variant?: Variant;
-  iconProps?: Omit<IconProps, 'icon'>;
+  iconProps?: Omit<SvgIconProps, 'icon'>;
   className?: string;
 };
 

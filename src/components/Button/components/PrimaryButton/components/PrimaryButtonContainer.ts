@@ -1,9 +1,13 @@
-import ButtonContainer from '@/components/Button/components/ButtonContainer';
 import { css, styled } from '@/hocs';
 
+import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
 import Icon from './PrimaryButtonIcon';
 
-const PrimaryButtonContainer = styled(ButtonContainer)`
+export type PrimaryButtonContainerProps = ButtonContainerProps & {
+  canHover?: boolean;
+};
+
+const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
   color: #fff;
   box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
@@ -11,7 +15,7 @@ const PrimaryButtonContainer = styled(ButtonContainer)`
   transition: all 0.15s ease-out;
   background-size: 1px 52px;
 
-  ${({ disabled, canHover }) =>
+  ${({ disabled, canHover = true }) =>
     disabled
       ? css`
           background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 100%);
@@ -32,9 +36,5 @@ const PrimaryButtonContainer = styled(ButtonContainer)`
     box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
   }
 `;
-
-PrimaryButtonContainer.defaultProps = {
-  canHover: true,
-};
 
 export default PrimaryButtonContainer;

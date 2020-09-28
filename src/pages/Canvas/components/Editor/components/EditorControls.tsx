@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
-import type { Icon } from '@/components/SvgIcon';
+import { SvgIconProps } from '@/components/SvgIcon';
 import { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 
@@ -10,7 +10,7 @@ import ControlsContainer from './ControlsContainer';
 import EditorTutorial from './EditorTutorial';
 
 export type ControlOptions = {
-  icon?: React.ReactNode | Icon;
+  icon?: SvgIconProps['icon'];
   label: string;
   onClick: React.MouseEventHandler;
   variant?: ButtonVariant;
@@ -49,7 +49,7 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       <div>{children}</div>
       <ControlsContainer>
         {menu}
-        {options.map(({ label, icon, onClick, variant = 'secondary', disabled = false }) => (
+        {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false }) => (
           <Button variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled}>
             {label}
           </Button>

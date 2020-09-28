@@ -5,10 +5,12 @@ import { PlatformType } from '@/constants';
 import { activePlatformSelector } from '@/ducks/skill/skill';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import log from '@/utils/logger';
 
 const getPlatformComponentSwitcher = (
   components: Partial<Record<PlatformType, React.FC>>,
   defaultComponent: React.FC
+  // eslint-disable-next-line react/display-name
 ): React.FC<UploadProjectButtonType> => ({ platform }) => {
   const Component = React.useMemo(() => {
     if (platform in components) {
@@ -32,8 +34,7 @@ export const platformMissingValuesWarn = <T extends any>(valuesMap: Partial<Reco
     const missingPlatforms = Object.values(PlatformType).filter((key: PlatformType) => !valuesMap[key]);
 
     if (missingPlatforms.length) {
-      // eslint-disable-next-line no-console
-      console.warn(message, missingPlatforms.join(', '), valuesMap);
+      log.warn(message, missingPlatforms.join(', '), valuesMap);
     }
   }
 };

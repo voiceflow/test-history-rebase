@@ -60,7 +60,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
       >
         {(ref, onToggle) => (
           <WorkspacesDropdown
-            loading={loadingProjects}
+            isLoading={loadingProjects}
             id="workspaceDropdown"
             className={`${ClassName.DROPDOWN}--active-workspace`}
             onClick={loadingProjects ? noop : onToggle}

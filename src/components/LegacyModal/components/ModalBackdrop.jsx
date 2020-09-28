@@ -18,7 +18,7 @@ const ModalBackdrop = () => {
   return IS_TEST ? (
     <StyledBackdropModal />
   ) : (
-    <ReactstrapModal isOpen={!!openedId} zIndex="1000" onPaste={stopImmediatePropagation()} toggle={() => close(openedId)}>
+    <ReactstrapModal isOpen={!!openedId} zIndex="999" onPaste={stopImmediatePropagation()} toggle={() => close(openedId)}>
       <StyledBackdropModal />
     </ReactstrapModal>
   );

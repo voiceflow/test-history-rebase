@@ -5,9 +5,13 @@ import Icon from './PrimaryButtonIcon';
 
 export { Container, Icon };
 
-const PrimaryButtonLabel = styled.span`
-  ${({ loading }) =>
-    loading
+export type PrimaryButtonLabelProps = {
+  isLoading?: boolean;
+};
+
+const PrimaryButtonLabel = styled.span<PrimaryButtonLabelProps>`
+  ${({ isLoading }) =>
+    isLoading
       ? css`
           padding: 0 9px;
           pointer-events: none;

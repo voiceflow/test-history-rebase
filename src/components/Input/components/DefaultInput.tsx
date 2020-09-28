@@ -1,7 +1,7 @@
 import _isString from 'lodash/isString';
 import React from 'react';
 
-import SvgIcon, { Icon, IconProps } from '@/components/SvgIcon';
+import SvgIcon, { Icon, SvgIconProps } from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 import { useCombinedRefs } from '@/hooks/ref';
 import { Either } from '@/types';
@@ -22,7 +22,7 @@ export type NestedInputProps = Omit<React.ComponentProps<'input'>, 'ref'> & {
   disabled?: boolean;
   leftAction?: React.ReactNode;
   rightAction?: React.ReactNode;
-  iconProps?: Partial<IconProps>;
+  iconProps?: Partial<SvgIconProps>;
   wrapperProps?: InputWrapperProps;
   children?: (props: { ref: React.Ref<HTMLInputElement> }) => React.ReactElement;
 };

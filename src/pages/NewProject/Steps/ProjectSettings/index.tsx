@@ -12,7 +12,7 @@ import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
-import { FORMATTED_LOCALES } from '@/pages/Publish/Google/Form';
+import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/Google/Form';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Settings/components/SettingsContent/Sections/Basic';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
@@ -44,7 +44,10 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   mainLanguage,
   setMainLanguage,
 }) => {
-  const displayName = selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ');
+  const alexaDisplayName =
+    selectedPlatform === PlatformType.ALEXA
+      ? selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
+      : '';
   const invocationError = invocationName && invNameError(invocationName, selectedLocales);
   const canContinue = !invocationError && (!!selectedLocales.length || !!mainLanguage);
   const InvocationDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].invocationDescription!;
@@ -75,8 +78,11 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             placeholder="Language"
             value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
             options={FORMATTED_LOCALES}
-            onSelect={setMainLanguage}
-            getOptionValue={(option) => option?.value}
+            onSelect={(val: string) => {
+              setMainLanguage(val);
+              setSelectedLocales(GOOGLE_LANGUAGE_TO_LOCALES[val]);
+            }}
+            getOptionValue={(option) => option?.value || ''}
             renderOptionLabel={(option) => option.name}
           />
         ) : (
@@ -91,7 +97,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
               setSelectedLocales(newLocales);
             }}
             selectedItems={selectedLocales}
-            selectedValue={displayName}
+            selectedValue={alexaDisplayName}
             withCaret
           />
         )}

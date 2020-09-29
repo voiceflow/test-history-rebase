@@ -136,7 +136,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
             await client.skill.updateGooglePublishInfo(versionID, googlePublishInfo);
             updatePublishInfo({ ...googlePublishInfo, googleId: googleID });
           }}
-          getOptionValue={(option) => option?.value}
+          getOptionValue={(option) => option?.value || ''}
           renderOptionLabel={(option) => option.name}
         />
       );

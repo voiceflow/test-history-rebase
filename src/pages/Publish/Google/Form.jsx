@@ -50,6 +50,32 @@ export const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
   return { value: GOOGLE_LOCALES[key], name: LOCALE_DISPLAY_NAMES[GOOGLE_LOCALES[key]] };
 });
 
+export const GOOGLE_LANGUAGE_TO_LOCALES = {
+  [L.HK]: ['zh-HK'],
+  [L.CN]: ['zh-CN'],
+  [L.TW]: ['zh-TW'],
+  [L.DA]: ['da-DK'],
+  [L.NL]: ['nl-NL', 'nl-BE'],
+  [L.EN]: ['en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-BE', 'en-SG', 'en-US'],
+  [L.FR]: ['fr-FR', 'fr-CA', 'fr-BE'],
+  [L.DE]: ['de-DE', 'de-AT', 'de-CH', 'de-BE'],
+  [L.HI]: ['hi-IN'],
+  [L.ID]: ['id-ID'],
+  [L.IT]: ['it-IT'],
+  [L.JA]: ['ja-JP'],
+  [L.KO]: ['ko-KR'],
+  [L.NO]: ['no-NO'],
+  [L.PL]: ['pl-PL'],
+  [L.PT]: ['pt-BR'],
+  [L.BR]: ['pt-BR'],
+  [L.RU]: ['ru-RU'],
+  [L.ES]: ['es-ES', 'es-419'],
+  [L.SV]: ['sv-SE'],
+  [L.TH]: ['th-TH'],
+  [L.TR]: ['tr-TR'],
+  [L.UK]: [],
+};
+
 const PrivacyPolicyLink = styled.div`
   color: #8da2b5;
   font-size: 13px;

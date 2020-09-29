@@ -152,7 +152,7 @@
     "@types/file-saver": "^2.0.1",
     "@types/git-branch": "^2.0.1",
     "@types/html-webpack-plugin": "^3.2.3",
-    "@types/jest": "^26.0.9",
+    "@types/jest": "^26.0.14",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/loglevel": "^1.6.3",
     "@types/logrocket-react": "^3.0.0",

@@ -85,6 +85,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   }, []);
 
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+  const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
@@ -299,7 +300,8 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                           }}
                         </DragLayer>
 
-                        {canManageLists && (
+                        {/* TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE) */}
+                        {canManageLists && !actionsEnv.isEnabled && (
                           <div className="main-list-add">
                             <Tooltip distance={10} title="Add new list" position="bottom">
                               <IconButton large icon="addStep" onClick={props.createNewList} size={13} />

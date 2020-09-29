@@ -1,7 +1,7 @@
 import { FlexCenter } from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
-export const Container = styled.div`
+export const Container = styled.div<{ disabled?: boolean }>`
   ${transition()};
   border: solid 1px #dfe3ed;
   border-radius: 8px;
@@ -15,6 +15,14 @@ export const Container = styled.div`
     border: solid 1px transparent;
     background: linear-gradient(180deg, rgba(253, 253, 253) 0%, rgba(250, 251, 252) 100%);
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      pointer-events: none;
+      opacity: 0.4;
+      background-color: rgb(249, 249, 249);
+    `}
 
   :last-child {
     margin-right: 0;

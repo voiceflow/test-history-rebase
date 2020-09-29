@@ -32,7 +32,9 @@ declare module 'webpack-nano/argv' {
 
     // feature flags
     ff_gadgets: boolean;
+    ff_codeExport: boolean;
     ff_dataRefactor: boolean;
+    ff_actionsEnv: boolean;
   }>;
 
   export = argv;

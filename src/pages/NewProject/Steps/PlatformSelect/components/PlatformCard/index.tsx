@@ -9,11 +9,12 @@ import { Container, FeaturesContainer, IconImage, PlatformDescription, PlatformF
 type PlatformCard = {
   platformMeta: PlatformMetaType;
   onClick: () => void;
+  disabled?: boolean;
 };
 
-const PlatformCard: React.FC<PlatformCard> = ({ platformMeta, onClick }) => {
+const PlatformCard: React.FC<PlatformCard> = ({ platformMeta, onClick, disabled }) => {
   return (
-    <Container onClick={onClick}>
+    <Container onClick={onClick} disabled={disabled}>
       <PlatformIcon>
         {platformMeta.iconType === IconType.ICON ? (
           <SvgIcon icon={platformMeta.icon || 'speak'} size={platformMeta.iconSize} color={platformMeta.iconColor} />

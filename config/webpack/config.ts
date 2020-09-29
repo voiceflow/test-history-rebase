@@ -11,6 +11,7 @@ import {
   debugRealtime,
   debugSocket,
   env,
+  ff_actionsEnv,
   ff_codeExport,
   ff_dataRefactor,
   ff_gadgets,
@@ -63,6 +64,7 @@ export const ENV = {
   FF_GADGETS: ff_gadgets && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
+  FF_ACTIONS_ENV: ff_actionsEnv && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

@@ -2,7 +2,9 @@ import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
+import { useFeature } from '@/hooks';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
 import { PLATFORM_META_ARRAY } from '../constants';
@@ -20,6 +22,8 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
     setSelectedPlatform(null);
   }, []);
 
+  const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
+
   return (
     <Container width={980}>
       <FlexCenter>
@@ -36,6 +40,7 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
           return (
             <PlatformCard
               key={index}
+              disabled={actionsEnv.isEnabled && meta.platform !== PlatformType.GOOGLE}
               platformMeta={meta}
               onClick={() => {
                 if (creatingSkill) return;

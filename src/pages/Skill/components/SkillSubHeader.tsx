@@ -22,7 +22,7 @@ const TABS = [
   },
   {
     value: 'publish',
-    label: 'build',
+    label: 'launch',
   },
 ];
 
@@ -58,7 +58,7 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
 
   useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
-  useHotKeys(Hotkey.BUILD_PAGE, () => !isViewerOrLibraryRole && goToPublish());
+  useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 
   return (
     <>

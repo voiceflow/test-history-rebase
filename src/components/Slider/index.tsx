@@ -1,11 +1,11 @@
 import 'rc-slider/assets/index.css';
 
-import { SliderProps as RCSliderProps } from 'rc-slider';
+import RCSlider from 'rc-slider';
 import React from 'react';
 
 import StyledSlider from './components/StyledSlider';
 
-export type SliderProps = RCSliderProps;
+export type SliderProps = React.ComponentProps<typeof RCSlider>;
 
 const Slider: React.FC<SliderProps> = ({ min = 1, max = 100, value = 0, step = 1, ...props }) => {
   return <StyledSlider min={min} max={max} value={value} step={step} {...props} />;

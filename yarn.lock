@@ -4530,10 +4530,10 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@1.27.3":
-  version "1.27.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.27.3.tgz#9dbc03dadc52419bb30567552046247c8a23fc6b"
-  integrity sha512-zOtObHBfckfh3IdT3WFaImMJXRgkFwAK+fBAEB5DIz2OjxfyLuB3p9HqN09zct1DmRnBOBFD1fLgzrw//Aw/4A==
+"@voiceflow/alexa-types@1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.28.0.tgz#5776b19468241d46acfeab017a4182759aefa62d"
+  integrity sha512-9/CrUKUUkNa79v25qutMJKE/TfAkqMXltjApcArQDDAqdJqFjzVEZOaJBdSdx9h9c2SXDGaw23x1KXFG10DrQw==
   dependencies:
     "@voiceflow/api-sdk" "1.9.2"
     ask-smapi-model "^1.11.0"

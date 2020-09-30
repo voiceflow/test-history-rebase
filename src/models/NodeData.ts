@@ -82,8 +82,9 @@ export namespace NodeData {
       // only added some properties here
       intent: string | null;
       diagramID: string | null;
+      mappings: SlotMapping[];
     }
-  >;
+  > & { name: string };
 
   export type Reprompt = {
     type: RepromptType;

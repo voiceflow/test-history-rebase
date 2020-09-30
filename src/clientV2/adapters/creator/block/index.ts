@@ -14,6 +14,7 @@ import cancelPayment from './cancelPayment';
 import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
+import commandAdapter from './command';
 import directiveAdapter from './directive';
 import displayAdapter from './display';
 import eventAdapter from './event';
@@ -65,7 +66,7 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
 const blockAdapter = {
   // internal
   [BlockType.START]: blockDataAdapter,
-  [BlockType.COMMAND]: emptyAdapter,
+  [BlockType.COMMAND]: commandAdapter,
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.COMMENT]: emptyAdapter,
   // user defined

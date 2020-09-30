@@ -6,7 +6,9 @@ import { createBlockAdapter } from './utils';
 
 const exitAdapter = createBlockAdapter<StepData, NodeData.Exit>(
   () => ({}),
-  () => ({})
+  () => ({
+    ports: [],
+  })
 );
 
 export default exitAdapter;

@@ -6,4 +6,5 @@ export type PrimativeDiagram = {
   zoom: number;
   variables: string[];
   nodes: Record<string, DiagramNode>;
+  children: string[];
 };

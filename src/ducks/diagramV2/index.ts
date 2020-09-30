@@ -17,13 +17,16 @@ import { PrimativeDiagram } from './types';
 // side effects
 
 export const loadVersionDiagrams = (versionID: string): Thunk => async (dispatch) => {
-  const diagrams = await clientV2.api.version.getDiagrams<{ _id: string; name: string; variables: string[] }>(versionID, [
+  const diagrams = await clientV2.api.version.getDiagrams<{ _id: string; name: string; variables: string[]; children: string[] }>(versionID, [
     '_id',
     'name',
     'variables',
+    'children',
   ]);
 
-  dispatch(DiagramReducer.replaceDiagrams(diagrams.map(({ _id, name, variables }) => ({ id: _id, name, subDiagrams: [], variables }))));
+  dispatch(
+    DiagramReducer.replaceDiagrams(diagrams.map(({ _id, name, variables, children = [] }) => ({ id: _id, name, subDiagrams: children, variables })))
+  );
 };
 
 export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string }> => (_, getState) => {

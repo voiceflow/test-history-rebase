@@ -1,7 +1,8 @@
 import { Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
+import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { MARKUP_NODES, PlatformType } from '@/constants';
+import { DIAGRAM_REFERENCE_NODES, MARKUP_NODES, PlatformType } from '@/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
 import { Normalized, denormalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
@@ -108,7 +109,7 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    return {
+    const diagram = {
       _id: diagramID,
       offsetX: viewport.x,
       offsetY: viewport.y,
@@ -125,6 +126,17 @@ const creatorAdapter = createSimpleAdapter<
         {}
       ),
     };
+
+    const children = Array.from(
+      Object.values(diagram.nodes).reduce((acc, node: any) => {
+        if (DIAGRAM_REFERENCE_NODES.includes(node.type) && _isString(node.data?.diagramID)) {
+          acc.add(node.data.diagramID);
+        }
+        return acc;
+      }, new Set<string>())
+    );
+
+    return { ...diagram, children };
   }
 );
 

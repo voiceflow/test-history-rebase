@@ -9,6 +9,7 @@ export const DEFAULT_DIAGRAM: PrimativeDiagram = {
   offsetY: 0,
   zoom: 100,
   variables: [],
+  children: [],
   nodes: {
     start00000000000000000000: {
       nodeID: 'start00000000000000000000',

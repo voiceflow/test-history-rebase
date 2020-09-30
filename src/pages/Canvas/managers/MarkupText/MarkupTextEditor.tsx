@@ -18,8 +18,12 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const { setModeType } = React.useContext(MarkupModeContext)!;
   const { toolbarPlugin, fakeSelectionPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
+  const [textAlignment, setTextAlignment] = React.useState(data.textAlignment);
 
-  const onSetAlignment = (textAlignment: TextAlignment) => onChange({ textAlignment });
+  const onSetAlignment = (alignment: TextAlignment) => {
+    setTextAlignment(alignment);
+    onChange({ textAlignment: alignment });
+  };
 
   const saveEditorState = (state: EditorState) => {
     onChange({ content: getRawContent(state) });
@@ -54,6 +58,12 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
     }
   }, [isOpen]);
 
+  useDidUpdateEffect(() => {
+    if (textAlignment !== data.textAlignment) {
+      setTextAlignment(data.textAlignment);
+    }
+  }, [data.textAlignment]);
+
   return (
     <toolbarPlugin.Toolbar>
       {({ getEditorState, setEditorState }) => (
@@ -71,7 +81,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
 
           <Section>
             <FlexAround>
-              <TextAligns alignment={data.textAlignment} setAlignment={onSetAlignment} />
+              <TextAligns alignment={textAlignment} setAlignment={onSetAlignment} />
 
               <IconButtonSeparator />
 

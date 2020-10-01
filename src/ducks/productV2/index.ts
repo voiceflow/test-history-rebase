@@ -92,7 +92,7 @@ export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (disp
 
     await Promise.all(
       allProducts.map((product) =>
-        clientV2.alexaService.updateProduct(projectID, product.id, { ...productAdapter.toDB(product), productID: product.id })
+        clientV2.alexaService.project.updateProduct(projectID, product.id, { ...productAdapter.toDB(product), productID: product.id })
       )
     );
   }

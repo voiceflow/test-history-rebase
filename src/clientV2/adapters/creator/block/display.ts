@@ -22,8 +22,8 @@ const displayAdapter = createBlockAdapter<DisplayData, NodeData.Display>(
     type: displayType === DisplayType.ADVANCED ? StepDisplayType.JSON : StepDisplayType.SPLASH,
     imageURL: backgroundImage || '',
     title: splashHeader,
-    datasource: dataSource,
-    document,
+    datasource: dataSource || '',
+    document: document || '',
     aplCommands,
     jsonFileName: jsonFileName || '',
   })

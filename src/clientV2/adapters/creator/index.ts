@@ -1,4 +1,4 @@
-import { Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
+import { Block, Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
 import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
@@ -16,15 +16,16 @@ export type DBCreatorDiagram = Omit<Diagram, 'created' | 'creatorID' | 'variable
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
   CreatorDiagram,
-  [PlatformType],
+  [{ platform: PlatformType }],
   [
     {
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
+      platform: PlatformType;
     }
   ]
 >(
-  (diagram) => {
+  (diagram, { platform }) => {
     const rootNodeIDs: string[] = [];
     const nodes: Node[] = [];
     const nodeIDs = new Set<string>();
@@ -37,17 +38,21 @@ const creatorAdapter = createSimpleAdapter<
     const data: Record<string, NodeData<unknown>> = {};
     const markupNodeIDs: string[] = [];
 
-    const parentNodes = Object.values(diagram.nodes).reduce<Record<string, string>>((acc, node) => {
+    const parentNodes = Object.values(diagram.nodes).reduce<Record<string, Block>>((acc, node) => {
       if (isBlock(node)) {
         node.data.steps.forEach((stepID) => {
-          acc[stepID] = node.nodeID;
+          acc[stepID] = node;
         });
       }
       return acc;
     }, {});
 
     const registerNode = (dbNode: DiagramNode) => {
-      const { node, data: nodeData, ports: nodePorts } = nodeAdapter.fromDB(dbNode, { parentNode: parentNodes[dbNode.nodeID], links });
+      const { node, data: nodeData, ports: nodePorts } = nodeAdapter.fromDB(dbNode, {
+        parentNode: parentNodes[dbNode.nodeID] || null,
+        links,
+        platform,
+      });
 
       nodes.push(node);
       nodeIDs.add(node.id);
@@ -90,7 +95,7 @@ const creatorAdapter = createSimpleAdapter<
       markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, links, data }, { nodes, ports }) => {
+  ({ diagramID, viewport, links, data }, { nodes, ports, platform }) => {
     const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, NodeID>>((acc, link) => {
@@ -120,7 +125,7 @@ const creatorAdapter = createSimpleAdapter<
           ...acc,
           [node.id]: nodeAdapter.toDB(
             { node, data: data[node.id], ports: node.ports.out.map((portID) => ports.byKey[portID]) },
-            { portToTargets, stepMap }
+            { portToTargets, stepMap, platform }
           ),
         }),
         {}

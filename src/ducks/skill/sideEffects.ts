@@ -109,7 +109,7 @@ export const createSkill = (platform: PlatformType, projectData: Partial<Skill>,
       createProject(workspaceID!, {
         name: projectData.name!,
         locales: platform === PlatformType.GENERAL ? [] : projectData.locales!,
-        platform: platform!,
+        platform,
         mainLocale: projectData?.mainLocale,
         inv_name: projectData?.invocation,
         image: projectData?.image,

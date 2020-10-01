@@ -1,3 +1,4 @@
+import React from 'react';
 import { InputGroup, InputGroupProps } from 'reactstrap';
 
 import { TextInputContainer } from '@/components/ButtonDropdownInput/components';
@@ -6,7 +7,9 @@ import { css, styled } from '@/hocs';
 import DropdownButton from './DropdownButton';
 import Input from './Input';
 
-const DropdownContainer = styled(InputGroup as any)<InputGroupProps & { isInvalid: boolean; isDisabled: boolean }>`
+const DropdownContainer = styled(({ isInvalid, isDisabled, ...props }) => <InputGroup {...props} />)<
+  InputGroupProps & { isInvalid: boolean; isDisabled: boolean }
+>`
   position: relative;
   flex-wrap: nowrap;
   flex: 1;

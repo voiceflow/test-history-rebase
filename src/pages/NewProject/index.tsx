@@ -61,11 +61,19 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
         const project = await createProject({ platform: selectedPlatform!, name, image, listID });
         // TODO: in the future make new project parameters much more platform specific
         if (selectedPlatform === PlatformType.ALEXA) {
-          clientV2.alexaService.updateVersionPublishing(project.versionID, {
+          clientV2.alexaService.version.updatePublishing(project.versionID, {
             invocationName,
             invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
             locales: selectedLocales as any,
             largeIcon: image,
+          });
+        } else if (selectedPlatform === PlatformType.GOOGLE) {
+          clientV2.googleService.version.updatePublishing(project.versionID, {
+            locales: selectedLocales as any,
+            smallLogoImage: image,
+            displayName: name,
+            pronunciation: invocationName,
+            sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           });
         }
         goToCanvas(project.versionID);

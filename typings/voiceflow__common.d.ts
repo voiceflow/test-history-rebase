@@ -41,5 +41,11 @@ declare module '@voiceflow/common' {
       };
       GOOGLE_LOCALES: Record<string, string>;
     };
+
+    const regex: {
+      validLatinChars: string;
+      validCharacters: string;
+      validSpokenCharacters: string;
+    };
   }
 }

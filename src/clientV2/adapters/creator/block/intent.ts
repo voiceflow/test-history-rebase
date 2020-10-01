@@ -1,19 +1,17 @@
 import type { StepData } from '@voiceflow/alexa-types/build/nodes/intent';
 
-import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { createBlockAdapter } from './utils';
+import { createBlockAdapter, defaultPlatformsData } from './utils';
 
 const intentAdapter = createBlockAdapter<StepData, NodeData.Intent>(
-  ({ intent, mappings }) => ({
-    [PlatformType.ALEXA]: { intent, mappings: mappings ?? [] },
-    [PlatformType.GOOGLE]: { intent: null, mappings: [] },
-    [PlatformType.GENERAL]: { intent: null, mappings: [] },
+  ({ intent, mappings }, { platform }) => ({
+    ...defaultPlatformsData({ intent: null, mappings: [] }),
+    [platform]: { intent, mappings: mappings ?? [] },
   }),
-  ({ alexa }) => ({
-    intent: alexa.intent,
-    mappings: alexa.mappings,
+  (data, { platform }) => ({
+    intent: data[platform].intent,
+    mappings: data[platform].mappings,
   })
 );
 

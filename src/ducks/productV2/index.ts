@@ -48,7 +48,7 @@ export const createProduct = (): Thunk => async (dispatch, getState) => {
 export const copyProduct = (productID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());
 
-  const copiedProduct = await clientV2.alexaService.copyProduct(projectID, productID);
+  const copiedProduct = await clientV2.alexaService.project.copyProduct(projectID, productID);
 
   dispatch(addProduct(copiedProduct.productID, productAdapter.fromDB(copiedProduct)));
 };
@@ -56,7 +56,7 @@ export const copyProduct = (productID: string): Thunk => async (dispatch, getSta
 export const deleteProduct = (productID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());
 
-  await clientV2.alexaService.deleteProduct(projectID, productID);
+  await clientV2.alexaService.project.deleteProduct(projectID, productID);
 
   dispatch(removeProduct(productID));
 };
@@ -69,12 +69,12 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
   const projectID = Skill.activeProjectIDSelector(state);
 
   if (product.id === NEW_PRODUCT_ID) {
-    const alexaProduct = await clientV2.alexaService.createProduct(projectID, productAdapter.toDB(product));
+    const alexaProduct = await clientV2.alexaService.project.createProduct(projectID, productAdapter.toDB(product));
 
     dispatch(cancelProduct());
     dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
   } else {
-    await clientV2.alexaService.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
+    await clientV2.alexaService.project.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
 
     dispatch(addProduct(productID, product));
   }

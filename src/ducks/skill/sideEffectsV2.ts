@@ -2,9 +2,11 @@ import { AccountLinking, AlexaVersionData, Locale } from '@voiceflow/alexa-types
 import _pick from 'lodash/pick';
 
 import clientV2, { getPlatformService } from '@/clientV2';
-import { alexaIntentAdapter } from '@/clientV2/adapters/intent';
+import intentAdapter from '@/clientV2/adapters/intent';
 import slotAdapter from '@/clientV2/adapters/slot';
 import alexaSettingsAdapter, { SkillSettings } from '@/clientV2/adapters/version/alexa/settings';
+import googleSettingsAdapter from '@/clientV2/adapters/version/google/settings';
+import { PlatformType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
@@ -17,6 +19,7 @@ import * as Skill from './skill';
 export const saveInvocationName = (invocationName: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
+  const platform = Skill.activePlatformSelector(state);
 
   const meta = Meta.skillMetaSelector(state);
   if (meta.invName === invocationName) return;
@@ -25,7 +28,12 @@ export const saveInvocationName = (invocationName: string): Thunk => async (disp
   const invocations = arrayStringReplace(meta.invName, invocationName, meta.invocations);
 
   dispatch(Meta.updateSkillMeta({ invName: invocationName, invocations }));
-  await clientV2.alexaService.updateVersionPublishing(versionID, { invocationName, invocations });
+
+  if (platform === PlatformType.ALEXA) {
+    await clientV2.alexaService.version.updatePublishing(versionID, { invocationName, invocations });
+  } else if (platform === PlatformType.GOOGLE) {
+    await clientV2.googleService.version.updatePublishing(versionID, { pronunciation: invocationName, sampleInvocations: invocations });
+  }
 };
 
 export const saveProjectName = (name: string): Thunk => async (dispatch, getState) => {
@@ -40,22 +48,31 @@ export const saveProjectName = (name: string): Thunk => async (dispatch, getStat
   dispatch(Project.updateProjectName(projectID, name));
 };
 
-export const saveAlexaSettings = (settings: Partial<SkillSettings>, properties?: string[]): Thunk => async (dispatch, getState) => {
+// TODO: REFACTOR SETTINGS INTO PLATFORM SPECIFIC CHUNKS
+export const saveSettings = (settings: Partial<SkillSettings>, properties?: string[]): Thunk => async (dispatch, getState) => {
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state)!;
+  const platform = Skill.activePlatformSelector(state)!;
 
   // only certain adapted properties as specified by "properties"
-  const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
-  await clientV2.alexaService.updateVersionSettings(skillID, properties ? _pick(alexaSettings, properties) : alexaSettings);
-  dispatch(Meta.updateSkillMeta(settings));
+  if (platform === PlatformType.ALEXA) {
+    const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
+    await clientV2.alexaService.version.updateSettings(skillID, properties ? _pick(alexaSettings, properties) : alexaSettings);
+    dispatch(Meta.updateSkillMeta(settings));
+  } else if (platform === PlatformType.GOOGLE) {
+    const googleSettings = googleSettingsAdapter.toDB(settings as SkillSettings);
+    await clientV2.googleService.version.updateSettings(skillID, properties ? _pick(googleSettings, properties) : googleSettings);
+    dispatch(Meta.updateSkillMeta(settings));
+  }
 };
 
 export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state);
+  const platform = Skill.activePlatformSelector(state);
 
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
-  const intents = alexaIntentAdapter.mapToDB(Intent.allIntentsSelector(state));
+  const intents = intentAdapter(platform).mapToDB(Intent.allIntentsSelector(state));
 
   await clientV2.api.version.updatePlatformData<AlexaVersionData>(skillID, { slots, intents });
 };
@@ -72,7 +89,7 @@ export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state);
 
-  await clientV2.alexaService.updateVersionSettings(skillID, { accountLinking });
+  await clientV2.alexaService.version.updateSettings(skillID, { accountLinking });
 
   dispatch(Meta.updateAccountLinking(accountLinking));
 };
@@ -93,6 +110,8 @@ export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dis
   const versionID = Skill.activeSkillIDSelector(state);
 
   const service = getPlatformService(platform);
-  await service?.updateVersionPublishing(versionID, { locales });
+
+  await service?.version.updatePublishing(versionID, { locales: locales as any });
+
   dispatch(Skill.updateActiveSkill({ locales }));
 };

@@ -11,26 +11,26 @@ import { createBlockAdapter } from './utils';
 import zapierAdapter from './zapier';
 
 const interactionAdapter = createBlockAdapter<APIStepData | ZapierStepData | GoogleSheetsStepData, NodeData.Integration>(
-  (data) => {
+  (data, ...args) => {
     switch (data.selectedIntegration) {
       case IntegrationType.CUSTOM_API:
-        return apiAdapter.fromDB(data);
+        return apiAdapter.fromDB(data, ...args);
       case IntegrationType.ZAPIER:
-        return zapierAdapter.fromDB(data);
+        return zapierAdapter.fromDB(data, ...args);
       case IntegrationType.GOOGLE_SHEETS:
-        return googleSheetsAdapter.fromDB(data);
+        return googleSheetsAdapter.fromDB(data, ...args);
       default:
         throw new Error('Integration adapter is not implemented yet!');
     }
   },
-  (data) => {
+  (data, ...args) => {
     switch (data.selectedIntegration) {
       case IntegrationType.CUSTOM_API:
-        return apiAdapter.toDB(data);
+        return apiAdapter.toDB(data, ...args);
       case IntegrationType.ZAPIER:
-        return zapierAdapter.toDB(data);
+        return zapierAdapter.toDB(data, ...args);
       case IntegrationType.GOOGLE_SHEETS:
-        return googleSheetsAdapter.toDB(data);
+        return googleSheetsAdapter.toDB(data, ...args);
       default:
         throw new Error('Integration adapter is not implemented yet!');
     }

@@ -4,6 +4,10 @@ import {
   AlexaPublishJobErrorType,
   AlexaPublishJobSuccessType,
   AlexaStageType,
+  GoogleExportJobSuccessType,
+  GooglePublishJobErrorType,
+  GooglePublishJobSuccessType,
+  GoogleStageType,
   PrototypeStageType,
 } from '@/constants/platforms';
 
@@ -86,6 +90,73 @@ export namespace AlexaExportJob {
   export type WaitInvocationNameStage = AlexaPublishJob.WaitInvocationNameStage;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+}
+
+export namespace GooglePublishJob {
+  export type IdleStage = JobStage<GoogleStageType.IDLE, Record<string, unknown>>;
+
+  export type ErrorStage = JobStage<
+    GoogleStageType.ERROR,
+    {
+      message: string;
+      errorType: GooglePublishJobErrorType;
+      error?: any;
+      googleError?: boolean;
+    }
+  >;
+
+  export type SuccessStage = JobStage<
+    GoogleStageType.SUCCESS,
+    {
+      message: string;
+      googleProjectID: string;
+      versionID: string;
+      successType: GooglePublishJobSuccessType;
+      rootDiagramID: string;
+      submittedForReview?: boolean;
+    }
+  >;
+
+  export type ProgressStage = JobStage<
+    GoogleStageType.PROGRESS,
+    {
+      message: string;
+      progress: number;
+    }
+  >;
+
+  export type WaitAccountStage = JobStage<GoogleStageType.WAIT_ACCOUNT>;
+
+  export type WaitProjectStage = JobStage<GoogleStageType.WAIT_PROJECT>;
+
+  export type WaitInvocationNameStage = JobStage<GoogleStageType.WAIT_INVOCATION_NAME, { error: string }>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+}
+
+export namespace GoogleExportJob {
+  export type IdleStage = GooglePublishJob.IdleStage;
+
+  export type ErrorStage = GooglePublishJob.ErrorStage;
+
+  export type SuccessStage = JobStage<
+    GoogleStageType.SUCCESS,
+    {
+      data: string;
+      fileName: string;
+      successType: GoogleExportJobSuccessType;
+    }
+  >;
+
+  export type ProgressStage = GooglePublishJob.ProgressStage;
+
+  export type WaitAccountStage = GooglePublishJob.WaitAccountStage;
+
+  export type WaitProjectStage = JobStage<GoogleStageType.WAIT_PROJECT>;
+
+  export type WaitInvocationNameStage = GooglePublishJob.WaitInvocationNameStage;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
 }
 
 export namespace PrototypeJob {

@@ -11,7 +11,7 @@ import { PlatformType } from '@/constants';
 import { googleIDSelector, updatePublishInfo } from '@/ducks/publish/google';
 import * as Skill from '@/ducks/skill';
 import { saveSkillSettings } from '@/ducks/skill/sideEffects';
-import { saveAlexaSettings, saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
+import { saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FORMATTED_LOCALES } from '@/pages/Publish/Google/Form';
@@ -184,7 +184,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   saveSkillMeta: Skill.saveSkillMeta,
   saveSkillSettings,
-  saveAlexaSettings,
   saveInvocationName,
   saveProjectName,
   updatePublishInfo,

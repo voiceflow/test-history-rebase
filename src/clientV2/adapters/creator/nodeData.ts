@@ -2,7 +2,7 @@ import { DiagramNode } from '@voiceflow/api-sdk';
 import _isFunction from 'lodash/isFunction';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { BlockType } from '@/constants';
+import { BlockType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB } from './block';
@@ -10,8 +10,13 @@ import { creatorLogger, isSupportedBlockType } from './utils';
 
 const log = creatorLogger.child('node-data');
 
-const nodeDataAdapter = createSimpleAdapter<DiagramNode['data'], NodeData<unknown>, [DiagramNode]>(
-  (dbData, dbNode) => {
+const nodeDataAdapter = createSimpleAdapter<
+  DiagramNode['data'],
+  NodeData<unknown>,
+  [{ dbNode: DiagramNode; platform: PlatformType }],
+  [{ platform: PlatformType }]
+>(
+  (dbData, { dbNode, platform }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbNode.type];
 
     let type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbNode.type;
@@ -21,8 +26,9 @@ const nodeDataAdapter = createSimpleAdapter<DiagramNode['data'], NodeData<unknow
     }
 
     let data: Partial<NodeData<unknown>> = {};
+
     try {
-      data = blockAdapter[type].fromDB(dbData as any);
+      data = blockAdapter[type].fromDB(dbData as any, { platform });
     } catch (err) {
       log.error('Block Adapter Error', err);
       data = dbData as any;
@@ -38,7 +44,7 @@ const nodeDataAdapter = createSimpleAdapter<DiagramNode['data'], NodeData<unknow
       path: [],
     };
   },
-  ({ type, path, ...appData }) => blockAdapter[type].toDB(appData as any)
+  ({ type, path, ...appData }, { platform }) => blockAdapter[type].toDB(appData as any, { platform })
 );
 
 export default nodeDataAdapter;

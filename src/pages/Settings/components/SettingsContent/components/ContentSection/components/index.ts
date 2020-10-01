@@ -9,4 +9,5 @@ export const SectionTitle = styled.div`
 
 export const ContentSectionContainer = styled.div`
   margin-bottom: 40px;
+  width: 100%;
 `;

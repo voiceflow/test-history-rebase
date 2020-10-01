@@ -8,11 +8,11 @@ import * as Diagram from '@/ducks/diagramV2';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useFeature, useSetup, useTeardown } from '@/hooks';
-import { AlexaPublishJob } from '@/models';
+import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 
 export type PublishContextValue = {
-  job: Nullable<AlexaPublishJob.AnyJob>;
+  job: Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>;
   cancel: () => Promise<void>;
   publish: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
@@ -26,7 +26,7 @@ const PULL_TIMEOUT = 3000; // 3s
 export const PublishProvider: React.FC = ({ children }) => {
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const pullTimeout = React.useRef<number>();
-  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
   const projectID = useSelector(Skill.activeProjectIDSelector);
@@ -35,7 +35,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const service = dataRefactor.isEnabled ? getPlatformService(platform) : null;
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.getPublishStatus(projectID);
+    const currentJob = await service?.publish.getStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, service]);
@@ -43,18 +43,16 @@ export const PublishProvider: React.FC = ({ children }) => {
   const publish = React.useCallback(async () => {
     await dispatch(Diagram.saveActiveDiagram());
 
-    const result = await service?.publish(projectID);
+    const result = await service?.publish.run(projectID);
 
     setJob(result?.job || null);
   }, [projectID, service]);
 
   const updateCurrentStage = React.useCallback(
     async (data: unknown) => {
-      if (!job) {
-        return;
-      }
+      if (!job) return;
 
-      await service?.updatePublishStage(projectID, job.stage.type, data);
+      await service?.publish.updateStage(projectID, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
     [projectID, service, job?.stage.type]
@@ -69,7 +67,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await service?.cancelPublish(projectID);
+    await service?.publish.cancel(projectID);
 
     setJob(null);
   }, [projectID, service]);
@@ -78,9 +76,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   useSetup(dataRefactor.isEnabled ? getJob : () => null);
 
   useDidUpdateEffect(() => {
-    if (!dataRefactor.isEnabled) {
-      return;
-    }
+    if (!dataRefactor.isEnabled) return;
 
     // stop pulling when projectID/platform changed
     stopPulling();
@@ -94,7 +90,7 @@ export const PublishProvider: React.FC = ({ children }) => {
     }
 
     // stop pulling when job is finished or job was canceled
-    if (job === null || job.status === JobStatus.FINISHED) {
+    if (!job || job.status === JobStatus.FINISHED) {
       stopPulling();
       return;
     }

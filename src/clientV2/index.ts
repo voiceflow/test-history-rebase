@@ -2,17 +2,14 @@ import { PlatformType } from '@/constants';
 import { getPlatformValue } from '@/utils/platform';
 
 import api from './api';
-import platfromServices from './platformServices';
+import platformServices, { platformServicesMap } from './platformServices';
 
 const client = {
-  ...platfromServices,
+  ...platformServices,
   api,
 };
 
-export const getPlatformService = (platform: PlatformType) =>
-  getPlatformValue(platform, {
-    [PlatformType.ALEXA]: client.alexaService,
-    // [PlatformType.GOOGLE]: client.googleService,
-  });
+export const getPlatformService = <T extends PlatformType>(platform: T) =>
+  (getPlatformValue<any>(platform, platformServicesMap) as typeof platformServicesMap[T])!;
 
 export default client;

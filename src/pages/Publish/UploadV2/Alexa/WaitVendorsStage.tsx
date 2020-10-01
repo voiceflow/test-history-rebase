@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 
-import { ButtonContainer, ButtonLink, Description, StageContainer } from '../shared';
+import { ButtonContainer, ButtonLink, Description, StageContainer } from '../components';
 
 type WaitVendorsStageProps = {
   cancel: () => void;

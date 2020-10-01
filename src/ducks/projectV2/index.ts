@@ -66,6 +66,7 @@ export type createProjectParams = {
   image?: string;
   listID?: string;
 };
+
 export const createProject = ({ platform, name, image, listID }: createProjectParams): Thunk<Project> => async (dispatch, getState) => {
   const state = getState();
   const teamID = activeWorkspaceIDSelector(state)!;
@@ -79,7 +80,8 @@ export const createProject = ({ platform, name, image, listID }: createProjectPa
   }
 
   try {
-    const newProject = await service.copyProject(templateProjectID, { name, image, teamID });
+    const newProject = await service.project.copy(templateProjectID, { name, image, teamID });
+
     if (listID) {
       await dispatch(addProjectToList(listID, newProject._id));
     }

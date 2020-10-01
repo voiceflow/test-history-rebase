@@ -135,7 +135,7 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   // dataRefactor / FeatureFlag.DATA_REFACTOR doesn't apply in the export size, base it on ObjectId instead
   const { viewport, ...creator } =
     diagramID.length === 24
-      ? creatorAdapterV2.fromDB(await clientV2.api.diagram.get(diagramID), platform)
+      ? creatorAdapterV2.fromDB(await clientV2.api.diagram.get(diagramID), { platform })
       : (await client.diagram.getData(diagramID, platform)).data;
 
   const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));

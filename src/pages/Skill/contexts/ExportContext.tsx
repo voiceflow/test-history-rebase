@@ -7,13 +7,13 @@ import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useFeature, useTeardown } from '@/hooks';
-import { AlexaExportJob } from '@/models';
+import { AlexaExportJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
 
 export type ExportContextValue = {
-  job: Nullable<AlexaExportJob.AnyJob>;
-  cancel: () => Promise<void>;
+  job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob>;
   start: () => Promise<void>;
+  cancel: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 };
 
@@ -25,7 +25,7 @@ const PULL_TIMEOUT = 1500; // 1.5s
 export const ExportProvider: React.FC = ({ children }) => {
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const pullTimeout = React.useRef<number>();
-  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
   const projectID = useSelector(Skill.activeProjectIDSelector);
@@ -33,13 +33,13 @@ export const ExportProvider: React.FC = ({ children }) => {
   const service = dataRefactor.isEnabled ? getPlatformService(platform) : null;
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.getExportStatus(projectID);
+    const currentJob = await service?.export.getStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, service]);
 
   const start = React.useCallback(async () => {
-    const result = await service?.export(projectID);
+    const result = await service?.export.run(projectID);
 
     setJob(result?.job || null);
   }, [projectID, service]);
@@ -50,7 +50,7 @@ export const ExportProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await service?.updateExportStage(projectID, job.stage.type, data);
+      await service?.export.updateStage(projectID, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
     [projectID, service, job?.stage.type]
@@ -65,7 +65,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await service?.cancelExport(projectID);
+    await service?.export.cancel(projectID);
 
     setJob(null);
   }, [projectID, service]);

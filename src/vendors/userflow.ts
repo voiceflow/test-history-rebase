@@ -8,19 +8,19 @@ export enum Event {
 }
 
 export const initialize = () => {
-  if (USERFLOW_ENABLED) {
-    userflow.init(USERFLOW_TOKEN);
-  }
+  if (!USERFLOW_ENABLED) return;
+
+  userflow.init(USERFLOW_TOKEN);
 };
 
 export const identify = async (user: Account) => {
-  if (USERFLOW_ENABLED) {
-    await userflow.identify(String(user.creator_id), {
-      name: user.name,
-      email: user.email,
-      signed_up_at: user.created,
-    });
-  }
+  if (!USERFLOW_ENABLED) return;
+
+  await userflow.identify(String(user.creator_id), {
+    name: user.name,
+    email: user.email,
+    signed_up_at: user.created,
+  });
 };
 
 export const startFlow = async (flowID: string) => {
@@ -29,4 +29,8 @@ export const startFlow = async (flowID: string) => {
   }
 };
 
-export const track = (event: string) => userflow.track(event);
+export const track = async (event: string) => {
+  if (!USERFLOW_ENABLED) return;
+
+  await userflow.track(event);
+};

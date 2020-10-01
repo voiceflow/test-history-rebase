@@ -9,7 +9,7 @@ import * as Creator from '../creator';
 import * as DiagramReducer from '../diagram';
 import { rtctimestampSelector } from '../realtime';
 import { goToDiagram, goToRootDiagram } from '../router';
-import { activeDiagramIDSelector, activeSkillIDSelector } from '../skill';
+import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from '../skill';
 import { viewportByIDSelector } from '../viewport';
 import { DEFAULT_DIAGRAM } from './constants';
 import { PrimativeDiagram } from './types';
@@ -41,6 +41,7 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
   const { rootNodeIDs, nodes, ports, data, markupNodeIDs } = Creator.creatorDiagramSelector(state);
   const links = Creator.allLinksSelector(state);
   const variables = DiagramReducer.diagramVariablesSelector(state)(diagramID);
+  const platform = activePlatformSelector(state);
 
   const diagram = creatorAdapterV2.toDB(
     {
@@ -51,7 +52,7 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
       data,
       markupNodeIDs,
     } as CreatorDiagram,
-    { nodes, ports }
+    { nodes, ports, platform }
   );
 
   return { ...diagram, variables };

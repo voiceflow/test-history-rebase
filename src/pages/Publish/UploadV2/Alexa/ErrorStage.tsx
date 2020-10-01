@@ -4,7 +4,7 @@ import React from 'react';
 import { AlexaPublishJobErrorType } from '@/constants/platforms';
 import { AlexaExportJob, AlexaPublishJob, JobStageData } from '@/models';
 
-import { ErrorStage as BaseErrorStage } from '../shared';
+import { ErrorStage as BaseErrorStage } from '../components';
 
 const getTitle = ({ errorType, message }: JobStageData<AlexaExportJob.ErrorStage> | JobStageData<AlexaPublishJob.ErrorStage>) => {
   switch (errorType) {

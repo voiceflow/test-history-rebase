@@ -20,9 +20,9 @@ const getNextScheduledTimeout = (schedule: string[]) => {
   return moment.min(validTimes).valueOf() - now.valueOf();
 };
 
-export const useAsyncMountUnmount = (didMount: () => void, willUnmount?: () => void) => {
+export const useAsyncMountUnmount = (didMount?: () => void, willUnmount?: () => void) => {
   useEffect(() => {
-    didMount();
+    didMount?.();
 
     if (willUnmount) {
       return willUnmount;

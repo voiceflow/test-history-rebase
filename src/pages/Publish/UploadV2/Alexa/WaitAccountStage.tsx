@@ -6,7 +6,7 @@ import { useSmartReducerV2 } from '@/hooks';
 import { Account } from '@/models';
 import { Nullable } from '@/types';
 
-import { ButtonContainer, Description, LoaderStage, StageContainer } from '../shared';
+import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
 
 type WaitAccountStageProps = {
   updateCurrentStage: (data: unknown) => void;

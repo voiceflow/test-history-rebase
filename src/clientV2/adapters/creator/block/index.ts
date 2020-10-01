@@ -10,7 +10,7 @@ import { NodeData } from '@/models';
 import { generateOutPort } from '../utils';
 import accountLinkingAdapter from './accountLinking';
 import blockDataAdapter from './block';
-import cancelPayment from './cancelPayment';
+import cancelPaymentAdapter from './cancelPayment';
 import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
@@ -24,6 +24,8 @@ import ifAdapter from './if';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
+import markupImageAdapter from './markupImage';
+import markupTextAdapter from './markupText';
 import paymentAdapter from './payment';
 import permissionAdapter from './permission';
 import promptAdapter from './prompt';
@@ -70,7 +72,7 @@ const blockAdapter = {
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.COMMENT]: emptyAdapter,
   // user defined
-  [BlockType.CANCEL_PAYMENT]: cancelPayment,
+  [BlockType.CANCEL_PAYMENT]: cancelPaymentAdapter,
   [BlockType.CAPTURE]: captureAdapter,
   [BlockType.CARD]: cardAdapter,
   [BlockType.CHOICE_OLD]: emptyAdapter,
@@ -96,8 +98,8 @@ const blockAdapter = {
   [BlockType.EVENT]: eventAdapter,
   [BlockType.PROMPT]: promptAdapter,
   // markup
-  [BlockType.MARKUP_TEXT]: emptyAdapter,
-  [BlockType.MARKUP_IMAGE]: emptyAdapter,
+  [BlockType.MARKUP_TEXT]: markupTextAdapter,
+  [BlockType.MARKUP_IMAGE]: markupImageAdapter,
 };
 
 export const portsAdapter: Record<string, PortsAdapter> = {

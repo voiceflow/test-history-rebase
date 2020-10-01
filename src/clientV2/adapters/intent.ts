@@ -5,7 +5,7 @@ import { PlatformType } from '@/constants';
 import { Intent } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
-export const createPlatformIntentAdapterCreator = (platform: PlatformType) =>
+const intentAdapter = (platform: PlatformType) =>
   createAdapter<DBIntent, Intent>(
     ({ key, name, inputs, slots = [] }) => ({
       id: key,
@@ -22,4 +22,4 @@ export const createPlatformIntentAdapterCreator = (platform: PlatformType) =>
     })
   );
 
-export const alexaIntentAdapter = createPlatformIntentAdapterCreator(PlatformType.ALEXA);
+export default intentAdapter;

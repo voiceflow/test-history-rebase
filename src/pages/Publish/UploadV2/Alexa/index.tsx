@@ -3,7 +3,7 @@ import React from 'react';
 import { AlexaStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 
-import { LoaderStage, ProgressStage } from '../shared';
+import { LoaderStage, ProgressStage } from '../components';
 import ErrorStage from './ErrorStage';
 import SuccessStage from './SuccessStage';
 import WaitAccountStage from './WaitAccountStage';
@@ -35,7 +35,6 @@ export const Alexa: React.FC<AlexaProps> = (props) => {
       return <WaitVendorsStage cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_INVOCATION_NAME:
       return <WaitInvocationName stage={contextValue.job.stage} updateCurrentStage={contextValue.updateCurrentStage} />;
-
     default:
       return null;
   }

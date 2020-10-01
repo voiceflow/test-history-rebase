@@ -9,7 +9,7 @@ import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { FeatureFlag } from '@/config/features';
 import * as AccountDuck from '@/ducks/account';
-import { getAmazonAccountV2, unlinkAmazonAccountV2 } from '@/ducks/account/sideEffectsV2';
+import { getAmazonAccountV2, getGoogleAccountV2, unlinkAmazonAccountV2, unlinkGoogleAccountV2 } from '@/ducks/account/sideEffectsV2';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
@@ -23,11 +23,11 @@ class Account extends Component {
   };
 
   componentDidMount = () => {
-    const { checkAmazonAccount, getAmazonAccountV2, checkGoogleAccount, isFeatureEnabled } = this.props;
+    const { checkAmazonAccount, getAmazonAccountV2, checkGoogleAccount, isFeatureEnabled, getGoogleAccountV2 } = this.props;
     // eslint-disable-next-line promise/catch-or-return
     (isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? getAmazonAccountV2() : checkAmazonAccount()).then(() => this.setState({ amazonStatus: true }));
     // eslint-disable-next-line promise/catch-or-return
-    checkGoogleAccount().then(() => this.setState({ googleStatus: true }));
+    (isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? getGoogleAccountV2() : checkGoogleAccount()).then(() => this.setState({ googleStatus: true }));
   };
 
   resetAmazon = () => {
@@ -49,7 +49,7 @@ class Account extends Component {
   };
 
   resetGoogle = () => {
-    const { setConfirm, deleteGoogleAccount } = this.props;
+    const { setConfirm, deleteGoogleAccount, unlinkGoogleAccountV2, isFeatureEnabled } = this.props;
     setConfirm({
       text: (
         <>Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing</>
@@ -57,7 +57,7 @@ class Account extends Component {
       warning: true,
       confirm: async () => {
         this.setState({ googleStatus: false });
-        await deleteGoogleAccount();
+        await (isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? unlinkGoogleAccountV2() : deleteGoogleAccount());
         this.setState({ googleStatus: true });
       },
     });
@@ -223,9 +223,11 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   checkAmazonAccount: AccountDuck.checkAmazonAccount,
   getAmazonAccountV2,
+  getGoogleAccountV2,
   checkGoogleAccount: AccountDuck.checkGoogleAccount,
   deleteAmazonAccount: AccountDuck.deleteAmazonAccount,
   unlinkAmazonAccountV2,
+  unlinkGoogleAccountV2,
   deleteGoogleAccount: AccountDuck.deleteGoogleAccount,
   updateAccount: AccountDuck.updateAccount,
   setConfirm: Modal.setConfirm,

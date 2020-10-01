@@ -4,7 +4,7 @@ import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/com
 import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { activePlatformSelector, saveMeta, settingsSelector, updateSettings } from '@/ducks/skill';
-import { saveAlexaSettings } from '@/ducks/skill/sideEffectsV2';
+import { saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature, useTeardown } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
@@ -18,16 +18,16 @@ type SettingsProps = {
   settings: Settings;
   updateSettings: (settings: Settings) => void;
   saveMeta: (data: { settings: Settings }) => void;
-  saveAlexaSettings: typeof saveAlexaSettings;
+  saveSettings: typeof saveSettings;
 };
 
-const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta, saveAlexaSettings }) => {
+const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta, saveSettings }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   useTeardown(() => {
     if (dataRefactor.isEnabled) {
-      saveAlexaSettings({ settings }, ['customInterface']);
+      saveSettings({ settings }, ['customInterface']);
     } else {
       saveMeta({ settings });
     }
@@ -59,7 +59,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   updateSettings,
   saveMeta,
-  saveAlexaSettings,
+  saveSettings,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlexaGadgets);

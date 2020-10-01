@@ -6,6 +6,7 @@ import { TextProps } from '../types';
 
 type LinkProps = {
   link?: string;
+  textDecoration?: boolean;
 } & TextProps;
 
 const Link = styled.a.attrs<LinkProps>(({ link, href }) => ({
@@ -17,6 +18,7 @@ const Link = styled.a.attrs<LinkProps>(({ link, href }) => ({
 
   :hover {
     color: ${({ theme }) => theme.colors.darkBlue};
+    ${({ textDecoration }) => !textDecoration && 'text-decoration: none !important;'}
   }
 
   ${space}

@@ -6,7 +6,7 @@ import Input from '@/components/Input';
 import SvgIcon, { IconVariant } from '@/components/SvgIcon';
 import { BlockText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
-import { invNameError } from '@/ducks/publish/alexa';
+import { getAmazonInvocationNameError } from '@/ducks/publish/utilsV2';
 import * as Skill from '@/ducks/skill';
 import { saveInvocationName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
@@ -14,7 +14,7 @@ import { useSmartReducerV2 } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { ConnectedProps, Nullable } from '@/types';
 
-import { ButtonContainer, Description, LoaderStage, StageContainer } from '../shared';
+import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
 
 type WaitInvocationNameProps = {
   stage: AlexaExportJob.WaitInvocationNameStage | AlexaPublishJob.WaitInvocationNameStage;
@@ -37,7 +37,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
   const updateName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     api.update({
       name: target.value,
-      error: invNameError(target.value, locales),
+      error: getAmazonInvocationNameError(target.value, locales),
     });
   };
 

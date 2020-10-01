@@ -10,6 +10,11 @@ import { Pair } from '@/types';
 
 export { IntegrationType, SLOT_REGEXP } from '@voiceflow/alexa-types';
 
+export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
+export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';
+export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloud-platform.read-only';
+export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE, ACTION_BUILDER_SCOPE, USER_INFO_SCOPE];
+
 export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';

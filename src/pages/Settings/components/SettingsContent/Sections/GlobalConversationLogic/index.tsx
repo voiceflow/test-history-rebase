@@ -9,7 +9,7 @@ import AudioUpload from '@/components/Upload/AudioUpload';
 import { FeatureFlag } from '@/config/features';
 import { VoiceType } from '@/constants';
 import { getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
-import { saveAlexaSettings, saveInvocationName, saveProjectName } from '@/ducks/skill/sideEffectsV2';
+import { saveInvocationName, saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useDidUpdateEffect, useFeature, useSyncedSmartReducer } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -31,7 +31,7 @@ const SSMLComponent: any = SSML;
 const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { platformMeta: PlatformSettingsMetaProps }> = ({
   meta,
   platformMeta,
-  saveAlexaSettings,
+  saveSettings,
 }) => {
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
@@ -96,9 +96,9 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
 
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
-  const saveSettings = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
+  const save = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
     if (dataRefactor.isEnabled) {
-      await saveAlexaSettings(data, ['session', 'repeat']);
+      await saveSettings(data, ['session', 'repeat']);
     } else {
       await saveSkillSettings(data);
     }
@@ -120,7 +120,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
 
     try {
       if (previousSessionDialogError) throw new Error();
-      await saveSettings(settingsObject);
+      await save(settingsObject);
     } catch (err) {
       toast.error('Settings Save Error');
     }
@@ -236,7 +236,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveAlexaSettings,
+  saveSettings,
   saveInvocationName,
   saveProjectName,
   saveSkillSettings,

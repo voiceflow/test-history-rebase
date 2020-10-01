@@ -8,27 +8,23 @@ import { BlockText, Link, Text } from '@/components/Text';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { AlexaPublishJob, JobStageData } from '@/models';
+import { GooglePublishJob, JobStageData } from '@/models';
 import { ConnectedProps } from '@/types';
 
-import { StageContainer } from '../../../shared';
-import Video from './Video';
+import { StageContainer, Video } from '../../components';
 
 type UploadedProps = {
-  stageData: JobStageData<AlexaPublishJob.SuccessStage>;
+  stageData: JobStageData<GooglePublishJob.SuccessStage>;
 };
 
-const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, userID, invocationName }) => {
-  const { succeededLocale, amazonID } = stageData;
+const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, userID, invocationName }) => {
+  const { googleProjectID } = stageData;
 
   const firstSession = React.useMemo(() => localStorage.getItem(`is_first_session_${userID}`) !== 'false', []);
 
   React.useEffect(() => {
     localStorage.setItem(`is_first_session_${userID}`, 'false');
   }, []);
-
-  // eslint-disable-next-line no-case-declarations
-  const locale = (succeededLocale || locales[0] || 'en-US').replace('-', '_');
 
   if (firstSession) {
     return (
@@ -42,23 +38,21 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData,
         <Video link="https://s3.amazonaws.com/com.getvoiceflow.videos/loomopt.mp4" />
 
         <BlockText color="#62778c" mt={16} textAlign="center">
-          You may test on the Alexa simulator or live on your personal Alexa device
+          You may test on the Google Action simulator or live on your personal device
         </BlockText>
 
-        {!!succeededLocale && (
-          <AlertMessage mb={0} mx={8} textAlign="center">
-            Alexa, open {invocationName}
-          </AlertMessage>
-        )}
+        <AlertMessage mb={0} mx={8} textAlign="center">
+          Google, open {invocationName}
+        </AlertMessage>
 
         <Box my={32}>
           <a
-            href={`https://developer.amazon.com/alexa/console/ask/test/${amazonID}/development/${locale}/`}
+            href={`https://console.actions.google.com/project/${googleProjectID}/simulator/`}
             className="btn-primary mr-2 no-underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Test on Alexa Simulator
+            Test on Google Action Simulator
           </a>
         </Box>
 
@@ -86,8 +80,8 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData,
       </FlexCenter>
 
       <BlockText color="#62778c" mb={16}>
-        Your Skill is now available to test on your Alexa and the{' '}
-        <Link href={`https://developer.amazon.com/alexa/console/ask/test/${amazonID}/development/${locale}/`}>Amazon console</Link>.
+        Your Action is now available to test on your device and the{' '}
+        <Link href={`https://console.actions.google.com/project/${googleProjectID}/simulator/`}>Google Actions console</Link>.
       </BlockText>
     </StageContainer>
   );

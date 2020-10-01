@@ -18,11 +18,14 @@ export const buttonContainerStyles = css<ButtonContainerProps>`
     }
     return 'auto';
   }};
+
+  ${({ nowrap }) => nowrap && 'white-space: nowrap;'}
 `;
 
 export type ButtonContainerProps = BaseButtonProps & {
   fullWidth?: boolean;
   square?: boolean;
+  nowrap?: boolean;
 };
 
 const ButtonContainer = styled(BaseButton)<ButtonContainerProps>`

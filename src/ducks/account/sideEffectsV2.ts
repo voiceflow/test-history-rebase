@@ -14,9 +14,44 @@ import { amazonVendorsSelector } from './selectors';
 
 const log = duckLogger.child(STATE_KEY);
 
+export const linkGoogleAccountV2 = (code: string): Thunk<Nullable<Account.Google>> => async (dispatch) => {
+  try {
+    const google = await clientV2.googleService.session.linkAccount({ code });
+
+    dispatch(updateAccount({ google }));
+
+    return google;
+  } catch (err) {
+    log.error(err);
+    throw err;
+  }
+};
+
+export const getGoogleAccountV2 = (): Thunk => async (dispatch) => {
+  let google: Nullable<Account.Google> = null;
+
+  try {
+    google = await clientV2.googleService.session.getAccount();
+  } catch (err) {
+    log.error(err);
+  }
+
+  dispatch(updateAccount({ google }));
+};
+
+export const unlinkGoogleAccountV2 = (): Thunk => async (dispatch) => {
+  try {
+    await clientV2.googleService.session.unlinkAccount();
+
+    dispatch(updateAccount({ google: null }));
+  } catch {
+    dispatch(Modal.setError('Something went wrong - please refresh your page'));
+  }
+};
+
 export const linkAmazonAccountV2 = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
   try {
-    const amazon = await clientV2.alexaService.linkAmazonAccount(code);
+    const amazon = await clientV2.alexaService.session.linkAccount({ code });
 
     dispatch(updateAccount({ amazon }));
 
@@ -31,7 +66,7 @@ export const getAmazonAccountV2 = (): Thunk => async (dispatch) => {
   let amazon: Nullable<Account.Amazon> = null;
 
   try {
-    amazon = await clientV2.alexaService.getAmazonAccount();
+    amazon = await clientV2.alexaService.session.getAccount();
   } catch (err) {
     log.error(err);
   }
@@ -41,7 +76,7 @@ export const getAmazonAccountV2 = (): Thunk => async (dispatch) => {
 
 export const unlinkAmazonAccountV2 = (): Thunk => async (dispatch) => {
   try {
-    await clientV2.alexaService.unlinkAmazonAccount();
+    await clientV2.alexaService.session.unlinkAccount();
 
     dispatch(updateAccount({ amazon: null }));
   } catch {
@@ -51,7 +86,7 @@ export const unlinkAmazonAccountV2 = (): Thunk => async (dispatch) => {
 
 export const updateVendorSkillID = (projectID: string, vendorID: string, skillID: string): Thunk => async (dispatch) => {
   try {
-    await clientV2.alexaService.updateVendorSkillID(projectID, vendorID, skillID);
+    await clientV2.alexaService.project.updateVendorSkillID(projectID, vendorID, skillID);
 
     dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
   } catch (err) {
@@ -62,7 +97,7 @@ export const updateVendorSkillID = (projectID: string, vendorID: string, skillID
 export const updateSelectedVendor = (vendorID: string): Thunk => async (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());
 
-  const { skillID } = await clientV2.alexaService.updateSelectedVendor(projectID, vendorID);
+  const { skillID } = await clientV2.alexaService.project.updateSelectedVendor(projectID, vendorID);
 
   dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID, vendorId: vendorID }));
 };

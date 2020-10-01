@@ -5,7 +5,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { activeProjectIDSelector, saveMeta, skillMetaSelector } from '@/ducks/skill';
-import { saveAlexaSettings } from '@/ducks/skill/sideEffectsV2';
+import { saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -21,7 +21,7 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
   meta,
   platformMeta,
   saveMeta,
-  saveAlexaSettings,
+  saveSettings,
 }) => {
   const { alexaEvents: propAlexaEvents } = meta;
   const { descriptors } = platformMeta;
@@ -44,14 +44,14 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
     setAlexaEvents(value);
   };
 
-  const saveSettings = async () => {
+  const save = async () => {
     const settingsObject = {
       alexaEvents,
     };
 
     try {
       if (dataRefactor.isEnabled) {
-        saveAlexaSettings(settingsObject, ['error', 'events']);
+        saveSettings(settingsObject, ['error', 'events']);
       } else {
         saveMeta(settingsObject);
       }
@@ -71,7 +71,7 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
         <FormControl contentBottomUnits={3.2}>
           <AceEditorComponent
             hasBorder
-            onBlur={saveSettings}
+            onBlur={save}
             name="datasource_editor"
             mode="json"
             theme="github"
@@ -98,7 +98,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   saveMeta,
-  saveAlexaSettings,
+  saveSettings,
 };
 
 type ConnectedAlexaFeatures = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

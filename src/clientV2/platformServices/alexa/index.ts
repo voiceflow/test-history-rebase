@@ -1,19 +1,21 @@
-import exportService from './export';
+import { AlexaPublishing, AlexaSettings, AlexaVersionData } from '@voiceflow/alexa-types';
+
+import { ALEXA_SERVICE_ENDPOINT } from '@/config';
+import { AlexaStageType } from '@/constants/platforms';
+import { Account, AlexaExportJob, AlexaPublishJob, PrototypeJob } from '@/models';
+
+import { createExportService, createPrototypeService, createPublishService, createSessionService, createVersionService } from '../utils';
 import handlersService from './handlers';
 import projectService from './project';
-import prototypeService from './prototype';
-import publishService from './publish';
-import sessionService from './session';
-import versionService from './version';
 
 const alexaServiceClient = {
-  ...exportService,
-  ...projectService,
-  ...prototypeService,
-  ...publishService,
-  ...sessionService,
-  ...versionService,
-  ...handlersService,
+  export: createExportService<AlexaExportJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),
+  project: projectService,
+  handlers: handlersService,
+  publish: createPublishService<AlexaPublishJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),
+  session: createSessionService<Account.Amazon, { code: string }>(ALEXA_SERVICE_ENDPOINT),
+  version: createVersionService<AlexaSettings, AlexaPublishing, AlexaVersionData>(ALEXA_SERVICE_ENDPOINT),
+  prototype: createPrototypeService<PrototypeJob.AnyJob>(ALEXA_SERVICE_ENDPOINT),
 };
 
 export default alexaServiceClient;

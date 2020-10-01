@@ -1,9 +1,10 @@
 import { AlexaProjectData, AlexaProjectMemberData, AlexaVersionData } from '@voiceflow/alexa-types';
+import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
 
 import client from '@/client';
 import clientV2, { getPlatformService } from '@/clientV2';
 import creatorAdapter from '@/clientV2/adapters/creator';
-import { alexaIntentAdapter } from '@/clientV2/adapters/intent';
+import intentAdapter from '@/clientV2/adapters/intent';
 import projectAdapter, { productAdapter } from '@/clientV2/adapters/project';
 import slotAdapter from '@/clientV2/adapters/slot';
 import versionAdapter from '@/clientV2/adapters/version';
@@ -31,7 +32,7 @@ export const importProject = (projectID: string, workspaceID: string): Thunk<Mod
   const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
 
   const service = getPlatformService(project.platform as PlatformType);
-  const copiedProject = projectAdapter.fromDB(await service.copyProject(project._id, { teamID: workspaceID }));
+  const copiedProject = projectAdapter.fromDB(await service.project.copy(project._id, { teamID: workspaceID }));
 
   if (activeWorkspaceID === workspaceID) {
     dispatch(Project.addProject(copiedProject.id, copiedProject));
@@ -47,10 +48,11 @@ export const importProject = (projectID: string, workspaceID: string): Thunk<Mod
 export const copyProject = (projectID: string, workspaceID: string, listID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const project = Project.projectByIDSelector(state)(projectID);
+
   if (!project) throw new Error();
 
   const service = getPlatformService(project.platform);
-  const copiedProject = projectAdapter.fromDB(await service.copyProject(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` }));
+  const copiedProject = projectAdapter.fromDB(await service.project.copy(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` }));
 
   dispatch(Project.addProject(copiedProject.id, copiedProject));
 
@@ -64,7 +66,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
   const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;
 
-  const creator = creatorAdapter.fromDB(DBDiagram, platform);
+  const creator = creatorAdapter.fromDB(DBDiagram, { platform });
 
   dispatch(DiagramReducer.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
@@ -74,14 +76,20 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch) => {
+export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch, getState) => {
+  const platform = Skill.activePlatformSelector(getState());
+
   const [dbVersion] = await Promise.all([
-    clientV2.api.version.get<AlexaVersionData>(versionID),
+    clientV2.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
     dispatch(Diagram.loadVersionDiagrams(versionID)),
   ] as const);
-  const dbProject = await clientV2.api.project.get<AlexaProjectData, AlexaProjectMemberData>(dbVersion.projectID);
+
+  const dbProject = await clientV2.api.project.get<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>(
+    dbVersion.projectID
+  );
 
   const project = projectAdapter.fromDB(dbProject);
+
   // use the project name instead of the version name
   const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
 
@@ -94,8 +102,8 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   // }
 
   const slots = slotAdapter.mapFromDB(dbVersion.platformData.slots);
-  const intents = alexaIntentAdapter.mapFromDB(dbVersion.platformData.intents);
-  const products = productAdapter.mapFromDB(Object.values(dbProject.platformData.products) ?? []);
+  const intents = intentAdapter(platform).mapFromDB(dbVersion.platformData.intents);
+  const products = 'products' in dbProject.platformData ? productAdapter.mapFromDB(Object.values(dbProject.platformData.products)) : [];
 
   dispatch(Product.replaceProducts(products));
   dispatch(Intent.replaceIntents(intents));

@@ -17,10 +17,10 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
   }
 
   try {
-    await client.alexaService.renderPrototype(projectID);
+    await client.alexaService.prototype.run(projectID);
 
     await waitJobFinished({
-      fetchJob: () => client.alexaService.getRenderPrototypeStatus(projectID),
+      fetchJob: () => client.alexaService.prototype.getStatus(projectID),
       maxChecks: MAX_CHECKS,
       abortControl,
     });

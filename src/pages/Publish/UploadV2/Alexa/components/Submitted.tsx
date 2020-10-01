@@ -2,7 +2,7 @@ import React from 'react';
 
 import Box from '@/components/Box';
 
-import { StageContainer } from '../../../shared';
+import { StageContainer } from '../../components';
 
 const Submitted = () => (
   <StageContainer>

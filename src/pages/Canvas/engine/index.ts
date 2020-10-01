@@ -6,7 +6,7 @@ import { useSelector, useStore } from 'react-redux';
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, COPY_NODES, MARKUP_NODES } from '@/constants';
+import { BlockType, COPY_NODES } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -291,9 +291,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   setActive(nodeID: string, isSelection?: boolean) {
-    const node = this.getNodeByID(nodeID);
-
-    if (isSelection && !MARKUP_NODES.includes(node.type)) {
+    if (isSelection) {
       this.selection.toggle(nodeID);
     } else {
       this.focus.set(nodeID);

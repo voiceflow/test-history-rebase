@@ -14,6 +14,7 @@ import {
   CANVAS_ANIMATING_CLASSNAME,
   CANVAS_BUSY_CLASSNAME,
   CANVAS_INTERACTING_CLASSNAME,
+  CANVAS_SHIFT_PRESSED_CLASSNAME,
   ControlScheme,
   ControlType,
   ZOOM_FACTOR,
@@ -339,6 +340,18 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     this.controls.dragstart(event);
   };
 
+  onKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Shift') {
+      this.props.removeClass?.(CANVAS_SHIFT_PRESSED_CLASSNAME);
+    }
+  };
+
+  onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Shift') {
+      this.props.addClass?.(CANVAS_SHIFT_PRESSED_CLASSNAME);
+    }
+  };
+
   componentDidMount() {
     this.props.onRegister?.(this.api);
 
@@ -356,12 +369,18 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       addListener('gesturestart');
       addListener('gesturechange');
     }
+
+    this.rootRef.current?.addEventListener('keyup', this.onKeyUp);
+    this.rootRef.current?.addEventListener('keydown', this.onKeyDown);
   }
 
   componentWillUnmount() {
     this.props.onRegister?.(null);
 
     this.controlTeardownHandlers.forEach((teardownHandler) => teardownHandler());
+
+    this.rootRef.current?.removeEventListener('keyup', this.onKeyUp);
+    this.rootRef.current?.removeEventListener('keydown', this.onKeyDown);
   }
 
   componentDidUpdate(prevProps: CanvasProps) {

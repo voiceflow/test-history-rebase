@@ -1,3 +1,4 @@
+import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
 import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
 import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
@@ -26,10 +27,18 @@ export const Container = styled.div<{ activated: boolean }>`
     activated
       ? css`
           border: solid 1px #5d9df5;
+
+          .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
+            cursor: pointer;
+          }
         `
       : css`
           .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
             cursor: grab;
+          }
+
+          .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
+            cursor: pointer;
           }
         `}
 

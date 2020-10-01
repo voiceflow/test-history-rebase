@@ -1,3 +1,4 @@
+import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
 import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
@@ -27,6 +28,10 @@ export const Container = styled.div.attrs<ContainerProps>(({ width, height }) =>
 
   .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
     cursor: grab;
+  }
+
+  .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
+    cursor: pointer;
   }
 
   ${({ activated }) =>

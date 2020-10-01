@@ -3,6 +3,7 @@ import { Identifier } from '@/styles/constants';
 export const CANVAS_BUSY_CLASSNAME = `${Identifier.CANVAS}--busy`;
 export const CANVAS_INTERACTING_CLASSNAME = `${Identifier.CANVAS}--interacting`;
 export const CANVAS_ANIMATING_CLASSNAME = `${Identifier.CANVAS}--animating`;
+export const CANVAS_SHIFT_PRESSED_CLASSNAME = `${Identifier.CANVAS}--shift-pressed`;
 
 export const ZOOM_FACTOR = 100;
 export const MIN_ZOOM = 10;

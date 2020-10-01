@@ -1,10 +1,9 @@
 import Input from '@/components/Input';
-import { css, styled, units } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export type SearchInputProps = {
   opened?: boolean;
   inline?: boolean;
-  withIcon?: boolean;
   clearable?: boolean;
   searchable?: boolean;
   isDropdown?: boolean;
@@ -13,12 +12,11 @@ export type SearchInputProps = {
 };
 
 const SearchInput = styled(Input)<SearchInputProps>`
-  padding-right: ${units(4.5)}px;
+  padding-right: 42px;
   height: ${({ theme }) => theme.components.input.height}px;
 
   ${({ searchable, isDropdown }) =>
-    !searchable &&
-    !isDropdown &&
+    (!searchable || isDropdown) &&
     css`
       color: #132144 !important;
     `}
@@ -51,12 +49,6 @@ const SearchInput = styled(Input)<SearchInputProps>`
   input {
     width: 100%;
   }
-
-  ${({ withIcon }) =>
-    withIcon &&
-    css`
-      padding-right: ${units(9)}px;
-    `}
 
   &::-webkit-search-cancel-button,
   input::-webkit-search-cancel-button {

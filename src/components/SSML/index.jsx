@@ -14,7 +14,7 @@ const pluginsTypes = [PluginType.XML, PluginType.VARIABLES];
 const pluginsWithoutVariablesTypes = [PluginType.XML];
 
 const voicesMap = VOICES.flatMap(({ value, label, options }) => [{ value, label }, ...options]).reduce(
-  (obj, option) => Object.assign(obj, { [option.value]: option.label }),
+  (obj, option) => Object.assign(obj, { [option.value]: option.value ? option.label : '' }),
   {}
 );
 
@@ -46,7 +46,7 @@ const SSML = (
         <Speaker voice={voice} getSSMLToPlay={() => store.getEditorState().getCurrentContent().getPlainText()} />
         {isAlexa && (
           <VoiceSelect
-            value={voice}
+            label={voice}
             inline
             grouped
             options={VOICES}
@@ -55,9 +55,9 @@ const SSML = (
             autoWidth={false}
             borderLess
             searchable
-            placeholder="Alexa"
             getOptionValue={getOptionValue}
             getOptionLabel={getOptionLabel}
+            createInputPlaceholder="Search Voice"
           />
         )}
       </>

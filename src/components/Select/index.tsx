@@ -57,7 +57,6 @@ export type SelectProps<O, V> = {
   minWidth?: boolean;
   onSelect: (value: V, optionsPath: number[]) => void;
   disabled?: boolean;
-  withIcon?: boolean;
   placement?: PopperProps['placement'];
   autoWidth?: boolean;
   fullWidth?: boolean;
@@ -86,7 +85,6 @@ export type SelectProps<O, V> = {
     onFocus?: (e?: React.FocusEvent) => void;
     onClick?: (e?: React.MouseEvent) => void;
     disabled?: boolean;
-    withIcon?: boolean;
     onChange: React.ChangeEventHandler;
     isFocused: boolean;
     fullWidth?: boolean;
@@ -136,7 +134,6 @@ const Select = <O, V = O>({
   minWidth = true,
   disabled,
   onSelect,
-  withIcon = false,
   onCreate,
   placement = 'bottom-start',
   autoWidth = true,
@@ -190,7 +187,6 @@ const Select = <O, V = O>({
     creatable,
     searchable,
     optionLabel,
-
     searchLabel,
     optionsFilter,
     getOptionLabel,
@@ -360,7 +356,6 @@ const Select = <O, V = O>({
     onFocus: searchable ? onOpenMenu : undefined,
     onClick: searchable ? onOpenMenu : undefined,
     disabled: disabled || !labelSearchable,
-    withIcon,
     onChange: onChangeSearchLabel,
     isFocused: opened,
     fullWidth,
@@ -401,14 +396,12 @@ const Select = <O, V = O>({
               <Flex>
                 <SearchInput {...inputProps} ref={inputRef} value={label || searchLabel} type="search" autoComplete="off" clearable={clearable} />
 
-                {!withIcon && (
-                  <SearchInputIcon
-                    icon={clearable ? 'close' : 'caretDown'}
-                    color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
-                    size={10}
-                    onClick={onIconClick}
-                  />
-                )}
+                <SearchInputIcon
+                  icon={clearable ? 'close' : 'caretDown'}
+                  color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
+                  size={10}
+                  onClick={onIconClick}
+                />
               </Flex>
             )}
           </SelectWrapper>
@@ -417,7 +410,7 @@ const Select = <O, V = O>({
 
       {inline && (
         <Portal>
-          <InlineInputValue ref={inlineRef}>{searchLabel || placeholder}</InlineInputValue>
+          <InlineInputValue ref={inlineRef}>{label || searchLabel || placeholder}</InlineInputValue>
         </Portal>
       )}
 

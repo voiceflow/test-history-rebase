@@ -213,7 +213,7 @@ function BaseNestedMenu({
       } else if (e.key === KeyCodes.ARROW_DOWN) {
         swallowEvent(null, true)(e);
         onFocusItem(isNotFocused ? 0 : focusedIndex + 1);
-      } else if (!isInput && multiLevelDropdown && options?.[focusedIndex]?.options?.length && e.key === KeyCodes.ARROW_RIGHT) {
+      } else if (!isInput && multiLevelDropdown && options?.[focusedIndex - firstOptionIndex]?.options?.length && e.key === KeyCodes.ARROW_RIGHT) {
         swallowEvent(null, true)(e);
         setChildFocusItemIndex(0);
       }

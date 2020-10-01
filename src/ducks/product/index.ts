@@ -1,3 +1,5 @@
+import { Locale } from '@voiceflow/alexa-types';
+
 import client from '@/client';
 import { NEW_PRODUCT_ID } from '@/constants';
 import { activeLocalesSelector, activeSkillIDSelector } from '@/ducks/skill';
@@ -78,4 +80,16 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
   }
 
   await dispatch(loadProductsForSkill(skillID));
+};
+
+export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const allProducts = allProductsSelector(state);
+  const skillID = activeSkillIDSelector(state);
+
+  if (allProducts.length) {
+    allProducts.forEach((product) => dispatch(updateProduct(product.id, { locales }, true)));
+
+    await Promise.all(allProducts.map((product) => client.product.update({ ...product, skill: skillID })));
+  }
 };

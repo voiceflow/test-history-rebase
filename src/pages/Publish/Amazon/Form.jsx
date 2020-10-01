@@ -22,6 +22,7 @@ import Toggle from '@/components/Toggle';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as SkillDuck from '@/ducks/skill';
@@ -162,7 +163,7 @@ class Skill extends Component {
   };
 
   save = async () => {
-    const { skillID, updateSkill, updateSkillMeta, updateProjectName, dataRefactorEnabled } = this.props;
+    const { skillID, updateSkill, updateSkillMeta, updateProjectName, dataRefactorEnabled, updateProducts } = this.props;
     const amazonFormObj = this.getFormValueObj();
     const formState = this.state;
 
@@ -188,6 +189,7 @@ class Skill extends Component {
       }
       updateSkillMeta(toStoreProperties.meta);
       updateSkill(toStoreProperties.skill);
+      updateProducts(formState.locales);
     } catch (err) {
       throw new Error('Save Error, Publish Settings not Saved');
     }
@@ -757,6 +759,7 @@ const mapDispatchToProps = {
   updateSkillMeta: SkillDuck.updateSkillMeta,
   updateProjectName: Project.updateProjectName,
   setError: Modal.setError,
+  updateProducts: Product.handleSkillLocaleChange,
 };
 
 export default compose(

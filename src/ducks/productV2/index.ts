@@ -1,3 +1,5 @@
+import { Locale } from '@voiceflow/alexa-types';
+
 import clientV2 from '@/clientV2';
 import { productAdapter } from '@/clientV2/adapters/project';
 import { NEW_PRODUCT_ID } from '@/constants';
@@ -77,5 +79,21 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
     await clientV2.alexaService.project.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
 
     dispatch(addProduct(productID, product));
+  }
+};
+
+export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const allProducts = allProductsSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
+
+  if (allProducts.length) {
+    allProducts.forEach((product) => dispatch(updateProduct(product.id, { locales }, true)));
+
+    await Promise.all(
+      allProducts.map((product) =>
+        clientV2.alexaService.updateProduct(projectID, product.id, { ...productAdapter.toDB(product), productID: product.id })
+      )
+    );
   }
 };

@@ -161,7 +161,6 @@ class ProductEditPage extends PureComponent {
           return !!(product.subscriptionFrequency && product.trialPeriodDays && product.taxCategory);
         }
         return !!product.taxCategory;
-
       case 2:
         return Object.keys(product.marketPlaces).length > 0;
       case 3:

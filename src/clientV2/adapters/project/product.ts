@@ -6,6 +6,7 @@ import { Product } from '@/models';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
 const productAdapter = createAdapter<AlexaProduct, Product>(
+  // db to app
   ({
     name,
     type,

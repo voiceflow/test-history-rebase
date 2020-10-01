@@ -160,6 +160,7 @@ export { default as restart } from './restart.svg';
 // s
 export { default as save } from './save.svg';
 export { default as sound } from './sound.svg';
+export { default as soundOff } from './soundOff.svg';
 export { default as stop } from './stop.svg';
 export { default as search } from './search.svg';
 export { default as share } from './share.svg';

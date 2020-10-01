@@ -2,9 +2,9 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import Drawer from '@/components/Drawer';
-import { FlexCenter } from '@/components/Flex';
+import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
-import { SectionToggleVariant, UncontrolledSection as Section } from '@/components/Section';
+import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
@@ -25,7 +25,16 @@ import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
-const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiveDiagram, saveActiveDiagramV2, renderPrototypeV2 }) => {
+const PrototypeSidebar = ({
+  settings,
+  renderPrototype,
+  resetPrototype,
+  saveActiveDiagram,
+  saveActiveDiagramV2,
+  renderPrototypeV2,
+  isMuted,
+  updatePrototype,
+}) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
@@ -68,13 +77,29 @@ const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiv
           </FlexCenter>
         ) : (
           <Container>
-            <Section header="Settings" collapseVariant={SectionToggleVariant.ARROW} onClick={toggleSettingsOpen} isCollapsed={!settingsOpen} />
             <Section
-              header="Dialog"
+              header="SETTINGS"
+              variant={SectionVariant.SECONDARY}
+              collapseVariant={SectionToggleVariant.ARROW}
+              onClick={toggleSettingsOpen}
+              isCollapsed={!settingsOpen}
+            />
+            <Section
+              header="DIALOG"
+              variant={SectionVariant.SECONDARY}
               suffix={
-                <Tooltip title="Reset Test">
-                  <SvgIcon icon="restart" clickable onClick={resetPrototype} />
-                </Tooltip>
+                <Flex>
+                  <div style={{ display: 'inline-block', marginRight: '15px' }}>
+                    <Tooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
+                      <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} clickable onClick={() => updatePrototype({ muted: !isMuted })} />
+                    </Tooltip>
+                  </div>
+                  <div style={{ display: 'inline-block' }}>
+                    <Tooltip title="Reset Test">
+                      <SvgIcon icon="restart" clickable onClick={resetPrototype} />
+                    </Tooltip>
+                  </div>
+                </Flex>
               }
             />
             <EmbedContainer>{isPrototypingMode && <PrototypePage debug={settings.debug} />}</EmbedContainer>
@@ -87,6 +112,7 @@ const PrototypeSidebar = ({ settings, renderPrototype, resetPrototype, saveActiv
 
 const mapStateToProps = {
   settings: Recent.recentprototypeSelector,
+  isMuted: Prototype.prototypeMutedSelector,
 };
 
 const mapDispatchToProps = {
@@ -96,6 +122,7 @@ const mapDispatchToProps = {
   renderPrototypeV2: Prototype.renderPrototypeV2,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
+  updatePrototype: Prototype.updatePrototype,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(PrototypeSidebar);

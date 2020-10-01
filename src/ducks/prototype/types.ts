@@ -90,6 +90,7 @@ export enum PrototypeStatus {
 export interface PrototypeState {
   ID: string | null;
   nlc: NLC | null;
+  muted: boolean;
   status: PrototypeStatus;
   startTime: number;
   context: Context;

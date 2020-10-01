@@ -11,6 +11,7 @@ import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
+import * as Prototype from '@/ducks/prototype';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
@@ -178,6 +179,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
 
   getDiagramID = () => this.select(Skill.activeDiagramIDSelector);
+
+  getPrototypeMuted = () => this.select(Prototype.prototypeMutedSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 

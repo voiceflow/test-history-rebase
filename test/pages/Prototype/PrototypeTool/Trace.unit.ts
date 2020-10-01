@@ -38,7 +38,7 @@ const suite = createSuite(({ spy, stub, mock, expect }) => ({
     context,
   }: { debug?: boolean; intents?: Omit<IIntent, 'callback'>[]; context?: { trace: Trace[] } } = {}) {
     const nlc = ({ getIntents: mock().returns(intents) } as any) as NLC;
-    const engine = ({ node: { center: mock() }, selection: { replace: mock() } } as any) as Engine;
+    const engine = ({ node: { center: mock() }, selection: { replace: mock() }, getPrototypeMuted: stub() } as any) as Engine;
 
     const audio = new AudioController();
     const timeout = new TimeoutController();

@@ -53,11 +53,12 @@ class AudioController {
     src: string,
     {
       play = true,
+      muted = false,
       loop = false,
       offset = 0,
       onError,
       onPause,
-    }: { offset?: number; play?: boolean; loop?: boolean; onError?: () => void; onPause?: (audio: TAudio) => void } = {}
+    }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onPause?: (audio: TAudio) => void } = {}
   ) {
     this.stop();
 
@@ -66,7 +67,7 @@ class AudioController {
       this.audio.VF_ON_PAUSE = onPause;
 
       this.audio.onended = resolve;
-
+      this.audio.muted = muted;
       this.audio.onerror = () => {
         onError?.();
 

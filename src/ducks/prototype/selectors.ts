@@ -16,3 +16,5 @@ export const prototypeIDSelector = createSelector([prototypeSelector], ({ ID }) 
 export const prototypeTimeSelector = createSelector([prototypeSelector], ({ startTime }) => startTime);
 
 export const prototypeVariablesSelector = createSelector([prototypeContextSelector], ({ variables = {} }) => variables);
+
+export const prototypeMutedSelector = createSelector([prototypeSelector], ({ muted }) => muted);

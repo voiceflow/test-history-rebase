@@ -237,9 +237,11 @@ class TraceController {
     if (token !== this.streamState.token) {
       this.streamState = { src, token, offset: 0 };
     }
+    const muted = this.props.engine?.getPrototypeMuted();
 
     try {
       await this.audio.play(src, {
+        muted,
         loop: action === StreamTraceAction.LOOP,
         offset: this.streamState.offset,
         onPause: (audio) => {
@@ -265,7 +267,9 @@ class TraceController {
       return;
     }
 
-    await this.audio.play(src, { onError: () => this.setError() }).catch(_noop);
+    const muted = this.props.engine?.getPrototypeMuted();
+
+    await this.audio.play(src, { muted, onError: () => this.setError() }).catch(_noop);
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {

@@ -1,19 +1,21 @@
-import { Voice } from '@voiceflow/alexa-types';
-import { StepData } from '@voiceflow/alexa-types/build/nodes/speak';
+import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
+import { Voice } from '@voiceflow/google-types';
+import { StepData } from '@voiceflow/google-types/build/nodes/speak';
 
-import { DialogType } from '@/constants';
+import { DialogType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
 const speakAdapter = createBlockAdapter<StepData, NodeData.Speak>(
-  ({ randomize, dialogs }) => ({
+  ({ randomize, dialogs }, { platform }) => ({
     randomize,
-    dialogs: dialogs.map(({ voice, content }) =>
+    dialogs: dialogs.map(({ voice, content, desc }) =>
       voice === Voice.AUDIO
         ? {
             type: DialogType.AUDIO,
             url: content,
+            ...(platform === PlatformType.GOOGLE && { desc }), // google specific field
           }
         : {
             type: DialogType.VOICE,
@@ -22,13 +24,14 @@ const speakAdapter = createBlockAdapter<StepData, NodeData.Speak>(
           }
     ),
   }),
-  ({ randomize, dialogs }) => ({
+  ({ randomize, dialogs }, { platform }) => ({
     randomize,
-    dialogs: dialogs.map(({ content = '', type, url = '', voice = Voice.ALEXA }) =>
+    dialogs: dialogs.map(({ content = '', type, url = '', voice = AlexaVoice.ALEXA, desc }) =>
       type === DialogType.AUDIO
         ? {
             voice: Voice.AUDIO,
             content: url,
+            ...(platform === PlatformType.GOOGLE && { desc }), // google specific field
           }
         : {
             voice: voice as Voice,

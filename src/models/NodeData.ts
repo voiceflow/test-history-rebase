@@ -107,6 +107,7 @@ export namespace NodeData {
       type: DialogType;
       voice?: string;
       url?: string;
+      desc?: string;
     }[];
   };
 

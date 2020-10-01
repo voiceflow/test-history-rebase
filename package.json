@@ -257,7 +257,7 @@
     "mock-local-storage": "^1.1.11",
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
-    "optimize-css-assets-webpack-plugin": "5.0.1",
+    "optimize-css-assets-webpack-plugin": "5.0.4",
     "patch-package": "^6.2.2",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",

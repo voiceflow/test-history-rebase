@@ -78,6 +78,9 @@ export const ExportProvider: React.FC = ({ children }) => {
     // stop pulling when job is finished or job was canceled
     if (job === null || job.status === JobStatus.FINISHED) {
       stopPulling();
+
+      service?.export.cancel(projectID);
+
       return;
     }
 

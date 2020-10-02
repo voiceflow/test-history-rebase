@@ -92,6 +92,9 @@ export const PublishProvider: React.FC = ({ children }) => {
     // stop pulling when job is finished or job was canceled
     if (!job || job.status === JobStatus.FINISHED) {
       stopPulling();
+
+      service?.publish.cancel(projectID);
+
       return;
     }
 

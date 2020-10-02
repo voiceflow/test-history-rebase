@@ -1,6 +1,7 @@
 import { constants } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 
+import * as Project from '@/ducks/project';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
@@ -22,6 +23,11 @@ export const rootDiagramIDSelector = createSelector(activeSkillSelector, ({ root
 export const globalVariablesSelector = createSelector(activeSkillSelector, (skill) => skill?.globalVariables || []);
 
 export const activeProjectIDSelector = createSelector(activeSkillSelector, ({ projectID }) => projectID);
+
+export const activeProjectNameSelector = createSelector(
+  [activeProjectIDSelector, Project.projectByIDSelector],
+  (projectID, getProjectByID) => getProjectByID(projectID)?.name
+);
 
 export const activeSkillCreatorIDSelector = createSelector(activeSkillSelector, ({ creatorID }) => creatorID);
 

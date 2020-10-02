@@ -4,11 +4,10 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
-import * as Models from '@/models';
 import { NodeEntityContext, NodeEntityProvider, PlatformContext } from '@/pages/Canvas/contexts';
 import { FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { MergeArguments } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';
 
@@ -47,20 +46,18 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
 
 const mapStateToProps = {
   invocationName: Skill.invNameSelector,
+  projectName: Skill.activeProjectNameSelector,
   isRootDiagram: Skill.isRootDiagramSelector,
   activeDiagramID: Skill.activeDiagramIDSelector,
   diagram: Diagram.diagramByIDSelector,
 };
 
-const mergeProps = (...[{ diagram: getDiagramByID, activeDiagramID }]: MergeArguments<typeof mapStateToProps>) => ({
+const mergeProps = (...[{ diagram: getDiagramByID, activeDiagramID, invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({
   diagram: getDiagramByID(activeDiagramID),
+  invocationName: invocationName || projectName,
 });
 
-type ConnectedNodeStartBlockProps = {
-  invocationName: string;
-  isRootDiagram: boolean;
-  diagram?: Models.Diagram;
-};
+type ConnectedNodeStartBlockProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
 
 export default compose(
   connect(mapStateToProps, null, mergeProps, { forwardRef: true }),

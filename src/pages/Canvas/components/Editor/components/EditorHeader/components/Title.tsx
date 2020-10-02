@@ -8,9 +8,10 @@ type TitleProps = {
   name: string;
   onChange: (value: string) => void;
   renameRevision: string;
+  disabled?: boolean;
 };
 
-const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision }) => {
+const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision, disabled }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [value, setValue] = React.useState(name);
   const engine = React.useContext(EngineContext)!;
@@ -31,7 +32,13 @@ const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision }) => {
   }, [renameRevision]);
 
   return (
-    <TitleInput ref={inputRef} value={value} onBlur={onBlur} onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => setValue(target.value)} />
+    <TitleInput
+      ref={inputRef}
+      value={value}
+      onBlur={onBlur}
+      disabled={disabled}
+      onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => setValue(target.value)}
+    />
   );
 };
 

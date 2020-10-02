@@ -61,7 +61,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
       // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;
 
-    const managerElm = (
+    const managerEl = (
       <Manager
         nodeID={node.id}
         onChange={updateData}
@@ -79,7 +79,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
       editor = (
         <NamespaceProvider value={['editor', node.type, node.id]}>
           <MarkupEditor key={node.id} animationDistance={prevAnimationDistance.current}>
-            {managerElm}
+            {managerEl}
           </MarkupEditor>
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
         </NamespaceProvider>
@@ -98,7 +98,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
             prevPathLength={prevPathLength.current}
             animationDistance={prevAnimationDistance.current}
           >
-            {managerElm}
+            {managerEl}
           </BlockEditor>
           <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !isModal} />
         </NamespaceProvider>

@@ -14,8 +14,7 @@ const IfManager: NodeConfig<NodeData.If> = {
   iconColor: '#f86683',
   mergeTerminator: true,
 
-  label: 'If',
-  labelV2: 'Condition',
+  label: 'Condition',
   tip: 'Set conditions that activate paths only when true',
 
   step: IfStep,

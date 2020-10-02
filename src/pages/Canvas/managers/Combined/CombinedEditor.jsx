@@ -14,13 +14,13 @@ function CombinedEditor({ nestedBlocks }) {
   return (
     <Content>
       {nestedBlocks.map(({ nodeID, ...data }, index) => {
-        const { getIcon, getIconColor, icon, iconColor } = getManager(data.type);
+        const { getIcon, getIconColor, icon, iconColor, label } = getManager(data.type);
 
         return (
           <Section
             key={nodeID}
             prefix={<SvgIcon icon={getIcon?.(data) || icon} color={getIconColor?.(data) || iconColor} />}
-            header={data.name}
+            header={data.name || label}
             isLink
             onClick={() => engine.focus.set(nodeID)}
             isDividerNested={index !== 0}

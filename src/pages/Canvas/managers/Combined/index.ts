@@ -5,6 +5,7 @@ import CombinedEditor from './CombinedEditor';
 
 const CombinedManager: BasicNodeConfig = {
   type: BlockType.COMBINED,
+  nameEditable: true,
 
   editor: CombinedEditor,
 };

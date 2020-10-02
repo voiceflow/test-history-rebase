@@ -35,10 +35,10 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   mergeInitializer?: boolean;
   mergeTerminator?: boolean;
   platformDependent?: boolean;
+  nameEditable?: boolean;
   platforms?: PlatformType[];
 
   label: string;
-  labelV2?: string;
   tip?: string;
 
   step: React.FC<ConnectedStepProps<T>>;

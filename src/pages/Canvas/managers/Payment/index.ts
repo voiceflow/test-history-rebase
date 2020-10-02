@@ -11,8 +11,7 @@ const PaymentManager: NodeConfig<NodeData.Payment> = {
   iconColor: '#558B2F',
   platforms: [PlatformType.ALEXA],
 
-  label: 'Payment',
-  labelV2: 'Purchase',
+  label: 'Purchase',
   tip: 'Request payment from user',
 
   step: PaymentStep,

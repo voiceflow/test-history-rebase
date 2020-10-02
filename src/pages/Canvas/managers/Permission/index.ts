@@ -11,8 +11,7 @@ const PermissionManager: NodeConfig<NodeData.Permission> = {
   iconColor: '#6e849a',
   platforms: [PlatformType.ALEXA],
 
-  label: 'Permission',
-  labelV2: 'Permissions',
+  label: 'Permissions',
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
 
   step: PermissionStep,

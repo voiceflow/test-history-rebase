@@ -11,8 +11,7 @@ const CancelPaymentManager: NodeConfig<NodeData.Payment> = {
   iconColor: '#d94c4c',
   platforms: [PlatformType.ALEXA],
 
-  label: 'Cancel Payment',
-  labelV2: 'Cancel Purchase',
+  label: 'Cancel Purchase',
   tip: "Refund a purchase or cancel an user's subscription",
 
   step: CancelPaymentStep,

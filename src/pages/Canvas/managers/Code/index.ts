@@ -10,8 +10,7 @@ const CodeManager: NodeConfig<NodeData.Code> = {
   icon: 'power',
   iconColor: '#cdad32',
 
-  label: 'Code',
-  labelV2: 'Custom Code',
+  label: 'Custom Code',
   tip: 'Modify Variables directly with Code',
 
   step: CodeStep,

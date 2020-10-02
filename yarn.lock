@@ -9210,12 +9210,12 @@ de-indent@^1.0.2:
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=
 
-debug@*, debug@4.1.1, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@~4.1.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
-  integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
+debug@*, debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.2.0.tgz#7f150f93920e94c58f5574c2fd01a3110effe7f1"
+  integrity sha512-IX2ncY78vDTjZMFUdmsvIRFY2Cf4FnD0wRs+nQwJU8Lu99/tPFdb0VybiiMTPe3I6rQmwsqQqRBvxU+bZ/I8sg==
   dependencies:
-    ms "^2.1.1"
+    ms "2.1.2"
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -9224,12 +9224,12 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.8, debug@^2.6.
   dependencies:
     ms "2.0.0"
 
-debug@4:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.2.0.tgz#7f150f93920e94c58f5574c2fd01a3110effe7f1"
-  integrity sha512-IX2ncY78vDTjZMFUdmsvIRFY2Cf4FnD0wRs+nQwJU8Lu99/tPFdb0VybiiMTPe3I6rQmwsqQqRBvxU+bZ/I8sg==
+debug@4.1.1, debug@~4.1.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
+  integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
   dependencies:
-    ms "2.1.2"
+    ms "^2.1.1"
 
 debug@=3.1.0, debug@~3.1.0:
   version "3.1.0"
@@ -22118,10 +22118,10 @@ stylelint-order@^4.1.0:
     postcss "^7.0.31"
     postcss-sorting "^5.0.1"
 
-stylelint@^13.7.0:
-  version "13.7.0"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-13.7.0.tgz#8d7a4233063b2f06e9f28b3405ff189e334547b5"
-  integrity sha512-1wStd4zVetnlHO98VjcHQbjSDmvcA39smkZQMct2cf+hom40H0xlQNdzzbswoG/jGBh61/Ue9m7Lu99PY51O6A==
+stylelint@^13.7.2:
+  version "13.7.2"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-13.7.2.tgz#6f3c58eea4077680ed0ceb0d064b22b100970486"
+  integrity sha512-mmieorkfmO+ZA6CNDu1ic9qpt4tFvH2QUB7vqXgrMVHe5ENU69q7YDq0YUg/UHLuCsZOWhUAvcMcLzLDIERzSg==
   dependencies:
     "@stylelint/postcss-css-in-js" "^0.37.2"
     "@stylelint/postcss-markdown" "^0.36.1"

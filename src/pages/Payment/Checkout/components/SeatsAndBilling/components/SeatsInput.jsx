@@ -33,7 +33,7 @@ const SeatsInput = ({
 }) => {
   const initialValue = React.useMemo(() => value ?? 0, []);
   const inputRef = React.useRef(null);
-  const errorTooltip = errorMessage ? <ErrorTooltipContainer>{errorMessage}</ErrorTooltipContainer> : null;
+  const errorTooltip = errorMessage ? <ErrorTooltipContainer>{errorMessage}</ErrorTooltipContainer> : <span />;
   const [hasFocus, setHasFocus] = React.useState(false);
   const [fetchingResponse, setFetchingResponse] = React.useState(false);
   const updateSeats = (e) => {
@@ -52,7 +52,7 @@ const SeatsInput = ({
 
   return (
     <Tooltip
-      open={hasError && hasFocus && !fetchingResponse && parseInt(value, 10) !== 0}
+      open={hasError && hasFocus && !fetchingResponse && parseInt(value, 10) !== 0 && !!errorMessage}
       position="top-start"
       theme="warning"
       html={errorTooltip}

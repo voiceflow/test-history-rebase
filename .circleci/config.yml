@@ -207,6 +207,10 @@ jobs:
         description: Running on a git tag?
         type: boolean
         default: false
+      google:
+        description: Deploy to google actions environment?
+        type: boolean
+        default: false
     executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
@@ -240,41 +244,17 @@ jobs:
           namespace: "voiceflow-v1"
           target: "statefulset/creator-app"
           tagged: << parameters.tagged >>
-
-  # TODO: Remove after retirement of google-actions environment
-  build-deploy-app-image-google:
-    executor: vfcommon/build-executor
-    environment:
-      IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
-    steps:
-      - attach_workspace:
-          at: /tmp/vf-build
-      - setup_remote_docker
-      - run:
-          name: "Build docker image"
-          command: |
-            IMAGE_TAG="k8s-$CIRCLE_SHA1"
-            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-            docker build \
-              -f app.dockerfile \
-              -t $IMAGE_NAME .
-      - run:
-          name: "Push docker images"
-          command: |
-            IMAGE_TAG="k8s-$CIRCLE_SHA1"
-            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-            $(aws ecr get-login --no-include-email --region us-east-1)
-            docker push $IMAGE_NAME
-            BRANCH_NAME=$CIRCLE_BRANCH
-            docker tag $IMAGE_NAME $IMAGE_REPO:latest-$BRANCH_NAME
-            docker push $IMAGE_REPO:latest-$BRANCH_NAME
-      - run:
-          name: Update kubernetes image
-          command: |
-            IMAGE_TAG="k8s-$CIRCLE_SHA1"
-            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-            aws eks --region us-east-1 update-kubeconfig --name production
-            kubectl set image --namespace voiceflow-v1 statefulset/creator-app-google app=$IMAGE_NAME
+      # TODO: Remove after retirement of google-actions environment
+      - when:
+          condition: << parameters.google >>
+          steps:
+            - run:
+                name: Deploy to actions subdomain kubernetes
+                command: |
+                  IMAGE_TAG="k8s-$CIRCLE_SHA1"
+                  IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
+                  aws eks --region us-east-1 update-kubeconfig --name production
+                  kubectl set image --namespace voiceflow-v1 statefulset/creator-app-google app=$IMAGE_NAME
 
   build-deploy-storybook-dev-environment:
     executor: vfcommon/build-executor
@@ -570,7 +550,6 @@ workflows:
               ignore:
                 - /env-.*/
                 - staging
-                - google # TODO: Remove after retirement of google-actions environment
       - test:
           context: dev-test
           filters:
@@ -578,14 +557,12 @@ workflows:
               ignore:
                 - /env-.*/
                 - staging
-                - google # TODO: Remove after retirement of google-actions environment
       - test-e2e:
           filters:
             branches:
               ignore:
                 - /env-.*/
                 - staging
-                - google # TODO: Remove after retirement of google-actions environment
       - build-app:
           context: dev-test
           filters:
@@ -593,7 +570,6 @@ workflows:
               ignore:
                 - /env-.*/
                 - staging
-                - google # TODO: Remove after retirement of google-actions environment
       - vfcommon/release:
           context: dev-test
           requires:
@@ -613,6 +589,7 @@ workflows:
       - build-deploy-app-image:
           <<: *prod_deploy_filters
           tagged: true
+          google: true
           context: dev-test
           requires:
             - build-app
@@ -633,41 +610,3 @@ workflows:
             branches:
               only:
                 - staging
-
-  # TODO: Remove after retirement of google-actions environment
-  app-google:
-    jobs:
-      - test-integration:
-          context: dev-test
-          filters:
-            branches:
-              only:
-                - google
-      - test:
-          context: dev-test
-          filters:
-            branches:
-              only:
-                - google
-      - test-e2e:
-          filters:
-            branches:
-              only:
-                - google
-      - build-app:
-          context: dev-test
-          filters:
-            branches:
-              only:
-                - google
-      - build-deploy-app-image-google:
-          context: dev-test
-          requires:
-            - build-app
-            - test-integration
-            - test
-            - test-e2e
-          filters:
-            branches:
-              only:
-                - google

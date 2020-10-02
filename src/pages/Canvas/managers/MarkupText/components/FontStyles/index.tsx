@@ -11,11 +11,9 @@ import { FormGroup } from './components';
 
 type FontStylesProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (state: EditorState) => void;
-  applyFakeSelection: (state: EditorState) => EditorState;
-  removeFakeSelection: (state: EditorState) => EditorState;
 };
 
-const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState, saveEditorState, applyFakeSelection, removeFakeSelection }) => {
+const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState, saveEditorState }) => {
   const { fontWeight, fontFamily } = React.useMemo(() => {
     const editorState = getEditorState?.();
 
@@ -39,12 +37,12 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
   }, [getEditorState?.()]);
 
   const onShowFakeSelection = () => {
-    setEditorState(applyFakeSelection(getEditorState()));
+    setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
   };
 
   const onHideFakeSelection = () => {
     setTimeout(() => {
-      setEditorState(removeFakeSelection(getEditorState()));
+      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION));
     }, 100);
   };
 

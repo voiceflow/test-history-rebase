@@ -1,7 +1,5 @@
 import type { AnchorPlugin, AnchorPluginConfig } from '@voiceflow/draft-js-anchor-plugin';
 import createAnchorPlugin from '@voiceflow/draft-js-anchor-plugin';
-import type { FakeSelectionPlugin } from '@voiceflow/draft-js-fake-selection';
-import createFakeSelectionPlugin from '@voiceflow/draft-js-fake-selection';
 import type { StaticToolBarPlugin } from '@voiceflow/draft-js-static-toolbar-plugin';
 import createStaticToolbarPlugin from '@voiceflow/draft-js-static-toolbar-plugin';
 import { createMatchSelector } from 'connected-react-router';
@@ -20,7 +18,6 @@ import { EngineConsumer } from './utils';
 type Plugins = {
   anchorPlugin: AnchorPlugin;
   toolbarPlugin: StaticToolBarPlugin;
-  fakeSelectionPlugin: FakeSelectionPlugin;
 };
 
 class MarkupEngine extends EngineConsumer {
@@ -79,7 +76,6 @@ class MarkupEngine extends EngineConsumer {
       () => ({
         anchorPlugin: createAnchorPlugin(anchorOptions),
         toolbarPlugin: createStaticToolbarPlugin(),
-        fakeSelectionPlugin: createFakeSelectionPlugin(),
       }),
       []
     );

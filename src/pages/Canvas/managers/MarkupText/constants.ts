@@ -50,4 +50,5 @@ export enum InlineStylePrefix {
   FONT_SIZE = 'FONT_SIZE',
   FONT_WEIGHT = 'FONT_WEIGHT',
   FONT_FAMILY = 'FONT_FAMILY',
+  FAKE_SELECTION = 'FAKE_SELECTION',
 }

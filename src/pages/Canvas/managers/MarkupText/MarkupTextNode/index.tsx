@@ -151,7 +151,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
         selectionCache.current.anchorOffset !== anchorOffset;
 
       if (isFocused && selection.getHasFocus() && selectionChanged) {
-        setEditorState(pluginsObj.fakeSelectionPlugin.removeFakeSelection(state));
+        setEditorState(togglePrefixedInlineStyle(state, InlineStylePrefix.FAKE_SELECTION));
       } else {
         setEditorState(state);
       }

@@ -48,6 +48,12 @@ export const customStyleFn = (styles: DraftInlineStyle): CSSProperties =>
           color: value!,
         };
       }
+      case InlineStylePrefix.FAKE_SELECTION: {
+        return {
+          ...acc,
+          backgroundColor: 'rgba(168, 200, 252, 0.85)',
+        };
+      }
       default: {
         return acc!;
       }

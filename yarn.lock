@@ -4653,23 +4653,19 @@
     moment "^2.24.0"
     randomstring "^1.1.5"
 
-"@voiceflow/draft-js-anchor-plugin@3.3.15":
-  version "3.3.15"
-  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-anchor-plugin/-/draft-js-anchor-plugin-3.3.15.tgz#d32fd6f6decac5d0e66337d53517cbef21fdffd3"
-  integrity sha512-wk/6f6MFPRi3C6qgEv02E2tVPf4tw9l6mhxvEqU10yhTrLln0fzT7qcKSQ1byYNOoQ7DcHmo0jtYEhqCk+hCvQ==
+"@voiceflow/draft-js-anchor-plugin@3.3.16":
+  version "3.3.16"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-anchor-plugin/-/draft-js-anchor-plugin-3.3.16.tgz#1b50838ee7d081001777d5288bd44f1b60ce59ba"
+  integrity sha512-XyUJzpCTllTog8PInKEF8gDFcLSyncDvnXs4okLQZggwutdcUP2jMCeg9WXOybbhnlvRTzOkqNXUFeF7lP6Ieg==
   dependencies:
     draft-js "^0.10.1 || ^0.11.0"
+    draft-js-plugins-editor "3.0.0"
     draft-js-plugins-utils "2.0.2"
 
-"@voiceflow/draft-js-buttons@3.3.17":
-  version "3.3.17"
-  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-buttons/-/draft-js-buttons-3.3.17.tgz#985855d7f4daedcc55b812ad126821243b90a0d2"
-  integrity sha512-yDhMgn3fQLbs1sW+NzJ31PjxL5AMqZE/JfEaGnK2Psx+pNQh6wlGw8V90NDe74EqM30ZZ4REDBlwcGoDRwLpkw==
-
-"@voiceflow/draft-js-fake-selection@3.3.34":
-  version "3.3.34"
-  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-fake-selection/-/draft-js-fake-selection-3.3.34.tgz#40d458e258ee672fd2c514a51316318665226b13"
-  integrity sha512-/5lrqiyeMmcgimcJT9JYOXDOHd6xAkDkAEVHetRgPGR35c6rIMVLeDLw8bRfbAFdc2jtG/UhJLfgErM3qhAJYg==
+"@voiceflow/draft-js-buttons@3.3.19":
+  version "3.3.19"
+  resolved "https://registry.yarnpkg.com/@voiceflow/draft-js-buttons/-/draft-js-buttons-3.3.19.tgz#6cf604195f7dfc232080db094994917c04e85114"
+  integrity sha512-pHUfT/CouP6zQxgWl1PolqSx6ciVusajk/TrrEy3NzV4qyHIg+KH1Uf0h3pwU6UzARGIfhzVBYiKfiReUFqDYw==
 
 "@voiceflow/draft-js-mention-plugin@3.3.15":
   version "3.3.15"

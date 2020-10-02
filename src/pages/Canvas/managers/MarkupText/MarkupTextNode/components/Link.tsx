@@ -11,11 +11,6 @@ type LinkProps = {
 const ClickableLink = styled(ClickableText)`
   display: inline;
   pointer-events: all;
-
-  & > span {
-    color: rgba(93, 157, 245, 1) !important;
-    text-decoration: underline;
-  }
 `;
 
 const Link: React.FC<LinkProps> = ({ href, children }) => {

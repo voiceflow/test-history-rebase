@@ -49,7 +49,7 @@ export const getPrefixedStyleAtOffset = (block: ContentBlock, prefix: InlineStyl
   const style = styles.filter(isPrefixedInlineStyle(prefix));
 
   if (style?.size > 0) {
-    return style.get(0);
+    return style.last();
   }
 
   return null;
@@ -74,11 +74,7 @@ export const getFullTextSelection = (editorState: EditorState) => {
 
 export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix) => {
   const inlineStyles: string[] = [];
-  let currentSelection = editorState.getSelection();
-
-  if (currentSelection.isCollapsed()) {
-    currentSelection = getFullTextSelection(editorState);
-  }
+  const currentSelection = editorState.getSelection();
 
   const start = currentSelection.getStartOffset();
   const end = currentSelection.getEndOffset();
@@ -109,7 +105,7 @@ export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix
   return [...new Set(inlineStyles)];
 };
 
-export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix, value: string) => {
+export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix, value?: string) => {
   let selection = editorState.getSelection();
   const isCollapsed = selection.isCollapsed();
 

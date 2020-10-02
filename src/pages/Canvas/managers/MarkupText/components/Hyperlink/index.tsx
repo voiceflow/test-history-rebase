@@ -1,5 +1,5 @@
-import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
-import { EditorState } from 'draft-js';
+import { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
+import { EditorState, Modifier } from 'draft-js';
 import utils from 'draft-js-plugins-utils';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
@@ -9,27 +9,18 @@ import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
-import { getFullTextSelection } from '../../utils';
+import { InlineStylePrefix } from '../../constants';
+import { createPrefixedInlineStyle, getFullTextSelection, togglePrefixedInlineStyle } from '../../utils';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
 export type HyperlinkProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (editorState: EditorState) => void;
-  applyFakeSelection: (state: EditorState) => EditorState;
-  removeFakeSelection: (state: EditorState) => EditorState;
   createLinkAtSelection: (editorState: EditorState, url: string) => EditorState;
   removeLinkAtSelection: (editorState: EditorState) => EditorState;
 };
 
-const Hyperlink: React.FC<HyperlinkProps> = ({
-  getEditorState,
-  setEditorState,
-  saveEditorState,
-  applyFakeSelection,
-  removeFakeSelection,
-  createLinkAtSelection,
-  removeLinkAtSelection,
-}) => {
+const Hyperlink: React.FC<HyperlinkProps> = ({ getEditorState, setEditorState, saveEditorState, createLinkAtSelection, removeLinkAtSelection }) => {
   const editorState = getEditorState();
 
   const [entityKey, link] = React.useMemo(() => {
@@ -69,14 +60,14 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
 
   const onClose = () => {
     setTimeout(() => {
-      setEditorState(removeFakeSelection(getEditorState()));
+      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
     }, 100);
   };
 
   const [open, toggleOpen] = useDismissable(false, onClose, false, popperRef);
 
   const onShow = () => {
-    setEditorState(applyFakeSelection(getEditorState()));
+    setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION));
     toggleOpen();
   };
 
@@ -95,10 +86,29 @@ const Hyperlink: React.FC<HyperlinkProps> = ({
       state = EditorState.acceptSelection(state, getFullTextSelection(state));
     }
 
-    if (!link) {
+    if (!link && localLink) {
       state = createLinkAtSelection(state, localLink);
+      state = togglePrefixedInlineStyle(state, InlineStylePrefix.COLOR, 'rgba(93,157,245,1)');
+
+      state = EditorState.push(
+        editorState,
+        Modifier.applyInlineStyle(state.getCurrentContent(), state.getSelection(), 'UNDERLINE'),
+        'change-inline-style'
+      );
     } else if (!localLink) {
       state = removeLinkAtSelection(state);
+
+      let newContent = state.getCurrentContent();
+
+      newContent = Modifier.removeInlineStyle(newContent, state.getSelection(), 'UNDERLINE');
+
+      newContent = Modifier.removeInlineStyle(
+        newContent,
+        state.getSelection(),
+        createPrefixedInlineStyle(InlineStylePrefix.COLOR, 'rgba(93,157,245,1)')
+      );
+
+      state = EditorState.push(editorState, newContent, 'change-inline-style');
     } else if (entityKey) {
       const content = state.getCurrentContent().mergeEntityData(entityKey, { url: localLink });
 

@@ -17,7 +17,7 @@ import { getRawContent } from './utils';
 export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeID, onChange, isOpen }) => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const { setModeType } = React.useContext(MarkupModeContext)!;
-  const { toolbarPlugin, fakeSelectionPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
+  const { toolbarPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
   const [textAlignment, setTextAlignment] = React.useState(data.textAlignment);
 
   const onSetAlignment = (alignment: TextAlignment) => {
@@ -69,14 +69,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
       {({ getEditorState, setEditorState }) => (
         <Content>
           <Section>
-            <FontStyles
-              key={String(isOpen)}
-              setEditorState={setEditorState}
-              getEditorState={getEditorState}
-              saveEditorState={saveEditorState}
-              applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
-              removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
-            />
+            <FontStyles key={String(isOpen)} setEditorState={setEditorState} getEditorState={getEditorState} saveEditorState={saveEditorState} />
           </Section>
 
           <Section>
@@ -94,8 +87,6 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
                 setEditorState={wrapSetEditorStateToSave(setEditorState)}
                 getEditorState={getEditorState}
                 saveEditorState={saveEditorState}
-                applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
-                removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
                 createLinkAtSelection={anchorPlugin.createLinkAtSelection}
                 removeLinkAtSelection={anchorPlugin.removeLinkAtSelection}
               />
@@ -103,14 +94,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
           </Section>
 
           <Section>
-            <TextColor
-              key={String(isOpen)}
-              setEditorState={setEditorState}
-              getEditorState={getEditorState}
-              saveEditorState={saveEditorState}
-              applyFakeSelection={fakeSelectionPlugin.applyFakeSelection}
-              removeFakeSelection={fakeSelectionPlugin.removeFakeSelection}
-            />
+            <TextColor key={String(isOpen)} setEditorState={setEditorState} getEditorState={getEditorState} saveEditorState={saveEditorState} />
           </Section>
         </Content>
       )}

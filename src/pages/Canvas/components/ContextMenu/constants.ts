@@ -2,6 +2,7 @@ import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
+import { Engine } from '../../engine';
 import { ContextMenuOption } from './types';
 
 export enum CanvasAction {
@@ -53,6 +54,14 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
 
 const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.COMMENT];
 
+const isBlock = (nodeID: string, engine: Engine) => {
+  const node = engine.getNodeByID(nodeID);
+
+  if (!node) return false;
+
+  return node.type === BlockType.COMBINED;
+};
+
 export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Rename',
@@ -67,17 +76,16 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Copy Block',
     value: CanvasAction.COPY_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
-      const node = engine.getNodeByID(nodeID!);
-
-      if (!node) return false;
-
-      return node.type === BlockType.COMBINED;
+      return isBlock(nodeID!, engine);
     },
   },
   {
     label: 'Block Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
+    shouldRender: ({ target: nodeID }, { engine }) => {
+      return isBlock(nodeID!, engine);
+    },
   },
   {
     label: 'Delete Block',

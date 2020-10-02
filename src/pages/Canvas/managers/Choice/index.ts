@@ -16,7 +16,6 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
   chips: true,
   reprompt: true,
   mergeTerminator: true,
-  platformDependent: true,
 
   label: 'Choice',
   tip: 'Select choices and capture slot values from user input',

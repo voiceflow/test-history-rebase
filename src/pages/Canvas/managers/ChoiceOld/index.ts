@@ -11,7 +11,7 @@ const EDITORS_BY_PATH = {
   noReplyResponse: NoReplyResponseForm,
 };
 
-const ChoiceOldManager: NodeConfig<NodeData.Choice> = {
+const ChoiceOldManager: NodeConfig<NodeData.ChoiceOld> = {
   type: BlockType.CHOICE_OLD,
   icon: ProjectDiagramIcon,
   reprompt: true,

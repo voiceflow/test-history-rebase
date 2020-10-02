@@ -3,7 +3,7 @@ import React from 'react';
 import { FlexApart } from '@/components/Flex';
 import Select from '@/components/Select';
 import { connect } from '@/hocs';
-import { activeSlotTypes } from '@/store/selectors';
+import { activeSlotTypesSelector } from '@/store/selectors';
 
 const slotOptionRenderer = (option) => {
   return <FlexApart fullWidth>{option.label}</FlexApart>;
@@ -30,7 +30,7 @@ const SlotSelect = ({ value, onChange, className, slotTypes, filter, ...props })
 };
 
 const mapStateToProps = {
-  slotTypes: activeSlotTypes,
+  slotTypes: activeSlotTypesSelector,
 };
 
 export default connect(mapStateToProps)(SlotSelect);

@@ -7,10 +7,14 @@ import slotAdapter from '@/clientV2/adapters/slot';
 import alexaSettingsAdapter, { SkillSettings } from '@/clientV2/adapters/version/alexa/settings';
 import googleSettingsAdapter from '@/clientV2/adapters/version/google/settings';
 import { PlatformType } from '@/constants';
+import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
+import * as Product from '@/ducks/productV2';
 import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
+import * as Models from '@/models';
 import { Thunk } from '@/store/types';
+import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { arrayStringReplace } from '@/utils/string';
 
 import * as Meta from './meta';
@@ -114,4 +118,59 @@ export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dis
   await service?.version.updatePublishing(versionID, { locales: locales as any });
 
   dispatch(Skill.updateActiveSkill({ locales }));
+};
+
+export const handlePastedNodes = ({
+  nodes,
+  products,
+  diagrams,
+  sourcePlatform,
+  targetPlatform,
+}: {
+  nodes: { data: Models.NodeData<unknown>; node: Models.Node }[];
+  products: Models.Product[];
+  diagrams: Models.Diagram[];
+  sourcePlatform: PlatformType;
+  targetPlatform: PlatformType;
+}): Thunk<{ data: Models.NodeData<unknown>; node: Models.Node }[]> => async (dispatch) => {
+  let mappedNodes = nodes;
+
+  if (sourcePlatform !== targetPlatform) {
+    mappedNodes = mappedNodes.map((node) => {
+      if (isIntentNode(node.data)) {
+        return { ...node, data: { ...node.data, [targetPlatform]: node.data[sourcePlatform] } };
+      }
+
+      if (isChoiceNode(node.data)) {
+        return {
+          ...node,
+          data: { ...node.data, choices: node.data.choices.map((choice) => ({ ...choice, [targetPlatform]: choice[sourcePlatform] })) },
+        };
+      }
+
+      return node;
+    });
+  }
+
+  await Promise.all(
+    products.map(async (product) => {
+      const newProductID = await dispatch(Product.copyNewProduct(product));
+
+      mappedNodes = mappedNodes.map((node) =>
+        isProductLinkedNode(node.data) && node.data.productID === product.id ? { ...node, data: { ...node.data, productID: newProductID } } : node
+      );
+    })
+  );
+
+  await Promise.all(
+    diagrams.map(async (diagram) => {
+      const newDiagramID = await dispatch(Diagram.copyDiagram(diagram.id));
+
+      mappedNodes = mappedNodes.map((node) =>
+        isFlowNode(node.data) && node.data.diagramID === diagram.id ? { ...node, data: { ...node.data, diagramID: newDiagramID } } : node
+      );
+    })
+  );
+
+  return mappedNodes;
 };

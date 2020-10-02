@@ -55,7 +55,12 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
     }
   }, [isDragging]);
 
-  const { step: StepComponent = getManager(BlockType.DEPRECATED).step } = getManager(nodeEntity.nodeType)!;
+  const { platforms = [], ...manager } = getManager(nodeEntity.nodeType);
+  let StepComponent = manager.step || getManager(BlockType.DEPRECATED).step;
+
+  if (platforms.length && !platforms.includes(platform)) {
+    StepComponent = getManager(BlockType.INVALID_PLATFORM).step;
+  }
 
   return (
     <>

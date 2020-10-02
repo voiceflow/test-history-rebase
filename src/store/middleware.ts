@@ -28,7 +28,7 @@ import * as User from '@/ducks/user';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
-import { isLinkedeDisplayNode } from '@/utils/node';
+import { isLinkedDisplayNode } from '@/utils/node';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { savePlatformAndActiveDiagram } from './sideEffects';
@@ -200,7 +200,7 @@ const cleanupDisplayMiddleware: StoreMiddleware = (store) => (next) => (action) 
           const { combinedNodes } = Creator.nodeByIDSelector(state)(nodeID);
           return cleanupDisplayData(combinedNodes);
         }
-        if (isLinkedeDisplayNode(nodeData) && nodeData.version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
+        if (isLinkedDisplayNode(nodeData) && nodeData.version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
           store.dispatch(Display.deleteDisplay(nodeData.displayID));
         }
       });

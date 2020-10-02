@@ -15,6 +15,7 @@ import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
 import commandAdapter from './command';
+import deprecatedAdapter from './deprecated';
 import directiveAdapter from './directive';
 import displayAdapter from './display';
 import eventAdapter from './event';
@@ -24,6 +25,7 @@ import ifAdapter from './if';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
+import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
 import paymentAdapter from './payment';
@@ -53,7 +55,7 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<string, BlockType | ((data: DiagramN
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>) => string)>> = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
-  [BlockType.INTEGRATION]: (data: NodeData.Integration) => {
+  [BlockType.INTEGRATION]: (data: NodeData<NodeData.Integration>) => {
     switch (data.selectedIntegration) {
       case IntegrationType.ZAPIER:
         return NodeType.ZAPIER;
@@ -93,7 +95,8 @@ const blockAdapter = {
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.STREAM]: streamAdapter,
   [BlockType.USER_INFO]: userInfoAdapter,
-  [BlockType.DEPRECATED]: emptyAdapter,
+  [BlockType.DEPRECATED]: deprecatedAdapter,
+  [BlockType.INVALID_PLATFORM]: invalidPlatformAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.EVENT]: eventAdapter,
   [BlockType.PROMPT]: promptAdapter,

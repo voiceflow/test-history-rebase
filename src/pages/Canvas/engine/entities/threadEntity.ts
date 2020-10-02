@@ -47,7 +47,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
   }
 
   constructor(engine: Engine, public threadID: string) {
-    super(EntityType.THREAD, engine, engine.log.child(`thread<${threadID.slice(-6)}>`));
+    super(EntityType.THREAD, engine, engine.log.child('thread', threadID.slice(-6)));
 
     const { thread } = this.resolve();
     this.diagramID = thread.diagramID;

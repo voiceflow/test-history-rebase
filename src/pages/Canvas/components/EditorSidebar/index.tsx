@@ -11,7 +11,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
-import { ManagerContext } from '@/pages/Canvas/contexts';
+import { ManagerContext, PlatformContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { useEditingMode } from '@/pages/Skill/hooks';
@@ -31,7 +31,7 @@ const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 type EditSidebarProps = {
   focus: FocusState;
   node: Node | null;
-  parent: NodeData<any>;
+  parent: NodeData<unknown>;
   theme: Theme;
 };
 
@@ -39,6 +39,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
   const isEditingMode = useEditingMode();
   const { path, goToPath, pushToPath, popFromPath } = useEditorPath(node, parent);
   const getManager = React.useContext(ManagerContext)!;
+  const platform = React.useContext(PlatformContext)!;
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
@@ -52,11 +53,16 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
   let editor = null;
 
   if (node !== null && shouldRender) {
-    const { editorsByPath, editor: rootEditor } = getManager(node.type);
+    const { editorsByPath, editor: rootEditor, platforms = [] } = getManager(node.type);
     const activePath = path[path.length - 1] || {};
 
     const subManager = activePath.type && editorsByPath?.[activePath.type];
-    const Manager: any = withManagerProps(subManager || rootEditor);
+    let Manager: any = withManagerProps(subManager || rootEditor);
+
+    if (platforms.length && !platforms.includes(platform)) {
+      Manager = withManagerProps(getManager(BlockType.INVALID_PLATFORM).editor);
+    }
+
     prevAnimationDistance.current =
       // eslint-disable-next-line no-nested-ternary
       prevPathLength.current < path.length ? 40 : prevPathLength.current > path.length ? -40 : prevAnimationDistance.current;

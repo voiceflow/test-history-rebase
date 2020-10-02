@@ -32,7 +32,7 @@ export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, suc
   </Step>
 );
 
-const ConnectedCancelPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment> & ConnectedCancelPaymentStepProps> = ({
+const ConnectedCancelPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.CancelPayment> & ConnectedCancelPaymentStepProps> = ({
   node,
   withPorts,
   product,
@@ -47,11 +47,11 @@ const mapStateToProps = {
 };
 
 const mergeProps = (
-  ...[{ product: productByIDSelector }, , { data }]: MergeArguments<typeof mapStateToProps, {}, ConnectedStepProps<Models.NodeData.Payment>>
+  ...[{ product: productByIDSelector }, , { data }]: MergeArguments<typeof mapStateToProps, {}, ConnectedStepProps<Models.NodeData.CancelPayment>>
 ) => ({
   product: productByIDSelector(data?.productID as any),
 });
 
 type ConnectedCancelPaymentStepProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
 
-export default connect(mapStateToProps, null, mergeProps)<ConnectedStepProps<Models.NodeData.Payment>>(ConnectedCancelPaymentStep as React.FC);
+export default connect(mapStateToProps, null, mergeProps)<ConnectedStepProps<Models.NodeData.CancelPayment>>(ConnectedCancelPaymentStep as React.FC);

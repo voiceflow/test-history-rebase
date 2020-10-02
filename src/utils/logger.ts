@@ -1,4 +1,5 @@
 import loglevel from 'loglevel';
+import moize from 'moize';
 
 import { LOG_FILTER, LOG_LEVEL } from '@/config';
 import * as Cookies from '@/utils/cookies';
@@ -239,8 +240,17 @@ export const createLogger = (path: string[]) => {
 
   customizeLogger(logger, path);
 
+  const createUniqueChildLogger = (childName: string, id?: string) => createLogger([...path, id ? `${childName}<${id}>` : childName]);
+  const createChildLogger = moize(createUniqueChildLogger);
+
   return Object.assign(logger, {
-    child: (childName: string) => createLogger([...path, childName]),
+    child(childName: string, id?: string) {
+      if (id) {
+        return createUniqueChildLogger(childName, id);
+      }
+
+      return createChildLogger(childName);
+    },
     diff: <T>(lhs: T, rhs: T) => new LogDiff(lhs, rhs),
     value: <T>(value: T) => new LogValue(value),
     bold: <T>(value: T) => new LogBold(value),

@@ -1,17 +1,17 @@
 import cuid from 'cuid';
 
 import { CanvasAPI } from '@/components/Canvas';
-import { BlockType } from '@/constants';
+import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Display from '@/ducks/display';
-import { EntityMap, Link, NodeData, NodeWithData, Port } from '@/models';
+import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatch, DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
-import { asyncForEach } from '@/utils/array';
+import { asyncForEach, unique } from '@/utils/array';
 import { Logger } from '@/utils/logger';
-import { isLinkedeDisplayNode } from '@/utils/node';
+import { isChoiceNode, isLinkedDisplayNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
 
 import type { Engine } from '.';
@@ -126,13 +126,13 @@ export const cloneNodeWithData = ({ getNodeID, getPortID }: CloneUtils, dispatch
   data,
 }: NodeWithData): Promise<NodeWithData> => {
   let originNode = node;
-  let originNodeData: NodeData<any> = data;
+  let originNodeData: NodeData<unknown> = data;
 
   const newID = getNodeID(originNode.id);
 
-  if (isLinkedeDisplayNode(originNodeData)) {
+  if (isLinkedDisplayNode(originNodeData)) {
     const newDisplayID = await dispatch(Display.duplicateDisplay(originNodeData.displayID, skillID));
-    originNodeData = { ...originNodeData, displayID: newDisplayID };
+    originNodeData = { ...originNodeData, displayID: newDisplayID } as NodeData<NodeData.Display>;
     originNode = { ...originNode, ports: originNode.ports };
   }
 
@@ -250,3 +250,39 @@ export const getCandidates = (nodeIDs: string[], engine: Engine): NodeCandidate[
         (isInRange(left, rect.left, rect.right) || isInRange(right, rect.left, rect.right)) &&
         (isInRange(top, rect.top, rect.bottom) || isInRange(bottom, rect.top, rect.bottom)),
     }));
+
+export const getNodesData = (nodeData: Record<string, NodeData<unknown>>, selectedNodes: Node[]) => {
+  const nodeIDs = selectedNodes
+    .map((node) => [node.id, ...node.combinedNodes] || [])
+    .flat()
+    .reduce<string[]>((acc, curr) => (acc.includes(curr) ? acc : [...acc, curr]), []);
+
+  return nodeIDs.map((nodeID) => nodeData[nodeID]);
+};
+
+export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>, copiedNodes: Node[], platform: PlatformType) => {
+  const copiedNodesData = getNodesData(nodeData, copiedNodes);
+  const intents: string[] = [];
+
+  copiedNodesData.forEach((data) => {
+    if (isLinkedIntentNode(data, platform)) {
+      intents.push(data[platform].intent);
+    }
+
+    if (isChoiceNode(data)) {
+      data.choices.forEach((choice) => {
+        const intent = choice[platform].intent;
+
+        if (intent) {
+          intents.push(intent);
+        }
+      }, []);
+    }
+  });
+
+  const products = unique(copiedNodesData.filter(isProductLinkedNode).map((node) => node.productID));
+
+  const diagrams = unique(copiedNodesData.filter(isLinkedFlowNode).map((node) => node.diagramID));
+
+  return { intents: unique(intents), products, diagrams };
+};

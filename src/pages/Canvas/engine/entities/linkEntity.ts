@@ -35,7 +35,7 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
   }
 
   constructor(engine: Engine, public linkID: string) {
-    super(EntityType.LINK, engine, engine.log.child(`link<${linkID.slice(-6)}>`));
+    super(EntityType.LINK, engine, engine.log.child('link', linkID.slice(-6)));
 
     this.log.debug(this.log.init('constructed link'), this.log.slug(linkID));
   }

@@ -4,7 +4,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-const cancelPaymentDataAdapter = createBlockAdapter<CancelPaymentDataData, NodeData.Payment>(
+const cancelPaymentDataAdapter = createBlockAdapter<CancelPaymentDataData, NodeData.CancelPayment>(
   ({ productID }) => ({ productID }),
   ({ productID }) => ({ productID: productID || '' })
 );

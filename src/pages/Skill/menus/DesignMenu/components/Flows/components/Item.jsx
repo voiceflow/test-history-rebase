@@ -41,7 +41,7 @@ const Item = ({
 
   const menuOptions = React.useMemo(() => {
     const options = [
-      { label: 'Duplicate', onClick: () => (dataRefactor.isEnabled ? copyDiagramV2 : copyDiagram)(id) },
+      { label: 'Duplicate', onClick: () => (dataRefactor.isEnabled ? copyDiagramV2 : copyDiagram)(id, { openDiagram: true }) },
       {
         label: 'Delete',
         onClick: () =>

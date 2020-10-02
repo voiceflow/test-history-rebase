@@ -27,7 +27,7 @@ export type PathEntry = {
   type?: string;
 };
 
-const generatePath = (node: Node | null, parent: NodeData<any> | null, engine: Engine) => (getManager: ManagerGetter): PathEntry[] => {
+const generatePath = (node: Node | null, parent: NodeData<unknown> | null, engine: Engine) => (getManager: ManagerGetter): PathEntry[] => {
   if (!node) {
     return [];
   }
@@ -46,7 +46,7 @@ const generatePath = (node: Node | null, parent: NodeData<any> | null, engine: E
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const useEditorPath = (node: Node | null, parent: NodeData<any> | null) => {
+export const useEditorPath = (node: Node | null, parent: NodeData<unknown> | null) => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
   const originalPath = React.useMemo(() => generatePath(node, parent, engine)(getManager), [node, parent, engine, getManager]);

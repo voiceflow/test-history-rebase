@@ -8,7 +8,7 @@ import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 export type DisplayStepProps = {
   image?: string | null;
-  label?: string;
+  label?: string | null;
   portID?: string;
 };
 

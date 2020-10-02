@@ -11,7 +11,7 @@ import { clearModal, setConfirm } from '@/ducks/modal';
 import { CreatorDiagram, Diagram } from '@/models';
 import { Thunk } from '@/store/types';
 import { append, hasIdenticalMembers, unique, withoutValue } from '@/utils/array';
-import { isLinkedCommandNode, isLinkedeFlowNode } from '@/utils/node';
+import { isLinkedCommandNode, isLinkedFlowNode } from '@/utils/node';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import * as Creator from './creator';
@@ -145,7 +145,7 @@ export const updateSubDiagrams = (diagramID: string): Thunk<string[]> => async (
 
   const subDiagramIDs = Array.from(
     allNodeData.reduce((acc, data) => {
-      if (isLinkedeFlowNode(data)) {
+      if (isLinkedFlowNode(data)) {
         acc.add(data.diagramID);
       } else if (isLinkedCommandNode(data, platform)) {
         acc.add(data[platform].diagramID);

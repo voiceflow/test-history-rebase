@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { InfoSection } from '@/components/Section';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
-import { HelpTooltip, Section } from './components';
+import { HelpTooltip } from './components';
 
 export const ExitEditor = ({ data }) => {
   return (
@@ -19,7 +20,7 @@ export const ExitEditor = ({ data }) => {
         />
       )}
     >
-      <Section>Exit block ends the project in its current state.</Section>
+      <InfoSection>Exit block ends the project in its current state.</InfoSection>
     </Content>
   );
 };

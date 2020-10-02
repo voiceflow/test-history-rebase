@@ -1,7 +1,8 @@
 declare module '@voiceflow/common' {
   import { Locale } from '@voiceflow/alexa-types';
+  import { PlatformType } from '@/constants';
 
-  type PlatformMap<T> = Record<'alexa' | 'google', T>;
+  type PlatformMap<T> = Record<PlatformType, T>;
 
   namespace utils {
     const intent: {

@@ -14,7 +14,6 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
   type: BlockType.INTENT,
   icon: 'user',
   iconColor: '#5589eb',
-  platformDependent: true,
 
   label: 'Intent',
   tip: 'All your project to handle an intent from anywhere inside your project',

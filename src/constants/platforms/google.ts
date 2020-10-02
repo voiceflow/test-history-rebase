@@ -1,3 +1,22 @@
+export const GOOGLE_SLOT_TYPES = [
+  {
+    label: 'Date Time',
+    value: 'actions.type.DateTime',
+  },
+  {
+    label: 'Date',
+    value: 'actions.type.Date',
+  },
+  {
+    label: 'Time',
+    value: 'actions.type.Time',
+  },
+  {
+    label: 'Number',
+    value: 'actions.type.Number',
+  },
+];
+
 export enum GoogleStageType {
   IDLE = 'IDLE',
   ERROR = 'ERROR',

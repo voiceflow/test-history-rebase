@@ -132,6 +132,7 @@ export enum BlockType {
   CANCEL_PAYMENT = 'cancel_payment',
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
+  INVALID_PLATFORM = 'invalid_platform',
 
   // event
   DIRECTIVE = 'directive',

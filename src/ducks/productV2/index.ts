@@ -97,3 +97,14 @@ export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (disp
     );
   }
 };
+
+export const copyNewProduct = (product: Product): Thunk<string> => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = Skill.activeProjectIDSelector(state);
+
+  const alexaProduct = await clientV2.alexaService.project.createProduct(projectID, productAdapter.toDB({ ...product, id: NEW_PRODUCT_ID }));
+
+  dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+
+  return alexaProduct.productID;
+};

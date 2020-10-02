@@ -14,14 +14,16 @@ const flowBlockAdapter = createBlockAdapter(
   }),
   ({ diagramID, inputs, outputs }) => ({
     diagram_id: diagramID,
-    inputs: inputs.map(({ from, to }) => ({
-      arg1: from,
-      arg2: to,
-    })),
-    outputs: outputs.map(({ from, to }) => ({
-      arg1: from,
-      arg2: to,
-    })),
+    inputs:
+      inputs?.map(({ from, to }) => ({
+        arg1: from,
+        arg2: to,
+      })) || [],
+    outputs:
+      outputs?.map(({ from, to }) => ({
+        arg1: from,
+        arg2: to,
+      })) || [],
   })
 );
 

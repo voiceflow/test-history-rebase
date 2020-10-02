@@ -19,6 +19,7 @@ import FlowManager from './Flow';
 import IfManager from './If';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
+import InvalidPlatformManager from './InvalidPlatform';
 import MarkupImageManager from './MarkupImage';
 import MarkupTextManager from './MarkupText';
 import PaymentManager from './Payment';
@@ -62,6 +63,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.DIRECTIVE]: DirectiveManager,
   [BlockType.PROMPT]: PromptManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
+  [BlockType.INVALID_PLATFORM]: InvalidPlatformManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
 };

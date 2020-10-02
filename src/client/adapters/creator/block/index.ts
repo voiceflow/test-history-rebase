@@ -20,6 +20,7 @@ import ifBlockAdapter from './if';
 import integrationBlockAdapter from './integration';
 import intentBlockAdapter from './intent';
 import interactionBlockAdapter from './interaction';
+import invalidPlatformBlockAdapter from './invalidPlatform';
 import markupImageBlockAdapter from './markupImage';
 import markupTextBlockAdapter from './markupText';
 import paymentBlockAdapter from './payment';
@@ -86,6 +87,7 @@ const blockAdapter = {
   [BlockType.MARKUP_TEXT]: markupTextBlockAdapter,
   [BlockType.MARKUP_IMAGE]: markupImageBlockAdapter,
   [BlockType.DEPRECATED]: deprecatedBlockAdapter,
+  [BlockType.INVALID_PLATFORM]: invalidPlatformBlockAdapter,
   [BlockType.DIRECTIVE]: directiveBlockAdapter,
   [BlockType.EVENT]: eventBlockAdapter,
   [BlockType.PROMPT]: promptBlockAdapter,

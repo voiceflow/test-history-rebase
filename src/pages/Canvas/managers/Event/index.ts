@@ -9,7 +9,6 @@ const EventManager: NodeConfig<NodeData.Event> = {
   type: BlockType.EVENT,
   icon: 'next',
   iconColor: '#5589eb',
-  platformDependent: true,
 
   label: 'Event',
   tip: 'Recieve special types of events from alexa',

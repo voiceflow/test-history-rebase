@@ -5,7 +5,7 @@ import { NodeConfig } from '../types';
 import CancelPaymentEditor from './CancelPaymentEditor';
 import CancelPaymentStep from './CancelPaymentStep';
 
-const CancelPaymentManager: NodeConfig<NodeData.Payment> = {
+const CancelPaymentManager: NodeConfig<NodeData.CancelPayment> = {
   type: BlockType.CANCEL_PAYMENT,
   icon: 'trash',
   iconColor: '#d94c4c',

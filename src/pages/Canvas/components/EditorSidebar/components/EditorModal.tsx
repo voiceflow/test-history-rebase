@@ -12,7 +12,7 @@ const ModalComponent: React.FC<any> = Modal;
 
 export type EditorModalProps = {
   disableModalMode?: () => void;
-  data: NodeData<any>;
+  data: NodeData<unknown>;
   editor: React.ReactNode;
 };
 

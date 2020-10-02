@@ -2,6 +2,7 @@ import clientV2 from '@/clientV2';
 import creatorAdapterV2 from '@/clientV2/adapters/creator';
 import { CreatorDiagram } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
+import { unique } from '@/utils/array';
 import { getCurrentTimestamp } from '@/utils/time';
 
 import { userIDSelector } from '../account';
@@ -68,10 +69,10 @@ export const createNewDiagram = (name: string, diagram: PrimativeDiagram = DEFAU
   const creatorID = userIDSelector(getState()) as number;
 
   const { _id: diagramID } = await clientV2.api.diagram.create({
+    ...diagram,
     versionID,
     creatorID,
     name,
-    ...diagram,
     modified: getCurrentTimestamp(),
   });
 
@@ -79,27 +80,34 @@ export const createNewDiagram = (name: string, diagram: PrimativeDiagram = DEFAU
   return diagramID;
 };
 
-export const copyDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
+export const copyDiagram = (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
-  const diagram = DiagramReducer.diagramByIDSelector(state)(diagramID);
   const versionID = activeSkillIDSelector(state);
   const allDiagrams = DiagramReducer.allDiagramsSelector(state);
 
-  const existingNames = new Set<string>();
-  allDiagrams.forEach(({ name }) => existingNames.add(name));
+  const { _id, ...diagram } = await clientV2.api.diagram.get(diagramID);
 
-  let newFlowName = `${diagram.name} (COPY)`;
+  const existingNames = unique(allDiagrams.map(({ name }) => name));
+
+  let newFlowName = existingNames.includes(diagram.name) ? `${diagram.name} (COPY)` : diagram.name;
   let index = 1;
-  while (existingNames.has(newFlowName)) {
+  while (existingNames.includes(newFlowName)) {
     newFlowName = `${diagram.name} (COPY ${index})`;
     index++;
   }
 
-  const { _id, ...activeDiagram } = dispatch(adaptActiveDiagram());
-  const newDiagramID = await dispatch(createNewDiagram(newFlowName, activeDiagram));
+  const newDiagramID = await dispatch(createNewDiagram(newFlowName, diagram));
 
   await dispatch(loadVersionDiagrams(versionID));
-  await dispatch(goToDiagram(newDiagramID));
+
+  if (openDiagram) {
+    await dispatch(goToDiagram(newDiagramID));
+  }
+
+  return newDiagramID;
 };
 
 export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {

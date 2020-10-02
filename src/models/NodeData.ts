@@ -63,7 +63,7 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   };
 
-  export type Choice = {
+  export type ChoiceOld = {
     choices: { synonyms: string[] }[];
     reprompt: Reprompt | null;
   };
@@ -76,15 +76,15 @@ export namespace NodeData {
     reprompt: Reprompt | null;
   };
 
-  export type Command = Record<
-    PlatformType,
-    {
+  export type Command = Record<PlatformType, Command.PlatformData> & { name: string };
+  export namespace Command {
+    export type PlatformData = {
       // only added some properties here
       intent: string | null;
       diagramID: string | null;
       mappings: SlotMapping[];
-    }
-  > & { name: string };
+    };
+  }
 
   export type Reprompt = {
     type: RepromptType;
@@ -217,7 +217,10 @@ export namespace NodeData {
 
   export type AccountLinking = {};
 
-  export type Intent = Record<PlatformType, { intent: string | null; mappings: SlotMapping[] }>;
+  export type Intent = Record<PlatformType, Intent.PlatformData>;
+  export namespace Intent {
+    export type PlatformData = { intent: string | null; mappings: SlotMapping[] };
+  }
 
   export type Event = {
     requestName: string;
@@ -228,6 +231,10 @@ export namespace NodeData {
   };
 
   export type Payment = {
+    productID: string | null;
+  };
+
+  export type CancelPayment = {
     productID: string | null;
   };
 

@@ -25,7 +25,7 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
   }
 
   constructor(engine: Engine, public portID: string) {
-    super(EntityType.PORT, engine, engine.log.child(`port<${portID.slice(-6)}>`));
+    super(EntityType.PORT, engine, engine.log.child('port', portID.slice(-6)));
 
     this.log.debug(this.log.init('constructed port'), this.log.slug(portID));
   }

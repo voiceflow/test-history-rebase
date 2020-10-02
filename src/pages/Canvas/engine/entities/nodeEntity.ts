@@ -134,7 +134,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   inPortID: string | null;
 
   constructor(engine: Engine, public nodeID: string) {
-    super(EntityType.NODE, engine, engine.log.child(`node<${nodeID.slice(-6)}>`));
+    super(EntityType.NODE, engine, engine.log.child('node', nodeID.slice(-6)));
 
     const { node } = this.resolve();
 

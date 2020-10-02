@@ -17,7 +17,7 @@ import * as Slot from '@/ducks/slot';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 import { useDidUpdateEffect, useModals } from '@/hooks';
-import { activeSlotTypes } from '@/store/selectors';
+import { activeSlotTypesSelector } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';
 import { formatIntentName } from '@/utils/intent';
@@ -242,7 +242,7 @@ function SlotEdit({
 }
 const mapStateToProps = {
   plan: Workspace.planTypeSelector,
-  slotTypes: activeSlotTypes,
+  slotTypes: activeSlotTypesSelector,
   intentsUsingSlot: Slot.intentsUsingSlotSelector,
 };
 

@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { styled } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { useDidUpdateEffect } from '@/hooks/lifecycle';
 
-import { UncontrolledSection } from './components';
+import { ContentContainer, UncontrolledSection } from './components';
 import { UncontrolledSectionProps } from './components/UncontrolledSection';
 
 export * from './components';
@@ -29,4 +30,18 @@ const Section: React.ForwardRefRenderFunction<HTMLDivElement, SectionProps> = (
   return <UncontrolledSection {...props} isCollapsed={isCollapsed} collapseVariant={collapseVariant} toggle={toggle} ref={ref} />;
 };
 
-export default React.forwardRef<HTMLDivElement, SectionProps>(Section);
+const RefForwardedSection = React.forwardRef<HTMLDivElement, SectionProps>(Section);
+
+export default RefForwardedSection;
+
+export const InfoSection = styled(RefForwardedSection)`
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  color: #62778c;
+
+  ${ContentContainer} {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+`;

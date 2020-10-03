@@ -9,9 +9,9 @@ type LinkProps = {
   textDecoration?: boolean;
 } & TextProps;
 
-const Link = styled.a.attrs<LinkProps>(({ link, href }) => ({
-  target: '_blank',
-  rel: 'noopener noreferrer',
+const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({
+  target,
+  rel,
   href: link || href,
 }))<LinkProps>`
   color: ${({ theme }) => theme.colors.blue};

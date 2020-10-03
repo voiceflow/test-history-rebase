@@ -13,6 +13,8 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import { Link as Anchor } from '@/components/Text';
+import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -180,6 +182,20 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       openCollaboratorsModal();
     } else if (query?.upgrade_workspace) {
       openPaymentModal();
+    }
+
+    if (actionsEnv.isEnabled) {
+      toast.warn(
+        <>
+          Looking for your other projects?
+          <br />
+          Return to{' '}
+          <Anchor href="https://creator.voiceflow.com" target="">
+            creator.voiceflow.com
+          </Anchor>
+        </>,
+        { autoClose: false, closeButton: true }
+      );
     }
   }, []);
 

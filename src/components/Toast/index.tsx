@@ -3,7 +3,7 @@ import * as Toastify from 'react-toastify';
 import { Overwrite } from 'utility-types';
 
 import Portal from '@/components/Portal';
-import { Icon } from '@/components/SvgIcon';
+import SvgIcon, { Icon, IconVariant } from '@/components/SvgIcon';
 import { createGlobalStyle } from '@/hocs';
 
 import Message from './components/Message';
@@ -21,7 +21,10 @@ const wrapWithMessage: (method: ToastMethod, icon?: Icon, color?: string) => Toa
     <Message icon={icon} iconColor={color}>
       {message}
     </Message>,
-    options
+    {
+      ...options,
+      ...(options?.closeButton === true && { closeButton: <SvgIcon icon="close" variant={IconVariant.TERTIARY} clickable size={10} ml={24} /> }),
+    }
   );
 
 const toast = wrapWithMessage(Toastify.toast) as ToastMethod & Overwrite<Toastify.Toast, Record<ToastMethodName, ToastMethod>>;

@@ -4,6 +4,7 @@ import client from '@/clientV2';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Container, Item } from '@/components/Menu/components';
+import { Link } from '@/components/Text';
 import { useAsyncMountUnmount, useSmartReducerV2 } from '@/hooks';
 
 import { ButtonContainer, ButtonLink, Description, LoaderStage, StageContainer } from '../components';
@@ -59,10 +60,19 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
               </Item>
             ))}
           </Container>
+
+          <Description>
+            Or create another project{' '}
+            <Link href="https://console.actions.google.com/" onClick={cancel}>
+              here
+            </Link>
+            .
+          </Description>
         </>
       ) : (
         <>
           <Description>Looks like you don't have a Google Actions project, create one to get started!</Description>
+          <Description>Select a Custom Project type, with a Blank Project template.</Description>
 
           <ButtonContainer>
             <ButtonLink href="https://console.actions.google.com/" onClick={cancel}>

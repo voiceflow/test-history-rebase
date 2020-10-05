@@ -200,7 +200,10 @@ function BaseNestedMenu({
         if (creatable && focusedIndex === 0 && nextValue && !isButtonDisabled(nextValue)) {
           swallowEvent(null, true)(e);
           onCreate(nextValue);
-        } else if ((!isInput || inputWrapperRef.contains(e.target) || (creatable && searchable)) && (!creatable || focusedIndex > 0)) {
+        } else if (
+          (!isInput || inputWrapperRef.contains(e.target) || (creatable && searchable) || (isDropdown && searchable)) &&
+          (!creatable || focusedIndex > 0)
+        ) {
           swallowEvent(null, true)(e);
           onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]), optionsPath);
         }

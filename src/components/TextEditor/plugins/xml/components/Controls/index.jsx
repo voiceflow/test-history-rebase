@@ -78,7 +78,7 @@ export default function Controls({
         <ControlsWrapper>
           {!!tagsHistory.length && (
             <Dropdown onClose={onHideFakeSelection} onSelect={onAddTag} options={tagsHistory} placement="bottom-end">
-              {(ref, onToggle) => (
+              {(ref, onToggle, isOpen) => (
                 <Tooltip title={historyTooltip} position="top">
                   <HistoryWrapper
                     onClick={(e) => {
@@ -86,6 +86,7 @@ export default function Controls({
                       onToggle(e);
                     }}
                     ref={ref}
+                    isOpen={isOpen}
                   >
                     <SvgIcon icon="clock" />
                   </HistoryWrapper>
@@ -105,6 +106,7 @@ export default function Controls({
             placement="bottom-end"
             borderLess
             searchable
+            inputProps={{ styles: { color: '#62778c' } }}
             getOptionKey={(option) => option.name}
             getOptionLabel={(value) => value?.name}
             renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused, optionsPath }) => (

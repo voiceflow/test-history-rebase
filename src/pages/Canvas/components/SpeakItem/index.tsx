@@ -100,7 +100,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
               voice={item.voice}
               value={item.content}
               onBlur={updateContent}
-              placeholder={isAlexa ? 'Enter what Alexa will say' : 'Enter what Google will say'}
+              placeholder={`Enter what ${item.voice} will say`}
               onChangeVoice={updateVoice}
             />
           ) : (

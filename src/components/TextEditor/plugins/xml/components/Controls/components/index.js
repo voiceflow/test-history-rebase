@@ -1,5 +1,5 @@
 import Flex from '@/components/Flex';
-import { styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 export { default as SelectOption } from './SelectOption';
 export { default as FullWidthWrapper } from './FullWidthWrapper';
@@ -18,8 +18,20 @@ export const ControlsWrapper = styled(Flex)`
 `;
 
 export const HistoryWrapper = styled.div`
-  padding: 4px;
+  padding: 4px 0 4px 4px;
   cursor: pointer;
   color: #6e849a;
   opacity: 0.8;
+  ${transition('opacity', 'color')}
+
+  &:hover {
+    opacity: 1;
+  }
+
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      color: #5d9df5;
+      opacity: 1;
+    `}
 `;

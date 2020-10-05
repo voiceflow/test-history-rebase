@@ -3,7 +3,7 @@ import { SearchInput } from '@/components/Select/components';
 import { styled } from '@/hocs';
 
 const TagsSelect = styled(Select)`
-  width: 134px;
+  width: 126px;
 
   ${SearchInput} {
     font-size: 13px;

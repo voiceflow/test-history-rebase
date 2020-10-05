@@ -73,7 +73,7 @@ function Speaker({ voice, setError, getSSMLToPlay }) {
 
   return (
     <Tooltip title={playing ? 'Stop' : 'Play'} position="top">
-      <SpeakerWrapper>
+      <SpeakerWrapper isPlaying={playing}>
         <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} icon={icon} size={loading || !playing ? 14 : 16} />
       </SpeakerWrapper>
     </Tooltip>

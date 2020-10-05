@@ -5,7 +5,7 @@ const InlineInputValue = styled.div`
   ${inputStyle}
   display: inline-block;
   padding-left: 16px;
-  padding-right: 42px;
+  padding-right: 34px;
   width: auto;
   visibility: hidden;
   position: absolute;

@@ -12,13 +12,15 @@ export type SearchInputProps = {
 };
 
 const SearchInput = styled(Input)<SearchInputProps>`
-  padding-right: 42px;
+  padding-right: 34px;
   height: ${({ theme }) => theme.components.input.height}px;
 
   ${({ searchable, isDropdown }) =>
     (!searchable || isDropdown) &&
     css`
-      color: #132144 !important;
+      &[disabled] {
+        color: #132144;
+      }
     `}
 
   ${({ borderLess }) =>
@@ -44,6 +46,13 @@ const SearchInput = styled(Input)<SearchInputProps>`
     (isDropDownOpened || opened) &&
     css`
       border-color: #5d9df5 !important;
+
+      ${isDropDownOpened &&
+      css`
+        &[disabled] {
+          color: #5d9df5 !important;
+        }
+      `}
     `}
 
   input {

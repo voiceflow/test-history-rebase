@@ -29,18 +29,10 @@ const DISPLAY_OPTIONS = [
 function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, selected, onChange, duplicateDisplay }) {
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
-  const {
-    migrating,
-    displayType,
-    backgroundImage,
-    splashHeader,
-    displayID,
-    dataSource,
-    document: documentData,
-    aplCommands,
-    jsonFileName,
-    version,
-  } = data;
+  const { migrating, displayType, backgroundImage, splashHeader, displayID, document: documentData, aplCommands, jsonFileName, version } = data;
+
+  const datasource = dataRefactor.isEnabled ? data.dataSource : data.datasource;
+
   const { open: openModal } = useModals(ModalType.DISPLAY_PREVIEW);
   const cache = React.useRef({ migrating, onChange, version });
   cache.current = { ...cache.current, version, migrating, onChange };
@@ -51,7 +43,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
 
   const openPreviewModal = async () => {
     const apl = aplCommands || '';
-    let data = dataSource || '';
+    let data = datasource || '';
     let selectedDocument = !dataRefactor.isEnabled ? selected.document : documentData;
 
     if (dataRefactor.isEnabled && displayType === DisplayType.SPLASH) {
@@ -65,7 +57,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
     const resetDataObject = {
       displayType: type,
       splashHeader: textEditorContentAdapter.fromDB(null),
-      dataSource: null,
+      datasource: null,
       document: null,
       backgroundImage: null,
       jsonFileName: null,
@@ -145,7 +137,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
       {displayType === DisplayType.ADVANCED && !dataRefactor.isEnabled && (
         <AdvancedEditor
           display={selected}
-          datasource={dataSource}
+          datasource={datasource}
           aplCommands={aplCommands}
           createDisplay={createDisplay}
           updateDisplay={updateDisplayData}
@@ -157,7 +149,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
       )}
       {displayType === DisplayType.ADVANCED && dataRefactor.isEnabled && (
         <AdvancedEditorV2
-          datasource={dataSource}
+          datasource={datasource}
           aplCommands={aplCommands}
           createDisplay={createDisplay}
           updateDisplay={updateDisplayData}

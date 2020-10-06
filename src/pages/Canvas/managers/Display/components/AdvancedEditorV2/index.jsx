@@ -66,7 +66,7 @@ function AdvancedEditorV2({ jsonFileName, onChange, aplCommands = '', document: 
               <AceEditor
                 name="datasourceEditor"
                 mode="json"
-                onChange={(datasource) => onChange({ datasource })}
+                onChange={(dataSource) => onChange({ dataSource })}
                 fontSize={14}
                 showPrintMargin={false}
                 showGutter

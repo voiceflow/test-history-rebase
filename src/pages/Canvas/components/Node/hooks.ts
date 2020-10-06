@@ -55,6 +55,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
         return [node.x, node.y];
       },
       rename: () => blockRef.current?.rename(),
+      blur: () => ref.current?.blur(),
       translate,
     }),
     [elementInstance]

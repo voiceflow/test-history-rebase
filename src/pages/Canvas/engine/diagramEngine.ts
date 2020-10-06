@@ -96,6 +96,9 @@ class DiagramEngine extends EngineConsumer {
   async duplicateNode(nodeID: string) {
     const rootNode = this.engine.getNodeByID(nodeID);
 
+    if (rootNode.type === BlockType.START) {
+      return null;
+    }
     const {
       nodesWithData: [nodeWithData],
     } = await (rootNode.parentNode ? this.duplicateParentNode(rootNode) : this.duplicateChildNode(rootNode));

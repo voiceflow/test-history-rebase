@@ -81,6 +81,11 @@ export type NodeInstance = EntityInstance & {
    * only Markup nodes can be transformed
    */
   applyTransformations?: () => void;
+
+  /**
+   * for de-focusing blocks
+   */
+  blur?: () => void;
 };
 
 const nodeEntitySelector = createSelector([Creator.nodeByIDSelector, Creator.dataByNodeIDSelector], (getNode, getData) => <T>(nodeID: string) => ({

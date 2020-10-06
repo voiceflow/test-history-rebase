@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import { toast } from '@/components/Toast';
 import { isSafari } from '@/config';
 import { MarkupModeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -79,6 +80,18 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
     []
   );
 
+  const onDuplicate = React.useCallback(() => {
+    const targets = engine.activation.getTargets();
+    if (targets.length === 1) {
+      const nodeID = targets[0];
+
+      engine.node.api(nodeID)?.instance?.blur?.();
+      engine.node.duplicate(nodeID);
+    } else if (targets.length > 1) {
+      toast.error('Group duplication is not supported.');
+    }
+  }, []);
+
   useRegistration(() => engine.register('container', api), [api]);
 
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
@@ -86,6 +99,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.UNDO, undoHistory as Callback, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory as Callback, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { preventDefault: true }, [showSpotlight]);
+  useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true });
 
   return (
     <Wrapper

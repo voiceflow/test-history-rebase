@@ -25,6 +25,14 @@ export const SHORTCUTS = [
     ),
   },
   {
+    title: 'Duplicate',
+    command: (
+      <>
+        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>D</ShortcutCommand>
+      </>
+    ),
+  },
+  {
     title: 'Undo',
     command: (
       <>

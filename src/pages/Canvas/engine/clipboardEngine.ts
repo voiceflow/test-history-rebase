@@ -252,6 +252,7 @@ class ClipboardEngine extends EngineConsumer {
     if (copyBuffer) {
       try {
         this.log.debug(this.log.pending('pasting to canvas'));
+
         const result = await this.internal.extractData(copyBuffer);
 
         const isSameSkill = result.skillID === skillID;

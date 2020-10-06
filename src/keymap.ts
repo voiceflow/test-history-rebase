@@ -24,6 +24,7 @@ export enum Hotkey {
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
   SELECT_IMAGE_MARKUP = 'SELECT_IMAGE_MARKUP',
   SELECT_TEXT_MARKUP = 'SELECT_TEXT_MARKUP',
+  DUPLICATE = 'DUPLICATE',
 }
 
 /**
@@ -56,6 +57,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.CLOSE_CANVAS_MODE]: ['esc'],
   [Hotkey.SELECT_IMAGE_MARKUP]: ['i'],
   [Hotkey.SELECT_TEXT_MARKUP]: ['t'],
+  [Hotkey.DUPLICATE]: ['ctrl+d', 'meta+d'],
 };
 
 export default HOTKEY_MAPPING;

@@ -193,10 +193,12 @@ class NodeManager extends EngineConsumer {
 
     const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
 
-    this.engine.saveHistory();
-    this.engine.setActive(duplicateNodeID);
+    if (duplicateNodeID) {
+      this.engine.saveHistory();
+      this.engine.setActive(duplicateNodeID);
 
-    this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
+      this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
+    }
   }
 
   async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true) {

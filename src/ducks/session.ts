@@ -144,11 +144,16 @@ export const resetSession = (): Thunk => async (dispatch) => {
   dispatch(goToLogin());
 };
 
-export const logout = (): Thunk => async (dispatch) => {
-  try {
-    await client.session.delete();
-  } catch (err) {
-    log.error(err);
+export const logout = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const token = authTokenSelector(state)!;
+
+  if (token) {
+    try {
+      await client.session.delete();
+    } catch (err) {
+      log.error(err);
+    }
   }
 
   localStorage.clear();

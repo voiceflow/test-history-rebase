@@ -10,19 +10,28 @@ export type LifecycleProviderProps = {
   history: History;
 };
 
-const LifecycleProvider: React.FC<LifecycleProviderProps & ConnectedLifecycleProviderProps> = ({ history, browserID, tabID, children }) => {
+const LifecycleProvider: React.FC<LifecycleProviderProps & ConnectedLifecycleProviderProps> = ({ history, browserID, tabID, children, logout }) => {
   React.useEffect(() => {
-    setupApp(history, browserID, tabID);
+    setupApp({
+      tabID,
+      logout,
+      history,
+      browserID,
+    });
   }, []);
 
   return <>{children}</>;
 };
 
 const mapStateToProps = {
-  browserID: Session.browserIDSelector,
   tabID: Session.tabIDSelector,
+  browserID: Session.browserIDSelector,
 };
 
-type ConnectedLifecycleProviderProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  logout: Session.logout,
+};
 
-export default connect(mapStateToProps)(LifecycleProvider) as React.FC<LifecycleProviderProps>;
+type ConnectedLifecycleProviderProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(LifecycleProvider) as React.FC<LifecycleProviderProps>;

@@ -6,9 +6,15 @@ import { DEFAULT_CACHE_TIMEOUT, GLOBAL_HEADERS, MAX_CACHE_SIZE, Method, NetworkE
 import { FetchOptions, FetchResult } from './types';
 import { _fetch, buildOptions, debugRequest, log, parseResponseBody } from './utils';
 
+let unauthorizedHandler: (endpoint: string) => void;
+
+export const setUnauthorizedHandler = (handler: (endpoint: string) => void) => {
+  unauthorizedHandler = handler;
+};
+
 async function rawFetch<R>(
   url: string,
-  { body, json = true, cache = false, expiry = DEFAULT_CACHE_TIMEOUT, ...rawOpts }: FetchOptions = {}
+  { body, json = true, cache = false, expiry = DEFAULT_CACHE_TIMEOUT, unauthorizedInterceptor = true, ...rawOpts }: FetchOptions = {}
 ): Promise<FetchResult<R>> {
   const opts = buildOptions(rawOpts, GLOBAL_HEADERS, body, json);
 
@@ -28,6 +34,10 @@ async function rawFetch<R>(
   const resText = await res.text();
   const resSize = resText.length;
   const resBody = parseResponseBody<R>(resText, json);
+
+  if (unauthorizedInterceptor && res.status === StatusCode.UNAUTHORIZED) {
+    await unauthorizedHandler?.(API_ENDPOINT);
+  }
 
   if (res.status >= StatusCode.BAD_REQUEST) {
     log.error(log.bold(opts.method || Method.GET), log.value(finalURL));

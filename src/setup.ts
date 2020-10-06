@@ -1,16 +1,39 @@
 import axios from 'axios';
 import { History } from 'history';
+import _throttle from 'lodash/throttle';
 
-import { GLOBAL_HEADERS } from './client/fetch';
+import { toast } from '@/components/Toast';
+
+import fetch, { GLOBAL_HEADERS, StatusCode } from './client/fetch';
+import { setUnauthorizedHandler } from './client/fetch/raw';
 import voiceflowAPI from './clientV2/api';
-import { API_ENDPOINT, VERSION } from './config';
+import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as LogRocket from './vendors/logRocket';
 import * as Userflow from './vendors/userflow';
 
-const setupApp = (history: History, browserID: string, tabID: string) => {
+const LOGOUT_HANDLER_TIMEOUT = 3000;
+
+const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout: () => void; history: History; browserID: string }) => {
   clearPersistedLogs();
+
+  const logoutHandler = _throttle(
+    async (endpoint: string) => {
+      if (TRUSTED_ENDPOINTS.includes(endpoint)) {
+        try {
+          await fetch.get('session', { unauthorizedInterceptor: false });
+        } catch (err) {
+          toast.info('You have been logged out due to inactivity or another open instance');
+          logout();
+        }
+      }
+    },
+    LOGOUT_HANDLER_TIMEOUT,
+    { trailing: false }
+  );
+
+  setUnauthorizedHandler(logoutHandler);
 
   axios.defaults.baseURL = API_ENDPOINT;
   axios.defaults.withCredentials = true;
@@ -18,6 +41,19 @@ const setupApp = (history: History, browserID: string, tabID: string) => {
   axios.defaults.headers.common.tabid = tabID;
   GLOBAL_HEADERS.set('browserid', browserID);
   GLOBAL_HEADERS.set('tabid', tabID);
+
+  axios.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    async (error) => {
+      if (error.response.status === StatusCode.UNAUTHORIZED) {
+        await logoutHandler(error.config.baseURL);
+      }
+
+      throw error;
+    }
+  );
 
   voiceflowAPI.fetch.setOptions({
     headers: {

@@ -35,7 +35,6 @@ function Header({
   logoAssetPath,
 }) {
   const { open: openWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
-
   return (
     <HeaderContainer>
       <PrimaryHeader isBackClick={onBackClick}>

@@ -22,7 +22,7 @@ Cypress.Commands.add('dragCanvas', (movementX, movementY) => {
   cy.document().then(($doc) => {
     const { clientWidth, clientHeight } = $doc.body;
 
-    canvasPage.el.canvas.trigger('dragstart', clientWidth / 2, 50);
+    canvasPage.el.canvas.trigger('dragstart', clientWidth / 2, 50, { button: 2 });
 
     cy.wrap($doc)
       .trigger('mousemove', { clientX: clientWidth / 2, clientY: clientHeight / 2, movementX, movementY })

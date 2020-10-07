@@ -2,6 +2,7 @@ import { preventDefault } from '@/utils/dom';
 import MouseMovement from '@/utils/mouseMovement';
 
 import { ControlType } from '../constants';
+import { ControlAction } from './types';
 import { BaseControls, getScrollDelta } from './utils';
 
 class MouseControls extends BaseControls {
@@ -12,6 +13,31 @@ class MouseControls extends BaseControls {
   scrollComplete = null;
 
   mouseMovement = new MouseMovement();
+
+  spacebarPressed = false;
+
+  twoFingerOnTrackpad = false;
+
+  constructor(props: { (action: ControlAction): void; (action: ControlAction): void }) {
+    super(props);
+
+    document.addEventListener('keydown', this.handleSpaceBarPress);
+    document.addEventListener('keyup', this.handleSpaceBarLifted);
+  }
+
+  handleSpaceBarPress = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      this.spacebarPressed = true;
+      document.body.style.cursor = 'grab';
+    }
+  };
+
+  handleSpaceBarLifted = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      this.spacebarPressed = false;
+      document.body.style.cursor = 'default';
+    }
+  };
 
   wheel = preventDefault((event: WheelEvent) => {
     const delta = getScrollDelta(event);
@@ -30,16 +56,27 @@ class MouseControls extends BaseControls {
   dragstart = (event: React.DragEvent) => {
     if (event.defaultPrevented) return;
 
+    event.preventDefault();
+
+    // two-finger touch on trackpad
+    if (event.button === 2) {
+      this.twoFingerOnTrackpad = true;
+    } else {
+      this.twoFingerOnTrackpad = false;
+    }
+
+    this.isPanning = this.spacebarPressed || this.twoFingerOnTrackpad;
+    if (this.isPanning) {
+      document.addEventListener('mousemove', this.mousemove);
+      this.handle({ type: ControlType.START_INTERACTION });
+    } else {
+      document.removeEventListener('mousemove', this.mousemove);
+    }
+
     if (event.shiftKey) {
       this.isDragging = true;
 
       this.handle({ type: ControlType.SHIFT_DRAG_START, event });
-    } else {
-      this.isPanning = true;
-
-      document.addEventListener('mousemove', this.mousemove);
-
-      this.handle({ type: ControlType.START_INTERACTION });
     }
   };
 

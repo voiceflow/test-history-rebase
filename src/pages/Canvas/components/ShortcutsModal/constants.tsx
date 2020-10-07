@@ -97,6 +97,14 @@ export const SHORTCUTS = [
     command: <ShortcutCommand>-</ShortcutCommand>,
   },
   {
+    title: 'Pan',
+    command: (
+      <>
+        <ShortcutCommand>Space</ShortcutCommand> + <ShortcutCommand>Drag</ShortcutCommand>
+      </>
+    ),
+  },
+  {
     title: 'Design',
     command: <ShortcutCommand>1</ShortcutCommand>,
   },

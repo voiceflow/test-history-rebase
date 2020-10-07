@@ -18,6 +18,8 @@ class MouseControls extends BaseControls {
 
   twoFingerOnTrackpad = false;
 
+  middleMouseButton = false;
+
   constructor(props: { (action: ControlAction): void; (action: ControlAction): void }) {
     super(props);
 
@@ -37,6 +39,11 @@ class MouseControls extends BaseControls {
       this.spacebarPressed = false;
       document.body.style.cursor = 'default';
     }
+  };
+
+  startPanning = () => {
+    document.addEventListener('mousemove', this.mousemove);
+    this.handle({ type: ControlType.START_INTERACTION });
   };
 
   wheel = preventDefault((event: WheelEvent) => {
@@ -63,8 +70,7 @@ class MouseControls extends BaseControls {
 
     this.isPanning = this.spacebarPressed || this.twoFingerOnTrackpad;
     if (this.isPanning) {
-      document.addEventListener('mousemove', this.mousemove);
-      this.handle({ type: ControlType.START_INTERACTION });
+      this.startPanning();
     } else {
       document.removeEventListener('mousemove', this.mousemove);
       this.isDragging = true;
@@ -75,6 +81,13 @@ class MouseControls extends BaseControls {
   mousedown = (event: React.MouseEvent) => {
     if (event.defaultPrevented) return;
 
+    // middle mouse button clicked
+    if (event.button === 1) {
+      this.middleMouseButton = true;
+      this.startPanning();
+      document.body.style.cursor = 'grab';
+    }
+
     document.addEventListener('mouseup', this.mouseup, { once: true });
   };
 
@@ -84,6 +97,11 @@ class MouseControls extends BaseControls {
     this.mouseMovement.clear();
 
     this.handle({ type: ControlType.MOUSE_UP, event });
+
+    if (event.button === 1) {
+      this.middleMouseButton = false;
+      document.body.style.cursor = 'default';
+    }
 
     document.removeEventListener('mousemove', this.mousemove);
   };

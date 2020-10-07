@@ -187,9 +187,9 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     if (actionsEnv.isEnabled) {
       toast.warn(
         <>
-          Looking for your other projects?
+          This version of your workspace is for your new Google Actions Console projects only.
           <br />
-          Return to{' '}
+          Looking for your existing projects? Return to{' '}
           <Anchor href="https://creator.voiceflow.com" target="">
             creator.voiceflow.com
           </Anchor>

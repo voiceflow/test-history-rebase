@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import _ from 'lodash';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -6,130 +7,62 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ModalType, PlanType, PlatformType, PromoType, UserRole } from '@/constants';
+import { BillingPeriod, ModalType, PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
-import { Query } from '@/models';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import * as Userflow from '@/vendors/userflow';
 
-import { ONBOARDING_PROJECT_NAME, STEP_META, StepID } from './constants';
-import { CollaboratorType } from './types';
+import { ONBOARDING_PROJECT_NAME, STEP_META, StepID } from '../constants';
+import { CollaboratorType } from '../types';
+import {
+  OnboardingContextActions,
+  OnboardingContextProps,
+  OnboardingContextState,
+  OnboardingProviderProps,
+  OnboardingType,
+  SpecificFlowType,
+} from './types';
+import * as Utils from './utils';
 
 const toast: any = toastNotif;
 
-export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
-  const members = collaborators.filter((collaborator: CollaboratorType) => {
-    const { permission } = collaborator;
-    return permission === UserRole.EDITOR;
-  });
-  // + 1 for the owner
-  return members.length + 1;
-};
-
-export enum OnboardingType {
-  create = 'create_workspace',
-  join = 'join_workpsace',
-  student = 'student',
-  creator = 'creator',
-}
-
-export enum SpecificFlowType {
-  login_vanilla_new = 'login_vanilla_new',
-  login_student_new = 'login_student_new',
-  login_payment_new = 'login_payment_new',
-  login_student_existing = 'login_student_existing',
-  login_invite = 'login_invite',
-  create_workspace = 'create_workspace',
-  login_creator_new = 'login_creator_new',
-  login_creator_existing = 'login_creator_existing',
-}
-
-export type OnboardingContextProps = {
-  state: {
-    selectableWorkspace: boolean;
-    specificFlowType: SpecificFlowType;
-    flow: OnboardingType;
-    stepStack: StepID[];
-    currentStepID: StepID;
-    numberOfSteps: number;
-    createWorkspaceMeta: {
-      workspaceName: string;
-      workspaceImage: string;
-    };
-    personalizeWorkspaceMeta: {
-      role: string;
-      channels: string[];
-      teamSize: string;
-    };
-    paymentMeta: {
-      plan?: PlanType;
-      couponCode?: string;
-      period: BillingPeriod;
-      selectedWorkspaceId: string;
-    };
-    addCollaboratorMeta: {
-      collaborators: CollaboratorType[];
-    };
-    joinWorkspaceMeta: {
-      role: string;
-    };
-    onboardingComplete: boolean;
-    sendingRequests: boolean;
-    workspaceId: string;
-    justCreatingWorkspace: boolean;
-    hasFixedPeriod: boolean;
-  };
-  actions: {
-    stepBack: () => null;
-    stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
-    closeOnboarding: () => void;
-    setCreateWorkspaceMeta: (data: unknown) => void;
-    setPersonalizeWorkspaceMeta: (data: unknown) => void;
-    setPaymentMeta: (data: unknown) => void;
-    setJoinWorkspaceMeta: (data: unknown) => void;
-    setAddCollaboratorMeta: (data: unknown) => void;
-    finishCreateOnboarding: () => void;
-    finishJoiningWorkspace: () => void;
-    onCancel: () => void;
-  };
-};
-
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
+    stepBack: _.constant(null),
+    stepForward: _.constant(null),
     closeOnboarding: _.constant(null),
     setCreateWorkspaceMeta: _.constant(null),
     setPersonalizeWorkspaceMeta: _.constant(null),
     setPaymentMeta: _.constant(null),
-    stepBack: _.constant(null),
-    stepForward: _.constant(null),
-    setAddCollaboratorMeta: _.constant(null),
     setJoinWorkspaceMeta: _.constant(null),
+    setAddCollaboratorMeta: _.constant(null),
     finishCreateOnboarding: _.constant(null),
     finishJoiningWorkspace: _.constant(null),
     onCancel: _.constant(null),
+    getNumberOfEditors: _.constant(0),
   },
   state: {
     selectableWorkspace: false,
-    flow: OnboardingType.create,
     specificFlowType: SpecificFlowType.create_workspace,
-    createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
+    flow: OnboardingType.create,
+    stepStack: [],
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
+    createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
     personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '' },
-    stepStack: [],
-    addCollaboratorMeta: { collaborators: [] },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
       selectedWorkspaceId: '',
     },
+    addCollaboratorMeta: { collaborators: [] },
     joinWorkspaceMeta: {
       role: '',
     },
@@ -142,112 +75,6 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 });
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
-
-const getFirstStep = (flow: OnboardingType, isLoginFlow: boolean, isFirstSession: boolean) => {
-  if (!isLoginFlow) {
-    return OnboardingType.create;
-  }
-
-  switch (flow) {
-    case OnboardingType.create:
-      return StepID.WELCOME;
-    case OnboardingType.join:
-      return StepID.JOIN_WORKSPACE;
-    case OnboardingType.creator:
-    case OnboardingType.student:
-      return isFirstSession ? StepID.WELCOME : StepID.PAYMENT;
-    default:
-      return StepID.WELCOME;
-  }
-};
-
-const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
-  if (flow === OnboardingType.join) {
-    return SpecificFlowType.login_invite;
-  }
-  if (flow === OnboardingType.student && !isFirstSession) {
-    return SpecificFlowType.login_student_existing;
-  }
-  if (flow === OnboardingType.creator && !isFirstSession) {
-    return SpecificFlowType.login_creator_existing;
-  }
-  if (!loginFlow) {
-    return SpecificFlowType.create_workspace;
-  }
-  if (loginFlow && isFirstSession && flow === OnboardingType.student) {
-    return SpecificFlowType.login_student_new;
-  }
-  if (loginFlow && isFirstSession && flow === OnboardingType.creator) {
-    return SpecificFlowType.login_creator_new;
-  }
-  if (query?.ob_payment) {
-    return SpecificFlowType.login_payment_new;
-  }
-  return SpecificFlowType.login_vanilla_new;
-};
-
-const getNumberOfSteps = (specificFlowType: SpecificFlowType) => {
-  switch (specificFlowType) {
-    case SpecificFlowType.login_invite:
-      return 1;
-    case SpecificFlowType.login_student_existing:
-    case SpecificFlowType.login_creator_existing:
-      return 1;
-    case SpecificFlowType.create_workspace:
-      return 3;
-    case SpecificFlowType.login_student_new:
-    case SpecificFlowType.login_creator_new:
-      return 5;
-    case SpecificFlowType.login_payment_new:
-      return 5;
-    case SpecificFlowType.login_vanilla_new:
-      return 4;
-    default:
-      return 4;
-  }
-};
-
-const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo }: Query) => {
-  const configurations = {
-    plan: PlanType.PRO,
-    period: BillingPeriod.ANNUALLY,
-    couponCode: ob_coupon || '',
-    flow: invite ? OnboardingType.join : OnboardingType.create,
-  };
-
-  if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
-    configurations.plan = ob_plan;
-  }
-
-  if (!!promo && promo === PromoType.STUDENT) {
-    configurations.plan = PlanType.STUDENT;
-    configurations.flow = OnboardingType.student;
-    configurations.period = BillingPeriod.MONTHLY;
-  }
-
-  if (!!promo && promo === PromoType.CREATOR) {
-    configurations.plan = PlanType.CREATOR;
-    configurations.flow = OnboardingType.creator;
-    configurations.period = BillingPeriod.MONTHLY;
-  }
-
-  if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
-    configurations.period = ob_period;
-  }
-
-  return configurations;
-};
-
-type OnboardingProviderProps = {
-  query: Query;
-  firstLogin: boolean;
-  numberOfSteps?: number;
-  children: React.ReactNode;
-  stripe: any;
-  checkChargeable: (data: any) => void;
-  trackInvitationAccepted: (workspaceId: string) => void;
-  isLoginFlow: boolean;
-};
 
 const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
   query,
@@ -277,13 +104,13 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
-  const { plan, period, couponCode, flow } = extractQueryParams(query);
+  const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const hasFixedPeriod = !!query.ob_period;
   const isFirstSession = firstLogin;
-  const firstStep = getFirstStep(flow, isLoginFlow, isFirstSession);
+  const firstStep = Utils.getFirstStep({ flow, isLoginFlow, isFirstSession, hasPresetSeats: !!seats });
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const specificFlowType = getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
-  const numberOfSteps = getNumberOfSteps(specificFlowType);
+  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
+  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
 
   const selectableWorkspaceInPayment =
@@ -293,27 +120,28 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
   const [state, actions] = useSmartReducer({
     selectableWorkspace: selectableWorkspaceInPayment,
-    usedSignupCoupon: false,
-    flow,
     specificFlowType,
-    workspaceId: '',
+    flow,
     stepStack: [firstStep],
+    numberOfSteps,
     createWorkspaceMeta: {},
     personalizeWorkspaceMeta: {},
     paymentMeta: {
       plan,
       couponCode,
       period,
+      seats,
     },
     addCollaboratorMeta: { collaborators: [] },
     joinWorkspaceMeta: {
       role: '',
     },
-    numberOfSteps,
     onboardingComplete: false,
     sendingRequests: false,
+    workspaceId: '',
     justCreatingWorkspace: !isLoginFlow,
     hasFixedPeriod,
+    usedSignupCoupon: false,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
@@ -364,13 +192,18 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     goToDashboard();
   };
 
+  const getNumberOfEditors = () => {
+    const numberOfEditors = Utils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
+
+    return Math.max(paymentMeta.seats, numberOfEditors);
+  };
+
   const handlePayment = async (workspaceID: string, source: any) => {
     const { plan, period, couponCode } = paymentMeta;
-    const numberOfEditors = getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
 
     await client.workspace.checkout(workspaceID, {
       plan,
-      seats: numberOfEditors,
+      seats: getNumberOfEditors(),
       period,
       coupon: couponCode || undefined,
       source_id: source?.id,
@@ -585,7 +418,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     cache.current.stepStack = stepStack;
   }, [stepStack]);
 
-  const api = {
+  const api: { state: OnboardingContextState; actions: OnboardingContextActions } = {
     state: {
       ...state,
       currentStepID: stepStack[0],
@@ -597,6 +430,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       finishJoiningWorkspace,
       finishCreateOnboarding,
       onCancel,
+      getNumberOfEditors,
     },
   };
 

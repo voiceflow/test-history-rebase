@@ -19,7 +19,8 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { OnboardingContext, SpecificFlowType, getNumberOfEditorSeats } from '@/pages/Onboarding/context';
+import { OnboardingContext } from '@/pages/Onboarding/context';
+import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import { OnboardingProps } from '@/pages/Onboarding/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
@@ -46,9 +47,8 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
   const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
-  const { collaborators } = state.addCollaboratorMeta;
 
-  const numberOfSeats = getNumberOfEditorSeats(collaborators);
+  const numberOfSeats = actions.getNumberOfEditors();
 
   const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
   const [coupon, setCoupon] = React.useState(couponCode || '');

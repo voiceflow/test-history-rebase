@@ -8,6 +8,7 @@ export namespace Query {
     ob_coupon: any;
     ob_period: BillingPeriod;
     ob_payment: boolean;
+    ob_seats: number;
     invite: string;
     email: string;
     choose_workspace: boolean;

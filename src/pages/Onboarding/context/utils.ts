@@ -1,0 +1,122 @@
+import { BillingPeriod, PlanType, PromoType, UserRole } from '@/constants';
+import { Query } from '@/models';
+
+import { StepID } from '../constants';
+import { CollaboratorType } from '../types';
+import { OnboardingType, SpecificFlowType } from './types';
+
+export const getNumberOfEditorSeats = (collaborators: CollaboratorType[]) => {
+  const members = collaborators.filter((collaborator: CollaboratorType) => {
+    const { permission } = collaborator;
+    return permission === UserRole.EDITOR;
+  });
+  // + 1 for the owner
+  return members.length + 1;
+};
+
+export const getFirstStep = ({
+  flow,
+  isLoginFlow,
+  isFirstSession,
+  hasPresetSeats,
+}: {
+  flow: OnboardingType;
+  isLoginFlow: boolean;
+  isFirstSession: boolean;
+  hasPresetSeats: boolean;
+}) => {
+  if (!isLoginFlow) {
+    return OnboardingType.create;
+  }
+
+  switch (flow) {
+    case OnboardingType.create:
+      return StepID.WELCOME;
+    case OnboardingType.join:
+      return StepID.JOIN_WORKSPACE;
+    case OnboardingType.creator:
+    case OnboardingType.student:
+      // eslint-disable-next-line no-nested-ternary
+      return isFirstSession ? StepID.WELCOME : hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
+    default:
+      return StepID.WELCOME;
+  }
+};
+
+export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
+  if (flow === OnboardingType.join) {
+    return SpecificFlowType.login_invite;
+  }
+  if (flow === OnboardingType.student && !isFirstSession) {
+    return SpecificFlowType.login_student_existing;
+  }
+  if (flow === OnboardingType.creator && !isFirstSession) {
+    return SpecificFlowType.login_creator_existing;
+  }
+  if (!loginFlow) {
+    return SpecificFlowType.create_workspace;
+  }
+  if (loginFlow && isFirstSession && flow === OnboardingType.student) {
+    return SpecificFlowType.login_student_new;
+  }
+  if (loginFlow && isFirstSession && flow === OnboardingType.creator) {
+    return SpecificFlowType.login_creator_new;
+  }
+  if (query?.ob_payment) {
+    return SpecificFlowType.login_payment_new;
+  }
+  return SpecificFlowType.login_vanilla_new;
+};
+
+export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSeats: boolean) => {
+  switch (specificFlowType) {
+    case SpecificFlowType.login_invite:
+      return 1;
+    case SpecificFlowType.login_student_existing:
+    case SpecificFlowType.login_creator_existing:
+      return hasPresetSeats ? 1 : 2;
+    case SpecificFlowType.create_workspace:
+      return 3;
+    case SpecificFlowType.login_student_new:
+    case SpecificFlowType.login_creator_new:
+      return 5;
+    case SpecificFlowType.login_payment_new:
+      return 5;
+    case SpecificFlowType.login_vanilla_new:
+      return 4;
+    default:
+      return 4;
+  }
+};
+
+export const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo, ob_seats }: Query) => {
+  const configurations = {
+    plan: PlanType.PRO,
+    period: BillingPeriod.ANNUALLY,
+    couponCode: ob_coupon || '',
+    flow: invite ? OnboardingType.join : OnboardingType.create,
+    seats: ob_seats ?? 0,
+  };
+
+  if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
+    configurations.plan = ob_plan;
+  }
+
+  if (!!promo && promo === PromoType.STUDENT) {
+    configurations.plan = PlanType.STUDENT;
+    configurations.flow = OnboardingType.student;
+    configurations.period = BillingPeriod.MONTHLY;
+  }
+
+  if (!!promo && promo === PromoType.CREATOR) {
+    configurations.plan = PlanType.CREATOR;
+    configurations.flow = OnboardingType.creator;
+    configurations.period = BillingPeriod.MONTHLY;
+  }
+
+  if (ob_period && Object.values(BillingPeriod).includes(ob_period)) {
+    configurations.period = ob_period;
+  }
+
+  return configurations;
+};

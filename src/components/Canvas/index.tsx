@@ -43,7 +43,7 @@ export type CanvasProps = {
   onMouseUp?: (event: MouseEvent) => void;
   onMouseDown?: (event: React.MouseEvent) => void;
   onRightClick?: (event: React.MouseEvent) => void;
-  onShiftDragStart?: (event: React.DragEvent) => void;
+  onSelectDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
   onDragStart?: (event: React.DragEvent) => void;
 };
@@ -313,8 +313,8 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
       case ControlType.END:
         this.onChange();
         break;
-      case ControlType.SHIFT_DRAG_START:
-        this.props.onShiftDragStart?.(control.event);
+      case ControlType.SELECT_DRAG_START:
+        this.props.onSelectDragStart?.(control.event);
         break;
       default:
     }

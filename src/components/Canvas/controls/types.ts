@@ -45,7 +45,7 @@ export type MouseUpAction = {
 };
 
 export type ShiftDragStartAction = {
-  type: ControlType.SHIFT_DRAG_START;
+  type: ControlType.SELECT_DRAG_START;
   event: React.DragEvent;
 };
 

@@ -59,11 +59,7 @@ class MouseControls extends BaseControls {
     event.preventDefault();
 
     // two-finger touch on trackpad
-    if (event.button === 2) {
-      this.twoFingerOnTrackpad = true;
-    } else {
-      this.twoFingerOnTrackpad = false;
-    }
+    this.twoFingerOnTrackpad = event.button === 2;
 
     this.isPanning = this.spacebarPressed || this.twoFingerOnTrackpad;
     if (this.isPanning) {
@@ -71,12 +67,8 @@ class MouseControls extends BaseControls {
       this.handle({ type: ControlType.START_INTERACTION });
     } else {
       document.removeEventListener('mousemove', this.mousemove);
-    }
-
-    if (event.shiftKey) {
       this.isDragging = true;
-
-      this.handle({ type: ControlType.SHIFT_DRAG_START, event });
+      this.handle({ type: ControlType.SELECT_DRAG_START, event });
     }
   };
 

@@ -49,14 +49,6 @@ export const SHORTCUTS = [
     ),
   },
   {
-    title: 'Multiple Block Selection',
-    command: (
-      <>
-        <ShortcutCommand>Shift</ShortcutCommand> + Drag
-      </>
-    ),
-  },
-  {
     title: 'Search and Add Block',
     command: (
       <>

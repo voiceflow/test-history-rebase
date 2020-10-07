@@ -124,7 +124,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         onZoom={zoomViewport}
         onRegister={registerCanvas}
         onRightClick={contextMenu.onOpen}
-        onShiftDragStart={startGroupSelection}
+        onSelectDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
         onDragStart={onDragStart}
         addClass={addClass}

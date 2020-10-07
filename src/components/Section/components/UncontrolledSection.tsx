@@ -93,6 +93,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
   const clickHandler = onClick || (headerToggle ? toggle : undefined);
   const ContentPrefixComponent = contentPrefix;
   const ContentSuffixComponent = contentSuffix;
+
   return (
     <Container
       ref={ref}

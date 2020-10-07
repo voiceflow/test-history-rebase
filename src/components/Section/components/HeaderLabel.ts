@@ -33,7 +33,6 @@ const HeaderLabel = styled.div<HeaderLabelProps>`
   min-width: 0;
   margin-right: ${units(1.5)}px;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-  font-weight: 500 !important;
   ${({ variant }) => {
     switch (variant) {
       // used important to override styling added by parent container with Collapse

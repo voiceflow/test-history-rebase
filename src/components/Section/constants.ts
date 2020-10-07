@@ -5,8 +5,8 @@ export enum SectionToggleVariant {
 
 export enum SectionVariant {
   PRIMARY = 'primary',
-  TERTIARY = 'tertiary',
   SECONDARY = 'secondary',
-  SUBSECTION = 'subsection',
+  TERTIARY = 'tertiary',
   QUATERNARY = 'quaternary',
+  SUBSECTION = 'subsection',
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Section from '@/components/Section';
+import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import SvgIcon from '@/components/SvgIcon';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
@@ -24,6 +25,7 @@ function CombinedEditor({ nestedBlocks }) {
             isLink
             onClick={() => engine.focus.set(nodeID)}
             isDividerNested={index !== 0}
+            headerVariant={HeaderVariant.LINK}
           />
         );
       })}

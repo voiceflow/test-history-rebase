@@ -10,7 +10,7 @@ import { UncontrolledSectionProps } from './components/UncontrolledSection';
 export * from './components';
 export * from './constants';
 
-export type SectionProps = UncontrolledSectionProps & {
+export type SectionProps = Omit<UncontrolledSectionProps, 'isCollapsed'> & {
   initialOpen?: boolean;
   onToggleChange?: (collapsed: boolean) => void;
 };

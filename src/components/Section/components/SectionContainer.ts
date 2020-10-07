@@ -89,6 +89,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
       switch (variant) {
         case SectionVariant.TERTIARY:
         case SectionVariant.SUBSECTION:
+        case SectionVariant.QUATERNARY:
           return css`
             color: #62778c;
             font-weight: 600;
@@ -98,12 +99,6 @@ const SectionContainer = styled.div<SectionContainerProps>`
           return css`
             font-weight: ${isCollapsed ? 'normal' : '600'};
             color: #62778c;
-          `;
-        case SectionVariant.QUATERNARY:
-          return css`
-            color: #62778c;
-            font-weight: 600;
-            font-size: 15px;
           `;
         case SectionVariant.PRIMARY:
         default:

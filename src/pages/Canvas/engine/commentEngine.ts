@@ -5,11 +5,15 @@ import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
+import { Comment } from '@/models';
+import { DraftCommentType, NewCommentAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 
-import { NewCommentAPI } from '../types';
 import { EngineConsumer, NodeCandidate, getCandidates } from './utils';
+
+export const NewCommentID = 'new';
+export const NEW_COMMENT = { text: '', mentions: [] };
 
 class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');
@@ -25,6 +29,8 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   targetNodeID: string | null = null;
 
   isCreating = false;
+
+  draftComment: DraftCommentType | null = null;
 
   get isActive() {
     return !!this.select(createMatchSelector(Path.CANVAS_COMMENTING));
@@ -76,6 +82,23 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (threadID) {
       this.redrawThread(threadID);
       this.log.info(this.log.success('set comment target'), this.log.slug(threadID));
+    }
+  }
+
+  setDraftComment(threadID: string, value: Pick<Comment, 'text' | 'mentions'>) {
+    this.draftComment = {
+      ...this.draftComment,
+      [threadID]: value,
+    };
+  }
+
+  resetDraftComment(threadID?: string) {
+    if (!this.draftComment) return;
+
+    if (threadID) {
+      delete this.draftComment[threadID];
+    } else {
+      this.draftComment = null;
     }
   }
 

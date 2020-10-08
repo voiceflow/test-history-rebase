@@ -18,34 +18,40 @@ export type EditableCommentProps = {
   onSave: (value: PartialComment) => void;
   isEditing?: boolean;
   onClose?: Callback;
-  initialValues?: Comment;
+  initialValues?: Pick<Comment, 'text' | 'mentions'>;
   headerProps?: Partial<ThreadEditorHeaderProps>;
+  onBlur?: (values: Pick<Comment, 'text' | 'mentions'>) => void;
 };
 
-const EditableComment: React.RefForwardingComponent<{ reset: () => void }, EditableCommentProps> = (
-  { initialValues = EMPTY_COMMENT, isEditing, headerProps, onSave, onClose },
-  ref
-) => {
+const EditableComment: React.FC<EditableCommentProps> = ({
+  initialValues = EMPTY_COMMENT,
+  isEditing,
+  headerProps,
+  onSave,
+  onClose,
+  onBlur: saveDraftValues,
+}) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
   const [comment, setComment] = useLinkedState<PartialComment>(initialValues);
   const engine = React.useContext(EngineContext)!;
 
   const onBlur = () => {
-    if (!comment.text) {
-      setComment(EMPTY_COMMENT);
-      onClose?.();
+    if (comment.text) {
+      saveDraftValues?.(comment);
     }
   };
 
-  React.useImperativeHandle(ref, () => ({
-    reset: () => setComment(EMPTY_COMMENT),
-  }));
+  const onPost = () => {
+    onSave(comment);
+
+    setComment(EMPTY_COMMENT);
+
+    onClose?.();
+  };
 
   React.useEffect(() => {
-    // TODO: figure out why this is needed
     // this is to render cursor at the end of the text
-
     if (inputRef.current) {
       const valueLength = inputRef.current.value.length;
 
@@ -53,15 +59,10 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
     }
   }, [isEditing]);
 
-  const onPost = () => {
-    onSave(comment);
-    setComment(EMPTY_COMMENT);
-    onClose?.();
-    inputRef?.current?.blur();
-  };
+  const disableModes = () => engine.disableAllModes();
 
   return (
-    <Box className={COMMENT_EDITOR_CLASSNAME}>
+    <Box className={COMMENT_EDITOR_CLASSNAME} onBlur={onBlur}>
       <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
       <Box className={COMMENT_CLASSNAME} mt={12}>
         {isEditing ? (
@@ -69,16 +70,15 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
             onChange={(text, mentions) => setComment({ text, mentions })}
             placeholder="Comment or @mention"
             value={comment.text}
-            onBlur={onBlur}
             inputProps={{
               inputRef,
               autoFocus: isEditing,
-              onKeyDown: async (e) => {
+              onKeyDown: (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
                   onPost();
                 }
                 if (e.keyCode === 27) {
-                  await engine.disableAllModes();
+                  disableModes();
                 }
               },
             }}
@@ -91,4 +91,4 @@ const EditableComment: React.RefForwardingComponent<{ reset: () => void }, Edita
   );
 };
 
-export default React.forwardRef(EditableComment);
+export default EditableComment;

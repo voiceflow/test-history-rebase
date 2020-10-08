@@ -25,14 +25,20 @@ const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
   const onSave = async (values: Pick<Comment, 'text' | 'mentions'>) => {
     await engine.comment.createComment(threadID, values);
 
+    engine.comment.resetDraftComment(threadID);
+
     trackEvents.trackNewThreadReply();
     disableReplying();
   };
+
+  const saveDraftValue = (values: Pick<Comment, 'text' | 'mentions'>) => engine.comment.setDraftComment(threadID, values);
 
   return isReplying ? (
     <EditableComment
       isEditing
       onSave={onSave}
+      initialValues={engine.comment.draftComment?.[threadID]}
+      onBlur={saveDraftValue}
       headerProps={{
         isPosted: !isReplying,
       }}

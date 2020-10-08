@@ -233,10 +233,7 @@ export const createComment = (threadID: string, data: Partial<Pick<Comment, 'tex
   }
 };
 
-export const updateComment = (threadID: string, commentID: string, data: Partial<Pick<Comment, 'text' | 'mentions'>>): Thunk => async (
-  dispatch,
-  getState
-) => {
+export const updateComment = (threadID: string, commentID: string, data: Pick<Comment, 'text' | 'mentions'>): Thunk => async (dispatch, getState) => {
   const state = getState();
   const projectID = Skill.activeProjectIDSelector(state);
   const thread = threadByIDSelector(state)(threadID);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { LockOwner, NodeData } from '@/models';
+import { Comment, LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -94,3 +94,5 @@ export type TransformOverlayAPI = {
 export type SelectionMarqueeAPI = {
   show: () => void;
 };
+
+export type DraftCommentType = Record<string, Pick<Comment, 'text' | 'mentions'>>;

@@ -21,6 +21,7 @@ const ThreadLayer: React.FC<ConnectedThreadLayerProps> = ({ threadIDs, updateUnr
     if (!isCommentingMode) {
       focusThread.resetFocus();
       engine.comment.reset();
+      engine.comment.resetDraftComment();
     }
   }, [isCommentingMode]);
 

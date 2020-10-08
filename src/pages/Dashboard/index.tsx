@@ -184,7 +184,19 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       openPaymentModal();
     }
 
-    if (actionsEnv.isEnabled && !sessionStorage.getItem('actions_return_to_creator')) {
+    if (document.referrer?.includes('creator.actions.voiceflow.com') && !sessionStorage.getItem('creator_return_to_actions')) {
+      sessionStorage.setItem('creator_return_to_actions', 'true');
+
+      toast.warn(
+        <>
+          Looking to build with Google Action Console? Get early access at{' '}
+          <Anchor href="https://creator.actions.voiceflow.com" target="" rel="">
+            creator.actions.voiceflow.com
+          </Anchor>
+        </>,
+        { autoClose: false, closeButton: true }
+      );
+    } else if (actionsEnv.isEnabled && !sessionStorage.getItem('actions_return_to_creator')) {
       sessionStorage.setItem('actions_return_to_creator', 'true');
 
       toast.warn(
@@ -192,7 +204,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
           This version of your workspace is for your new Google Actions Console projects only.
           <br />
           Looking for your existing projects? Return to{' '}
-          <Anchor href="https://creator.voiceflow.com" target="">
+          <Anchor href="https://creator.voiceflow.com" target="" rel="">
             creator.voiceflow.com
           </Anchor>
         </>,

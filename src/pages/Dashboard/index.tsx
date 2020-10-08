@@ -184,7 +184,9 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       openPaymentModal();
     }
 
-    if (actionsEnv.isEnabled) {
+    if (actionsEnv.isEnabled && !sessionStorage.getItem('actions_return_to_creator')) {
+      sessionStorage.setItem('actions_return_to_creator', 'true');
+
       toast.warn(
         <>
           This version of your workspace is for your new Google Actions Console projects only.

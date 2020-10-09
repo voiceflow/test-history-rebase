@@ -10,14 +10,21 @@ const IconUpload: React.FC<any> = UploadJustIcon;
 type NameAndImageProps = {
   name: string;
   setName: (name: string) => void;
-  image: string;
-  setImage: (url: string) => void;
+  smallIcon: string;
+  largeIcon: string;
+  setSmallIcon: (url: string) => void;
+  setLargeIcon: (url: string) => void;
   onContinue: () => void;
 };
 
-const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, image, setImage, onContinue }) => {
+const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, largeIcon, setSmallIcon, setLargeIcon, onContinue }) => {
   const canContinue = !!name;
   const iconUploadRef = React.createRef<HTMLElement>();
+
+  const updateIconURLS = (urls: string[]) => {
+    setLargeIcon(urls[0]);
+    setSmallIcon(urls[1]);
+  };
 
   return (
     <Container>
@@ -32,7 +39,13 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, image, setIm
       </FlexCenter>
 
       <FlexCenter>
-        <IconUpload image={image} update={setImage} size="large" ref={iconUploadRef} endpoint="/image/large_icon" />
+        <IconUpload
+          image={largeIcon}
+          update={updateIconURLS}
+          size="large"
+          ref={iconUploadRef}
+          endpoint={['/image/large_icon', '/image/small_icon']}
+        />
       </FlexCenter>
 
       <LabelContainer>

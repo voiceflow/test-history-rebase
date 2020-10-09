@@ -10,8 +10,8 @@ type Config = UploadConfig & {
 };
 
 type RequiredProps<F> = {
-  update: (url: string | null) => void;
-} & (F extends 'uploadImage' ? { endpoint?: null | string } : F extends 'uploadAudio' ? { endpoint: string } : never);
+  update: (url: string | string[] | null) => void;
+} & (F extends 'uploadImage' ? { endpoint?: null | string | string[] } : F extends 'uploadAudio' ? { endpoint: string } : never);
 
 type InjectedProps = {
   error: null | string;
@@ -42,8 +42,22 @@ export const withUpload = <C extends Config, P extends RequiredProps<C['clientFu
         }
 
         try {
-          const url = await onUpload(endpoint, acceptedFiles[0]);
-          update(url);
+          if (Array.isArray(endpoint)) {
+            Promise.all(
+              endpoint.map(async (item: string) => {
+                return onUpload(item, acceptedFiles[0]);
+              })
+            )
+              .then((urls: string[]) => {
+                update(urls);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          } else {
+            const url = await onUpload(endpoint, acceptedFiles[0]);
+            update(url);
+          }
         } catch {
           update(null);
           setError(errorMessage || 'There was an error');

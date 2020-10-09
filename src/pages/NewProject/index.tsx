@@ -34,7 +34,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
   const currentStep = stepStack[0];
   const [name, setName] = React.useState('');
-  const [image, setImage] = React.useState('');
+  const [smallIcon, setSmallIcon] = React.useState('');
+  const [largeIcon, setLargeIcon] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
   const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
   const [selectedLocales, setSelectedLocales] = React.useState([LOCALE_MAP[0].value]);
@@ -52,25 +53,27 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
       platform: selectedPlatform!,
       mainLocale: mainLanguage,
       invocation: invocationName,
-      image,
+      smallIcon,
+      largeIcon,
     };
     const listID = computedMatch?.params?.listID;
 
     try {
       if (dataRefactor.isEnabled) {
-        const project = await createProject({ platform: selectedPlatform!, name, image, listID });
+        const project = await createProject({ platform: selectedPlatform!, name, largeIcon, listID });
         // TODO: in the future make new project parameters much more platform specific
         if (selectedPlatform === PlatformType.ALEXA) {
           clientV2.alexaService.version.updatePublishing(project.versionID, {
             invocationName,
             invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
             locales: selectedLocales as any,
-            largeIcon: image,
+            largeIcon,
+            smallIcon,
           });
         } else if (selectedPlatform === PlatformType.GOOGLE) {
           clientV2.googleService.version.updatePublishing(project.versionID, {
             locales: selectedLocales as any,
-            smallLogoImage: image,
+            smallLogoImage: smallIcon,
             displayName: name,
             pronunciation: invocationName,
             sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
@@ -137,9 +140,11 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
             selectedLocales={selectedLocales}
             setSelectedLocales={setSelectedLocales}
             name={name}
-            setImage={setImage}
             setName={setName}
-            image={image}
+            smallIcon={smallIcon}
+            largeIcon={largeIcon}
+            setSmallIcon={setSmallIcon}
+            setLargeIcon={setLargeIcon}
             finalizeCreation={finalizeCreation}
             onContinue={onContinue}
             setSelectedPlatform={setSelectedPlatform}

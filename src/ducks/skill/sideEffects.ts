@@ -112,7 +112,8 @@ export const createSkill = (platform: PlatformType, projectData: Partial<Skill>,
         platform,
         mainLocale: projectData?.mainLocale,
         inv_name: projectData?.invocation,
-        image: projectData?.image,
+        smallIcon: projectData?.smallIcon,
+        largeIcon: projectData?.largeIcon,
       })
     );
 

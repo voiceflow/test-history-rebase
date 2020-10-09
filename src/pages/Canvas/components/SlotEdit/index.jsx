@@ -71,6 +71,8 @@ function SlotEdit({
   const updateSlot = () => {
     if (!slotName.trim()) {
       toast.error('Slot must have a name');
+    } else if (slotName.length > 32) {
+      toast.error('Slot name cannot exceed 32 characters');
     } else if (!slotType) {
       toast.error('Slot must have a type');
     } else if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {

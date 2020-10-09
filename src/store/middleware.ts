@@ -232,6 +232,16 @@ const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) =>
   next(action);
 };
 
+// only run middleware if logged in
+const createLoggedInMiddleware = (childMiddleware: StoreMiddleware): StoreMiddleware => (store) => (next) => (action) => {
+  const state = store.getState();
+  const loggedIn = !!Account.userIDSelector(state);
+  if (loggedIn) {
+    return childMiddleware(store)(next)(action);
+  }
+  return next(action);
+};
+
 const createMiddleware = (history: History) => {
   const middleware = [
     routerMiddleware(history),
@@ -239,13 +249,15 @@ const createMiddleware = (history: History) => {
     creatorHistoryMiddleware,
     creatorResetMiddleware,
     cleanupDisplayMiddleware,
-    createFeatureFlaggedMiddleware(
-      FeatureFlag.DATA_REFACTOR,
-      createAutosaveMiddleware(
-        createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
-        SkillV2.saveIntentsAndSlots
-      ),
-      createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents)
+    createLoggedInMiddleware(
+      createFeatureFlaggedMiddleware(
+        FeatureFlag.DATA_REFACTOR,
+        createAutosaveMiddleware(
+          createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
+          SkillV2.saveIntentsAndSlots
+        ),
+        createAutosaveMiddleware(createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }), Skill.saveIntents)
+      )
     ),
     createAutosaveMiddleware(Skill.activePlatformSelector, savePlatformAndActiveDiagram, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createFeatureFlaggedMiddleware(

@@ -10,7 +10,6 @@ import { createAction } from './utils';
 import createCRUDReducer, { AnyCRUDAction, INITIAL_STATE as INITIAL_CRUD_STATE, createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
 
 export const STATE_KEY = 'viewport';
-// TODO: expire at some point? 30 days?
 const PERSIST_CONFIG = {
   key: STATE_KEY,
   storage: storageLocal,

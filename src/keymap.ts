@@ -38,7 +38,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.DELETE]: ['del', 'backspace'],
   [Hotkey.ZOOM_IN]: ['=', 'shift+='],
   [Hotkey.ZOOM_OUT]: ['-', 'shift+-'],
-  [Hotkey.ROOT_NODE]: 'h',
+  [Hotkey.ROOT_NODE]: 's',
   [Hotkey.SPOTLIGHT]: 'shift+space',
   [Hotkey.USER_SPEECH]: 'space',
   [Hotkey.OPEN_CMS_MODAL]: 'm',

@@ -7,10 +7,11 @@ import { SectionVariants } from '@/pages/Settings/components/constants';
 import { PLATFORM_SETTINGS_META, SettingSections, SettingsTabsType } from '@/pages/Settings/constants';
 
 import ProjectVersions from '../ProjectVersions';
-import { Basic, DangerZone, GlobalConversationLogic } from './Sections';
+import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
 const SectionComponents: Record<SettingSections, React.FC> = {
   [SettingSections.BASIC]: Basic,
+  [SettingSections.CANVAS]: Canvas,
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,
   [SettingSections.CHANNEL_SPECIFIC_FEATURES]: AlexaFeatures,
   [SettingSections.DANGER_ZONE]: DangerZone,

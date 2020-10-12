@@ -17,8 +17,8 @@ export const SCROLL_TIMEOUT = 500;
 export const ANIMATION_TIMEOUT = 250;
 
 export enum ControlScheme {
-  TRACKPAD = 'TRACKPAD',
   MOUSE = 'MOUSE',
+  TRACKPAD = 'TRACKPAD',
 }
 
 export enum ControlType {

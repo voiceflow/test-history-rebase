@@ -1,7 +1,7 @@
 import composeRefs from '@seznam/compose-react-refs';
 import React from 'react';
 
-import { isMac, isSafari } from '@/config';
+import { isSafari } from '@/config';
 import { OverlayValue, withOverlay } from '@/contexts';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
@@ -41,7 +41,7 @@ export type CanvasProps = {
   onZoom?: (translateZoom: MovementCalculator) => void;
   onClick?: (event: React.MouseEvent) => void;
   onMouseUp?: (event: MouseEvent) => void;
-  onMouseDown?: (event: React.MouseEvent) => void;
+  onMouseDown?: (event: MouseEvent) => void;
   onRightClick?: (event: React.MouseEvent) => void;
   onSelectDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
@@ -49,10 +49,6 @@ export type CanvasProps = {
 };
 
 class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { overlay: OverlayValue }> {
-  static defaultProps = {
-    controlScheme: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
-  };
-
   rootRef = React.createRef<HTMLDivElement>();
 
   renderLayerRef = React.createRef<HTMLDivElement>();
@@ -69,8 +65,10 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
   api = {
     getControlScheme: () => this.controls.scheme,
+    applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
+      this.controls = generateControls(controlScheme, this.handleControl);
+    },
     isPanning: () => this.controls.isPanning,
-    isTrackpadPanning: () => this.controls?.isTrackpadPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
     getRef: () => this.rootRef.current!,
@@ -326,7 +324,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     this.controls.click(event);
   };
 
-  onMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  onMouseDown = (event: MouseEvent) => {
     const { onMouseDown } = this.props;
 
     onMouseDown?.(event);
@@ -344,12 +342,14 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     if (event.key === 'Shift') {
       this.props.removeClass?.(CANVAS_SHIFT_PRESSED_CLASSNAME);
     }
+    this.controls.keyup(event);
   };
 
   onKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Shift') {
       this.props.addClass?.(CANVAS_SHIFT_PRESSED_CLASSNAME);
     }
+    this.controls.keydown(event);
   };
 
   componentDidMount() {
@@ -372,6 +372,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     this.rootRef.current?.addEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.addEventListener('keydown', this.onKeyDown);
+    this.rootRef.current?.addEventListener('mousedown', this.onMouseDown);
   }
 
   componentWillUnmount() {
@@ -381,6 +382,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     this.rootRef.current?.removeEventListener('keyup', this.onKeyUp);
     this.rootRef.current?.removeEventListener('keydown', this.onKeyDown);
+    this.rootRef.current?.removeEventListener('mousedown', this.onMouseDown);
   }
 
   componentDidUpdate(prevProps: CanvasProps) {
@@ -401,7 +403,6 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
           onContextMenu={onRightClick}
           onClick={this.onClick}
           onDragStart={this.onDragStart}
-          onMouseDown={this.onMouseDown}
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >

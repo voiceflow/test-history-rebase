@@ -6,6 +6,7 @@ import { Alexa, General, Google, Universal } from './components/ContentDescripto
 
 export enum SettingSections {
   BASIC = 'Basic',
+  CANVAS = 'Canvas',
   GLOBAL_CONVERSATION_LOGIC = 'Global Conversation Logic',
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
   DANGER_ZONE = 'Danger Zone',
@@ -39,6 +40,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
     name: 'Alexa',
     sections: [
       SettingSections.BASIC,
+      SettingSections.CANVAS,
       SettingSections.GLOBAL_CONVERSATION_LOGIC,
       SettingSections.CHANNEL_SPECIFIC_FEATURES,
       SettingSections.DANGER_ZONE,
@@ -59,7 +61,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
   },
   [PlatformType.GOOGLE]: {
     name: 'Google',
-    sections: [SettingSections.BASIC, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
+    sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
     descriptors: {
       projectName: Google.ProjectName,
       invocationName: Google.InvocationName,

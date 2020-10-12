@@ -21,7 +21,7 @@ export const useCursorControls = () => {
     (movement: Pair<number>) => {
       engine.panViewport(movement);
 
-      if (mousePosition.current !== null && engine.canvas!.isTrackpadPanning()) {
+      if (mousePosition.current !== null && engine.canvas!.isPanning()) {
         const zoom = engine.canvas!.getZoom();
         const [moveX, moveY] = movement;
         const [currX, currY] = mousePosition.current;

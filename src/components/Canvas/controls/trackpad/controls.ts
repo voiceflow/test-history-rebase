@@ -1,11 +1,11 @@
 import { isChrome, isChromeOS, isEdge, isFirefox, isMac, isWindows } from '@/config';
 import { preventDefault } from '@/utils/dom';
 
-import { ANIMATION_TIMEOUT, ControlType, SCROLL_TIMEOUT } from '../constants';
-import { GestureEvent } from './types';
-import { BaseControls } from './utils';
+import { ANIMATION_TIMEOUT, ControlType, SCROLL_TIMEOUT } from '../../constants';
+import MouseControls from '../mouse/controls';
+import { GestureEvent } from '../types';
 
-class TrackPadControls extends BaseControls {
+class TrackPadControls extends MouseControls {
   lastMultiplier = 0;
 
   lastTimestamp = 0;
@@ -22,11 +22,24 @@ class TrackPadControls extends BaseControls {
 
   isPanning = false;
 
+  dragstart = (event: React.DragEvent) => {
+    if (event.defaultPrevented) return;
+
+    event.preventDefault();
+
+    this.isPanning = this.spacebarPressed || event.button === 2;
+    if (this.isPanning) {
+      this.startPanning();
+    } else {
+      document.removeEventListener('mousemove', this.mousemove);
+      this.isDragging = true;
+      this.handle({ type: ControlType.SELECT_DRAG_START, event });
+    }
+  };
+
   gesturestart = (event: GestureEvent) => {
     this.lastScale = 1;
     event.preventDefault();
-
-    this.handle({ type: ControlType.START_INTERACTION });
   };
 
   gesturechange = (event: GestureEvent) => {
@@ -46,7 +59,6 @@ class TrackPadControls extends BaseControls {
 
   onAnimateCompleteEarly = () => {
     this.animateCompleteEarly = null;
-    this.handle({ type: ControlType.END_INTERACTION });
   };
 
   wheel = preventDefault((event: WheelEvent & { wheelDeltaX?: number; wheelDeltaY?: number }) => {
@@ -156,8 +168,6 @@ class TrackPadControls extends BaseControls {
 
     if (this.animateCompleteEarly) {
       clearTimeout(this.animateCompleteEarly);
-    } else {
-      this.handle({ type: ControlType.START_INTERACTION });
     }
 
     this.animateCompleteEarly = setTimeout(this.onAnimateCompleteEarly, ANIMATION_TIMEOUT);

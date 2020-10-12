@@ -2,6 +2,8 @@ import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
+import { ControlScheme } from '@/components/Canvas/constants';
+import { isMac } from '@/config';
 import { BlockCategoryType } from '@/constants';
 import { Action, Reducer, RootReducer } from '@/store/types';
 import { withoutValue } from '@/utils/array';
@@ -17,6 +19,7 @@ export type UIState = {
     openSections: BlockCategoryType[];
   };
   local: Record<string, any>;
+  canvasNavigation: ControlScheme;
 };
 
 export const STATE_KEY = 'ui';
@@ -29,6 +32,7 @@ export const INITIAL_STATE = {
     openSections: [BlockCategoryType.BASIC],
   },
   local: {},
+  canvasNavigation: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
 };
 
 const PERSIST_CONFIG = {
@@ -40,6 +44,7 @@ export enum UIAction {
   TOGGLE_BLOCK_MENU_SECTION = 'UI:BLOCK_MENU:TOGGLE_SECTION',
   SET_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ACTIVE_MENU',
   TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN',
+  SET_CANVAS_NAVIGATION = 'UI:SET_CANVAS_NAVIGATION',
 }
 
 // action types
@@ -50,7 +55,9 @@ export type SetActiveCreatorMenu = Action<UIAction.SET_ACTIVE_CREATOR_MENU, stri
 
 export type ToggleCreatorMenuHidden = Action<UIAction.TOGGLE_CREATOR_MENU_HIDDEN>;
 
-type AnyUIAction = ToggleBlockMenuSection | SetActiveCreatorMenu | ToggleCreatorMenuHidden;
+export type SetCanvasNavigation = Action<UIAction.SET_CANVAS_NAVIGATION, ControlScheme>;
+
+type AnyUIAction = ToggleBlockMenuSection | SetActiveCreatorMenu | ToggleCreatorMenuHidden | SetCanvasNavigation;
 
 // reducers
 
@@ -79,12 +86,19 @@ export const toggleCreatorMenuHiddenReducer: Reducer<UIState> = (state) => ({
   },
 });
 
+export const setNavigationReducer: Reducer<UIState, SetCanvasNavigation> = (state, { payload: canvasNavigation }) => ({
+  ...state,
+  canvasNavigation,
+});
+
 const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
       return toggleBlockMenuSectionReducer(state, action);
     case UIAction.SET_ACTIVE_CREATOR_MENU:
       return setActiveCreatorMenuReducer(state, action);
+    case UIAction.SET_CANVAS_NAVIGATION:
+      return setNavigationReducer(state, action);
     case UIAction.TOGGLE_CREATOR_MENU_HIDDEN:
       return toggleCreatorMenuHiddenReducer(state);
     default:
@@ -104,6 +118,8 @@ export const activeCreatorMenuSelector = createSelector(rootSelector, ({ creator
 
 export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creatorMenu: { isHidden } }) => isHidden);
 
+export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNavigation }) => canvasNavigation);
+
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategoryType): ToggleBlockMenuSection =>
@@ -112,3 +128,6 @@ export const toggleBlockMenuSection = (section: BlockCategoryType): ToggleBlockM
 export const setActiveCreatorMenu = (menu: string): SetActiveCreatorMenu => createAction(UIAction.SET_ACTIVE_CREATOR_MENU, menu);
 
 export const toggleCreatorMenuHidden = (): ToggleCreatorMenuHidden => createAction(UIAction.TOGGLE_CREATOR_MENU_HIDDEN);
+
+export const setCanvasNavigation = (canvasNavigation: ControlScheme): SetCanvasNavigation =>
+  createAction(UIAction.SET_CANVAS_NAVIGATION, canvasNavigation);

@@ -38,10 +38,9 @@ export const STATIC_RESOURCES: StaticResource[] = [
 ];
 
 export enum CanvasControl {
-  HOME = 'home',
+  START = 'start',
   MODEL = 'model',
   MARKUP = 'markup',
-  RESOURCES = 'resources',
   COMMENTING = 'commenting',
   ZOOM_IN = 'zoom_in',
   ZOOM_OUT = 'zoom_out',
@@ -55,10 +54,10 @@ export type CanvasControlMetaProps = {
 };
 
 export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = {
-  [CanvasControl.HOME]: {
-    title: 'Home',
+  [CanvasControl.START]: {
+    title: 'Start',
     icon: 'home',
-    hotkey: 'H',
+    hotkey: 'S',
   },
   [CanvasControl.MODEL]: {
     title: 'Model',
@@ -73,10 +72,6 @@ export const CanvasControlMeta: Record<CanvasControl, CanvasControlMetaProps> = 
   [CanvasControl.MARKUP]: {
     title: 'Markup',
     hotkey: 'A',
-  },
-  [CanvasControl.RESOURCES]: {
-    title: 'Home',
-    hotkey: 'I',
   },
   [CanvasControl.ZOOM_IN]: {
     title: 'Zoom In',

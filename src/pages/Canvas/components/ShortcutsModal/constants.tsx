@@ -77,8 +77,8 @@ export const SHORTCUTS = [
     command: <ShortcutCommand>?</ShortcutCommand>,
   },
   {
-    title: 'Go to Home',
-    command: <ShortcutCommand>H</ShortcutCommand>,
+    title: 'Go to Start Block',
+    command: <ShortcutCommand>S</ShortcutCommand>,
   },
   {
     title: 'Zoom In',

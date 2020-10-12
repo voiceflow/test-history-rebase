@@ -1,10 +1,12 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
+import { useSelector } from 'react-redux';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
 import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
+import { canvasNavigationSelector } from '@/ducks/ui';
 import { connect } from '@/hocs';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -113,9 +115,12 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
 
   const removeClass = React.useCallback((className: string) => engine.removeClass(className), []);
 
+  const navigation = useSelector(canvasNavigationSelector);
+
   return (
     <>
       <Canvas
+        controlScheme={navigation}
         viewport={viewport}
         onClick={onClickCanvas}
         onMouseUp={onMouseUp}

@@ -84,6 +84,7 @@ export { default as greater } from './greater.svg';
 // h
 export { default as hyperlink } from './hyperlink.svg';
 export { default as home } from './home.svg';
+export { default as hand } from './hand.svg';
 
 // i
 export { default as image } from './image.svg';

@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-import { CANVAS_BUSY_CLASSNAME } from '../constants';
+import { CANVAS_BUSY_CLASSNAME, CANVAS_INTERACTING_CLASSNAME } from '../constants';
 
 const CanvasContainer = styled.div`
   position: relative;
@@ -8,6 +8,14 @@ const CanvasContainer = styled.div`
   width: 100%;
   overflow: hidden;
   user-select: none;
+
+  .${CANVAS_INTERACTING_CLASSNAME} & {
+    cursor: grab;
+
+    > * > * {
+      pointer-events: none;
+    }
+  }
 
   &:active:not(.${CANVAS_BUSY_CLASSNAME}) {
     cursor: grabbing;

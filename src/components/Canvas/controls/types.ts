@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Either } from '@/types';
 
-import { ControlType } from '../constants';
+import { ControlScheme, ControlType } from '../constants';
 
 export type GestureEvent = UIEvent & {
   scale?: number;
@@ -64,3 +64,18 @@ export type ControlAction =
   | ClickAction
   | MouseUpAction
   | ShiftDragStartAction;
+
+export interface ControlInterface {
+  readonly isPanning: boolean;
+  scheme: ControlScheme | null;
+  click: (event: React.MouseEvent) => void;
+  mousedown: (event: MouseEvent) => void;
+  dragstart: (event: React.DragEvent) => void;
+  wheel: (event: WheelEvent) => void;
+  gesturestart: (event: GestureEvent) => void;
+  gesturechange: (event: GestureEvent) => void;
+  keyup: (event: KeyboardEvent) => void;
+  keydown: (event: KeyboardEvent) => void;
+}
+
+export type GenerateControlInterface = (handle: (action: ControlAction) => void) => ControlInterface;

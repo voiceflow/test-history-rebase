@@ -25,8 +25,7 @@ const SimpleSection = styled.div<SimpleSectionProps>`
 
   ${({ isDragging }) => isDragging && draggingStyles}
 
-  ${({ isDraggingPreview }) =>
-    isDraggingPreview && draggingPreviewStyles}
+  ${({ isDraggingPreview }) => isDraggingPreview && draggingPreviewStyles}
 `;
 
 export default SimpleSection;

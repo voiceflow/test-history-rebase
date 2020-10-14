@@ -15,7 +15,7 @@ export const normal = () => (
   <TutorialTooltip anchorRenderer={() => <span>How it works</span>} title="Choice Block Tutorial">
     <>
       <Section>
-        <VideoPlayer link="https://www.youtube.com/embed/mxe1iwDboHc" />
+        <VideoPlayer link="https://www.youtube.com/embed/vuEmXn-lGK0" />
       </Section>
       <Title isSubtitle>Tutorial Recap</Title>
 

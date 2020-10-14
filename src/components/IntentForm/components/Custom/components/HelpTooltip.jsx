@@ -8,7 +8,7 @@ function HelpTooltip() {
   return (
     <>
       <Section marginBottomUnits={2.5}>
-        <VideoPlayer link="https://www.youtube.com/embed/mxe1iwDboHc" height="210px" />
+        <VideoPlayer link="https://www.youtube.com/embed/vuEmXn-lGK0" height="210px" />
       </Section>
       <Title isSubtitle>Tutorial Recap</Title>
       <Collapsable title="Intents">

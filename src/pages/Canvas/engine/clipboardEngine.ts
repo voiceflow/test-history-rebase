@@ -5,6 +5,7 @@ import { get, set } from 'idb-keyval';
 import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
 import nodeDataAdapter from '@/client/adapters/creator/nodeData';
+import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -15,7 +16,6 @@ import * as Product from '@/ducks/product';
 import * as Skill from '@/ducks/skill';
 import { handlePastedNodes } from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
-import * as User from '@/ducks/user';
 import * as Models from '@/models';
 import { activeSlotTypesSelector } from '@/store/selectors';
 import * as Clipboard from '@/utils/clipboard';
@@ -153,7 +153,7 @@ class ClipboardEngine extends EngineConsumer {
         })
       );
 
-      this.dispatch(User.setCanvasInfo(`${copiedBlocks.length} block(s) copied to clipboard`));
+      toast.success(`${copiedBlocks.length} block(s) copied to clipboard`);
     },
 
     extractData: async (copiedKey: string) => {

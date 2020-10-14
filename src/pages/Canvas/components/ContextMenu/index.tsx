@@ -28,6 +28,8 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID!),
 
+  [CanvasAction.DUPLICATE_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.duplicate(nodeID!),
+
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
 
   [CanvasAction.DELETE_BLOCK]: ({ target: nodeID }, { engine }) => {

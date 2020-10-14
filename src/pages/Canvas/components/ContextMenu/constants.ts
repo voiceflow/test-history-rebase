@@ -9,6 +9,7 @@ export enum CanvasAction {
   PASTE = 'paste',
   RENAME_BLOCK = 'rename_block',
   COPY_BLOCK = 'copy_block',
+  DUPLICATE_BLOCK = 'duplicate_block',
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   RETURN_TO_HOME = 'return_to_home',
@@ -73,14 +74,21 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     },
   },
   {
-    label: 'Copy Block',
+    label: 'Duplicate',
+    value: CanvasAction.DUPLICATE_BLOCK,
+    shouldRender: ({ target: nodeID }, { engine }) => {
+      return isBlock(nodeID!, engine);
+    },
+  },
+  {
+    label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
       return isBlock(nodeID!, engine);
     },
   },
   {
-    label: 'Block Color',
+    label: 'Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
     shouldRender: ({ target: nodeID }, { engine }) => {
@@ -88,7 +96,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     },
   },
   {
-    label: 'Delete Block',
+    label: 'Delete',
     value: CanvasAction.DELETE_BLOCK,
   },
 ];

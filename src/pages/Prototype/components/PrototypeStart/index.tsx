@@ -14,8 +14,8 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ start }) => (
 
     <div>Start test to see the dialog transcription</div>
 
-    <Button icon="forward" onClick={start}>
-      Start Test
+    <Button icon="rocket" onClick={start}>
+      Start Prototype
     </Button>
   </Container>
 );

@@ -14,7 +14,7 @@ const formatDigit = (number) => {
   return `0${flooredNumber}`.slice(-2);
 };
 
-const formatTime = (num) => {
+export const formatTime = (num) => {
   if (!_.isNumber(num)) {
     return '00:00';
   }

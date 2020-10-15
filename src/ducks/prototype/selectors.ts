@@ -18,3 +18,7 @@ export const prototypeTimeSelector = createSelector([prototypeSelector], ({ star
 export const prototypeVariablesSelector = createSelector([prototypeContextSelector], ({ variables = {} }) => variables);
 
 export const prototypeMutedSelector = createSelector([prototypeSelector], ({ muted }) => muted);
+
+export const prototypeInputModeSelector = createSelector([prototypeSelector], ({ inputMode }) => inputMode);
+
+export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({ showChips }) => showChips);

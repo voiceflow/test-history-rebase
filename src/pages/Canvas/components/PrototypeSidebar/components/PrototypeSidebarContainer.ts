@@ -1,6 +1,5 @@
 import { ContentContainer, Header } from '@/components/Section';
 import { styled, units } from '@/hocs';
-import { Outter } from '@/pages/Prototype/components/PrototypeDialog/components/Container';
 
 const PrototypeSidebarContainer = styled.div`
   display: flex;
@@ -8,10 +7,6 @@ const PrototypeSidebarContainer = styled.div`
   height: 100%;
   overflow: hidden;
   user-select: none;
-
-  ${Outter} {
-    border-top: 1px solid #eaeff4;
-  }
 
   ${Header}, ${ContentContainer} {
     padding-right: ${units(3)}px;

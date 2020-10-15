@@ -8,8 +8,10 @@ type ContainerProps = {
 const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-
+  position: relative;
   & > * {
     width: 100%;
   }

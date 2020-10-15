@@ -1,4 +1,4 @@
-import { SectionVariant } from '@/components/Section';
+import { SectionVariant } from '@/components/Section/constants';
 import { overflowTextStyles } from '@/components/Text';
 import { css, styled, units } from '@/hocs';
 
@@ -20,7 +20,7 @@ const HeaderLabel = styled.div<HeaderLabelProps>`
 
   ${({ hasToggle, isCollapsed, sectionVariant }) =>
     hasToggle &&
-    sectionVariant === 'tertiary' &&
+    sectionVariant === SectionVariant.TERTIARY &&
     (isCollapsed
       ? css`
           color: #62778c !important;

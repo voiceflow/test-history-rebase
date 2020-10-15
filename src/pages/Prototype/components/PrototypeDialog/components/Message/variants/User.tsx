@@ -8,7 +8,7 @@ type UserProps = Omit<MessageProps, 'iconProps'> & {
 };
 
 const User: React.FC<UserProps> = ({ input, ...props }) => (
-  <Message rightAlign iconProps={{ icon: 'user', color: '#6b95e9' }} {...props}>
+  <Message withLogo={false} rightAlign {...props}>
     {input}
   </Message>
 );

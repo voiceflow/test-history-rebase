@@ -2,7 +2,7 @@ import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import Input from '@/components/Input';
-import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import Section, { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import { prototypeVariablesSelector, updateVariables } from '@/ducks/prototype';
@@ -16,7 +16,7 @@ import Variables from './components/PrototypeSettingsVariables';
 const PrototypeSettings = ({ open, settings, updateSettings, variables, updateVariables }) => (
   <Drawer as="section" open={open} width={TESTING_SIDEBAR_SETTINGS_WIDTH} offset={PROTOTYPE_SIDEBAR_WIDTH} direction="left">
     <Container>
-      <Section header="Variables" borderBottom />
+      <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
       <Variables>
         {Object.keys(variables).map((name) => {
           const value = variables[name];

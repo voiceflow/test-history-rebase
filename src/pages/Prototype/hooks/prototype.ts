@@ -7,6 +7,7 @@ import { setError } from '@/ducks/modal';
 import { Context, PrototypeStatus, fetchContext, prototypeNLCSelector, prototypeVariablesSelector, updatePrototypeStatus } from '@/ducks/prototype';
 import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
 import { Slot } from '@/models';
+import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
 import PrototypeTool from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
@@ -15,7 +16,7 @@ const usePrototype = (
   prototypeToolStatus: PrototypeStatus,
   debug: boolean,
   slots: Array<Slot>
-): [PMStatus | null, Message[], Interaction[], (input: string) => void, (src: string) => void] => {
+): [PMStatus | null, Message[], Interaction[], (input: string) => Promise<void>, (src: string) => void, TAudio | null] => {
   const dispatch = useDispatch();
 
   const nlc = useSelector(prototypeNLCSelector) as NLC;
@@ -25,7 +26,6 @@ const usePrototype = (
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
-
   const eventualEngine = React.useContext(EventualEngineContext)!;
 
   const engine = eventualEngine.get();
@@ -51,10 +51,13 @@ const usePrototype = (
 
   const prototype = React.useMemo(() => new PrototypeTool(cache.current), []);
 
+  const audioInstance = prototype.audio?.audio || null;
+
   React.useEffect(() => {
     if (prototypeToolStatus === PrototypeStatus.IDLE) {
       setStatus(null);
       updateMessages([]);
+      setInteractions([]);
       prototype.stop();
     } else if (prototypeToolStatus === PrototypeStatus.ACTIVE) {
       prototype.start();
@@ -70,9 +73,14 @@ const usePrototype = (
   React.useEffect(() => () => prototype.stop(), []);
 
   const onInteraction = React.useCallback((input: string) => prototype.interact(input), [prototype]);
-  const onPlay = React.useCallback((src: string) => prototype.play(src), [prototype]);
+  const onPlay = React.useCallback(
+    (src: string) => {
+      prototype.play(src);
+    },
+    [prototype]
+  );
 
-  return [status, messages, interactions, onInteraction, onPlay];
+  return [status, messages, interactions, onInteraction, onPlay, audioInstance];
 };
 
 export default usePrototype;

@@ -22,7 +22,7 @@ export class TAudio extends Audio {
 }
 
 class AudioController {
-  private audio = new TAudio();
+  public audio = new TAudio();
 
   /**
    * Pauses PrototypeMachine audio and replaces it with external audio before resuming again

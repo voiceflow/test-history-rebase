@@ -1,30 +1,36 @@
 import Flex from '@/components/Flex';
-import { styled, units } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import { horizontalDividerStyles } from './HorizontalDivider';
 
 const LabeledHorizontalDivider = styled(Flex)`
-  margin: ${units()}px 0;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
+  margin-bottom: 12px;
+
+  ${({ isLast }) =>
+    isLast &&
+    css`
+      margin-bottom: 0;
+      margin-top: 12px;
+    `}
+  font-size: 13px;
+  font-weight: 500;
   color: #8da2b5;
   white-space: nowrap;
 
   &::before,
   &::after {
-    ${horizontalDividerStyles}
+    ${horizontalDividerStyles};
 
     display: block;
     content: '';
   }
 
   &::before {
-    margin-right: ${units()}px;
+    margin-right: 16px;
   }
 
   &::after {
-    margin-left: ${units()}px;
+    margin-left: 16px;
   }
 `;
 

@@ -1,5 +1,5 @@
 import { FlexApart } from '@/components/Flex';
-import { css, styled, units } from '@/hocs';
+import { css, styled, transition, units } from '@/hocs';
 
 type SectionHeaderProps = {
   isDragging?: boolean;
@@ -11,6 +11,8 @@ const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
   padding: ${units(2.5)}px ${units(4)}px;
   overflow: visible;
   cursor: default;
+
+  ${transition('background')};
 
   ${({ containerToggle }) =>
     containerToggle &&

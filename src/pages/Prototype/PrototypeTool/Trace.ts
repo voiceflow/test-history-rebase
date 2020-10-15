@@ -282,7 +282,7 @@ class TraceController {
   }
 
   private async processEndTrace(topTrace: EndTrace) {
-    this.message.session(topTrace.id, 'Session Ended');
+    this.message.session(topTrace.id, 'Session ended');
 
     this.stop();
 

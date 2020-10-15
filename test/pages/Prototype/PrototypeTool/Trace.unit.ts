@@ -450,7 +450,7 @@ suite(
         await controller.next();
 
         expect(stop).to.be.called;
-        expectMessage(controller, 'session', ID, 'Session Ended');
+        expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
       });
 
@@ -499,7 +499,7 @@ suite(
 
         expect(stop).to.be.called;
         Object.values(TraceMethods).forEach((method) => expect(controller[method]).to.be.called);
-        expectMessage(controller, 'session', ID, 'Session Ended');
+        expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
       });
 
@@ -556,7 +556,7 @@ suite(
 
         expectMessage(controller, 'speak', ID, { src: SRC, voice: 'voice', message: MESSAGE });
         expectMessage(controller, 'stream', ID, { audio: SRC });
-        expectMessage(controller, 'session', ID, 'Session Ended');
+        expectMessage(controller, 'session', ID, 'Session ended');
         expectAudioPlay(controller).not.to.be.called;
       });
     });

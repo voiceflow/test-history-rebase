@@ -87,11 +87,18 @@ export enum PrototypeStatus {
   ENDED = 'ENDED',
 }
 
+export enum InputMode {
+  TEXT = 'TEXT',
+  VOICE = 'VOICE',
+}
+
 export interface PrototypeState {
   ID: string | null;
   nlc: NLC | null;
   muted: boolean;
+  showChips: boolean;
   status: PrototypeStatus;
+  inputMode: InputMode;
   startTime: number;
   context: Context;
 }

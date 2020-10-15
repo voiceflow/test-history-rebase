@@ -1,37 +1,30 @@
-import { Container as SvgIconContainer } from '@/components/SvgIcon';
-import { css, styled, units } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-import Bubble from './MessageBubble';
-
-const Container = styled.div<{ rightAlign?: boolean }>`
+const Container = styled.div<{ rightAlign?: boolean; userSpeak?: boolean; isFirstInSeries?: boolean }>`
   display: flex;
+  position: relative;
   align-items: flex-end;
-  margin-top: ${units(1)}px;
+  margin-left: 45px;
+
+  ${({ isFirstInSeries }) =>
+    !isFirstInSeries &&
+    css`
+      margin-top: 8px;
+    `}
+
+  ${({ userSpeak }) =>
+    userSpeak &&
+    css`
+      margin-top: 16px;
+      margin-bottom: 16px;
+    `}
 
   ${({ rightAlign = false }) =>
     rightAlign
       ? css`
           flex-direction: row-reverse;
-
-          & > ${SvgIconContainer} {
-            margin-bottom: 2px;
-            margin-left: 8px;
-          }
-
-          ${Bubble} {
-            border-bottom-right-radius: 5px;
-          }
         `
-      : css`
-          & > ${SvgIconContainer} {
-            margin-right: 8px;
-            margin-bottom: 2px;
-          }
-
-          ${Bubble} {
-            border-bottom-left-radius: 5px;
-          }
-        `}
+      : css``}
 `;
 
 export default Container;

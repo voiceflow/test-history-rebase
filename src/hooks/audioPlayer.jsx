@@ -76,6 +76,11 @@ function useAudioPlayer({ autoplay = false }) {
     }
   }, [clickedTime, curTime]);
 
+  const restart = () => {
+    const audio = ref.current;
+    audio.currentTime = 0;
+  };
+
   return {
     ref,
     error,
@@ -84,6 +89,7 @@ function useAudioPlayer({ autoplay = false }) {
     playing,
     setPlaying,
     setClickedTime,
+    restart,
   };
 }
 

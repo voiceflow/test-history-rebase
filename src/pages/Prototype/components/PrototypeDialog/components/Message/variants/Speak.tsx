@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { SSML_TAG_REGEX } from '@/constants';
 import { styled } from '@/hocs';
 
 import { Message } from '../components';
@@ -15,11 +16,14 @@ type SpeakProps = Omit<MessageProps, 'iconProps'> & {
   message: string;
 };
 
-const Speak: React.FC<SpeakProps> = ({ voice, message, ...props }) => (
-  <Message iconProps={{ icon: 'alexa' }} {...props}>
-    {voice && <Voice>{voice}</Voice>}
-    {message}
-  </Message>
-);
+const Speak: React.FC<SpeakProps> = ({ voice, message, ...props }) => {
+  const noSSMLMessage = message.replace(SSML_TAG_REGEX, '');
+  return (
+    <Message {...props}>
+      {voice && <Voice>{voice}</Voice>}
+      {noSSMLMessage}
+    </Message>
+  );
+};
 
 export default Speak;

@@ -1,7 +1,15 @@
 export const checkMicrophonePermission = async () => {
-  const { state } = await navigator.permissions.query({ name: 'microphone' });
-
-  return state === 'granted';
+  let hasMicrophonePermissions = false;
+  // eslint-disable-next-line compat/compat
+  await navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then(() => {
+      hasMicrophonePermissions = true;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  return hasMicrophonePermissions;
 };
 
 export const askMicrophonePermissions = async () => {

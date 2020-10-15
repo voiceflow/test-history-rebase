@@ -5,7 +5,7 @@ const Container = styled(Flex).attrs({ column: true })`
   height: 100%;
   padding-top: 100px;
   color: #62778c;
-  background-color: #fff;
+  background-color: #fdfdfd;
 
   & > * {
     margin-bottom: 20px;

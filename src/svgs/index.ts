@@ -174,6 +174,7 @@ export { default as speak } from './speak.svg';
 export { default as speakRandomized } from './speak-randomized.svg';
 export { default as shortcuts } from './shortcuts.svg';
 export { default as support } from './support.svg';
+export { default as send } from './send.svg';
 
 // t
 export { default as tic } from './tic.svg';
@@ -185,6 +186,8 @@ export { default as textAutoResize } from './text-auto-resize.svg';
 export { default as template } from './template.svg';
 export { default as trash } from './trash.svg';
 export { default as times } from './times.svg';
+export { default as touch } from './touch.svg';
+export { default as text } from './text.svg';
 
 // u
 export { default as up } from './up.svg';

@@ -12,7 +12,7 @@ type Props = MessageControllerProps & TraceControllerProps & DialogControllerPro
 class PrototypeTool {
   private props: Props;
 
-  private audio?: AudioController;
+  public audio?: AudioController;
 
   private trace?: TraceController;
 
@@ -30,7 +30,7 @@ class PrototypeTool {
     this.createController();
 
     this.message!.trackStartTime();
-    this.message!.session(cuid(), 'New Session Started');
+    this.message!.session(cuid(), 'New session started');
 
     this.trace!.next();
   }

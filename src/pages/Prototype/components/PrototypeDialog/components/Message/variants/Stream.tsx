@@ -8,10 +8,6 @@ type StreamProps = Omit<MessageProps, 'iconProps'> & {
   duration?: number;
 };
 
-const Stream: React.FC<StreamProps> = ({ audio, duration, ...props }) => (
-  <Message iconProps={{ icon: 'audioPlayer', color: '#f65b6d' }} {...props}>
-    {audio}
-  </Message>
-);
+const Stream: React.FC<StreamProps> = ({ audio, duration, ...props }) => <Message {...props}>{audio}</Message>;
 
 export default Stream;

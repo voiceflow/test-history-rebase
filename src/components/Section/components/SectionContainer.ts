@@ -39,6 +39,15 @@ export const draggingPreviewStyles = css`
   }
 `;
 
+export const prototypeStyles = css`
+  font-size: 13px;
+  color: #62778c !important;
+
+  ${Header} {
+    height: 50px !important;
+  }
+`;
+
 export const dividersStyles = css<SectionContainerProps>`
   &::before {
     position: absolute;
@@ -175,6 +184,9 @@ const SectionContainer = styled.div<SectionContainerProps>`
     css`
       border-bottom: 1px solid #eaeff4;
     `}
+
+
+    ${({ variant }) => variant === SectionVariant.PROTOTYPE && prototypeStyles}
 `;
 
 export default SectionContainer;

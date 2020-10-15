@@ -1,24 +1,21 @@
 import React from 'react';
 import withSpeechRecognition, { ReactSpeechRecognitionProps } from 'react-speech-recognition';
 
-import Portal from '@/components/Portal';
-import SvgIcon from '@/components/SvgIcon';
+import { ClickableText } from '@/components/Text/components/ClickableText';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
-import { Container, Content, IconContainer } from './components';
+import { BlueText, Container, SpeechText, SpokenText } from './components';
 import { askMicrophonePermissions, checkMicrophonePermission } from './utils';
 
 export type PrototypeSpeechBarProps = {
   locale: string;
   isPublic?: boolean;
   onTranscript: (input: string) => void;
-  onToggleListening: (value: boolean) => void;
 };
 
 const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeechBarProps> = ({
   locale,
-  isPublic,
   listening,
   transcript,
   recognition,
@@ -27,7 +24,6 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   startListening,
   finalTranscript,
   resetTranscript,
-  onToggleListening,
   interimTranscript,
   browserSupportsSpeechRecognition,
 }) => {
@@ -62,7 +58,7 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   };
 
   const onListen = React.useCallback(async () => {
-    if (dataCache.current.listening) {
+    if (listening) {
       return;
     }
 
@@ -100,48 +96,48 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   React.useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
     checkMicrophonePermission().then(setMicrophoneAvailable);
-
     return () => stopListening();
   }, []);
 
-  React.useEffect(() => {
-    onToggleListening(listening);
-  }, [listening]);
-
   if (!browserSupportsSpeechRecognition) {
-    return null;
+    return (
+      <Container style={{ cursor: 'default' }}>
+        <SpeechText> Browser doesn't support speech recognition</SpeechText>
+      </Container>
+    );
   }
 
   let text;
-
   if (!isMicrophoneAvailable) {
-    text = <span>Please enable Voiceflow access to the microphone</span>;
+    text = (
+      <>
+        Please <ClickableText onClick={askMicrophonePermissions}>enable</ClickableText> microphone access
+      </>
+    );
   } else if (!listening) {
-    text = 'Hold Spacebar for Voice Input';
+    text = (
+      <>
+        Hold <BlueText> spacebar </BlueText> for Voice Input
+      </>
+    );
   } else if (listening) {
     if (finalTranscript || interimTranscript) {
       text = (
         <>
-          <span>{finalTranscript}</span> {interimTranscript}
+          <SpokenText>
+            {finalTranscript} {interimTranscript}
+          </SpokenText>
         </>
       );
     } else {
-      text = 'Say Something...';
+      text = 'Say something...';
     }
   }
 
   return (
-    <Portal portalNode={document.body}>
-      <Container isPublic={isPublic}>
-        <Content onMouseDown={onListen} onMouseUp={onStop} isListening={listening}>
-          <IconContainer isListening={listening}>
-            <SvgIcon icon="microphone" color="#fff" size={16} />
-          </IconContainer>
-
-          {text}
-        </Content>
-      </Container>
-    </Portal>
+    <Container onMouseDown={onListen} onMouseUp={onStop}>
+      <SpeechText>{text}</SpeechText>
+    </Container>
   );
 };
 

@@ -12,11 +12,13 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
+import { prototypeStatusSelector } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import PrototypePage from '@/pages/Prototype';
+import { PMStatus } from '@/pages/Prototype/types';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { compose } from '@/utils/functional';
 
@@ -34,12 +36,22 @@ const PrototypeSidebar = ({
   renderPrototypeV2,
   isMuted,
   updatePrototype,
+  status,
 }) => {
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const eventualEngine = React.useContext(EventualEngineContext);
+  const [atTop, setAtTop] = React.useState(true);
+  const notStarted = status === PMStatus.IDLE;
+
+  React.useEffect(() => {
+    // Reset the custom styling of the header when reset
+    if (status === PMStatus.IDLE) {
+      setAtTop(true);
+    }
+  }, [status]);
 
   React.useEffect(() => {
     if (!isPrototypingMode) {
@@ -79,14 +91,15 @@ const PrototypeSidebar = ({
           <Container>
             <Section
               header="SETTINGS"
-              variant={SectionVariant.SECONDARY}
+              variant={SectionVariant.PROTOTYPE}
               collapseVariant={SectionToggleVariant.ARROW}
               onClick={toggleSettingsOpen}
               isCollapsed={!settingsOpen}
             />
             <Section
               header="DIALOG"
-              variant={SectionVariant.SECONDARY}
+              variant={SectionVariant.PROTOTYPE}
+              customHeaderStyling={{ background: !atTop && !notStarted ? '#fff' : '#FDFDFD' }}
               suffix={
                 <Flex>
                   <div style={{ display: 'inline-block', marginRight: '15px' }}>
@@ -96,13 +109,18 @@ const PrototypeSidebar = ({
                   </div>
                   <div style={{ display: 'inline-block' }}>
                     <Tooltip title="Reset Test">
-                      <SvgIcon icon="restart" clickable onClick={resetPrototype} />
+                      <SvgIcon
+                        icon="restart"
+                        color={notStarted && '#BECEDC'}
+                        clickable={!notStarted}
+                        onClick={() => (notStarted ? null : resetPrototype())}
+                      />
                     </Tooltip>
                   </div>
                 </Flex>
               }
             />
-            <EmbedContainer>{isPrototypingMode && <PrototypePage debug={settings.debug} />}</EmbedContainer>
+            <EmbedContainer>{isPrototypingMode && <PrototypePage debug={settings.debug} atTop={atTop} setAtTop={setAtTop} />}</EmbedContainer>
           </Container>
         )}
       </Drawer>
@@ -113,6 +131,7 @@ const PrototypeSidebar = ({
 const mapStateToProps = {
   settings: Recent.recentprototypeSelector,
   isMuted: Prototype.prototypeMutedSelector,
+  status: prototypeStatusSelector,
 };
 
 const mapDispatchToProps = {

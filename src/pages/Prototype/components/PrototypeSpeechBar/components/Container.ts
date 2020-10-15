@@ -1,22 +1,15 @@
-import { styled } from '@/hocs';
+import { styled, transition } from '@/hocs';
 
-type ContainerProps = {
-  isPublic?: boolean;
-};
-
-const Container = styled.div<ContainerProps>`
-  position: fixed;
-  left: ${({ isPublic }) => (isPublic ? 16 : 0)}px;
-  right: ${({ isPublic }) => (isPublic ? 16 : 400)}px;
-  bottom: 0;
-  z-index: 1;
+const Container = styled.div`
+  width: 100%;
   margin: 0 auto;
+  min-height: 178px;
+  padding: 24px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
 
-  @media (min-width: 432px) {
-    & {
-      max-width: 600px;
-    }
-  }
+  ${transition('transform')}
 `;
 
 export default Container;

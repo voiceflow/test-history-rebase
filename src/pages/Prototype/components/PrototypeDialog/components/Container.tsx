@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import { styled } from '@/hocs';
 
 export const Outter = styled.div`
@@ -8,30 +9,26 @@ export const Outter = styled.div`
   flex: 1;
   max-width: 500px;
   height: 100%;
-  overflow-x: hidden;
-  background-color: #fdfdfd;
+  padding-top: 0;
 `;
 
 export const Middle = styled.div`
   position: absolute;
   display: flex;
   flex: 1;
-  flex-direction: column-reverse;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 0 20px 20px 20px;
-  overflow-x: hidden;
-`;
-
-export const Inner = styled.div`
-  width: 100%;
+  padding: 0 24px 20px;
 `;
 
 const Container: React.FC = ({ children }) => {
   return (
     <Outter>
       <Middle>
-        <Inner>{children}</Inner>
+        <Box pb={20} width="100%">
+          {children}
+        </Box>
       </Middle>
     </Outter>
   );

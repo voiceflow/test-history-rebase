@@ -47,6 +47,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isDividerNested?: boolean;
   isDraggingPreview?: boolean;
   customContentStyling?: CSSProperties;
+  customHeaderStyling?: CSSProperties;
   headerVariant?: HeaderVariant;
   contentPrefix?: React.FC | string;
   contentSuffix?: React.FC | string;
@@ -81,6 +82,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     isDividerNested = false,
     isDraggingPreview = false,
     customContentStyling,
+    customHeaderStyling,
     headerVariant,
     emptyChildren,
     contentPrefix = React.Fragment,
@@ -110,7 +112,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       {...props}
     >
       {hasHeader && (
-        <Header ref={headerRef} isDragging={isDragging} containerToggle={!!clickHandler} onClick={clickHandler}>
+        <Header ref={headerRef} isDragging={isDragging} containerToggle={!!clickHandler} onClick={clickHandler} style={customHeaderStyling}>
           {(prefix || header || tooltip || dropdown) && (
             <HeaderContent>
               {prefix && <FixNode fixNode={prefix} color="#787878" />}

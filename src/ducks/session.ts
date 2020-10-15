@@ -183,9 +183,8 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     await dispatch(identifyUser(user));
 
     const location = ConnectedReactRouter.getLocation(state);
-    const search = queryString.parse(location?.search);
-
-    if (search?.promo) {
+    const search = queryString.parse(location.search);
+    if (search.promo) {
       dispatch(goToOnboarding());
     }
   } catch (err) {

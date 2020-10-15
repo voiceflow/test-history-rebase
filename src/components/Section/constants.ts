@@ -8,5 +8,6 @@ export enum SectionVariant {
   SECONDARY = 'secondary',
   TERTIARY = 'tertiary',
   QUATERNARY = 'quaternary',
+  PROTOTYPE = 'prototype',
   SUBSECTION = 'subsection',
 }

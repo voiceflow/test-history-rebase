@@ -37,6 +37,8 @@ export enum MessageType {
   SESSION = 'SESSION',
 }
 
+export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.STREAM];
+
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string } & D;
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string }>;

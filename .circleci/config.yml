@@ -264,11 +264,13 @@ jobs:
           channel: product_releases
           event: pass
           template: success_tagged_deploy_1
+          branch_pattern: ".*"
       - slack/notify:
           channel: product_releases
           event: fail
           mentions: "@engteam"
           template: basic_fail_1
+          branch_pattern: ".*"
 
   build-deploy-storybook-dev-environment:
     executor: vfcommon/build-executor

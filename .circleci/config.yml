@@ -2,7 +2,8 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@1.1.1
-  vfcommon: voiceflow/common@0.0.15
+  vfcommon: voiceflow/common@0.0.16
+  slack: circleci/slack@4.0.1
 
 # Reusable YAML chunks
 defaults:
@@ -255,6 +256,19 @@ jobs:
                   IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
                   aws eks --region us-east-1 update-kubeconfig --name production
                   kubectl set image --namespace voiceflow-v1 statefulset/creator-app-google app=$IMAGE_NAME
+      - run:
+          name: Wait for deployment rollout
+          command: |
+            sleep 120
+      - slack/notify:
+          channel: product_releases
+          event: pass
+          template: success_tagged_deploy_1
+      - slack/notify:
+          channel: product_releases
+          event: fail
+          mentions: "@engteam"
+          template: basic_fail_1
 
   build-deploy-storybook-dev-environment:
     executor: vfcommon/build-executor

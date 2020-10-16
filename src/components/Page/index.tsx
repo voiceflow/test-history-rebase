@@ -22,6 +22,7 @@ export type PageProps = {
   scrollHorizontal?: boolean;
   userMenu?: boolean;
   navigateBackText?: string;
+  noHeaderPadding?: boolean;
 };
 
 const Page: React.FC<PageProps> = ({
@@ -33,6 +34,7 @@ const Page: React.FC<PageProps> = ({
   userMenu = true,
   onNavigateBack,
   children,
+  noHeaderPadding = false,
 }) => {
   const headerRef = React.useRef<HTMLDivElement>(null);
 
@@ -40,7 +42,7 @@ const Page: React.FC<PageProps> = ({
     <HeaderContext.Provider value={headerRef}>
       <Container>
         <HeaderContainer>
-          <Header>
+          <Header noPadding={noHeaderPadding}>
             {onNavigateBack && (
               <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
                 <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />

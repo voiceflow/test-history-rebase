@@ -1,7 +1,7 @@
 import { styled } from '@/hocs';
 
 const NavigateBackTextContainer = styled.div`
-  color: black;
+  color: ${({ theme }) => theme.colors.primary};
   padding-left: 10px;
   padding-right: 10px;
   font-weight: 500;

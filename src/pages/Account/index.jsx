@@ -124,7 +124,13 @@ class Account extends Component {
       goToDashboard,
     } = this.props;
     return (
-      <Page header={<Header history={this.props.history} />} userMenu={false} navigateBackText="Back" onNavigateBack={goToDashboard}>
+      <Page
+        header={<Header history={this.props.history} />}
+        userMenu={false}
+        navigateBackText="Back"
+        onNavigateBack={goToDashboard}
+        noHeaderPadding={true}
+      >
         <div id="app" className="pt-6">
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>

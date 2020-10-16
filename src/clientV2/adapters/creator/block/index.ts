@@ -3,7 +3,6 @@
 import { NodeType } from '@voiceflow/alexa-types';
 import { DiagramNode } from '@voiceflow/api-sdk';
 
-import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 
@@ -39,11 +38,6 @@ import streamAdapter, { streamPortsAdapter } from './stream';
 import userInfoAdapter from './userInfo';
 import { PortsAdapter } from './utils';
 
-const emptyAdapter = createSimpleAdapter(
-  () => ({}),
-  () => ({})
-);
-
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
 export const APP_BLOCK_TYPE_FROM_DB: Record<string, BlockType | ((data: DiagramNode['data']) => BlockType)> = {
@@ -72,12 +66,12 @@ const blockAdapter = {
   [BlockType.START]: blockDataAdapter,
   [BlockType.COMMAND]: commandAdapter,
   [BlockType.COMBINED]: blockDataAdapter,
-  [BlockType.COMMENT]: emptyAdapter,
+  [BlockType.COMMENT]: null,
   // user defined
   [BlockType.CANCEL_PAYMENT]: cancelPaymentAdapter,
   [BlockType.CAPTURE]: captureAdapter,
   [BlockType.CARD]: cardAdapter,
-  [BlockType.CHOICE_OLD]: emptyAdapter,
+  [BlockType.CHOICE_OLD]: null,
   [BlockType.CODE]: codeAdapter,
   [BlockType.DISPLAY]: displayAdapter,
   [BlockType.EXIT]: exitAdapter,

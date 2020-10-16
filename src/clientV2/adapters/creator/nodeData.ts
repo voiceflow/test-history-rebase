@@ -6,6 +6,7 @@ import { BlockType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
 import blockAdapter, { APP_BLOCK_TYPE_FROM_DB } from './block';
+import deprecatedAdapter from './block/deprecated';
 import { creatorLogger, isSupportedBlockType } from './utils';
 
 const log = creatorLogger.child('node-data');
@@ -25,15 +26,15 @@ const nodeDataAdapter = createSimpleAdapter<
       type = BlockType.DEPRECATED;
     }
 
+    const adapter = (isSupportedBlockType(type) && blockAdapter[type]) || deprecatedAdapter;
+
     let data: Partial<NodeData<unknown>> = {};
 
     try {
-      data = blockAdapter[type].fromDB(dbData as any, { platform });
+      data = adapter.fromDB(dbData as any, { platform });
     } catch (err) {
       log.error('Block Adapter Error', err);
-      data = dbData as any;
-      data.deprecatedType = dbNode.type;
-      type = BlockType.DEPRECATED;
+      data = deprecatedAdapter.fromDB(dbData as any, { platform });
     }
 
     return {
@@ -44,7 +45,7 @@ const nodeDataAdapter = createSimpleAdapter<
       path: [],
     };
   },
-  ({ type, path, ...appData }, { platform }) => blockAdapter[type].toDB(appData as any, { platform })
+  ({ type, path, ...appData }, { platform }) => (blockAdapter[type] || deprecatedAdapter).toDB(appData as any, { platform })
 );
 
 export default nodeDataAdapter;

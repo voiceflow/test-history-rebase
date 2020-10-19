@@ -92,6 +92,13 @@ export enum InputMode {
   VOICE = 'VOICE',
 }
 
+export enum PrototypeMode {
+  CANVAS = 'CANVAS',
+  DISPLAY = 'DISPLAY',
+  DEVELOPER = 'DEVELOPER',
+  SETTINGS = 'SETTINGS',
+}
+
 export interface PrototypeState {
   ID: string | null;
   nlc: NLC | null;
@@ -101,4 +108,6 @@ export interface PrototypeState {
   inputMode: InputMode;
   startTime: number;
   context: Context;
+  mode: PrototypeMode;
+  display: string | null;
 }

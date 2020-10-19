@@ -4,6 +4,8 @@ import { FlexCenter } from '@/components/Flex';
 import { Link } from '@/components/Text';
 import {
   PrototypeStatus,
+  prototypeDisplaySelector,
+  prototypeModeSelector,
   prototypeShowChipsSelector,
   prototypeStatusSelector,
   resetPrototype,
@@ -48,6 +50,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   atTop,
   setAtTop,
   slots,
+  mode,
+  display,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
   const [prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance] = usePrototype(status, debug, slots);
@@ -86,7 +90,11 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   if (status === PrototypeStatus.IDLE) {
     return (
       <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
-        <Start start={() => (isPublic ? startPrototype() : trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart')())} />
+        <Start
+          start={() =>
+            isPublic ? startPrototype() : trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })()
+          }
+        />
         <FlexCenter style={{ marginBottom: '30px', color: '#62778c' }}>
           <>
             New to prototyping?
@@ -140,6 +148,8 @@ const mapStateToProps = {
   settings: recentprototypeSelector,
   slots: Slot.allSlotsSelector,
   showChips: prototypeShowChipsSelector,
+  mode: prototypeModeSelector,
+  display: prototypeDisplaySelector,
 };
 
 const mapDispatchProps = {

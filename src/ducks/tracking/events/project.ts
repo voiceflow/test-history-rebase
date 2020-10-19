@@ -1,4 +1,5 @@
 import client from '@/client';
+import { PrototypeMode } from '@/ducks/prototype';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';
@@ -10,8 +11,12 @@ export const trackActiveProjectSessionBegin = (options: ProjectEventInfo) => () 
 export const trackActiveProjectSessionDuration = (options: ProjectEventInfo & { duration: number }) => () =>
   client.analytics.track(EventName.PROJECT_SESSION_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }));
 
-export const trackActiveProjectPrototypeTestStart = createProjectEventTracker((options) =>
-  client.analytics.track(EventName.PROJECT_PROTOTYPE_TEST_START, createProjectEventPayload(options))
+export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{ debug: boolean; display: string | null; mode: PrototypeMode }>(
+  (options) =>
+    client.analytics.track(
+      EventName.PROJECT_PROTOTYPE_TEST_START,
+      createProjectEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
+    )
 );
 
 export const trackActiveProjectSettingsOpened = createProjectEventTracker((options) =>

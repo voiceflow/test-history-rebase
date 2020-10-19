@@ -8,7 +8,7 @@ import {
   UpdatePrototypeContextStore,
   UpdatePrototypeStatus,
 } from './actions';
-import { InputMode, PrototypeState, PrototypeStatus } from './types';
+import { InputMode, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
 
 export * from './actions';
 export * from './constants';
@@ -24,6 +24,8 @@ export const INITIAL_STATE: PrototypeState = {
   startTime: 0,
   inputMode: InputMode.TEXT,
   showChips: true,
+  mode: PrototypeMode.CANVAS,
+  display: null,
   context: {
     turn: {},
     trace: [],

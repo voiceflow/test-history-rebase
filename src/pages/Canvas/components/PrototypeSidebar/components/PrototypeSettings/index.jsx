@@ -25,9 +25,9 @@ const PrototypeSettings = ({ open, settings, updateSettings, variables, updateVa
             <Input
               key={name}
               leftAction={
-                <VariableTag style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <VariableTag isPrototypeSettings={true} style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   <Tooltip delay={500} distance={6} title={name} position="top">
-                    {`{${name}}`}
+                    {name}
                   </Tooltip>
                 </VariableTag>
               }

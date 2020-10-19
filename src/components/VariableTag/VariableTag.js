@@ -16,6 +16,16 @@ export const variableStyle = css`
   &.default {
     color: #62778c;
   }
+
+  ${({ isPrototypeSettings = false }) =>
+    isPrototypeSettings &&
+    css`
+      padding: 0;
+      background-color: white;
+      border: none;
+      border-radius: 0px;
+      text-transform: uppercase;
+    `}
 `;
 
 export const VariableTag = styled.span`

@@ -13,7 +13,6 @@ const AuthenticationContainer = styled.div<AuthenticationContainerProps>`
   align-items: center;
   -webkit-justify-content: center;
   justify-content: center;
-  justify-content: center;
   height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

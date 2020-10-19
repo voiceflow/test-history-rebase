@@ -10,6 +10,7 @@ import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useEnableDisable } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
@@ -29,8 +30,13 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
 
+  const [isDisabled, onDisable, onEnable] = useEnableDisable(false);
+
   const [coupon, setCoupon] = React.useState('');
   const [couponValid, setCouponValid] = React.useState(false);
+
+  const isSignupDisabled = !!coupon && !couponValid;
+
   let timeout: number | undefined;
 
   const openLogin = (event: React.MouseEvent) => {
@@ -40,28 +46,26 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
   };
 
   const signupSubmit = async (event: React.FormEvent) => {
+    onDisable();
+
     event.preventDefault();
 
-    signup({
-      name,
-      email,
-      password,
-      coupon: coupon.toLowerCase(),
-      referralCode: query.code,
-    }).catch((err) => {
-      setSignupError(err.body.data);
-    });
+    if (!isDisabled) {
+      await signup({
+        name,
+        email,
+        password,
+        coupon: coupon.toLowerCase(),
+        referralCode: query.code,
+      }).catch((err) => {
+        setSignupError(err.body.data);
+      });
+
+      onEnable();
+    }
 
     return false;
   };
-
-  React.useEffect(() => {
-    timeout = setTimeout(() => {
-      setSignupError(false);
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  });
 
   const verifyCoupon = React.useCallback(
     throttle<(input?: string) => Promise<void>>(async (input) => {
@@ -86,7 +90,13 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
     [verifyCoupon]
   );
 
-  const isSignupDisabled = !!coupon && !couponValid;
+  React.useEffect(() => {
+    timeout = setTimeout(() => {
+      setSignupError(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  });
 
   React.useEffect(() => {
     if (promo && query.coupon) {

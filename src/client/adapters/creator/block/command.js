@@ -4,7 +4,7 @@ import { createBlockAdapter, platformDependentAdapter, slotMappingAdapter } from
 
 const commandBlockAdapter = platformDependentAdapter(
   createBlockAdapter(
-    ({ intent, mappings, resume, diagram_id }) => ({
+    ({ intent, mappings, resume, diagram_id } = {}) => ({
       intent: intent ? intent.value : null,
       resume,
       inputs: [],

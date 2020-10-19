@@ -48,6 +48,10 @@ export const saveSkillSettings = <T extends { name: string; locales?: Locale[]; 
     delete newSkillData.locales;
   }
 
+  if (!name) {
+    delete newSkillData.name;
+  }
+
   await client.skill.update(skillID, skillMetaAdapter.toDB(settings));
   dispatch(updateActiveSkill(newSkillData));
   dispatch(updateSkillMeta(meta));

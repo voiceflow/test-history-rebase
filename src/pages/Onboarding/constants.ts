@@ -46,7 +46,9 @@ export const STEP_META: StepMetaProps = {
     trackStep: () => Tracking.trackOnboardingPersonalize(),
   },
   [StepID.ADD_COLLABORATORS]: {
-    title: (workspaceName) => `Invite teammates to ${workspaceName}`,
+    title: (workspaceName) => {
+      return !workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`;
+    },
     canBack: true,
     canSkip: true,
     skipTo: StepID.PAYMENT,

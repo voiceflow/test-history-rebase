@@ -39,7 +39,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <PublicRoute exact path={Path.LOGIN} name="Login" component={LoginForm} />
         <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={SignupForm} promo />
         <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={SignupForm} />
-        <Route exact path={Path.ONBOARDING} component={Onboarding} />
+        <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
         <Route exact path={Path.CREATOR_TERMS} name="Privacy Policy" component={Legal} />
 

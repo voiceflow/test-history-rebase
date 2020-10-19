@@ -9,7 +9,7 @@ import AudioUpload from '@/components/Upload/AudioUpload';
 import { FeatureFlag } from '@/config/features';
 import { VoiceType } from '@/constants';
 import { getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
-import { saveInvocationName, saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
+import { saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useDidUpdateEffect, useFeature, useSyncedSmartReducer } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -32,6 +32,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
   meta,
   platformMeta,
   saveSettings,
+  saveSkillSettings,
 }) => {
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
@@ -237,7 +238,6 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   saveSettings,
-  saveInvocationName,
   saveProjectName,
   saveSkillSettings,
   getImportToken,

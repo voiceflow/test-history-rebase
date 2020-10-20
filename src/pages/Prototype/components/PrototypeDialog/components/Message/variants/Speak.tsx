@@ -18,12 +18,12 @@ type SpeakProps = Omit<MessageProps, 'iconProps'> & {
 
 const Speak: React.FC<SpeakProps> = ({ voice, message, ...props }) => {
   const noSSMLMessage = message.replace(SSML_TAG_REGEX, '');
-  return (
+  return noSSMLMessage ? (
     <Message {...props}>
       {voice && <Voice>{voice}</Voice>}
       {noSSMLMessage}
     </Message>
-  );
+  ) : null;
 };
 
 export default Speak;

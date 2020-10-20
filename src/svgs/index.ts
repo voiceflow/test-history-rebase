@@ -44,6 +44,7 @@ export { default as circle } from './circle.svg';
 export { default as community } from './community.svg';
 export { default as checked } from './images/icons/check.svg';
 export { default as creditCard } from './credit-card.svg';
+export { default as canvas } from './canvas.svg';
 
 // d
 export { default as display } from './display.svg';
@@ -52,6 +53,7 @@ export { default as dollar } from './dollar.svg';
 export { default as downloads } from './downloads.svg';
 export { default as docs } from './docs.svg';
 export { default as divide } from './divide.svg';
+export { default as developer } from './developer.svg';
 
 // e
 export { default as equals } from './equals.svg';
@@ -201,6 +203,7 @@ export { default as upload } from './upload.svg';
 export { default as variable } from './var.svg';
 export { default as volume } from './volume.svg';
 export { default as voiceflowV } from './V.svg';
+export { default as visuals } from './visuals.svg';
 
 // w
 export { default as warning } from './warning.svg';

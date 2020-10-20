@@ -42,6 +42,9 @@ export default merge(commonConfig, {
               '**/types.ts',
               'models/**/*',
 
+              // TODO: delete when SubMenu gets used
+              'components/SubMenu/**/*',
+
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'components/DropdownButton/**/*',

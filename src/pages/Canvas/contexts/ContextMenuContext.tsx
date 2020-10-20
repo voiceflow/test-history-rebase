@@ -4,6 +4,8 @@ import { OverlayContext } from '@/contexts';
 import { withContext, withStaticContext } from '@/hocs';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
+import { EngineContext } from './EngineContext';
+
 export type MenuContext = {
   position: [number, number];
   type: ContextMenuTarget;
@@ -21,7 +23,13 @@ export const { Consumer: ContextMenuConsumer } = ContextMenuContext;
 
 export const ContextMenuProvider: React.FC = ({ children }) => {
   const overlay = React.useContext(OverlayContext)!;
+  const engine = React.useContext(EngineContext)!;
   const [menuContext, setMenuContext] = React.useState<MenuContext | null>(null);
+
+  React.useEffect(() => {
+    if (!menuContext || !menuContext.target) return;
+    engine.selection.replace([menuContext.target]);
+  }, [menuContext]);
 
   const onHide = () => {
     if (menuContext === null) {

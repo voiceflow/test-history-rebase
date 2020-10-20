@@ -50,8 +50,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   }, [isMarkupCreating, markupModeType]);
 
   const onMouseUp = React.useCallback((event: MouseEvent) => {
-    if (event.defaultPrevented || engine.isCanvasBusy) return;
-
+    const nodeRightClicked = event.button === 2;
+    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked) return;
     engine.clearActivation();
   }, []);
 

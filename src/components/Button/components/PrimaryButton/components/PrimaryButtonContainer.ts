@@ -14,6 +14,8 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
   background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
   transition: all 0.15s ease-out;
   background-size: 1px 52px;
+  white-space: nowrap;
+  text-align: center;
 
   ${({ disabled, canHover = true }) =>
     disabled

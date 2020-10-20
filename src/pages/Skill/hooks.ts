@@ -9,6 +9,8 @@ export const useCommentingMode = () => !!useRouteMatch(Path.CANVAS_COMMENTING);
 
 export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE]);
 
+export const useCanvasMode = () => !!useRouteMatch(Path.PROJECT_CANVAS);
+
 export const useMarkupMode = () => !!useRouteMatch(Path.CANVAS_MARKUP);
 
 export const useAnyModeOpen = () => {

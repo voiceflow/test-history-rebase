@@ -7,8 +7,6 @@ const ProjectTitleContainer = styled(FlexCenter)`
   display: flex;
   align-items: center;
   height: inherit;
-  margin-right: 50px;
-  flex: 3;
 
   input {
     margin-top: -2px;

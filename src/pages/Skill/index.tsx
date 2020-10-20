@@ -18,9 +18,11 @@ import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadi
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, useFeature, usePermission } from '@/hooks';
 import Business from '@/pages/Business';
+import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { isOnlyViewerSelector } from '@/store/selectors';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
@@ -44,16 +46,19 @@ export type InjectedSkillProps = {
 
 const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
   error,
+  versionID,
   diagramID,
   activePage,
   activeSkill,
   goToDashboard,
+  goToCanvas,
   saveProjectNameV2,
   updateProjectName,
   isOnlyViewer,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const isPrototypingMode = usePrototypingMode();
 
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const projectNameChange = dataRefactor.isEnabled ? saveProjectNameV2 : updateProjectName;
@@ -94,11 +99,18 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
       <PublishProvider>
         <ExportProvider>
           <Page
-            header={<ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
-            userMenu={false}
+            header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
+            subHeader={!isPrototypingMode && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
             canScroll={false}
-            subHeader={<SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-            onNavigateBack={goToDashboard}
+            headerChildren={<CanvasHeader />}
+            onNavigateBack={() => {
+              if (isPrototypingMode) {
+                goToCanvas(versionID, diagramID);
+              } else {
+                goToDashboard();
+              }
+            }}
+            navigateBackText={isPrototypingMode ? 'Back' : ''}
           >
             <Switch>
               <PrivateRoute
@@ -131,6 +143,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   saveProjectNameV2: SkillV2.saveProjectName,
   goToDashboard: Router.goToDashboard,
+  goToCanvas: Router.goToCanvas,
   updateProjectName: Project.updateProjectName,
   updateSkillName: SkillDuck.saveSkillSettings,
 };

@@ -3,7 +3,7 @@ import './Account.css';
 import moment from 'moment';
 import React, { Component } from 'react';
 
-import Header from '@/components/Header';
+import { UserMenu } from '@/components/Header/components';
 import Button from '@/components/LegacyButton';
 import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
@@ -124,13 +124,7 @@ class Account extends Component {
       goToDashboard,
     } = this.props;
     return (
-      <Page
-        header={<Header history={this.props.history} />}
-        userMenu={false}
-        navigateBackText="Back"
-        onNavigateBack={goToDashboard}
-        noHeaderPadding={true}
-      >
+      <Page navigateBackText="Back" onNavigateBack={goToDashboard} headerChildren={<UserMenu />}>
         <div id="app" className="pt-6">
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>

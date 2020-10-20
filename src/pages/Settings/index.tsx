@@ -12,14 +12,14 @@ import { compose } from '@/utils/functional';
 
 import { InnerContainer, LeftSection, RightSection } from './components';
 import SettingsContent from './components/SettingsContent';
-import Header from './components/SettingsHeader';
+import SettingsHeader from './components/SettingsHeader';
 import SettingsTabs from './components/SettingsTabs';
 
 const Settings: React.FC<ConnectedSettings> = ({ platform, goToDesign }) => {
   const [selectedTab, setSelectedTab] = React.useState(SettingsTabsType.GENERAL);
 
   return (
-    <Page header={<Header />} userMenu={false} navigateBackText="Back" onNavigateBack={goToDesign}>
+    <Page navigateBackText="Back" onNavigateBack={goToDesign} headerChildren={<SettingsHeader />}>
       <span id="vf-settings-page">
         <InnerContainer>
           <LeftSection>

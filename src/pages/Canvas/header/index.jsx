@@ -1,15 +1,21 @@
 import React from 'react';
 
-import { HeaderPortal } from '@/components/Page';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { useCanvasMode, usePrototypingMode } from '@/pages/Skill/hooks';
 
 import ProjectHeader from './ProjectHeader';
 import PrototypeHeader from './Prototype/PrototypeHeader';
 
 const CanvasHeader = () => {
   const isPrototypingMode = usePrototypingMode();
+  const isCanvasMode = useCanvasMode();
 
-  return <HeaderPortal>{isPrototypingMode ? <PrototypeHeader /> : <ProjectHeader />}</HeaderPortal>;
+  if (isPrototypingMode) {
+    return <PrototypeHeader />;
+  }
+  if (isCanvasMode) {
+    return <ProjectHeader />;
+  }
+  return null;
 };
 
 export default CanvasHeader;

@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { HeaderText, TextContainer } from './components';
+import { FlexCenter } from '@/components/Flex';
+
+import HeaderText from './components';
 
 const SettingsHeader: React.FC = () => {
   return (
     <HeaderText>
-      <TextContainer>Project Settings</TextContainer>
+      <FlexCenter style={{ position: 'absolute', width: '100%' }}>Project Settings</FlexCenter>
     </HeaderText>
   );
 };

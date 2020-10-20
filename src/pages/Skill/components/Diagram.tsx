@@ -8,7 +8,6 @@ import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
-import CanvasHeader from '@/pages/Canvas/header';
 import { getManager } from '@/pages/Canvas/managers';
 import { useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
@@ -35,8 +34,6 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
     <>
       {!isPrototypingMode && <DiagramSync diagramID={diagramID} />}
       <ManagerProvider value={getManager as any}>
-        <CanvasHeader />
-
         <TopPrompt />
 
         {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}

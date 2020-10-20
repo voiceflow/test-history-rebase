@@ -4,6 +4,7 @@ import cuid from 'cuid';
 
 import client from '@/client';
 import { Slot } from '@/models';
+import type { Engine } from '@/pages/Canvas/engine';
 import { regexVariables } from '@/utils/string';
 
 import { PMStatus, TMAmazonIntent } from '../types';
@@ -16,6 +17,7 @@ export type DialogControllerProps = {
   variables: Record<string, any>;
   updateStatus: (status: PMStatus) => void;
   slots: Array<Slot>;
+  engine: Engine | null;
 };
 
 type DialogControllerOptions = {
@@ -55,7 +57,8 @@ class DialogController<Options extends DialogControllerOptions = DialogControlle
     let src = '';
     try {
       src = await client.prototype.getSpeakAudio({ ssml: regexedMessage, voice: '_DEFAULT' });
-      this.audio.playExternal(src);
+      const muted = this.props.engine?.getPrototypeMuted();
+      this.audio.playExternal(src, muted);
     } finally {
       this.message.speak(cuid(), { message: regexedMessage, src });
     }

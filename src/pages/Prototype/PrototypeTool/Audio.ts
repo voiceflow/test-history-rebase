@@ -27,9 +27,9 @@ class AudioController {
   /**
    * Pauses PrototypeMachine audio and replaces it with external audio before resuming again
    */
-  public playExternal(src: string) {
+  public playExternal(src: string, muted = false) {
     const externalAudio = new TAudio(src);
-
+    externalAudio.muted = muted;
     const currentAudio = this.audio;
 
     if (!currentAudio.paused) {

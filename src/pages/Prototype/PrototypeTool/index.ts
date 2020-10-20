@@ -49,7 +49,8 @@ class PrototypeTool {
   }
 
   public play(src: string) {
-    this.audio?.playExternal(src);
+    const muted = this.props.engine?.getPrototypeMuted();
+    this.audio?.playExternal(src, muted);
   }
 
   public async interact(input: string) {

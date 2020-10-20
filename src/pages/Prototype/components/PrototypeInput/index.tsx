@@ -51,7 +51,7 @@ const PrototypeInput: React.FC<PrototypeInputProps & ConnectedPrototypeInputProp
 
   React.useEffect(() => {
     inputRef?.current?.focus();
-  }, [inputRef.current]);
+  }, []);
 
   return (
     <>

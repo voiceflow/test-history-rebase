@@ -35,7 +35,6 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
         return null;
     }
   };
-
   return (
     <>
       {!prototypeTest.isEnabled && <Canvas />}
@@ -48,10 +47,9 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
             }}
           />
           {renderPrototypePageContent()}
+          <PrototypeSidebar />
         </>
       )}
-
-      <PrototypeSidebar />
     </>
   );
 };

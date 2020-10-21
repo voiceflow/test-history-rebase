@@ -2,6 +2,8 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
 import { useCommentingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
@@ -30,6 +32,8 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   } else if (isPrototypingMode) {
     modeText = 'prototyping';
   }
+
+  useHotKeys(Hotkey.CLOSE_CANVAS_MODE, goToDesign, { preventDefault: true });
 
   return (
     <>

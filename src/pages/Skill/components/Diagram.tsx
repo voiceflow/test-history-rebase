@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
 import { useFeature, useTeardown } from '@/hooks';
-import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
@@ -47,8 +46,6 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
         <FlowControls />
 
         <MarkupImageLoading />
-
-        <Canvas />
 
         <PrototypePage />
 

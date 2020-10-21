@@ -1,9 +1,19 @@
 import { ChildInput } from '@/components/Input/components';
 import InputWrapper from '@/components/Input/components/InputWrapper';
-import Section from '@/components/Section';
+import Section, { ContentContainer, Header } from '@/components/Section';
 import { styled, units } from '@/hocs';
 
-const TestSettingsVariables = styled(Section).attrs({ dividers: false })`
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  ${Header}, ${ContentContainer} {
+    padding-right: ${units(3)}px;
+    padding-left: ${units(3)}px;
+  }
+`;
+
+export const Variables = styled(Section).attrs({ dividers: false })`
   flex: 1;
   overflow-y: scroll;
 
@@ -25,5 +35,3 @@ const TestSettingsVariables = styled(Section).attrs({ dividers: false })`
     }
   }
 `;
-
-export default TestSettingsVariables;

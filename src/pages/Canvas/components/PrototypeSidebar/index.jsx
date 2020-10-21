@@ -18,11 +18,11 @@ import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import PrototypePage from '@/pages/Prototype';
+import PrototypeDeveloper from '@/pages/Prototype/components/PrototypePage/components/PrototypeDeveloper';
 import { PMStatus } from '@/pages/Prototype/types';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { compose } from '@/utils/functional';
 
-import PrototypeSettings from './components/PrototypeSettings';
 import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
@@ -38,6 +38,7 @@ const PrototypeSidebar = ({
   updatePrototype,
   status,
 }) => {
+  const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
@@ -81,7 +82,7 @@ const PrototypeSidebar = ({
 
   return (
     <>
-      {isPrototypingMode && <PrototypeSettings open={settingsOpen} />}
+      {isPrototypingMode && <PrototypeDeveloper open={settingsOpen} />}
       <Drawer as="section" open={isPrototypingMode} width={PROTOTYPE_SIDEBAR_WIDTH} direction="left">
         {loading ? (
           <FlexCenter style={{ height: '100%' }}>
@@ -89,13 +90,15 @@ const PrototypeSidebar = ({
           </FlexCenter>
         ) : (
           <Container>
-            <Section
-              header="SETTINGS"
-              variant={SectionVariant.PROTOTYPE}
-              collapseVariant={SectionToggleVariant.ARROW}
-              onClick={toggleSettingsOpen}
-              isCollapsed={!settingsOpen}
-            />
+            {!prototypeTestEnabled && (
+              <Section
+                header="SETTINGS"
+                variant={SectionVariant.PROTOTYPE}
+                collapseVariant={SectionToggleVariant.ARROW}
+                onClick={toggleSettingsOpen}
+                isCollapsed={!settingsOpen}
+              />
+            )}
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}

@@ -1,6 +1,10 @@
 import { css, styled } from '@/hocs';
 
-export const variableStyle = css`
+type VariableTagProps = {
+  isPrototypeSettings?: boolean;
+};
+
+export const variableStyle = css<VariableTagProps>`
   display: inline-block;
   padding: 0px 4px 1px 4px;
   color: #62778c;

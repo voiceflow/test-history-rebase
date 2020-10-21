@@ -18,11 +18,17 @@ export type SubMenuItem = {
 export type SubMenuProps = {
   options: SubMenuItem[];
   selected?: string;
+  onChange?: (value: string) => void;
 };
 
-const SubMenu: React.FC<SubMenuProps> = ({ options, selected }) => {
+const SubMenu: React.FC<SubMenuProps> = ({ options, selected, onChange }) => {
   const [selectedOption, setSelectedOption] = React.useState(selected || options?.[0].value || '');
   const isPrototypingMode = usePrototypingMode();
+
+  const onSubMenuItemClick = (value: string) => {
+    setSelectedOption(value);
+    onChange?.(value);
+  };
 
   return (
     <Drawer as="section" open={isPrototypingMode} width={SUBMENU_WIDTH} direction={SlideOutDirection.RIGHT}>
@@ -30,7 +36,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ options, selected }) => {
         {options.map((option: SubMenuItem, i) => {
           const isSelectedOption = option.value === selectedOption;
           return (
-            <MenuItem key={i} selected={isSelectedOption} onClick={() => setSelectedOption(option.value)}>
+            <MenuItem key={i} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
               <TippyTooltip title={option.value} position="right">
                 <SvgIcon icon={option.icon} color={isSelectedOption ? '#132144' : '#6e849a'} />
               </TippyTooltip>

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Flex } from '@/components/Box';
+import { FlexCenter } from '@/components/Flex';
 import { FeatureFlag } from '@/config/features';
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
@@ -11,16 +13,15 @@ import SharePrototypeButton from '../ActionGroup/components/SharePrototypeButton
 import PrototypeTimer from './PrototypeTimer';
 import { SeparatorDot } from './styled';
 
-const TimerContainer = styled.div`
-  display: inline-block;
+const TimerContainer = styled(FlexCenter)`
   position: absolute;
-  left: 49%;
+  left: 50%;
 `;
 
 function PrototypeHeader({ status }: { status: PrototypeStatus }) {
   const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
   return (
-    <>
+    <Flex style={{ height: '100%', minHeight: '100%' }}>
       <TimerContainer>
         {status === PrototypeStatus.ENDED && (
           <>
@@ -45,7 +46,7 @@ function PrototypeHeader({ status }: { status: PrototypeStatus }) {
           <UploadProjectButton />
         </>
       )}
-    </>
+    </Flex>
   );
 }
 

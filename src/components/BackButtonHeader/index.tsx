@@ -18,20 +18,29 @@ export type BackButtonHeaderProps = {
 const BackButtonComp: React.FC<any> = BackButton;
 
 const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({ header, subHeader, onNavigateBack, navigateBackText, children }) => (
-  <HeaderContainer>
-    <Flex p={0} height={70} backgroundColor="#fff">
-      <Flex height="100%" width="100%" alignItems="center">
-        <FlexCenter style={{ minWidth: '100%', minHeight: '100%' }}>
-          {onNavigateBack && (
-            <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
-              <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
-              {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
-            </BackButtonComp>
-          )}
-          {header}
-          <FlexEnd style={{ alignItems: 'center', marginRight: '32px', width: '100%' }}>{children}</FlexEnd>
-        </FlexCenter>
-      </Flex>
+  <HeaderContainer style={{ minWidth: '100%' }}>
+    <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
+      <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
+        {onNavigateBack && (
+          <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
+            <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
+            {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
+          </BackButtonComp>
+        )}
+        {header}
+        <FlexEnd
+          style={{
+            padding: 'none',
+            alignItems: 'center',
+            marginRight: '32px',
+            width: '100%',
+            minHeight: '100%',
+            height: '100%',
+          }}
+        >
+          {children}
+        </FlexEnd>
+      </FlexCenter>
     </Flex>
     {subHeader && <SubHeader>{subHeader}</SubHeader>}
   </HeaderContainer>

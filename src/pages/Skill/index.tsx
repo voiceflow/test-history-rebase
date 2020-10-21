@@ -61,6 +61,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const isPrototypingMode = usePrototypingMode();
 
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+  const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const projectNameChange = dataRefactor.isEnabled ? saveProjectNameV2 : updateProjectName;
 
   const idleTimer = React.useRef<IdleTimer>(null);
@@ -99,18 +100,24 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
       <PublishProvider>
         <ExportProvider>
           <Page
-            header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={projectNameChange} />}
-            subHeader={!isPrototypingMode && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+            header={
+              (!prototypeTestEnabled || (prototypeTestEnabled && !isPrototypingMode)) && (
+                <ProjectTitle title={activeSkill.name} onChange={projectNameChange} />
+              )
+            }
+            subHeader={(!prototypeTestEnabled || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
             canScroll={false}
             headerChildren={<CanvasHeader />}
             onNavigateBack={() => {
-              if (isPrototypingMode) {
+              if (!prototypeTestEnabled) {
+                goToDashboard();
+              } else if (isPrototypingMode) {
                 goToCanvas(versionID, diagramID);
               } else {
                 goToDashboard();
               }
             }}
-            navigateBackText={isPrototypingMode ? 'Back' : ''}
+            navigateBackText={prototypeTestEnabled && isPrototypingMode ? 'Back' : ''}
           >
             <Switch>
               <PrivateRoute

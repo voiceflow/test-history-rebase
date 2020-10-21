@@ -4,9 +4,10 @@ import FlexCenter from '@/components/Flex';
 
 const ProjectTitleContainer = styled(FlexCenter)`
   font-size: 18px;
-  display: flex;
-  align-items: center;
   height: inherit;
+  display: flex;
+  width: 100%;
+  vertical-align: middle;
 
   input {
     margin-top: -2px;

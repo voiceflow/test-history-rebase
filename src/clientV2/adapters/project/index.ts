@@ -9,7 +9,7 @@ import { Project } from '@/models';
 export { default as productAdapter } from './product';
 
 const projectAdapter = createAdapter<DBProject<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>, Project>(
-  ({ _id, name, devVersion, platform, privacy }) => ({
+  ({ _id, name, devVersion, platform, privacy, image = null }) => ({
     id: _id,
     name,
     isLive: false,
@@ -20,8 +20,8 @@ const projectAdapter = createAdapter<DBProject<AlexaProjectData | GoogleProjectD
     diagramID: '',
     reference: false,
     versionID: devVersion!,
-    smallIcon: null,
-    largeIcon: null,
+    smallIcon: image,
+    largeIcon: image,
     privacy,
   }),
   () => {

@@ -1,14 +1,16 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
-import { useTeardown } from '@/hooks';
+import { useFeature, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { getManager } from '@/pages/Canvas/managers';
+import PrototypePage from '@/pages/Prototype/components/PrototypePage';
 import { useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
@@ -22,6 +24,8 @@ export type DiagramProps = RouteComponentProps & {
 };
 
 const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
+  const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
+
   const eventualEngine = React.useContext(EventualEngineContext);
   const isPrototypingMode = usePrototypingMode();
   const isMarkupMode = useMarkupMode();
@@ -38,13 +42,15 @@ const Diagram: React.FC<DiagramProps> = ({ diagramID }) => {
 
         {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
 
-        <CanvasControls />
+        {(!prototypeTest.isEnabled || !isPrototypingMode) && <CanvasControls />}
 
         <FlowControls />
 
         <MarkupImageLoading />
 
         <Canvas />
+
+        <PrototypePage />
 
         <PrototypeSidebar />
       </ManagerProvider>

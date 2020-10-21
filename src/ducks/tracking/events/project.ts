@@ -1,5 +1,5 @@
 import client from '@/client';
-import { PrototypeMode } from '@/ducks/prototype';
+import { PrototypeMode } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';

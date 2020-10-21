@@ -93,10 +93,10 @@ export enum InputMode {
 }
 
 export enum PrototypeMode {
-  CANVAS = 'CANVAS',
-  DISPLAY = 'DISPLAY',
-  DEVELOPER = 'DEVELOPER',
-  SETTINGS = 'SETTINGS',
+  CANVAS = 'Canvas',
+  DISPLAY = 'Display',
+  DEVELOPER = 'Developer',
+  SETTINGS = 'Settings',
 }
 
 export interface PrototypeState {

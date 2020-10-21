@@ -1,6 +1,6 @@
-import { GoogleSheetsActionType } from '@voiceflow/alexa-types/build/nodes/googleSheets';
-import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
 import { utils } from '@voiceflow/common';
+import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
+import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import React, { Component } from 'react';

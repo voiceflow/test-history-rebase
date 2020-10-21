@@ -1,4 +1,4 @@
-import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
+import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
 import React from 'react';
 
 import { NodeData, SpeakData } from '@/models';

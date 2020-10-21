@@ -1,4 +1,4 @@
-import { Locale, ProductType } from '@voiceflow/alexa-types';
+import { Locale, ProductType, decodeMarketPlaceKey, encodeMarketPlaceKey } from '@voiceflow/alexa-types';
 import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
 import moment from 'moment';
 
@@ -31,10 +31,10 @@ export const formatMarketPlaces = (marketPlaces: Record<string, Product.MarketPl
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
 
   return Object.keys(marketPlaces).reduce<Record<string, DBProduct.Pricing>>((acc, place) => {
-    acc[place] = {
+    acc[encodeMarketPlaceKey(place as MarketPlace)] = {
       releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
       defaultPriceListing: {
-        price: marketPlaces[place].price,
+        price: +marketPlaces[place].price || 0,
         currency: marketPlaces[place].currency,
       },
     };
@@ -49,7 +49,8 @@ export const parseMarketPlaces = (
   allPlaces: Partial<Record<string, DBProduct.Pricing>>,
   distributionCountries: string[]
 ): Record<string, Product.MarketPlace> =>
-  Object.keys(allPlaces).reduce((acc, placeKey) => {
+  Object.keys(allPlaces).reduce((acc, encodedKey) => {
+    const placeKey = decodeMarketPlaceKey(encodedKey);
     const place = allPlaces[placeKey];
 
     return !place

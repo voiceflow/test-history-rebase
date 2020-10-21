@@ -1,7 +1,7 @@
-import { IntegrationType } from '@voiceflow/alexa-types';
-import type { StepData as APIStepData } from '@voiceflow/alexa-types/build/nodes/api';
-import type { StepData as GoogleSheetsStepData } from '@voiceflow/alexa-types/build/nodes/googleSheets';
-import type { StepData as ZapierStepData } from '@voiceflow/alexa-types/build/nodes/zapier';
+import { IntegrationType } from '@voiceflow/general-types';
+import type { StepData as APIStepData } from '@voiceflow/general-types/build/nodes/api';
+import type { StepData as GoogleSheetsStepData } from '@voiceflow/general-types/build/nodes/googleSheets';
+import type { StepData as ZapierStepData } from '@voiceflow/general-types/build/nodes/zapier';
 
 import { NodeData } from '@/models';
 

@@ -1,4 +1,4 @@
-import { Expression, ExpressionType } from '@voiceflow/alexa-types';
+import { Expression, ExpressionType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';
@@ -26,7 +26,7 @@ const convertExpressionValueFromDB = (expression: Expression): string | NodeData
 function convertExpressionValueToDB(expression: NodeData.Expression): string | Expression | [Expression, Expression] {
   switch (expression.type) {
     case ExpressionType.NOT:
-      return expressionAdapter.toDB(expression.value);
+      return expressionAdapter.toDB(expression.value as NodeData.Expression);
     case ExpressionType.OR:
     case ExpressionType.AND:
     case ExpressionType.PLUS:
@@ -36,7 +36,7 @@ function convertExpressionValueToDB(expression: NodeData.Expression): string | E
     case ExpressionType.GREATER:
     case ExpressionType.LESS:
     case ExpressionType.EQUALS:
-      return expressionAdapter.mapToDB(expression.value) as [Expression, Expression];
+      return expressionAdapter.mapToDB(expression.value as NodeData.Expression[]) as [Expression, Expression];
     default:
       return expression.value;
   }

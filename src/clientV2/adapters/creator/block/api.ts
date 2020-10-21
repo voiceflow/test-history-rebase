@@ -1,5 +1,5 @@
-import { IntegrationType } from '@voiceflow/alexa-types';
-import { APIActionType, APIBodyType, APIMethod, StepData } from '@voiceflow/alexa-types/build/nodes/api';
+import { IntegrationType } from '@voiceflow/google-types';
+import { APIActionType, APIBodyType, APIMethod, StepData } from '@voiceflow/google-types/build/nodes/api';
 
 import { NodeData } from '@/models';
 

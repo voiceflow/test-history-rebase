@@ -1,4 +1,4 @@
-import { GoogleSheetsActionType } from '@voiceflow/alexa-types/build/nodes/googleSheets';
+import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import _ from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 

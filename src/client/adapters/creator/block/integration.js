@@ -1,4 +1,4 @@
-import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
+import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';

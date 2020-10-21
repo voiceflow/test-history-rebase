@@ -1,5 +1,5 @@
-import { IntegrationType } from '@voiceflow/alexa-types';
-import { StepData, ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
+import { IntegrationType } from '@voiceflow/general-types';
+import { StepData, ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 
 import { NodeData } from '@/models';
 

@@ -1,4 +1,4 @@
-import { APIActionType } from '@voiceflow/alexa-types/build/nodes/api';
+import { APIActionType } from '@voiceflow/general-types/build/nodes/api';
 import React from 'react';
 
 import { Icon } from '@/components/SvgIcon';

@@ -1,4 +1,4 @@
-import type { StepData } from '@voiceflow/alexa-types/build/nodes/set';
+import type { StepData } from '@voiceflow/google-types/build/nodes/set';
 import cuid from 'cuid';
 
 import expressionAdapter from '@/clientV2/adapters/expression';

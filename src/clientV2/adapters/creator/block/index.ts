@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
-import { NodeType } from '@voiceflow/alexa-types';
 import { DiagramNode } from '@voiceflow/api-sdk';
+import { NodeType } from '@voiceflow/google-types';
 
 import { BlockType, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';

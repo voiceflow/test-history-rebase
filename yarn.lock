@@ -4714,18 +4714,20 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@voiceflow/alexa-types@1.28.2":
-  version "1.28.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.28.2.tgz#3417f53e0cfb98f3f62c4514062e85ec4e0fe60d"
-  integrity sha512-dzY2J9GOcpALz9XcMRpuMYwWGkawKSv57NT8slTgZnE3hQG4fPAr78+6Q39lNOPIjK04ol6Y9yECmgw5gHDVlQ==
+"@voiceflow/alexa-types@1.30.2":
+  version "1.30.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.30.2.tgz#6dd74c94f44599d2532962c560da5267b85030ab"
+  integrity sha512-8SjRZ6UsBLdnxlpsWUjrzLSMO5lsdSib+HctGLNjpZPNUy+RxtNb1CkZ9W4oA7WybkHQ6+oZ8G4XnuMEHXVInw==
   dependencies:
-    "@voiceflow/api-sdk" "1.9.2"
+    "@voiceflow/api-sdk" "1.10.1"
+    "@voiceflow/general-types" "^1.2.0"
     ask-smapi-model "^1.11.0"
+    eslint-plugin-prettier "^3.1.4"
 
-"@voiceflow/api-sdk@1.10.0", "@voiceflow/api-sdk@^1.9.2":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.10.0.tgz#f83dfd2b29d487c82b0f9156d8fb3fd367f1591b"
-  integrity sha512-Sl9wIkR2dvuTcJDMXTa8M6LP3GFH8aB4r/U1+bcaSMhth4OZ4HR2485UVGZQljDuH5Hx0mjCt/uHdBPyvpM+EQ==
+"@voiceflow/api-sdk@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.10.1.tgz#c9177eb866a003b786453056cdb11439d820f076"
+  integrity sha512-PEpf0dybn5YCc9Sp2JrYGW5sYGe3dxGJ7QPcTdFUp0Hz/D4ihsisLKEU5LhcRFXQU62o+PlxAQt/u90/QDHHmA==
   dependencies:
     "@types/atob" "^2.1.2"
     "@voiceflow/logger" "^1.1.10"
@@ -4736,10 +4738,10 @@
     regenerator-runtime "^0.13.5"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.9.2.tgz#877193d57780743ba9e9666900b6160508e30c01"
-  integrity sha512-M743aRs21PJSIx68MxdjEI6lzFfBot7bEGi6DrGXrbxfNjWERdEoNV/ProszXdoyTfdZ14dFcrWFHaXZkVqbmw==
+"@voiceflow/api-sdk@^1.9.2":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.10.0.tgz#f83dfd2b29d487c82b0f9156d8fb3fd367f1591b"
+  integrity sha512-Sl9wIkR2dvuTcJDMXTa8M6LP3GFH8aB4r/U1+bcaSMhth4OZ4HR2485UVGZQljDuH5Hx0mjCt/uHdBPyvpM+EQ==
   dependencies:
     "@types/atob" "^2.1.2"
     "@voiceflow/logger" "^1.1.10"
@@ -4842,6 +4844,13 @@
     eslint-plugin-simple-import-sort "^3.1.1"
     eslint-plugin-sonarjs "^0.4.0"
     eslint-plugin-xss "^0.1.9"
+
+"@voiceflow/general-types@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.2.0.tgz#491f3d155c71cb502bd284d0fa2e0c7b989786e1"
+  integrity sha512-WAwrIGr9RQy6MvauLUiK9J/7BHoi3DRqjNFsixQ0T7/m2fO2jpkzzhuI14j8E8Ojr3kq8njDH22juFy3JIG4Jw==
+  dependencies:
+    "@voiceflow/api-sdk" "1.10.1"
 
 "@voiceflow/git-branch-check@^1.1.3":
   version "1.1.3"
@@ -10499,6 +10508,13 @@ eslint-plugin-prettier@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.0.tgz#8695188f95daa93b0dc54b249347ca3b79c4686d"
   integrity sha512-XWX2yVuwVNLOUhQijAkXz+rMPPoCr7WFiAl8ig6I7Xn+pPVhDhzg4DxHpmbeb0iqjO9UronEA3Tb09ChnFVHHA==
+  dependencies:
+    prettier-linter-helpers "^1.0.0"
+
+eslint-plugin-prettier@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
+  integrity sha512-jZDa8z76klRqo+TdGDTFJSavwbnWK2ZpqGKNZ+VvweMW516pDUMmQ2koXvxEE4JhzNvTv+radye/bWGBmA6jmg==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 

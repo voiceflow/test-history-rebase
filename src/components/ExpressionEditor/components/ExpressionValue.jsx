@@ -1,4 +1,4 @@
-import { ExpressionType } from '@voiceflow/alexa-types';
+import { ExpressionType } from '@voiceflow/general-types';
 import cn from 'classnames';
 import React from 'react';
 

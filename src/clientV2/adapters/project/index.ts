@@ -9,13 +9,13 @@ import { Project } from '@/models';
 export { default as productAdapter } from './product';
 
 const projectAdapter = createAdapter<DBProject<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>, Project>(
-  ({ _id, name, devVersion, created, platform, privacy }) => ({
+  ({ _id, name, devVersion, platform, privacy }) => ({
     id: _id,
     name,
     isLive: false,
     module: '',
     locales: [],
-    created: created ? new Date(created).toString() : '', // TODO: remove when created will be sent for the template projects
+    created: '',
     platform: platform as PlatformType,
     diagramID: '',
     reference: false,

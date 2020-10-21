@@ -1,4 +1,4 @@
-import type { StepData as IfData } from '@voiceflow/alexa-types/build/nodes/if';
+import type { StepData as IfData } from '@voiceflow/google-types/build/nodes/if';
 
 import expressionAdapter from '@/clientV2/adapters/expression';
 import { NodeData } from '@/models';

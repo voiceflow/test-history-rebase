@@ -1,4 +1,4 @@
-import type { StepData } from '@voiceflow/alexa-types/build/nodes/intent';
+import type { StepData } from '@voiceflow/general-types/build/nodes/intent';
 
 import { NodeData } from '@/models';
 

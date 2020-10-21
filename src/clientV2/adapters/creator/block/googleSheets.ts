@@ -1,5 +1,5 @@
-import { IntegrationType } from '@voiceflow/alexa-types';
-import { GoogleSheetsActionType, StepData } from '@voiceflow/alexa-types/build/nodes/googleSheets';
+import { IntegrationType } from '@voiceflow/google-types';
+import { GoogleSheetsActionType, StepData } from '@voiceflow/google-types/build/nodes/googleSheets';
 
 import { NodeData } from '@/models';
 

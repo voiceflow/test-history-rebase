@@ -1,4 +1,4 @@
-import { ExpressionType } from '@voiceflow/alexa-types';
+import { ExpressionType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';

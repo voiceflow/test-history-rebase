@@ -1,4 +1,4 @@
-import { Intent as DBIntent } from '@voiceflow/alexa-types';
+import { Intent as DBIntent } from '@voiceflow/general-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';

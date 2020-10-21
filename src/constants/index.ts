@@ -1,14 +1,15 @@
 /* eslint-disable camelcase */
-import { IS_VARIABLE_REGEXP, IntegrationType, PermissionType, READABLE_VARIABLE_REGEXP } from '@voiceflow/alexa-types';
-import { APIActionType, APIBodyType } from '@voiceflow/alexa-types/build/nodes/api';
-import { ZapierActionType } from '@voiceflow/alexa-types/build/nodes/zapier';
+import { PermissionType } from '@voiceflow/alexa-types';
 import { constants } from '@voiceflow/common';
+import { IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP } from '@voiceflow/general-types';
+import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
+import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 
 import { NodeData } from '@/models';
 import { Icon } from '@/svgs/types';
 import { Pair } from '@/types';
 
-export { IntegrationType, SLOT_REGEXP } from '@voiceflow/alexa-types';
+export { SLOT_REGEXP, IntegrationType } from '@voiceflow/general-types';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';

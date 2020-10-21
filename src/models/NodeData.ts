@@ -1,7 +1,7 @@
 import { ExpressionType, IntegrationUser, PermissionType, SlotMapping } from '@voiceflow/alexa-types';
-import { APIBodyType, APIKeyVal } from '@voiceflow/alexa-types/build/nodes/api';
-import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/alexa-types/build/nodes/googleSheets';
-import { ElseType as InteractionElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
+import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
+import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
+import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
 
 import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';

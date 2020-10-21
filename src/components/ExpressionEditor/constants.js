@@ -1,4 +1,4 @@
-import { ExpressionType } from '@voiceflow/alexa-types';
+import { ExpressionType } from '@voiceflow/general-types';
 
 export const GROUPS = [
   [ExpressionType.PLUS, ExpressionType.MINUS, ExpressionType.TIMES, ExpressionType.DIVIDE],

@@ -1,4 +1,4 @@
-import { Slot as DBSlot } from '@voiceflow/alexa-types';
+import { Slot as DBSlot } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';

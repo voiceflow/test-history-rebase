@@ -1,4 +1,4 @@
-import { GoogleSheetsActionType } from '@voiceflow/alexa-types/build/nodes/googleSheets';
+import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import React from 'react';
 
 import SquareButton from '../../components/SquareButton';

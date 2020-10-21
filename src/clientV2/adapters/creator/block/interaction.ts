@@ -1,4 +1,4 @@
-import type { Choice, ElseData, StepData } from '@voiceflow/alexa-types/build/nodes/interaction';
+import type { Choice, ElseData, StepData } from '@voiceflow/google-types/build/nodes/interaction';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';

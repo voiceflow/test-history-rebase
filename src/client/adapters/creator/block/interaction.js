@@ -1,4 +1,4 @@
-import { ElseType } from '@voiceflow/alexa-types/build/nodes/interaction';
+import { ElseType } from '@voiceflow/general-types/build/nodes/interaction';
 import cuid from 'cuid';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';

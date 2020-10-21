@@ -1,5 +1,6 @@
-import { NoMatches, Prompt, Voice } from '@voiceflow/alexa-types';
+import { Voice } from '@voiceflow/alexa-types';
 import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
+import { NoMatches, Prompt } from '@voiceflow/general-types';
 
 import { Adapter, Options, createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
 import { DialogType, PlatformType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
@@ -20,7 +21,7 @@ export type PortsAdapter = {
 };
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
-export const repromptAdapter = createAdapter<Prompt, NodeData.Reprompt>(
+export const repromptAdapter = createAdapter<Prompt<any>, NodeData.Reprompt>(
   (reprompt) => {
     const type = reprompt.voice === Voice.AUDIO ? RepromptType.AUDIO : RepromptType.TEXT;
 
@@ -37,7 +38,7 @@ export const repromptAdapter = createAdapter<Prompt, NodeData.Reprompt>(
   })
 );
 
-export const noMatchRepromptAdapter = createAdapter<Prompt, SpeakData>(
+export const noMatchRepromptAdapter = createAdapter<Prompt<any>, SpeakData>(
   (reprompt) =>
     reprompt.voice === Voice.AUDIO
       ? { url: reprompt.content, type: DialogType.AUDIO }
@@ -48,7 +49,7 @@ export const noMatchRepromptAdapter = createAdapter<Prompt, SpeakData>(
   })
 );
 
-export const noMatchAdapter = createAdapter<NoMatches, NodeData.NoMatches>(
+export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
   ({ randomize, reprompts }) => ({
     randomize,
     reprompts: noMatchRepromptAdapter.mapFromDB(reprompts),

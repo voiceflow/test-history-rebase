@@ -95,14 +95,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
       {isDragging || isDraggingPreview ? null : (
         <FormControl {...formControlProps}>
           {isVoice(item) ? (
-            <AnySSML
-              icon={null}
-              voice={item.voice}
-              value={item.content}
-              onBlur={updateContent}
-              placeholder={`Enter what ${item.voice} will say`}
-              onChangeVoice={updateVoice}
-            />
+            <AnySSML icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} />
           ) : (
             <>
               <AudioUpload audio={item.url} update={updateAudio} />

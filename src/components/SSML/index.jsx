@@ -6,7 +6,7 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 
 import { Editor, Speaker, VoiceSelect } from './components';
-import { ALEXA_ADD_OPTIONS, ALEXA_DEFAULT_TAGS, DEFAULT_VOICE, GOOGLE_DEFAULT_TAGS, UNIVERSAL_ADD_OPTIONS, VOICES } from './constants';
+import { DEFAULT_VOICE, PLATFORM_SSML_META, VOICES } from './constants';
 
 export { VOICES, DEFAULT_VOICE };
 
@@ -26,17 +26,21 @@ const SSML = (
     creatable,
     variables,
     characters,
-    isAlexa,
-    placeholder = isAlexa ? 'Enter what Alexa will say' : 'Enter what Google will say',
+    placeholder,
     onEnterPress,
     onChangeVoice,
     onAddVariable,
     withVariablesPlugin = true,
     createInputPlaceholder = 'New Variable',
+    platform,
     ...props
   },
   ref
 ) => {
+  const platformSSMLMeta = PLATFORM_SSML_META[platform];
+  const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
+  const canChangeVoice = platformSSMLMeta.canChangeVoice;
+
   const getOptionValue = React.useCallback((option) => option?.value, []);
   const getOptionLabel = React.useCallback((value) => voicesMap[value], []);
 
@@ -44,7 +48,7 @@ const SSML = (
     ({ store }) => (
       <>
         <Speaker voice={voice} getSSMLToPlay={() => store.getEditorState().getCurrentContent().getPlainText()} />
-        {isAlexa && (
+        {canChangeVoice && (
           <VoiceSelect
             label={voice}
             inline
@@ -65,8 +69,7 @@ const SSML = (
     [voice, onChangeVoice, getOptionValue, getOptionLabel]
   );
 
-  const platformTags = isAlexa ? ALEXA_DEFAULT_TAGS : GOOGLE_DEFAULT_TAGS;
-  const addOptions = isAlexa ? ALEXA_ADD_OPTIONS : UNIVERSAL_ADD_OPTIONS;
+  const platformTags = platformSSMLMeta.platformTags;
 
   const pluginProps = React.useMemo(
     () => ({
@@ -74,7 +77,7 @@ const SSML = (
         type: 'ssml',
         tags: platformTags,
         addLabel: 'Add Effect',
-        addOptions,
+        addOptions: platformSSMLMeta.addOptions,
         historyTooltip: 'Recent Effects',
         tagsSearchPlaceholder: 'Search effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,
@@ -101,7 +104,7 @@ const SSML = (
       {...props}
       ref={ref}
       onBlur={onBlurCallback}
-      placeholder={placeholder}
+      placeholder={SSMLPlaceholder}
       onEnterPress={onEnterPress ? onEnterPressCallback : null}
       pluginsTypes={withVariablesPlugin ? pluginsTypes : pluginsWithoutVariablesTypes}
       pluginsProps={pluginProps}

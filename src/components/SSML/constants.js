@@ -1,6 +1,8 @@
 import { constants } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 
+import { PlatformType } from '@/constants';
+
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
 const PROSODY_VOLUME_REGEXP = /^(\+|-)\d+(\.\d+)?dB$/;
@@ -731,3 +733,26 @@ export const ALEXA_ADD_OPTIONS = [
     },
   },
 ];
+
+export const PLATFORM_SSML_META = {
+  [PlatformType.ALEXA]: {
+    fallbackPlaceholder: (voice) => `Enter what ${voice || 'Alexa'} will say`,
+    canChangeVoice: true,
+    platformTags: ALEXA_DEFAULT_TAGS,
+    addOptions: ALEXA_ADD_OPTIONS,
+  },
+  [PlatformType.GOOGLE]: {
+    // eslint-disable-next-line lodash/prefer-constant
+    fallbackPlaceholder: () => 'Enter what Google will say',
+    canChangeVoice: false,
+    platformTags: GOOGLE_DEFAULT_TAGS,
+    addOptions: UNIVERSAL_ADD_OPTIONS,
+  },
+  [PlatformType.GENERAL]: {
+    // eslint-disable-next-line lodash/prefer-constant
+    fallbackPlaceholder: () => "What should 'the assistant' say?",
+    canChangeVoice: false,
+    platformTags: null,
+    addOptions: null,
+  },
+};

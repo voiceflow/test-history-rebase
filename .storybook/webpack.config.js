@@ -2,7 +2,7 @@ require('ts-node/register/transpile-only');
 
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { mergeWithCustomize, customizeArray } = require('webpack-merge');
 const paths = require('../config/paths').default;
 
 const { ENV, IS_PRODUCTION } = require('../config/webpack/config');
@@ -17,7 +17,9 @@ const BABEL_LOADER = {
 };
 
 module.exports = ({ config }) =>
-  merge.strategy({ 'module.rules': 'replace' })(config, {
+  mergeWithCustomize({
+    customizeArray: customizeArray({ 'module.rules': 'replace' }),
+  })(config, {
     resolve: {
       alias: {
         '@': paths.sourceDir,

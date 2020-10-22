@@ -1,6 +1,11 @@
 import React from 'react';
 
 import BackButtonHeader from '@/components/BackButtonHeader';
+import * as UI from '@/ducks/ui';
+import { connect } from '@/hocs';
+import { useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
+import { ConnectedProps } from '@/types';
 
 import { Container, Content } from './components';
 
@@ -16,7 +21,7 @@ export type PageProps = {
   headerChildren?: React.ReactNode;
 };
 
-const Page: React.FC<PageProps> = ({
+const Page: React.FC<PageProps & ConnectedPageProps> = ({
   header,
   navigateBackText,
   subHeader,
@@ -25,10 +30,24 @@ const Page: React.FC<PageProps> = ({
   onNavigateBack,
   children,
   headerChildren,
+  canvasOnly,
+  setCanvasOnly,
 }) => {
+  const toggleCanvasOnlyMode = React.useCallback(() => {
+    setCanvasOnly(!canvasOnly);
+  }, [canvasOnly]);
+
+  useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnlyMode, { preventDefault: true }, [toggleCanvasOnlyMode]);
+
   return (
     <Container>
-      <BackButtonHeader header={header} subHeader={subHeader} onNavigateBack={onNavigateBack} navigateBackText={navigateBackText}>
+      <BackButtonHeader
+        render={!canvasOnly}
+        header={header}
+        subHeader={subHeader}
+        onNavigateBack={onNavigateBack}
+        navigateBackText={navigateBackText}
+      >
         {headerChildren}
       </BackButtonHeader>
 
@@ -39,4 +58,14 @@ const Page: React.FC<PageProps> = ({
   );
 };
 
-export default Page;
+const mapStateToProps = {
+  canvasOnly: UI.isCanvasOnlyShowingSelector,
+};
+
+const mapDispatchToProps = {
+  setCanvasOnly: UI.setCanvasOnly,
+};
+
+type ConnectedPageProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page) as React.FC<PageProps>;

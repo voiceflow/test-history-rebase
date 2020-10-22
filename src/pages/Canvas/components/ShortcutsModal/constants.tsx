@@ -77,6 +77,14 @@ export const SHORTCUTS = [
     command: <ShortcutCommand>?</ShortcutCommand>,
   },
   {
+    title: 'Show/Hide UI',
+    command: (
+      <>
+        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>\</ShortcutCommand>
+      </>
+    ),
+  },
+  {
     title: 'Go to Start Block',
     command: <ShortcutCommand>S</ShortcutCommand>,
   },

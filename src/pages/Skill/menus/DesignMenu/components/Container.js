@@ -20,6 +20,12 @@ const Container = styled.aside`
       transform: translateX(0);
     `}
 
+  ${({ canvasOnly }) =>
+    canvasOnly &&
+    css`
+      bottom: 50px;
+    `}
+
   &:after {
     display: block;
     width: 4px;

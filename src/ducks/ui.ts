@@ -20,6 +20,7 @@ export type UIState = {
   };
   local: Record<string, any>;
   canvasNavigation: ControlScheme;
+  canvasOnly: boolean;
 };
 
 export const STATE_KEY = 'ui';
@@ -33,11 +34,13 @@ export const INITIAL_STATE = {
   },
   local: {},
   canvasNavigation: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
+  canvasOnly: false,
 };
 
 const PERSIST_CONFIG = {
   key: STATE_KEY,
   storage: storageLocal,
+  blacklist: ['canvasOnly'],
 };
 
 export enum UIAction {
@@ -45,6 +48,9 @@ export enum UIAction {
   SET_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ACTIVE_MENU',
   TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN',
   SET_CANVAS_NAVIGATION = 'UI:SET_CANVAS_NAVIGATION',
+  SHOW_CREATOR_MENU = 'UI:CREATOR_MENU:SHOW',
+  HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
+  SET_CANVAS_ONLY = 'UI:SET_CANVAS_ONLY',
 }
 
 // action types
@@ -55,9 +61,22 @@ export type SetActiveCreatorMenu = Action<UIAction.SET_ACTIVE_CREATOR_MENU, stri
 
 export type ToggleCreatorMenuHidden = Action<UIAction.TOGGLE_CREATOR_MENU_HIDDEN>;
 
+export type ShowCreatorMenu = Action<UIAction.SHOW_CREATOR_MENU>;
+
+export type HideCreatorMenu = Action<UIAction.HIDE_CREATOR_MENU>;
+
 export type SetCanvasNavigation = Action<UIAction.SET_CANVAS_NAVIGATION, ControlScheme>;
 
-type AnyUIAction = ToggleBlockMenuSection | SetActiveCreatorMenu | ToggleCreatorMenuHidden | SetCanvasNavigation;
+export type SetCanvasOnly = Action<UIAction.SET_CANVAS_ONLY, boolean>;
+
+type AnyUIAction =
+  | ToggleBlockMenuSection
+  | SetActiveCreatorMenu
+  | ToggleCreatorMenuHidden
+  | SetCanvasNavigation
+  | HideCreatorMenu
+  | ShowCreatorMenu
+  | SetCanvasOnly;
 
 // reducers
 
@@ -86,9 +105,30 @@ export const toggleCreatorMenuHiddenReducer: Reducer<UIState> = (state) => ({
   },
 });
 
+export const hideCreatorMenuReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  creatorMenu: {
+    ...state.creatorMenu,
+    isHidden: true,
+  },
+});
+
+export const showCreatorMenuReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  creatorMenu: {
+    ...state.creatorMenu,
+    isHidden: false,
+  },
+});
+
 export const setNavigationReducer: Reducer<UIState, SetCanvasNavigation> = (state, { payload: canvasNavigation }) => ({
   ...state,
   canvasNavigation,
+});
+
+export const setCanvasOnlyReducer: Reducer<UIState, SetCanvasOnly> = (state, { payload: canvasOnly }) => ({
+  ...state,
+  canvasOnly,
 });
 
 const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, action) => {
@@ -101,6 +141,12 @@ const uiReducer: RootReducer<UIState, AnyUIAction> = (state = INITIAL_STATE, act
       return setNavigationReducer(state, action);
     case UIAction.TOGGLE_CREATOR_MENU_HIDDEN:
       return toggleCreatorMenuHiddenReducer(state);
+    case UIAction.HIDE_CREATOR_MENU:
+      return hideCreatorMenuReducer(state);
+    case UIAction.SHOW_CREATOR_MENU:
+      return showCreatorMenuReducer(state);
+    case UIAction.SET_CANVAS_ONLY:
+      return setCanvasOnlyReducer(state, action);
     default:
       return state;
   }
@@ -120,6 +166,8 @@ export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creat
 
 export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNavigation }) => canvasNavigation);
 
+export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);
+
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategoryType): ToggleBlockMenuSection =>
@@ -129,5 +177,11 @@ export const setActiveCreatorMenu = (menu: string): SetActiveCreatorMenu => crea
 
 export const toggleCreatorMenuHidden = (): ToggleCreatorMenuHidden => createAction(UIAction.TOGGLE_CREATOR_MENU_HIDDEN);
 
+export const showCreatorMenu = (): ShowCreatorMenu => createAction(UIAction.SHOW_CREATOR_MENU);
+
+export const hideCreatorMenu = (): HideCreatorMenu => createAction(UIAction.HIDE_CREATOR_MENU);
+
 export const setCanvasNavigation = (canvasNavigation: ControlScheme): SetCanvasNavigation =>
   createAction(UIAction.SET_CANVAS_NAVIGATION, canvasNavigation);
+
+export const setCanvasOnly = (canvasOnly: boolean): SetCanvasOnly => createAction(UIAction.SET_CANVAS_ONLY, canvasOnly);

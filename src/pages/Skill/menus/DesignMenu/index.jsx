@@ -15,7 +15,7 @@ import { Identifier } from '@/styles/constants';
 import { Container, Content, Flows, Header, Steps } from './components';
 import { TABS, Tab } from './constants';
 
-function DesignMenu({ isHidden, activeTab, toggleIsHidden, isViewerOrLibraryRole, selectActiveTab }) {
+function DesignMenu({ isHidden, activeTab, toggleIsHidden, showCreatorMenu, hideCreatorMenu, isViewerOrLibraryRole, selectActiveTab, canvasOnly }) {
   const [isEditingMode] = usePermission(Permission.EDIT_CANVAS);
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
@@ -28,6 +28,14 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, isViewerOrLibraryRole
     return Object.values(Tab).includes(activeTab) ? activeTab : Tab.STEPS;
   }, [activeTab, isViewerOrLibraryRole]);
   const [events] = useTrackingEvents();
+
+  React.useEffect(() => {
+    if (canvasOnly) {
+      hideCreatorMenu(); // canvas only mode should unlock the step menu
+    } else {
+      showCreatorMenu();
+    }
+  }, [canvasOnly]);
 
   useHotKeys(
     Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB,
@@ -68,6 +76,7 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, isViewerOrLibraryRole
       onMouseLeave={canBeOpened ? closeByLoseHover : null}
       tabIndex={-1}
       ref={dropRef}
+      canvasOnly={canvasOnly}
     >
       <Content isOpen={isOpen} activeTab={selectedTab}>
         <Header
@@ -77,7 +86,6 @@ function DesignMenu({ isHidden, activeTab, toggleIsHidden, isViewerOrLibraryRole
           selectedTab={selectedTab}
           selectActiveTab={selectActiveTab}
         />
-
         {selectedTab === Tab.STEPS && !isViewerOrLibraryRole && <Steps />}
         {selectedTab === Tab.FLOWS && <Flows isOpen={isOpen} />}
       </Content>
@@ -89,10 +97,13 @@ const mapStateToProps = {
   isHidden: UI.isCreatorMenuHiddenSelector,
   activeTab: UI.activeCreatorMenuSelector,
   isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
+  canvasOnly: UI.isCanvasOnlyShowingSelector,
 };
 
 const mapDispatchToProps = {
   toggleIsHidden: UI.toggleCreatorMenuHidden,
+  hideCreatorMenu: UI.hideCreatorMenu,
+  showCreatorMenu: UI.showCreatorMenu,
   selectActiveTab: UI.setActiveCreatorMenu,
 };
 

@@ -22,7 +22,11 @@ import { CanvasControl, CanvasControlMeta } from './constants';
 
 const ZOOM_DELTA = 15;
 
-const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWorkspace, hasUnreadComments }) => {
+type CanvasControlProps = {
+  render: boolean;
+};
+
+const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps> = ({ render, isTemplateWorkspace, hasUnreadComments }) => {
   const [trackEvents, trackingEventsWrapper] = useTrackingEvents();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
@@ -118,48 +122,52 @@ const CanvasControls: React.FC<ConnectedCanvasControlsProps> = ({ isTemplateWork
   useHotKeys(Hotkey.CLOSE_CANVAS_MODE, disableModes, { preventDefault: true });
 
   return (
-    <Container>
-      <CanvasControlButton {...CanvasControlMeta[CanvasControl.START]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
-      <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
-      {showHintFeatures && (
-        <>
-          <Box position="relative">
-            <CanvasControlButton
-              {...CanvasControlMeta[CanvasControl.COMMENTING]}
-              className={cn(ClassName.CANVAS_CONTROL, COMMENTING_CONTROL_CLASSNAME)}
-              iconProps={{
-                active: isCommentingMode,
-                icon: isCommentingMode ? 'close' : 'comment',
-                size: isCommentingMode ? 14 : 16,
-              }}
-              onClick={toggleCommenting}
-            />
-            {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
-          </Box>
+    <>
+      {render && (
+        <Container>
+          <CanvasControlButton {...CanvasControlMeta[CanvasControl.START]} iconProps={{ id: Identifier.CANVAS_HOME_BUTTON }} onClick={onFocusHome} />
+          <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
+          {showHintFeatures && (
+            <>
+              <Box position="relative">
+                <CanvasControlButton
+                  {...CanvasControlMeta[CanvasControl.COMMENTING]}
+                  className={cn(ClassName.CANVAS_CONTROL, COMMENTING_CONTROL_CLASSNAME)}
+                  iconProps={{
+                    active: isCommentingMode,
+                    icon: isCommentingMode ? 'close' : 'comment',
+                    size: isCommentingMode ? 14 : 16,
+                  }}
+                  onClick={toggleCommenting}
+                />
+                {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
+              </Box>
 
-          <CanvasControlButton
-            {...CanvasControlMeta[CanvasControl.MARKUP]}
-            className={cn(ClassName.CANVAS_CONTROL, MARKUP_CONTROL_CLASSNAME)}
-            iconProps={{
-              active: isMarkupMode,
-              icon: isMarkupMode ? 'close' : 'editName',
-              size: isMarkupMode ? 14 : 16,
-            }}
-            onClick={toggleMarkup}
-          />
-        </>
+              <CanvasControlButton
+                {...CanvasControlMeta[CanvasControl.MARKUP]}
+                className={cn(ClassName.CANVAS_CONTROL, MARKUP_CONTROL_CLASSNAME)}
+                iconProps={{
+                  active: isMarkupMode,
+                  icon: isMarkupMode ? 'close' : 'editName',
+                  size: isMarkupMode ? 14 : 16,
+                }}
+                onClick={toggleMarkup}
+              />
+            </>
+          )}
+          <ControlContainer>
+            <ZoomContainer>
+              <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">
+                <IconButton icon="zoomOut" size={14} onClick={onZoomOut} />
+              </Tooltip>
+              <Tooltip distance={6} title="Zoom In" position="top" hotkey="+">
+                <IconButton icon="zoomIn" size={14} onClick={onZoomIn} />
+              </Tooltip>
+            </ZoomContainer>
+          </ControlContainer>
+        </Container>
       )}
-      <ControlContainer>
-        <ZoomContainer>
-          <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">
-            <IconButton icon="zoomOut" size={14} onClick={onZoomOut} />
-          </Tooltip>
-          <Tooltip distance={6} title="Zoom In" position="top" hotkey="+">
-            <IconButton icon="zoomIn" size={14} onClick={onZoomIn} />
-          </Tooltip>
-        </ZoomContainer>
-      </ControlContainer>
-    </Container>
+    </>
   );
 };
 
@@ -170,4 +178,4 @@ const mapStateToProps = {
 
 type ConnectedCanvasControlsProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(CanvasControls);
+export default connect(mapStateToProps)(CanvasControls) as React.FC<CanvasControlProps>;

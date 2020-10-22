@@ -25,6 +25,7 @@ export enum Hotkey {
   SELECT_IMAGE_MARKUP = 'SELECT_IMAGE_MARKUP',
   SELECT_TEXT_MARKUP = 'SELECT_TEXT_MARKUP',
   DUPLICATE = 'DUPLICATE',
+  SHOW_HIDE_UI = 'SHOW_HIDE_UI',
 }
 
 /**
@@ -58,6 +59,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.SELECT_IMAGE_MARKUP]: ['i'],
   [Hotkey.SELECT_TEXT_MARKUP]: ['t'],
   [Hotkey.DUPLICATE]: ['ctrl+d', 'meta+d'],
+  [Hotkey.SHOW_HIDE_UI]: ['ctrl+\\', 'meta+\\'],
 };
 
 export default HOTKEY_MAPPING;

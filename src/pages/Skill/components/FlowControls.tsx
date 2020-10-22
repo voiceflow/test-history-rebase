@@ -10,7 +10,11 @@ import { ConnectedProps } from '@/types';
 
 const FlowBarComponent = FlowBar as React.FC<any>;
 
-const FlowControls: React.FC<ConnectedFlowControlsProps> = ({ flow, isRootDiagram }) => {
+type FlowControlsProps = {
+  render: boolean;
+};
+
+const FlowControls: React.FC<FlowControlsProps & ConnectedFlowControlsProps> = ({ render, flow, isRootDiagram }) => {
   const isPrototypingMode = usePrototypingMode();
   const isEditingMode = useEditingMode();
   const showFlowControls = !isPrototypingMode && !isRootDiagram && flow;
@@ -19,8 +23,12 @@ const FlowControls: React.FC<ConnectedFlowControlsProps> = ({ flow, isRootDiagra
 
   return (
     <>
-      <CanvasGoHome withMenu={false} withDrawer={isEditingMode} />
-      <FlowBarComponent withMenu withDrawer={isEditingMode} flow={flow} />
+      {render && (
+        <>
+          <CanvasGoHome withMenu={false} withDrawer={isEditingMode} />
+          <FlowBarComponent withMenu withDrawer={isEditingMode} flow={flow} />
+        </>
+      )}
     </>
   );
 };
@@ -32,4 +40,4 @@ const mapStateToProps = {
 
 type ConnectedFlowControlsProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(FlowControls);
+export default connect(mapStateToProps)(FlowControls) as React.FC<FlowControlsProps>;

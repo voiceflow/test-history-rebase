@@ -32,6 +32,34 @@ function ImportModal({ importProject, importProjectV2, workspaces, workspaceByID
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { importToken, cloning = false } = data;
+  const [multipleWorkspaces, setMultipleWorkspaces] = React.useState(null);
+
+  const renderModal = isOpened && multipleWorkspaces;
+
+  React.useEffect(() => {
+    if (!importToken) return;
+    // get a list of workspaces with editor/owner/admin role
+    const authorizedWorkspaces = workspaces.filter((workspace) => {
+      return workspace.members.some((member) => member.creator_id === creatorId && allowedToClone(workspace, creatorId));
+    });
+    // If user has 0 workspaces with Editor/Admin/Owner role, show toast
+    if (authorizedWorkspaces.length === 0) {
+      setMultipleWorkspaces(false);
+      toast.error('You do not have permission to copy project to any of your workspaces');
+
+      // setTimeout needed to prevent race condition and creating unclickable overlay
+      setTimeout(() => {
+        close();
+      }, 100);
+    }
+    // If user has only 1 workspace with Editor/Admin/Owner role, automatically add it
+    else if (authorizedWorkspaces.length === 1) {
+      setMultipleWorkspaces(false);
+      cloneProject(authorizedWorkspaces[0].id);
+    } else {
+      setMultipleWorkspaces(true);
+    }
+  }, [targetWorkspace, importToken]);
 
   React.useEffect(() => {
     setTargetWorkspace(workspaceOptions[0]);
@@ -80,7 +108,8 @@ function ImportModal({ importProject, importProjectV2, workspaces, workspaceByID
       );
     }
   };
-  return (
+
+  return renderModal ? (
     <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
       <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
       <ModalBody padding="0 32px 32px 32px">
@@ -103,7 +132,7 @@ function ImportModal({ importProject, importProjectV2, workspaces, workspaceByID
         <Button onClick={() => cloneProject(targetWorkspace.value)}>{cloning ? 'Clone' : 'Copy Project'}</Button>
       </ModalFooter>
     </Modal>
-  );
+  ) : null;
 }
 
 const mapStateToProps = {

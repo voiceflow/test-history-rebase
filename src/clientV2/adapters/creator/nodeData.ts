@@ -5,47 +5,50 @@ import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import blockAdapter, { APP_BLOCK_TYPE_FROM_DB } from './block';
-import deprecatedAdapter from './block/deprecated';
-import { creatorLogger, isSupportedBlockType } from './utils';
-
-const log = creatorLogger.child('node-data');
+import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
 
 const nodeDataAdapter = createSimpleAdapter<
-  DiagramNode['data'],
+  { data: DiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ dbNode: DiagramNode; platform: PlatformType }],
+  [{ platform: PlatformType; nodeID: string }],
   [{ platform: PlatformType }]
 >(
-  (dbData, { dbNode, platform }) => {
-    const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbNode.type];
+  ({ data: dbData, type: dbType }, { platform, nodeID }) => {
+    const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];
 
-    let type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbNode.type;
-
-    if (!isSupportedBlockType(type)) {
-      type = BlockType.DEPRECATED;
-    }
-
-    const adapter = (isSupportedBlockType(type) && blockAdapter[type]) || deprecatedAdapter;
+    const type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbType;
 
     let data: Partial<NodeData<unknown>> = {};
-
     try {
-      data = adapter.fromDB(dbData as any, { platform });
-    } catch (err) {
-      log.error('Block Adapter Error', err);
-      data = deprecatedAdapter.fromDB(dbData as any, { platform });
+      data = blockAdapter[type]?.fromDB(dbData as any, { platform }) || { deprecatedType: type, ...dbData };
+    } catch {
+      data = { deprecatedType: type, ...dbData };
     }
 
     return {
       name: '',
       ...data,
-      type,
-      nodeID: dbNode.nodeID,
+      type: data.deprecatedType ? BlockType.DEPRECATED : type,
+      nodeID,
       path: [],
     };
   },
-  ({ type, path, ...appData }, { platform }) => (blockAdapter[type] || deprecatedAdapter).toDB(appData as any, { platform })
+  ({ type, path, deprecatedType, nodeID, ...appData }, { platform }) => {
+    const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
+    const dbType = _isFunction(getNodeType) ? getNodeType(appData) : getNodeType || deprecatedType || type;
+
+    let data: DiagramNode['data'] = {};
+    try {
+      data = blockAdapter[dbType as BlockType]?.toDB(appData as any, { platform }) || (appData as any);
+    } catch {
+      data = appData as any;
+    }
+
+    return {
+      data,
+      type: dbType,
+    };
+  }
 );
 
 export default nodeDataAdapter;

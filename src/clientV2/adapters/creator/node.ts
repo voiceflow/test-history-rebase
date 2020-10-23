@@ -1,11 +1,10 @@
 import { Block, DiagramNode, NodeID } from '@voiceflow/api-sdk';
-import _isFunction from 'lodash/isFunction';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
 import { Link, Node, NodeData, Port } from '@/models';
 
-import { DB_BLOCK_TYPE_FROM_APP, defaultPortAdapter, portsAdapter } from './block';
+import { defaultPortAdapter, portsAdapter } from './block';
 import { IN_PORT_KEY, OUT_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, getLinkID, isBlock, isStep } from './utils';
@@ -18,7 +17,7 @@ const nodeAdapter = createAdapter<
 >(
   (dbNode, { parentNode, links, platform }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
-    const data = nodeDataAdapter.fromDB(dbNode.data, { dbNode, platform });
+    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, nodeID: dbNode.nodeID });
 
     const ports: Port[] = [];
 
@@ -88,14 +87,13 @@ const nodeAdapter = createAdapter<
   },
   ({ node, data, ports }, { portToTargets, stepMap, platform }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
-    const getNodeType = DB_BLOCK_TYPE_FROM_APP[node.type];
-    const type = _isFunction(getNodeType) ? getNodeType(data) : getNodeType || node.type;
+    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform });
 
     const diagramNode: DiagramNode = {
       nodeID: node.id,
       type,
       coords: node.parentNode ? undefined : [node.x, node.y],
-      data: nodeDataAdapter.toDB(data, { platform }),
+      data: dbData,
     };
 
     if (node.ports.out.length > 0) {

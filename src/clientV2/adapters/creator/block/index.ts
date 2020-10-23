@@ -14,7 +14,6 @@ import captureAdapter from './capture';
 import cardAdapter from './card';
 import codeAdapter from './code';
 import commandAdapter from './command';
-import deprecatedAdapter from './deprecated';
 import directiveAdapter from './directive';
 import displayAdapter from './display';
 import eventAdapter from './event';
@@ -89,7 +88,7 @@ const blockAdapter = {
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.STREAM]: streamAdapter,
   [BlockType.USER_INFO]: userInfoAdapter,
-  [BlockType.DEPRECATED]: deprecatedAdapter,
+  [BlockType.DEPRECATED]: null,
   [BlockType.INVALID_PLATFORM]: invalidPlatformAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.EVENT]: eventAdapter,

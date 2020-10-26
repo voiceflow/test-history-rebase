@@ -54,7 +54,7 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
       ],
       reprompt: null,
       else: {
-        type: InteractionElseType.PATH,
+        type: InteractionElseType.REPROMPT,
         randomize: false,
         reprompts: [
           {

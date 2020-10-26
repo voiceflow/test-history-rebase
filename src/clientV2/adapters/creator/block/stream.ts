@@ -1,7 +1,7 @@
 import type { StepData } from '@voiceflow/alexa-types/build/nodes/stream';
 
 import { PlatformType } from '@/constants';
-import { NodeData } from '@/models';
+import { NodeData, Port } from '@/models';
 
 import { generateOutPort } from '../utils';
 import { PortsAdapter, createBlockAdapter } from './utils';
@@ -27,6 +27,11 @@ const streamAdapter = createBlockAdapter<StepData, NodeData.Stream>(
   })
 );
 
+function getPortByLabel(ports: { port: Port; target: string | null }[], label: string) {
+  for (let i = 0; i < ports.length; i++) if (ports[i].port.label === label) return ports[i];
+  return null;
+}
+
 export enum PortType {
   NEXT = 'next',
   PAUSE = 'pause',
@@ -38,15 +43,15 @@ export const streamPortsAdapter: PortsAdapter = {
   toDB: (ports) => [
     {
       type: PortType.NEXT,
-      target: ports[1]?.target || null,
+      target: getPortByLabel(ports, PortType.NEXT)?.target || null,
     },
     {
       type: PortType.PREVIOUS,
-      target: ports[2]?.target || null,
+      target: getPortByLabel(ports, PortType.PREVIOUS)?.target || null,
     },
     {
       type: PortType.PAUSE,
-      target: ports[3]?.target || null,
+      target: getPortByLabel(ports, PortType.PAUSE)?.target || null,
     },
   ],
   fromDB: (ports, { nodeID }) => [

@@ -1,5 +1,5 @@
 import { IntegrationType } from '@voiceflow/google-types';
-import { APIActionType, APIBodyType, APIMethod, StepData } from '@voiceflow/google-types/build/nodes/api';
+import { APIActionType, APIBodyType, APIMethod, StepData } from '@voiceflow/general-types/build/nodes/api';
 
 import { NodeData } from '@/models';
 

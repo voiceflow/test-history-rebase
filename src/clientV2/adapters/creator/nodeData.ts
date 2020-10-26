@@ -39,7 +39,7 @@ const nodeDataAdapter = createSimpleAdapter<
 
     let data: DiagramNode['data'] = {};
     try {
-      data = blockAdapter[dbType as BlockType]?.toDB(appData as any, { platform }) || (appData as any);
+      data = blockAdapter[type]?.toDB(appData as any, { platform }) || (appData as any);
     } catch {
       data = appData as any;
     }

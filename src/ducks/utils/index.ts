@@ -1,7 +1,7 @@
 import moize from 'moize';
 
 import type { State } from '@/ducks/_root';
-import { Action, AnyAction, Reducer, RootReducer, Selector } from '@/store/types';
+import { Action, AnyAction, RootReducer, Selector } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 
 export const duckLogger = storeLogger.child('duck');
@@ -38,19 +38,20 @@ export const createLookupReducer = <S, A extends AnyAction>(reducer: RootReducer
   };
 };
 
-type ReducerMap<T extends object, A extends AnyAction> = Partial<
-  {
-    [K in keyof T]: Reducer<T[K], A>;
-  }
->;
+type ReducerMap<T extends Record<string, any>, A> = {
+  [K in keyof T]: RootReducer<T[K], A>;
+};
 
-export const compositeReducer = <S extends Record<string, any>, A extends AnyAction, M extends ReducerMap<S, A>>(
+type ReducerMapState<T> = T extends ReducerMap<infer R, any> ? R : never;
+type ReducerMapAction<T> = T extends ReducerMap<any, infer R> ? R : never;
+
+export const compositeReducer = <S extends Record<string, any>, A extends AnyAction, M extends ReducerMap<Record<string, any>, any>>(
   rootReducer: RootReducer<S, A>,
   reducers: M
-): RootReducer<S, A> => (state, action) =>
+): RootReducer<S & ReducerMapState<M>, A | ReducerMapAction<M>> => (state, action) =>
   Object.keys(reducers).reduce((acc, key) => {
     if (acc) {
-      const subState = reducers[key]!(acc[key], action);
+      const subState = reducers[key]!(acc[key], action as ReducerMapAction<M>);
       if (subState !== acc[key]) {
         return {
           ...acc,
@@ -60,4 +61,4 @@ export const compositeReducer = <S extends Record<string, any>, A extends AnyAct
     }
 
     return acc;
-  }, rootReducer(state, action));
+  }, rootReducer(state, action as A) as S & ReducerMapState<M>);

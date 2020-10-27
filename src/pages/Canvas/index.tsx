@@ -12,7 +12,6 @@ import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
-import CanvasNotifications from './components/CanvasNotifications';
 import ContextMenu from './components/ContextMenu';
 import EditSidebar from './components/EditorSidebar';
 import RealtimeOverlay from './components/RealtimeOverlay';
@@ -52,8 +51,6 @@ const Canvas: React.FC = () => {
       <BulkImportSlots />
       <BulkImportUtterances />
       <InteractionModelModal />
-
-      <CanvasNotifications />
     </CanvasProviders>
   );
 };

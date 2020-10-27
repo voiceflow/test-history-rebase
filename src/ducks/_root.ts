@@ -27,7 +27,6 @@ import template, * as Template from '@/ducks/template';
 import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
-import userSetting, * as UserSetting from '@/ducks/user';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
 
@@ -37,7 +36,6 @@ const getCombinedReducer = (history: History) =>
     form: formReducer,
     [ProjectList.STATE_KEY]: projectList,
     publish,
-    [UserSetting.STATE_KEY]: userSetting,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
     [Thread.STATE_KEY]: thread,

@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
+import { toast } from '@/components/Toast';
 import { LOGROCKET_ENABLED } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { RootRoute } from '@/config/routes';
@@ -24,7 +25,6 @@ import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
-import * as User from '@/ducks/user';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Workspace from '@/ducks/workspace';
 import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
@@ -175,7 +175,7 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
   }
 
   if (hasViewers && isHistoryAction) {
-    store.dispatch(User.setCanvasError('Undo and Redo actions unavailable while other active users are viewing this flow'));
+    toast.error('Undo and Redo actions unavailable while other active users are viewing this flow');
 
     return;
   }

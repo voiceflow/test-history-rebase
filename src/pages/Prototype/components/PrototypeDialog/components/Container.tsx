@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Box from '@/components/Box';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export const Outter = styled.div`
   position: relative;
@@ -12,7 +12,7 @@ export const Outter = styled.div`
   padding-top: 0;
 `;
 
-export const Middle = styled.div`
+export const Middle = styled.div<{ isPublic?: boolean }>`
   position: absolute;
   display: flex;
   flex: 1;
@@ -20,12 +20,17 @@ export const Middle = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 24px 20px;
+  ${({ isPublic }) =>
+    isPublic &&
+    css`
+      padding-top: 20px;
+    `}
 `;
 
-const Container: React.FC = ({ children }) => {
+const Container: React.FC<{ isPublic?: boolean }> = ({ children, isPublic }) => {
   return (
     <Outter>
-      <Middle>
+      <Middle isPublic={isPublic}>
         <Box pb={20} width="100%">
           {children}
         </Box>

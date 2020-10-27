@@ -2,7 +2,7 @@ import { Locale } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Box, { Flex } from '@/components/Box';
+import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { ButtonVariant } from '@/components/Button/constants';
 import SvgIcon from '@/components/SvgIcon';
@@ -13,7 +13,7 @@ import { ConnectedProps } from '@/types';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
-import { ControlButton, InputArea, InputContainer } from './components';
+import { ControlButton, ControlsContainer, InputArea, InputContainer } from './components';
 
 const InputAreaComp: React.FC<any> = InputArea;
 export type PrototypeInputProps = {
@@ -55,7 +55,7 @@ const PrototypeInput: React.FC<PrototypeInputProps & ConnectedPrototypeInputProp
 
   return (
     <>
-      <Flex p="10px 24px">
+      <ControlsContainer>
         <Tooltip title="Text" position="top">
           <ControlButton active={inputMode === InputMode.TEXT} onClick={() => setInputMode(InputMode.TEXT)}>
             <SvgIcon icon="text" size={16} color="#99a8b8" />
@@ -76,7 +76,7 @@ const PrototypeInput: React.FC<PrototypeInputProps & ConnectedPrototypeInputProp
             <SvgIcon icon="touch" size={16} color="#99a8b8" />
           </ControlButton>
         </Tooltip>
-      </Flex>
+      </ControlsContainer>
       <InputContainer>
         {inputMode === InputMode.TEXT ? (
           <Box pb={70}>

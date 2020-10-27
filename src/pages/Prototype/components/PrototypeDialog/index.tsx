@@ -17,11 +17,21 @@ type DialogProps = {
   audioInstance: TAudio | null;
   setForceAutoUpdate: (val: number) => void;
   bottomScrollRef: React.Ref<HTMLElement>;
+  isPublic?: boolean;
 };
 
-const PrototypeDialog: React.FC<DialogProps> = ({ setForceAutoUpdate, bottomScrollRef, audioInstance, messages, debug, onPlay, isLoading }) => {
+const PrototypeDialog: React.FC<DialogProps> = ({
+  setForceAutoUpdate,
+  isPublic,
+  bottomScrollRef,
+  audioInstance,
+  messages,
+  debug,
+  onPlay,
+  isLoading,
+}) => {
   return (
-    <Container>
+    <Container isPublic={isPublic}>
       {messages.map((message: Message, index) => {
         const previousMessage = messages[index - 1];
         const userSpeak = message.type === MessageType.USER;

@@ -16,6 +16,7 @@ const THEME = {
   backgrounds: {
     offWhite: '#f9f9f9',
     offWhiteBlue: '#FAFAFC',
+    white: '#ffffff',
   },
   colors: {
     primary: '#132144',

@@ -95,7 +95,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
             isPublic ? startPrototype() : trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })()
           }
         />
-        <FlexCenter style={{ marginBottom: '30px', color: '#62778c' }}>
+        <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
           <>
             New to prototyping?
             <Link href={PrototypingHelpLink} style={{ marginLeft: '6px' }}>
@@ -112,6 +112,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       <OutterChatContainer>
         <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
           <Dialog
+            isPublic={isPublic}
             isLoading={isLoading}
             messages={messages}
             onInteraction={onInteraction}

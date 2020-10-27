@@ -25,6 +25,7 @@ export enum ClassName {
   MENU = 'vf-menu',
   MENU_ITEM = 'vf-menu__item',
   TEXT_EDITOR = 'vf-text-editor',
+  SSML = 'vf-ssml',
   SSML_PLAY_AUDIO = 'vf-ssml__play-audio',
   CANVAS_EDITOR = 'vf-canvas__editor',
   CANVAS_NODE = 'vf-canvas__node',

@@ -1,9 +1,11 @@
+import cn from 'classnames';
 import React from 'react';
 
 import { PluginType } from '@/components/TextEditor';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { ClassName } from '@/styles/constants';
 
 import { Editor, Speaker, VoiceSelect } from './components';
 import { DEFAULT_VOICE, PLATFORM_SSML_META, VOICES } from './constants';
@@ -33,6 +35,7 @@ const SSML = (
     withVariablesPlugin = true,
     createInputPlaceholder = 'New Variable',
     platform,
+    className,
     ...props
   },
   ref
@@ -102,6 +105,7 @@ const SSML = (
   return (
     <Editor
       {...props}
+      className={cn(ClassName.SSML, className)}
       ref={ref}
       onBlur={onBlurCallback}
       placeholder={SSMLPlaceholder}

@@ -5,6 +5,7 @@ import { FlexEnd } from '@/components/Flex';
 import Header from '@/components/Header';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import SSML from '@/components/SSML';
+import { PlatformType } from '@/constants';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { useEnableDisable } from '@/hooks/toggle';
@@ -72,7 +73,7 @@ function SSMLPage() {
     <>
       <MadeInVoiceflow />
 
-      <Header withLogo logoAssetPath="/logo.png" />
+      <Header withLogo disableLogoClick withUserMenu={false} />
 
       <App>
         <Page>
@@ -83,6 +84,7 @@ function SSMLPage() {
             onChangeVoice={onChangeVoice}
             withVariablesPlugin={false}
             onEditorStateChange={onEditorStateChange}
+            platform={PlatformType.ALEXA}
           />
 
           {state.text && (

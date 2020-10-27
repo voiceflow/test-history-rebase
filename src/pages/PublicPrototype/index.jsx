@@ -87,9 +87,9 @@ class PublicPrototype extends React.Component {
       <>
         <MadeInVoiceflow />
         <Header
-          isUserMenu
+          withUserMenu={false}
           withLogo
-          logoAssetPath="/logo_bubble_Small.png"
+          disableLogoClick
           centerRenderer={() => name || 'Loading...'}
           rightRenderer={() => (
             <div className="mr-3">

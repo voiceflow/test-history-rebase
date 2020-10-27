@@ -23,7 +23,7 @@ import {
 function Header({
   title,
   preview,
-  isUserMenu,
+  withUserMenu = true,
   history,
   withLogo,
   onBackClick,
@@ -60,7 +60,7 @@ function Header({
           <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
           <JustifiedHeaderActions>
             {!preview && rightRenderer && <TitleGroup>{rightRenderer()}</TitleGroup>}
-            {!isUserMenu && <UserMenu history={history} preview={preview} />}
+            {withUserMenu && <UserMenu history={history} preview={preview} />}
           </JustifiedHeaderActions>
         </HeaderActions>
       </PrimaryHeader>

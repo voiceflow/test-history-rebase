@@ -205,7 +205,15 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
   return (
-    <Container activated={isActivated} draggable onDragStart={onDragStart} ref={composeRefs(containerRef, blockAPI.ref)}>
+    <Container
+      onMouseUp={(e) => {
+        e.preventDefault();
+      }}
+      activated={isActivated}
+      draggable
+      onDragStart={onDragStart}
+      ref={composeRefs(containerRef, blockAPI.ref)}
+    >
       <DraftJSEditor
         ref={editorRef}
         ariaMultiline

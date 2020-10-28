@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import SvgIcon from '@/components/SvgIcon';
+
 export { default as UserMenu } from './UserMenu';
 
 export const HeaderContainer = styled.header`
@@ -68,10 +70,8 @@ export const BackButton = styled.span`
   }
 `;
 
-export const Logo = styled.img`
-  height: 42px;
-  width: 42px;
-  margin-right: 6px;
+export const Logo = styled(SvgIcon)`
+  margin-right: 12px;
   border-radius: 50%;
   cursor: ${({ disableLogoClick }) => (disableLogoClick ? 'initial' : 'pointer')};
 `;

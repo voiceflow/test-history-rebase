@@ -32,21 +32,12 @@ function Header({
   centerRenderer,
   subHeaderRenderer,
   disableLogoClick,
-  logoAssetPath,
 }) {
   const { open: openWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
   return (
     <HeaderContainer>
       <PrimaryHeader isBackClick={onBackClick}>
-        {withLogo && (
-          <Logo
-            disableLogoClick={disableLogoClick}
-            src={logoAssetPath || '/logo_bubble_Small.png'}
-            alt="logo"
-            draggable="false"
-            onClick={() => (disableLogoClick ? null : openWorkspaceSettings())}
-          />
-        )}
+        {withLogo && <Logo icon="logo" size={36} onClick={() => (disableLogoClick ? null : openWorkspaceSettings())} />}
         {onBackClick && (
           <BackButton>
             <SvgIcon icon={LeftIcon} size={3} className="icon-back" onClick={onBackClick} />
@@ -79,7 +70,6 @@ Header.propTypes = {
   rightClassName: PropTypes.string,
   centerRenderer: PropTypes.func,
   subHeaderRenderer: PropTypes.func,
-  logoAssetPath: PropTypes.string,
 };
 
 export default Header;

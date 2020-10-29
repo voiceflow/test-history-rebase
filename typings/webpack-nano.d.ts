@@ -36,6 +36,7 @@ declare module 'webpack-nano/argv' {
     ff_dataRefactor: boolean;
     ff_actionsEnv: boolean;
     ff_prototypeTest: boolean;
+    ff_headerRedesign: boolean;
   }>;
 
   export = argv;

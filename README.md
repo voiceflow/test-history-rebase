@@ -282,6 +282,7 @@ yarn start --ff_someFeature
 - `ff_dataRefactor` / `VF_APP_FF_DATA_REFACTOR`: amazon/google jobs publish system
 - `ff_actionsEnv` / `VF_APP_FF_ACTIONS_ENV`: google actions beta environment
 - `ff_prototypeTest` / `VF_APP_FF_PROTOTYPE_TEST`: visuals in prototyping test tools
+- `ff_headerRedesign` / `VF_APP_FF_HEADER_REDESIGN`: canvas header redesign
 
 
 ### Environment variable overrides

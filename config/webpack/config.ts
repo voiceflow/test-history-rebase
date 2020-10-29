@@ -15,6 +15,7 @@ import {
   ff_codeExport,
   ff_dataRefactor,
   ff_gadgets,
+  ff_headerRedesign,
   ff_prototypeTest,
   ga,
   intercom,
@@ -67,6 +68,7 @@ export const ENV = {
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_ACTIONS_ENV: ff_actionsEnv && 'true',
   FF_PROTOTYPE_TEST: ff_prototypeTest && 'true',
+  FF_HEADER_REDESIGN: ff_headerRedesign && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

@@ -51,7 +51,7 @@ export const parseMarketPlaces = (
 ): Record<string, Product.MarketPlace> =>
   Object.keys(allPlaces).reduce((acc, encodedKey) => {
     const placeKey = decodeMarketPlaceKey(encodedKey);
-    const place = allPlaces[placeKey];
+    const place = allPlaces[encodedKey];
 
     return !place
       ? acc

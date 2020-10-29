@@ -49,11 +49,15 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     setDraggedCanvas(true);
   }, [isMarkupCreating, markupModeType]);
 
-  const onMouseUp = React.useCallback((event: MouseEvent) => {
-    const nodeRightClicked = event.button === 2;
-    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked) return;
-    engine.clearActivation();
-  }, []);
+  const onMouseUp = React.useCallback(
+    (event: MouseEvent) => {
+      const nodeRightClicked = event.button === 2;
+      const middleMouseButtonClicked = event.button === 1;
+      if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || draggedCanvas || middleMouseButtonClicked) return;
+      engine.clearActivation();
+    },
+    [draggedCanvas]
+  );
 
   const onClickCanvas = React.useCallback(
     async (event: React.MouseEvent) => {

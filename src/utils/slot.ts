@@ -50,7 +50,7 @@ export const getSlotTypes = ({
 
   slots = [
     customSlotType,
-    ...slots.slice(1).sort((lhs, rhs) => {
+    ...slots.sort((lhs, rhs) => {
       if (lhs.type.google && lhs.type.alexa && !(rhs.type.google && rhs.type.alexa)) {
         return -1;
       }

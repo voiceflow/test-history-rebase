@@ -153,7 +153,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
 
       it('should return null if no member matches for active workspace', () => {
-        expect(select(Workspace.activeWorkspaceMemberSelector)('999')).to.be.null;
+        expect(select(Workspace.anyWorkspaceMemberSelector)('999')).to.be.null;
       });
 
       it('should return null members list', () => {

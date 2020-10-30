@@ -10,6 +10,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import * as Workspace from '@/ducks/workspace';
+import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { Thread as ThreadType } from '@/models';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
@@ -40,7 +41,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   return (
     <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
       <FlexApart height={42}>
-        <Commenter creatorID={user.creator_id} />
+        <Commenter creatorID={user?.creator_id || UNKNOWN_MEMBER_DATA.creator_id} />
         {resolved && (
           <TippyTooltip title="Mark Unresolved" distance={1}>
             <IconButton

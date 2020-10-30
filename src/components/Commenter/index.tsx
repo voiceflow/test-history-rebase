@@ -4,6 +4,7 @@ import Box, { Flex } from '@/components/Box';
 import Duration from '@/components/Duration';
 import User from '@/components/User';
 import * as Workspace from '@/ducks/workspace';
+import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { capitalizeAllWords } from '@/utils/string';
@@ -16,10 +17,12 @@ type CommenterProps = {
 };
 
 export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ user, time }) => {
+  const userData = user ?? UNKNOWN_MEMBER_DATA;
+
   return (
     <Flex>
-      <User user={user!} medium />
-      <NameContainer>{capitalizeAllWords(user!.name)}</NameContainer>
+      <User user={userData} medium />
+      <NameContainer>{capitalizeAllWords(userData.name)}</NameContainer>
       {time && (
         <Box ml={6}>
           <Duration time={time} short={!!time} />

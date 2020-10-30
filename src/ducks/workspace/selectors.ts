@@ -73,7 +73,6 @@ export const distinctWorkspaceMemberSelector = createSelector(
   [activeWorkspaceMemberSelector],
   (getWorkspaceMember) => (creatorID: string, tabID: string) => {
     const workspaceMember = getWorkspaceMember(creatorID);
-
     return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(tabID) } : null;
   }
 );

@@ -235,7 +235,7 @@
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^2.3.0",
     "exargs": "^1.0.0",
-    "file-loader": "6.1.0",
+    "file-loader": "6.2.0",
     "fixpack": "^3.0.6",
     "fork-ts-checker-webpack-plugin": "^5.2.0",
     "git-branch": "^2.0.1",

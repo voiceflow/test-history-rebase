@@ -34,6 +34,10 @@ export namespace NodeData {
     code: string;
   };
 
+  export type Deprecated = {
+    deprecatedType: string;
+  } & Record<string, unknown>;
+
   export type Random = {
     paths: number;
     noDuplicates: boolean;

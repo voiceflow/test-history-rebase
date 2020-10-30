@@ -29,7 +29,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   hasBorder?: boolean;
 };
 
-export default styled(AceEditor).attrs({
+export default styled(AceEditor).attrs<AceEditorProps>({
   fontSize: 13,
   showGutter: true,
   showPrintMargin: false,

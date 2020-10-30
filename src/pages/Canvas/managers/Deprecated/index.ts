@@ -1,10 +1,11 @@
 import { BlockType } from '@/constants';
+import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 import DeprecatedEditor from './DeprecatedEditor';
 import DeprecatedStep from './DeprecatedStep';
 
-const DeprecatedManager: NodeConfig<{}> = {
+const DeprecatedManager: NodeConfig<NodeData.Deprecated> = {
   type: BlockType.DEPRECATED,
   icon: 'warning',
   mergeTerminator: true,

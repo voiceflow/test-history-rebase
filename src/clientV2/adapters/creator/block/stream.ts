@@ -40,38 +40,60 @@ export enum PortType {
 
 // for the alexa version
 export const streamPortsAdapter: PortsAdapter = {
-  toDB: (ports) => [
-    {
-      type: PortType.NEXT,
-      target: getPortByLabel(ports, PortType.NEXT)?.target || null,
-    },
-    {
-      type: PortType.PREVIOUS,
-      target: getPortByLabel(ports, PortType.PREVIOUS)?.target || null,
-    },
-    {
-      type: PortType.PAUSE,
-      target: getPortByLabel(ports, PortType.PAUSE)?.target || null,
-    },
-  ],
-  fromDB: (ports, { nodeID }) => [
-    {
-      port: generateOutPort(nodeID, 0, { platform: PlatformType.GOOGLE }),
-      target: null,
-    },
-    {
-      port: generateOutPort(nodeID, 1, { label: PortType.NEXT, platform: PlatformType.ALEXA }),
-      target: ports[0].target,
-    },
-    {
-      port: generateOutPort(nodeID, 2, { label: PortType.PREVIOUS, platform: PlatformType.ALEXA }),
-      target: ports[1].target,
-    },
-    {
-      port: generateOutPort(nodeID, 3, { label: PortType.PAUSE, platform: PlatformType.ALEXA }),
-      target: ports[2].target,
-    },
-  ],
+  toDB: (ports, _node, platform) => {
+    if (platform === PlatformType.GOOGLE) {
+      return [
+        {
+          type: '',
+          target: ports[0]?.target || null,
+        },
+      ];
+    }
+
+    return [
+      {
+        type: PortType.NEXT,
+        target: getPortByLabel(ports, PortType.NEXT)?.target || null,
+      },
+      {
+        type: PortType.PREVIOUS,
+        target: getPortByLabel(ports, PortType.PREVIOUS)?.target || null,
+      },
+      {
+        type: PortType.PAUSE,
+        target: getPortByLabel(ports, PortType.PAUSE)?.target || null,
+      },
+    ];
+  },
+  fromDB: (ports, { nodeID }, platform) => {
+    if (platform === PlatformType.GOOGLE) {
+      return [
+        {
+          port: generateOutPort(nodeID, 0, { platform: PlatformType.GOOGLE }),
+          target: ports[0].target,
+        },
+      ];
+    }
+
+    return [
+      {
+        port: generateOutPort(nodeID, 0, { platform: PlatformType.GOOGLE }),
+        target: null,
+      },
+      {
+        port: generateOutPort(nodeID, 1, { label: PortType.NEXT, platform: PlatformType.ALEXA }),
+        target: ports[0].target,
+      },
+      {
+        port: generateOutPort(nodeID, 2, { label: PortType.PREVIOUS, platform: PlatformType.ALEXA }),
+        target: ports[1].target,
+      },
+      {
+        port: generateOutPort(nodeID, 3, { label: PortType.PAUSE, platform: PlatformType.ALEXA }),
+        target: ports[2].target,
+      },
+    ];
+  },
 };
 
 export default streamAdapter;

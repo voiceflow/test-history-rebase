@@ -75,7 +75,7 @@ const nodeAdapter = createAdapter<
 
       registerPort(generateInPort(node.id));
       (portsAdapter[node.type] || defaultPortAdapter)
-        .fromDB(dbNode.data.ports, dbNode)
+        .fromDB(dbNode.data.ports, dbNode, platform)
         .forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));
     }
 
@@ -102,7 +102,8 @@ const nodeAdapter = createAdapter<
           port: portMap[portID],
           target: portToTargets[portID] || stepMap[node.id] || null,
         })),
-        node
+        node,
+        platform
       );
     }
 

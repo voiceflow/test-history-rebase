@@ -16,8 +16,8 @@ export const createBlockAdapter = <I, O>(
 ) => createSimpleAdapter<I, O, [{ platform: PlatformType }], [{ platform: PlatformType }]>(fromDB, toDB, options);
 
 export type PortsAdapter = {
-  toDB: (ports: { port: Port; target: string | null }[], node: Node) => DBPort[];
-  fromDB: (ports: DBPort[], node: DBNode) => { port: Port; target: string | null }[];
+  toDB: (ports: { port: Port; target: string | null }[], node: Node, platform: PlatformType) => DBPort[];
+  fromDB: (ports: DBPort[], node: DBNode, platform: PlatformType) => { port: Port; target: string | null }[];
 };
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types

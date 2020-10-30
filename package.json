@@ -131,7 +131,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
     "@babel/plugin-proposal-optional-chaining": "^7.12.1",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "@commitlint/cli": "^8.0.0",
+    "@commitlint/cli": "^10.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@cypress/code-coverage": "^3.8.1",
     "@hot-loader/react-dom": "^16.13.0",

@@ -1,8 +1,7 @@
-import cuid from 'cuid';
-
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import { PartialModel, Port } from '@/models';
+import { objectID } from '@/utils';
 import { noop } from '@/utils/functional';
 
 import { EngineConsumer } from './utils';
@@ -39,7 +38,7 @@ class PortManager extends EngineConsumer {
   }
 
   async add(nodeID: string, port: PartialModel<Port>) {
-    const portID = cuid();
+    const portID = objectID();
     const augmentedPort = { ...port, id: portID };
 
     this.log.debug(this.log.pending('adding port'), this.log.slug(portID));

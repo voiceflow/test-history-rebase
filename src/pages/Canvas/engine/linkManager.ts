@@ -1,10 +1,9 @@
-import cuid from 'cuid';
-
 import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import { Link } from '@/models';
 import { Pair } from '@/types';
+import { objectID } from '@/utils';
 
 import { EngineConsumer, extractPoints } from './utils';
 
@@ -62,7 +61,7 @@ class LinkManager extends EngineConsumer {
   }
 
   async add(sourcePortID: string, targetPortID: string) {
-    const linkID = cuid();
+    const linkID = objectID();
 
     this.log.debug(this.log.pending('adding link'), this.log.slug(linkID));
     await this.engine.realtime.sendUpdate(Realtime.addLink(sourcePortID, targetPortID, linkID));

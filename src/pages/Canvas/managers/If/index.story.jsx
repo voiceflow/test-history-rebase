@@ -1,10 +1,10 @@
-import cuid from 'cuid';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { composeDecorators, withRedux } from '@/../.storybook';
 import * as Creator from '@/ducks/creator';
 import { EngineProvider } from '@/pages/Canvas/contexts';
+import { objectID } from '@/utils';
 
 import IfEditor from './IfEditor';
 
@@ -89,7 +89,7 @@ export const normal = withDecorators(() => {
   const dispatch = useDispatch();
   const engine = React.useRef({
     port: {
-      add: (_, port) => dispatch(Creator.addPort(NODE_ID, cuid(), port)),
+      add: (_, port) => dispatch(Creator.addPort(NODE_ID, objectID(), port)),
       remove: (portID) => dispatch(Creator.removePort(portID)),
     },
   });

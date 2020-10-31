@@ -1,10 +1,10 @@
-import cuid from 'cuid';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
+import { objectID } from '@/utils';
 import { isInRange } from '@/utils/number';
 
 export const useMergeInfo = (index: number) => {
@@ -85,7 +85,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     ),
 
     drop: (_, monitor) => {
-      const newNodeID = cuid();
+      const newNodeID = objectID();
       const { type, factoryData } = engine.merge.virtualSource!;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset()!;

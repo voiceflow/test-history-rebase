@@ -3,7 +3,6 @@ import createAnchorPlugin from '@voiceflow/draft-js-anchor-plugin';
 import type { StaticToolBarPlugin } from '@voiceflow/draft-js-static-toolbar-plugin';
 import createStaticToolbarPlugin from '@voiceflow/draft-js-static-toolbar-plugin';
 import { createMatchSelector } from 'connected-react-router';
-import cuid from 'cuid';
 import { EditorState, convertToRaw } from 'draft-js';
 import React from 'react';
 
@@ -12,6 +11,7 @@ import { BlockType, MARKUP_NODES, TextAlignment } from '@/constants';
 import * as Router from '@/ducks/router';
 import { useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import { objectID } from '@/utils';
 
 import { EngineConsumer } from './utils';
 
@@ -55,7 +55,7 @@ class MarkupEngine extends EngineConsumer {
       BlockType.MARKUP_TEXT,
       this.engine.getMouseCoords(),
       nodeData as NodeData<Markup.NodeData.Text>,
-      cuid(),
+      objectID(),
       false
     );
 

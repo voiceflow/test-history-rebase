@@ -1,8 +1,8 @@
-import cuid from 'cuid';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
+import { objectID } from '@/utils';
 import Logger from '@/utils/logger';
 
 import { EntityType } from '../constants';
@@ -18,7 +18,7 @@ export type EntityInstance = {
 const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 
 export abstract class Entity<T extends EntityInstance = EntityInstance> {
-  instanceID = cuid();
+  instanceID = objectID();
 
   handlers: ((entity: this) => any)[] = [];
 

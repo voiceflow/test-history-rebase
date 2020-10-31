@@ -12,7 +12,7 @@ import { rtctimestampSelector } from '../realtime';
 import { goToDiagram, goToRootDiagram } from '../router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from '../skill';
 import { viewportByIDSelector } from '../viewport';
-import { DEFAULT_DIAGRAM } from './constants';
+import { generateDefaultDiagram } from './constants';
 import { PrimativeDiagram } from './types';
 
 // side effects
@@ -64,7 +64,7 @@ export const saveActiveDiagram = (): Thunk => async (dispatch, getState) => {
   await clientV2.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(_id, activeDiagram);
 };
 
-export const createNewDiagram = (name: string, diagram: PrimativeDiagram = DEFAULT_DIAGRAM): Thunk<string> => async (dispatch, getState) => {
+export const createNewDiagram = (name: string, diagram: PrimativeDiagram = generateDefaultDiagram()): Thunk<string> => async (dispatch, getState) => {
   const versionID = activeSkillIDSelector(getState());
   const creatorID = userIDSelector(getState()) as number;
 

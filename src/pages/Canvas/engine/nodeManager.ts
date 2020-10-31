@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import { partition as _partition } from 'lodash';
 import { batch } from 'react-redux';
 
@@ -9,6 +8,7 @@ import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
+import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 import { isCommandNode } from '@/utils/node';
 
@@ -155,11 +155,11 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = cuid(), autoFocus = true) {
+  async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = objectID(), autoFocus = true) {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
     const { node, data } = nodeFactory(type, factoryData);
     const augmentedNode = { ...node, x, y, id: nodeID };
-    const parentNode = { id: cuid(), ports: { in: [{ id: cuid() }], out: [] } };
+    const parentNode = { id: objectID(), ports: { in: [{ id: objectID() }], out: [] } };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
@@ -334,8 +334,8 @@ class NodeManager extends EngineConsumer {
   // nested node management methods
 
   async addNested(parentNodeID: string, type: BlockType) {
-    const nodeID = cuid();
-    const mergedNodeID = cuid();
+    const nodeID = objectID();
+    const mergedNodeID = objectID();
     const { node, data } = nodeFactory(type);
     const augmentedNode = { ...node, id: nodeID };
 
@@ -366,8 +366,8 @@ class NodeManager extends EngineConsumer {
     factoryData: Partial<NodeData<unknown>>;
     position: Point;
   }) {
-    const childID = cuid();
-    const combinedPortID = cuid();
+    const childID = objectID();
+    const combinedPortID = objectID();
     const { node, data } = nodeFactory(type, factoryData);
     const [x, y] = position;
     const augmentedNode = { ...node, x, y, id: childID };
@@ -405,8 +405,8 @@ class NodeManager extends EngineConsumer {
   }
 
   async unmerge(nodeID: string, position: Point) {
-    const parentNodeID = cuid();
-    const parentPortID = cuid();
+    const parentNodeID = objectID();
+    const parentPortID = objectID();
     const parentNode = {
       id: parentNodeID,
       ports: { in: [{ id: parentPortID }], out: [] },

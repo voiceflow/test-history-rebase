@@ -1,9 +1,8 @@
-import cuid from 'cuid';
-
 import { BlockType } from '@/constants';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { EntityMap, Node } from '@/models';
 import { Pair } from '@/types';
+import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, cloneEntityMap, mergeEntityMaps } from './utils';
@@ -25,7 +24,7 @@ class DiagramEngine extends EngineConsumer {
   getParentEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {
     const node = this.engine.getNodeByID(nodeID);
     const data = this.engine.getDataByNodeID(nodeID);
-    const newNodeID = cuid();
+    const newNodeID = objectID();
 
     return {
       nodesWithData: [

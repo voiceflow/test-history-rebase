@@ -1,5 +1,3 @@
-import cuid from 'cuid';
-
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -9,6 +7,7 @@ import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatch, DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
+import { objectID } from '@/utils';
 import { asyncForEach, unique } from '@/utils/array';
 import { Logger } from '@/utils/logger';
 import { isChoiceNode, isLinkedDisplayNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
@@ -98,8 +97,8 @@ export function nodeFactory(
     node: {
       ...Creator.Factories.nodeFactory(null, { ...node, type }),
       ports: {
-        in: ((ports || {}).in || []).map((port) => ({ ...port, id: cuid() })),
-        out: ((ports || {}).out || []).map((port) => ({ ...port, id: cuid() })),
+        in: ((ports || {}).in || []).map((port) => ({ ...port, id: objectID() })),
+        out: ((ports || {}).out || []).map((port) => ({ ...port, id: objectID() })),
       },
     },
     data,
@@ -108,7 +107,7 @@ export function nodeFactory(
 
 export const cloneLink = ({ getPortID, getNodeID }: CloneUtils) => (link: Link): Link => ({
   ...link,
-  id: cuid(),
+  id: objectID(),
   source: {
     ...link.source,
     nodeID: getNodeID(link.source.nodeID),
@@ -172,7 +171,7 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
   }
 
   // eslint-disable-next-line no-return-assign
-  return (lookup[id] = cuid());
+  return (lookup[id] = objectID());
 };
 
 export const createCloneContext = () => {

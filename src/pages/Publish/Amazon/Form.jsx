@@ -281,7 +281,7 @@ class Skill extends Component {
         {saving && <SvgIcon icon="loader" spin inline ml="s" />}
       </>
     );
-    const selectedCategory = category ? AMAZON_CATEGORIES.find((ac) => ac.value === category.value) : null;
+    const selectedCategory = category ? AMAZON_CATEGORIES.find((ac) => ac.value === category.value || ac.value === category) : null;
     blocks.push({
       title: 'Basic Skill Info',
       content: (

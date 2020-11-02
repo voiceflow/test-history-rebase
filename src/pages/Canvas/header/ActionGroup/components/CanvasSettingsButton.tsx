@@ -5,11 +5,17 @@ import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { usePermission } from '@/hooks';
+import { usePermission, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 const CanvasSettingsButton: React.FC<ConnectedCanvasSettingsButton> = ({ goToSettings }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [trackingEvents] = useTrackingEvents();
+
+  const onClickSettings = () => {
+    goToSettings();
+    trackingEvents.trackActiveProjectSettingsOpened();
+  };
 
   return (
     <TippyTooltip disabled={!canEditCanvas} title="Settings" position="bottom">
@@ -19,7 +25,7 @@ const CanvasSettingsButton: React.FC<ConnectedCanvasSettingsButton> = ({ goToSet
         variant={IconButtonVariant.OUTLINE}
         icon="cog"
         large
-        onClick={goToSettings}
+        onClick={onClickSettings}
         iconProps={{ width: 16, height: 15 }}
       />
     </TippyTooltip>

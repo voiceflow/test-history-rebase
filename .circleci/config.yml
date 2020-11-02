@@ -208,10 +208,6 @@ jobs:
         description: Running on a git tag?
         type: boolean
         default: false
-      google:
-        description: Deploy to google actions environment?
-        type: boolean
-        default: false
     executor: vfcommon/build-executor
     environment:
       IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
@@ -245,17 +241,6 @@ jobs:
           namespace: "voiceflow-v1"
           target: "statefulset/creator-app"
           tagged: << parameters.tagged >>
-      # TODO: Remove after retirement of google-actions environment
-      - when:
-          condition: << parameters.google >>
-          steps:
-            - run:
-                name: Deploy to actions subdomain kubernetes
-                command: |
-                  IMAGE_TAG="k8s-$CIRCLE_SHA1"
-                  IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
-                  aws eks --region us-east-1 update-kubeconfig --name production
-                  kubectl set image --namespace voiceflow-v1 statefulset/creator-app-google app=$IMAGE_NAME
       - run:
           name: Wait for deployment rollout
           command: |
@@ -605,7 +590,6 @@ workflows:
       - build-deploy-app-image:
           <<: *prod_deploy_filters
           tagged: true
-          google: true
           context: dev-test
           requires:
             - build-app

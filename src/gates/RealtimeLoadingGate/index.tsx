@@ -1,11 +1,9 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { ConnectionWarning, DiagramHeartbeat, DiagramLifecycle, DisabledWarning, ReloadWarning } from './components';
@@ -20,11 +18,11 @@ const RealtimeLoadingGate: React.FC<ConnectedRealtimeLoadingGateProps> = ({
   terminateConnection,
   children,
 }) => {
-  const [isAllowed] = usePermission(Permission.CANVAS_REALTIME);
+  // const [isAllowed] = usePermission(Permission.CANVAS_REALTIME);
 
-  if (!isAllowed) {
-    return <RealtimeSubscriptionProvider>{children}</RealtimeSubscriptionProvider>;
-  }
+  // if (!isAllowed) {
+  return <RealtimeSubscriptionProvider>{children}</RealtimeSubscriptionProvider>;
+  // }
 
   if (!isWebsocketsEnabled) {
     return <DisabledWarning />;

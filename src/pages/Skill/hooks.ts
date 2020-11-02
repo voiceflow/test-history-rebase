@@ -13,6 +13,8 @@ export const useCanvasMode = () => !!useRouteMatch(Path.PROJECT_CANVAS);
 
 export const useMarkupMode = () => !!useRouteMatch(Path.CANVAS_MARKUP);
 
+export const useDashboardMode = () => !!useRouteMatch(Path.WORKSPACE_DASHBOARD);
+
 export const useAnyModeOpen = () => {
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();

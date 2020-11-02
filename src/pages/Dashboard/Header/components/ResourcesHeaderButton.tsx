@@ -6,9 +6,10 @@ import Select from '@/components/Select';
 import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { OptionLabel } from '@/pages/Canvas/components/CanvasControls/components/ResourcesDropdown/components';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
+import { useDashboardMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
 type Option = {
@@ -25,7 +26,9 @@ export type Resource = Omit<StaticResource, 'link'> & {
 };
 
 const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
+  const [trackEvents] = useTrackingEvents();
   const shortcutModal = useModals(ModalType.SHORTCUTS);
+  const isDashboardMode = useDashboardMode();
   const dropdownOptions: Option[] = hasShortcuts
     ? [
         ...STATIC_RESOURCES,
@@ -51,6 +54,9 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
             window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
           } else {
             option.onClick?.();
+          }
+          if (!isDashboardMode) {
+            trackEvents.trackCanvasControlHelpMenuResource({ resource: option.resourceName! });
           }
         }}
         autoWidth={false}

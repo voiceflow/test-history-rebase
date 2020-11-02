@@ -14,8 +14,7 @@ import { allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspace'
 import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { importProject } from '@/store/sideEffects';
-import { importProject as importProjectV2 } from '@/store/sideEffectsV2';
+import { importProject } from '@/store/sideEffectsV2';
 
 import { ImportSelect } from './ModalComponents';
 
@@ -24,20 +23,20 @@ const allowedToClone = (workspace, creatorId) => {
   return hasPermission(Permission.MANAGE_PROJECTS, creatorRole, null);
 };
 
-function ImportModal({ importProject, importProjectV2, workspaces, workspaceByIDSelector, goToWorkspace, creatorId }) {
+function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWorkspace, creatorId }) {
   const [trackEvents] = useTrackingEvents();
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
   const [targetWorkspace, setTargetWorkspace] = useState(workspaceOptions[0]);
   const { close, toggle, data, isOpened } = useModals(ModalType.IMPORT_PROJECT);
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
-  const { importToken, cloning = false } = data;
+  const { projectID, cloning = false } = data;
   const [multipleWorkspaces, setMultipleWorkspaces] = React.useState(null);
 
   const renderModal = isOpened && multipleWorkspaces;
 
   React.useEffect(() => {
-    if (!importToken) return;
+    if (!projectID) return;
     // get a list of workspaces with editor/owner/admin role
     const authorizedWorkspaces = workspaces.filter((workspace) => {
       return workspace.members.some((member) => member.creator_id === creatorId && allowedToClone(workspace, creatorId));
@@ -59,7 +58,7 @@ function ImportModal({ importProject, importProjectV2, workspaces, workspaceByID
     } else {
       setMultipleWorkspaces(true);
     }
-  }, [targetWorkspace, importToken]);
+  }, [targetWorkspace, projectID]);
 
   React.useEffect(() => {
     setTargetWorkspace(workspaceOptions[0]);
@@ -76,9 +75,7 @@ function ImportModal({ importProject, importProjectV2, workspaces, workspaceByID
       try {
         close();
         openLoadingModal();
-        const importedProject = await (importToken.length === 24
-          ? importProjectV2(importToken, workspaceId)
-          : importProject(workspaceId, importToken, true));
+        const importedProject = await importProject(projectID, workspaceId);
 
         if (cloning) {
           trackEvents.trackProjectClone({
@@ -143,7 +140,6 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   importProject,
-  importProjectV2,
   goToWorkspace,
 };
 

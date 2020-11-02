@@ -8,7 +8,7 @@ import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { FeatureFlag } from '@/config/features';
 import { VoiceType } from '@/constants';
-import { getImportToken, saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
+import { saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
 import { saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useDidUpdateEffect, useFeature, useSyncedSmartReducer } from '@/hooks';
@@ -240,7 +240,6 @@ const mapDispatchToProps = {
   saveSettings,
   saveProjectName,
   saveSkillSettings,
-  getImportToken,
 };
 
 type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

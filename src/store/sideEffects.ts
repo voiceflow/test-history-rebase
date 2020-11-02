@@ -38,22 +38,6 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
   }
 };
 
-export const importProject = (workspaceID: string, importToken: string, addToStart = false): Thunk<Models.Project> => async (dispatch, getState) => {
-  const importedProject = await client.project.import(importToken, workspaceID);
-
-  const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
-
-  if (activeWorkspaceID === workspaceID) {
-    dispatch(Project.addProject(importedProject.id, importedProject));
-    await dispatch(ProjectList.addProjectToDefaultList(importedProject.id, addToStart));
-  } else {
-    const projectLists = await client.projectList.find(workspaceID);
-    dispatch(ProjectList.addToListInWorkspace(workspaceID, projectLists, importedProject.id));
-  }
-
-  return importedProject;
-};
-
 export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);

@@ -18,12 +18,7 @@ export type Project = {
   privacy?: ProjectPrivacy;
 };
 
-export namespace Project {
-  export type ImportToken = {
-    projectId: string;
-    projectName: string;
-  };
-}
+export namespace Project {}
 
 export type DBProject = {
   project_id: string;

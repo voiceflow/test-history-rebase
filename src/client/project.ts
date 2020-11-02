@@ -33,16 +33,9 @@ const projectClient = {
       }
     }),
 
-  import: (token: string, teamID: string) =>
-    fetch
-      .post<DBProject>(`importProject/${teamID}/`, { token })
-      .then(projectAdapter.fromDB),
-
   claimReference: (projectID: string) => fetch.post<{ skill_id: string }>(`${PROJECT_PATH}/${projectID}/use_reference`),
 
   updateVendorId: (projectID: string, vendorID: string) => fetch.post<string>(`${PROJECT_PATH}/${projectID}/vendor_id`, { vendor_id: vendorID }),
-
-  getImportToken: (projectID: string) => fetch.get<string>(`exportProject/${projectID}`),
 
   getLiveVersion: (projectID: string) => fetch.get<{ live_skill: string; live_version: string }>(`${PROJECT_PATH}/${projectID}/live_version`),
 

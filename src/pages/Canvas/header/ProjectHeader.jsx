@@ -1,6 +1,5 @@
 import React from 'react';
 
-import client from '@/client';
 import Button from '@/components/Button';
 import Text from '@/components/Text';
 import { DiagramState, ModalType } from '@/constants';
@@ -28,8 +27,7 @@ const ProjectHeader = ({ isTemplateWorkspace, projectId, diagramState }) => {
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
   const openCloneModal = async () => {
-    const importToken = await client.project.getImportToken(projectId);
-    openImportModal({ importToken, cloning: true });
+    openImportModal({ projectID: projectId, cloning: true });
   };
 
   return isTemplateWorkspace ? (

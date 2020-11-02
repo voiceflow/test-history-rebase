@@ -5,7 +5,7 @@ import client from '@/client';
 import skillMetaAdapter from '@/client/adapters/skill/meta';
 import { createAction } from '@/ducks/utils';
 
-import { activeProjectIDSelector, activeSkillIDSelector, activeSkillSelector } from '../skill';
+import { activeSkillIDSelector, activeSkillSelector } from '../skill';
 
 export const UPDATE_SKILL_META = 'SKILL:META:UPDATE';
 export const UPDATE_SKILL_META_SETTINGS = 'SKILL:META:SETTINGS:UPDATE';
@@ -52,18 +52,6 @@ export const updateInvName = (invName) => async (dispatch, getState) => {
 };
 
 export const updateAccountLinking = (accountLinking) => updateSkillMeta({ accountLinking });
-
-export const getImportToken = () => async (dispatch, getState) => {
-  const state = getState();
-  let { importToken } = skillMetaSelector(state);
-
-  if (!importToken) {
-    const projectID = activeProjectIDSelector(state);
-    importToken = await client.project.getImportToken(projectID);
-
-    dispatch(updateSkillMeta({ importToken }));
-  }
-};
 
 export const saveMeta = (settings) => async (dispatch, getState) => {
   const state = getState();

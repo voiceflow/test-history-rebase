@@ -1,7 +1,6 @@
 import './DashBoard.css';
 
 import cn from 'classnames';
-import jwt from 'jsonwebtoken';
 import queryString from 'query-string';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -60,29 +59,17 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
 
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
-  let importToken = null;
-
   React.useEffect(() => {
     if (query) {
-      importToken = query.import;
+      const importProjectID = query.import;
 
       props.history.replace({ search: '' });
-      if (!importToken) return;
 
-      if (importToken.length === 24) {
-        openImportModal({ importToken });
+      if (!importProjectID) {
         return;
       }
-      try {
-        const result = jwt.decode(importToken) as Models.Project.ImportToken;
-        if (!result.projectId || !result.projectName) {
-          throw new Error('Unexpected JWT content');
-        }
-        openImportModal({ importToken });
-      } catch (e) {
-        importToken = null;
-        props.setError('Bad Import Link');
-      }
+
+      openImportModal({ projectID: importProjectID });
     }
   }, []);
 

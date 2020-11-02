@@ -27,9 +27,7 @@ type ShareProjectProps = {
 };
 
 const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({
-  meta,
   render,
-  getImportToken,
   sharePrototype,
   platform,
   projectID,
@@ -49,7 +47,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
   const [state, stateApi] = useSmartReducerV2({
     testableLink: null as Nullable<string>,
-    loadingImportToken: false,
     loadingTestableLink: false,
   });
 
@@ -80,23 +77,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     });
   };
 
-  const loadImportToken = async () => {
-    if (dataRefactor.isEnabled) {
-      stateApi.loadingImportToken.set(false);
-      return;
-    }
-
-    if (meta?.importToken) {
-      return;
-    }
-
-    stateApi.loadingImportToken.set(true);
-
-    await getImportToken();
-
-    stateApi.loadingImportToken.set(false);
-  };
-
   const onClickImport = () => {
     if (dataRefactor.isEnabled) {
       updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
@@ -105,7 +85,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
     if (!prevIsOpen && (canShareProject || canSharePrototype)) {
-      loadImportToken();
       loadTestableLink();
     }
 
@@ -134,12 +113,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
               <MenuItem
                 isAllowed={canShareProject}
-                loading={state.loadingImportToken}
                 title="Project Download"
                 description="Allow others to download this project to their own Voiceflow account."
                 onRedirect={openProjectDownloadModal}
                 help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
-                link={`${window.location.origin}/dashboard?import=${dataRefactor.isEnabled ? projectID : meta?.importToken}`}
+                link={`${window.location.origin}/dashboard?import=${projectID}`}
                 track={trackingEvents.trackActiveProjectDownloadLinkShare}
                 onClick={onClickImport}
               />
@@ -177,7 +155,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  getImportToken: Skill.getImportToken,
   sharePrototype: Prototype.sharePrototype,
   renderPrototype: Prototype.renderPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,

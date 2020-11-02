@@ -73,19 +73,6 @@ suite('Client - Project', ({ expect, stubFetch, expectCall }) => {
     });
   });
 
-  describe('import()', () => {
-    it('should import a project', async () => {
-      const token = generate.id();
-      const teamID = generate.id();
-      const project = generate.object();
-      const fetch = stubFetch('post').resolves(project);
-
-      await expectCall(client.import, token, teamID).withAdapter(projectAdapter, project).toYield();
-
-      expect(fetch).to.be.calledWithExactly(`importProject/${teamID}/`, { token });
-    });
-  });
-
   describe('claimReference()', () => {
     it('should get a reference to a project', async () => {
       const projectReference = generate.object();
@@ -105,17 +92,6 @@ suite('Client - Project', ({ expect, stubFetch, expectCall }) => {
       await expectCall(client.updateVendorId, PROJECT_ID, VENDOR_ID).toYield(amazonID);
 
       expect(fetch).to.be.calledWithExactly(`${PROJECT_PATH}/${PROJECT_ID}/vendor_id`, { vendor_id: VENDOR_ID });
-    });
-  });
-
-  describe('getImportToken()', () => {
-    it('should get import token', async () => {
-      const importToken = generate.string();
-      const fetch = stubFetch().resolves(importToken);
-
-      await expectCall(client.getImportToken, PROJECT_ID).toYield(importToken);
-
-      expect(fetch).to.be.calledWithExactly(`exportProject/${PROJECT_ID}`);
     });
   });
 

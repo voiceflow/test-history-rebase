@@ -5,11 +5,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import client from '@/client';
 import Avatar from '@/components/Avatar';
 import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
-import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import { ModalType, PLATFORM_APP_NAME } from '@/constants';
@@ -77,14 +75,7 @@ export function Item(props) {
       value: 'clone',
       label: 'Clone Project',
       onClick: async () => {
-        let importToken;
-        try {
-          importToken = await client.project.getImportToken(id);
-        } catch {
-          toast.error('Error getting import link');
-          return;
-        }
-        openCloneModal({ cloning: true, importToken });
+        openCloneModal({ cloning: true, projectID: id });
       },
     };
     options.push(cloneOption);

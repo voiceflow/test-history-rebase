@@ -73,13 +73,8 @@ jobs:
       - run:
           name: Build admin static artifacts
           command: |
-            if [ "$CIRCLE_BRANCH" == "admin" ]; then
-              export VF_APP_API_HOST=api-master.development.voiceflow.com
-              export VF_APP_BUILD_ENV=staging
-            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
-              export VF_APP_API_HOST=api.voiceflow.com
-              export VF_APP_BUILD_ENV=production
-            fi
+            export VF_APP_API_HOST=api-master.development.voiceflow.com
+            export VF_APP_BUILD_ENV=production
             yarn build:admin
       - persist_to_workspace:
           root: ~/voiceflow
@@ -345,33 +340,21 @@ jobs:
       - run:
           name: "Build admin docker image"
           command: |
-            if [ "$CIRCLE_BRANCH" == "admin" ]; then
-              export DEPLOY_SUFFIX=development
-            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
-              export DEPLOY_SUFFIX=production
-            fi
-            echo $DEPLOY_SUFFIX > /tmp/deploy_suffix
             docker build \
               -f admin.dockerfile \
-              -t $IMAGE_REPO:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1 .
+              -t $IMAGE_REPO:k8s-$CIRCLE_SHA1 .
       - run:
           name: "Push admin docker images"
           command: |
-            DEPLOY_SUFFIX=$(cat /tmp/deploy_suffix)
             $(aws ecr get-login --no-include-email --region us-east-1)
-            docker push $IMAGE_REPO:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1
-            docker tag $IMAGE_REPO:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1 $IMAGE_REPO:latest-$DEPLOY_SUFFIX
-            docker push $IMAGE_REPO:latest-$DEPLOY_SUFFIX
-      - run:
-          name: "Deploy admin docker image"
-          command: |
-            DEPLOY_SUFFIX=$(cat /tmp/deploy_suffix)
-            if [ "$CIRCLE_BRANCH" == "admin" ]; then
-              aws eks --region us-east-1 update-kubeconfig --name development
-            elif [ "$CIRCLE_BRANCH" == "admin-prod" ]; then
-              aws eks --region us-east-1 update-kubeconfig --name production
-            fi
-            kubectl set image --namespace voiceflow-v1 deployment/admin-ui-$DEPLOY_SUFFIX app=$IMAGE_REPO:k8s-$DEPLOY_SUFFIX-$CIRCLE_SHA1
+            docker push $IMAGE_REPO:k8s-$CIRCLE_SHA1
+            docker tag $IMAGE_REPO:k8s-$CIRCLE_SHA1 $IMAGE_REPO:latest-master
+            docker push $IMAGE_REPO:latest-master
+      - vfcommon/deploy_image:
+          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+          namespace: "voiceflow-v1"
+          target: "deployment/admin-ui"
+          tagged: false
 
   build-app-dev-environment:
     executor: vfcommon/node-executor
@@ -511,9 +494,8 @@ workflows:
           context: dev-test
           filters:
             branches:
-              only:
-                - admin
-                - admin-prod
+              ignore:
+                - /env-.*/
       - build-deploy-admin-image:
           context: dev-test
           requires:
@@ -521,8 +503,7 @@ workflows:
           filters:
             branches:
               only:
-                - admin
-                - admin-prod
+                - master
 
   storybook:
     jobs:

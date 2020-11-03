@@ -46,6 +46,7 @@ export const streamPortsAdapter: PortsAdapter = {
         {
           type: '',
           target: ports[0]?.target || null,
+          id: ports[0].port.id,
         },
       ];
     }
@@ -54,14 +55,17 @@ export const streamPortsAdapter: PortsAdapter = {
       {
         type: PortType.NEXT,
         target: getPortByLabel(ports, PortType.NEXT)?.target || null,
+        id: ports[0].port.id,
       },
       {
         type: PortType.PREVIOUS,
         target: getPortByLabel(ports, PortType.PREVIOUS)?.target || null,
+        id: ports[1].port.id,
       },
       {
         type: PortType.PAUSE,
         target: getPortByLabel(ports, PortType.PAUSE)?.target || null,
+        id: ports[2].port.id,
       },
     ];
   },
@@ -69,7 +73,7 @@ export const streamPortsAdapter: PortsAdapter = {
     if (platform === PlatformType.GOOGLE) {
       return [
         {
-          port: generateOutPort(nodeID, 0, { platform: PlatformType.GOOGLE }),
+          port: generateOutPort(nodeID, ports[0], { platform: PlatformType.GOOGLE }),
           target: ports[0].target,
         },
       ];
@@ -77,19 +81,19 @@ export const streamPortsAdapter: PortsAdapter = {
 
     return [
       {
-        port: generateOutPort(nodeID, 0, { platform: PlatformType.GOOGLE }),
+        port: generateOutPort(nodeID, { data: {} } as any, { platform: PlatformType.GOOGLE }),
         target: null,
       },
       {
-        port: generateOutPort(nodeID, 1, { label: PortType.NEXT, platform: PlatformType.ALEXA }),
+        port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: PlatformType.ALEXA }),
         target: ports[0].target,
       },
       {
-        port: generateOutPort(nodeID, 2, { label: PortType.PREVIOUS, platform: PlatformType.ALEXA }),
+        port: generateOutPort(nodeID, ports[1], { label: PortType.PREVIOUS, platform: PlatformType.ALEXA }),
         target: ports[1].target,
       },
       {
-        port: generateOutPort(nodeID, 3, { label: PortType.PAUSE, platform: PlatformType.ALEXA }),
+        port: generateOutPort(nodeID, ports[2], { label: PortType.PAUSE, platform: PlatformType.ALEXA }),
         target: ports[2].target,
       },
     ];

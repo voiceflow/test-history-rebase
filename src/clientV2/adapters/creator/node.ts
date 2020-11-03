@@ -5,9 +5,9 @@ import { BlockType, PlatformType } from '@/constants';
 import { Link, Node, NodeData, Port } from '@/models';
 
 import { defaultPortAdapter, portsAdapter } from './block';
-import { IN_PORT_KEY, OUT_PORT_KEY } from './constants';
+import { IN_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';
-import { generateInPort, getInPortID, getLinkID, isBlock, isStep } from './utils';
+import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 
 const nodeAdapter = createAdapter<
   DiagramNode,
@@ -37,17 +37,15 @@ const nodeAdapter = createAdapter<
     const registerPort = (port: Port, target?: NodeID | null) => {
       ports.push(port);
 
-      if (port.id.endsWith(OUT_PORT_KEY)) {
-        node.ports.out.push(port.id);
-      }
-
       if (port.id.endsWith(IN_PORT_KEY)) {
         node.ports.in.push(port.id);
+      } else if (port.id) {
+        node.ports.out.push(port.id);
       }
 
       if (target) {
         links.push({
-          id: getLinkID(port.id, target),
+          id: port.id,
           source: {
             nodeID: node.id,
             portID: port.id,

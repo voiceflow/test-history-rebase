@@ -103,10 +103,10 @@ export const portsAdapter: Record<string, PortsAdapter> = {
 };
 
 export const defaultPortAdapter: PortsAdapter = {
-  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target })),
+  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target, id: port.id })),
   fromDB: (ports, node) =>
-    ports.map((port, index) => ({
-      port: generateOutPort(node.nodeID, index, { label: port.type }),
+    ports.map((port) => ({
+      port: generateOutPort(node.nodeID, port, { label: port.type }),
       target: port.target,
     })),
 };

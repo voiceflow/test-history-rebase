@@ -1,20 +1,18 @@
-import { Block, DiagramNode, Step } from '@voiceflow/api-sdk';
+import { Block, DiagramNode, Port as DBPort, Step } from '@voiceflow/api-sdk';
+import _isString from 'lodash/isString';
 
 import { adapterLogger } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
 import { Port } from '@/models';
+import { objectID } from '@/utils';
 
-import { IN_PORT_KEY, OUT_PORT_KEY } from './constants';
+import { IN_PORT_KEY } from './constants';
 
 export const creatorLogger = adapterLogger.child('creator');
 
 export const isSupportedBlockType = (type: BlockType) => Object.values(BlockType).includes(type);
 
-export const getLinkID = (portID: string, target: string) => `${portID}-${target}`;
-
 export const getInPortID = (nodeID: string) => `${nodeID}${IN_PORT_KEY}`;
-
-export const getOutPortID = (nodeID: string, index: number) => `${nodeID}-${index}${OUT_PORT_KEY}`;
 
 export const getAlternativePlatform = (platform: PlatformType) => (platform === PlatformType.ALEXA ? PlatformType.GOOGLE : PlatformType.ALEXA);
 
@@ -34,7 +32,7 @@ export const generateInPort = (nodeID: string, { platform = null, virtual = fals
   nodeID,
 });
 
-export const generateOutPort = (nodeID: string, index: number, port: Partial<Port>): Port => ({
-  ...generateInPort(nodeID, port),
-  id: getOutPortID(nodeID, index),
+export const generateOutPort = (nodeID: string, port: DBPort, settings?: Partial<Port>): Port => ({
+  ...generateInPort(nodeID, settings),
+  id: (_isString(port.id) && port.id) || objectID(),
 });

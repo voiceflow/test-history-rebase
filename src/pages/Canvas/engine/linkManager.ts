@@ -3,7 +3,6 @@ import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import { Link } from '@/models';
 import { Pair } from '@/types';
-import { objectID } from '@/utils';
 
 import { EngineConsumer, extractPoints } from './utils';
 
@@ -61,7 +60,7 @@ class LinkManager extends EngineConsumer {
   }
 
   async add(sourcePortID: string, targetPortID: string) {
-    const linkID = objectID();
+    const linkID = sourcePortID;
 
     this.log.debug(this.log.pending('adding link'), this.log.slug(linkID));
     await this.engine.realtime.sendUpdate(Realtime.addLink(sourcePortID, targetPortID, linkID));

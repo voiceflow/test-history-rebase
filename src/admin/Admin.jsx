@@ -44,7 +44,7 @@ class Admin extends React.Component {
               <Route path="/admin/copy" component={Copy} />
               <Route path="/admin/charges/:creator_id" component={FinanceBoard} />
               <Route exact path="/admin/charges" component={FinanceBoard} />
-              <Route path="/admin/lookup/:version_id" component={SkillLookup} />
+              <Route path="/admin/lookup/:project_id" component={SkillLookup} />
               <Route exact path="/admin/lookup" component={SkillLookup} />
               <Route path="/admin/vendors/:creator_id" component={Vendors} />
               <Route exact path="/admin/vendors" component={Vendors} />

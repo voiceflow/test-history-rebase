@@ -40,8 +40,8 @@ class Copy extends Component {
       .then((res) => {
         this.setState({
           creator_skills: res.data.map((skill) => ({
-            label: `${skill.name} - ${skill.skill_id} ${skill.live ? '(Live)' : ''}`,
-            value: skill.skill_id,
+            label: `${skill.name} - ${skill._id} ${skill.version?.platformData?.status?.stage === 'LIVE' ? '(Live)' : ''}`,
+            value: skill._id,
           })),
         });
       })

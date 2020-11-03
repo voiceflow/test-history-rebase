@@ -5,26 +5,18 @@ import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
-import ReactTable from 'react-table';
+import ReactTable from 'react-table-6';
 import { Button, Input } from 'reactstrap';
 
 import { AdminTitle } from '@/admin/styles';
 import { Spinner } from '@/components/Spinner';
 import { toast } from '@/components/Toast';
-import Toggle from '@/components/Toggle';
-
-import LogTable from '../Logs/components/LogTable';
 
 const COLUMNS = [
   {
     Header: 'ID',
-    accessor: 'version_id',
-    width: 60,
-  },
-  {
-    Header: 'Encoded',
-    accessor: 'encoded',
-    width: 110,
+    accessor: '_id',
+    width: 250,
   },
   {
     Header: 'Name',
@@ -39,21 +31,13 @@ const COLUMNS = [
   {
     Header: 'Made',
     accessor: 'created',
-    width: 100,
+    width: 200,
     // eslint-disable-next-line react/display-name
     Cell: (props) => <span>{moment(props.value).format('YYYY/MM/DD h:mm:ss a')}</span>,
   },
   {
-    Header: 'Amazon ID',
-    accessor: 'amzn_id',
-  },
-  {
-    Header: 'Google ID',
-    accessor: 'google_id',
-  },
-  {
     Header: 'Creator',
-    accessor: 'creator_id',
+    accessor: 'creatorID',
     width: 80,
   },
   {
@@ -74,25 +58,16 @@ class SkillLookup extends React.Component {
     super(props);
 
     this.state = {
-      versionID: _.get(props, ['match', 'params', 'version_id']) || '',
-      encoded: true,
       loading: false,
-      versionInfo: null,
+      project: null,
+      versions: [],
+      projectID: _.get(props, ['match', 'params', 'project_id']) || '',
     };
   }
 
   componentDidMount() {
-    if (this.state.versionID) {
-      if (isNaN(this.state.versionID)) this.lookupSkill();
-      else {
-        // Assume that it's a number I guess
-        this.setState(
-          {
-            encoded: false,
-          },
-          this.lookupSkill
-        );
-      }
+    if (this.state.projectID) {
+      this.lookupSkill();
     }
   }
 
@@ -102,28 +77,31 @@ class SkillLookup extends React.Component {
     });
   };
 
-  lookupSkill = () => {
-    if (!this.state.versionID) return;
-    this.setState({ loading: true, errors: '' });
-    axios
-      .get(`/version/${this.state.versionID}/info`, { params: { encoded: this.state.encoded ? '1' : undefined } })
-      .then((res) => {
-        const v = res.data;
-        v.dev_version = v.versions.find((vers) => vers.version_id === v.project.dev_version);
-        this.setState({
-          loading: false,
-          versionInfo: v,
-        });
-      })
-      .catch((e) => {
-        this.setState({ loading: false });
-        console.error(e);
-        toast.error('There was an error looking up this skill');
-      });
+  lookupSkill = async () => {
+    if (!this.state.projectID) {
+      return;
+    }
+
+    this.setState({ loading: true, errors: '', project: null, versions: [] });
+
+    try {
+      const {
+        data: { project, versions },
+      } = await axios.get(`/admin-api/projects/${this.state.projectID}`);
+
+      this.setState({ loading: false, project, versions });
+    } catch (err) {
+      this.setState({ loading: false, project: null, versions: [] });
+      console.error(err);
+      toast.error('There was an error looking up this skill');
+    }
   };
 
   render() {
-    const v = this.state.versionInfo;
+    const { project, versions, loading } = this.state;
+
+    const devVersion = versions.find(({ _id }) => _id === project.devVersion);
+
     return (
       <>
         <AdminTitle>
@@ -134,56 +112,75 @@ class SkillLookup extends React.Component {
             </span>
           </span>
         </AdminTitle>
+
         <hr />
 
         <h5>Projects/Versions</h5>
-        {this.state.loading ? (
+
+        {loading ? (
           <Spinner isEmpty />
         ) : (
-          <div className="">
-            <label className="d-flex align-items-center">
-              Version Id | Encoded &nbsp;&nbsp;
-              <Toggle
-                checked={this.state.encoded}
-                onChange={() => {
-                  this.setState({ encoded: !this.state.encoded });
-                }}
-              />
-            </label>
-            <Input
-              name="versionID"
-              value={this.state.versionID}
-              onChange={this.handleChange}
-              placeholder={this.state.encoded ? '86d84lrdAB' : '38728'}
-            />
+          <div>
+            <Input name="projectID" value={this.state.projectID} onChange={this.handleChange} placeholder="86d84lrdAB" />
             <Button color="primary" className="w-100 mt-3" size="lg" onClick={this.lookupSkill}>
               Search
             </Button>
           </div>
         )}
         <hr />
-        {v && (
+        {!!project && (
           <div>
-            <label>General Info</label>
-            <div>
-              <b>Version ID:</b> {v.version_id} | <b>Encoded ID:</b> {v.encoded} | <b>Dev Version:</b> {v.project.dev_version} |{' '}
-              <b>Project Creator ID:</b> {v.project.creator_id} | <b>Project ID:</b> {v.project.project_id}{' '}
-            </div>
+            <h5>General Info</h5>
+            <dl>
+              <dt>Project ID:</dt>
+              <dd>{project._id}</dd>
+              <dt>Project Creator ID:</dt>
+              <dd>{project.creatorID}</dd>
+              <dt>Platform:</dt>
+              <dd>{project.platform}</dd>
+              <dt>Dev Version:</dt>
+              <dd>{project.devVersion}</dd>
+            </dl>
+
+            <br />
             <hr />
-            {v.dev_version && (
+            <br />
+
+            {!!devVersion && (
               <>
-                <label>Dev Version</label>
-                <ReactTable columns={COLUMNS} data={[v.dev_version]} defaultPageSize={1} showPagination={false} showPageSizeOptions={false} />
+                <h5>Dev Version</h5>
+                <ReactTable columns={COLUMNS} data={[devVersion]} defaultPageSize={1} showPagination={false} showPageSizeOptions={false} />
+                <br />
                 <hr />
+                <br />
               </>
             )}
-            <label>All Versions</label>
-            <ReactTable defaultPageSize={5} columns={COLUMNS} data={v.versions} />
-            <hr />
-            {v.logs.length !== 0 && (
+
+            <h5>All Versions</h5>
+
+            <ReactTable defaultPageSize={5} columns={COLUMNS} data={versions} />
+
+            {!!project.members?.length && (
               <>
-                <label>Errors</label>
-                <LogTable logs={v.logs} />
+                <br />
+                <hr />
+                <br />
+                <h5>Members</h5>
+                <ReactTable
+                  defaultPageSize={5}
+                  columns={[
+                    {
+                      Header: 'Creator',
+                      accessor: 'creatorID',
+                    },
+                    {
+                      Header: 'Platform Data',
+                      accessor: 'platformData',
+                      Cell: (props) => <span>{JSON.stringify(props.value ?? {})}</span>,
+                    },
+                  ]}
+                  data={project.members}
+                />
               </>
             )}
           </div>

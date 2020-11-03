@@ -38,14 +38,14 @@ class InternalLookup extends React.Component {
         filtered_boards = filtered_boards.filter((board) => {
           let found = false;
           for (let i = 0; i < board.projects.length; i++) {
-            if (board.projects[i].skill_name.includes(event.target.value)) found = true;
+            if (board.projects[i].name.includes(event.target.value)) found = true;
           }
           return found;
         });
 
         filtered_boards.map((board) => {
           board.projects = board.projects.filter((proj) => {
-            return proj.skill_name.includes(event.target.value);
+            return proj.name.includes(event.target.value);
           });
           return board;
         });

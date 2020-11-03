@@ -2,6 +2,7 @@ import './TeamSummary.css';
 
 import moment from 'moment';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardBody, Collapse, ListGroup } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
@@ -34,14 +35,21 @@ class TeamSummary extends React.Component {
 
   renderSkillPreviews = () => {
     return this.props.board.projects.map((skill) => {
-      return <span key={skill.skill_id}>{skill.skill_name}, </span>;
+      return (
+        <>
+          <Link key={skill._id} to={`/admin/lookup/${skill._id}`}>
+            {skill.name}
+          </Link>
+          {' | '}
+        </>
+      );
     });
   };
 
   renderSkills = () => {
     if (this.props.board) {
       return this.props.board.projects.map((skill) => {
-        return <SkillDetail skill={skill} key={skill.skill_id} />;
+        return <SkillDetail skill={skill} key={skill._id} />;
       });
     }
   };
@@ -102,7 +110,7 @@ class TeamSummary extends React.Component {
         </div>
 
         <Collapse isOpen={this.props.expand_all || this.state.showSkills}>
-          <Card>
+          <Card style={{ marginTop: 25 }}>
             <CardBody>
               <ListGroup>{this.renderSkills()}</ListGroup>
               <span className="show_skills_button bottom_show_skills_button" onClick={this.toggle}>

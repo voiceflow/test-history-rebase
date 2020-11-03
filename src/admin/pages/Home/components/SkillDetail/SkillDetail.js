@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
+import { getPlatformService } from '@/clientV2';
 import { toast } from '@/components/Toast';
 
 export class SkillDetail extends Component {
@@ -35,41 +36,50 @@ export class SkillDetail extends Component {
     });
   };
 
-  copy(versionID) {
-    if (!(versionID && this.state.target_board)) {
+  copy = async () => {
+    if (!(this.props.skill._id && this.state.target_board)) {
       toast.error('Fields not Complete!');
       return;
     }
-    axios
-      .post(`/version/${versionID}/copy/team/${this.state.target_board.value}`)
-      .then(() => {
-        this.setState({
-          target_board: '',
-          target_user: '',
-        });
-        toast.success('Successfully copied skill');
-      })
-      .catch(() => toast.error('Error'));
-  }
+
+    const service = getPlatformService(this.props.skill.platform);
+
+    try {
+      await service.project.copy(this.props.skill._id, { teamID: this.state.target_board.value });
+
+      this.setState({ target_user: '', target_board: '' });
+
+      toast.success('Project copied successfully!');
+    } catch {
+      toast.error('Error');
+    }
+  };
 
   render() {
     if (!this.props.skill) return <div>Loading...</div>;
     return (
       <div className="row skill_preview py-4">
-        <div className="col-sm-3">
+        <div className="col-sm-6">
           <div className="skill_preview_title">
-            <div className="skill_preview_title_large">{this.props.skill.skill_name}</div>
-            <span className="skill_preview_subtitle">Skill #{this.props.skill.skill_id}</span>
+            <div className="skill_preview_title_large mb-2">{this.props.skill.name}</div>
+
+            <div className="skill_preview_subtitle mb-1">
+              <b>Skill id:</b> {this.props.skill._id}
+            </div>
+            <div className="skill_preview_subtitle mb-1">
+              <b>Platform:</b> {this.props.skill.platform}
+            </div>
+            <div className="skill_preview_subtitle mb-2">
+              <b>Dev version:</b> {this.props.skill.devVersion}
+            </div>
           </div>
-          <div className="team_summary_created">{moment(this.props.skill.skill_created).format('MMMM Do YYYY, h:mm:ss a')}</div>
+
+          <div className="team_summary_created">{moment(this.props.skill.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
         </div>
-        <div className="col-sm-3 mb-2 skill_summary_and_description">
-          <div className="mt-2 skill_summary">{this.props.skill.summary}</div>
-          <div className="mt-2 skill_description">{this.props.skill.description}</div>
-        </div>
-        <div className="col-sm-6 mb-2">
-          <div>
-            <Link to={`/admin/lookup/${this.props.skill.skill_id}`}>View skill in skill lookup</Link>
+
+        <div className="col-sm-6">
+          <div className="mb-1">
+            <Link to={`/admin/lookup/${this.props.skill._id}`}>View skill in skill lookup</Link>
           </div>
           <div>
             <div className="mb-2">Copy this skill to:</div>
@@ -119,7 +129,7 @@ export class SkillDetail extends Component {
                 <span>{`User: ${this.props.creator.creator_id}`}</span>
               </div>
               <div className="col-sm-6 team_summary_button_row">
-                <span onClick={() => this.copy(this.props.skill.skill_id)} className="mb-2">
+                <span onClick={this.copy} className="mb-2">
                   Copy!
                 </span>
               </div>

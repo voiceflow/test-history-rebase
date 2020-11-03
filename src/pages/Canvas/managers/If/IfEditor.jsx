@@ -47,8 +47,8 @@ function IfEditor({ data, onChange, focusedNode }) {
 
   const addExpression = React.useCallback(
     async (scrollToBottom) => {
-      await engine.port.add(focusedNode.id, { label: items.length + 1 });
       onAdd();
+      await engine.port.add(focusedNode.id, { label: items.length + 1 });
       scrollToBottom();
     },
     [engine.port, focusedNode.id, items.length, onAdd]

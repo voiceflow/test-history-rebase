@@ -1,11 +1,25 @@
 import React from 'react';
 
-import Button from '@/components/Button';
+import BaseButton from '@/components/Button/components/BaseButton';
+import SvgIcon from '@/components/SvgIcon';
 import { linkGoogleAccountV2 } from '@/ducks/account/sideEffectsV2';
-import { connect } from '@/hocs';
+import { connect, styled } from '@/hocs';
 import { useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
 import { ConnectedProps } from '@/types';
+
+const GoogleLoginButton = styled(BaseButton)`
+  position: relative;
+  background: #4285f4;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  height: 40px;
+  border-radius: 2px;
+
+  span:last-of-type {
+    padding: 0 22px 0 18px;
+  }
+`;
 
 export type GoogleLoginProps = {
   scopes: string[];
@@ -30,9 +44,10 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({ s
   );
 
   return (
-    <Button variant="primary" className="LoginWithAmazon" onClick={onLogin}>
-      Connect Google
-    </Button>
+    <GoogleLoginButton className="LoginWithGoogle" onClick={onLogin}>
+      <SvgIcon icon="connectGoogle" size={46} />
+      <span>Sign in with Google</span>
+    </GoogleLoginButton>
   );
 };
 

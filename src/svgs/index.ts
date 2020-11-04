@@ -81,6 +81,7 @@ export { default as google } from './brands/google.svg';
 export { default as grid } from './grid.svg';
 export { default as googleSheets } from './google-sheets.svg';
 export { default as googleAssistant } from './google-assistant.svg';
+export { default as connectGoogle } from './connect-google.svg';
 export { default as greater } from './greater.svg';
 
 // h

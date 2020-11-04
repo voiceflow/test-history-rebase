@@ -9,6 +9,7 @@ import projectAdapter, { productAdapter } from '@/clientV2/adapters/project';
 import slotAdapter from '@/clientV2/adapters/slot';
 import versionAdapter from '@/clientV2/adapters/version';
 import { PlatformType } from '@/constants';
+import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as DiagramReducer from '@/ducks/diagram';
 import * as Diagram from '@/ducks/diagramV2';
@@ -78,7 +79,9 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
 // eslint-disable-next-line import/prefer-default-export
 export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch, getState) => {
-  const platform = Skill.activePlatformSelector(getState());
+  const state = getState();
+  const platform = Skill.activePlatformSelector(state);
+  const userID = Account.userIDSelector(state);
 
   const [dbVersion] = await Promise.all([
     clientV2.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
@@ -91,9 +94,10 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   );
 
   const project = projectAdapter.fromDB(dbProject);
+  const member = dbProject.members.find(({ creatorID }) => creatorID === userID);
 
   // use the project name instead of the version name
-  const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
+  const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType, member });
 
   dispatch(Creator.resetCreator());
 

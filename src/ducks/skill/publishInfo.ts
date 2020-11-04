@@ -6,7 +6,7 @@ import { createAction } from '@/ducks/utils';
 import { Action, RootReducer } from '@/store/types';
 import { Nullable } from '@/types';
 
-import { activeSkillSelector } from './skill';
+import { activePlatformSelector, activeSkillSelector } from './skill';
 
 type State = Nullable<Record<PlatformType, any>>;
 
@@ -41,6 +41,16 @@ export default publishInfoReducer;
 
 export const publishInfoSelector = createSelector(activeSkillSelector, ({ publishInfo }) => publishInfo);
 
+export const selectedVendorSelector = createSelector(
+  [publishInfoSelector, activePlatformSelector],
+  (publishInfo, platform) => publishInfo?.[platform].vendorId
+);
+
+export const amazonIDSelector = createSelector(
+  [publishInfoSelector, activePlatformSelector],
+  (publishInfo, platform) => publishInfo?.[platform].amznID
+);
+
 const createPublishPlatformSelector = (platform: PlatformType) =>
   createSelector(activeSkillSelector, ({ publishInfo }) => publishInfo?.[platform] ?? null);
 
@@ -64,3 +74,7 @@ export const updatePublishPlatforms = PLATFORMS.reduce<UpdatePublishPlatforms>(
   (actions, platform) => Object.assign(actions, { [platform]: createUpdatePublishPlatformAction(platform) }),
   {} as UpdatePublishPlatforms
 );
+
+export const updateAlexaPublishInfo = updatePublishPlatforms[PlatformType.ALEXA];
+
+export const updateGooglePublishInfo = updatePublishPlatforms[PlatformType.GOOGLE];

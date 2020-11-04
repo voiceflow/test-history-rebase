@@ -1,7 +1,6 @@
 import clientV2 from '@/clientV2';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
-import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
@@ -107,7 +106,7 @@ export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
 
   const state = getState();
   const vendors = amazonVendorsSelector(state);
-  const skillVendor = AlexaPublish.vendorIdSelector(state);
+  const skillVendor = Skill.selectedVendorSelector(state);
 
   if (skillVendor && vendors.length && !vendors.find((vendor) => vendor?.id === skillVendor)) {
     await dispatch(updateSelectedVendor(vendors[0]?.id));

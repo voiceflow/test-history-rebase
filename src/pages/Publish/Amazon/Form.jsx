@@ -20,7 +20,9 @@ import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
+import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
@@ -272,7 +274,7 @@ class Skill extends Component {
       export: stateExport,
     } = this.state;
 
-    const { amznID, review } = this.props;
+    const { amazonID, review } = this.props;
 
     const blocks = [];
     const enterText = (
@@ -662,13 +664,17 @@ class Skill extends Component {
         onFinishSteps={this.validateForm}
         submitText={enterText}
         disabled={saving || review}
-        preventSubmit={!amznID && { message: 'You must upload to Amazon at least once on the canvas before submitting for review' }}
+        preventSubmit={
+          !amazonID && {
+            message: 'You must upload to Amazon at least once on the canvas before submitting for review',
+          }
+        }
       />
     );
   };
 
   render() {
-    const { amznID, review } = this.props;
+    const { amazonID, review } = this.props;
     const { locales, loaded, live, id_collapse } = this.state;
 
     if (!loaded)
@@ -695,7 +701,7 @@ class Skill extends Component {
                   <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
                 </div>
               )}
-              {amznID && (
+              {amazonID && (
                 <div className="alert alert-success" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on Amazon Developer Console</span>
@@ -708,11 +714,11 @@ class Skill extends Component {
                     <hr />
                     <span>Skill ID | </span>
                     <a
-                      href={`https://developer.amazon.com/alexa/console/ask/test/${amznID}/development/${locales[0].replace('-', '_')}/`}
+                      href={`https://developer.amazon.com/alexa/console/ask/test/${amazonID}/development/${locales[0].replace('-', '_')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <b>{amznID}</b>
+                      <b>{amazonID}</b>
                     </a>
                   </Collapse>
                 </div>
@@ -752,6 +758,8 @@ const mapStateToProps = {
   amznID: AlexaPublish.amznIDSelector,
   review: AlexaPublish.reviewSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
+  feature: Feature.isFeatureEnabledSelector,
+  amazonID: SkillDuck.amazonIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -762,8 +770,10 @@ const mapDispatchToProps = {
   updateProducts: Product.handleSkillLocaleChange,
 };
 
+const mergeProps = ({ feature: featureSelector, amznID, amazonID }) => ({ amazonID: featureSelector(FeatureFlag.DATA_REFACTOR) ? amazonID : amznID });
+
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
   reduxForm({
     form: PUBLISH_AMAZON_FORM,
     validate,

@@ -1,21 +1,31 @@
-import { AlexaVersion } from '@voiceflow/alexa-types';
-import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { AlexaProjectMemberData, AlexaVersion } from '@voiceflow/alexa-types';
+import { Member, Version, VersionPlatformData } from '@voiceflow/api-sdk';
 import { GoogleVersion } from '@voiceflow/google-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';
-import { Skill } from '@/models';
+import { FullSkill } from '@/models';
 
 import alexaVersionAdapter from './alexa';
 import googleVersionAdapter from './google';
 
-const versionAdapter = createAdapter<Version<VersionPlatformData>, Skill, [{ platform: PlatformType }]>(
-  (version, { platform = PlatformType.ALEXA }) => {
+const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill, [{ platform: PlatformType; member?: Member }]>(
+  (dbVersion, { platform = PlatformType.ALEXA, member }) => {
     if (platform === PlatformType.ALEXA) {
-      return alexaVersionAdapter.fromDB(version as AlexaVersion);
+      const version = alexaVersionAdapter.fromDB(dbVersion as AlexaVersion);
+
+      if (member) {
+        const {
+          platformData: { selectedVendor, vendors },
+        } = member as Member<AlexaProjectMemberData>;
+        version.publishInfo.alexa.amznID = vendors?.find(({ vendorID }) => vendorID === selectedVendor)?.skillID ?? null;
+        version.publishInfo.alexa.vendorId = selectedVendor;
+      }
+      return version;
     }
+
     if (platform === PlatformType.GOOGLE) {
-      return googleVersionAdapter.fromDB(version as GoogleVersion);
+      return googleVersionAdapter.fromDB(dbVersion as GoogleVersion);
     }
     throw new Error('Invalid Platform');
   },
@@ -23,5 +33,4 @@ const versionAdapter = createAdapter<Version<VersionPlatformData>, Skill, [{ pla
     throw new AdapterNotImplementedError();
   }
 );
-
 export default versionAdapter;

@@ -47,6 +47,7 @@ export namespace AlexaPublishJob {
       rootDiagramID: string;
       succeededLocale: string | null;
       submittedForReview?: boolean;
+      selectedVendorID: string | null;
     }
   >;
 

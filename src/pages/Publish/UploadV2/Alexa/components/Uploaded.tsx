@@ -17,14 +17,18 @@ type UploadedProps = {
   stageData: JobStageData<AlexaPublishJob.SuccessStage>;
 };
 
-const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, userID, invocationName }) => {
-  const { succeededLocale, amazonID } = stageData;
+const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, userID, invocationName, updateAlexaPublishInfo }) => {
+  const { succeededLocale, amazonID, selectedVendorID } = stageData;
 
   const firstSession = React.useMemo(() => localStorage.getItem(`is_first_session_${userID}`) !== 'false', []);
 
   React.useEffect(() => {
     localStorage.setItem(`is_first_session_${userID}`, 'false');
   }, []);
+
+  React.useEffect(() => {
+    updateAlexaPublishInfo({ amznID: amazonID, vendorId: selectedVendorID });
+  }, [amazonID]);
 
   // eslint-disable-next-line no-case-declarations
   const locale = (succeededLocale || locales[0] || 'en-US').replace('-', '_');
@@ -98,6 +102,10 @@ const mapStateToProps = {
   invocationName: Skill.invNameSelector,
 };
 
-export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  updateAlexaPublishInfo: Skill.updateAlexaPublishInfo,
+};
 
-export default connect(mapStateToProps, null)(Uploaded) as React.FC<UploadedProps>;
+export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Uploaded) as React.FC<UploadedProps>;

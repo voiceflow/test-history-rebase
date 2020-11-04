@@ -7,6 +7,7 @@ import Select from 'react-select';
 
 import { CopyContent, CopyFields, ToField } from '@/admin/pages/Copy/styles';
 import { AdminTitle } from '@/admin/styles';
+import { getPlatformService } from '@/clientV2';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 
@@ -35,14 +36,20 @@ class Copy extends Component {
     if (isNaN(this.state.creator)) {
       return;
     }
+
     axios
-      .get(`/user/${this.state.creator}/projects`)
+      .get(`/admin-api/${this.state.creator}`)
       .then((res) => {
         this.setState({
-          creator_skills: res.data.map((skill) => ({
-            label: `${skill.name} - ${skill._id} ${skill.version?.platformData?.status?.stage === 'LIVE' ? '(Live)' : ''}`,
-            value: skill._id,
-          })),
+          creator_skills: Object.values(res.data.boards)
+            .map(({ projects }) =>
+              projects.map((project) => ({
+                label: `${project.name} - ${project._id} ${project.version?.platformData?.status?.stage === 'LIVE' ? '(Live)' : ''}`,
+                value: project._id,
+                platform: project.platform,
+              }))
+            )
+            .flat(),
         });
       })
       .catch((error) => {
@@ -65,28 +72,28 @@ class Copy extends Component {
     });
   }
 
-  copy() {
+  copy = async () => {
     if (!(this.state.creator && this.state.skill && this.state.target_board)) {
       toast.error('Fields not Complete!');
       return;
     }
-    axios
-      .post(`/version/${this.state.skill.value}/copy/team/${this.state.target_board.value}`)
-      .then(() => {
-        this.setState({
-          creator: '',
-          skill: null,
-          target: '',
-        });
-        toast.success('Successfully copied skill');
-      })
-      .catch(() => toast.error('Error'));
-  }
+
+    try {
+      const service = getPlatformService(this.state.skill.platform);
+      await service.project.copy(this.state.skill.value, { teamID: this.state.target_board.value });
+
+      this.setState({ creator: '', skill: null, target_board: '', target_user: '' });
+
+      toast.success('Project copied successfully!');
+    } catch (err) {
+      toast.error('Error');
+    }
+  };
 
   render() {
     return (
       <>
-        <AdminTitle>Copy Skills</AdminTitle>
+        <AdminTitle>Copy Project</AdminTitle>
         <hr />
 
         <CopyContent>

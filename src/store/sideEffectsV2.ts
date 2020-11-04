@@ -12,9 +12,9 @@ import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as DiagramReducer from '@/ducks/diagram';
 import * as Diagram from '@/ducks/diagramV2';
+import * as Integration from '@/ducks/integration';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/productV2';
-// import * as Integration from '@/ducks/integration';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
@@ -23,6 +23,7 @@ import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
+import { storeLogger } from '@/store/utils';
 
 import { Thunk } from './types';
 
@@ -82,6 +83,7 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const [dbVersion] = await Promise.all([
     clientV2.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
     dispatch(Diagram.loadVersionDiagrams(versionID)),
+    dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users')),
   ] as const);
 
   const dbProject = await clientV2.api.project.get<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>(
@@ -94,12 +96,6 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
 
   dispatch(Creator.resetCreator());
-
-  // try {
-  //   await dispatch(Integration.fetchIntegrationUsers());
-  // } catch (err) {
-  //   storeLogger.warn('Unable to fetch integration users');
-  // }
 
   const slots = slotAdapter.mapFromDB(dbVersion.platformData.slots);
   const intents = intentAdapter(platform).mapFromDB(dbVersion.platformData.intents);

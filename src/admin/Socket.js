@@ -47,7 +47,11 @@ const socketFail = () => {
   window.CreatorSocket.status = 'FAIL';
 };
 
-window.CreatorSocket = socket(getEndpoint());
+window.CreatorSocket = socket(getEndpoint(), {
+  timeout: 5000,
+  transports: ['websocket'],
+  autoConnect: false,
+});
 
 window.CreatorSocket.status = 'CONNECTING';
 

@@ -25,7 +25,8 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
         : await client.socket.diagram.switch(versionID, diagramID);
 
       dispatch(Realtime.initializeRealtime(diagramID, locks));
-    } catch {
+    } catch (err) {
+      console.error(err);
       dispatch(Modal.setError('Error Switching Flows'));
     }
   }

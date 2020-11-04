@@ -9,6 +9,7 @@ import { toast as toastNotif } from '@/components/Toast';
 import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
@@ -19,7 +20,7 @@ import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import * as Userflow from '@/vendors/userflow';
 
-import { ONBOARDING_PROJECT_NAME, STEP_META, StepID } from '../constants';
+import { STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
 import {
   OnboardingContextActions,
@@ -90,9 +91,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   fetchWorkspaces,
   firstLogin,
   validateInvite,
-  createProject,
   workspaces,
   isLoginFlow,
+  createProject,
   trackInvitationAccepted,
   workspaceById,
   account,
@@ -325,17 +326,12 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     try {
-      const { skill_id, diagram } = await createProject(
-        workspace.id,
-        { name: ONBOARDING_PROJECT_NAME, locales: ['en-US'], platform: PlatformType.ALEXA },
-        1
-      );
-
+      const { versionID } = await createProject({ platform: PlatformType.ALEXA }, 'onboarding');
       if (isLoginFlow) {
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          await goToCanvas(skill_id, diagram);
+          await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
       } else {
@@ -454,11 +450,11 @@ const mapDispatchToProps = {
   goToDashboardWithSearch: Router.goToDashboardWithSearch,
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
   fetchWorkspaces: Workspace.fetchWorkspaces,
-  createProject: Workspace.createProject,
   updateWorkspaceName: Workspace.updateWorkspaceName,
   updateWorkspaceImage: Workspace.updateWorkspaceImage,
   goToWorkspace: Router.goToWorkspace,
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
+  createProject: ProjectV2.createProject,
 };
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

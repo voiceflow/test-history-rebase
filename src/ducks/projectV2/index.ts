@@ -67,13 +67,16 @@ export type createProjectParams = {
   listID?: string;
 };
 
-export const createProject = ({ platform, name, largeIcon, listID }: createProjectParams): Thunk<Project> => async (dispatch, getState) => {
+export const createProject = ({ platform, name, largeIcon, listID }: Partial<createProjectParams>, templateTag?: string): Thunk<Project> => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const teamID = activeWorkspaceIDSelector(state)!;
 
-  const service = getPlatformService(platform);
+  const service = getPlatformService(platform!);
 
-  const templateProjectID = await clientV2.api.template.getPlatformTemplate(platform);
+  const templateProjectID = await clientV2.api.template.getPlatformTemplate(platform!, templateTag);
   if (!templateProjectID) {
     toast.error(`no project templates exist for platform ${platform}`);
     throw new Error('no platform project template');

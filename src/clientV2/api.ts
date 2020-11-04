@@ -11,7 +11,8 @@ export const voiceflow = new Voiceflow({
 
 const creatorAPI = {
   template: {
-    getPlatformTemplate: (platform: PlatformType) => axios.get(`${API_ENDPOINT}/v2/templates/${platform}`).then((res) => res.data as string | null),
+    getPlatformTemplate: (platform: PlatformType, tag = 'default') =>
+      axios.get(`${API_ENDPOINT}/v2/templates/${platform}`, { params: { tag } }).then((res) => res.data as string | null),
   },
   prototype: {
     createInfo: (versionID: string, diagramID: string, variables: Record<string, any>) =>

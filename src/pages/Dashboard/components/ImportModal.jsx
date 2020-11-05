@@ -71,6 +71,14 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
 
   const cloneProject = async (workspaceId) => {
     const workspace = workspaceByIDSelector(workspaceId);
+
+    const projectCountPerWorkspace = workspace.boards.reduce((acc, board) => acc + (board.projects.length || 0), 0);
+    if (projectCountPerWorkspace >= workspace.projects) {
+      close();
+      goToWorkspace(workspaceId);
+      openProjectLimitModal({ message: 'Project limitations is reached' });
+      return;
+    }
     if (allowedToClone(workspace, creatorId)) {
       try {
         close();

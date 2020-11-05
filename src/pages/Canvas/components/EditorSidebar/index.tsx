@@ -27,7 +27,6 @@ import { withManagerProps } from './hocs';
 import { useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
-const HIDDEN_TITLE_BLOCKS = [BlockType.START, BlockType.INVOCATION];
 
 type EditSidebarProps = {
   focus: FocusState;
@@ -99,7 +98,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
             path={path}
             goToPath={goToPath}
             onRename={onRename}
-            hideTitle={HIDDEN_TITLE_BLOCKS.includes(node.type)}
+            hideTitle={node.type === BlockType.START}
             hideHeader={isModal}
             renameRevision={focus.renameActiveRevision}
             prevPathLength={prevPathLength.current}
@@ -118,11 +117,10 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
   }
 
   return (
-    <SidebarProvider
-      key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is
-    >
+    <SidebarProvider>
       <Drawer
         as="section"
+        key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is
         style={{ overflow: 'hidden' }}
         open={isOpen}
         width={isMarkup ? theme.components.markupSidebar.width : theme.components.blockSidebar.width}

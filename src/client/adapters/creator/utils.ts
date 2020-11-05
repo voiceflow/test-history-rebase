@@ -4,13 +4,7 @@ import PORT_LABELS from '@/pages/Canvas/managers/labels';
 import { Point } from '@/types';
 
 import { adapterLogger } from '../utils';
-import {
-  INVOCATION_NODE_ID_PREFIX,
-  NODE_HEIGHT_DIFFERENCE,
-  NODE_WIDTH_DIFFERENCE,
-  VIRTUAL_NODE_ID_PREFIX,
-  VIRTUAL_PORT_ID_PREFIX,
-} from './constants';
+import { NODE_HEIGHT_DIFFERENCE, NODE_WIDTH_DIFFERENCE, VIRTUAL_NODE_ID_PREFIX, VIRTUAL_PORT_ID_PREFIX } from './constants';
 
 export const creatorLogger = adapterLogger.child('creator');
 
@@ -19,8 +13,6 @@ export const isSupportedBlockType = (type: BlockType) => Object.values(BlockType
 export const getVirtualPortID = (nodeID: string) => `${VIRTUAL_PORT_ID_PREFIX}${nodeID}`;
 
 export const getVirtualNodeID = (nodeID: string) => `${VIRTUAL_NODE_ID_PREFIX}${nodeID}`;
-
-export const getInvocationNodeID = (nodeID: string) => `${INVOCATION_NODE_ID_PREFIX}${nodeID}`;
 
 export const findDiagramCenter = (nodes: DBNode.WithCoords[]): Point => {
   const xValues = nodes.map((node) => node.x);

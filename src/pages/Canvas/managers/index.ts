@@ -20,7 +20,6 @@ import IfManager from './If';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
 import InvalidPlatformManager from './InvalidPlatform';
-import InvocationManager from './Invocation';
 import MarkupImageManager from './MarkupImage';
 import MarkupTextManager from './MarkupText';
 import PaymentManager from './Payment';
@@ -36,7 +35,6 @@ import UserInfoManager from './UserInfo';
 
 export const MANAGERS_BY_TYPE = {
   [BlockType.START]: StartManager,
-  [BlockType.INVOCATION]: InvocationManager,
   [BlockType.SPEAK]: SpeakManager,
   [BlockType.CHOICE]: ChoiceManager,
   [BlockType.CHOICE_OLD]: ChoiceOldManager,

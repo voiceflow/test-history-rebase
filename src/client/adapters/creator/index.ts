@@ -11,7 +11,7 @@ import linkAdapter from './link';
 import nodeAdapter from './node';
 import nodeDataAdapter from './nodeData';
 import portAdapter from './port';
-import { findDiagramCenter, getInvocationNodeID, getVirtualNodeID, getVirtualPortID, spreadOutNodes } from './utils';
+import { findDiagramCenter, getVirtualNodeID, getVirtualPortID, spreadOutNodes } from './utils';
 
 const buildVirtualExtras = (node: DBNode, childNode: DBNode) => {
   const { color } = node.extras;
@@ -126,22 +126,6 @@ const creatorAdapter = createSimpleAdapter<
       rootNodeIDs.push(_node.id);
 
       registerNode(_node);
-
-      if (nodeType === BlockType.START) {
-        registerNode(
-          {
-            x: node.x,
-            y: node.y,
-            id: getInvocationNodeID(node.id),
-            name: 'Invocation',
-            ports: node.ports,
-            extras: { type: BlockType.INVOCATION },
-            combines: null,
-            parentNode: node.id,
-          },
-          _node.id
-        );
-      }
 
       if (_node.combines) {
         _node.combines.forEach((combinedNode) => registerNode(combinedNode, _node.id));

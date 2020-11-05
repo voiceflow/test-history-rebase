@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import React from 'react';
 import { ThemeContext } from 'styled-components';
 
+import { BlockType } from '@/constants';
 import { useEnableDisable, useHover } from '@/hooks';
 import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -54,17 +55,7 @@ export const useNodeInstance = () => {
   );
 };
 
-export const useStepAPI = <T extends HTMLElement>({
-  stepRef,
-  withPorts,
-  isDraggable,
-  contextMenu: withContextMenu = true,
-}: {
-  stepRef: React.RefObject<T>;
-  withPorts: boolean;
-  isDraggable: boolean;
-  contextMenu?: boolean;
-}) => {
+export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, withPorts: boolean, isDraggable: boolean) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { lockOwner } = nodeEntity.useState((e) => {
     return {
@@ -123,7 +114,7 @@ export const useStepAPI = <T extends HTMLElement>({
         onClick: preventDefault(() => engine.setActive(nodeEntity.nodeID)),
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
-          if (!withContextMenu || !isEditingMode) return;
+          if (nodeEntity.nodeType === BlockType.START || !isEditingMode) return;
 
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),

@@ -6,7 +6,20 @@ import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/con
 import type { Engine } from '@/pages/Canvas/engine/';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
-import { DEFAULT_SIDEBAR_HEADER_ACTIONS, SidebarContext } from './contexts';
+import { SidebarContext, SidebarHeaderAction } from './contexts';
+
+const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
+  {
+    value: 'duplicate_block',
+    label: 'Duplicate',
+    onClick: ({ data, engine }) => engine.node.duplicate(data.nodeID),
+  },
+  {
+    value: 'delete_block',
+    label: 'Delete',
+    onClick: ({ data, engine }) => engine.node.remove(data.nodeID),
+  },
+];
 
 export type PathEntry = {
   label: string;

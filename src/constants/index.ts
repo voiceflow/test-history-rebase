@@ -104,7 +104,6 @@ export enum BlockType {
   COMBINED = 'combined',
   COMMAND = 'command',
   COMMENT = 'comment',
-  INVOCATION = 'invocation',
 
   // basic
   SPEAK = 'speak',

@@ -18,16 +18,15 @@ export type NodeStepProps = {
   isLast: boolean;
   variant: BlockVariant;
   isDraggable: boolean;
-  contextMenu?: boolean;
 };
 
-const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable, contextMenu = true }) => {
+const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const instance = useNodeInstance();
-  const stepAPI = useStepAPI({ stepRef: instance.ref, withPorts: isLast, isDraggable, contextMenu });
+  const stepAPI = useStepAPI(instance.ref, isLast, isDraggable);
   const { node, data, isDragging } = nodeEntity.useState((e) => {
     const resolved = e.resolve();
 

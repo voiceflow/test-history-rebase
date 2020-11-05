@@ -18,7 +18,7 @@ const BlockWithCommands: React.ForwardRefRenderFunction<BlockAPI, React.PropsWit
 ) => {
   const stepRef = React.useRef<HTMLDivElement>(null);
   const sections = commands ? [{ name: 'Commands', children: commands }] : [];
-  const stepAPI = useStepAPI({ stepRef, withPorts: true, isDraggable: false });
+  const stepAPI = useStepAPI(stepRef, true, false);
 
   return (
     <StepAPIProvider value={stepAPI}>

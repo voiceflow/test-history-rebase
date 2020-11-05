@@ -1,7 +1,7 @@
 import canvas from './canvas';
 
 export default {
-  goToExport: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/project/${skillID}/export/${diagramID}`)),
+  goToExport: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/export/${diagramID}`)),
 
   el: canvas.el,
 

@@ -45,7 +45,7 @@ declare namespace Cypress {
     /**
      * create a new project
      */
-    createProject(): Chainable;
+    createProject(platform?: 'alexa' | 'google'): Chainable;
 
     /**
      * create a new thread
@@ -70,7 +70,7 @@ declare namespace Cypress {
     /**
      * get stored session information
      */
-    getSession(): Promise<{ skillID: string; diagramID: string }>;
+    getSession(): Promise<{ versionID: string; diagramID: string }>;
 
     /**
      * assert the active page based off of path matching

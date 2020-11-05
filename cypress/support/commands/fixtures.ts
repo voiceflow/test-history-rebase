@@ -1,9 +1,10 @@
 /* eslint-disable promise/no-nesting */
-import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, SKILL_ID_KEY, TEAM_ID_KEY } from './session';
+import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, TEAM_ID_KEY, VERSION_ID_KEY } from './session';
 
 const API_URL = 'https://localhost:8080';
+const PLATFORM_SERVICE_URL = 'https://localhost:6969';
 
-Cypress.Commands.add('createProject', () => {
+Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' = 'alexa') => {
   cy.request('POST', `${API_URL}/workspaces`, {
     name: 'my workspace',
   }).then((res) => {
@@ -11,19 +12,26 @@ Cypress.Commands.add('createProject', () => {
 
     SESSION_CONTEXT.set(TEAM_ID_KEY, teamID);
 
-    cy.request(`${API_URL}/template/all`).then((res) => {
-      const [{ module_id: moduleID }] = res.body;
+    cy.request(`${API_URL}/v2/templates/${platform}`).then((res) => {
+      const moduleID = res.body;
 
-      cy.request('POST', `${API_URL}/team/${teamID}/copy/module/${moduleID}`, {
-        locales: ['en-US'],
+      cy.log('moduleID', moduleID);
+
+      cy.request('POST', `${PLATFORM_SERVICE_URL}/project/${moduleID}/copy`, {
+        image: '',
         name: 'my other project',
-        platform: 'alexa',
+        teamID,
       }).then((res) => {
-        const { skill_id: skillID, project_id: projectID, diagram: diagramID } = res.body;
+        const { devVersion: versionID, _id: projectID } = res.body;
 
         SESSION_CONTEXT.set(PROJECT_ID_KEY, projectID);
-        SESSION_CONTEXT.set(SKILL_ID_KEY, skillID);
-        SESSION_CONTEXT.set(DIAGRAM_ID_KEY, diagramID);
+        SESSION_CONTEXT.set(VERSION_ID_KEY, versionID);
+
+        cy.request(`${API_URL}/v2/versions/${versionID}`).then((res) => {
+          const { rootDiagramID: diagramID } = res.body;
+
+          SESSION_CONTEXT.set(DIAGRAM_ID_KEY, diagramID);
+        });
       });
     });
   });
@@ -35,7 +43,7 @@ Cypress.Commands.add('createThread', (text: string) => {
   const diagramID = SESSION_CONTEXT.get(DIAGRAM_ID_KEY);
 
   cy.request('POST', `${API_URL}/commenting/project/${projectID}/threads`, {
-    position: [-460, 600],
+    position: [-400, -100],
     resolved: false,
     project_id: projectID,
     diagram_id: diagramID,

@@ -137,20 +137,30 @@ jobs:
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
             apt update
             apt install docker-ce-cli
+
             wget https://github.com/FiloSottile/mkcert/releases/download/$MKCERT_VERSION/mkcert-$MKCERT_VERSION-linux-amd64
             chmod +x mkcert-$MKCERT_VERSION-linux-amd64
             mv mkcert-$MKCERT_VERSION-linux-amd64 /usr/local/bin/mkcert
+            mkcert -install
+
             wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
             tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
             rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
             curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
       - run:
           name: Clone Database
           command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/database-cli ~/database-cli
       - run:
+          name: Clone Server Data API
+          command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/server-data-api ~/server-data-api
+      - run:
           name: Clone Creator API
           command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/creator-api ~/creator-api
+      - run:
+          name: Clone Alexa Service
+          command: git clone https://$GITHUB_USERNAME:$GITHUB_READ_TOKEN@github.com/voiceflow/alexa-service ~/alexa-service
       - run:
           name: Setup Database
           working_directory: ~/database-cli
@@ -158,8 +168,20 @@ jobs:
             yarn install --frozen-lockfile --ignore-engines
             yarn init:e2e
       - run:
+          name: Setup Server Data API
+          working_directory: ~/server-data-api
+          command: |
+            yarn install --frozen-lockfile
+            yarn gen-certs:e2e
+      - run:
           name: Setup Creator API
           working_directory: ~/creator-api
+          command: |
+            yarn install --frozen-lockfile
+            yarn gen-certs:e2e
+      - run:
+          name: Setup Alexa Service
+          working_directory: ~/alexa-service
           command: |
             yarn install --frozen-lockfile
             yarn gen-certs:e2e
@@ -167,7 +189,8 @@ jobs:
           name: Setup Creator App
           no_output_timeout: 15m
           command: |
-            echo 'VF_APP_API_HOST=localhost' > .env.local
+            echo 'VF_APP_API_HOST=localhost' >> .env.local
+            echo 'VF_APP_FF_DATA_REFACTOR=true' >> .env.local
             yarn install --frozen-lockfile
             yarn build:e2e
             yarn gen-certs:e2e
@@ -177,15 +200,30 @@ jobs:
             nginx
       - run:
           name: Wait for Postgres & Dynamo Docker Images
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m && dockerize -wait tcp://localhost:8000 -timeout 1m
+          command: |
+            dockerize -wait tcp://localhost:5432 -timeout 1m \
+            && dockerize -wait tcp://localhost:8000 -timeout 1m
+      - run:
+          name: Start Server Data API
+          background: true
+          working_directory: ~/server-data-api
+          command: yarn e2e
       - run:
           name: Start Creator API
           background: true
           working_directory: ~/creator-api
           command: yarn e2e
       - run:
-          name: Wait for Creator API
-          command: dockerize -wait tcp://localhost:8080 -timeout 1m
+          name: Start Alexa Service
+          background: true
+          working_directory: ~/alexa-service
+          command: yarn e2e
+      - run:
+          name: Wait for Services
+          command: |
+            dockerize -wait tcp://localhost:8080 -timeout 1m \
+            && dockerize -wait tcp://localhost:8200 -timeout 1m \
+            && dockerize -wait tcp://localhost:6969 -timeout 1m
       - run:
           name: Run Cypress Tests
           command: yarn cypress:ci
@@ -557,7 +595,7 @@ workflows:
           requires:
             - test
             - test-integration
-            # - test-e2e
+            - test-e2e
             - build-app
           filters:
             branches:

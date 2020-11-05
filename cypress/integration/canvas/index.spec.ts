@@ -33,10 +33,10 @@ context('Canvas', () => {
   it('drag canvas', () => {
     cy.awaitCanvasAnimation();
 
-    canvasPage.el.canvas.children().should('have.coords', [737, -275]);
+    canvasPage.el.canvas.children().should('have.coords', [112, 208]);
 
     cy.dragCanvas(200, -20);
 
-    canvasPage.el.canvas.children().should('have.coords', [937, -295]);
+    canvasPage.el.canvas.children().should('have.coords', [312, 188]);
   });
 });

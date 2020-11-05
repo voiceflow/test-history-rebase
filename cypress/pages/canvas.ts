@@ -1,8 +1,8 @@
 export default {
-  goToCanvas: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/project/${skillID}/canvas/${diagramID}`)),
+  goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}`)),
 
   route: {
-    postDiagram: () => cy.route('POST', '/diagram'),
+    postDiagram: () => cy.route('GET', '/v2/diagrams/**'),
   },
 
   el: {
@@ -43,7 +43,7 @@ export default {
 
   mode: {
     commenting: {
-      goToCanvas: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/project/${skillID}/canvas/${diagramID}/commenting`)),
+      goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}/commenting`)),
 
       el: {
         get historyDrawer() {
@@ -81,7 +81,7 @@ export default {
     },
 
     markup: {
-      goToCanvas: () => cy.getSession().then(({ skillID, diagramID }) => cy.visit(`/project/${skillID}/canvas/${diagramID}/markup`)),
+      goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}/markup`)),
 
       meta: {
         route: /project\/.*\/canvas\/.*?\/markup/,

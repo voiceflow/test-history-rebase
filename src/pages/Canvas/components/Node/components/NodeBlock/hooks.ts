@@ -2,7 +2,8 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
+import { noInPortTypes } from '@/clientV2/adapters/creator/block';
+import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { objectID } from '@/utils';
 import { isInRange } from '@/utils/number';
@@ -25,7 +26,7 @@ export const useMergeInfo = (index: number) => {
     const { type } = engine.merge.virtualSource;
 
     return {
-      mustBeFirst: type === BlockType.INTENT,
+      mustBeFirst: noInPortTypes.has(type),
       mustBeLast: getManager(type)?.mergeTerminator,
     };
   }
@@ -44,7 +45,7 @@ export const useMergeInfo = (index: number) => {
 
     return {
       mustNotBe: parentNodeID === mergeSource.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
-      mustBeFirst: mergeSource.type === BlockType.INTENT,
+      mustBeFirst: noInPortTypes.has(mergeSource.type),
       mustBeLast: getManager(mergeSource.type)?.mergeTerminator,
     };
   }
@@ -55,7 +56,7 @@ export const useMergeInfo = (index: number) => {
   const lastChildNode = engine.getNodeByID(lastChildNodeID);
 
   return {
-    mustBeFirst: firstChildNode?.type === BlockType.INTENT,
+    mustBeFirst: noInPortTypes.has(firstChildNode?.type),
     mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
   };
 };

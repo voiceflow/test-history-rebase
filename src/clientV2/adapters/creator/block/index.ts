@@ -102,6 +102,8 @@ export const portsAdapter: Record<string, PortsAdapter> = {
   [BlockType.STREAM]: streamPortsAdapter,
 };
 
+export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
+
 export const defaultPortAdapter: PortsAdapter = {
   toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target, id: port.id })),
   fromDB: (ports, node) =>

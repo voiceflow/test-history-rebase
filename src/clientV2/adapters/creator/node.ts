@@ -4,7 +4,7 @@ import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
 import { Link, Node, NodeData, Port } from '@/models';
 
-import { defaultPortAdapter, portsAdapter } from './block';
+import { defaultPortAdapter, noInPortTypes, portsAdapter } from './block';
 import { IN_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, isBlock, isStep } from './utils';
@@ -71,7 +71,9 @@ const nodeAdapter = createAdapter<
       const hasNextStep = stepIndex !== -1 && stepIndex + 1 < siblingSteps.length;
       const nextStep = hasNextStep ? siblingSteps[stepIndex + 1] : null;
 
-      registerPort(generateInPort(node.id));
+      if (!noInPortTypes.has(node.type)) {
+        registerPort(generateInPort(node.id));
+      }
       (portsAdapter[node.type] || defaultPortAdapter)
         .fromDB(dbNode.data.ports, dbNode, platform)
         .forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));

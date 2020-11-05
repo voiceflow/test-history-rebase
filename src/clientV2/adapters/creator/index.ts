@@ -1,8 +1,9 @@
 import { Block, Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
 import _isString from 'lodash/isString';
 
+import { getInvocationNodeID } from '@/client/adapters/creator/utils';
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { DIAGRAM_REFERENCE_NODES, MARKUP_NODES, PlatformType } from '@/constants';
+import { BlockType, DIAGRAM_REFERENCE_NODES, MARKUP_NODES, PlatformType } from '@/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
 import { Normalized, denormalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
@@ -69,6 +70,18 @@ const creatorAdapter = createSimpleAdapter<
 
       if (Array.isArray(dbNode.coords) && dbNode.coords.length === 2) {
         rootNodeIDs.push(node.id);
+      }
+
+      if (node.type === BlockType.START) {
+        registerNode({
+          type: BlockType.INVOCATION,
+          coords: [node.x, node.y],
+          nodeID: getInvocationNodeID(node.id),
+          data: {
+            name: 'Invocation',
+            ports: node.ports,
+          },
+        });
       }
     };
 

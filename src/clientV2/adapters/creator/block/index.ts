@@ -35,7 +35,7 @@ import setAdapter from './set';
 import speakAdapter from './speak';
 import streamAdapter, { streamPortsAdapter } from './stream';
 import userInfoAdapter from './userInfo';
-import { PortsAdapter } from './utils';
+import { PortsAdapter, createBlockAdapter } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
@@ -60,12 +60,18 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
   },
 };
 
+const emptyAdapter = createBlockAdapter(
+  () => ({}),
+  () => ({})
+);
+
 const blockAdapter = {
   // internal
   [BlockType.START]: blockDataAdapter,
   [BlockType.COMMAND]: commandAdapter,
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.COMMENT]: null,
+  [BlockType.INVOCATION]: emptyAdapter,
   // user defined
   [BlockType.CANCEL_PAYMENT]: cancelPaymentAdapter,
   [BlockType.CAPTURE]: captureAdapter,

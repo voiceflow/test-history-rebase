@@ -21,7 +21,7 @@ export type SidebarContextType = {
 export const SidebarContext = React.createContext<null | SidebarContextType>(null);
 export const { Consumer: SidebarConsumer } = SidebarContext;
 
-const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
+export const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   {
     value: 'duplicate_block',
     label: 'Duplicate',

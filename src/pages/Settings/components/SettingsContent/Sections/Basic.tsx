@@ -14,7 +14,7 @@ import { saveSkillSettings } from '@/ducks/skill/sideEffects';
 import { saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import { FORMATTED_LOCALES } from '@/pages/Publish/Google/Form';
+import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/Google/Form';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
@@ -46,6 +46,10 @@ const sectionStyling = {
   paddingBottom: '24px',
 };
 
+const getLocaleLanguage = (locales: any[]) => {
+  return Object.keys(GOOGLE_LANGUAGE_TO_LOCALES).find((locale) => GOOGLE_LANGUAGE_TO_LOCALES[locale].includes(locales[0])) || '';
+};
+
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   saveProjectName,
   saveSkillSettings,
@@ -62,15 +66,24 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 }) => {
   const { invName } = meta;
   const { name, locales, publishInfo } = skill;
+  const { descriptors, localeText } = platformMeta;
+  const { projectName, invocationName, localesDescriptor } = descriptors;
+
+  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+
   const initialInvocationName = React.useMemo(() => invName, [invName]);
+
   const [newInvocation, setNewInvocation] = React.useState(invName);
   const [newProjectName, setNewProjectName] = React.useState(name);
   const [selectedLocales, setSelectedLocales] = React.useState<Locale[]>(locales || []);
-  const [mainLanguage, setMainLanguage] = React.useState<string>(publishInfo?.google?.main_locale);
-  const displayName = selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ');
-  const { descriptors, localeText } = platformMeta;
-  const { projectName, invocationName, localesDescriptor } = descriptors;
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+  const [mainLanguage, setMainLanguage] = React.useState<string>(
+    dataRefactor.isEnabled ? getLocaleLanguage(locales) : publishInfo?.google?.main_locale
+  );
+
+  const displayName =
+    platform === PlatformType.ALEXA
+      ? selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
+      : '';
 
   const saveSettings = async () => {
     const newSettingsData: newSettingsDataProps = {
@@ -82,7 +95,11 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     if (dataRefactor.isEnabled) {
       saveProjectName(newProjectName);
       saveInvocationName(newInvocation);
-      saveLocales(selectedLocales as [Locale, ...Locale[]]);
+      if (platform === PlatformType.ALEXA) {
+        saveLocales(selectedLocales as [Locale, ...Locale[]]);
+      } else {
+        saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as [Locale, ...Locale[]]);
+      }
     } else {
       // Legacy, to be removed after data refactor is merged / enabled
       if (initialInvocationName !== newInvocation) {
@@ -129,12 +146,17 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           options={FORMATTED_LOCALES}
           onSelect={async (val: string) => {
             setMainLanguage(val);
-            const googlePublishInfo = {
-              main_locale: val,
-            };
 
-            await client.skill.updateGooglePublishInfo(versionID, googlePublishInfo);
-            updatePublishInfo({ ...googlePublishInfo, googleId: googleID });
+            if (dataRefactor.isEnabled) {
+              saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as [Locale, ...Locale[]]);
+            } else {
+              const googlePublishInfo = {
+                main_locale: val,
+              };
+
+              await client.skill.updateGooglePublishInfo(versionID, googlePublishInfo);
+              updatePublishInfo({ ...googlePublishInfo, googleId: googleID });
+            }
           }}
           getOptionValue={(option) => option?.value || ''}
           renderOptionLabel={(option) => option.name}

@@ -113,7 +113,7 @@ export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dis
 };
 
 export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dispatch, getState) => {
-  if (locales.length === 0) return;
+  if (locales?.length === 0) return;
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
   const versionID = Skill.activeSkillIDSelector(state);

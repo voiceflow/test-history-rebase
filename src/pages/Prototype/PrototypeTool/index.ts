@@ -64,7 +64,7 @@ class PrototypeTool {
       const intent = await this.dialog?.handle(input);
 
       await this.trace!.next(TraceController.getNextStateRequest(intent as NLCIntent, input));
-    } finally {
+    } catch {
       // no action, dialog may throw
     }
   }

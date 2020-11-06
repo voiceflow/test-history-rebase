@@ -4866,14 +4866,13 @@
     express-pino-logger "^4.0.0"
     pino "^5.14.0"
 
-"@voiceflow/natural-language-commander@^0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/natural-language-commander/-/natural-language-commander-0.4.3.tgz#256418e082908ded9bfde7e04d2d5ace9498b8a2"
-  integrity sha512-ifDX4DSQx9Yt6ElRAlXafxl4lguxdRrvgmSFXt8sR3oLmgDMiTB4rv8AKdQLNiEnbIAMF3Uv8GE0KJHGi1ctJA==
+"@voiceflow/natural-language-commander@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/natural-language-commander/-/natural-language-commander-0.5.0.tgz#c64a28e6c772cd22dd4b20e87746158fe7827999"
+  integrity sha512-ONZjNW5O99BITyHOS+JcO1D59yrYnDBP2L8Vm7TYJS3pTGFQPKGAtbVVlRvqVteEd9uemYlm+Wu2+LMGJpR6TA==
   dependencies:
     "@types/lodash" "^4.14.106"
     babel-runtime "^6.9.2"
-    immer "^6.0.2"
     lodash "^4.17.5"
     moment "^2.22.0"
     moment-timezone "^0.5.14"
@@ -12982,11 +12981,6 @@ immer@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
-
-immer@^6.0.2:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.3.tgz#94d5051cd724668160a900d66d85ec02816f29bd"
-  integrity sha512-12VvNrfSrXZdm/BJgi/KDW2soq5freVSf3I1+4CLunUM8mAGx2/0Njy0xBVzi5zewQZiwM7z1/1T+8VaI7NkmQ==
 
 immutability-helper@^2.9.0:
   version "2.9.1"

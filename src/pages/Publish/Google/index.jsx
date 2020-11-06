@@ -60,16 +60,14 @@ export function PublishGoogle(props) {
   React.useEffect(() => {
     if (dataRefactor.isEnabled) {
       getGoogleAccountV2();
+    } else {
+      if (!googleAccount) {
+        checkGoogleAccount();
+      }
 
-      return;
+      // reset state on unmount
+      return resetGoogleUpload;
     }
-
-    if (!googleAccount) {
-      checkGoogleAccount();
-    }
-
-    // reset state on unmount
-    return resetGoogleUpload;
   }, []);
 
   if (dataRefactor.isEnabled) {

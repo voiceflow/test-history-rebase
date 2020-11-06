@@ -36,21 +36,22 @@ export function PublishAmazon(props) {
   }, [stage, job?.status]);
 
   useEffect(() => {
-    if (dataRefactor.isEnabled) {
-      syncSelectedVendor();
-
-      return;
-    }
-
-    if (!amazon) {
+    if (!dataRefactor.isEnabled && !amazon) {
       (async () => {
         await checkAmazonAccount();
         await syncVendors();
       })();
     }
+
     // reset state on unmount
     return resetAlexaUpload;
   }, [amazon]);
+
+  useEffect(() => {
+    if (dataRefactor.isEnabled) {
+      syncSelectedVendor();
+    }
+  }, []);
 
   return (
     <>

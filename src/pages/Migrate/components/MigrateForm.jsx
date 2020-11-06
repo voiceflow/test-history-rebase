@@ -15,7 +15,7 @@ import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 
 function Migrate({
-  amznID,
+  amazonID,
   amazonAccount,
   projectID,
   updateVendor,
@@ -26,15 +26,15 @@ function Migrate({
   updateSelectedVendor,
   updateVendorSkillID,
 }) {
-  const [newAmznID, setNewAmznID] = React.useState('');
+  const [newAmazonID, setNewAmaonID] = React.useState('');
   const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const updateSkillID = async () => {
     try {
       if (dataRefactor.isEnabled) {
-        await updateVendorSkillID(projectID, vendorID, newAmznID);
+        await updateVendorSkillID(projectID, vendorID, newAmazonID);
       } else {
-        await updateAmznId(projectID, vendorID, newAmznID);
+        await updateAmznId(projectID, vendorID, newAmazonID);
       }
 
       onSuccess();
@@ -44,28 +44,32 @@ function Migrate({
   };
 
   const vendors = amazonAccount?.vendors;
+
   if (!vendors) {
     return <Alert color="danger">No Amazon Account Linked to Voiceflow</Alert>;
   }
 
-  const disabled = !newAmznID.trim();
+  const disabled = !newAmazonID.trim();
 
   return (
     <>
       <Alert className="mb-3">
-        {amznID ? (
+        {amazonID ? (
           <>
-            Current Skill ID: <b>{amznID}</b>
+            Current Skill ID: <b>{amazonID}</b>
           </>
         ) : (
           'There is no existing Alexa Skill associated with this Voiceflow project, updating will link an existing Skill with this project'
         )}
       </Alert>
+
       <Alert color="danger">
         Updating the Skill ID will cause Voiceflow to overwrite any existing content on the development version of the Skill on Alexa Developer
         Console
       </Alert>
-      <Input className="my-3" value={newAmznID} onChange={(e) => setNewAmznID(e.target.value)} placeholder="New Skill ID" />
+
+      <Input className="my-3" value={newAmazonID} onChange={(e) => setNewAmaonID(e.target.value)} placeholder="New Skill ID" />
+
       {vendors.length > 1 ? (
         <DropdownButton
           buttonProps={{
@@ -99,7 +103,7 @@ function Migrate({
 }
 
 const mapStateToProps = {
-  amznID: AlexaPublish.amznIDSelector,
+  amazonID: Skill.amazonIDSelector,
   projectID: Skill.activeProjectIDSelector,
   amazonAccount: Account.amazonAccountSelector,
   vendorID: AlexaPublish.vendorIdSelector,

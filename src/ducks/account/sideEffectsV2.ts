@@ -84,13 +84,9 @@ export const unlinkAmazonAccountV2 = (): Thunk => async (dispatch) => {
 };
 
 export const updateVendorSkillID = (projectID: string, vendorID: string, skillID: string): Thunk => async (dispatch) => {
-  try {
-    await clientV2.alexaService.project.updateVendorSkillID(projectID, vendorID, skillID);
+  await clientV2.alexaService.project.updateVendorSkillID(projectID, vendorID, skillID);
 
-    dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
-  } catch (err) {
-    dispatch(Modal.setError('Something went wrong - please refresh your page'));
-  }
+  dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
 };
 
 export const updateSelectedVendor = (vendorID: string): Thunk => async (dispatch, getState) => {

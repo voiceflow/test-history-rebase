@@ -4,6 +4,7 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import { accountLinkingSelector } from '@/ducks/skill/meta';
 import { connect } from '@/hocs';
+import { AccountLinking } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { EMPTY_ACCOUNT_DATA } from '@/pages/Canvas/managers/AccountLinking/constants';
 
@@ -28,18 +29,7 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
 );
 
 type ConnectedAccountLinkingStepProps = ConnectedStepProps & {
-  accountLinkingData?: {
-    skipOnEnablement: boolean;
-    type: string;
-    authorizationUrl: string;
-    domains: string[];
-    clientId: string;
-    scopes: string[];
-    accessTokenUrl: string;
-    clientSecret: string;
-    accessTokenScheme: string;
-    defaultTokenExpirationInSeconds: number;
-  };
+  accountLinkingData?: AccountLinking;
 };
 
 const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData }) => {

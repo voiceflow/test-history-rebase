@@ -4,6 +4,8 @@ import _invert from 'lodash/invert';
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
 
+import accountLinkingAdapter from './accountLinking';
+
 export type SkillSettings = Pick<
   FullSkill['meta'],
   'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'alexa_permissions'
@@ -76,7 +78,7 @@ const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
     const { error, session, repeat, accountLinking, customInterface, events, permissions } = defaultAlexaSettings(settings);
     return {
       repeat: RepeatMap[repeat],
-      accountLinking,
+      accountLinking: accountLinking && accountLinkingAdapter.fromDB(accountLinking),
       alexaEvents: events || '',
       settings: {
         customInterface,
@@ -90,7 +92,7 @@ const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
-    accountLinking,
+    accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking),
     events: alexaEvents?.trim() || null,
     customInterface,
     permissions: alexa_permissions,

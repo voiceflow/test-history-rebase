@@ -4,6 +4,7 @@ import _pick from 'lodash/pick';
 import clientV2, { getPlatformService } from '@/clientV2';
 import intentAdapter from '@/clientV2/adapters/intent';
 import slotAdapter from '@/clientV2/adapters/slot';
+import accountLinkingAdapter from '@/clientV2/adapters/version/alexa/accountLinking';
 import alexaSettingsAdapter, { SkillSettings } from '@/clientV2/adapters/version/alexa/settings';
 import googleSettingsAdapter from '@/clientV2/adapters/version/google/settings';
 import { PlatformType } from '@/constants';
@@ -93,7 +94,7 @@ export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state);
 
-  await clientV2.alexaService.version.updateSettings(skillID, { accountLinking });
+  await clientV2.alexaService.version.updateSettings(skillID, { accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking) });
 
   dispatch(Meta.updateAccountLinking(accountLinking));
 };
@@ -102,9 +103,13 @@ export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dis
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state);
 
-  const { platformData } = await clientV2.api.version.get<{ platformData: AlexaVersionData }>(skillID, ['platformData']);
+  const {
+    platformData: {
+      settings: { accountLinking },
+    },
+  } = await clientV2.api.version.get<{ platformData: AlexaVersionData }>(skillID, ['platformData']);
 
-  return platformData.settings.accountLinking;
+  return accountLinking && accountLinkingAdapter.fromDB(accountLinking);
 };
 
 export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dispatch, getState) => {

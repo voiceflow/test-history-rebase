@@ -1,12 +1,3 @@
-export type AccountLinking = {
-  skipOnEnablement: boolean;
-  type: string;
-  authorizationUrl: string;
-  domains: string[];
-  clientId: string;
-  scopes: string[];
-  accessTokenUrl: string;
-  clientSecret: string;
-  accessTokenScheme: string;
-  defaultTokenExpirationInSeconds: number;
-};
+import { AccountLinking as BaseAccountLinking } from '@voiceflow/alexa-types';
+
+export type AccountLinking = BaseAccountLinking;

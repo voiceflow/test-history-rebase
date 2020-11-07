@@ -6,8 +6,10 @@ import { Nullable } from '@/types';
 export const RESOURCE_ENDPOINT = 'publish';
 
 const createPublishService = <J extends Job, S extends string>(serviceEndpoint: string) => ({
-  run: (projectID: string) =>
-    axios.post<{ job: J; projectID: string }>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}`).then((res) => res.data),
+  run: (projectID: string, submit = false) =>
+    axios
+      .post<{ job: J; projectID: string }>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}`, { submit })
+      .then((res) => res.data),
 
   cancel: (projectID: string) => axios.post<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}/cancel`).then((res) => res.data),
 

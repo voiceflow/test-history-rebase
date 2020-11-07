@@ -10,6 +10,7 @@ import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import UploadAlexa from '@/pages/Publish/Upload/Alexa';
+import { Alexa } from '@/pages/Publish/UploadV2';
 import { PublishContext } from '@/pages/Skill/contexts';
 
 import PublishAmazonForm from './Form';
@@ -24,7 +25,7 @@ export function PublishAmazon(props) {
 
   const onPublish = () => {
     setOpen(true);
-    dataRefactor.isEnabled ? publishV2() : publish({ submit: true });
+    dataRefactor.isEnabled ? publishV2(true) : publish({ submit: true });
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export function PublishAmazon(props) {
       <PublishAmazonForm isLocked={isLocked} publish={onPublish} dataRefactorEnabled={!!dataRefactor.isEnabled} />
       <Modal isOpen={open} onClosed={dataRefactor.isEnabled ? cancel : resetAlexaUpload} centered contentClassName="overflow-hidden">
         {close && <ModalHeader toggle={() => setOpen(false)} />}
-        <UploadAlexa />
+        {dataRefactor.isEnabled ? <Alexa /> : <UploadAlexa />}
       </Modal>
     </>
   );

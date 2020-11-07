@@ -40,13 +40,20 @@ export const PublishProvider: React.FC = ({ children }) => {
     setJob(currentJob || null);
   }, [projectID, service]);
 
-  const publish = React.useCallback(async () => {
-    await dispatch(Diagram.saveActiveDiagram());
+  const publish = React.useCallback(
+    async (submit = false) => {
+      try {
+        await dispatch(Diagram.saveActiveDiagram());
+      } catch (error) {
+        console.error(error);
+      }
 
-    const result = await service?.publish.run(projectID);
+      const result = await service?.publish.run(projectID, submit);
 
-    setJob(result?.job || null);
-  }, [projectID, service]);
+      setJob(result?.job || null);
+    },
+    [projectID, service]
+  );
 
   const updateCurrentStage = React.useCallback(
     async (data: unknown) => {
